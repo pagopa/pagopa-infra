@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.20.1"
+  source = "./.terraform/modules/__v4__/key_vault"
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -94,9 +94,10 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "redis_wallet_password" {
-  name         = "redis-wallet-password"
-  value        = module.pagopa_pay_wallet_redis[0].primary_access_key
+
+resource "azurerm_key_vault_secret" "redis_std_wallet_password" {
+  name         = "redis-std-wallet-password"
+  value        = module.pagopa_pay_wallet_redis_std[0].primary_access_key
   key_vault_id = module.key_vault.id
 }
 

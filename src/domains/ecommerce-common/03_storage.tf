@@ -305,6 +305,7 @@ locals {
       "queue_key"         = "transaction-notifications-queue"
       "severity"          = 1
       "time_window"       = 30
+      "fetch_time_window" = 45
       "frequency"         = 15
       "threshold"         = 20
       "dynamic_threshold" = 2.0
@@ -313,6 +314,7 @@ locals {
       "queue_key"         = "transactions-close-payment-queue"
       "severity"          = 1
       "time_window"       = 30
+      "fetch_time_window" = 45
       "frequency"         = 15
       "threshold"         = 20
       "dynamic_threshold" = 2.0
@@ -321,9 +323,28 @@ locals {
       "queue_key"         = "transactions-refund-queue"
       "severity"          = 1
       "time_window"       = 30
+      "fetch_time_window" = 45
       "frequency"         = 15
       "threshold"         = 20
       "dynamic_threshold" = 2.0
+    },
+    {
+      "queue_key"         = "transaction-auth-outcome-waiting-queue"
+      "severity"          = 1
+      "time_window"       = 30
+      "fetch_time_window" = 45
+      "frequency"         = 15
+      "threshold"         = 100
+      "dynamic_threshold" = 3.0
+    },
+    {
+      "queue_key"         = "transaction-auth-requested-queue"
+      "severity"          = 1
+      "time_window"       = 30
+      "fetch_time_window" = 45
+      "frequency"         = 15
+      "threshold"         = 400
+      "dynamic_threshold" = 3.0
     }
   ] : []
 }
@@ -344,37 +365,42 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
   description    = format("Enqueuing rate for queue %s > ${each.value.dynamic_threshold} percent threshold of 'PutMessage' (at least 10) during last ${each.value.time_window} minutes", replace("${each.value.queue_key}", "-", " "))
   enabled        = true
   query = format(<<-QUERY
-    let OpCountForQueue = (operation: string, queueKey: string) {
+    let endDelete = ago(10m);
+    let startDelete = endDelete - ${each.value.time_window}m;
+    let endPut = endDelete;
+    let startPut = endPut - ${each.value.time_window}m;
+    let OpCountForQueue = (operation: string, queueKey: string, timestart: datetime, timeend: datetime) {
         StorageQueueLogs
         | where OperationName == operation and ObjectKey startswith queueKey
+        | where TimeGenerated between (timestart .. timeend)
         | summarize count()
         | project count_
         | extend dummy=1
     };
-    let PutMessages = (queueName: string) {
-      OpCountForQueue("PutMessage", queueName)
+    let PutMessages = (queueName: string, timestart: datetime, timeend: datetime) {
+      OpCountForQueue("PutMessage", queueName, timestart, timeend)
         | project PutCount = count_
         | extend dummy = 1
     };
-    let DeletedMessages =  (queueName: string) {
-      OpCountForQueue("DeleteMessage", queueName)
+    let DeletedMessages =  (queueName: string, timestart: datetime, timeend: datetime) {
+      OpCountForQueue("DeleteMessage", queueName, timestart, timeend)
         | project DeleteCount = count_
         | extend dummy = 1
     };
-    let MessageRateForQueue = (queueKey: string) {
-        PutMessages(queueKey)
-        | join kind=inner (DeletedMessages(queueKey)) on dummy
+    let MessageRateForQueue = (queueKey: string, timestartPut: datetime, timeendPut: datetime, timestartDelete: datetime, timeendDelete: datetime) {
+        PutMessages(queueKey, timestartPut, timeendPut)
+        | join kind=inner (DeletedMessages(queueKey, timestartDelete, timeendDelete)) on dummy
         | extend Diff = PutCount - DeleteCount
         | project PutCount, DeleteCount, Diff
     };
-    MessageRateForQueue("%s")
+    MessageRateForQueue("%s", startPut, endPut, startDelete, endDelete)
     | where Diff > max_of(PutCount*(${each.value.dynamic_threshold}/100.0), ${each.value.threshold})
     QUERY
     , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
   )
   severity    = each.value.severity
   frequency   = each.value.frequency
-  time_window = each.value.time_window
+  time_window = each.value.fetch_time_window
   trigger {
     operator  = "GreaterThan"
     threshold = 0
@@ -384,53 +410,44 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
 locals {
   queue_expiration_alert_props = var.env_short == "p" ? [
     {
-      "queue_key"   = "transactions-expiration-queue"
-      "severity"    = 1
-      "time_window" = 15
-      "frequency"   = 15
-      "threshold"   = 40
+      "queue_key"         = "transactions-expiration-queue"
+      "severity"          = 1
+      "time_window"       = 15
+      "fetch_time_window" = 75
+      "frequency"         = 15
+      "threshold"         = 40
     },
     {
-      "queue_key"   = "notifications-service-retry-queue"
-      "severity"    = 1
-      "time_window" = 30
-      "frequency"   = 15
-      "threshold"   = 10
+      "queue_key"         = "notifications-service-retry-queue"
+      "severity"          = 1
+      "time_window"       = 30
+      "fetch_time_window" = 75
+      "frequency"         = 15
+      "threshold"         = 10
     },
     {
-      "queue_key"   = "transaction-notifications-retry-queue"
-      "severity"    = 1
-      "time_window" = 30
-      "frequency"   = 15
-      "threshold"   = 20
+      "queue_key"         = "transaction-notifications-retry-queue"
+      "severity"          = 1
+      "time_window"       = 30
+      "fetch_time_window" = 75
+      "frequency"         = 15
+      "threshold"         = 20
     },
     {
-      "queue_key"   = "transactions-refund-retry-queue"
-      "severity"    = 1
-      "time_window" = 30
-      "frequency"   = 15
-      "threshold"   = 10
+      "queue_key"         = "transactions-refund-retry-queue"
+      "severity"          = 1
+      "time_window"       = 30
+      "fetch_time_window" = 75
+      "frequency"         = 15
+      "threshold"         = 10
     },
     {
-      "queue_key"   = "transaction-auth-outcome-waiting-queue"
-      "severity"    = 1
-      "time_window" = 30
-      "frequency"   = 15
-      "threshold"   = 40
-    },
-    {
-      "queue_key"   = "transaction-auth-requested-queue"
-      "severity"    = 1
-      "time_window" = 30
-      "frequency"   = 15
-      "threshold"   = 400
-    },
-    {
-      "queue_key"   = "transactions-close-payment-retry-queue"
-      "severity"    = 1
-      "time_window" = 30
-      "frequency"   = 15
-      "threshold"   = 10
+      "queue_key"         = "transactions-close-payment-retry-queue"
+      "severity"          = 1
+      "time_window"       = 30
+      "fetch_time_window" = 75
+      "frequency"         = 15
+      "threshold"         = 10
     }
   ] : []
 }
@@ -451,7 +468,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_enqueue_rate_a
   description    = format("Enqueuing rate for queue %s > ${each.value.threshold} during last ${each.value.time_window} minutes", replace("${each.value.queue_key}", "-", " "))
   enabled        = true
   query = format(<<-QUERY
-    let endDelete = datetime_local_to_utc(now(), 'Europe/Rome');
+    let endDelete = ago(10m);
     let startDelete = endDelete - ${each.value.time_window}m;
     let endPut = startDelete;
     let startPut = endPut - ${each.value.time_window}m;
@@ -486,7 +503,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_enqueue_rate_a
   )
   severity    = each.value.severity
   frequency   = each.value.frequency
-  time_window = each.value.time_window
+  time_window = each.value.fetch_time_window
   trigger {
     operator  = "GreaterThan"
     threshold = 0

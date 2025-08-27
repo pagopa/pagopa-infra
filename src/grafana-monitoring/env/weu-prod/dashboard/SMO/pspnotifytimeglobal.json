@@ -26,7 +26,6 @@
     "graphTooltip": 0,
     "id": 50,
     "links": [],
-    "liveNow": false,
     "panels": [
       {
         "datasource": {
@@ -45,6 +44,7 @@
               "axisLabel": "",
               "axisPlacement": "auto",
               "barAlignment": 0,
+              "barWidthFactor": 0.6,
               "drawStyle": "line",
               "fillOpacity": 11,
               "gradientMode": "none",
@@ -78,8 +78,7 @@
               "mode": "absolute",
               "steps": [
                 {
-                  "color": "green",
-                  "value": null
+                  "color": "green"
                 },
                 {
                   "color": "red",
@@ -105,10 +104,12 @@
             "showLegend": true
           },
           "tooltip": {
+            "hideZeros": false,
             "mode": "single",
             "sort": "none"
           }
         },
+        "pluginVersion": "11.6.3",
         "targets": [
           {
             "database": "re",
@@ -180,8 +181,7 @@
               "mode": "absolute",
               "steps": [
                 {
-                  "color": "green",
-                  "value": null
+                  "color": "green"
                 },
                 {
                   "color": "red",
@@ -211,7 +211,7 @@
           },
           "showHeader": true
         },
-        "pluginVersion": "10.4.15",
+        "pluginVersion": "11.6.3",
         "targets": [
           {
             "database": "re",
@@ -253,15 +253,14 @@
         "type": "table"
       }
     ],
-    "refresh": false,
-    "revision": 1,
-    "schemaVersion": 39,
+    "preload": false,
+    "refresh": "",
+    "schemaVersion": 41,
     "tags": [],
     "templating": {
       "list": [
         {
           "current": {
-            "selected": false,
             "text": "All",
             "value": "$__all"
           },
@@ -269,11 +268,9 @@
             "type": "grafana-azure-data-explorer-datasource",
             "uid": "2mZ1xay4z"
           },
-          "definition": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"pspNotifyPayment\"\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"REQ\"\n| extend idBrokerPSP = extract(\"<idBrokerPSP>(.*)</idBrokerPSP>\", 1 , base64_decode_tostring(payload))\n| project idBrokerPSP\n| join kind=inner INTERMEDIARI_PSP on $left.idBrokerPSP == $right.ID_INTERMEDIARIO_PSP\n| extend v = strcat(idBrokerPSP, \"|\", INTERMEDIARIO_DESCR)\n| sort by INTERMEDIARIO_DESCR asc \n| project v\n",
-          "hide": 0,
+          "definition": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"pspNotifyPaymentV2\"\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"REQ\"\n| extend idBrokerPSP = extract(\"<idBrokerPSP>(.*)</idBrokerPSP>\", 1 , base64_decode_tostring(payload))\n| project idBrokerPSP\n| join kind=inner INTERMEDIARI_PSP on $left.idBrokerPSP == $right.ID_INTERMEDIARIO_PSP\n| extend v = strcat(idBrokerPSP, \"|\", INTERMEDIARIO_DESCR)\n| sort by INTERMEDIARIO_DESCR asc \n| project v\n",
           "includeAll": true,
           "label": "Intermediario PSP",
-          "multi": false,
           "name": "IntPSP",
           "options": [],
           "query": {
@@ -300,7 +297,7 @@
               }
             },
             "pluginVersion": "4.4.0",
-            "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"pspNotifyPayment\"\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"REQ\"\n| extend idBrokerPSP = extract(\"<idBrokerPSP>(.*)</idBrokerPSP>\", 1 , base64_decode_tostring(payload))\n| project idBrokerPSP\n| join kind=inner INTERMEDIARI_PSP on $left.idBrokerPSP == $right.ID_INTERMEDIARIO_PSP\n| extend v = strcat(idBrokerPSP, \"|\", INTERMEDIARIO_DESCR)\n| sort by INTERMEDIARIO_DESCR asc \n| project v\n",
+            "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"pspNotifyPaymentV2\"\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"REQ\"\n| extend idBrokerPSP = extract(\"<idBrokerPSP>(.*)</idBrokerPSP>\", 1 , base64_decode_tostring(payload))\n| project idBrokerPSP\n| join kind=inner INTERMEDIARI_PSP on $left.idBrokerPSP == $right.ID_INTERMEDIARIO_PSP\n| extend v = strcat(idBrokerPSP, \"|\", INTERMEDIARIO_DESCR)\n| sort by INTERMEDIARIO_DESCR asc \n| project v\n",
             "querySource": "raw",
             "queryType": "KQL",
             "rawMode": true,
@@ -308,8 +305,6 @@
           },
           "refresh": 1,
           "regex": "/(?<value>.*)\\|(?<text>.*)/",
-          "skipUrlSync": false,
-          "sort": 0,
           "type": "query"
         }
       ]
@@ -322,6 +317,5 @@
     "timezone": "",
     "title": "[GLOBAL] - Tempi pspNotifyPayment",
     "uid": "qvnjs6IVz",
-    "version": 9,
-    "weekStart": ""
-  }
+    "version": 11
+}
