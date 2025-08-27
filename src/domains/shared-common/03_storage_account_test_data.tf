@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "test_data_rg" {
   name     = "${local.project}-${local.test_label}-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "test_data_sa" {
@@ -29,5 +29,5 @@ module "test_data_sa" {
 
   blob_delete_retention_days = var.test_data_storage_account.blob_delete_retention_days
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

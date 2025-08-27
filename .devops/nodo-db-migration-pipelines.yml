@@ -7,23 +7,24 @@ pool:
   vmImage: 'ubuntu-latest'
 
 parameters:
-  - name: k8sEnv
-    displayName: K8s Environment
+  - name: env
+    displayName: Environment
     type: string
     default: dev
     values:
       - dev
-      - dev-storico
-      - it
-      - prf
       - uat
-      - uat-storico
       - prd
-      - prd-storico
   # version of liquibase db.changelog-master-*.xml to run
   - name: dbVersion
     displayName: Database Version
     type: string
+    default: '3.36.2'
+  # version of liquibase db.changelog-master-*.xml to run
+  - name: dbVersionSt
+    displayName: Database Version Storico patch
+    type: string
+    default: '1.1.2'
   # liquibase context to run specific changelogs,default to '_' to run only uncontexted changelogs
   - name: lbContexts
     displayName: Liquibase Contexts
@@ -41,68 +42,39 @@ parameters:
       - SEVERE
 
 variables:
-  ${{ if eq(parameters.k8sEnv, 'dev') }}:
+  ${{ if eq(parameters.env, 'dev') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
-    JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/postgres?sslmode=require&prepareThreshold=0
+    JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
+    JDBC_URL_STORICO: jdbc:postgresql://pagopa-d-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
+    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/postgres?sslmode=require&prepareThreshold=0
+    POSTGRES_JDBC_URL_STORICO: jdbc:postgresql://pagopa-d-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:5432/postgres?sslmode=require&prepareThreshold=0
     KEY_VAULT_NAME: pagopa-d-nodo-kv
     poolImage: 'pagopa-dev-linux-infra'
-    liquibase_folder: 'changelog'
-  ${{ if eq(parameters.k8sEnv, 'dev-storico') }}:
-    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
-    JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:6432/postgres?sslmode=require&prepareThreshold=0
     NODO_DB_HOST: pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com
     NODO_DB_PORT: 6432
-    KEY_VAULT_NAME: pagopa-d-nodo-kv
-    poolImage: 'pagopa-dev-linux-infra'
-    liquibase_folder: 'changelog_storico'
-  ${{ if eq(parameters.k8sEnv, 'it') }}:
-    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
-    JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/nodo-replica?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/postgres?sslmode=require&prepareThreshold=0
-    KEY_VAULT_NAME: pagopa-d-nodo-kv
-    poolImage: 'pagopa-dev-linux-infra'
-    liquibase_folder: 'changelog'
-  ${{ elseif eq(parameters.k8sEnv, 'prf') }}:
+    REQUIRE_VALIDATION: false
+  ${{ elseif eq(parameters.env, 'uat') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
-    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/nodo-replica?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/postgres?sslmode=require&prepareThreshold=0
-    KEY_VAULT_NAME: pagopa-u-nodo-kv
-    poolImage: 'pagopa-uat-linux-infra'
-    liquibase_folder: 'changelog'
-  ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
-    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
-    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/postgres?sslmode=require&prepareThreshold=0
-    KEY_VAULT_NAME: pagopa-u-nodo-kv
-    poolImage: 'pagopa-uat-linux-infra'
-    liquibase_folder: 'changelog'
-  ${{ elseif eq(parameters.k8sEnv, 'uat-storico') }}:
-    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
-    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:6432/postgres?sslmode=require&prepareThreshold=0
-    KEY_VAULT_NAME: pagopa-u-nodo-kv
+    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
+    JDBC_URL_STORICO: jdbc:postgresql://pagopa-u-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
+    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/postgres?sslmode=require&prepareThreshold=0
+    POSTGRES_JDBC_URL_STORICO: jdbc:postgresql://pagopa-u-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:5432/postgres?sslmode=require&prepareThreshold=0
     NODO_DB_HOST: pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com
     NODO_DB_PORT: 6432
+    KEY_VAULT_NAME: pagopa-u-nodo-kv
     poolImage: 'pagopa-uat-linux-infra'
-    liquibase_folder: 'changelog_storico'
-  ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
+    REQUIRE_VALIDATION: false
+  ${{ elseif eq(parameters.env, 'prd') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
-    JDBC_URL: jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/postgres?sslmode=require&prepareThreshold=0
-    KEY_VAULT_NAME: pagopa-p-nodo-kv
-    poolImage: 'pagopa-prod-linux-infra'
-    liquibase_folder: 'changelog'
-  ${{ elseif eq(parameters.k8sEnv, 'prd-storico') }}:
-    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
-    JDBC_URL: jdbc:postgresql://pagopa-p-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-p-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:6432/postgres?sslmode=require&prepareThreshold=0
+    JDBC_URL: jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
+    JDBC_URL_STORICO: jdbc:postgresql://pagopa-p-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
+    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/postgres?sslmode=require&prepareThreshold=0
+    POSTGRES_JDBC_URL_STORICO: jdbc:postgresql://pagopa-p-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:5432/postgres?sslmode=require&prepareThreshold=0
     KEY_VAULT_NAME: pagopa-p-nodo-kv
     NODO_DB_HOST: pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com
     NODO_DB_PORT: 6432
     poolImage: 'pagopa-prod-linux-infra'
-    liquibase_folder: 'changelog_storico'
+    REQUIRE_VALIDATION: true
   APPROVE_NOTIFY_GROUP: '[pagoPA-iac]\pagopa-iac-externals-team'
   APPROVE_NOTIFY_ADMIN: '[pagoPA-iac]\Project Administrators'
   CFG_USERNAME: cfg
@@ -113,14 +85,13 @@ variables:
   ONLINE_SCHEMA: online
   RE_USERNAME: re
   RE_SCHEMA: re
-  WFESP_USERNAME: wfesp
-  WFESP_SCHEMA: wfesp
   PARTITION_USERNAME: partition
   PARTITION_SCHEMA: partition
-  CRON_USERNAME: partition
-  CRON_SCHEMA: cron
   ADMIN_USERNAME: azureuser
   ADMIN_SCHEMA: public
+  liquibase_folder: 'changelog'
+  liquibase_folder_st_nodo: 'changelog_st_nodo'
+  liquibase_folder_st_nodo_storico: 'changelog_st_nodo_storico'
 
 stages:
   - stage: liquibase_status
@@ -155,269 +126,218 @@ stages:
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
-              secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password,db-partition-password,db-administrator-login-password'
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/cfg/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on cfg!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(CFG_USERNAME)" \
-                --password="$(db-cfg-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/cfg \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(CFG_SCHEMA)" \
-                --defaultSchemaName="$(CFG_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                status -Dschema=$(CFG_SCHEMA)
-              fi
-            displayName: "cfg db status"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/online/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on online!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(ONLINE_USERNAME)" \
-                --password="$(db-online-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/online \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(ONLINE_SCHEMA)" \
-                --defaultSchemaName="$(ONLINE_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                status -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME)
-              fi
-            displayName: "online db status"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/offline/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on offline!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(OFFLINE_USERNAME)" \
-                --password="$(db-offline-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/offline \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(OFFLINE_SCHEMA)" \
-                --defaultSchemaName="$(OFFLINE_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                status -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline=$(ONLINE_SCHEMA)
-              fi
-            displayName: "offline db status"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/re/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on re!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(RE_USERNAME)" \
-                --password="$(db-re-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/re \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(RE_SCHEMA)" \
-                --defaultSchemaName="$(RE_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                status -Dschema=$(RE_SCHEMA)
-              fi
-            displayName: "re db status"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/wfesp/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on wfesp!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(WFESP_USERNAME)" \
-                --password="$(db-wfesp-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/wfesp \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(WFESP_SCHEMA)" \
-                --defaultSchemaName="$(WFESP_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                status -Dschema=$(WFESP_SCHEMA)
-              fi
-            displayName: "wfeps db status"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/partition/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on partition!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(PARTITION_USERNAME)" \
-                --password="$(db-partition-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/partition \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(PARTITION_SCHEMA)" \
-                --defaultSchemaName="$(PARTITION_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                status -Dschema=$(PARTITION_SCHEMA)
-              fi
-            displayName: "partition db status"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/cfg/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on cfg!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(CFG_USERNAME)" \
-                --password="$(db-cfg-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/cfg \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(CFG_SCHEMA)" \
-                --defaultSchemaName="$(CFG_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                validate -Dschema=$(CFG_SCHEMA)
-              fi
-            displayName: "cfg db validate"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/online/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on online!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(ONLINE_USERNAME)" \
-                --password="$(db-online-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/online \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(ONLINE_SCHEMA)" \
-                --defaultSchemaName="$(ONLINE_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                validate -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME)
-              fi
-            displayName: "online db validate"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/offline/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on offline!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(OFFLINE_USERNAME)" \
-                --password="$(db-offline-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/offline \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(OFFLINE_SCHEMA)" \
-                --defaultSchemaName="$(OFFLINE_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                validate -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline=$(ONLINE_SCHEMA)
-              fi
-            displayName: "offline db validate"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/re/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on re!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(RE_USERNAME)" \
-                --password="$(db-re-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/re \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(RE_SCHEMA)" \
-                --defaultSchemaName="$(RE_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                validate -Dschema=$(RE_SCHEMA)
-              fi
-            displayName: "re db validate"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/wfesp/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on wfesp!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(WFESP_USERNAME)" \
-                --password="$(db-wfesp-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/wfesp \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(WFESP_SCHEMA)" \
-                --defaultSchemaName="$(WFESP_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                validate -Dschema=$(WFESP_SCHEMA)
-              fi
-            displayName: "wfeps db validate"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/partition/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on partition!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(PARTITION_USERNAME)" \
-                --password="$(db-partition-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/partition \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(PARTITION_SCHEMA)" \
-                --defaultSchemaName="$(PARTITION_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                validate -Dschema=$(PARTITION_SCHEMA)
-              fi
-            displayName: "partition db validate"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/cron/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on cron!"
-              else
-                liquibase \
-                --url="$(POSTGRES_JDBC_URL)" \
-                --username="$(CRON_USERNAME)" \
-                --password="$(db-partition-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/cron \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(CRON_SCHEMA)" \
-                --defaultSchemaName="$(CRON_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                validate -Dschema=$(CRON_SCHEMA)
-              fi
-            displayName: "cron postgres db validate"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/admin/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on admin!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(ADMIN_USERNAME)" \
-                --password="$(db-administrator-login-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/admin \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="public" \
-                --database-changelog-lock-table-name="DATABASECHANGELOGLOCK_ADMIN" \
-                --database-changelog-table-name="DATABASECHANGELOG_ADMIN" \
-                --defaultSchemaName="$(ADMIN_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                validate -Dschema=$(ADMIN_SCHEMA) -Dnodo-db-host=$(NODO_DB_HOST) -Dnodo-db-port=$(NODO_DB_PORT) -Dpartition-password=$(db-partition-password) -Dadmin-password=$(db-administrator-login-password)
-              fi
-            displayName: "admin nodo db validate"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/admin-postgres/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on admin!"
-              else
-                liquibase \
-                --url="$(POSTGRES_JDBC_URL)" \
-                --username="$(ADMIN_USERNAME)" \
-                --password="$(db-administrator-login-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/admin-postgres \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="public" \
-                --database-changelog-lock-table-name="DATABASECHANGELOGLOCK_CRON" \
-                --database-changelog-table-name="DATABASECHANGELOG_CRON" \
-                --defaultSchemaName="$(ADMIN_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                validate -Dschema=$(ADMIN_SCHEMA)
-              fi
-            displayName: "admin postgres db validate"
+              secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-partition-password,db-administrator-login-password'
+          # cfg status
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: cfg
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(CFG_USERNAME)
+              PASSWORD: $(db-cfg-password)
+              SCHEMA: $(CFG_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: cfg
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(CFG_USERNAME)
+              PASSWORD: $(db-cfg-password)
+              SCHEMA: $(CFG_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          # online status
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: online
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(ONLINE_USERNAME)
+              PASSWORD: $(db-online-password)
+              SCHEMA: $(ONLINE_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              OFFLINE_SCHEMA: $(OFFLINE_SCHEMA)
+              OFFLINE_USERNAME: $(OFFLINE_USERNAME)
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: online
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(ONLINE_USERNAME)
+              PASSWORD: $(db-online-password)
+              SCHEMA: $(ONLINE_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              OFFLINE_SCHEMA: $(OFFLINE_SCHEMA)
+              OFFLINE_USERNAME: $(OFFLINE_USERNAME)
+          # offline status
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: offline
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(OFFLINE_USERNAME)
+              PASSWORD: $(db-offline-password)
+              SCHEMA: $(OFFLINE_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              ONLINE_SCHEMA: $(ONLINE_SCHEMA)
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: offline
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(OFFLINE_USERNAME)
+              PASSWORD: $(db-offline-password)
+              SCHEMA: $(OFFLINE_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              ONLINE_SCHEMA: $(ONLINE_SCHEMA)
+          # RE status
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: re
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(RE_USERNAME)
+              PASSWORD: $(db-re-password)
+              SCHEMA: $(RE_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: re
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(RE_USERNAME)
+              PASSWORD: $(db-re-password)
+              SCHEMA: $(RE_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          # partition status
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: partition
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(PARTITION_USERNAME)
+              PASSWORD: $(db-partition-password)
+              SCHEMA: $(PARTITION_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: partition
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(PARTITION_USERNAME)
+              PASSWORD: $(db-partition-password)
+              SCHEMA: $(PARTITION_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          # partition st_nodo status
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: partition
+              LIQUIBASE_FOLDER: $(liquibase_folder_st_nodo)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionSt }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(PARTITION_USERNAME)
+              PASSWORD: $(db-partition-password)
+              SCHEMA: $(PARTITION_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: partition
+              LIQUIBASE_FOLDER: $(liquibase_folder_st_nodo_storico)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionSt }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(PARTITION_USERNAME)
+              PASSWORD: $(db-partition-password)
+              SCHEMA: $(PARTITION_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          # admin st_nodo_storico status
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: admin
+              LIQUIBASE_FOLDER: $(liquibase_folder_st_nodo_storico)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionSt }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(ADMIN_USERNAME)
+              PASSWORD: $(db-administrator-login-password)
+              SCHEMA: $(ADMIN_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_SCHEMA_NAME: public
+              CHANGELOG_LOCK_TABLE: DATABASECHANGELOGLOCK_ADMIN
+              CHANGELOG_TABLE: DATABASECHANGELOG_ADMIN
+              NODO_DB_HOST: $(NODO_DB_HOST)
+              NODO_DB_PORT: $(NODO_DB_PORT)
+              DB_PARTITION_PASSWORD: $(db-partition-password)
+              DB_ADMIN_PASSWORD: $(db-administrator-login-password)
+          # admin st_nodo_storico status
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: admin-postgres
+              LIQUIBASE_FOLDER: $(liquibase_folder_st_nodo)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionSt }}
+              JDBC_URL: $(POSTGRES_JDBC_URL)
+              USERNAME: $(ADMIN_USERNAME)
+              PASSWORD: $(db-administrator-login-password)
+              SCHEMA: $(ADMIN_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_SCHEMA_NAME: public
+              CHANGELOG_LOCK_TABLE: DATABASECHANGELOGLOCK_CRON
+              CHANGELOG_TABLE: DATABASECHANGELOG_CRON
+          # admin st_nodo_storico status
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: admin-postgres
+              LIQUIBASE_FOLDER: $(liquibase_folder_st_nodo_storico)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionSt }}
+              JDBC_URL: $(POSTGRES_JDBC_URL_STORICO)
+              USERNAME: $(ADMIN_USERNAME)
+              PASSWORD: $(db-administrator-login-password)
+              SCHEMA: $(ADMIN_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_SCHEMA_NAME: public
+              CHANGELOG_LOCK_TABLE: DATABASECHANGELOGLOCK_CRON
+              CHANGELOG_TABLE: DATABASECHANGELOG_CRON
       - job: approval
         dependsOn: liquibase_status_job
-        condition: eq('${{ parameters.k8sEnv }}', 'prd')
+        condition: and(eq('${{ variables.REQUIRE_VALIDATION }}', 'true'), succeeded())
         pool: server
         displayName: "Approval"
         timeoutInMinutes: 16
@@ -432,9 +352,12 @@ stages:
               onTimeout: 'reject'
       - job: initialization
         pool: $(poolImage)
-        dependsOn: [liquibase_status_job,approval]
-        condition: and(not(failed('liquibase_status_job')), not(failed('approval')))
-        displayName: "Update nodo DB ${{ parameters.k8sEnv }}"
+        ${{ if eq(variables.REQUIRE_VALIDATION, 'true') }}:
+          dependsOn: [liquibase_status_job,approval]
+        ${{ else }}:
+          dependsOn: [liquibase_status_job]
+        condition: succeeded()
+        displayName: "Update nodo DB ${{ parameters.env }}"
         steps:
           - checkout: self
             clean: true
@@ -463,318 +386,212 @@ stages:
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
-              secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password,db-partition-password,db-administrator-login-password'
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/cfg/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on cfg!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(CFG_USERNAME)" \
-                --password="$(db-cfg-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/cfg \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(CFG_SCHEMA)" \
-                --defaultSchemaName="$(CFG_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                update -Dschema=$(CFG_SCHEMA)
-              fi
-            displayName: "Run Liquibase cfg"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/cfg/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on cfg!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(CFG_USERNAME)" \
-                --password="$(db-cfg-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/cfg \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(CFG_SCHEMA)" \
-                --defaultSchemaName="$(CFG_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                tag ${{ parameters.dbVersion }}
-              fi
-            displayName: "Tag cfg"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/online/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on online!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(ONLINE_USERNAME)" \
-                --password="$(db-online-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/online \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(ONLINE_SCHEMA)" \
-                --defaultSchemaName="$(ONLINE_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                update -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME)
-              fi
-            displayName: "Run Liquibase online"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/online/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on online!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(ONLINE_USERNAME)" \
-                --password="$(db-online-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/online \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(ONLINE_SCHEMA)" \
-                --defaultSchemaName="$(ONLINE_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                tag ${{ parameters.dbVersion }}
-              fi
-            displayName: "Tag online"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/offline/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on offline!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(OFFLINE_USERNAME)" \
-                --password="$(db-offline-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/offline \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(OFFLINE_SCHEMA)" \
-                --defaultSchemaName="$(OFFLINE_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                update -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline=$(ONLINE_SCHEMA)
-              fi
-            displayName: "Run Liquibase offline"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/offline/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on offline!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(OFFLINE_USERNAME)" \
-                --password="$(db-offline-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/offline \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(OFFLINE_SCHEMA)" \
-                --defaultSchemaName="$(OFFLINE_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                tag ${{ parameters.dbVersion }}
-              fi
-            displayName: "Tag offline"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/re/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on re!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(RE_USERNAME)" \
-                --password="$(db-re-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/re \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(RE_SCHEMA)" \
-                --defaultSchemaName="$(RE_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                update -Dschema=$(RE_SCHEMA)
-              fi
-            displayName: "Run Liquibase re"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/re/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on re!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(RE_USERNAME)" \
-                --password="$(db-re-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/re \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(RE_SCHEMA)" \
-                --defaultSchemaName="$(RE_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                tag ${{ parameters.dbVersion }}
-              fi
-            displayName: "Tag re"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/wfesp/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on wfesp!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(WFESP_USERNAME)" \
-                --password="$(db-wfesp-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/wfesp \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(WFESP_SCHEMA)" \
-                --defaultSchemaName="$(WFESP_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                update -Dschema=$(WFESP_SCHEMA)
-              fi
-            displayName: "Run Liquibase wfesp"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/wfesp/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on wfesp!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(WFESP_USERNAME)" \
-                --password="$(db-wfesp-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/wfesp \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(WFESP_SCHEMA)" \
-                --defaultSchemaName="$(WFESP_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                tag ${{ parameters.dbVersion }}
-              fi
-            displayName: "Tag wfesp"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/partition/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on partition!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(PARTITION_USERNAME)" \
-                --password="$(db-partition-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/partition \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(PARTITION_SCHEMA)" \
-                --defaultSchemaName="$(PARTITION_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                update -Dschema=$(PARTITION_SCHEMA)
-              fi
-            displayName: "Run Liquibase partition"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/partition/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on partition!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(PARTITION_USERNAME)" \
-                --password="$(db-partition-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/partition \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(PARTITION_SCHEMA)" \
-                --defaultSchemaName="$(PARTITION_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                tag ${{ parameters.dbVersion }}
-              fi
-            displayName: "Tag partition"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/cron/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on cron!"
-              else
-                liquibase \
-                --url="$(POSTGRES_JDBC_URL)" \
-                --username="$(CRON_USERNAME)" \
-                --password="$(db-partition-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/cron \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(CRON_SCHEMA)" \
-                --defaultSchemaName="$(CRON_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                tag ${{ parameters.dbVersion }}
-              fi
-            displayName: "Run Liquibase cron postgres db"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/cron/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on cron!"
-              else
-                liquibase \
-                --url="$(POSTGRES_JDBC_URL)" \
-                --username="$(CRON_USERNAME)" \
-                --password="$(db-partition-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/cron \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(CRON_SCHEMA)" \
-                --defaultSchemaName="$(CRON_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                tag ${{ parameters.dbVersion }}
-              fi
-            displayName: "Tag cron postgres db"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/admin/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on admin!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(ADMIN_USERNAME)" \
-                --password="$(db-administrator-login-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/admin \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="public" \
-                --database-changelog-lock-table-name="DATABASECHANGELOGLOCK_ADMIN" \
-                --database-changelog-table-name="DATABASECHANGELOG_ADMIN" \
-                --defaultSchemaName="$(ADMIN_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                update -Dschema=$(ADMIN_SCHEMA) -Dnodo-db-host=$(NODO_DB_HOST) -Dnodo-db-port=$(NODO_DB_PORT) -Dpartition-password=$(db-partition-password) -Dadmin-password=$(db-administrator-login-password)
-              fi
-            displayName: "Run Liquibase admin nodo"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/admin/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on admin!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(ADMIN_USERNAME)" \
-                --password="$(db-administrator-login-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/admin \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --defaultSchemaName="$(ADMIN_SCHEMA)" \
-                --liquibaseSchemaName="public" \
-                --database-changelog-lock-table-name="DATABASECHANGELOGLOCK_ADMIN" \
-                --database-changelog-table-name="DATABASECHANGELOG_ADMIN" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                tag ${{ parameters.dbVersion }}
-              fi
-            displayName: "Tag admin nodo"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/admin-postgres/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on admin!"
-              else
-                liquibase \
-                --url="$(POSTGRES_JDBC_URL)" \
-                --username="$(ADMIN_USERNAME)" \
-                --password="$(db-administrator-login-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/admin-postgres \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="public" \
-                --database-changelog-lock-table-name="DATABASECHANGELOGLOCK_CRON" \
-                --database-changelog-table-name="DATABASECHANGELOG_CRON" \
-                --defaultSchemaName="$(ADMIN_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                update -Dschema=$(ADMIN_SCHEMA)
-              fi
-            displayName: "Run Liquibase admin postgres"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/admin-postgres/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on admin!"
-              else
-                liquibase \
-                --url="$(POSTGRES_JDBC_URL)" \
-                --username="$(ADMIN_USERNAME)" \
-                --password="$(db-administrator-login-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/admin-postgres \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="public" \
-                --database-changelog-lock-table-name="DATABASECHANGELOGLOCK_CRON" \
-                --database-changelog-table-name="DATABASECHANGELOG_CRON" \
-                --defaultSchemaName="$(ADMIN_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                tag ${{ parameters.dbVersion }}
-              fi
-            displayName: "Tag admin postgres"
+              secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-partition-password,db-administrator-login-password'
+          # cfg apply
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: cfg
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(CFG_USERNAME)
+              PASSWORD: $(db-cfg-password)
+              SCHEMA: $(CFG_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: cfg
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(CFG_USERNAME)
+              PASSWORD: $(db-cfg-password)
+              SCHEMA: $(CFG_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          # online apply
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: online
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(ONLINE_USERNAME)
+              PASSWORD: $(db-online-password)
+              SCHEMA: $(ONLINE_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              OFFLINE_SCHEMA: $(OFFLINE_SCHEMA)
+              OFFLINE_USERNAME: $(OFFLINE_USERNAME)
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: online
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(ONLINE_USERNAME)
+              PASSWORD: $(db-online-password)
+              SCHEMA: $(ONLINE_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              OFFLINE_SCHEMA: $(OFFLINE_SCHEMA)
+              OFFLINE_USERNAME: $(OFFLINE_USERNAME)
+          # offline apply
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: offline
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(OFFLINE_USERNAME)
+              PASSWORD: $(db-offline-password)
+              SCHEMA: $(OFFLINE_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              ONLINE_SCHEMA: $(ONLINE_SCHEMA)
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: offline
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(OFFLINE_USERNAME)
+              PASSWORD: $(db-offline-password)
+              SCHEMA: $(OFFLINE_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              ONLINE_SCHEMA: $(ONLINE_SCHEMA)
+          # RE apply
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: re
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(RE_USERNAME)
+              PASSWORD: $(db-re-password)
+              SCHEMA: $(RE_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: re
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(RE_USERNAME)
+              PASSWORD: $(db-re-password)
+              SCHEMA: $(RE_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          # partition apply
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: partition
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(PARTITION_USERNAME)
+              PASSWORD: $(db-partition-password)
+              SCHEMA: $(PARTITION_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: partition
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(PARTITION_USERNAME)
+              PASSWORD: $(db-partition-password)
+              SCHEMA: $(PARTITION_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          # partition st_nodo apply
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: partition
+              LIQUIBASE_FOLDER: $(liquibase_folder_st_nodo)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionSt }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(PARTITION_USERNAME)
+              PASSWORD: $(db-partition-password)
+              SCHEMA: $(PARTITION_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: partition
+              LIQUIBASE_FOLDER: $(liquibase_folder_st_nodo_storico)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionSt }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(PARTITION_USERNAME)
+              PASSWORD: $(db-partition-password)
+              SCHEMA: $(PARTITION_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          # admin st_nodo_storico apply
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: admin
+              LIQUIBASE_FOLDER: $(liquibase_folder_st_nodo_storico)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionSt }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(ADMIN_USERNAME)
+              PASSWORD: $(db-administrator-login-password)
+              SCHEMA: $(ADMIN_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_SCHEMA_NAME: public
+              CHANGELOG_LOCK_TABLE: DATABASECHANGELOGLOCK_ADMIN
+              CHANGELOG_TABLE: DATABASECHANGELOG_ADMIN
+              NODO_DB_HOST: $(NODO_DB_HOST)
+              NODO_DB_PORT: $(NODO_DB_PORT)
+              DB_PARTITION_PASSWORD: $(db-partition-password)
+              DB_ADMIN_PASSWORD: $(db-administrator-login-password)
+          # admin st_nodo_storico apply
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: admin-postgres
+              LIQUIBASE_FOLDER: $(liquibase_folder_st_nodo)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionSt }}
+              JDBC_URL: $(POSTGRES_JDBC_URL)
+              USERNAME: $(ADMIN_USERNAME)
+              PASSWORD: $(db-administrator-login-password)
+              SCHEMA: $(ADMIN_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_SCHEMA_NAME: public
+              CHANGELOG_LOCK_TABLE: DATABASECHANGELOGLOCK_CRON
+              CHANGELOG_TABLE: DATABASECHANGELOG_CRON
+          # admin st_nodo_storico apply
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: admin-postgres
+              LIQUIBASE_FOLDER: $(liquibase_folder_st_nodo_storico)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionSt }}
+              JDBC_URL: $(POSTGRES_JDBC_URL_STORICO)
+              USERNAME: $(ADMIN_USERNAME)
+              PASSWORD: $(db-administrator-login-password)
+              SCHEMA: $(ADMIN_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_SCHEMA_NAME: public
+              CHANGELOG_LOCK_TABLE: DATABASECHANGELOGLOCK_CRON
+              CHANGELOG_TABLE: DATABASECHANGELOG_CRON

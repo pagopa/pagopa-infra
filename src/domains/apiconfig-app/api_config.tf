@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "api_config_rg" {
   name     = format("%s-api-config-rg", local.product)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 locals {

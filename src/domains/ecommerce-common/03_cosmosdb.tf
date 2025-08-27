@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "cosmosdb_ecommerce_rg" {
   name     = "${local.project}-cosmosdb-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "cosmosdb_ecommerce_snet" {
@@ -59,7 +59,7 @@ module "cosmosdb_account_mongodb" {
   private_endpoint_mongo_name           = "${local.project}-cosmos-account-private-endpoint" # forced after update module vers
   private_service_connection_mongo_name = "${local.project}-cosmos-account-private-endpoint" # forced after update module vers
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_cosmosdb_mongo_database" "ecommerce" {
@@ -268,15 +268,21 @@ module "cosmosdb_ecommerce_history_collections" {
 # Alerts
 # -----------------------------------------------
 
-resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
+locals {
+  location_to_alert_region = {
+    westeurope  = "West Europe"
+    northeurope = "North Europe"
+  }
+}
+resource "azurerm_monitor_metric_alert" "cosmos_db_provisioned_throughput_ru_exceeded_write_region" {
   count = var.env_short == "p" ? 1 : 0
 
-  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmosdb_account_mongodb.name}] Normalized RU Exceeded"
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmosdb_account_mongodb.name}] Provisioned throughput RU Exceeded"
   resource_group_name = azurerm_resource_group.cosmosdb_ecommerce_rg.name
   scopes              = [module.cosmosdb_account_mongodb.id]
-  description         = "A collection Normalized RU/s exceed provisioned throughput, and it's raising latency. Please, consider to increase RU."
+  description         = "Provisioned throughput for ${local.location_to_alert_region[azurerm_resource_group.cosmosdb_ecommerce_rg.location]} region is over 95% of it's maximum for the. Please, consider to increase max RU."
   severity            = 0
-  window_size         = "PT5M"
+  window_size         = "PT15M"
   frequency           = "PT5M"
   auto_mitigate       = false
 
@@ -285,25 +291,16 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
   # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
   criteria {
     metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
-    metric_name            = "NormalizedRUConsumption"
+    metric_name            = "ProvisionedThroughput"
     aggregation            = "Maximum"
     operator               = "GreaterThan"
-    threshold              = "80"
+    threshold              = var.cosmos_mongo_db_ecommerce_params.max_throughput * 0.95
     skip_metric_validation = false
-
-
     dimension {
       name     = "Region"
       operator = "Include"
-      values   = [azurerm_resource_group.cosmosdb_ecommerce_rg.location]
+      values   = [local.location_to_alert_region[azurerm_resource_group.cosmosdb_ecommerce_rg.location]]
     }
-
-    dimension {
-      name     = "CollectionName"
-      operator = "Include"
-      values   = ["*"]
-    }
-
   }
 
   action {
@@ -318,5 +315,9 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
     action_group_id = azurerm_monitor_action_group.ecommerce_opsgenie[0].id
   }
 
-  tags = var.tags
+  action {
+    action_group_id = azurerm_monitor_action_group.service_management_opsgenie[0].id
+  }
+
+  tags = module.tag_config.tags
 }

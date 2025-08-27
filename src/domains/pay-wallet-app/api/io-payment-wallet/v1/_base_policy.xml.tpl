@@ -1,9 +1,6 @@
 <policies>
     <inbound>
       <base />
-      <!-- fragment to read user id from session token jwt claims. it return userId as sessionTokenUserId variable taken from jwt claims. if the session token
-      is an opaque token a "session-token-not-found" string is returned-->  
-      <include-fragment fragment-id="pay-wallet-user-id-from-session-token" />
       <!-- Delete headers required for backend service START -->
       <set-header name="x-user-id" exists-action="delete" />
       <set-header name="x-client-id" exists-action="delete" />
@@ -21,6 +18,9 @@
       <set-backend-service base-url="@("https://${hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-wallet-service")" />
       <set-header name="x-client-id" exists-action="override" >
         <value>IO</value>
+      </set-header>
+      <set-header name="x-api-key" exists-action="override">
+        <value>{{payment-wallet-service-rest-api-key}}</value>
       </set-header>
     </inbound>
     <outbound>

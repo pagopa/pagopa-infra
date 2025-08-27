@@ -6,14 +6,6 @@ location_short     = "weu"
 location_ita       = "italynorth"
 location_short_ita = "itn"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "core"
-}
 
 #
 # Feature flag
@@ -22,8 +14,6 @@ enabled_features = {
   vnet_ita          = false
   node_forwarder_ha = true
 }
-
-
 
 
 # main vnet
@@ -89,7 +79,8 @@ apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
 apim_fdr_nodo_pagopa_enable     = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
-
+apim_enable_nm3_decoupler_switch     = true
+apim_enable_routing_decoupler_switch = true
 
 
 

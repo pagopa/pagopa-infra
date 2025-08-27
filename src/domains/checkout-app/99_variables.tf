@@ -55,12 +55,6 @@ variable "location_string" {
   description = "One of West Europe, North Europe"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 variable "checkout_enabled" {
   type    = bool
@@ -120,36 +114,6 @@ variable "checkout_pagopaproxy_host" {
   type        = string
   description = "pagopaproxy host"
   default     = null
-}
-
-variable "cidr_subnet_pagopa_proxy" {
-  type        = list(string)
-  description = "Address prefixes subnet proxy"
-  default     = null
-}
-
-variable "cidr_subnet_pagopa_proxy_ha" {
-  type        = list(string)
-  description = "Address prefixes subnet proxy ha"
-  default     = null
-}
-
-variable "pagopa_proxy_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "pagopa_proxy_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 10
-}
-
-variable "pagopa_proxy_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 5
 }
 
 # Checkout APIM
@@ -218,35 +182,7 @@ variable "checkout_function_worker_count" {
   default     = 1
 }
 
-variable "pagopa_proxy_plan_sku" {
-  description = "(Required) pagopa proxy app service sku name"
-  type        = string
-}
-
-variable "pagopa_proxy_vnet_integration" {
-  type        = bool
-  default     = true
-  description = "(Optional) enables vnet integration for pagopa proxy app service"
-}
-
-
-variable "pagopa_proxy_zone_balance_enabled" {
-  type        = bool
-  description = "(Optional) enables zone balancing for pagopa proxy app service"
-  default     = true
-}
-
-variable "pagopa_proxy_ha_enabled" {
-  type        = bool
-  description = "(Required) enables the deployment of pagopa proxy in HA"
-}
-
 variable "checkout_ip_restriction_default_action" {
-  type        = string
-  description = "(Required) The Default action for traffic that does not match any ip_restriction rule. possible values include Allow and Deny. "
-}
-
-variable "pagopa_proxy_ip_restriction_default_action" {
   type        = string
   description = "(Required) The Default action for traffic that does not match any ip_restriction rule. possible values include Allow and Deny. "
 }

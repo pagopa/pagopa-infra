@@ -41,7 +41,7 @@ resource "azurerm_resource_group" "service_bus_rg" {
   name     = local.sb_resource_group_name
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-quotas
@@ -71,7 +71,7 @@ resource "azurerm_servicebus_namespace" "service_bus_wisp" {
     }
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     azurerm_resource_group.service_bus_rg

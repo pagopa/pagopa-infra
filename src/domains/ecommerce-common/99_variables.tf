@@ -55,12 +55,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 ### External resources
 
@@ -217,4 +211,10 @@ variable "enable_iac_pipeline" {
   type        = bool
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
+}
+
+variable "ecommerce_jwt_issuer_api_key_use_primary" {
+  type        = bool
+  description = "If true the current active API key used for jwt issuer service will be the primary one."
+  default     = true
 }

@@ -7,14 +7,6 @@ location_short  = "weu"
 location_string = "West Europe"
 instance        = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/qi-app"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "qi"
-}
 
 ### External resources
 

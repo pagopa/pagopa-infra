@@ -7,14 +7,6 @@ cdn_location   = "westeurope"
 location_short = "itn"
 instance       = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/pay-wallet-common"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "paywallet"
-}
 
 ### FEATURES FLAGS
 is_feature_enabled = {
@@ -68,7 +60,7 @@ cosmos_mongo_db_params = {
   is_virtual_network_filter_enabled            = false
   enable_provisioned_throughput_exceeded_alert = false
   backup_continuous_enabled                    = false
-  ip_range_filter                              = null
+  ip_range_filter                              = []
 }
 
 cosmos_mongo_db_pay_wallet_params = {
@@ -82,6 +74,14 @@ cosmos_mongo_db_pay_wallet_params = {
 ### Redis
 
 redis_pay_wallet_params = {
+  capacity = 0
+  sku_name = "Basic"
+  family   = "C"
+  version  = 6
+  zones    = []
+}
+
+redis_std_pay_wallet_params = {
   capacity = 0
   sku_name = "Basic"
   family   = "C"
@@ -114,3 +114,6 @@ aks_user_node_pool = {
   node_taints     = ["paymentWalletOnly=true:NoSchedule"],
   node_tags       = { payWallet : "true" },
 }
+payment_wallet_service_api_key_use_primary = true
+
+pay_wallet_jwt_issuer_api_key_use_primary = true

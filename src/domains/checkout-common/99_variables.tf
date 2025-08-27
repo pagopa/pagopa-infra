@@ -50,12 +50,6 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 variable "checkout_enabled" {
   type    = bool
@@ -169,6 +163,17 @@ variable "ingress_load_balancer_ip" {
 
 
 variable "redis_checkout_params" {
+  type = object({
+    capacity   = number
+    sku_name   = string
+    family     = string
+    version    = string
+    ha_enabled = bool
+    zones      = list(number)
+  })
+}
+
+variable "redis_checkout_params_std" {
   type = object({
     capacity   = number
     sku_name   = string

@@ -90,6 +90,11 @@ data "azurerm_private_dns_zone" "privatelink_blob_azure_com" {
   resource_group_name = local.vnet_resource_group_name
 }
 
+data "azurerm_private_dns_zone" "privatelink_file_azure_com" {
+  name                = "privatelink.file.core.windows.net"
+  resource_group_name = local.vnet_resource_group_name
+}
+
 data "azurerm_private_dns_zone" "privatelink_table_azure_com" {
   name                = local.table_dns_zone_name
   resource_group_name = local.storage_dns_zone_resource_group_name
@@ -144,7 +149,7 @@ resource "azurerm_resource_group" "standin_rg" {
   name     = "${local.project}-standin-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "cosmosdb_standin_snet" {
@@ -168,7 +173,7 @@ resource "azurerm_resource_group" "wisp_converter_rg" {
   name     = "${local.project}-wisp-converter-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "cosmosdb_wisp_converter_snet" {
@@ -183,7 +188,6 @@ module "cosmosdb_wisp_converter_snet" {
 
   service_endpoints = [
     "Microsoft.Web",
-    "Microsoft.AzureCosmosDB",
-    "Microsoft.Storage"
+    "Microsoft.AzureCosmosDB"
   ]
 }

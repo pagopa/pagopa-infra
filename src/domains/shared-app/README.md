@@ -9,14 +9,15 @@
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | <= 5.12.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.12.1 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.14.0 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.30.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f3485105e35ce8c801209dcbb4ef72f3d944f0e5 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f6b15b7c89b4b2a2de7424cfd2ed163704cd1bab |
+| <a name="module_apim_anonymizer_product"></a> [apim\_anonymizer\_product](#module\_apim\_anonymizer\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_api_authorizer_api_v1"></a> [apim\_api\_authorizer\_api\_v1](#module\_apim\_api\_authorizer\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_authorizer_config_api_v1"></a> [apim\_api\_authorizer\_config\_api\_v1](#module\_apim\_api\_authorizer\_config\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_enrolled_orgs_api_v1"></a> [apim\_api\_enrolled\_orgs\_api\_v1](#module\_apim\_api\_enrolled\_orgs\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
@@ -49,10 +50,12 @@
 | <a name="module_shared_pdf_engine_app_service_snet"></a> [shared\_pdf\_engine\_app\_service\_snet](#module\_shared\_pdf\_engine\_app\_service\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
 | <a name="module_shared_pdf_engine_java_slot_staging"></a> [shared\_pdf\_engine\_java\_slot\_staging](#module\_shared\_pdf\_engine\_java\_slot\_staging) | ./.terraform/modules/__v3__/app_service_slot | n/a |
 | <a name="module_shared_pdf_engine_slot_staging"></a> [shared\_pdf\_engine\_slot\_staging](#module\_shared\_pdf\_engine\_slot\_staging) | ./.terraform/modules/__v3__/app_service_slot | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_taxonomy_function"></a> [taxonomy\_function](#module\_taxonomy\_function) | ./.terraform/modules/__v3__/function_app | n/a |
 | <a name="module_taxonomy_function_slot_staging"></a> [taxonomy\_function\_slot\_staging](#module\_taxonomy\_function\_slot\_staging) | ./.terraform/modules/__v3__/function_app_slot | n/a |
 | <a name="module_taxonomy_function_snet"></a> [taxonomy\_function\_snet](#module\_taxonomy\_function\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
+| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_configuration | n/a |
 
 ## Resources
 
@@ -60,7 +63,6 @@
 |------|------|
 | [azapi_resource.authorizer_fragment](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource.fragment_chk_jwt_session_token](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
-| [azapi_resource.fragment_chk_pm_session_token](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azurerm_api_management_api.apim_session_wallet_api_mock](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api_policy.apim_session_wallet_api_mock_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_version_set.api_authorizer_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
@@ -77,8 +79,6 @@
 | [azurerm_api_management_api_version_set.session_wallet_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.session_wallet_api_mock](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_group.technical_support_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
-| [azurerm_api_management_named_value.ecommerce_for_io_pm_npg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
-| [azurerm_api_management_named_value.ecommerce_io_pm_enabled](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.pagopa-wallet-jwt-signing-key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.wallet-jwt-signing-key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.wallet_personal_data_vault_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
@@ -92,10 +92,13 @@
 | [azurerm_monitor_autoscale_setting.autoscale_app_service_shared_pdf_engine_java_autoscale](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.taxonomy_function](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_generate-pdf-engine-generate-responsetime](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-anonymizer-rest-availability-upd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-anonymizer-rest-responsetime-upd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-pdf-engine-pdf-availability](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-platform-authorizer-availability](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-platform-authorizer-config-availability](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-platform-authorizer-responsetime](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.pagopa-platform-authorizer-exceptions](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.pdf-engine-fun-error-alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.taxonomy_appexception](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.taxonomy_blobstorageexception](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
@@ -114,7 +117,6 @@
 | [kubernetes_service_account.azure_devops](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/service_account) | resource |
 | [terraform_data.sha256_authorizer_fragment](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_fragment_chk_jwt_session_token](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
-| [terraform_data.sha256_fragment_chk_pm_session_token](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
@@ -177,8 +179,6 @@
 | <a name="input_cname_record_name"></a> [cname\_record\_name](#input\_cname\_record\_name) | n/a | `string` | `"shared"` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
-| <a name="input_ecommerce_for_io_pm_npg"></a> [ecommerce\_for\_io\_pm\_npg](#input\_ecommerce\_for\_io\_pm\_npg) | eCommerce for io gateway (3 values allowed: 'NPG','PM','NPGFF') | `string` | `"NPGFF"` | no |
-| <a name="input_ecommerce_io_pm_enabled"></a> [ecommerce\_io\_pm\_enabled](#input\_ecommerce\_io\_pm\_enabled) | eCommerce vs pm enabled | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
@@ -202,7 +202,6 @@
 | <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br/>    name         = optional(string, null)<br/>    minAvailable = optional(number, null)<br/>    matchLabels  = optional(map(any), {})<br/>  }))</pre> | `{}` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_robots_indexed_paths"></a> [robots\_indexed\_paths](#input\_robots\_indexed\_paths) | List of cdn paths to allow robots index | `list(string)` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 | <a name="input_taxonomy_function"></a> [taxonomy\_function](#input\_taxonomy\_function) | Taxonomy function | <pre>object({<br/>    always_on                    = bool<br/>    kind                         = string<br/>    sku_size                     = string<br/>    maximum_elastic_worker_count = number<br/>  })</pre> | n/a | yes |
 | <a name="input_taxonomy_function_app_image_tag"></a> [taxonomy\_function\_app\_image\_tag](#input\_taxonomy\_function\_app\_image\_tag) | Taxonomy function app docker image tag. Defaults to 'latest' | `string` | `"latest"` | no |
 | <a name="input_taxonomy_function_autoscale"></a> [taxonomy\_function\_autoscale](#input\_taxonomy\_function\_autoscale) | Taxonomy function autoscaling parameters | <pre>object({<br/>    default = number<br/>    minimum = number<br/>    maximum = number<br/>  })</pre> | n/a | yes |

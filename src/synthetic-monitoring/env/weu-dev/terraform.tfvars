@@ -4,14 +4,6 @@ env            = "dev"
 location       = "westeurope"
 location_short = "weu"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/elk-monitoring"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "core"
-}
 
 storage_account_replication_type = "LRS"
 use_private_endpoint             = false
@@ -41,4 +33,6 @@ check_position_body = {
 }
 verify_payment_internal_expected_outcome = "KO"
 nexi_node_ip                             = "10.70.66.200"
+nexi_node_ip_postgres                    = "10.70.66.200"
 nexi_ndp_host                            = "nodo-p-sit.tst-npc.sia.eu"
+nexi_ndp_host_postgres                   = "nodo-p-sit.tst-npc.sia.eu"

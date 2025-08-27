@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "gpd_rg" {
   name     = format("%s-gpd-rg", local.project)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_app_service_plan" "gpd_reporting_service_plan" {
@@ -24,7 +24,7 @@ resource "azurerm_app_service_plan" "gpd_reporting_service_plan" {
     capacity = 1
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 locals {
@@ -142,6 +142,14 @@ locals {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
+    # FDR1-FDR3 Integration
+    FDR3_APIM_SUBSCRIPTION_KEY = azurerm_key_vault_secret.fdr3_subscription_key.value
+    FDR1_APIM_SUBSCRIPTION_KEY = azurerm_key_vault_secret.fdr1_subscription_key.value
+    FDR1_BASE_URL             = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "fdr-nodo/service-internal", "v1")
+    FDR3_BASE_URL             = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "fdr-org/service", "v1")
+    FDR3_FLOW_LIST_DEPTH      =  "2"
+    FDR3_LIST_ELEMENTS_FOR_PAGE = "30000"
+
     # ACR
     DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
@@ -185,7 +193,7 @@ module "reporting_batch_function" {
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     azurerm_app_service_plan.gpd_reporting_service_plan
@@ -224,7 +232,7 @@ module "reporting_batch_function_slot_staging" {
   allowed_ips     = []
   subnet_id       = module.reporting_function_snet.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## Function reporting_service
@@ -269,7 +277,7 @@ module "reporting_service_function" {
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     azurerm_app_service_plan.gpd_reporting_service_plan
@@ -308,7 +316,7 @@ module "reporting_service_function_slot_staging" {
   allowed_ips     = []
   subnet_id       = module.reporting_function_snet.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## Function reporting_analysis
@@ -349,7 +357,7 @@ module "reporting_analysis_function" {
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     azurerm_app_service_plan.gpd_reporting_service_plan
@@ -389,7 +397,7 @@ module "reporting_analysis_function_slot_staging" {
   allowed_ips     = []
   subnet_id       = module.reporting_function_snet.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # autoscaling - reporting_batch & reporting_service & reporting_analysis ( shared service plan )

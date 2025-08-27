@@ -2,7 +2,7 @@
 #   name     = format("%s-api-config-common-rg", local.product)
 #   location = var.location
 
-#   tags = var.tags
+#   tags = module.tag_config.tags
 # }
 
 data "azurerm_resource_group" "api_config_rg" {
@@ -15,7 +15,7 @@ data "azurerm_storage_account" "api_config_ica_sa" {
 }
 
 module "api_config_ica_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
+  source = "./.terraform/modules/__v3__/storage_account"
 
   name                            = replace(format("%s-sa", local.project), "-", "")
   account_kind                    = "StorageV2"
@@ -39,7 +39,7 @@ module "api_config_ica_sa" {
     blob_restore_policy_days   = var.api_config_reporting_backup_retention_days
   }
   blob_delete_retention_days = var.api_config_reporting_delete_retention_days
-  tags                       = var.tags
+  tags                       = module.tag_config.tags
 }
 
 

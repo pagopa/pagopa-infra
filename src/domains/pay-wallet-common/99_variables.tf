@@ -59,12 +59,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 ### FEATURE FLAGS
 
@@ -176,7 +170,7 @@ variable "cosmos_mongo_db_params" {
     public_network_access_enabled                = bool
     is_virtual_network_filter_enabled            = bool
     backup_continuous_enabled                    = bool
-    ip_range_filter                              = optional(string, null)
+    ip_range_filter                              = list(string)
     enable_provisioned_throughput_exceeded_alert = bool
   })
 }
@@ -193,6 +187,16 @@ variable "cosmos_mongo_db_pay_wallet_params" {
 ### Redis
 
 variable "redis_pay_wallet_params" {
+  type = object({
+    capacity = number
+    sku_name = string
+    family   = string
+    version  = string
+    zones    = list(number)
+  })
+}
+
+variable "redis_std_pay_wallet_params" {
   type = object({
     capacity = number
     sku_name = string
@@ -241,4 +245,16 @@ variable "aks_user_node_pool" {
     zones                      = optional(list(any), [1, 2, 3]),
   })
   description = "AKS node pool user configuration"
+}
+
+variable "pay_wallet_jwt_issuer_api_key_use_primary" {
+  type        = bool
+  description = "If true the current active API key used for jwt issuer service will be the primary one."
+  default     = true
+}
+
+variable "payment_wallet_service_api_key_use_primary" {
+  type        = bool
+  description = "If true the current active API key used for wallet service requests will be the primary one."
+  default     = true
 }

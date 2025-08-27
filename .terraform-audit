@@ -1,0 +1,3 @@
+audit_storage_account_name=tfauditprodpagopa
+audit_container_name=prod-apply
+audit_table_name=prodapply

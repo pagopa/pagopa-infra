@@ -1,7 +1,7 @@
 locals {
   apim_authorizer_config_api = {
     display_name          = "Authorizer Configurator - API"
-    description           = "API for handle the lyfecycle of the authorization for the platform Authorizer"
+    description           = "API for handle the lifecycle of the authorization for the platform Authorizer"
     path                  = "shared/authorizer-config"
     subscription_required = true
     service_url           = null
@@ -55,6 +55,7 @@ module "apim_api_authorizer_config_api_v1" {
   service_url  = local.apim_authorizer_config_api.service_url
 
   content_format = "openapi"
+  # the openapi is https://github.com/pagopa/pagopa-platform-authorizer-config/blob/main/openapi/openapi_core.json
   content_value = templatefile("./api/authorizer-config/v1/_openapi.json.tpl", {
     host = local.apim_hostname
   })

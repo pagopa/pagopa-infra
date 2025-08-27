@@ -6,14 +6,6 @@ location       = "westeurope"
 location_short = "weu"
 instance       = "prod"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "PagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/fdr"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "fdr"
-}
 
 ### External resources
 
@@ -147,7 +139,7 @@ cosmos_mongo_db_fdr_re_params = {
 
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 6000
+  max_throughput     = 20000
   throughput         = 1000
 }
 

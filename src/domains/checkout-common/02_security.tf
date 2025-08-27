@@ -2,11 +2,11 @@ resource "azurerm_resource_group" "sec_rg" {
   name     = "${local.product}-${var.domain}-sec-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.42.3"
+  source = "./.terraform/modules/__v4__/key_vault"
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -14,7 +14,7 @@ module "key_vault" {
   tenant_id                  = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days = 90
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## ad group policy ##

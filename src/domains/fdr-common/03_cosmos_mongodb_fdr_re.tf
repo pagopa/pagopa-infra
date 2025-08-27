@@ -25,7 +25,7 @@ module "cosmosdb_account_mongodb_fdr_re" {
 
   backup_continuous_enabled = var.cosmos_mongo_db_fdr_re_params.backup_continuous_enabled
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_cosmosdb_mongo_database" "fdr_re" {
@@ -57,7 +57,23 @@ locals {
         {
           keys   = ["PartitionKey"]
           unique = false
-        }
+        },
+        {
+          keys   = ["fdr"]
+          unique = false
+        },
+        {
+          keys   = ["pspId"]
+          unique = false
+        },
+        {
+          keys   = ["organizationId"]
+          unique = false
+        },
+        {
+          keys   = ["fdrAction"]
+          unique = false
+        },
       ]
       shard_key = "created"
     },
@@ -75,35 +91,6 @@ locals {
         }
       ]
       shard_key = "pspCreditorInstitution"
-    },
-    ### history collections ###
-    {
-      name = "fdr3-flow-metadata"
-      indexes = [
-        {
-          keys   = ["_id"]
-          unique = true
-        },
-        {
-          keys   = ["PartitionKey"]
-          unique = false
-        }
-      ]
-      shard_key = "created"
-    },
-    {
-      name = "fdr3-payment-metadata"
-      indexes = [
-        {
-          keys   = ["_id"]
-          unique = true
-        },
-        {
-          keys   = ["PartitionKey"]
-          unique = false
-        }
-      ]
-      shard_key = "created"
     }
   ]
 }

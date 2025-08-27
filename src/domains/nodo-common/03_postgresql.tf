@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "db_rg" {
   name     = format("%s-db-rg", local.project)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 data "azurerm_key_vault_secret" "pgres_flex_admin_login" {
@@ -85,7 +85,7 @@ module "postgres_flexible_server" {
   private_dns_record_cname = "nodo-db"
 
 
-  tags = var.tags
+  tags = local.tags_grafana
 }
 
 # Nodo database

@@ -83,6 +83,15 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_methods_for_
   )
 }
 
+resource "azurerm_api_management_named_value" "pay_wallet_jwt_issuer_api_key_value" {
+  name                = "pay-wallet-jwt-issuer-api-key-value"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "pay-wallet-jwt-issuer-api-key-value"
+  value               = var.pay_wallet_jwt_issuer_api_key_use_primary ? data.azurerm_key_vault_secret.pay_wallet_jwt_issuer_service_primary_api_key.value : data.azurerm_key_vault_secret.pay_wallet_jwt_issuer_service_secondary_api_key.value
+  secret              = true
+}
+
 resource "azurerm_api_management_api_operation_policy" "post_io_wallets" {
   api_name            = "${local.project}-io-payment-wallet-api-v1"
   resource_group_name = local.pagopa_apim_rg
@@ -90,49 +99,7 @@ resource "azurerm_api_management_api_operation_policy" "post_io_wallets" {
   operation_id        = "createIOPaymentWallet"
 
   xml_content = templatefile("./api/io-payment-wallet/v1/_post_wallets.xml.tpl", {
-    env                = var.env == "prod" ? "" : "${var.env}.",
-    ecommerce_hostname = local.ecommerce_hostname
+    env      = var.env == "prod" ? "" : "${var.env}.",
+    hostname = local.payment_wallet_hostname
   })
-}
-
-resource "azurerm_api_management_named_value" "pay_wallet_family_friends_user_ids" {
-  name                = "pay-wallet-family-friends-user-ids"
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-  display_name        = "pay-wallet-family-friends-user-ids"
-  value               = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-#######################################################################
-## Fragment policy to extract user id from session token             ##
-#######################################################################
-resource "terraform_data" "sha256_pay_wallet_fragment_user_id_from_session_token" {
-  input = sha256(file("./api/fragments/_fragment_policy_user_id_from_session_token.tpl.xml"))
-}
-
-resource "azapi_resource" "pay_wallet_fragment_user_id_from_session_token" {
-
-  # provider  = azapi.apim
-  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
-  name      = "pay-wallet-user-id-from-session-token"
-  parent_id = data.azurerm_api_management.apim.id
-
-  body = jsonencode({
-    properties = {
-      description = "Component that extract userId from JWT session token"
-      format      = "rawxml"
-      value = templatefile("./api/fragments/_fragment_policy_user_id_from_session_token.tpl.xml", {
-      })
-
-    }
-  })
-
-  lifecycle {
-    ignore_changes = [output]
-  }
 }

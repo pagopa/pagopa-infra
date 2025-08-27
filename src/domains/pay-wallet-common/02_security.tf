@@ -2,11 +2,11 @@ resource "azurerm_resource_group" "sec_rg" {
   name     = "${local.product}-${var.domain}-sec-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.20.1"
+  source = "./.terraform/modules/__v4__/key_vault"
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -14,7 +14,7 @@ module "key_vault" {
   tenant_id                  = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days = 90
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## ad group policy ##
@@ -94,9 +94,10 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "redis_wallet_password" {
-  name         = "redis-wallet-password"
-  value        = module.pagopa_pay_wallet_redis[0].primary_access_key
+
+resource "azurerm_key_vault_secret" "redis_std_wallet_password" {
+  name         = "redis-std-wallet-password"
+  value        = module.pagopa_pay_wallet_redis_std[0].primary_access_key
   key_vault_id = module.key_vault.id
 }
 
@@ -327,4 +328,186 @@ resource "azurerm_key_vault_secret" "payment_wallet_gha_bot_pat" {
       value,
     ]
   }
+}
+
+
+resource "azurerm_key_vault_certificate" "pay-wallet-jwt-token-issuer-certificate" {
+  name         = "jwt-token-issuer-cert"
+  key_vault_id = module.key_vault.id
+
+  certificate_policy {
+    issuer_parameters {
+      name = "Self"
+    }
+
+    key_properties {
+      exportable = true
+      key_size   = 2048
+      key_type   = "RSA"
+      reuse_key  = false
+    }
+
+    lifetime_action {
+      action {
+        action_type = "AutoRenew"
+      }
+
+      trigger {
+        days_before_expiry = 2
+      }
+    }
+
+    secret_properties {
+      content_type = "application/x-pkcs12"
+    }
+
+    x509_certificate_properties {
+      key_usage = [
+        "digitalSignature"
+      ]
+      subject            = "CN=${var.env}-${var.domain}-jwt-issuer"
+      validity_in_months = 1
+    }
+  }
+}
+
+resource "azurerm_key_vault_certificate" "pay-wallet-jwt-token-issuer-certificate-ec" {
+  name         = "jwt-token-issuer-cert-ec"
+  key_vault_id = module.key_vault.id
+
+  certificate_policy {
+    issuer_parameters {
+      name = "Self"
+    }
+
+    key_properties {
+      exportable = true
+      key_size   = 256
+      key_type   = "EC"
+      reuse_key  = false
+      curve      = "P-256"
+    }
+
+    lifetime_action {
+      action {
+        action_type = "AutoRenew"
+      }
+
+      trigger {
+        days_before_expiry = 2
+      }
+    }
+
+    secret_properties {
+      content_type = "application/x-pkcs12"
+    }
+
+    x509_certificate_properties {
+      key_usage = [
+        "digitalSignature"
+      ]
+      subject            = "CN=${var.env}-${var.domain}-jwt-issuer"
+      validity_in_months = 1
+    }
+  }
+}
+
+resource "random_password" "pay_wallet_jwt_issuer_service_primary_api_key_pass" {
+  length  = 32
+  special = false
+  #key-value string map used to track resource state: if one key-value change a resource regeneration is triggered
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "random_password" "pay_wallet_jwt_issuer_service_secondary_api_key_pass" {
+  length  = 32
+  special = false
+  #key-value string map used to track resource state: if one key-value change a resource regeneration is triggered
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "azurerm_key_vault_secret" "pay_wallet_jwt_issuer_service_primary_api_key" {
+  name         = "pay-wallet-jwt-issuer-service-primary-api-key"
+  value        = random_password.pay_wallet_jwt_issuer_service_primary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "pay_wallet_jwt_issuer_service_secondary_api_key" {
+  name         = "pay-wallet-jwt-issuer-service-secondary-api-key"
+  value        = random_password.pay_wallet_jwt_issuer_service_secondary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+
+resource "random_password" "payment_wallet_service_primary_api_key_pass" {
+  length  = 32
+  special = false
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "random_password" "payment_wallet_service_secondary_api_key_pass" {
+  length  = 32
+  special = false
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "azurerm_key_vault_secret" "payment_wallet_service_primary_api_key" {
+  name         = "payment-wallet-service-primary-api-key"
+  value        = random_password.payment_wallet_service_primary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "payment_wallet_service_secondary_api_key" {
+  name         = "payment-wallet-service-secondary-api-key"
+  value        = random_password.payment_wallet_service_secondary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+
+
+resource "random_password" "pay_wallet_event_dispatcher_service_primary_api_key_pass" {
+  length  = 32
+  special = false
+  #key-value string map used to track resource state: if one key-value change a resource regeneration is triggered
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "random_password" "pay_wallet_event_dispatcher_service_secondary_api_key_pass" {
+  length  = 32
+  special = false
+  #key-value string map used to track resource state: if one key-value change a resource regeneration is triggered
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "azurerm_key_vault_secret" "pay_wallet_event_dispatcher_service_primary_api_key" {
+  name         = "pay-wallet-event-dispatcher-service-primary-api-key"
+  value        = random_password.pay_wallet_event_dispatcher_service_primary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "pay_wallet_event_dispatcher_service_secondary_api_key" {
+  name         = "pay-wallet-event-dispatcher-service-secondary-api-key"
+  value        = random_password.pay_wallet_event_dispatcher_service_secondary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+resource "azurerm_key_vault_secret" "pay_wallet_jwt_issuer_service_active_api_key" {
+  name         = "pay-wallet-jwt-issuer-service-active-api-key"
+  value        = var.pay_wallet_jwt_issuer_api_key_use_primary ? azurerm_key_vault_secret.pay_wallet_jwt_issuer_service_primary_api_key.value : azurerm_key_vault_secret.payment_wallet_service_secondary_api_key.value
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "payment_wallet_service_active_api_key" {
+  name         = "payment-wallet-service-active-api-key"
+  value        = var.payment_wallet_service_api_key_use_primary ? azurerm_key_vault_secret.payment_wallet_service_primary_api_key.value : azurerm_key_vault_secret.payment_wallet_service_secondary_api_key.value
+  key_vault_id = module.key_vault.id
 }

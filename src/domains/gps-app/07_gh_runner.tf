@@ -50,6 +50,22 @@ module "gh_runner_job" {
     {
       name : "pagopa-gpd-ingestion-manager"
       short_name : "gpd-ingst-mgr"
+    },
+    {
+      name : "pagopa-reporting-orgs-enrollment"
+      short_name : "gpd-rep-org"
+    },
+    {
+      name : "pagopa-spontaneous-payments"
+      short_name : "gpd-spopaym"
+    },
+    {
+      name : "pagopa-debt-position"
+      short_name : "gpd-debt-pos"
+    },
+    {
+      name : "pagopa-gpd-rtp"
+      short_name : "gpd-rtp"
     }
   ]
   job = {
@@ -57,9 +73,12 @@ module "gh_runner_job" {
   }
   job_meta = {}
   key_vault = {
-    name        = "${local.product}-kv"     # Name of the KeyVault which stores PAT as secret
-    rg          = "${local.product}-sec-rg" # Resource group of the KeyVault which stores PAT as secret
-    secret_name = "gh-runner-job-pat"       # Data of the KeyVault which stores PAT as secret
+    # name        = "${local.product}-kv"     # Name of the KeyVault which stores PAT as secret
+    # rg          = "${local.product}-sec-rg" # Resource group of the KeyVault which stores PAT as secret
+    # secret_name = "gh-runner-job-pat"       # Data of the KeyVault which stores PAT as secret
+    name        = "${local.product}-${var.domain}-kv"        # Name of the KeyVault which stores PAT as secret
+    rg          = "${local.product}-${var.domain}-sec-rg"    # Resource group of the KeyVault which stores PAT as secret
+    secret_name = "pagopa-platform-domain-github-bot-cd-pat" # Data of the KeyVault which stores PAT as secret
   }
   kubernetes_deploy = {
     enabled      = true
@@ -71,6 +90,6 @@ module "gh_runner_job" {
   prefix                  = var.prefix
   resource_group_name     = data.azurerm_resource_group.identity_rg.name
   domain_security_rg_name = "${local.product}-${var.domain}-sec-rg"
-  tags                    = var.tags
+  tags                    = module.tag_config.tags
 
 }

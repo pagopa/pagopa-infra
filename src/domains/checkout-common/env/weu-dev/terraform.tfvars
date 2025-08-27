@@ -5,14 +5,6 @@ domain         = "checkout"
 location       = "westeurope"
 location_short = "weu"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/checkout-common"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "checkout"
-}
 
 ### External resources
 
@@ -47,6 +39,16 @@ enable_iac_pipeline = true
 
 # Checkout Redis
 redis_checkout_params = {
+  capacity   = 0
+  sku_name   = "Basic"
+  family     = "C"
+  version    = 6
+  ha_enabled = false
+  zones      = []
+}
+
+# Checkout Redis
+redis_checkout_params_std = {
   capacity   = 0
   sku_name   = "Basic"
   family     = "C"

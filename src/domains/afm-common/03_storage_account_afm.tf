@@ -1,5 +1,5 @@
 module "afm_storage" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
+  source = "./.terraform/modules/__v3__/storage_account"
 
   name                            = replace("${local.project}-sa", "-", "")
   account_kind                    = var.afm_storage_params.kind
@@ -23,7 +23,7 @@ module "afm_storage" {
     blob_restore_policy_days   = var.afm_storage_params.backup_retention_days
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_storage_table" "issuer_range_table" {
