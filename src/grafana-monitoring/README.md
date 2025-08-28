@@ -22,7 +22,11 @@
 
 | Name | Type |
 |------|------|
+| [azuread_application.grafana_infinity](https://registry.terraform.io/providers/hashicorp/azuread/2.10.0/docs/resources/application) | resource |
+| [azuread_application_password.grafana_infinity](https://registry.terraform.io/providers/hashicorp/azuread/2.10.0/docs/resources/application_password) | resource |
+| [azuread_service_principal.grafana_infinity](https://registry.terraform.io/providers/hashicorp/azuread/2.10.0/docs/resources/service_principal) | resource |
 | [azurerm_dashboard_grafana.grafana_dashboard](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dashboard_grafana) | resource |
+| [azurerm_key_vault_secret.grafana_infinity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_kusto_database_principal_assignment.grafana_viewer](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kusto_database_principal_assignment) | resource |
 | [azurerm_resource_group.grafana_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_role_assignment.grafana_dashboard_monitoring_data_reader](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
