@@ -1,25 +1,31 @@
 <policies>
-<inbound>
-  <base />
-  <!-- rate limit by subscription key -->
-  <rate-limit calls="10" renewal-period="1" remaining-calls-variable-name="remainingCallsPerSubscription"/>
-  <!-- Calling Authorizer's fragment -->
-  <set-variable name="application_domain" value="gpd" />
-  <choose>
-    <!-- Making sure that will excludes all APIs that does not includes CI fiscal code -->
-    <when condition="@(context.Request.MatchedParameters.ContainsKey("organization-fiscal-code") && !context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key", "").Equals(""))">
-    <set-variable name="authorization_entity" value="@(context.Request.MatchedParameters["organization-fiscal-code"])" />
-    <include-fragment fragment-id="authorizer" />
-  </when>
-</choose>
-</inbound>
-<outbound>
-  <base />
-</outbound>
-<backend>
-  <base />
-</backend>
-<on-error>
-  <base />
-</on-error>
+  <inbound>
+    <base />
+    <!-- rate limit by subscription key -->
+    <rate-limit calls="10" renewal-period="1" remaining-calls-variable-name="remainingCallsPerSubscription"/>
+    <!-- Calling Authorizer's fragment -->
+    <set-variable name="application_domain" value="gpd" />
+
+    <!-- Add query parameter serviceType to request -->
+    <set-query-parameter name="serviceType" exists-action="override">
+      <value>@(context.Request.Headers.GetValueOrDefault("X-Original-URL").Contains("/aca/") ? "ACA" : "GPD")</value>
+    </set-query-parameter>
+
+    <choose>
+      <!-- Making sure that will excludes all APIs that does not includes CI fiscal code -->
+      <when condition="@(context.Request.MatchedParameters.ContainsKey("organization-fiscal-code") && !context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key", "").Equals(""))">
+      <set-variable name="authorization_entity" value="@(context.Request.MatchedParameters["organization-fiscal-code"])" />
+      <include-fragment fragment-id="authorizer" />
+      </when>
+    </choose>
+  </inbound>
+  <outbound>
+    <base />
+  </outbound>
+  <backend>
+    <base />
+  </backend>
+  <on-error>
+    <base />
+  </on-error>
 </policies>
