@@ -14,7 +14,12 @@
     "node_uri": "https://weudev.nodo.internal.dev.platform.pagopa.it/nodo",
     "routing": 0,
     "broker_psps": [],
-    "cis": ["15376371009"],
+    "cis": [
+      "12300020158",
+      "00347000721",
+      "00395920788",
+      "96289850586"
+    ],
     "list_priority": 1
   },
   {
