@@ -72,7 +72,7 @@ module "apim_aca_upload_api_v1" {
   name                  = "${local.product}-aca-upload-api"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_debt_positions_product.product_id, module.apim_gpd_integration_product.product_id]
+  product_ids           = [module.apim_debt_positions_product.product_id, module.apim_aca_integration_product.product_id, module.apim_gpd_integration_product.product_id]
   subscription_required = local.apim_aca_upload_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.apim_aca_upload_api.id
   api_version           = "v1"
