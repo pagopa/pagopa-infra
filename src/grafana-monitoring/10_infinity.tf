@@ -10,8 +10,6 @@ resource "azuread_application" "grafana_infinity" {
       type = "Scope"
     }
   }
-
-  owners = [data.azuread_group.adgroup_admin.object_id]
 }
 
 resource "azuread_service_principal" "grafana_infinity" {
