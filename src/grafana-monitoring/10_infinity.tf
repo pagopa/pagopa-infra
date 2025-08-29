@@ -27,3 +27,9 @@ resource "azurerm_key_vault_secret" "grafana_infinity" {
   name         = "grafana-infinity-principal-secret"
   value        = azuread_application_password.grafana_infinity.value
 }
+
+resource "azurerm_role_assignment" "grafana_infinity_viewer" {
+  scope                = data.azurerm_subscription.current.id
+  role_definition_name = "Cost Management Reader"
+  principal_id         = azuread_service_principal.grafana_infinity.object_id
+}
