@@ -1064,3 +1064,15 @@ resource "azurerm_key_vault_secret" "ecommerce_helpdesk_command_service_secondar
   key_vault_id = module.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "ecommerce_github_packages_read_bot_token" {
+  name         = "ecommerce-github-packages-read-bot-token"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
