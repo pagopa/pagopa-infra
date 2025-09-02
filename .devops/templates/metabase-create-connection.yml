@@ -46,7 +46,6 @@ steps:
           do \$\$
           BEGIN
 
-          SELECT FROM public.metabase_database WHERE name = '${{parameters.TARGET_DB}}';
 
           IF NOT EXISTS (SELECT FROM public.metabase_database WHERE name = '${{parameters.TARGET_DB}}') THEN
             INSERT INTO public.metabase_database(created_at, updated_at, name, details, engine, is_sample, is_full_sync, metadata_sync_schedule, cache_field_values_schedule, timezone, is_on_demand, auto_run_queries, initial_sync_status, creator_id, dbms_version, is_audit, uploads_enabled, is_attached_dwh)
