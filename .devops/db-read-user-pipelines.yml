@@ -134,7 +134,7 @@ stages:
     displayName: "Create metabase connections"
     dependsOn: get_read_user_credentials
     jobs:
-      - job: create_metabase_nodo
+      - job: create_metabase_connection_fdr
         pool: $(poolImage)
         displayName: "Create metabase connection for nodo db"
         variables:
