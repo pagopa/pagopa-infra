@@ -55,16 +55,14 @@ stages:
             name: credentials
             env:
               metabase-password: $(metabase-password)
-  - stage: initialization_jobs
-    displayName: "Create nodo readonly user"
-    dependsOn: get_read_user_credentials
-    jobs:
-      - job: initialization
+      # replicate this for each database
+      - job: create_user_nodo
+        dependsOn: get_credentials
         pool: $(poolImage)
-        displayName: "User creation job"
+        displayName: "Create read user in nodo db"
         variables:
-          READ_USER_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_LOGIN'] ]
-          READ_USER_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_PASSWORD'] ]
+          READ_USER_LOGIN: $[ dependencies.get_credentials.outputs['credentials.READ_USER_LOGIN'] ]
+          READ_USER_PASSWORD: $[ dependencies.get_credentials.outputs['credentials.READ_USER_PASSWORD'] ]
         steps:
           - template: ./templates/db-readonly-user-create.yml
             parameters:
@@ -76,3 +74,6 @@ stages:
               ADMIN_LOGIN_KEY: "db-administrator-login"
               ADMIN_PWD_KEY: "db-administrator-login-password"
               SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+
+
+
