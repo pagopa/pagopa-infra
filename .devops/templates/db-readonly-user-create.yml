@@ -43,7 +43,7 @@ steps:
           PASS=$2
           az config set extension.use_dynamic_install=yes_without_prompt
           az postgres flexible-server execute --name ${{ parameters.DB_HOST }} --admin-user $(${{parameters.ADMIN_LOGIN_KEY}}) \
-          --admin-password '$(${{parameters.ADMIN_PWD_KEY}})' --database-name "$(DATABASE_NAME)" \
+          --admin-password '$(${{parameters.ADMIN_PWD_KEY}})' --database-name "${{ parameters.DATABASE_NAME }}" \
           --querytext "
           do \$\$
           BEGIN
