@@ -20,6 +20,7 @@
         <allowed-headers>
           <header>Content-Type</header>
           <header>Authorization</header>
+          <header>x-rpt-ids</header>
           <header>x-rpt-id</header>
         </allowed-headers>
       </cors>
