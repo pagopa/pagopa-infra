@@ -39,6 +39,7 @@ stages:
     displayName: "Get read user credentials"
     jobs:
       - job: get_credentials
+        name: credentials
         pool: $(poolImage)
         displayName: "Get credentials job"
         steps:
@@ -51,8 +52,8 @@ stages:
           - script: |
               echo "##vso[task.setvariable variable=READ_USER_PASSWORD]$(metabase-reader-password)"
               echo "##vso[task.setvariable variable=READ_USER_LOGIN]$(metabase-reader-login)"
-            name: credentials
             displayName: "Set read user password as pipeline variable"
+            name: credentials
             env:
               metabase-password: $(metabase-password)
   - stage: initialization_jobs
@@ -67,8 +68,8 @@ stages:
             parameters:
               DATABASE_NAME: 'postgres'
               DB_HOST: 'pagopa-${{ variables.ENV }}-weu-nodo-flexible-postgresql.postgres.database.azure.com'
-              USERNAME: ${{ stageDependencies.get_read_user_credentials.credentials.outputs['READ_USER_LOGIN'] }}
-              PASSWORD: ${{ stageDependencies.get_read_user_credentials.credentials.outputs['READ_USER_PASSWORD'] }}
+              USERNAME: $[ stageDependencies.get_read_user_credentials.credentials.outputs['credentials.READ_USER_LOGIN'] ]
+              PASSWORD: $[ stageDependencies.get_read_user_credentials.credentials.outputs['credentials.READ_USER_PASSWORD'] ]
               KEY_VAULT_NAME: "pagopa-${{ variables.ENV }}-nodo-kv"
               ADMIN_LOGIN_KEY: "db-administrator-login"
               ADMIN_PWD_KEY: "db-administrator-login-password"
