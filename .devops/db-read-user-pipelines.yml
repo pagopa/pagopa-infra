@@ -49,8 +49,8 @@ stages:
               keyVaultName: $(METABASE_KEY_VAULT_NAME)
               secretsFilter: 'metabase-reader-login,metabase-reader-password'
           - script: |
-              echo "##vso[task.setvariable variable=READ_USER_PASSWORD]$(metabase-reader-password)"
-              echo "##vso[task.setvariable variable=READ_USER_LOGIN]$(metabase-reader-login)"
+              echo "##vso[task.setvariable variable=READ_USER_PASSWORD;isOutput=true]$(metabase-reader-password)"
+              echo "##vso[task.setvariable variable=READ_USER_LOGIN;isOutput=true]$(metabase-reader-login)"
             displayName: "Set read user password as pipeline variable"
             name: credentials
             env:
