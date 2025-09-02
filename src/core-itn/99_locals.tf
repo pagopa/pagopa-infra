@@ -22,4 +22,7 @@ locals {
 
   cstar_weu_vnet_rg_name = "cstar-${var.env_short}-weu-${var.env}01-vnet-rg"
   cstar_weu_vnet_name    = "cstar-${var.env_short}-weu-${var.env}01-vnet"
+
+  azdo_iac_managed_identities   = toset(["azdo-${var.env}-pagopa-iac-deploy", "azdo-${var.env}-pagopa-iac-plan"])
+  azdo_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
 }

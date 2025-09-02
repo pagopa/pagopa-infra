@@ -38,6 +38,16 @@ resource "azurerm_key_vault_access_policy" "app_gateway_public_policy" {
   storage_permissions     = []
 }
 
+resource "azurerm_key_vault_access_policy" "app_gateway_integration_policy" {
+  key_vault_id            = module.key_vault.id
+  tenant_id               = data.azurerm_client_config.current.tenant_id
+  object_id               = azurerm_user_assigned_identity.appgateway.principal_id
+  key_permissions         = ["Get", "List"]
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List", "Purge"]
+  storage_permissions     = []
+}
+
 
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "ad_group_policy" {
