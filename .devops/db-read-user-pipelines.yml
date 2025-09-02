@@ -69,7 +69,7 @@ stages:
           - template: ./templates/db-readonly-user-create.yml
             parameters:
               DATABASE_NAME: 'postgres'
-              DB_HOST: 'pagopa-${{ variables.ENV }}-weu-nodo-flexible-postgresql.postgres.database.azure.com'
+              DB_HOST: 'pagopa-${{ variables.ENV }}-weu-nodo-flexible-postgresql'
               USERNAME: $(READ_USER_LOGIN)
               PASSWORD: $(READ_USER_PASSWORD)
               KEY_VAULT_NAME: "pagopa-${{ variables.ENV }}-nodo-kv"
