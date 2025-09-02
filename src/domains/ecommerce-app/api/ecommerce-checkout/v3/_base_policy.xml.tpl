@@ -18,6 +18,7 @@
           <header>x-correlation-id</header>
           <header>x-client-id-from-client</header>
           <header>x-rpt-id</header>
+          <header>x-rpt-ids</header>
         </allowed-headers>
       </cors>
       <base />
@@ -67,8 +68,8 @@
             <set-header name="Authorization" exists-action="override">
                 <value>@("Bearer " + (string)context.Variables["authToken"])</value>
             </set-header>
-            <set-header name="x-rpt-id" exists-action="override">
-              <value>@((string)context.Request.Headers.GetValueOrDefault("x-rpt-id",""))</value>
+            <set-header name="x-rpt-ids" exists-action="override">
+              <value>@((string)context.Request.Headers.GetValueOrDefault("x-rpt-ids",""))</value>
             </set-header>
           </send-request>
           <choose>
