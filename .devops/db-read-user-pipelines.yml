@@ -63,7 +63,6 @@ stages:
     jobs:
       # replicate this for each database
       - job: create_user_nodo
-        dependsOn: get_credentials
         pool: $(poolImage)
         displayName: "Create read user in nodo db"
         variables:
@@ -81,7 +80,6 @@ stages:
               ADMIN_PWD_KEY: "db-administrator-login-password"
               SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
       - job: create_user_crusc8
-        dependsOn: get_credentials
         pool: $(poolImage)
         displayName: "Create read user in crusc8 db"
         variables:
@@ -99,7 +97,6 @@ stages:
               ADMIN_PWD_KEY: "db-administrator-login-password"
               SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
       - job: create_user_fdr
-        dependsOn: get_credentials
         pool: $(poolImage)
         displayName: "Create read user in fdr db"
         variables:
@@ -117,7 +114,6 @@ stages:
               ADMIN_PWD_KEY: "db-administrator-login-password"
               SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
       - job: create_user_gpd
-        dependsOn: get_credentials
         pool: $(poolImage)
         displayName: "Create read user in gpd db"
         variables:
