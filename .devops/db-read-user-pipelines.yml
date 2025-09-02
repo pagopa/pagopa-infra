@@ -72,3 +72,4 @@ stages:
               KEY_VAULT_NAME: "pagopa-${{ variables.ENV }}-nodo-kv"
               ADMIN_LOGIN_KEY: "db-administrator-login"
               ADMIN_PWD_KEY: "db-administrator-login-password"
+              SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
