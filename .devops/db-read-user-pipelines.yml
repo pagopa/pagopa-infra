@@ -152,11 +152,6 @@ stages:
             parameters:
               METABASE_DATABASE_NAME: 'metabase'
               METABASE_DB_HOST: 'pagopa-${{ parameters.ENV }}-itn-dbsecurity-flexible-postgresql'
-              USERNAME: $(READ_USER_LOGIN)
-              PASSWORD: $(READ_USER_PASSWORD)
-              KEY_VAULT_NAME: "pagopa-${{ variables.ENV }}-gps-kv"
-              ADMIN_LOGIN_KEY: "pgres-admin-login"
-              ADMIN_PWD_KEY: "pgres-admin-pwd"
               SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               METABASE_ADMIN_LOGIN: $(METABASE_ADMIN_LOGIN)
               METABASE_ADMIN_PWD: $(METABASE_ADMIN_PASSWORD)
