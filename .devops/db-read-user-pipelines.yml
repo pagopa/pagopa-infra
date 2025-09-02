@@ -62,13 +62,16 @@ stages:
       - job: initialization
         pool: $(poolImage)
         displayName: "User creation job"
+        variables:
+          READ_USER_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_LOGIN'] ]
+          READ_USER_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_PASSWORD'] ]
         steps:
           - template: ./templates/db-readonly-user-create.yml
             parameters:
               DATABASE_NAME: 'postgres'
               DB_HOST: 'pagopa-${{ variables.ENV }}-weu-nodo-flexible-postgresql.postgres.database.azure.com'
-              USERNAME: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_LOGIN'] ]
-              PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_PASSWORD'] ]
+              USERNAME: $(READ_USER_LOGIN)
+              PASSWORD: $(READ_USER_PASSWORD)
               KEY_VAULT_NAME: "pagopa-${{ variables.ENV }}-nodo-kv"
               ADMIN_LOGIN_KEY: "db-administrator-login"
               ADMIN_PWD_KEY: "db-administrator-login-password"
