@@ -24,10 +24,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
         ${each.value.formatted_operations}
     ];
     let operationIds = toscalar(operationMap | summarize make_list(operationId_s, 20));
-    let thresholdTrafficMin = 150;
-    let thresholdTrafficLinear = 400;
-    let lowTrafficAvailability = 92;
-    let highTrafficAvailability = 98;
+    let thresholdTrafficMin = 20;
+    let thresholdTrafficLinear = 150;
+    let lowTrafficAvailability = 80;
+    let highTrafficAvailability = 99;
     let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
     AzureDiagnostics
