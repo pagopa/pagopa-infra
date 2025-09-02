@@ -139,7 +139,6 @@ stages:
     dependsOn: get_read_user_credentials
     jobs:
       - job: create_metabase_nodo
-        dependsOn: create_readonly_user
         pool: $(poolImage)
         displayName: "Create metabase connection for nodo db"
         variables:
