@@ -33,3 +33,33 @@ resource "azurerm_role_assignment" "grafana_infinity_viewer" {
   role_definition_name = "Cost Management Reader"
   principal_id         = azuread_service_principal.grafana_infinity.object_id
 }
+
+resource "grafana_data_source" "infinity" {
+  provider    = grafana.cloudinternal
+  type        = "yesoreyeram-infinity-datasource"
+  name        = "${local.product}-infinity"
+  access_mode = "proxy"
+  is_default  = false
+
+  json_data_encoded = jsonencode({
+    allowedHosts = [
+      "https://management.azure.com/"
+    ]
+    auth_method    = "oauth2"
+    global_queries = []
+    oauth2 = {
+      client_secret = azurerm_key_vault_secret.grafana_infinity.value
+      client_id     = azuread_service_principal.grafana_infinity.application_id
+      scopes = [
+        ""
+      ],
+      token_url = "https://login.microsoftonline.com/${data.azurerm_subscription.current.tenant_id}/oauth2/token"
+    },
+    oauth2EndPointParamsName1 = "resource"
+  })
+
+  secure_json_data_encoded = jsonencode({
+    oauth2ClientSecret         = azurerm_key_vault_secret.grafana_infinity.value
+    oauth2EndPointParamsValue1 = "https://management.azure.com/"
+  })
+}
