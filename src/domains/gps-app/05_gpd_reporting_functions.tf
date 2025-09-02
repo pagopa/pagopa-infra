@@ -139,9 +139,9 @@ module "reporting_analysis_function_slot_staging" {
   tags = module.tag_config.tags
 }
 
-# autoscaling - reporting_batch & reporting_service & reporting_analysis ( shared service plan )
+# autoscaling - reporting_analysis
 resource "azurerm_monitor_autoscale_setting" "reporting_function" {
-  name                = format("gpd-reporting-autoscale")
+  name                = "${local.product_location}-fn-gpd-batch-autoscale"
   resource_group_name = azurerm_resource_group.gpd_rg.name
   location            = var.location
   target_resource_id  = azurerm_app_service_plan.gpd_reporting_service_plan.id
