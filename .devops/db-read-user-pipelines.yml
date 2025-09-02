@@ -146,7 +146,7 @@ stages:
           - template: ./templates/metabase-create-connection.yml
             parameters:
               METABASE_DATABASE_NAME: 'metabase'
-              METABASE_DB_HOST: 'pagopa-${{ parameters.ENV }}-itn-dbsecurity-flexible-postgresql'
+              METABASE_DB_HOST: 'pagopa-${{ variables.ENV }}-itn-dbsecurity-flexible-postgresql'
               SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               METABASE_ADMIN_LOGIN: $(METABASE_ADMIN_LOGIN)
               METABASE_ADMIN_PWD: $(METABASE_ADMIN_PASSWORD)
