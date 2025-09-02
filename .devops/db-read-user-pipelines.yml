@@ -67,8 +67,8 @@ stages:
             parameters:
               DATABASE_NAME: 'postgres'
               DB_HOST: 'pagopa-${{ variables.ENV }}-weu-nodo-flexible-postgresql.postgres.database.azure.com'
-              USERNAME: ${{ dependencies.get_read_user_credentials.outputs['credentials.READ_USER_LOGIN'] }}
-              PASSWORD: ${{ dependencies.get_read_user_credentials.outputs['credentials.READ_USER_PASSWORD'] }}
+              USERNAME: ${{ stageDependencies.get_read_user_credentials.credentials.outputs['READ_USER_LOGIN'] }}
+              PASSWORD: ${{ stageDependencies.get_read_user_credentials.credentials.outputs['READ_USER_PASSWORD'] }}
               KEY_VAULT_NAME: "pagopa-${{ variables.ENV }}-nodo-kv"
               ADMIN_LOGIN_KEY: "db-administrator-login"
               ADMIN_PWD_KEY: "db-administrator-login-password"
