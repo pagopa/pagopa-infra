@@ -1,0 +1,58 @@
+parameters:
+  - name: METABASE_DATABASE_NAME
+    displayName: 'Database name'
+    type: string
+  - name: METABASE_DB_HOST
+    displayName: 'DB hostname'
+    type: string
+  - name: METABASE_ADMIN_LOGIN
+    displayName: 'Admin login key vault secret name'
+    type: string
+  - name: METABASE_ADMIN_PWD
+    displayName: 'Admin password key vault secret name'
+    type: string
+  - name: SERVICE_CONNECTION
+    displayName: 'Azure service connection name'
+    type: string
+  - name: TARGET_HOST
+    displayName: 'Target host'
+    type: string
+  - name: TARGET_USER
+    displayName: 'Target user'
+    type: string
+  - name: TARGET_PASSWORD
+    displayName: 'Target password'
+    type: string
+  - name: TARGET_DB
+    displayName: 'Target database'
+    type: string
+  - name: TARGET_VERSION
+    displayName: 'Target database version'
+    type: string
+
+steps:
+  - task: AzureCLI@2
+    displayName: "Create metabase connection"
+    inputs:
+      azureSubscription: ${{ parameters.SERVICE_CONNECTION }}
+      scriptLocation: inlineScript
+      scriptType: bash
+      inlineScript: |
+        create_connection () {
+          az config set extension.use_dynamic_install=yes_without_prompt
+          az postgres flexible-server execute --name ${{ parameters.METABASE_DB_HOST }} --admin-user ${{parameters.METABASE_ADMIN_LOGIN}} \
+          --admin-password '${{parameters.METABASE_ADMIN_PWD}}' --database-name "${{ parameters.METABASE_DATABASE_NAME }}" \
+          --querytext "
+          do \$\$
+          BEGIN
+
+          INSERT INTO public.metabase_database(
+	      created_at, updated_at, name, description, details, engine, is_sample, is_full_sync, metadata_sync_schedule, cache_field_values_schedule, timezone, is_on_demand, auto_run_queries, initial_sync_status, creator_id, dbms_version, is_audit, uploads_enabled, is_attached_dwh)
+	      VALUES (NOW(), NOW(), ${{parameters.TARGET_DB}}, "", '{"ssl-use-client-auth":false,"ssl":true,"password":"${{parameters.TARGET_PASSWORD}}","destination-database":false,"port":null,"advanced-options":false,"schema-filters-type":"all","dbname":"${{parameters.TARGET_DB}}","host":"${{parameters.TARGET_HOST}}","tunnel-enabled":false,"user":"metabase","ssl-mode":"require"}', "postgres", false, true, "0 9 * * * ? *", "0 0 17 * * ? *", "GMT", false, true,  "complete", 1, '{"flavor":"PostgreSQL","version":"${{parameters.TARGET_VERSION}}","semantic-version":[${{replace(parameters.TARGET_VERSION, ".", ","}}]}', false, false, false);
+
+          END
+          \$\$;
+          "
+        }
+
+        create_connection
