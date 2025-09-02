@@ -139,7 +139,7 @@ eventhubs_rtp = [
     name              = "rtp-events"
     partitions        = 32
     message_retention = 7
-    consumers         = ["rtp-events-processor"]
+    consumers         = ["rtp-events-processor", "gpd-rtp-integration-test-consumer-group"]
     keys = [
       {
         name   = "rtp-events-tx"
@@ -149,6 +149,12 @@ eventhubs_rtp = [
       },
       {
         name   = "rtp-events-rx"
+        listen = true
+        send   = true
+        manage = false
+      },
+      {
+        name   = "rtp-events-integration-test-rx"
         listen = true
         send   = false
         manage = false

@@ -57,7 +57,23 @@ locals {
         {
           keys   = ["PartitionKey"]
           unique = false
-        }
+        },
+        {
+          keys   = ["fdr"]
+          unique = false
+        },
+        {
+          keys   = ["pspId"]
+          unique = false
+        },
+        {
+          keys   = ["organizationId"]
+          unique = false
+        },
+        {
+          keys   = ["fdrAction"]
+          unique = false
+        },
       ]
       shard_key = "created"
     },
@@ -75,35 +91,6 @@ locals {
         }
       ]
       shard_key = "pspCreditorInstitution"
-    },
-    ### history collections ###
-    {
-      name = "fdr3-flow-metadata"
-      indexes = [
-        {
-          keys   = ["_id"]
-          unique = true
-        },
-        {
-          keys   = ["PartitionKey"]
-          unique = false
-        }
-      ]
-      shard_key = "created"
-    },
-    {
-      name = "fdr3-payment-metadata"
-      indexes = [
-        {
-          keys   = ["_id"]
-          unique = true
-        },
-        {
-          keys   = ["PartitionKey"]
-          unique = false
-        }
-      ]
-      shard_key = "created"
     }
   ]
 }

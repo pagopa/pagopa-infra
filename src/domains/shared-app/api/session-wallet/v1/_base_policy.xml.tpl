@@ -4,7 +4,7 @@
       <set-variable name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />     
       <!-- Get User IO : START-->
       <send-request ignore-error="true" timeout="10" response-variable-name="user-auth-body" mode="new">
-        <set-url>@("${io_backend_base_path}/pagopa/api/v1/user?version=20200114")</set-url> 
+        <set-url>@("${io_backend_base_path}/api/sso/pagopa/v1/user")</set-url> 
         <set-method>GET</set-method>
         <set-header name="Accept" exists-action="override">
           <value>application/json</value>

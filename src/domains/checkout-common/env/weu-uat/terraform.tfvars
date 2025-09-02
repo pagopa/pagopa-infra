@@ -42,4 +42,14 @@ redis_checkout_params = {
   ha_enabled = false
   zones      = []
 }
+
+# Checkout Redis
+redis_checkout_params_std = {
+  capacity   = 0
+  sku_name   = "Basic"
+  family     = "C"
+  version    = 6
+  ha_enabled = false
+  zones      = []
+}
 cidr_subnet_redis_checkout = ["10.1.167.0/24"]

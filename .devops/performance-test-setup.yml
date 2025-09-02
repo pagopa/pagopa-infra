@@ -5,20 +5,21 @@ parameters:
   - name: 'ENV'
     displayName: 'Environment to switch'
     type: string
-    default: dev
+    default: uat
     values:
       - dev
       - uat
   - name: 'ACTION'
     displayName: 'Action to perform'
     type: string
-    default: setup
+    default: teardown
     values:
       - setup
       - teardown
   - name: 'REASON'
     displayName: 'Reason for this execution'
     type: string
+    default: 'Scheduled'
 
 variables:
   - name: TIME_OUT
@@ -78,7 +79,7 @@ variables:
     ${{ if eq(parameters.ACTION, 'setup') }}:
       value: "Premium"
     ${{ if eq(parameters.ACTION, 'teardown') }}:
-      value: "Standard"
+      value: "Developer"
 
   - name: appgwMinCapacity
     ${{ if eq(parameters.ACTION, 'setup') }}:
@@ -126,6 +127,13 @@ stages:
         displayName: "Perform infra updates on environment"
         timeoutInMinutes: ${{ variables.TIME_OUT }}
         steps:
+          - script: |
+              if [ "$(Build.Reason)" != "Schedule" ] && [ "${{parameters.REASON}}" = "Scheduled" ]; then
+                echo "##vso[task.logissue type=error]Esecuzione manuale con REASON non specificata!"
+                echo "##vso[task.logissue type=error]Specifica una reason valida"
+                exit 1
+              fi
+            displayName: 'Check REASON'
           - task: AzureCLI@2
             displayName: 'Update APIM'
             inputs:

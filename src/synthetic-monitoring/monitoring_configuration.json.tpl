@@ -713,30 +713,6 @@
     }
   },
   {
-    "apiName" : "checkPosition",
-    "appName" : "nodo",
-    "url" : "https://${nexi_node_ip}/checkPosition",
-    "type" : "nexi",
-    "checkCertificate" : true,
-    "method" : "POST",
-    "expectedCodes" : ["200"],
-    "body": {"positionslist": [{"fiscalCode": "${check_position_body.fiscal_code}", "noticeNumber": "${check_position_body.notice_number}"}]},
-    "expectedBody": {"outcome":"OK"},
-    "bodyCompareStrategy": "contains",
-    "headers": {
-      "Content-Type": "application/json",
-      "ndphost": "nodo-${env_short}.nexigroup.com",
-      "Host": "${nexi_ndp_host}"
-    },
-    "tags" : {
-      "description" : "pagopa nodo ${env_name} check position"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : ${alert_enabled}
-    }
-  },
-  {
     "enabled" : ${nexi_postgres_enabled},
     "apiName" : "checkPosition",
     "appName" : "nodo",
@@ -752,6 +728,28 @@
       "Content-Type": "application/json",
       "ndphost": "nodo-${env_short}.nexigroup.com",
       "Host": "${nexi_ndp_host_postgres}"
+    },
+    "tags" : {
+      "description" : "pagopa nodo ${env_name} check position"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "checkPosition",
+    "appName" : "nodo",
+    "url" : "https://${internal_api_domain_prefix}.nodo.${internal_api_domain_suffix}/nodo/checkPosition",
+    "type" : "pagoPa",
+    "checkCertificate" : true,
+    "method" : "POST",
+    "expectedCodes" : ["200"],
+    "body": {"positionslist": [{"fiscalCode": "${check_position_body.fiscal_code}", "noticeNumber": "${check_position_body.notice_number}"}]},
+    "expectedBody": {"outcome":"OK"},
+    "bodyCompareStrategy": "contains",
+    "headers": {
+      "Content-Type": "application/json"
     },
     "tags" : {
       "description" : "pagopa nodo ${env_name} check position"
@@ -849,39 +847,6 @@
       "Ocp-Apim-Subscription-Key": "${nodo_subscription_key}",
       "Content-Type": "application/xml",
       "Host": "${api_dot_env_name}.platform.pagopa.it"
-    },
-    "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice using GPD service"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : ${alert_enabled}
-    }
-  },
-  {
-    "apiName" : "verifyPaymentNoticeOnGPD",
-    "appName" : "nodo",
-    "url" : "https://${nexi_node_ip}/webservices/input",
-    "type" : "nexi",
-    "checkCertificate" : true,
-    "method" : "POST",
-    "expectedCodes" : ["200"],
-    "expectedBody": {
-      "soapenv:Envelope": {
-        "soapenv:Body": {
-          "nfp:verifyPaymentNoticeRes": {
-            "outcome": "${verify_payment_internal_expected_outcome}"
-          }
-        }
-      }
-    },
-    "bodyCompareStrategy": "xmlContains",
-    "body": "<SOAP-ENV:Envelope xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/'> <SOAP-ENV:Body> <ns3:verifyPaymentNoticeReq xmlns:ns3='http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd'> <idPSP>CIPBITMM</idPSP> <idBrokerPSP>13212880150</idBrokerPSP> <idChannel>13212880150_10</idChannel> <password>PLACEHOLDER</password> <qrCode> <fiscalCode>83000970612</fiscalCode> <noticeNumber>302000000014360604</noticeNumber> </qrCode> </ns3:verifyPaymentNoticeReq> </SOAP-ENV:Body> </SOAP-ENV:Envelope>",
-    "headers": {
-      "SOAPAction": "verifyPaymentNotice",
-      "Content-Type": "application/xml",
-      "ndphost": "nodo-${env_short}.nexigroup.com",
-      "Host": "${nexi_ndp_host}"
     },
     "tags" : {
       "description" : "pagopa nodo ${env_name} verify payment notice using GPD service"
@@ -949,39 +914,6 @@
       "Ocp-Apim-Subscription-Key": "${nodo_subscription_key}",
       "Content-Type": "application/xml",
       "Host": "${api_dot_env_name}.platform.pagopa.it"
-    },
-    "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice using partner's service"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : ${alert_enabled}
-    }
-  },
-  {
-    "apiName" : "verifyPaymentNoticeOnPartner",
-    "appName" : "nodo",
-    "url" : "https://${nexi_node_ip}/webservices/input",
-    "type" : "nexi",
-    "checkCertificate" : true,
-    "method" : "POST",
-    "expectedCodes" : ["200"],
-    "expectedBody": {
-      "soapenv:Envelope": {
-        "soapenv:Body": {
-          "nfp:verifyPaymentNoticeRes": {
-            "outcome": "KO"
-          }
-        }
-      }
-    },
-    "bodyCompareStrategy": "xmlContains",
-    "body": "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/'><soapenv:Header /><soapenv:Body><nod:verifyPaymentNoticeReq xmlns:nod='http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd'><idPSP>ABI18164</idPSP><idBrokerPSP>02654890025</idBrokerPSP><idChannel>02654890025_01</idChannel><password>PLACEHOLDER</password><qrCode><fiscalCode>97532760580</fiscalCode><noticeNumber>302704889233205169</noticeNumber></qrCode></nod:verifyPaymentNoticeReq></soapenv:Body></soapenv:Envelope>",
-    "headers": {
-      "SOAPAction": "verifyPaymentNotice",
-      "Content-Type": "application/xml",
-      "ndphost": "nodo-${env_short}.nexigroup.com",
-      "Host": "${nexi_ndp_host}"
     },
     "tags" : {
       "description" : "pagopa nodo ${env_name} verify payment notice using partner's service"

@@ -102,6 +102,11 @@ resource "azurerm_key_vault_secret" "verifyko_tablestorage_connection_string" {
   tags = module.tag_config.tags
 }
 
+# Storage Account for MBD - file shared firmatore
+# 🏗️ https://pagopa.atlassian.net/wiki/spaces/IQCGJ/pages/887455819/Design+Review+Rendicontazione+MBD#Vista-statica-delle-componenti
+# the old one present into node-secrets will be rename in
+# 1) azurestorageaccountkey-deprecated
+# 1) azurestorageaccountname-deprecated
 resource "azurerm_key_vault_secret" "mbd_storage_key" {
   name         = "azurestorageaccountkey"
   value        = module.mbd_storage_account.primary_access_key
@@ -127,9 +132,20 @@ resource "azurerm_key_vault_secret" "mbd_storage_name" {
 Event Hub
 ***********/
 ### cache
+# consumer used by node-cfg-sync
 resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_cache_sync_rx" {
   name         = "nodo-dei-pagamenti-cache-sync-rx-connection-string-key"
   value        = data.azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_nodo-dei-pagamenti-cache-sync-rx.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+
+  tags = module.tag_config.tags
+}
+# consumer used by stand-in-manager
+resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_cache_stand_in_rx" {
+  name         = "nodo-dei-pagamenti-cache-stand-in-rx-connection-string-key"
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_nodo-dei-pagamenti-cache-stand-in-rx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id

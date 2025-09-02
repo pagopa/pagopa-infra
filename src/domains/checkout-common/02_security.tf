@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.42.3"
+  source = "./.terraform/modules/__v4__/key_vault"
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -165,18 +165,6 @@ resource "azurerm_key_vault_secret" "one_identity_client_secret_test" {
 resource "azurerm_key_vault_secret" "checkout_gha_bot_pat" {
   count        = var.env_short == "p" ? 1 : 0
   name         = "checkout-gha-bot-pat"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-resource "azurerm_key_vault_secret" "ecommerce_payment_requests_active_api_key" {
-  name         = "ecommerce-payment-requests-active-api-key"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 
