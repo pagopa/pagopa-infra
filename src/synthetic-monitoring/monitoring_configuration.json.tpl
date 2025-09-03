@@ -433,22 +433,6 @@
   {
     "apiName" : "status",
     "appName" : "gpdEnrollment",
-    "url" :  "https://${internal_api_domain_prefix}.gps.${internal_api_domain_suffix}/pagopa-gpd-reporting-orgs-enrollment/info",
-    "type" : "aks",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} gpd reports status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : ${alert_enabled}
-    }
-  },
-  {
-    "apiName" : "status",
-    "appName" : "gpdEnrollment",
     "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=gpdenrollment",
     "type" : "apim",
     "checkCertificate" : true,
@@ -627,12 +611,6 @@
       "enabled" : ${alert_enabled}
     }
   },
-
-
-
-
-
-
   {
     "apiName" : "status",
     "appName" : "gpdAnalysis",
@@ -649,47 +627,6 @@
       "enabled" : ${alert_enabled}
     }
   },
-
-
-  {
-    "apiName" : "status",
-    "appName" : "gpdBatch",
-    "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=gpdreportingbatch",
-    "type" : "apim",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} gpd-batch status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : ${alert_enabled}
-    }
-  },
-
-
-  {
-    "apiName" : "status",
-    "appName" : "gpdReporting",
-    "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=gpdreportingservice",
-    "type" : "apim",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} gpd-reporting status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : ${alert_enabled}
-    }
-  },
-
-
-
-
-
   {
     "apiName" : "checkPosition",
     "appName" : "nodo",
