@@ -4,7 +4,7 @@
     "title" : "PagoPA API Debt Position ${service}",
     "description" : "Progetto Gestione Posizioni Debitorie",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.14.8"
+    "version" : "0.15.0"
   },
   "servers" : [ {
     "url" : "https://api.uat.platform.pagopa.it/gpd/debt-positions-service/v1",
@@ -1280,6 +1280,172 @@
           "type" : "string"
         }
       } ]
+    },
+    "/organizations/{organizationfiscalcode}/paymentoptions/paids/{nav}" : {
+      "post" : {
+        "tags" : [ "Payments API" ],
+        "summary" : "The Organization mark a payment option as already paid.",
+        "operationId" : "setPaymentOptionAsAlreadyPaid",
+        "parameters" : [ {
+          "name" : "organizationfiscalcode",
+          "in" : "path",
+          "description" : "Organization fiscal code, the fiscal code of the Organization.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "nav",
+          "in" : "path",
+          "description" : "NAV (notice number) is the unique reference assigned to the payment by a creditor institution.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AlreadyPaidPaymentOptionModel"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Request set as paid.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaymentsModelResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Malformed request.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Wrong or missing function key.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "No payment option found.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Conflict: existing related payment found.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "Unprocessable: not in payable state.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
+      },
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
     }
   },
   "components" : {
@@ -1573,6 +1739,179 @@
           }
         }
       },
+      "AlreadyPaidPaymentOptionModel" : {
+        "type" : "object",
+        "properties" : {
+          "paymentDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
+      "PaymentOptionMetadataModelResponse" : {
+        "type" : "object",
+        "properties" : {
+          "key" : {
+            "type" : "string"
+          },
+          "value" : {
+            "type" : "string"
+          }
+        }
+      },
+      "PaymentsModelResponse" : {
+        "type" : "object",
+        "properties" : {
+          "nav" : {
+            "type" : "string"
+          },
+          "iuv" : {
+            "type" : "string"
+          },
+          "organizationFiscalCode" : {
+            "type" : "string"
+          },
+          "amount" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "isPartialPayment" : {
+            "type" : "boolean"
+          },
+          "dueDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "retentionDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "paymentDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "reportingDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "insertedDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "paymentMethod" : {
+            "type" : "string"
+          },
+          "fee" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "notificationFee" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "pspCompany" : {
+            "type" : "string"
+          },
+          "idReceipt" : {
+            "type" : "string"
+          },
+          "idFlowReporting" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "PO_UNPAID", "PO_PAID", "PO_PARTIALLY_REPORTED", "PO_REPORTED" ]
+          },
+          "lastUpdatedDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "lastUpdatedDateNotificationFee" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "paymentOptionMetadata" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/PaymentOptionMetadataModelResponse"
+            }
+          },
+          "transfer" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/TransferModelResponse"
+            }
+          },
+          "serviceType" : {
+            "type" : "string"
+          }
+        }
+      },
+      "TransferMetadataModelResponse" : {
+        "type" : "object",
+        "properties" : {
+          "key" : {
+            "type" : "string"
+          },
+          "value" : {
+            "type" : "string"
+          }
+        }
+      },
+      "TransferModelResponse" : {
+        "type" : "object",
+        "properties" : {
+          "organizationFiscalCode" : {
+            "type" : "string"
+          },
+          "companyName" : {
+            "type" : "string"
+          },
+          "idTransfer" : {
+            "type" : "string"
+          },
+          "amount" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "remittanceInformation" : {
+            "type" : "string"
+          },
+          "category" : {
+            "type" : "string"
+          },
+          "iban" : {
+            "type" : "string"
+          },
+          "postalIban" : {
+            "type" : "string"
+          },
+          "stamp" : {
+            "$ref" : "#/components/schemas/Stamp"
+          },
+          "insertedDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "T_UNREPORTED", "T_REPORTED" ]
+          },
+          "lastUpdatedDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "transferMetadata" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/TransferMetadataModelResponse"
+            }
+          }
+        }
+      },
       "UpdateTransferIbanMassiveModel" : {
         "required" : [ "newIban" ],
         "type" : "object",
@@ -1617,17 +1956,6 @@
             "type" : "integer",
             "description" : "Total number of pages",
             "format" : "int32"
-          }
-        }
-      },
-      "PaymentOptionMetadataModelResponse" : {
-        "type" : "object",
-        "properties" : {
-          "key" : {
-            "type" : "string"
-          },
-          "value" : {
-            "type" : "string"
           }
         }
       },
@@ -1778,68 +2106,6 @@
           },
           "page_info" : {
             "$ref" : "#/components/schemas/PageInfo"
-          }
-        }
-      },
-      "TransferMetadataModelResponse" : {
-        "type" : "object",
-        "properties" : {
-          "key" : {
-            "type" : "string"
-          },
-          "value" : {
-            "type" : "string"
-          }
-        }
-      },
-      "TransferModelResponse" : {
-        "type" : "object",
-        "properties" : {
-          "organizationFiscalCode" : {
-            "type" : "string"
-          },
-          "companyName" : {
-            "type" : "string"
-          },
-          "idTransfer" : {
-            "type" : "string"
-          },
-          "amount" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "remittanceInformation" : {
-            "type" : "string"
-          },
-          "category" : {
-            "type" : "string"
-          },
-          "iban" : {
-            "type" : "string"
-          },
-          "postalIban" : {
-            "type" : "string"
-          },
-          "stamp" : {
-            "$ref" : "#/components/schemas/Stamp"
-          },
-          "insertedDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "status" : {
-            "type" : "string",
-            "enum" : [ "T_UNREPORTED", "T_REPORTED" ]
-          },
-          "lastUpdatedDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "transferMetadata" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/TransferMetadataModelResponse"
-            }
           }
         }
       },
