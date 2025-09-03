@@ -75,6 +75,8 @@ module "reporting_fdr_function" {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
+    APP_ENVIRONMENT = var.env
+
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
