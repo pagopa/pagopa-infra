@@ -172,6 +172,7 @@ stages:
               TARGET_PASSWORD: $(READ_USER_PASSWORD)
               TARGET_DB: 'cruscotto'
               TARGET_VERSION: "16.8"
+              TARGET_CONN_NAME: "Cruscotto"
       - job: create_metabase_connection_fdr
         pool: $(poolImage)
         displayName: "Create metabase connection for fdr db"
@@ -193,6 +194,7 @@ stages:
               TARGET_PASSWORD: $(READ_USER_PASSWORD)
               TARGET_DB: 'fdr'
               TARGET_VERSION: "15.13"
+              TARGET_CONN_NAME: "FDR"
       - job: create_metabase_connection_gps
         pool: $(poolImage)
         displayName: "Create metabase connection for gps db"
@@ -214,6 +216,7 @@ stages:
               TARGET_PASSWORD: $(READ_USER_PASSWORD)
               TARGET_DB: 'apd'
               TARGET_VERSION: "15.13"
+              TARGET_CONN_NAME: "GPS"
       - job: create_metabase_connection_nodo
         pool: $(poolImage)
         displayName: "Create metabase connection for nodo db"
@@ -235,6 +238,7 @@ stages:
               TARGET_PASSWORD: $(READ_USER_PASSWORD)
               TARGET_DB: 'nodo'
               TARGET_VERSION: "16.9"
+              TARGET_CONN_NAME: "Nodo"
       - job: create_metabase_connection_nodo_storico
         pool: $(poolImage)
         displayName: "Create metabase connection for nodo storico db"
@@ -256,4 +260,5 @@ stages:
               TARGET_PASSWORD: $(READ_USER_PASSWORD)
               TARGET_DB: 'nodo'
               TARGET_VERSION: "16.9"
+              TARGET_CONN_NAME: "Nodo storico"
 
