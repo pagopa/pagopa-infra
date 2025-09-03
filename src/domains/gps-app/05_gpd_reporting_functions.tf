@@ -51,9 +51,10 @@ locals {
     FDR3_LIST_ELEMENTS_FOR_PAGE = "30000"
 
     # ACR
-    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
+    DOCKER_REGISTRY_SERVER_URL = "ghcr.io"
+    # DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
+    # DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
+    # DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
   }
 }
 
@@ -71,11 +72,11 @@ module "reporting_analysis_function" {
   subnet_id       = module.reporting_function_snet.id
   runtime_version = "~4"
   docker = {
-    registry_url      = local.function_analysis_app_settings.DOCKER_REGISTRY_SERVER_URL
-    image_name        = var.reporting_analysis_image
+    registry_url      = "ghcr.io"
+    image_name        = "pagopa/pagopa-gpd-reporting-analysis"
     image_tag         = "latest"
-    registry_username = local.function_analysis_app_settings.DOCKER_REGISTRY_SERVER_USERNAME
-    registry_password = local.function_analysis_app_settings.DOCKER_REGISTRY_SERVER_PASSWORD
+    registry_username = null
+    registry_password = null
   }
   storage_account_info = var.fn_app_storage_account_info
   ## DEDICATED SERVICE PLAN
@@ -125,11 +126,11 @@ module "reporting_analysis_function_slot_staging" {
   app_settings = local.function_analysis_app_settings
 
   docker = {
-    registry_url      = local.function_analysis_app_settings.DOCKER_REGISTRY_SERVER_URL
-    image_name        = var.reporting_analysis_image
+    registry_url      = "ghcr.io"
+    image_name        = "pagopa/pagopa-gpd-reporting-analysis"
     image_tag         = "latest"
-    registry_username = local.function_analysis_app_settings.DOCKER_REGISTRY_SERVER_USERNAME
-    registry_password = local.function_analysis_app_settings.DOCKER_REGISTRY_SERVER_PASSWORD
+    registry_username = null
+    registry_password = null
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
