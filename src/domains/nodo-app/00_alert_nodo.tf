@@ -25,9 +25,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
     ];
     let operationIds = toscalar(operationMap | summarize make_list(operationId_s, 20));
     let thresholdTrafficMin = 20;
-    let thresholdTrafficLinear = 150;
+    let thresholdTrafficLinear = 90;
     let lowTrafficAvailability = 80;
-    let highTrafficAvailability = 99;
+    let highTrafficAvailability = 98;
     let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
     AzureDiagnostics
@@ -38,6 +38,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
         Total = count(),
         Success = countif(todouble(responseCode_d) < 500)
         by bin(TimeGenerated, 7m), operationId_s
+    | where Total > 5
     | extend trafficUp = Total-thresholdTrafficMin
     | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
     | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
