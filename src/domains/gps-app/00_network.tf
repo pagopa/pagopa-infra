@@ -9,12 +9,6 @@ data "azurerm_subnet" "apim_snet" {
   virtual_network_name = local.pagopa_vnet_integration
 }
 
-data "azurerm_subnet" "canoneunico_function_snet" {
-  name                 = format("%s-canoneunico-snet", local.product)
-  resource_group_name  = local.vnet_resource_group_name
-  virtual_network_name = local.vnet_name
-}
-
 # Subnet to host ecommerce transactions function
 module "reporting_function_snet" {
   source                                    = "./.terraform/modules/__v3__/subnet"
