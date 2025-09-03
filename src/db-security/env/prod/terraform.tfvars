@@ -1,35 +1,18 @@
 prefix         = "pagopa"
 env_short      = "p"
 env            = "prod"
-location       = "westeurope"
-location_short = "weu"
-
-storage_account_replication_type = "GZRS"
-use_private_endpoint             = true
+location       = "italynorth"
+location_short = "itn"
 
 
-#
-# Feature Flags
-#
-enabled_resource = {
-  container_app_tools_cae = true
+metabase_pgflex_params = {
+  idh_tier = "pgflex2" # https://github.com/pagopa/terraform-azurerm-v4/blob/44df8cdf0615a2d1c39efd05996edc4bf28e0dec/IDH/postgres_flexible_server/LIBRARY.md
+  db_version   = "16"
+  pgres_flex_diagnostic_settings_enabled = false
+  alerts_enabled                         = true
+  private_dns_registration_enabled       = false
+  storage_mb                             = 32768
 }
-synthetic_alerts_enabled = true
 
-law_sku               = "CapacityReservation" # TODO verify why it is changed from PerGB2018 to CapacityReservation
-law_retention_in_days = 30
-law_daily_quota_gb    = -1
 
-#
-# monitoring template variables
-#
-check_position_body = {
-  fiscal_code   = "00876220633"
-  notice_number = "001000000136265862"
-}
-verify_payment_internal_expected_outcome = "OK"
-nexi_node_ip                             = "10.79.20.34"
-nexi_node_ip_postgres                    = "10.79.20.25"
-nexi_ndp_host                            = "nodo-p.npc.sia.eu"
-nexi_ndp_host_postgres                   = "nexi.ndp.pagopa.it"
-nexi_ndp_host_2                          = "nodo-dei-pagamenti.npc.sia.eu"
+metabase_plan_idh_tier = "premium"

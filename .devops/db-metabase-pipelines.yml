@@ -25,7 +25,7 @@ variables:
 #    METABASE_KEY_VAULT_NAME: 'pagopa-u-itn-core-kv'
 #    poolImage: 'pagopa-uat-linux-infra'
 #    ENV: 'u'
-  ${{ elseif eq(parameters.env, 'prod') }}:
+  ${{ if eq(parameters.env, 'prod') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
     METABASE_KEY_VAULT_NAME: 'pagopa-p-itn-core-kv'
     poolImage: 'pagopa-prod-linux-infra'

@@ -21,7 +21,7 @@ locals {
 module "metabase_app_service" {
   source = "./.terraform/modules/__v4__/IDH/app_service_webapp"
   env    = var.env
-  idh_resource_tier = "cpu_optimized"
+  idh_resource_tier = var.metabase_plan_idh_tier
   location = var.location
   name = "${local.project}-metabase-webapp"
   product_name = var.prefix
@@ -29,9 +29,6 @@ module "metabase_app_service" {
 
   app_service_plan_name = "${local.project}-metabase-plan"
   app_settings = {
-    # MB_DB_TYPE="postgres"
-    # MB_DB_DBNAME="metabase"
-    # MB_DB_PORT=5432
     MB_DB_USER=module.secret_core.values["metabase-db-admin-login"].value
     MB_DB_PASS=module.secret_core.values["metabase-db-admin-password"].value
     MB_DB_CONNECTION_URI="jdbc:postgresql://${module.metabase_postgres_db.fqdn}:5432/metabase?ssl=true&sslmode=require"
@@ -47,6 +44,13 @@ module "metabase_app_service" {
 
   private_endpoint_dns_zone_id = data.azurerm_private_dns_zone.azurewebsites.id
   private_endpoint_subnet_id = data.azurerm_subnet.private_endpoint_subnet.id
+
+  autoscale_settings = {
+    max_capacity = 3
+    scale_up_requests_threshold = 250
+    scale_down_requests_threshold = 150
+
+  }
 
   always_on = true
   ftps_state = "AllAllowed"

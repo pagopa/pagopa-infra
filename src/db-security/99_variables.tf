@@ -53,15 +53,8 @@ variable "metabase_pgflex_params" {
     idh_tier                           = string
     db_version                             = string
     storage_mb                             = string
-    zone                                   = number
-    standby_zone                           = optional(number, 1)
-    backup_retention_days                  = number
-    geo_redundant_backup_enabled           = bool
-    pgres_flex_private_endpoint_enabled    = bool
-    pgres_flex_ha_enabled                  = bool
     pgres_flex_diagnostic_settings_enabled = bool
     alerts_enabled                         = bool
-    public_network_access_enabled          = bool
     private_dns_registration_enabled      = bool
   })
 }
@@ -141,4 +134,9 @@ variable "metabase_pgflex_custom_metric_alerts" {
       severity         = 2
     }
   }
+}
+
+variable "metabase_plan_idh_tier" {
+  type = string
+  description = "IDH resource tier for metabase app service"
 }
