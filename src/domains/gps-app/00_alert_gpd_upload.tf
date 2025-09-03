@@ -12,12 +12,12 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-upload-r
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Response time for /upload/gpd/debt-positions-service is less than or equal to 2s - <dashboard-link-here>"
+  description    = "Response time for /upload/*/debt-positions-service is less than or equal to 2s - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-gpd-upload"
   enabled        = true
   query = (<<-QUERY
 let threshold = 2000;
 AzureDiagnostics
-| where url_s matches regex "/upload/gpd/debt-positions-service"
+| where url_s matches regex "/upload/[^/]+/debt-positions-service"
 | summarize
     watermark=threshold,
     duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 5m)
@@ -46,12 +46,12 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-upload-r
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for /upload/gpd/debt-positions-service/ is less than or equal to 99% - <dashboard-link-here>"
+  description    = "Availability for /upload/*/debt-positions-service is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-gpd-upload"
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
 AzureDiagnostics
-| where url_s matches regex "/upload/gpd/debt-positions-service"
+| where url_s matches regex "/upload/[^/]+/debt-positions-service"
 | summarize
     Total=count(),
     Success=count(responseCode_d < 500)
