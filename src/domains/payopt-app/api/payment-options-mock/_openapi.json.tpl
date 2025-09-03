@@ -11,13 +11,13 @@
         }
     ],
     "paths": {
-        "/payment-options/organizations/{fiscal-code}/notices/{notice-number}": {
+        "/payment-options/organizations/{organization-fiscal-code}/notices/{notice-number}": {
             "post": {
                 "summary": "Get Payment Options",
                 "operationId": "get-payment-options",
                 "parameters": [
                     {
-                        "name": "fiscal-code",
+                        "name": "organization-fiscal-code",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -39,9 +39,9 @@
                         "content": {
                             "application/json": {
                                 "example": {
-                                    "paTaxCode": "77777777777",
-                                    "paFullName": "EC",
-                                    "paOfficeName": "EC",
+                                    "organizationFiscalCode": "77777777777",
+                                    "companyName": "EC",
+                                    "officeName": "EC",
                                     "paymentOptions": [
                                         {
                                             "description": "Test PayOpt - unica opzione",
