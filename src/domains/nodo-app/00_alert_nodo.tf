@@ -90,7 +90,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_psp_api_fault_c
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
     dependencies
     | where timestamp > ago(7m)
-    | where name == "POST ${local.nodo_soap_path}/"
+    | where name == "POST ${local.nodo_soap_path_short}/"
     | extend operationId_s = tostring(split(operation_Name, " - ")[1])
     | where operationId_s in (operationIds)
     | extend response = tostring(customDimensions["Response-Body"])
