@@ -1309,13 +1309,17 @@
   "components" : {
     "schemas" : {
       "PaymentOptionMetadataModel" : {
-        "required" : [ "key" ],
+        "required" : [ "key", "value" ],
         "type" : "object",
         "properties" : {
           "key" : {
+            "maxLength" : 140,
+            "minLength" : 0,
             "type" : "string"
           },
           "value" : {
+            "maxLength" : 140,
+            "minLength" : 0,
             "type" : "string"
           }
         },
@@ -1494,13 +1498,17 @@
         }
       },
       "TransferMetadataModel" : {
-        "required" : [ "key" ],
+        "required" : [ "key", "value" ],
         "type" : "object",
         "properties" : {
           "key" : {
+            "maxLength" : 140,
+            "minLength" : 0,
             "type" : "string"
           },
           "value" : {
+            "maxLength" : 140,
+            "minLength" : 0,
             "type" : "string"
           }
         },
@@ -1533,11 +1541,17 @@
             "type" : "string"
           },
           "iban" : {
+            "maxLength" : 35,
+            "minLength" : 1,
+            "pattern" : "^[A-Za-z0-9]{1,35}$",
             "type" : "string",
             "description" : "mutual exclusive with stamp",
             "example" : "IT0000000000000000000000000"
           },
           "postalIban" : {
+            "maxLength" : 35,
+            "minLength" : 1,
+            "pattern" : "^$|^[A-Za-z0-9]{1,35}$",
             "type" : "string",
             "description" : "optional - can be combined with iban but not with stamp",
             "example" : "IT0000000000000000000000000"
