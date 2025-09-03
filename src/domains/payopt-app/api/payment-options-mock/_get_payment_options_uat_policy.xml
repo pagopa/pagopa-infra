@@ -21,9 +21,9 @@
       <when condition="@(context.Request.MatchedParameters["fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111111111112")">
       <set-body template="liquid">
         {
-        "paTaxCode": "99999000013",
-        "paFullName": "EC",
-        "paOfficeName": "EC",
+        "organizationFiscalCode": "99999000013",
+        "companyName": "EC",
+        "officeName": "EC",
         "paymentOptions": [
         {
         "description": "Test PayOpt - Opzione 1 - Soluzione Unica",
@@ -96,9 +96,9 @@
     <when condition="@(context.Request.MatchedParameters["fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111111111116")">
     <set-body template="liquid">
       {
-      "paTaxCode": "99999000013",
-      "paFullName": "EC",
-      "paOfficeName": "EC",
+      "organizationFiscalCode": "99999000013",
+      "companyName": "EC",
+      "officeName": "EC",
       "paymentOptions": [
       {
       "description": "Test PayOpt - Opzione 1 - Soluzione Unica",
@@ -232,9 +232,9 @@
   </when>
   <when condition="@(context.Request.MatchedParameters["fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111111111111")">
     <set-body template="liquid">{
-      "paTaxCode": "99999000013",
-      "paFullName": "EC",
-      "paOfficeName": "EC",
+      "organizationFiscalCode": "99999000013",
+      "companyName": "EC",
+      "officeName": "EC",
       "paymentOptions": [
       {
       "description": "Test PayOpt - unica opzione",
@@ -263,9 +263,9 @@
   </when>
   <when condition="@(context.Request.MatchedParameters["fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111112222225")">
     <set-body>{
-    "paTaxCode": "99999000013",
-    "paFullName": "EC",
-    "paOfficeName": "EC",
+    "organizationFiscalCode": "99999000013",
+    "companyName": "EC",
+    "officeName": "EC",
     "paymentOptions": [
     {
     "description": "Test PayOpt - Opzione 1 - CO-Obbligato 1",
