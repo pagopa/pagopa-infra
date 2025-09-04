@@ -174,3 +174,15 @@ resource "azurerm_key_vault_secret" "checkout_gha_bot_pat" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "redis_std_checkout_access_key" {
+  name         = "redis-std-checkout-access-key"
+  value        = module.pagopa_checkout_redis_std.primary_access_key
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "redis_std_checkout_hostname" {
+  name         = "redis-std-checkout-hostname"
+  value        = module.pagopa_checkout_redis_std.hostname
+  key_vault_id = module.key_vault.id
+}
