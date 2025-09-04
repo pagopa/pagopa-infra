@@ -47,5 +47,5 @@ module "metabase_app_service" {
 
   }
 
-  always_on  = true
+  always_on = true
 }
