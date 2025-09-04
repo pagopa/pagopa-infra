@@ -24,9 +24,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
         ${each.value.formatted_operations}
     ];
     let operationIds = toscalar(operationMap | summarize make_list(operationId_s, 20));
-    let thresholdTrafficMin = 150;
-    let thresholdTrafficLinear = 400;
-    let lowTrafficAvailability = 92;
+    let thresholdTrafficMin = 20;
+    let thresholdTrafficLinear = 90;
+    let lowTrafficAvailability = 80;
     let highTrafficAvailability = 98;
     let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
@@ -38,6 +38,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
         Total = count(),
         Success = countif(todouble(responseCode_d) < 500)
         by bin(TimeGenerated, 7m), operationId_s
+    | where Total > 5
     | extend trafficUp = Total-thresholdTrafficMin
     | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
     | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
@@ -89,7 +90,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_psp_api_fault_c
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
     dependencies
     | where timestamp > ago(7m)
-    | where name == "POST ${local.nodo_soap_path}/"
+    | where name == "POST ${local.nodo_soap_path_short}/"
     | extend operationId_s = tostring(split(operation_Name, " - ")[1])
     | where operationId_s in (operationIds)
     | extend response = tostring(customDimensions["Response-Body"])

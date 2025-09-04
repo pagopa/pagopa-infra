@@ -16,7 +16,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f3485105e35ce8c801209dcbb4ef72f3d944f0e5 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 4ac32cd6fb7d56e7be3b1c0dbcbf251f5b0cd199 |
 | <a name="module_apim_pagopa_qi_fdr_kpi_service_api"></a> [apim\_pagopa\_qi\_fdr\_kpi\_service\_api](#module\_apim\_pagopa\_qi\_fdr\_kpi\_service\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_pagopa_qi_observability_perf_kpi_api"></a> [apim\_pagopa\_qi\_observability\_perf\_kpi\_api](#module\_apim\_pagopa\_qi\_observability\_perf\_kpi\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_pagopa_qi_smo_jira_tickets_service_api"></a> [apim\_pagopa\_qi\_smo\_jira\_tickets\_service\_api](#module\_apim\_pagopa\_qi\_smo\_jira\_tickets\_service\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
