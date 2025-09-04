@@ -13,11 +13,6 @@ module "app_service_snet" {
 
 }
 
-locals {
-  db_user     = module.secret_core.values["metabase-db-admin-login"].value
-  db_password = module.secret_core.values["metabase-db-admin-password"].value
-}
-
 module "metabase_app_service" {
   source              = "./.terraform/modules/__v4__/IDH/app_service_webapp"
   env                 = var.env
