@@ -53,5 +53,4 @@ module "metabase_app_service" {
   }
 
   always_on  = true
-  ftps_state = "AllAllowed"
 }
