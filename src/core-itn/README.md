@@ -121,6 +121,7 @@ No outputs.
 | <a name="module_vnet_ita_peering"></a> [vnet\_ita\_peering](#module\_vnet\_ita\_peering) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
 | <a name="module_vnet_ita_to_integration_peering"></a> [vnet\_ita\_to\_integration\_peering](#module\_vnet\_ita\_to\_integration\_peering) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
 | <a name="module_vnet_italy"></a> [vnet\_italy](#module\_vnet\_italy) | ./.terraform/modules/__v4__/virtual_network | n/a |
+| <a name="module_vnet_replica_to_vnet_ita_peering"></a> [vnet\_replica\_to\_vnet\_ita\_peering](#module\_vnet\_replica\_to\_vnet\_ita\_peering) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
 
 ## Resources
 
@@ -131,6 +132,7 @@ No outputs.
 | [azurerm_key_vault_access_policy.ad_group_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.adgroup_developers_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.adgroup_externals_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
+| [azurerm_key_vault_access_policy.azdevops_iac_managed_identities](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_secret.monitor_notification_email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.monitor_notification_slack_email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_log_analytics_workspace.log_analytics_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
@@ -195,8 +197,10 @@ No outputs.
 | [azurerm_resource_group.rg_vnet_core](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.rg_vnet_integration](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
+| [azurerm_user_assigned_identity.iac_federated_azdo](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
 | [azurerm_virtual_network.vnet_core](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet_integration](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
+| [azurerm_virtual_network.vnet_replica](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 
 ## Inputs
 
