@@ -128,7 +128,7 @@ resource "azurerm_key_vault_secret" "mbd_storage_name" {
 }
 
 resource "azurerm_key_vault_secret" "mbd_storage_conn_string" {
-  name         = "azurestorageaccountconnectionstring"
+  name         = "mbd-storage-account-connection-string"
   value        = module.mbd_storage_account.primary_connection_string
   content_type = "text/plain"
 
