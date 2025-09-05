@@ -15,11 +15,8 @@ locals {
     "pagopa-gpd-payments-pull",
     "pagopa-gps-donation-service",
     "pagopa-gpd-payments",
-    "pagopa-gpd-reporting-batch",
     "pagopa-gpd-reporting-analysis",
-    "pagopa-gpd-reporting-service",
     "pagopa-gpd-ingestion-manager",
-    "pagopa-reporting-orgs-enrollment",
     "pagopa-spontaneous-payments",
     "pagopa-debt-position",
     "pagopa-gpd-rtp"

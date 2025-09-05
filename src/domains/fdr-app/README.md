@@ -17,7 +17,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f3485105e35ce8c801209dcbb4ef72f3d944f0e5 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f97230b8a5838fe3c616b5aa01bef8caeff8bc6b |
 | <a name="module_apim_api_fdr_2_event_hub_api"></a> [apim\_api\_fdr\_2\_event\_hub\_api](#module\_apim\_api\_fdr\_2\_event\_hub\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_fdr_nodo_api_v1_internal"></a> [apim\_api\_fdr\_nodo\_api\_v1\_internal](#module\_apim\_api\_fdr\_nodo\_api\_v1\_internal) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_fdr_nodo_dei_pagamenti_legacy_product"></a> [apim\_fdr\_nodo\_dei\_pagamenti\_legacy\_product](#module\_apim\_fdr\_nodo\_dei\_pagamenti\_legacy\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
