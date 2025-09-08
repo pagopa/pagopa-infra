@@ -1077,9 +1077,9 @@ resource "azurerm_key_vault_secret" "ecommerce_github_packages_read_bot_token" {
   }
 }
 
-resource "azurerm_key_vault_secret" "ecommerce_github_bot_ratemyopenapi_api_key" {
+resource "azurerm_key_vault_secret" "ecommerce_ratemyopenapi_api_key" {
   count        = var.env_short == "p" ? 1 : 0
-  name         = "ecommerce-github-bot-ratemyopenapi-api-key"
+  name         = "ecommerce-ratemyopenapi-api-key"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 
