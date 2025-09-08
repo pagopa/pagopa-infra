@@ -380,6 +380,9 @@ locals {
 
   // Nodo SOAP path
   nodo_soap_path = "/nodo/webservices/input"
+  // Nodo SOAP path short
+  nodo_soap_path_short = "/webservices/input"
+
   // PagoPA Nodo ingress
   pagopa_nodo_ingress = "https://weuprod.nodo.internal.platform.pagopa.it"
 
