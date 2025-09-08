@@ -14,7 +14,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f3485105e35ce8c801209dcbb4ef72f3d944f0e5 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 4ac32cd6fb7d56e7be3b1c0dbcbf251f5b0cd199 |
 | <a name="module_apim_api_bizevents_api_v1"></a> [apim\_api\_bizevents\_api\_v1](#module\_apim\_api\_bizevents\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_bizevents_helpdesk_api_v1"></a> [apim\_api\_bizevents\_helpdesk\_api\_v1](#module\_apim\_api\_bizevents\_helpdesk\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_bizevents_lap_api_jwt_v1"></a> [apim\_api\_bizevents\_lap\_api\_jwt\_v1](#module\_apim\_api\_bizevents\_lap\_api\_jwt\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
