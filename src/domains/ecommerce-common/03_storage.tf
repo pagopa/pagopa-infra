@@ -672,7 +672,7 @@ module "ecommerce_pm_history_storage" {
   blob_versioning_enabled         = true
   resource_group_name             = azurerm_resource_group.storage_ecommerce_rg.name
   location                        = var.location
-  advanced_threat_protection      = true
+  advanced_threat_protection      = false
   allow_nested_items_to_be_public = false
   public_network_access_enabled   = true
   blob_delete_retention_days      = 30
@@ -701,7 +701,7 @@ module "ecommerce_reporting_storage" {
   blob_versioning_enabled         = true
   resource_group_name             = azurerm_resource_group.storage_ecommerce_rg.name
   location                        = var.location
-  advanced_threat_protection      = true
+  advanced_threat_protection      = false
   allow_nested_items_to_be_public = false
   public_network_access_enabled   = true
   blob_delete_retention_days      = 30
