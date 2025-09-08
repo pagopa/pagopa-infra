@@ -21,6 +21,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-unauthor
   query = (<<-QUERY
 let threshold = 0.10;
 AzureDiagnostics
+| where TimeGenerated > ago(7m)
 | where url_s matches regex "/gpd/debt-positions-service/"
     or url_s matches regex "/gps/spontaneous-payments-enrollments-service"
     or url_s matches regex "/upload/gpd/debt-positions-service"
@@ -29,14 +30,14 @@ AzureDiagnostics
 | summarize
     Total=count(),
     Unauthorized=count(responseCode_d == 403)
-    by bin(TimeGenerated, 5m)
+    by bin(TimeGenerated, 7m)
 | extend KO=toreal(Unauthorized) / Total
 | where KO > threshold
   QUERY
   )
   severity    = 1
   frequency   = 5
-  time_window = 5
+  time_window = 7
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1
