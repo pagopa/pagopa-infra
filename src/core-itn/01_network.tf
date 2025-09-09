@@ -106,6 +106,22 @@ module "vnet_ita_to_integration_peering" {
   target_allow_forwarded_traffic   = true
 }
 
+module "vnet_replica_to_vnet_ita_peering" {
+  source                           = "./.terraform/modules/__v4__/virtual_network_peering"
+  source_resource_group_name       = data.azurerm_resource_group.rg_vnet_core.name
+  source_virtual_network_name      = data.azurerm_virtual_network.vnet_replica.name
+  source_remote_virtual_network_id = data.azurerm_virtual_network.vnet_replica.id
+  source_use_remote_gateways       = false
+  source_allow_forwarded_traffic   = true
+  source_allow_gateway_transit     = true
+
+  target_resource_group_name       = azurerm_resource_group.rg_ita_vnet.name
+  target_virtual_network_name      = module.vnet_italy[0].name
+  target_remote_virtual_network_id = module.vnet_italy[0].id
+  target_allow_gateway_transit     = true
+  target_allow_forwarded_traffic   = true
+}
+
 #
 # PUBLIC IP
 #

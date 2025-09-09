@@ -28,16 +28,12 @@ tls_cert_check_helm = {
 }
 
 # function_app docker
-reporting_batch_image    = "pagopa/pagopa-gpd-reporting-batch"
-reporting_service_image  = "pagopagpdreportingservice"
 reporting_analysis_image = "pagopagpdreportinganalysis"
 
 # gpd-reporting-functions
 gpd_paa_id_intermediario = "15376371009"
 gpd_paa_stazione_int     = "15376371009_01"
 
-reporting_batch_function_always_on    = true
-reporting_service_function_always_on  = true
 reporting_analysis_function_always_on = true
 
 cidr_subnet_reporting_functions = ["10.1.177.0/24"]
