@@ -357,8 +357,8 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_TPNP" {
   activated = true
   time_zone = "W. Europe Standard Time"
   schedule {
-    days_of_month = [5]
-    hours         = [8]
+    days_of_month = [10]
+    hours         = [6]
     minutes       = [0]
   }
 
@@ -399,8 +399,8 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_DASPO" {
   activated = true
   time_zone = "W. Europe Standard Time"
   schedule {
-    days_of_month = [5]
-    hours         = [8]
+    days_of_month = [10]
+    hours         = [6]
     minutes       = [0]
   }
 
@@ -441,8 +441,8 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_LFDR" {
   activated = true
   time_zone = "W. Europe Standard Time"
   schedule {
-    days_of_month = [5]
-    hours         = [8]
+    days_of_month = [10]
+    hours         = [6]
     minutes       = [0]
   }
 
@@ -483,8 +483,8 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_LSPO" {
   activated = true
   time_zone = "W. Europe Standard Time"
   schedule {
-    days_of_month = [5]
-    hours         = [8]
+    days_of_month = [10]
+    hours         = [6]
     minutes       = [0]
   }
 
@@ -525,8 +525,8 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_NRFDR" {
   activated = true
   time_zone = "W. Europe Standard Time"
   schedule {
-    days_of_month = [5]
-    hours         = [8]
+    days_of_month = [10]
+    hours         = [6]
     minutes       = [0]
   }
 
@@ -567,8 +567,8 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_TNSPO" {
   activated = true
   time_zone = "W. Europe Standard Time"
   schedule {
-    days_of_month = [5]
-    hours         = [8]
+    days_of_month = [10]
+    hours         = [6]
     minutes       = [0]
   }
 
@@ -609,8 +609,8 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_WAFDR" {
   activated = true
   time_zone = "W. Europe Standard Time"
   schedule {
-    days_of_month = [5]
-    hours         = [8]
+    days_of_month = [10]
+    hours         = [6]
     minutes       = [0]
   }
 
@@ -651,8 +651,8 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_WPNFDR" {
   activated = true
   time_zone = "W. Europe Standard Time"
   schedule {
-    days_of_month = [5]
-    hours         = [8]
+    days_of_month = [10]
+    hours         = [6]
     minutes       = [0]
   }
 
