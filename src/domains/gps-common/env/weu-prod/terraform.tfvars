@@ -139,9 +139,9 @@ reporting_storage_account = {
 }
 
 geo_replica_enabled                = true
-location_replica                   = "northeurope"
-location_replica_short             = "neu"
-geo_replica_cidr_subnet_postgresql = ["10.2.141.0/24"]
+location_replica                   = "italynorth"
+location_replica_short             = "itn"
+geo_replica_cidr_subnet_postgresql = ["10.3.5.128/27"]
 postgresql_sku_name                = "GP_Gen5_2"
 
 # GPD Storage Account SFTP
