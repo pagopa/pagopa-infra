@@ -39,7 +39,7 @@ resource "grafana_data_source" "infinity" {
   type        = "yesoreyeram-infinity-datasource"
   name        = "${local.product}-infinity"
   access_mode = "proxy"
-  is_default  = false
+  is_default  = true
 
   json_data_encoded = jsonencode({
     allowedHosts = [
