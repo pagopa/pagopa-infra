@@ -28,8 +28,8 @@ module "gh_runner_job" {
   }
   job_meta = {}
   key_vault = {
-    name        = "${local.project}-kv"        # Name of the KeyVault which stores PAT as secret
-    rg          = "${local.project}-sec-rg"    # Resource group of the KeyVault which stores PAT as secret
+    name        = "${local.project}-kv"                      # Name of the KeyVault which stores PAT as secret
+    rg          = "${local.project}-sec-rg"                  # Resource group of the KeyVault which stores PAT as secret
     secret_name = "pagopa-platform-domain-github-bot-cd-pat" # Data of the KeyVault which stores PAT as secret
   }
   kubernetes_deploy = {
