@@ -11,7 +11,7 @@
       "00395920788",
       "96289850586"
     ],
-    "list_priority": 2
+    "list_priority": 1
   },
   {
     "node_id": "NDP004PROD",
@@ -20,6 +20,6 @@
     "routing": 100,
     "broker_psps": [],
     "cis": [],
-    "list_priority": 1
+    "list_priority": 2
   }
 ]
