@@ -1,61 +1,4 @@
 # Postgres Flexible Server subnet
-# FIXME to remove
-module "postgres_flexible_snet_replica" {
-  count                                         = var.geo_replica_enabled ? 1 : 0
-  source                                        = "./.terraform/modules/__v3__/subnet"
-  name                                          = "${var.prefix}-${var.env_short}-neu-${var.domain}-pgres-flexible-snet"
-  address_prefixes                              = ["10.2.162.0/24"]#var.geo_replica_cidr_subnet_postgresql
-  resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name                          = data.azurerm_virtual_network.vnet_replica[0].name
-  service_endpoints                             = ["Microsoft.Storage"]
-  private_link_service_network_policies_enabled = true
-
-  delegation = {
-    name = "delegation"
-    service_delegation = {
-      name = "Microsoft.DBforPostgreSQL/flexibleServers"
-      actions = [
-        "Microsoft.Network/virtualNetworks/subnets/join/action",
-      ]
-    }
-  }
-}
-
-
-
-module "postgresql_fdr_replica_db" {
-  source = "./.terraform/modules/__v3__/postgres_flexible_server_replica"
-  count  = var.geo_replica_enabled ? 1 : 0
-
-  name                = "${var.prefix}-${var.env_short}-neu-${var.domain}-flexible-postgresql"
-  resource_group_name = azurerm_resource_group.db_rg.name
-  location            = "northeurope"#var.location_replica
-
-  private_dns_zone_id      = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
-  delegated_subnet_id      = module.postgres_flexible_snet_replica[0].id
-  private_endpoint_enabled = var.pgres_flex_params.pgres_flex_private_endpoint_enabled
-
-  sku_name   = var.pgres_flex_params.sku_name
-  storage_mb = var.pgres_flex_params.storage_mb
-
-  high_availability_enabled = false
-  pgbouncer_enabled         = var.pgres_flex_params.pgres_flex_pgbouncer_enabled
-  max_connections           = var.pgres_flex_params.max_connections
-  max_worker_process        = var.pgres_flex_params.max_worker_process
-
-  source_server_id = module.postgres_flexible_server_fdr.id
-
-  diagnostic_settings_enabled = false
-
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
-  zone                       = 2
-  tags                       = module.tag_config.tags
-
-  alerts_enabled = var.pgres_flex_params.alerts_enabled
-}
-# END TOREMOVE
-
-
 module "postgres_flexible_snet_itn_replica" {
   count                                         = var.geo_replica_enabled ? 1 : 0
   source                                        = "./.terraform/modules/__v3__/subnet"
@@ -114,7 +57,7 @@ resource "azurerm_postgresql_flexible_server_virtual_endpoint" "virtual_endpoint
   count             = var.geo_replica_enabled ? 1 : 0
   name              = "${local.project}-pgflex-ve"
   source_server_id  = module.postgres_flexible_server_fdr.id
-  replica_server_id = module.postgresql_fdr_replica_db[0].id #fixme move to itn replica
+  replica_server_id = module.postgresql_fdr_replica_itn_db[0].id
   type              = "ReadWrite"
 }
 
