@@ -28,8 +28,8 @@
 | <a name="module_identity_oidc_01"></a> [identity\_oidc\_01](#module\_identity\_oidc\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | v8.36.1 |
 | <a name="module_postgres_flexible_server_fdr"></a> [postgres\_flexible\_server\_fdr](#module\_postgres\_flexible\_server\_fdr) | ./.terraform/modules/__v3__/postgres_flexible_server | n/a |
 | <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
-| <a name="module_postgres_flexible_snet_replica"></a> [postgres\_flexible\_snet\_replica](#module\_postgres\_flexible\_snet\_replica) | ./.terraform/modules/__v3__/subnet | n/a |
-| <a name="module_postgresql_fdr_replica_db"></a> [postgresql\_fdr\_replica\_db](#module\_postgresql\_fdr\_replica\_db) | ./.terraform/modules/__v3__/postgres_flexible_server_replica | n/a |
+| <a name="module_postgres_flexible_snet_itn_replica"></a> [postgres\_flexible\_snet\_itn\_replica](#module\_postgres\_flexible\_snet\_itn\_replica) | ./.terraform/modules/__v3__/subnet | n/a |
+| <a name="module_postgresql_fdr_replica_itn_db"></a> [postgresql\_fdr\_replica\_itn\_db](#module\_postgresql\_fdr\_replica\_itn\_db) | ./.terraform/modules/__v3__/postgres_flexible_server_replica | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
 
@@ -125,6 +125,7 @@
 | [azurerm_subnet.aks_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
+| [azurerm_virtual_network.vnet_italy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet_replica](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 
 ## Inputs
@@ -156,9 +157,9 @@
 | <a name="input_ingress_load_balancer_ip"></a> [ingress\_load\_balancer\_ip](#input\_ingress\_load\_balancer\_ip) | n/a | `string` | n/a | yes |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
 | <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | n/a | `string` | `"~/.kube"` | no |
-| <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
-| <a name="input_location_replica"></a> [location\_replica](#input\_location\_replica) | One of westeurope, northeurope | `string` | `"northeurope"` | no |
-| <a name="input_location_replica_short"></a> [location\_replica\_short](#input\_location\_replica\_short) | One of wue, neu | `string` | `"neu"` | no |
+| <a name="input_location"></a> [location](#input\_location) | One of westeurope, italynorth | `string` | n/a | yes |
+| <a name="input_location_replica"></a> [location\_replica](#input\_location\_replica) | One of westeurope, italynorth | `string` | `"italynorth"` | no |
+| <a name="input_location_replica_short"></a> [location\_replica\_short](#input\_location\_replica\_short) | One of wue, itn | `string` | `"itn"` | no |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
