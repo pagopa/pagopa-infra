@@ -36,8 +36,8 @@ pgres_flex_params = {
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                                       = 1048576
-  zone                                             = 2
-  standby_ha_zone                                  = 1
+  zone                                             = 1
+  standby_ha_zone                                  = 2
   backup_retention_days                            = 30
   geo_redundant_backup_enabled                     = true
   create_mode                                      = "Default"
@@ -311,9 +311,9 @@ sftp_sa_backup_retention_days = 30
 
 
 geo_replica_enabled                = true
-location_replica                   = "northeurope"
-location_replica_short             = "neu"
-geo_replica_cidr_subnet_postgresql = ["10.2.160.0/24"]
+location_replica                   = "italynorth"
+location_replica_short             = "itn"
+geo_replica_cidr_subnet_postgresql = ["10.3.7.32/27"]
 postgresql_sku_name                = "GP_Gen5_2"
 
 nodo_cfg_sync_storage_account = {

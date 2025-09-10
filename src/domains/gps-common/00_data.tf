@@ -28,6 +28,7 @@ data "azurerm_virtual_network" "vnet_replica" {
   resource_group_name = local.vnet_resource_group_name
 }
 
+
 data "azurerm_private_dns_zone" "storage" {
   count               = var.env_short != "d" ? 1 : 0
   name                = local.storage_dns_zone_name

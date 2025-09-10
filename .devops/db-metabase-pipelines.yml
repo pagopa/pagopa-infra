@@ -189,12 +189,34 @@ stages:
               SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               METABASE_ADMIN_LOGIN: $(METABASE_ADMIN_LOGIN)
               METABASE_ADMIN_PWD: $(METABASE_ADMIN_PASSWORD)
-              TARGET_HOST: "pagopa-${{ variables.ENV }}-neu-fdr-flexible-postgresql.postgres.database.azure.com"
+              TARGET_HOST: "pagopa-${{ variables.ENV }}-itn-fdr-flexible-postgresql.postgres.database.azure.com"
               TARGET_USER: $(READ_USER_LOGIN)
               TARGET_PASSWORD: $(READ_USER_PASSWORD)
               TARGET_DB: 'fdr'
               TARGET_VERSION: "15.13"
               TARGET_CONN_NAME: "FDR"
+      - job: create_metabase_connection_fdr_3
+        pool: $(poolImage)
+        displayName: "Create metabase connection for fdr3 db"
+        variables:
+          READ_USER_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_LOGIN'] ]
+          READ_USER_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_PASSWORD'] ]
+          METABASE_ADMIN_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.METABASE_ADMIN_LOGIN'] ]
+          METABASE_ADMIN_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.METABASE_ADMIN_PASSWORD'] ]
+        steps:
+          - template: ./templates/metabase-create-connection.yml
+            parameters:
+              METABASE_DATABASE_NAME: 'metabase'
+              METABASE_DB_HOST: 'pagopa-${{ variables.ENV }}-itn-dbsecurity-flexible-postgresql'
+              SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              METABASE_ADMIN_LOGIN: $(METABASE_ADMIN_LOGIN)
+              METABASE_ADMIN_PWD: $(METABASE_ADMIN_PASSWORD)
+              TARGET_HOST: "pagopa-${{ variables.ENV }}-itn-fdr-flexible-postgresql.postgres.database.azure.com"
+              TARGET_USER: $(READ_USER_LOGIN)
+              TARGET_PASSWORD: $(READ_USER_PASSWORD)
+              TARGET_DB: 'fdr3'
+              TARGET_VERSION: "15.13"
+              TARGET_CONN_NAME: "FDR3"
       - job: create_metabase_connection_gps
         pool: $(poolImage)
         displayName: "Create metabase connection for gps db"
@@ -211,7 +233,7 @@ stages:
               SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               METABASE_ADMIN_LOGIN: $(METABASE_ADMIN_LOGIN)
               METABASE_ADMIN_PWD: $(METABASE_ADMIN_PASSWORD)
-              TARGET_HOST: "pagopa-${{ variables.ENV }}-neu-gps-pgflex.postgres.database.azure.com"
+              TARGET_HOST: "pagopa-${{ variables.ENV }}-itn-gps-pgflex.postgres.database.azure.com"
               TARGET_USER: $(READ_USER_LOGIN)
               TARGET_PASSWORD: $(READ_USER_PASSWORD)
               TARGET_DB: 'apd'
@@ -233,7 +255,7 @@ stages:
               SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               METABASE_ADMIN_LOGIN: $(METABASE_ADMIN_LOGIN)
               METABASE_ADMIN_PWD: $(METABASE_ADMIN_PASSWORD)
-              TARGET_HOST: "pagopa-${{ variables.ENV }}-neu-nodo-flexible-postgresql.postgres.database.azure.com"
+              TARGET_HOST: "pagopa-${{ variables.ENV }}-itn-nodo-flexible-postgresql.postgres.database.azure.com"
               TARGET_USER: $(READ_USER_LOGIN)
               TARGET_PASSWORD: $(READ_USER_PASSWORD)
               TARGET_DB: 'nodo'
