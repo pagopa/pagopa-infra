@@ -106,6 +106,7 @@ module "vnet_ita_to_integration_peering" {
   target_allow_forwarded_traffic   = true
 }
 
+
 #
 # PUBLIC IP
 #

@@ -4,7 +4,7 @@
     "title" : "PagoPA API Debt Position ${service}",
     "description" : "Progetto Gestione Posizioni Debitorie",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.14.8"
+    "version" : "0.15.0"
   },
   "servers" : [ {
     "url" : "https://api.uat.platform.pagopa.it/gpd/api/v1",
@@ -1373,6 +1373,172 @@
         }
       } ]
     },
+    "/organizations/{organizationfiscalcode}/paymentoptions/paids/{nav}" : {
+      "post" : {
+        "tags" : [ "Payments API" ],
+        "summary" : "The Organization mark a payment option as already paid.",
+        "operationId" : "setPaymentOptionAsAlreadyPaid",
+        "parameters" : [ {
+          "name" : "organizationfiscalcode",
+          "in" : "path",
+          "description" : "Organization fiscal code, the fiscal code of the Organization.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "nav",
+          "in" : "path",
+          "description" : "NAV (notice number) is the unique reference assigned to the payment by a creditor institution.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AlreadyPaidPaymentOptionModel"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Request set as paid.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaymentsModelResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Malformed request.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Wrong or missing function key.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "No payment option found.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Conflict: existing related payment found.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "Unprocessable: not in payable state.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
+      },
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
     "/organizations/{organizationfiscalcode}/paymentoptions/{iuv}/debtposition" : {
       "get" : {
         "tags" : [ "Debt Positions API" ],
@@ -2319,13 +2485,17 @@
         }
       },
       "PaymentOptionMetadataModel" : {
-        "required" : [ "key" ],
+        "required" : [ "key", "value" ],
         "type" : "object",
         "properties" : {
           "key" : {
+            "maxLength" : 140,
+            "minLength" : 0,
             "type" : "string"
           },
           "value" : {
+            "maxLength" : 140,
+            "minLength" : 0,
             "type" : "string"
           }
         },
@@ -2480,13 +2650,17 @@
         }
       },
       "TransferMetadataModel" : {
-        "required" : [ "key" ],
+        "required" : [ "key", "value" ],
         "type" : "object",
         "properties" : {
           "key" : {
+            "maxLength" : 140,
+            "minLength" : 0,
             "type" : "string"
           },
           "value" : {
+            "maxLength" : 140,
+            "minLength" : 0,
             "type" : "string"
           }
         },
@@ -2519,11 +2693,17 @@
             "type" : "string"
           },
           "iban" : {
+            "maxLength" : 35,
+            "minLength" : 1,
+            "pattern" : "^[A-Za-z0-9]{1,35}$",
             "type" : "string",
             "description" : "mutual exclusive with stamp",
             "example" : "IT0000000000000000000000000"
           },
           "postalIban" : {
+            "maxLength" : 35,
+            "minLength" : 1,
+            "pattern" : "^$|^[A-Za-z0-9]{1,35}$",
             "type" : "string",
             "description" : "optional - can be combined with iban but not with stamp",
             "example" : "IT0000000000000000000000000"
@@ -2576,6 +2756,15 @@
           },
           "fee" : {
             "type" : "string"
+          }
+        }
+      },
+      "AlreadyPaidPaymentOptionModel" : {
+        "type" : "object",
+        "properties" : {
+          "paymentDate" : {
+            "type" : "string",
+            "format" : "date-time"
           }
         }
       },

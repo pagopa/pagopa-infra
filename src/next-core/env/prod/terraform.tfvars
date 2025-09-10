@@ -73,17 +73,6 @@ log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 dns_forwarder_vm_image_name = "pagopa-p-dns-forwarder-ubuntu2204-image-v1"
 
 
-#
-# replica settings
-#
-geo_replica_enabled        = true
-geo_replica_location       = "northeurope"
-geo_replica_location_short = "neu"
-geo_replica_cidr_vnet      = ["10.2.0.0/16"]
-geo_replica_ddos_protection_plan = {
-  id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
-  enable = true
-}
 
 postgres_private_dns_enabled = true
 
@@ -677,7 +666,7 @@ eventhubs_04 = [
     name              = "nodo-dei-pagamenti-cache"
     partitions        = 32
     message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-cache-sync-rx", "nodo-dei-pagamenti-cache-aca-rx"]
+    consumers         = ["nodo-dei-pagamenti-cache-sync-rx", "nodo-dei-pagamenti-cache-aca-rx", "nodo-dei-pagamenti-cache-stand-in-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-cache-tx"
@@ -693,6 +682,12 @@ eventhubs_04 = [
       },
       {
         name   = "nodo-dei-pagamenti-cache-aca-rx" # node-cfg for ACA-Payments
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-cache-stand-in-rx" # node-cfg for Stand-In Manager
         listen = true
         send   = false
         manage = false
