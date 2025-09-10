@@ -313,7 +313,7 @@ sftp_sa_backup_retention_days = 30
 geo_replica_enabled                = true
 location_replica                   = "italynorth"
 location_replica_short             = "itn"
-geo_replica_cidr_subnet_postgresql                 = ["10.3.7.32/27"]
+geo_replica_cidr_subnet_postgresql = ["10.3.7.32/27"]
 postgresql_sku_name                = "GP_Gen5_2"
 
 nodo_cfg_sync_storage_account = {
