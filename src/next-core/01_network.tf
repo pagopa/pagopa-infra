@@ -165,3 +165,9 @@ module "common_private_endpoint_snet" {
 
   service_endpoints = var.env_short == "p" ? ["Microsoft.Storage"] : []
 }
+
+# RT sia associated to app gw integration
+resource "azurerm_subnet_route_table_association" "rt_sia_for_appgw_integration" {
+  subnet_id      = module.integration_appgateway_snet.id
+  route_table_id = module.route_table_peering_sia.id
+}
