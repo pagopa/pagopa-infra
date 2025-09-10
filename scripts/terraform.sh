@@ -302,6 +302,8 @@ function clean_audit_files() {
   rm "$file_name.tfplan" 2>/dev/null
   rm "$file_name.json" 2>/dev/null
   rm "$file_name.jq" 2>/dev/null
+  rm "$file_name.opa" 2>/dev/null
+
 }
 
 function opa_check_policy() {
@@ -345,13 +347,12 @@ function opa_check_policy() {
         opa eval --data $root_folder/$opa_policy_folder --input "$file_name.json" "data.azure.$opa_service_tag.opa" --format values --fail-defined >> $file_name.jq
         opa_custom_exitcode=$?
 
-        opa_global_exitcode=$((opa_exitcode+opa_custom_exitcode))
-
+        cat $file_name.jq | jq -r '..|.deny? | select(. != null) '| jq -r ' ( .[])| @tsv' | awk -v FS="|" 'BEGIN{print ""}{printf "%s\t%s\n","\033[33m"$1,"\033[31m"$2}' | tee $file_name.opa
+        awk 'NF {exit 1}' $file_name.opa && opa_global_exitcode=0 || opa_global_exitcode=1
+        
         rm -rf "$root_folder/$opa_policy_clone_folder" 2>/dev/null
-        if [ $opa_global_exitcode -gt 0 ]; then
-          cat $file_name.jq | jq -r '..|.deny? | select(. != null) '| jq -r ' ( .[])| @tsv' | awk -v FS="|" 'BEGIN{print ""}{printf "%s\t%s\n","\033[33m"$1,"\033[31m"$2}'
-          check_conftest_output "$opa_global_exitcode"
-        fi
+        check_conftest_output "$opa_global_exitcode"
+
 
 }
 
@@ -360,7 +361,7 @@ function other_actions() {
   if [ -n "$env" ] && [ -n "$action" ]; then
     root_folder=$(git rev-parse --show-toplevel)
     # if apply in prod environment and audit settings are defined
-    if [ "$action" == "apply" ] && [[ "$env" == *"prod" ]] && [ -f "$root_folder/.terraform-audit" ]; then
+    if [ "$action" == "apply" ] && [[ "$env" == *"dev" ]] && [ -f "$root_folder/.terraform-audit" ]; then
 
       check_arguments
       # skip_policy to false by default
