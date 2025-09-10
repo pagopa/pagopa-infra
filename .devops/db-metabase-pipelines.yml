@@ -233,7 +233,7 @@ stages:
               SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               METABASE_ADMIN_LOGIN: $(METABASE_ADMIN_LOGIN)
               METABASE_ADMIN_PWD: $(METABASE_ADMIN_PASSWORD)
-              TARGET_HOST: "pagopa-${{ variables.ENV }}-neu-gps-pgflex.postgres.database.azure.com"
+              TARGET_HOST: "pagopa-${{ variables.ENV }}-itn-gps-pgflex.postgres.database.azure.com"
               TARGET_USER: $(READ_USER_LOGIN)
               TARGET_PASSWORD: $(READ_USER_PASSWORD)
               TARGET_DB: 'apd'

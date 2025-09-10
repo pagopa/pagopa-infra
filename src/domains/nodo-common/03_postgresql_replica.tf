@@ -1,58 +1,5 @@
 #
 ## Postgres Flexible Server subnet
-# fixme toremove
-module "postgres_flexible_snet_replica" {
-  count                                         = var.geo_replica_enabled ? 1 : 0
-  source                                        = "./.terraform/modules/__v3__/subnet"
-  name                                          = "${var.prefix}-${var.env_short}-neu-${var.domain}-pgres-flexible-snet"
-  address_prefixes                              = ["10.2.160.0/24"]
-  resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name                          = data.azurerm_virtual_network.vnet_replica[0].name
-  service_endpoints                             = ["Microsoft.Storage"]
-  private_link_service_network_policies_enabled = true
-
-  delegation = {
-    name = "delegation"
-    service_delegation = {
-      name = "Microsoft.DBforPostgreSQL/flexibleServers"
-      actions = [
-        "Microsoft.Network/virtualNetworks/subnets/join/action",
-      ]
-    }
-  }
-}
-
-
-
-module "postgresql_nodo_replica_db" {
-  source = "./.terraform/modules/__v3__/postgres_flexible_server_replica"
-  count  = var.geo_replica_enabled ? 1 : 0
-
-  name                = "${var.prefix}-${var.env_short}-neu-${var.domain}-flexible-postgresql"
-  resource_group_name = azurerm_resource_group.db_rg.name
-  location            = "northeurope"
-
-  private_dns_zone_id      = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
-  delegated_subnet_id      = module.postgres_flexible_snet_replica[0].id
-  private_endpoint_enabled = var.pgres_flex_params.pgres_flex_private_endpoint_enabled
-
-  sku_name = var.pgres_flex_params.sku_name
-
-  high_availability_enabled = false
-  pgbouncer_enabled         = var.pgres_flex_params.pgres_flex_pgbouncer_enabled
-
-
-  source_server_id = module.postgres_flexible_server.id
-
-  diagnostic_settings_enabled = false
-
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
-  zone                       = 2
-
-  storage_mb = var.pgres_flex_params.storage_mb
-  tags       = module.tag_config.tags
-}
-# fixme fine toremove
 
 
 module "postgres_flexible_snet_replica_itn" {
@@ -112,7 +59,7 @@ resource "azurerm_postgresql_flexible_server_virtual_endpoint" "virtual_endpoint
   count             = var.geo_replica_enabled ? 1 : 0
   name              = "${local.project}-pgflex-ve"
   source_server_id  = module.postgres_flexible_server.id
-  replica_server_id = module.postgresql_nodo_replica_db[0].id # fixme move to itn replica
+  replica_server_id = module.postgresql_nodo_replica_itn_db[0].id
   type              = "ReadWrite"
 }
 
