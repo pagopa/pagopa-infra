@@ -61,7 +61,7 @@ module "postgres_flexible_snet_itn_replica" {
   source                                        = "./.terraform/modules/__v3__/subnet"
   name                                          = "${local.project_replica}-pgres-flexible-snet"
   address_prefixes                              = var.geo_replica_cidr_subnet_postgresql
-  resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
+  resource_group_name                           = local.vnet_italy_rg_name
   virtual_network_name                          = data.azurerm_virtual_network.vnet_italy.name
   service_endpoints                             = ["Microsoft.Storage"]
   private_link_service_network_policies_enabled = true
