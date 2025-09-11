@@ -70,10 +70,6 @@ log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 ### VPN
 dns_forwarder_vm_image_name = "pagopa-u-dns-forwarder-ubuntu2204-image-v4"
 
-#
-# replica settings
-#
-geo_replica_enabled = false
 
 #
 # apim v2
