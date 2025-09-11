@@ -15,21 +15,27 @@ parameters:
       - prod
 
 variables:
-#  ${{ if eq(parameters.env, 'dev') }}:
-#    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
-#    METABASE_KEY_VAULT_NAME: 'pagopa-d-itn-core-kv'
-#    poolImage: 'pagopa-dev-linux-infra'
-#    ENV: 'd'
-#  ${{ elseif eq(parameters.env, 'uat') }}:
-#    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
-#    METABASE_KEY_VAULT_NAME: 'pagopa-u-itn-core-kv'
-#    poolImage: 'pagopa-uat-linux-infra'
-#    ENV: 'u'
+  ${{ if eq(parameters.env, 'dev') }}:
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
+    METABASE_KEY_VAULT_NAME: 'pagopa-d-itn-core-kv'
+    poolImage: 'pagopa-dev-linux-infra'
+    ENV: 'd'
+    CONNECT_REPLICA_DB_REGION_SHORT: 'weu'
+    GPS_DB_DOMAIN: 'gpd'
+  ${{ elseif eq(parameters.env, 'uat') }}:
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
+    METABASE_KEY_VAULT_NAME: 'pagopa-u-itn-core-kv'
+    poolImage: 'pagopa-uat-linux-infra'
+    ENV: 'u'
+    CONNECT_REPLICA_DB_REGION_SHORT: 'weu'
+    GPS_DB_DOMAIN: 'gpd'
   ${{ if eq(parameters.env, 'prod') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
     METABASE_KEY_VAULT_NAME: 'pagopa-p-itn-core-kv'
     poolImage: 'pagopa-prod-linux-infra'
     ENV: 'p'
+    CONNECT_REPLICA_DB_REGION_SHORT: 'itn'
+    GPS_DB_DOMAIN: 'gps'
 
 
 
@@ -189,7 +195,7 @@ stages:
               SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               METABASE_ADMIN_LOGIN: $(METABASE_ADMIN_LOGIN)
               METABASE_ADMIN_PWD: $(METABASE_ADMIN_PASSWORD)
-              TARGET_HOST: "pagopa-${{ variables.ENV }}-itn-fdr-flexible-postgresql.postgres.database.azure.com"
+              TARGET_HOST: "pagopa-${{ variables.ENV }}-${{ variables.CONNECT_REPLICA_DB_REGION_SHORT }}-fdr-flexible-postgresql.postgres.database.azure.com"
               TARGET_USER: $(READ_USER_LOGIN)
               TARGET_PASSWORD: $(READ_USER_PASSWORD)
               TARGET_DB: 'fdr'
@@ -211,7 +217,7 @@ stages:
               SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               METABASE_ADMIN_LOGIN: $(METABASE_ADMIN_LOGIN)
               METABASE_ADMIN_PWD: $(METABASE_ADMIN_PASSWORD)
-              TARGET_HOST: "pagopa-${{ variables.ENV }}-itn-fdr-flexible-postgresql.postgres.database.azure.com"
+              TARGET_HOST: "pagopa-${{ variables.ENV }}-${{ variables.CONNECT_REPLICA_DB_REGION_SHORT }}-fdr-flexible-postgresql.postgres.database.azure.com"
               TARGET_USER: $(READ_USER_LOGIN)
               TARGET_PASSWORD: $(READ_USER_PASSWORD)
               TARGET_DB: 'fdr3'
@@ -233,7 +239,7 @@ stages:
               SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               METABASE_ADMIN_LOGIN: $(METABASE_ADMIN_LOGIN)
               METABASE_ADMIN_PWD: $(METABASE_ADMIN_PASSWORD)
-              TARGET_HOST: "pagopa-${{ variables.ENV }}-itn-gps-pgflex.postgres.database.azure.com"
+              TARGET_HOST: "pagopa-${{ variables.ENV }}-${{ variables.CONNECT_REPLICA_DB_REGION_SHORT }}-${{ GPS_DB_DOMAIN }}-pgflex.postgres.database.azure.com"
               TARGET_USER: $(READ_USER_LOGIN)
               TARGET_PASSWORD: $(READ_USER_PASSWORD)
               TARGET_DB: 'apd'
@@ -255,7 +261,7 @@ stages:
               SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               METABASE_ADMIN_LOGIN: $(METABASE_ADMIN_LOGIN)
               METABASE_ADMIN_PWD: $(METABASE_ADMIN_PASSWORD)
-              TARGET_HOST: "pagopa-${{ variables.ENV }}-itn-nodo-flexible-postgresql.postgres.database.azure.com"
+              TARGET_HOST: "pagopa-${{ variables.ENV }}-${{ variables.CONNECT_REPLICA_DB_REGION_SHORT }}-nodo-flexible-postgresql.postgres.database.azure.com"
               TARGET_USER: $(READ_USER_LOGIN)
               TARGET_PASSWORD: $(READ_USER_PASSWORD)
               TARGET_DB: 'nodo'
