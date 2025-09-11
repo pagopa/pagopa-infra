@@ -4,8 +4,8 @@
       {
         "builtIn": 1,
         "datasource": {
-          "type": "grafana",
-          "uid": "-- Grafana --"
+          "type": "yesoreyeram-infinity-datasource",
+          "uid": "pagopa-d-infinity"
         },
         "enable": true,
         "hide": true,
@@ -37,7 +37,8 @@
     },
     {
       "datasource": {
-        "type": "yesoreyeram-infinity-datasource"
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "pagopa-d-infinity"
       },
       "fieldConfig": {
         "defaults": {
@@ -112,7 +113,8 @@
         {
           "columns": [],
           "datasource": {
-            "type": "yesoreyeram-infinity-datasource"
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "pagopa-d-infinity"
           },
           "filters": [],
           "format": "table",
@@ -209,7 +211,8 @@
     },
     {
       "datasource": {
-        "type": "yesoreyeram-infinity-datasource"
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "pagopa-d-infinity"
       },
       "fieldConfig": {
         "defaults": {
@@ -311,7 +314,8 @@
           "columns": [],
           "computed_columns": [],
           "datasource": {
-            "type": "yesoreyeram-infinity-datasource"
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "pagopa-d-infinity"
           },
           "filters": [],
           "format": "table",
