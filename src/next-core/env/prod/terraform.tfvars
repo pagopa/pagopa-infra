@@ -729,7 +729,7 @@ eventhubs_04 = [
     name              = "fdr-qi-reported-iuv"
     partitions        = 32
     message_retention = 7
-    consumers         = ["fdr-qi-reported-iuv-rx"]
+    consumers         = ["fdr-qi-reported-iuv-rx", "gpd-reporting-sync"]
     keys = [
       {
         name   = "fdr-qi-reported-iuv-tx"
@@ -739,6 +739,12 @@ eventhubs_04 = [
       },
       {
         name   = "fdr-qi-reported-iuv-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "gpd-reporting-sync"
         listen = true
         send   = false
         manage = false

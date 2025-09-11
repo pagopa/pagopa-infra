@@ -50,6 +50,9 @@ locals {
     FDR3_FLOW_LIST_DEPTH        = "2"
     FDR3_LIST_ELEMENTS_FOR_PAGE = "30000"
 
+    GPD_BASE_PATH            = azurerm_api_management_subscription.gpd_for_reporting_subkey.primary_key
+    FDR_EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_fdr-qi-reported-iuv.primary_connection_string
+
     # ACR
     DOCKER_REGISTRY_SERVER_URL = "ghcr.io"
     # DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
