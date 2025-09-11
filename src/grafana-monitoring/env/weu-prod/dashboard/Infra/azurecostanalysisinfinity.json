@@ -19,11 +19,11 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 437,
+  "id": 381,
   "links": [],
   "panels": [
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -31,407 +31,408 @@
         "y": 0
       },
       "id": 21,
-      "panels": [],
-      "title": "Dati _raw",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "yesoreyeram-infinity-datasource",
-        "uid": "pagopa-p-infinity"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": true,
-            "inspect": false
-          },
-          "fieldMinMax": false,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Date"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "dateTimeAsIso"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 0,
-        "y": 1
-      },
-      "id": 15,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Date"
-          }
-        ]
-      },
-      "pluginVersion": "11.6.3",
-      "targets": [
+      "panels": [
         {
-          "columns": [],
           "datasource": {
             "type": "yesoreyeram-infinity-datasource",
             "uid": "pagopa-p-infinity"
           },
-          "filters": [],
-          "format": "table",
-          "global_query_id": "",
-          "parser": "backend",
-          "refId": "A",
-          "root_selector": "properties.rows",
-          "source": "url",
-          "type": "json",
-          "url": "https://management.azure.com/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/providers/Microsoft.CostManagement/query?api-version=2023-11-01",
-          "url_options": {
-            "body_content_type": "application/json",
-            "body_type": "raw",
-            "data": "{\n  \"type\": \"Usage\",\n  \"timeframe\": \"Custom\",\n  \"timePeriod\": {\n    \"from\": \"${__from:date:YYYY-MM-DDTHH:mm:ssZ}\",\n    \"to\": \"${__to:date:YYYY-MM-DDTHH:mm:ssZ}\"\n  },\n  \"dataset\": {\n    \"granularity\": \"Daily\",\n    \"aggregation\": {\n      \"totalCost\": { \"name\": \"Cost\", \"function\": \"Sum\" }\n    },\n    \"grouping\": [\n      { \"type\": \"TagKey\", \"name\": \"domain\" }\n    ],\n    \"orderBy\": [\n      { \"name\": \"totalCost\", \"direction\": \"desc\" }\n    ]  \n  }\n}",
-            "headers": [
-              {
-                "key": "x-ms-command-name",
-                "value": "CostAnalysis"
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
               },
-              {
-                "key": "ClientType",
-                "value": "PagopaInfinity"
-              }
-            ],
-            "method": "POST"
-          }
-        }
-      ],
-      "title": "1. Base operativa giornaliera (dal ${__from:date:DD/MM} al ${__to:date:DD/MM})",
-      "transformations": [
-        {
-          "id": "extractFields",
-          "options": {
-            "delimiter": ",",
-            "format": "json",
-            "jsonPaths": [
-              {
-                "path": ""
-              }
-            ],
-            "source": "A"
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "2": true,
-              "4": false
-            },
-            "includeByName": {},
-            "indexByName": {
-              "0": 2,
-              "1": 3,
-              "2": 1,
-              "3": 4,
-              "4": 5,
-              "5": 6,
-              "6": 7,
-              "A": 0
-            },
-            "renameByName": {
-              "0": "Cost",
-              "1": "Date",
-              "2": "",
-              "3": "Domain",
-              "4": "Currency",
-              "5": "Domain",
-              "6": "Currency",
-              "A": "_raw"
-            }
-          }
-        },
-        {
-          "id": "convertFieldType",
-          "options": {
-            "conversions": [
-              {
-                "destinationType": "string",
-                "targetField": "Date"
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "inspect": false
               },
-              {
-                "dateFormat": "YYYY-MM-DD",
-                "destinationType": "time",
-                "targetField": "Date"
-              }
-            ],
-            "fields": {}
-          }
-        }
-      ],
-      "transparent": true,
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "yesoreyeram-infinity-datasource",
-        "uid": "pagopa-p-infinity"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": true,
-            "inspect": false
-          },
-          "fieldMinMax": false,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Name"
-            },
-            "properties": [
-              {
-                "id": "mappings",
-                "value": [
+              "fieldMinMax": false,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
                   {
-                    "options": {
-                      "pattern": "^.*/([^/?#]+).*",
-                      "result": {
-                        "color": "transparent",
-                        "index": 0,
-                        "text": "$1"
-                      }
-                    },
-                    "type": "regex"
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Date"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "dateTimeAsIso"
                   }
                 ]
               }
             ]
           },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Date"
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 1
+          },
+          "id": 15,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
             },
-            "properties": [
+            "showHeader": true,
+            "sortBy": [
               {
-                "id": "unit",
-                "value": "dateTimeAsIso"
+                "desc": true,
+                "displayName": "Date"
               }
             ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 12,
-        "y": 1
-      },
-      "id": 19,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": false,
-          "fields": "",
-          "reducer": [
-            "sum"
+          },
+          "pluginVersion": "11.6.3",
+          "targets": [
+            {
+              "columns": [],
+              "datasource": {
+                "type": "yesoreyeram-infinity-datasource",
+                "uid": "pagopa-p-infinity"
+              },
+              "filters": [],
+              "format": "table",
+              "global_query_id": "",
+              "parser": "backend",
+              "refId": "A",
+              "root_selector": "properties.rows",
+              "source": "url",
+              "type": "json",
+              "url": "https://management.azure.com/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/providers/Microsoft.CostManagement/query?api-version=2023-11-01",
+              "url_options": {
+                "body_content_type": "application/json",
+                "body_type": "raw",
+                "data": "{\n  \"type\": \"Usage\",\n  \"timeframe\": \"Custom\",\n  \"timePeriod\": {\n    \"from\": \"${__from:date:YYYY-MM-DDTHH:mm:ssZ}\",\n    \"to\": \"${__to:date:YYYY-MM-DDTHH:mm:ssZ}\"\n  },\n  \"dataset\": {\n    \"granularity\": \"Daily\",\n    \"aggregation\": {\n      \"totalCost\": { \"name\": \"Cost\", \"function\": \"Sum\" }\n    },\n    \"grouping\": [\n      { \"type\": \"TagKey\", \"name\": \"domain\" }\n    ],\n    \"orderBy\": [\n      { \"name\": \"totalCost\", \"direction\": \"desc\" }\n    ]  \n  }\n}",
+                "headers": [
+                  {
+                    "key": "x-ms-command-name",
+                    "value": "CostAnalysis"
+                  },
+                  {
+                    "key": "ClientType",
+                    "value": "PagopaInfinity"
+                  }
+                ],
+                "method": "POST"
+              }
+            }
           ],
-          "show": false
+          "title": "1. Base operativa giornaliera (dal ${__from:date:DD/MM} al ${__to:date:DD/MM})",
+          "transformations": [
+            {
+              "id": "extractFields",
+              "options": {
+                "delimiter": ",",
+                "format": "json",
+                "jsonPaths": [
+                  {
+                    "path": ""
+                  }
+                ],
+                "source": "A"
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "2": true,
+                  "4": false
+                },
+                "includeByName": {},
+                "indexByName": {
+                  "0": 2,
+                  "1": 3,
+                  "2": 1,
+                  "3": 4,
+                  "4": 5,
+                  "5": 6,
+                  "6": 7,
+                  "A": 0
+                },
+                "renameByName": {
+                  "0": "Cost",
+                  "1": "Date",
+                  "2": "",
+                  "3": "Domain",
+                  "4": "Currency",
+                  "5": "Domain",
+                  "6": "Currency",
+                  "A": "_raw"
+                }
+              }
+            },
+            {
+              "id": "convertFieldType",
+              "options": {
+                "conversions": [
+                  {
+                    "destinationType": "string",
+                    "targetField": "Date"
+                  },
+                  {
+                    "dateFormat": "YYYY-MM-DD",
+                    "destinationType": "time",
+                    "targetField": "Date"
+                  }
+                ],
+                "fields": {}
+              }
+            }
+          ],
+          "transparent": true,
+          "type": "table"
         },
-        "frameIndex": 250,
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Date"
-          }
-        ]
-      },
-      "pluginVersion": "11.6.3",
-      "targets": [
         {
-          "columns": [],
-          "computed_columns": [],
           "datasource": {
             "type": "yesoreyeram-infinity-datasource",
             "uid": "pagopa-p-infinity"
           },
-          "filters": [],
-          "format": "table",
-          "global_query_id": "",
-          "parser": "backend",
-          "refId": "A",
-          "root_selector": "properties.rows[*]",
-          "source": "url",
-          "type": "json",
-          "url": "https://management.azure.com/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/providers/Microsoft.CostManagement/query?api-version=2023-11-01",
-          "url_options": {
-            "body_content_type": "application/json",
-            "body_type": "raw",
-            "data": "{\n  \"type\": \"Usage\",\n  \"timeframe\": \"Custom\",\n  \"timePeriod\": {\n    \"from\": \"${__from:date:YYYY-MM-DDTHH:mm:ssZ}\",\n    \"to\": \"${__to:date:YYYY-MM-DDTHH:mm:ssZ}\"\n  },\n  \"dataset\": {\n    \"granularity\": \"Daily\",\n    \"aggregation\": {\n      \"totalCost\": { \"name\": \"Cost\", \"function\": \"Sum\" }\n    },\n    \"grouping\": [\n      { \"type\": \"TagKey\", \"name\": \"domain\" },\n      { \"type\": \"Dimension\", \"name\": \"BillingMonth\" },\n      { \"type\": \"Dimension\", \"name\": \"ResourceId\" },\n      { \"type\": \"Dimension\", \"name\": \"ResourceGroup\" },\n      { \"type\": \"Dimension\", \"name\": \"AccountName\" },\n      { \"type\": \"Dimension\", \"name\": \"ServiceName\" },\n      { \"type\": \"Dimension\", \"name\": \"ServiceTier\" },\n      { \"type\": \"Dimension\", \"name\": \"ChargeType\" },\n      { \"type\": \"Dimension\", \"name\": \"ConsumedService\" },\n      { \"type\": \"Dimension\", \"name\": \"BenefitName\" },\n      { \"type\": \"Dimension\", \"name\": \"Meter\" }\n    ],\n    \"orderBy\": [{ \"name\": \"totalCost\", \"direction\": \"desc\" }]\n  }\n}",
-            "headers": [
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "inspect": false
+              },
+              "fieldMinMax": false,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
               {
-                "key": "x-ms-command-name",
-                "value": "CostAnalysis"
+                "matcher": {
+                  "id": "byName",
+                  "options": "Name"
+                },
+                "properties": [
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "pattern": "^.*/([^/?#]+).*",
+                          "result": {
+                            "color": "transparent",
+                            "index": 0,
+                            "text": "$1"
+                          }
+                        },
+                        "type": "regex"
+                      }
+                    ]
+                  }
+                ]
               },
               {
-                "key": "ClientType",
-                "value": "PagopaInfinity"
+                "matcher": {
+                  "id": "byName",
+                  "options": "Date"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "dateTimeAsIso"
+                  }
+                ]
               }
-            ],
-            "method": "POST"
-          }
-        }
-      ],
-      "title": "2. Risorse per domain/rg (dal ${__from:date:DD/MM} al ${__to:date:DD/MM})",
-      "transformations": [
-        {
-          "id": "extractFields",
+            ]
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 1
+          },
+          "id": 19,
           "options": {
-            "delimiter": ",",
-            "format": "json",
-            "jsonPaths": [
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "enablePagination": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "frameIndex": 250,
+            "showHeader": true,
+            "sortBy": [
               {
-                "path": ""
+                "desc": true,
+                "displayName": "Date"
               }
-            ],
-            "keepTime": false,
-            "replace": false,
-            "source": "A"
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "1": false,
-              "2": true,
-              "12": false,
-              "13": false,
-              "14": true,
-              "A": true
-            },
-            "includeByName": {},
-            "indexByName": {
-              "0": 1,
-              "1": 2,
-              "2": 3,
-              "3": 4,
-              "4": 5,
-              "5": 6,
-              "6": 7,
-              "7": 8,
-              "8": 9,
-              "9": 10,
-              "10": 11,
-              "11": 12,
-              "12": 13,
-              "13": 14,
-              "14": 15,
-              "A": 0
-            },
-            "renameByName": {
-              "0": "Cost",
-              "1": "Date",
-              "2": "",
-              "3": "Domain",
-              "4": "Billed month",
-              "5": "Name",
-              "6": "Resource Group",
-              "7": "Account Name",
-              "8": "ServiceName",
-              "9": "Meter",
-              "10": "ConsumedService",
-              "11": "Reservation",
-              "12": "ServiceTier",
-              "13": "Currency",
-              "14": "",
-              "A": "_raw"
+            ]
+          },
+          "pluginVersion": "11.6.3",
+          "targets": [
+            {
+              "columns": [],
+              "computed_columns": [],
+              "datasource": {
+                "type": "yesoreyeram-infinity-datasource",
+                "uid": "pagopa-p-infinity"
+              },
+              "filters": [],
+              "format": "table",
+              "global_query_id": "",
+              "parser": "backend",
+              "refId": "A",
+              "root_selector": "properties.rows[*]",
+              "source": "url",
+              "type": "json",
+              "url": "https://management.azure.com/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/providers/Microsoft.CostManagement/query?api-version=2023-11-01",
+              "url_options": {
+                "body_content_type": "application/json",
+                "body_type": "raw",
+                "data": "{\n  \"type\": \"Usage\",\n  \"timeframe\": \"Custom\",\n  \"timePeriod\": {\n    \"from\": \"${__from:date:YYYY-MM-DDTHH:mm:ssZ}\",\n    \"to\": \"${__to:date:YYYY-MM-DDTHH:mm:ssZ}\"\n  },\n  \"dataset\": {\n    \"granularity\": \"Daily\",\n    \"aggregation\": {\n      \"totalCost\": { \"name\": \"Cost\", \"function\": \"Sum\" }\n    },\n    \"grouping\": [\n      { \"type\": \"TagKey\", \"name\": \"domain\" },\n      { \"type\": \"Dimension\", \"name\": \"BillingMonth\" },\n      { \"type\": \"Dimension\", \"name\": \"ResourceId\" },\n      { \"type\": \"Dimension\", \"name\": \"ResourceGroup\" },\n      { \"type\": \"Dimension\", \"name\": \"AccountName\" },\n      { \"type\": \"Dimension\", \"name\": \"ServiceName\" },\n      { \"type\": \"Dimension\", \"name\": \"ServiceTier\" },\n      { \"type\": \"Dimension\", \"name\": \"ChargeType\" },\n      { \"type\": \"Dimension\", \"name\": \"ConsumedService\" },\n      { \"type\": \"Dimension\", \"name\": \"BenefitName\" },\n      { \"type\": \"Dimension\", \"name\": \"Meter\" }\n    ],\n    \"orderBy\": [{ \"name\": \"totalCost\", \"direction\": \"desc\" }]\n  }\n}",
+                "headers": [
+                  {
+                    "key": "x-ms-command-name",
+                    "value": "CostAnalysis"
+                  },
+                  {
+                    "key": "ClientType",
+                    "value": "PagopaInfinity"
+                  }
+                ],
+                "method": "POST"
+              }
             }
-          }
-        },
-        {
-          "id": "convertFieldType",
-          "options": {
-            "conversions": [
-              {
-                "dateFormat": "YYYY-MM-DD",
-                "destinationType": "string",
-                "targetField": "Date"
-              },
-              {
-                "dateFormat": "YYYY-MM-DD",
-                "destinationType": "time",
-                "targetField": "Date"
+          ],
+          "title": "2. Risorse per domain/rg (dal ${__from:date:DD/MM} al ${__to:date:DD/MM})",
+          "transformations": [
+            {
+              "id": "extractFields",
+              "options": {
+                "delimiter": ",",
+                "format": "json",
+                "jsonPaths": [
+                  {
+                    "path": ""
+                  }
+                ],
+                "keepTime": false,
+                "replace": false,
+                "source": "A"
               }
-            ],
-            "fields": {}
-          }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "1": false,
+                  "2": true,
+                  "12": false,
+                  "13": false,
+                  "14": true,
+                  "A": true
+                },
+                "includeByName": {},
+                "indexByName": {
+                  "0": 1,
+                  "1": 2,
+                  "2": 3,
+                  "3": 4,
+                  "4": 5,
+                  "5": 6,
+                  "6": 7,
+                  "7": 8,
+                  "8": 9,
+                  "9": 10,
+                  "10": 11,
+                  "11": 12,
+                  "12": 13,
+                  "13": 14,
+                  "14": 15,
+                  "A": 0
+                },
+                "renameByName": {
+                  "0": "Cost",
+                  "1": "Date",
+                  "2": "",
+                  "3": "Domain",
+                  "4": "Billed month",
+                  "5": "Name",
+                  "6": "Resource Group",
+                  "7": "Account Name",
+                  "8": "ServiceName",
+                  "9": "Meter",
+                  "10": "ConsumedService",
+                  "11": "Reservation",
+                  "12": "ServiceTier",
+                  "13": "Currency",
+                  "14": "",
+                  "A": "_raw"
+                }
+              }
+            },
+            {
+              "id": "convertFieldType",
+              "options": {
+                "conversions": [
+                  {
+                    "dateFormat": "YYYY-MM-DD",
+                    "destinationType": "string",
+                    "targetField": "Date"
+                  },
+                  {
+                    "dateFormat": "YYYY-MM-DD",
+                    "destinationType": "time",
+                    "targetField": "Date"
+                  }
+                ],
+                "fields": {}
+              }
+            }
+          ],
+          "transparent": true,
+          "type": "table"
         }
       ],
-      "transparent": true,
-      "type": "table"
+      "title": "Dati _raw",
+      "type": "row"
     },
     {
       "collapsed": false,
@@ -439,7 +440,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 1
       },
       "id": 22,
       "panels": [],
@@ -477,7 +478,7 @@
         "h": 3,
         "w": 3,
         "x": 0,
-        "y": 11
+        "y": 2
       },
       "id": 23,
       "options": {
@@ -609,7 +610,7 @@
         "h": 9,
         "w": 21,
         "x": 3,
-        "y": 11
+        "y": 2
       },
       "id": 25,
       "options": {
@@ -718,7 +719,7 @@
         "h": 3,
         "w": 3,
         "x": 0,
-        "y": 14
+        "y": 5
       },
       "id": 29,
       "options": {
@@ -896,7 +897,7 @@
         "h": 3,
         "w": 3,
         "x": 0,
-        "y": 17
+        "y": 8
       },
       "id": 28,
       "options": {
@@ -1105,9 +1106,9 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 16,
+        "w": 24,
         "x": 0,
-        "y": 20
+        "y": 11
       },
       "id": 30,
       "options": {
@@ -1135,7 +1136,7 @@
           "withTransforms": true
         }
       ],
-      "title": "Burn-down del budget (10k) mese",
+      "title": "Burn-down del budget (${budget}) mese",
       "transformations": [
         {
           "id": "groupBy",
@@ -1262,268 +1263,6 @@
         "type": "datasource",
         "uid": "-- Dashboard --"
       },
-      "description": "Per capire se la spesa cumulata a oggi è sopra/sotto al consumo “ideale” del budget fino a oggi.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 8,
-        "x": 16,
-        "y": 20
-      },
-      "id": 31,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.6.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "-- Dashboard --"
-          },
-          "panelId": 19,
-          "refId": "A",
-          "withTransforms": true
-        }
-      ],
-      "title": "KPI ETA e Varianza (${budget}) mese",
-      "transformations": [
-        {
-          "id": "groupBy",
-          "options": {
-            "fields": {
-              "Cost": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "Date": {
-                "aggregations": [],
-                "operation": "groupby"
-              }
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "CumCost",
-            "cumulative": {
-              "field": "Cost (sum)",
-              "reducer": "sum"
-            },
-            "mode": "cumulativeFunctions",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "DayIndex",
-            "index": {
-              "asPercentile": false
-            },
-            "mode": "index",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "window": {
-              "reducer": "mean",
-              "windowAlignment": "trailing",
-              "windowSize": 0.1,
-              "windowSizeMode": "percentage"
-            }
-          }
-        },
-        {
-          "id": "reduce",
-          "options": {
-            "includeTimeField": false,
-            "mode": "reduceFields",
-            "reducers": [
-              "last"
-            ]
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "AvgDaily (run-rate medio MTD)",
-            "binary": {
-              "left": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "CumCost"
-                }
-              },
-              "operator": "/",
-              "right": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "DayIndex"
-                }
-              }
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "ForecastEOM",
-            "binary": {
-              "left": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "AvgDaily (run-rate medio MTD)"
-                }
-              },
-              "operator": "*",
-              "right": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "$dom"
-                }
-              }
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "VarAbs",
-            "binary": {
-              "left": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "ForecastEOM"
-                }
-              },
-              "operator": "-",
-              "right": {
-                "fixed": "10000"
-              }
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Remaining",
-            "binary": {
-              "left": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "$budget"
-                }
-              },
-              "operator": "-",
-              "right": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "CumCost"
-                }
-              }
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "ETA_days",
-            "binary": {
-              "left": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Remaining"
-                }
-              },
-              "operator": "/",
-              "right": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "AvgDaily (run-rate medio MTD)"
-                }
-              }
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "AvgDaily (run-rate medio MTD)": true,
-              "Cost (sum)": true,
-              "CumCost": true,
-              "DayIndex": true,
-              "ForecastEOM": false,
-              "Remaining": false
-            },
-            "includeByName": {},
-            "indexByName": {},
-            "renameByName": {}
-          }
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "datasource",
-        "uid": "-- Dashboard --"
-      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1567,7 +1306,7 @@
         "h": 9,
         "w": 17,
         "x": 0,
-        "y": 29
+        "y": 20
       },
       "id": 20,
       "options": {
@@ -1701,7 +1440,7 @@
         "h": 9,
         "w": 7,
         "x": 17,
-        "y": 29
+        "y": 20
       },
       "id": 32,
       "options": {
@@ -1903,7 +1642,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 38
+        "y": 29
       },
       "id": 9,
       "options": {
@@ -2008,7 +1747,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 47
+        "y": 38
       },
       "id": 1,
       "panels": [],
@@ -2055,7 +1794,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 48
+        "y": 39
       },
       "id": 2,
       "options": {
@@ -2221,7 +1960,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 48
+        "y": 39
       },
       "id": 3,
       "options": {
@@ -2372,7 +2111,7 @@
         "h": 16,
         "w": 24,
         "x": 0,
-        "y": 58
+        "y": 49
       },
       "id": 14,
       "options": {
@@ -2554,7 +2293,7 @@
         "h": 17,
         "w": 24,
         "x": 0,
-        "y": 74
+        "y": 65
       },
       "id": 24,
       "options": {
@@ -2830,15 +2569,15 @@
       },
       {
         "current": {
-          "text": "31",
-          "value": "31"
+          "text": "30",
+          "value": "30"
         },
         "description": "",
         "label": "Days in this month",
         "name": "dom",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "30",
             "value": "30"
           }
@@ -2858,5 +2597,6 @@
   },
   "timezone": "",
   "title": "PAGOPA Domain costs",
-  "version": 64
+  "uid": "eexmvls326uwwa",
+  "version": 7
 }
