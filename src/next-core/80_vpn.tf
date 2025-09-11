@@ -11,7 +11,8 @@ module "vpn_snet" {
   resource_group_name  = azurerm_resource_group.rg_vnet.name
   service_endpoints = [
     "Microsoft.AzureCosmosDB",
-    "Microsoft.Storage"
+    "Microsoft.Storage",
+    "Microsoft.Web"
   ]
   private_endpoint_network_policies_enabled = false
 }

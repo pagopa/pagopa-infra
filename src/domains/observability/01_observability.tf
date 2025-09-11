@@ -233,3 +233,10 @@ locals {
 #   principal_id         = each.key
 # }
 
+resource "azurerm_role_assignment" "adgroup_dataexp_reader" {
+  for_each             = toset(local.dataexp_contributor_groups)
+  principal_id         = each.key
+  principal_type       = "Group"
+  role_definition_name = "Reader" # https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#general 👀 roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7
+  scope                = azurerm_kusto_cluster.data_explorer_cluster[0].id
+}

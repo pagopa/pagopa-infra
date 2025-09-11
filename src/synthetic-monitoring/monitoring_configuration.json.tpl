@@ -430,22 +430,6 @@
       "enabled" : ${alert_enabled}
     }
   },
-  {
-    "apiName" : "status",
-    "appName" : "gpdEnrollment",
-    "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=gpdenrollment",
-    "type" : "apim",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} gpd reports status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : ${alert_enabled}
-    }
-  },
 
   {
     "apiName" : "status",
