@@ -29,15 +29,15 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-variable "enable_neu_nsg" {
-  type = bool
-  default = false
-  description = "(Optional) Enable NSG in neu vnet"
-}
-
 
 variable "nsg_regions" {
   type = list(string)
   default = ["westeurope"]
   description = "(Optional) Regions where NSG must be created"
+}
+
+variable "nsg_network_watcher_enabled" {
+  type = bool
+  description = "(Optional) Enable Network Watcher for all NSG (subnet associated to nsg)"
+  default = false
 }
