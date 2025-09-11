@@ -1831,7 +1831,7 @@
           "withTransforms": true
         }
       ],
-      "title": "Usage Cost by Services - Current Month",
+      "title": "Usage Cost by Services",
       "transformations": [
         {
           "id": "groupBy",
@@ -1999,7 +1999,7 @@
           "withTransforms": true
         }
       ],
-      "title": "Usage Cost by Services - This Month",
+      "title": "Usage Cost by Domain",
       "transformations": [
         {
           "id": "groupBy",
@@ -2439,119 +2439,6 @@
     "list": [
       {
         "current": {
-          "text": "Azure Kubernetes Service",
-          "value": "Azure Kubernetes Service"
-        },
-        "includeAll": false,
-        "label": "ServiceName",
-        "name": "service",
-        "options": [
-          {
-            "selected": false,
-            "text": "Application Gateway",
-            "value": "Application Gateway"
-          },
-          {
-            "selected": false,
-            "text": "Automation",
-            "value": "Automation"
-          },
-          {
-            "selected": false,
-            "text": "Azure Data Factory v2",
-            "value": "Azure Data Factory v2"
-          },
-          {
-            "selected": false,
-            "text": "Azure Database for PostgreSQL",
-            "value": "Azure Database for PostgreSQL"
-          },
-          {
-            "selected": false,
-            "text": "Azure DNS",
-            "value": "Azure DNS"
-          },
-          {
-            "selected": true,
-            "text": "Azure Kubernetes Service",
-            "value": "Azure Kubernetes Service"
-          },
-          {
-            "selected": false,
-            "text": "Azure Monitor",
-            "value": "Azure Monitor"
-          },
-          {
-            "selected": false,
-            "text": "Backup",
-            "value": "Backup"
-          },
-          {
-            "selected": false,
-            "text": "Bandwidth",
-            "value": "Bandwidth"
-          },
-          {
-            "selected": false,
-            "text": "Key Vault",
-            "value": "Key Vault"
-          },
-          {
-            "selected": false,
-            "text": "Insight and Analytics",
-            "value": "Insight and Analytics"
-          },
-          {
-            "selected": false,
-            "text": "Load Balancer",
-            "value": "Load Balancer"
-          },
-          {
-            "selected": false,
-            "text": "Log Analytics",
-            "value": "Log Analytics"
-          },
-          {
-            "selected": false,
-            "text": "Logic Apps",
-            "value": "Logic Apps"
-          },
-          {
-            "selected": false,
-            "text": "Microsoft Defender for Cloud",
-            "value": "Microsoft Defender for Cloud"
-          },
-          {
-            "selected": false,
-            "text": "SQL Database",
-            "value": "SQL Database"
-          },
-          {
-            "selected": false,
-            "text": "Storage",
-            "value": "Storage"
-          },
-          {
-            "selected": false,
-            "text": "Unassigned",
-            "value": "Unassigned"
-          },
-          {
-            "selected": false,
-            "text": "Virtual Machines",
-            "value": "Virtual Machines"
-          },
-          {
-            "selected": false,
-            "text": "Virtual Network",
-            "value": "Virtual Network"
-          }
-        ],
-        "query": "Application Gateway, Automation, Azure Data Factory v2, Azure Database for PostgreSQL, Azure DNS, Azure Kubernetes Service, Azure Monitor, Backup, Bandwidth, Key Vault, Insight and Analytics, Load Balancer, Log Analytics, Logic Apps, Microsoft Defender for Cloud, SQL Database, Storage, Unassigned, Virtual Machines, Virtual Network",
-        "type": "custom"
-      },
-      {
-        "current": {
           "text": "10000",
           "value": "10000"
         },
@@ -2598,5 +2485,5 @@
   "timezone": "",
   "title": "PAGOPA Domain costs",
   "uid": "eexmvls326uwwa",
-  "version": 7
+  "version": 8
 }
