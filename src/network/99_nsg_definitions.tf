@@ -142,7 +142,7 @@ locals {
       }
       allow_aks_itn_user_to_postgres = {
           name                       = "AllowAKSItnUserPostgreSQL"
-          priority                   = 400
+          priority                   = 401
           target_service             = "postgresql"
           source_subnet_name         = "pagopa-${var.env_short}-itn-${var.env}-user-aks"
           source_subnet_vnet_name    = "pagopa-${var.env_short}-itn-vnet"
@@ -150,7 +150,7 @@ locals {
       }
       allow_aks_itn_system_to_postgres = {
           name                       = "AllowAKSItnSystemPostgreSQL"
-          priority                   = 400
+          priority                   = 402
           target_service             = "postgresql"
           source_subnet_name         = "pagopa-${var.env_short}-itn-${var.env}-system-aks"
           source_subnet_vnet_name    = "pagopa-${var.env_short}-itn-vnet"
@@ -158,7 +158,7 @@ locals {
       }
       allow_aks_itn_paywallet_to_postgres = {
           name                       = "AllowAKSItnPaywalletPostgreSQL"
-          priority                   = 400
+          priority                   = 403
           target_service             = "postgresql"
           source_subnet_name         = "pagopa-${var.env_short}-itn-pay-wallet-user-aks"
           source_subnet_vnet_name    = "pagopa-${var.env_short}-itn-vnet"
@@ -166,11 +166,19 @@ locals {
       }
       allow_metabase_to_postgres = {
           name                       = "AllowMetabasePostgreSQL"
-          priority                   = 400
+          priority                   = 404
           target_service             = "postgresql"
           source_subnet_name         = "pagopa-${var.env_short}-itn-dbsecurity-app-snet"
           source_subnet_vnet_name    = "pagopa-${var.env_short}-itn-vnet"
           description                = "Allow metabase to access PostgreSQL"
+      }
+      allow_azdo_to_postgres = {
+          name                       = "AllowAZDOPostgreSQL"
+          priority                   = 405
+          target_service             = "postgresql"
+          source_subnet_name         = "pagopa-${var.env_short}-azdoa-snet"
+          source_subnet_vnet_name    = "pagopa-${var.env_short}-vnet"
+          description                = "Allow AZDO to access PostgreSQL"
       }
 
 
