@@ -15,7 +15,7 @@ module "apim_mdb_product" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  published             = false
+  published             = true
   subscription_required = true
   approval_required     = false
   subscriptions_limit   = 1000
