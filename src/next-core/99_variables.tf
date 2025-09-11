@@ -232,42 +232,6 @@ variable "dns_forwarder_vm_image_name" {
 }
 
 
-#
-# replica variables
-#
-variable "geo_replica_enabled" {
-  type        = bool
-  description = "(Optional) True if geo replica should be active for key data components i.e. PostgreSQL Flexible servers"
-  default     = false
-}
-
-variable "geo_replica_location" {
-  type        = string
-  description = "(Optional) Location of the geo replica"
-  default     = "northeurope"
-}
-
-variable "geo_replica_location_short" {
-  type        = string
-  description = "(Optional) Short Location of the geo replica"
-  default     = "neu"
-}
-
-variable "geo_replica_cidr_vnet" {
-  type        = list(string)
-  description = "(Required) Cidr block for replica vnet address space"
-  default     = null
-}
-
-variable "geo_replica_ddos_protection_plan" {
-  type = object({
-    id     = string
-    enable = bool
-  })
-  default = null
-}
-
-
 
 variable "logos_donations_storage_account_replication_type" {
   type        = string
