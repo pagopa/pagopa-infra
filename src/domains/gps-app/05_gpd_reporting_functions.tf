@@ -50,7 +50,8 @@ locals {
     FDR3_FLOW_LIST_DEPTH        = "2"
     FDR3_LIST_ELEMENTS_FOR_PAGE = "30000"
 
-    GPD_BASE_PATH            = azurerm_api_management_subscription.gpd_for_reporting_subkey.primary_key
+    GPD_BASE_PATH            = "https://${local.apim_hostname}/gpd/api/v2"
+    GPD_SUBKEY               = azurerm_api_management_subscription.gpd_for_reporting_subkey.primary_key
     FDR_EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_fdr-qi-reported-iuv.primary_connection_string
 
     # ACR
