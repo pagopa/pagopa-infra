@@ -340,7 +340,7 @@
           }
         }
       ],
-      "title": "3. Top risorse per un domain/rg nel mese corrente",
+      "title": "2. Risorse per domain/rg (dal ${__from:date:DD/MM} al ${__to:date:DD/MM})",
       "transformations": [
         {
           "id": "extractFields",
