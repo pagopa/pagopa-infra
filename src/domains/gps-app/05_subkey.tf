@@ -47,3 +47,19 @@ resource "azurerm_api_management_subscription" "fdr1_flow_subkey" {
   allow_tracing       = false
   state               = "active"
 }
+resource "azurerm_api_management_subscription" "gpd_for_reporting_subkey" {
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  product_id          = data.azurerm_api_management_product.apim_gpd_integration_product.id
+  display_name        = "GPD for GPD Reporting"
+  allow_tracing       = false
+  state               = "active"
+}
+
+resource "azurerm_key_vault_secret" "gpd_for_reporting_subkey_secret" {
+  name         = "gpd-subkey-for-reporting"
+  value        = azurerm_api_management_subscription.gpd_for_reporting_subkey.primary_key
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.gps_kv.id
+}
+
