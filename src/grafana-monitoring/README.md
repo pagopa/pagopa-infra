@@ -22,12 +22,18 @@
 
 | Name | Type |
 |------|------|
+| [azuread_application.grafana_infinity](https://registry.terraform.io/providers/hashicorp/azuread/2.10.0/docs/resources/application) | resource |
+| [azuread_application_password.grafana_infinity](https://registry.terraform.io/providers/hashicorp/azuread/2.10.0/docs/resources/application_password) | resource |
+| [azuread_service_principal.grafana_infinity](https://registry.terraform.io/providers/hashicorp/azuread/2.10.0/docs/resources/service_principal) | resource |
 | [azurerm_dashboard_grafana.grafana_dashboard](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dashboard_grafana) | resource |
+| [azurerm_key_vault_secret.grafana_infinity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_kusto_database_principal_assignment.grafana_viewer](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kusto_database_principal_assignment) | resource |
 | [azurerm_resource_group.grafana_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_role_assignment.grafana_dashboard_monitoring_data_reader](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.grafana_dashboard_monitoring_reader](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.grafana_infinity_viewer](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [grafana_dashboard.azure_monitor_grafana](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/dashboard) | resource |
+| [grafana_data_source.infinity](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/data_source) | resource |
 | [grafana_folder.customfolder](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/folder) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.10.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.10.0/docs/data-sources/group) | data source |
