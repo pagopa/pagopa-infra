@@ -2145,7 +2145,7 @@
           "withTransforms": true
         }
       ],
-      "title": "Usage Cost by Services - Current Month",
+      "title": "Usage Cost by Services",
       "transformations": [
         {
           "id": "organize",
@@ -2321,7 +2321,7 @@
           "withTransforms": true
         }
       ],
-      "title": "NO RESERV - Current Month",
+      "title": "NO RESERV",
       "transformations": [
         {
           "id": "organize",
