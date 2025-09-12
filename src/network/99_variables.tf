@@ -41,3 +41,13 @@ variable "nsg_network_watcher_enabled" {
   description = "(Optional) Enable Network Watcher for all NSG (subnet associated to nsg)"
   default = false
 }
+
+variable "enabled_features" {
+  type = object({
+    metabase = bool
+  })
+  default = {
+    metabase = false
+  }
+  description = "(Optional) Enable/Disable features"
+}

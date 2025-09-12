@@ -6,10 +6,14 @@ locals {
       target_subnet_vnet_name = local.vnet_core_name
       watcher_enabled         = var.nsg_network_watcher_enabled
 
-      inbound_rules  = [
-        local.nsg_rule_library.allow_all_to_postgres,
-        local.nsg_rule_library.allow_vpn_to_postgres
-      ]
+      inbound_rules  = concat([
+        local.nsg_rule_library.allow_all_to_postgres, #fixme remove after testing (all sng)
+        local.nsg_rule_library.allow_vpn_to_postgres,
+        local.nsg_rule_library.allow_azdo_to_postgres,
+        local.nsg_rule_library.allow_tools_cae_to_postgres,
+        local.nsg_rule_library.allow_aks_weu_to_postgres,
+        # fixme add application subnet (all nsg)
+      ], var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [])
       outbound_rules = []
     }
 
@@ -18,10 +22,14 @@ locals {
       target_subnet_vnet_name = local.vnet_core_name
       watcher_enabled         = var.nsg_network_watcher_enabled
 
-      inbound_rules  = [
-        local.nsg_rule_library.allow_all_to_postgres,
-        local.nsg_rule_library.allow_vpn_to_postgres
-      ]
+      inbound_rules  = concat([
+        local.nsg_rule_library.allow_all_to_postgres, #fixme remove after testing (all sng)
+        local.nsg_rule_library.allow_vpn_to_postgres,
+        local.nsg_rule_library.allow_azdo_to_postgres,
+        local.nsg_rule_library.allow_tools_cae_to_postgres,
+        local.nsg_rule_library.allow_aks_weu_to_postgres,
+        # fixme add application subnet (all nsg)
+      ], var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [])
       outbound_rules = []
     }
 
@@ -30,10 +38,14 @@ locals {
       target_subnet_vnet_name = local.vnet_core_name
       watcher_enabled         = var.nsg_network_watcher_enabled
 
-      inbound_rules  = [
-        local.nsg_rule_library.allow_all_to_postgres,
-        local.nsg_rule_library.allow_vpn_to_postgres
-      ]
+      inbound_rules  = concat([
+        local.nsg_rule_library.allow_all_to_postgres, #fixme remove after testing (all sng)
+        local.nsg_rule_library.allow_vpn_to_postgres,
+        local.nsg_rule_library.allow_azdo_to_postgres,
+        local.nsg_rule_library.allow_tools_cae_to_postgres,
+        local.nsg_rule_library.allow_aks_weu_to_postgres,
+        # fixme add application subnet (all nsg)
+      ], var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [])
       outbound_rules = []
     }
 
@@ -42,10 +54,14 @@ locals {
       target_subnet_vnet_name = local.vnet_core_name
       watcher_enabled         = var.nsg_network_watcher_enabled
 
-      inbound_rules  = [
-        local.nsg_rule_library.allow_all_to_postgres,
-        local.nsg_rule_library.allow_vpn_to_postgres
-      ]
+      inbound_rules  = concat([
+        local.nsg_rule_library.allow_all_to_postgres, #fixme remove after testing (all sng)
+        local.nsg_rule_library.allow_vpn_to_postgres,
+        local.nsg_rule_library.allow_azdo_to_postgres,
+        local.nsg_rule_library.allow_tools_cae_to_postgres,
+        local.nsg_rule_library.allow_aks_weu_to_postgres,
+        # fixme add application subnet (all nsg)
+      ], var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [])
       outbound_rules = []
     }
   }
@@ -56,10 +72,15 @@ locals {
       target_subnet_vnet_name = local.vnet_italy_name
       watcher_enabled         = var.nsg_network_watcher_enabled
 
-      inbound_rules  = [
-        local.nsg_rule_library.allow_all_to_postgres,
-        local.nsg_rule_library.allow_vpn_to_postgres
-      ]
+      inbound_rules  = concat([
+        local.nsg_rule_library.allow_all_to_postgres, #fixme remove after testing (all sng)
+        local.nsg_rule_library.allow_vpn_to_postgres,
+        local.nsg_rule_library.allow_azdo_to_postgres,
+        local.nsg_rule_library.allow_tools_cae_to_postgres,
+        local.nsg_rule_library.allow_aks_itn_system_to_postgres,
+        local.nsg_rule_library.allow_aks_itn_user_to_postgres,
+        # fixme add application subnet (all nsg)
+      ], var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [])
       outbound_rules = []
     }
   }
@@ -70,10 +91,15 @@ locals {
       target_subnet_vnet_name = local.vnet_italy_name
       watcher_enabled         = var.nsg_network_watcher_enabled
 
-      inbound_rules  = [
-        local.nsg_rule_library.allow_all_to_postgres,
-        local.nsg_rule_library.allow_vpn_to_postgres
-      ]
+      inbound_rules  = concat([
+        local.nsg_rule_library.allow_all_to_postgres, #fixme remove after testing (all sng)
+        local.nsg_rule_library.allow_vpn_to_postgres,
+        local.nsg_rule_library.allow_azdo_to_postgres,
+        local.nsg_rule_library.allow_tools_cae_to_postgres,
+        local.nsg_rule_library.allow_aks_itn_system_to_postgres,
+        local.nsg_rule_library.allow_aks_itn_user_to_postgres,
+        # fixme add application subnet (all nsg)
+      ], var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [])
       outbound_rules = []
     }
 
@@ -82,10 +108,15 @@ locals {
       target_subnet_vnet_name = local.vnet_italy_name
       watcher_enabled         = var.nsg_network_watcher_enabled
 
-      inbound_rules  = [
-        local.nsg_rule_library.allow_all_to_postgres,
-        local.nsg_rule_library.allow_vpn_to_postgres
-      ]
+      inbound_rules  = concat([
+        local.nsg_rule_library.allow_all_to_postgres, #fixme remove after testing (all sng)
+        local.nsg_rule_library.allow_vpn_to_postgres,
+        local.nsg_rule_library.allow_azdo_to_postgres,
+        local.nsg_rule_library.allow_tools_cae_to_postgres,
+        local.nsg_rule_library.allow_aks_itn_system_to_postgres,
+        local.nsg_rule_library.allow_aks_itn_user_to_postgres,
+        # fixme add application subnet (all nsg)
+      ], var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [])
       outbound_rules = []
     }
 
@@ -95,10 +126,15 @@ locals {
       target_subnet_vnet_name = local.vnet_italy_name
       watcher_enabled         = var.nsg_network_watcher_enabled
 
-      inbound_rules  = [
-        local.nsg_rule_library.allow_all_to_postgres,
-        local.nsg_rule_library.allow_vpn_to_postgres
-      ]
+      inbound_rules  = concat([
+        local.nsg_rule_library.allow_all_to_postgres, #fixme remove after testing (all sng)
+        local.nsg_rule_library.allow_vpn_to_postgres,
+        local.nsg_rule_library.allow_azdo_to_postgres,
+        local.nsg_rule_library.allow_tools_cae_to_postgres,
+        local.nsg_rule_library.allow_aks_itn_system_to_postgres,
+        local.nsg_rule_library.allow_aks_itn_user_to_postgres,
+        # fixme add application subnet (all nsg)
+      ], var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [])
       outbound_rules = []
     }
 
@@ -107,10 +143,15 @@ locals {
       target_subnet_vnet_name = local.vnet_italy_name
       watcher_enabled         = var.nsg_network_watcher_enabled
 
-      inbound_rules  = [
-        local.nsg_rule_library.allow_all_to_postgres,
-        local.nsg_rule_library.allow_vpn_to_postgres
-      ]
+      inbound_rules  = concat([
+        local.nsg_rule_library.allow_all_to_postgres, #fixme remove after testing (all sng)
+        local.nsg_rule_library.allow_vpn_to_postgres,
+        local.nsg_rule_library.allow_azdo_to_postgres,
+        local.nsg_rule_library.allow_tools_cae_to_postgres,
+        local.nsg_rule_library.allow_aks_itn_system_to_postgres,
+        local.nsg_rule_library.allow_aks_itn_user_to_postgres,
+        # fixme add application subnet (all nsg)
+      ], var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [])
       outbound_rules = []
     }
   }
@@ -180,8 +221,38 @@ locals {
           source_subnet_vnet_name    = "pagopa-${var.env_short}-vnet"
           description                = "Allow AZDO to access PostgreSQL"
       }
-
-
+      allow_tools_cae_to_postgres = {
+          name                       = "AllowToolsCaePostgreSQL"
+          priority                   = 406
+          target_service             = "postgresql"
+          source_subnet_name         = "pagopa-${var.env_short}-tools-cae-snet"
+          source_subnet_vnet_name    = "pagopa-${var.env_short}-vnet"
+          description                = "Allow Container app tools to access PostgreSQL"
+      }
+      allow_tools_cae_itn_to_postgres = {
+          name                       = "AllowToolsCaeItnPostgreSQL"
+          priority                   = 407
+          target_service             = "postgresql"
+          source_subnet_name         = "pagopa-${var.env_short}-itn-core-tools-cae-subnet"
+          source_subnet_vnet_name    = "pagopa-${var.env_short}-itn-vnet"
+          description                = "Allow Container app tools itn to access PostgreSQL"
+      }
+      allow_gh_runner_itn_to_postgres = {
+          name                       = "AllowGhRunnerItnPostgreSQL"
+          priority                   = 408
+          target_service             = "postgresql"
+          source_subnet_name         = "github-runner-snet-ita"
+          source_subnet_vnet_name    = "pagopa-${var.env_short}-itn-vnet"
+          description                = "Allow gh runner itn to access PostgreSQL"
+      }
+      allow_gh_runner_weu_to_postgres = {
+          name                       = "AllowGhRunnerWeuPostgreSQL"
+          priority                   = 409
+          target_service             = "postgresql"
+          source_subnet_name         = "github-runner-snet"
+          source_subnet_vnet_name    = "pagopa-${var.env_short}-vnet"
+          description                = "Allow gh runner weu to access PostgreSQL"
+      }
   }
 
 }
