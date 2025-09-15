@@ -4,7 +4,7 @@
     "title": "PagoPA API Calculator Logic - API AFM-Calculator for node v2",
     "description": "Calculator Logic microservice for pagoPA AFM",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "2.10.41"
+    "version": "2.11.21"
   },
   "servers": [
     {
@@ -37,120 +37,6 @@
     }
   ],
   "paths": {
-    "/info": {
-      "get": {
-        "tags": [
-          "Home"
-        ],
-        "summary": "health check",
-        "description": "Return OK if application is started",
-        "operationId": "healthCheck",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AppInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "ApiKey": []
-          }
-        ]
-      },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
-        }
-      ]
-    },
     "/fees": {
       "post": {
         "tags": [
@@ -180,24 +66,24 @@
             }
           },
           {
-          	"name": "onUsFirst",
-          	"in": "query",
-          	"description": "Affects the sorting logic [default = true]. true: if the onus bundle is present, it is returned in the first position, regardless of the chosen sorting logic. false: the sorting logic is also applied to the onus bundle, which may therefore appear in positions other than the first",
-          	"required": false,
-          	"schema": {
-          		"type": "string",
-          		"default": "true"
-          	}
+            "name": "onUsFirst",
+            "in": "query",
+            "description": "Affects the sorting logic [default = true]. true â if the onus bundle is present, it is returned in the first position, regardless of the chosen sorting logic. false â the sorting logic is also applied to the onus bundle, which may therefore appear in positions other than the first",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "true"
+            }
           },
           {
-          	"name": "orderBy",
-          	"in": "query",
-          	"description": "Sorting logic to be applied to the bundles [default = RANDOM]. random: bundles are sorted randomly. fee: sorted by increasing fee, if fees are equal then by PSP name. pspname : sorted by PSP name.",
-          	"required": false,
-          	"schema": {
-          		"type": "string",
-          		"default": "random"
-          	}
+            "name": "orderBy",
+            "in": "query",
+            "description": "Sorting logic to be applied to the bundles [default = RANDOM]. random â bundles are sorted randomly. fee â sorted by increasing fee, if fees are equal then by PSP name. pspname â sorted by PSP name.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "random"
+            }
           }
         ],
         "requestBody": {
@@ -341,6 +227,120 @@
         }
       ]
     },
+    "/info": {
+      "get": {
+        "tags": [
+          "Home"
+        ],
+        "summary": "health check",
+        "description": "Return OK if application is started",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
     "/psps/{idPsp}/fees": {
       "post": {
         "tags": [
@@ -381,7 +381,7 @@
           {
             "name": "onUsFirst",
             "in": "query",
-            "description": "Affects the sorting logic [default = true]. true: if the onus bundle is present, it is returned in the first position, regardless of the chosen sorting logic. false: the sorting logic is also applied to the onus bundle, which may therefore appear in positions other than the first",
+            "description": "Affects the sorting logic [default = true]. true â if the onus bundle is present, it is returned in the first position, regardless of the chosen sorting logic. false â the sorting logic is also applied to the onus bundle, which may therefore appear in positions other than the first",
             "required": false,
             "schema": {
               "type": "string",
@@ -391,7 +391,7 @@
           {
             "name": "orderBy",
             "in": "query",
-            "description": "Sorting logic to be applied to the bundles [default = RANDOM]. random: bundles are sorted randomly. fee: sorted by increasing fee, if fees are equal then by PSP name. pspname : sorted by PSP name.",
+            "description": "Sorting logic to be applied to the bundles [default = RANDOM]. random â bundles are sorted randomly. fee â sorted by increasing fee, if fees are equal then by PSP name. pspname â sorted by PSP name.",
             "required": false,
             "schema": {
               "type": "string",
@@ -596,6 +596,9 @@
         }
       },
       "TransferListItem": {
+        "required": [
+          "creditorInstitution"
+        ],
         "type": "object",
         "properties": {
           "creditorInstitution": {
@@ -606,6 +609,28 @@
           },
           "digitalStamp": {
             "type": "boolean"
+          }
+        }
+      },
+      "ProblemJson": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
+          },
+          "status": {
+            "maximum": 600,
+            "minimum": 100,
+            "type": "integer",
+            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
+            "format": "int32",
+            "example": 200
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human readable explanation specific to this occurrence of the problem.",
+            "example": "There was an error processing the request"
           }
         }
       },
@@ -698,28 +723,6 @@
             "items": {
               "$ref": "#/components/schemas/Fee"
             }
-          }
-        }
-      },
-      "ProblemJson": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
-          },
-          "status": {
-            "maximum": 600,
-            "minimum": 100,
-            "type": "integer",
-            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
-            "format": "int32",
-            "example": 200
-          },
-          "detail": {
-            "type": "string",
-            "description": "A human readable explanation specific to this occurrence of the problem.",
-            "example": "There was an error processing the request"
           }
         }
       },
