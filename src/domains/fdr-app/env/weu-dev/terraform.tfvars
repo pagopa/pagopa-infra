@@ -66,6 +66,7 @@ tls_cert_check_helm = {
 # docker image
 image_name = "reporting-fdr"
 image_tag  = "latest"
+registry_url  = "pagopadcommonacr.azurecr.io"
 
 # FDR ( phase#1 and phase#3 cfg )
 

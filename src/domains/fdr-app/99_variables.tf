@@ -172,6 +172,12 @@ variable "image_tag" {
   description = "The image tag to use with a function app"
 }
 
+variable "registry_url" {
+  type        = string
+  default     = null
+  description = "The container registry to use with a function app"
+}
+
 variable "eventhub_name" {
   type        = string
   default     = null
