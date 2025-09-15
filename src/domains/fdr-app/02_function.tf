@@ -138,7 +138,7 @@ module "reporting_fdr_function_slot_staging" {
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
-  subnet_id       = module.reporting_fdr_function_snet.id
+  subnet_id       = module.reporting_fdr_function_snet[0].id
 
   tags = module.tag_config.tags
 }

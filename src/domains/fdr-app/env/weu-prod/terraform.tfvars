@@ -15,6 +15,7 @@ reporting_fdr_function_always_on = true
 
 app_service_plan_info = {
   kind                         = "Linux"
+  sku_tier                     = "PremiumV3"
   sku_size                     = "P1v3"
   maximum_elastic_worker_count = 1
   worker_count                 = 1
