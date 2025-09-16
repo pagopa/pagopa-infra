@@ -205,9 +205,3 @@ variable "k8s_kube_config_path_prefix" {
   type    = string
   default = "~/.kube"
 }
-
-variable "checkout_feature_flag_map" {
-  type        = string
-  description = "Checkout feature flag JSON map"
-  default = "{}"
-}

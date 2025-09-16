@@ -60,18 +60,18 @@ module "apim_checkout_feature_flags_v1" {
   })
 }
 
+data "azurerm_key_vault_secret" "checkout_feature_flags_map" {
+  name         = "checkout-feature-flags-map"
+  key_vault_id = data.azurerm_key_vault.key_vault_checkout.id
+}
+
 resource "azurerm_api_management_named_value" "apim_checkout_feature_flags_map_value" {
   name                = "checkout-feature-flag-map"
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
   display_name        = "checkout-feature-flag-map"
-  value               = "{ \"enableAuthIpWhiteList\": \"-\", \"enablePspPickerPageIpWhiteList\": \"-\"}"
+  value               = data.azurerm_key_vault_secret.checkout_feature_flags_map.value
   secret              = true
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
 }
 
 #######################################################################
