@@ -5,6 +5,10 @@ resource "azurerm_data_factory_linked_service_key_vault" "gps_kv_linked_service"
 }
 
 resource "azapi_resource" "gpd_postgres_linked_service" {
+  depends_on = [
+    azurerm_data_factory_linked_service_key_vault.gps_kv_linked_service
+  ]
+
   type                      = "Microsoft.DataFactory/factories/linkedservices@2018-06-01"
   name                      = "gpd-${var.env}-postgres-ls"
   parent_id                 = data.azurerm_data_factory.data_factory.id
