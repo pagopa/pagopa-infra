@@ -4,51 +4,6 @@ resource "azurerm_data_factory_linked_service_key_vault" "gps_kv_linked_service"
   key_vault_id    = data.azurerm_key_vault.gps_kv.id
 }
 
-/*
-  Non si è potuto usare azurerm_data_factory_linked_service_postgresql perchè
-  definisce un linked service per PostgreSQL (Legacy) e non un AzurePostgreSql.
-  Errore:
-  "This linked service is no longer supported. Your pipeline referencing this linked service may fail after September 30, 2025 if not upgraded. Please upgrade by creating a new PostgreSQL linked service."
-
-  Come workaround creiamo la risorsa tramite azurerm_data_factory_linked_custom_service.
-*/
-resource "azurerm_data_factory_linked_custom_service" "gpd_azure_postgres_linked_service" {
-  depends_on = [
-    azurerm_data_factory_linked_service_key_vault.gps_kv_linked_service
-  ]
-
-  name                 = "gpd-${var.env}-azure-postgres-linked-service"
-  data_factory_id      = data.azurerm_data_factory.data_factory.id
-  type                 = "AzurePostgreSql"
-  description          = "Source gpd schema for gpd migration test"
-  type_properties_json = <<JSON
-{
-  "server": "${module.postgres_flexible_server_private_db.fqdn}",
-  "port": "5432",
-  "database": "${var.gpd_db_name}",
-  "sslMode": 2,
-  "username": "${data.azurerm_key_vault_secret.gpd_db_usr.value}",
-  "password": {
-    "type": "AzureKeyVaultSecret",
-    "store": {
-      "referenceName": "${azurerm_data_factory_linked_service_key_vault.gps_kv_linked_service.name}",
-      "type": "LinkedServiceReference"
-    },
-    "secretName": "${data.azurerm_key_vault_secret.gpd_db_pwd.name}"
-  },
-  "authenticationType": "Basic"
-}
-JSON
-
-  integration_runtime {
-    name = "AutoResolveIntegrationRuntime"
-  }
-
-  additional_properties = {
-    version = "2.0"
-  }
-}
-
 resource "azapi_resource" "gpd_postgres_linked_service" {
   type                      = "Microsoft.DataFactory/factories/linkedservices@2018-06-01"
   name                      = "gpd-${var.env}-postgres-ls"
@@ -102,6 +57,8 @@ resource "azurerm_data_factory_pipeline" "pipeline_odp_migration" {
     processed_po          = 1,
     processed_installment = 1
   }
+
+  folder = "GPD_MIGRATION_PIPELINE"
 
   activities_json = "[${templatefile("datafactory/pipelines/APD_TO_ODP_MIGRATION_Pipeline.json", {
     linked_service_gpd = azapi_resource.gpd_postgres_linked_service.name
