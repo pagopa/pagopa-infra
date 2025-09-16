@@ -1,0 +1,292 @@
+pr: none
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+parameters:
+  - name: env
+    displayName: deploy environment
+    type: string
+    default: prod
+    values:
+#      - dev
+#      - uat
+      - prod
+
+variables:
+  ${{ if eq(parameters.env, 'dev') }}:
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
+    METABASE_KEY_VAULT_NAME: 'pagopa-d-itn-core-kv'
+    poolImage: 'pagopa-dev-linux-infra'
+    ENV: 'd'
+    CONNECT_REPLICA_DB_REGION_SHORT: 'weu'
+    GPS_DB_DOMAIN: 'gpd'
+  ${{ elseif eq(parameters.env, 'uat') }}:
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
+    METABASE_KEY_VAULT_NAME: 'pagopa-u-itn-core-kv'
+    poolImage: 'pagopa-uat-linux-infra'
+    ENV: 'u'
+    CONNECT_REPLICA_DB_REGION_SHORT: 'weu'
+    GPS_DB_DOMAIN: 'gpd'
+  ${{ if eq(parameters.env, 'prod') }}:
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
+    METABASE_KEY_VAULT_NAME: 'pagopa-p-itn-core-kv'
+    poolImage: 'pagopa-prod-linux-infra'
+    ENV: 'p'
+    CONNECT_REPLICA_DB_REGION_SHORT: 'itn'
+    GPS_DB_DOMAIN: 'gps'
+
+
+
+
+stages:
+  - stage: get_read_user_credentials
+    displayName: "Get read user credentials"
+    jobs:
+      - job: get_credentials
+        pool: $(poolImage)
+        displayName: "Get credentials job"
+        steps:
+          - task: AzureKeyVault@2
+            displayName: "Get read user password from key vault"
+            inputs:
+              azureSubscription: $(AZURE_SERVICE_CONNECTION)
+              keyVaultName: $(METABASE_KEY_VAULT_NAME)
+              secretsFilter: 'metabase-reader-login,metabase-reader-password,metabase-db-admin-login,metabase-db-admin-password'
+          - script: |
+              echo "##vso[task.setvariable variable=READ_USER_PASSWORD;isOutput=true]$(metabase-reader-password)"
+              echo "##vso[task.setvariable variable=READ_USER_LOGIN;isOutput=true]$(metabase-reader-login)"
+              echo "##vso[task.setvariable variable=METABASE_ADMIN_LOGIN;isOutput=true]$(metabase-db-admin-login)"
+              echo "##vso[task.setvariable variable=METABASE_ADMIN_PASSWORD;isOutput=true]$(metabase-db-admin-password)"
+            displayName: "Set read user password as pipeline variable"
+            name: credentials
+            env:
+              metabase-password: $(metabase-password)
+  - stage: create_readonly_user
+    displayName: "Create readonly user"
+    dependsOn: get_read_user_credentials
+    jobs:
+      # replicate this for each database
+      - job: create_user_nodo
+        pool: $(poolImage)
+        displayName: "Create read user in nodo db"
+        variables:
+          READ_USER_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_LOGIN'] ]
+          READ_USER_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_PASSWORD'] ]
+        steps:
+          - template: ./templates/db-readonly-user-create.yml
+            parameters:
+              DATABASE_NAME: 'postgres'
+              DB_HOST: 'pagopa-${{ variables.ENV }}-weu-nodo-flexible-postgresql'
+              USERNAME: $(READ_USER_LOGIN)
+              PASSWORD: $(READ_USER_PASSWORD)
+              KEY_VAULT_NAME: "pagopa-${{ variables.ENV }}-nodo-kv"
+              ADMIN_LOGIN_KEY: "db-administrator-login"
+              ADMIN_PWD_KEY: "db-administrator-login-password"
+              SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+      - job: create_user_nodo_storico
+        pool: $(poolImage)
+        displayName: "Create read user in nodo db"
+        variables:
+          READ_USER_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_LOGIN'] ]
+          READ_USER_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_PASSWORD'] ]
+        steps:
+          - template: ./templates/db-readonly-user-create.yml
+            parameters:
+              DATABASE_NAME: 'postgres'
+              DB_HOST: 'pagopa-${{ variables.ENV }}-weu-nodo-storico-flexible-postgresql'
+              USERNAME: $(READ_USER_LOGIN)
+              PASSWORD: $(READ_USER_PASSWORD)
+              KEY_VAULT_NAME: "pagopa-${{ variables.ENV }}-nodo-kv"
+              ADMIN_LOGIN_KEY: "db-administrator-login"
+              ADMIN_PWD_KEY: "db-administrator-login-password"
+              SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+      - job: create_user_crusc8
+        pool: $(poolImage)
+        displayName: "Create read user in crusc8 db"
+        variables:
+          READ_USER_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_LOGIN'] ]
+          READ_USER_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_PASSWORD'] ]
+        steps:
+          - template: ./templates/db-readonly-user-create.yml
+            parameters:
+              DATABASE_NAME: 'postgres'
+              DB_HOST: 'pagopa-${{ variables.ENV }}-itn-crusc8-flexible-postgresql'
+              USERNAME: $(READ_USER_LOGIN)
+              PASSWORD: $(READ_USER_PASSWORD)
+              KEY_VAULT_NAME: "pagopa-${{ variables.ENV }}-itn-crusc8-kv"
+              ADMIN_LOGIN_KEY: "db-administrator-login"
+              ADMIN_PWD_KEY: "db-administrator-login-password"
+              SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+      - job: create_user_fdr
+        pool: $(poolImage)
+        displayName: "Create read user in fdr db"
+        variables:
+          READ_USER_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_LOGIN'] ]
+          READ_USER_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_PASSWORD'] ]
+        steps:
+          - template: ./templates/db-readonly-user-create.yml
+            parameters:
+              DATABASE_NAME: 'postgres'
+              DB_HOST: 'pagopa-${{ variables.ENV }}-weu-fdr-flexible-postgresql'
+              USERNAME: $(READ_USER_LOGIN)
+              PASSWORD: $(READ_USER_PASSWORD)
+              KEY_VAULT_NAME: "pagopa-${{ variables.ENV }}-fdr-kv"
+              ADMIN_LOGIN_KEY: "db-administrator-login"
+              ADMIN_PWD_KEY: "db-administrator-login-password"
+              SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+      - job: create_user_gpd
+        pool: $(poolImage)
+        displayName: "Create read user in gpd db"
+        variables:
+          READ_USER_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_LOGIN'] ]
+          READ_USER_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_PASSWORD'] ]
+        steps:
+          - template: ./templates/db-readonly-user-create.yml
+            parameters:
+              DATABASE_NAME: 'postgres'
+              DB_HOST: 'pagopa-${{ variables.ENV }}-weu-gpd-pgflex'
+              USERNAME: $(READ_USER_LOGIN)
+              PASSWORD: $(READ_USER_PASSWORD)
+              KEY_VAULT_NAME: "pagopa-${{ variables.ENV }}-gps-kv"
+              ADMIN_LOGIN_KEY: "pgres-admin-login"
+              ADMIN_PWD_KEY: "pgres-admin-pwd"
+              SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+  - stage: create_metabase_connections
+    displayName: "Create metabase connections"
+    dependsOn: get_read_user_credentials
+    jobs:
+      - job: create_metabase_connection_cruscotto
+        pool: $(poolImage)
+        displayName: "Create metabase connection for cruscotto db"
+        variables:
+          READ_USER_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_LOGIN'] ]
+          READ_USER_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_PASSWORD'] ]
+          METABASE_ADMIN_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.METABASE_ADMIN_LOGIN'] ]
+          METABASE_ADMIN_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.METABASE_ADMIN_PASSWORD'] ]
+        steps:
+          - template: ./templates/metabase-create-connection.yml
+            parameters:
+              METABASE_DATABASE_NAME: 'metabase'
+              METABASE_DB_HOST: 'pagopa-${{ variables.ENV }}-itn-dbsecurity-flexible-postgresql'
+              SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              METABASE_ADMIN_LOGIN: $(METABASE_ADMIN_LOGIN)
+              METABASE_ADMIN_PWD: $(METABASE_ADMIN_PASSWORD)
+              TARGET_HOST: "pagopa-${{ variables.ENV }}-itn-crusc8-flexible-postgresql.postgres.database.azure.com"
+              TARGET_USER: $(READ_USER_LOGIN)
+              TARGET_PASSWORD: $(READ_USER_PASSWORD)
+              TARGET_DB: 'cruscotto'
+              TARGET_VERSION: "16.8"
+              TARGET_CONN_NAME: "Cruscotto"
+      - job: create_metabase_connection_fdr
+        pool: $(poolImage)
+        displayName: "Create metabase connection for fdr db"
+        variables:
+          READ_USER_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_LOGIN'] ]
+          READ_USER_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_PASSWORD'] ]
+          METABASE_ADMIN_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.METABASE_ADMIN_LOGIN'] ]
+          METABASE_ADMIN_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.METABASE_ADMIN_PASSWORD'] ]
+        steps:
+          - template: ./templates/metabase-create-connection.yml
+            parameters:
+              METABASE_DATABASE_NAME: 'metabase'
+              METABASE_DB_HOST: 'pagopa-${{ variables.ENV }}-itn-dbsecurity-flexible-postgresql'
+              SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              METABASE_ADMIN_LOGIN: $(METABASE_ADMIN_LOGIN)
+              METABASE_ADMIN_PWD: $(METABASE_ADMIN_PASSWORD)
+              TARGET_HOST: "pagopa-${{ variables.ENV }}-${{ variables.CONNECT_REPLICA_DB_REGION_SHORT }}-fdr-flexible-postgresql.postgres.database.azure.com"
+              TARGET_USER: $(READ_USER_LOGIN)
+              TARGET_PASSWORD: $(READ_USER_PASSWORD)
+              TARGET_DB: 'fdr'
+              TARGET_VERSION: "15.13"
+              TARGET_CONN_NAME: "FDR"
+      - job: create_metabase_connection_fdr_3
+        pool: $(poolImage)
+        displayName: "Create metabase connection for fdr3 db"
+        variables:
+          READ_USER_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_LOGIN'] ]
+          READ_USER_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_PASSWORD'] ]
+          METABASE_ADMIN_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.METABASE_ADMIN_LOGIN'] ]
+          METABASE_ADMIN_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.METABASE_ADMIN_PASSWORD'] ]
+        steps:
+          - template: ./templates/metabase-create-connection.yml
+            parameters:
+              METABASE_DATABASE_NAME: 'metabase'
+              METABASE_DB_HOST: 'pagopa-${{ variables.ENV }}-itn-dbsecurity-flexible-postgresql'
+              SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              METABASE_ADMIN_LOGIN: $(METABASE_ADMIN_LOGIN)
+              METABASE_ADMIN_PWD: $(METABASE_ADMIN_PASSWORD)
+              TARGET_HOST: "pagopa-${{ variables.ENV }}-${{ variables.CONNECT_REPLICA_DB_REGION_SHORT }}-fdr-flexible-postgresql.postgres.database.azure.com"
+              TARGET_USER: $(READ_USER_LOGIN)
+              TARGET_PASSWORD: $(READ_USER_PASSWORD)
+              TARGET_DB: 'fdr3'
+              TARGET_VERSION: "15.13"
+              TARGET_CONN_NAME: "FDR3"
+      - job: create_metabase_connection_gps
+        pool: $(poolImage)
+        displayName: "Create metabase connection for gps db"
+        variables:
+          READ_USER_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_LOGIN'] ]
+          READ_USER_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_PASSWORD'] ]
+          METABASE_ADMIN_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.METABASE_ADMIN_LOGIN'] ]
+          METABASE_ADMIN_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.METABASE_ADMIN_PASSWORD'] ]
+        steps:
+          - template: ./templates/metabase-create-connection.yml
+            parameters:
+              METABASE_DATABASE_NAME: 'metabase'
+              METABASE_DB_HOST: 'pagopa-${{ variables.ENV }}-itn-dbsecurity-flexible-postgresql'
+              SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              METABASE_ADMIN_LOGIN: $(METABASE_ADMIN_LOGIN)
+              METABASE_ADMIN_PWD: $(METABASE_ADMIN_PASSWORD)
+              TARGET_HOST: "pagopa-${{ variables.ENV }}-${{ variables.CONNECT_REPLICA_DB_REGION_SHORT }}-${{ GPS_DB_DOMAIN }}-pgflex.postgres.database.azure.com"
+              TARGET_USER: $(READ_USER_LOGIN)
+              TARGET_PASSWORD: $(READ_USER_PASSWORD)
+              TARGET_DB: 'apd'
+              TARGET_VERSION: "15.13"
+              TARGET_CONN_NAME: "GPS"
+      - job: create_metabase_connection_nodo
+        pool: $(poolImage)
+        displayName: "Create metabase connection for nodo db"
+        variables:
+          READ_USER_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_LOGIN'] ]
+          READ_USER_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_PASSWORD'] ]
+          METABASE_ADMIN_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.METABASE_ADMIN_LOGIN'] ]
+          METABASE_ADMIN_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.METABASE_ADMIN_PASSWORD'] ]
+        steps:
+          - template: ./templates/metabase-create-connection.yml
+            parameters:
+              METABASE_DATABASE_NAME: 'metabase'
+              METABASE_DB_HOST: 'pagopa-${{ variables.ENV }}-itn-dbsecurity-flexible-postgresql'
+              SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              METABASE_ADMIN_LOGIN: $(METABASE_ADMIN_LOGIN)
+              METABASE_ADMIN_PWD: $(METABASE_ADMIN_PASSWORD)
+              TARGET_HOST: "pagopa-${{ variables.ENV }}-${{ variables.CONNECT_REPLICA_DB_REGION_SHORT }}-nodo-flexible-postgresql.postgres.database.azure.com"
+              TARGET_USER: $(READ_USER_LOGIN)
+              TARGET_PASSWORD: $(READ_USER_PASSWORD)
+              TARGET_DB: 'nodo'
+              TARGET_VERSION: "16.9"
+              TARGET_CONN_NAME: "Nodo"
+      - job: create_metabase_connection_nodo_storico
+        pool: $(poolImage)
+        displayName: "Create metabase connection for nodo storico db"
+        variables:
+          READ_USER_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_LOGIN'] ]
+          READ_USER_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.READ_USER_PASSWORD'] ]
+          METABASE_ADMIN_LOGIN: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.METABASE_ADMIN_LOGIN'] ]
+          METABASE_ADMIN_PASSWORD: $[ stageDependencies.get_read_user_credentials.get_credentials.outputs['credentials.METABASE_ADMIN_PASSWORD'] ]
+        steps:
+          - template: ./templates/metabase-create-connection.yml
+            parameters:
+              METABASE_DATABASE_NAME: 'metabase'
+              METABASE_DB_HOST: 'pagopa-${{ variables.ENV }}-itn-dbsecurity-flexible-postgresql'
+              SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              METABASE_ADMIN_LOGIN: $(METABASE_ADMIN_LOGIN)
+              METABASE_ADMIN_PWD: $(METABASE_ADMIN_PASSWORD)
+              TARGET_HOST: "pagopa-${{ variables.ENV }}-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com"
+              TARGET_USER: $(READ_USER_LOGIN)
+              TARGET_PASSWORD: $(READ_USER_PASSWORD)
+              TARGET_DB: 'nodo'
+              TARGET_VERSION: "16.9"
+              TARGET_CONN_NAME: "Nodo storico"
+

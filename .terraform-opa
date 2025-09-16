@@ -1,0 +1,4 @@
+opa_policy_folder=./.policy/azure
+opa_policy_clone_folder=./.policy
+opa_service_tag=pagopa
+opa_policy_version=v0.1.0
