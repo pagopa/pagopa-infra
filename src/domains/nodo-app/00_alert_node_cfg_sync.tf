@@ -177,7 +177,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "node_cfg_sync_sync_dumpi
 # Cache
 resource "azurerm_monitor_scheduled_query_rules_alert" "cache-dumping-error" {
   count               = var.env_short == "p" ? 1 : 0
-  name                = format("%s-%s", local.pagopa_node_cfg_sync.name, "sync-dumping-error")
+  name                = format("%s-%s", local.pagopa_node_cfg_sync.name, "cache-dumping-error")
   resource_group_name = data.azurerm_resource_group.node_cfg_sync_rg.name
   location            = var.location
 
@@ -202,7 +202,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "cache-dumping-error" {
 # Stand-in
 resource "azurerm_monitor_scheduled_query_rules_alert" "stand-in-station-dumping-error" {
   count               = var.env_short == "p" ? 1 : 0
-  name                = format("%s-%s", local.pagopa_node_cfg_sync.name, "sync-dumping-error")
+  name                = format("%s-%s", local.pagopa_node_cfg_sync.name, "stand-in-station-dumping-error")
   resource_group_name = data.azurerm_resource_group.node_cfg_sync_rg.name
   location            = var.location
 
