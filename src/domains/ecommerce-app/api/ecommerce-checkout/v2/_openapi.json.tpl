@@ -1518,9 +1518,6 @@
               "SAFARI"
             ]
           },
-          "bin": {
-            "type": "string"
-          },
           "totalAmount": {
             "type": "integer",
             "format": "int64"
