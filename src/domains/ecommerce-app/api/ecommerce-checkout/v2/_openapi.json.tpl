@@ -329,7 +329,7 @@
     "/payment-methods": {
       "post": {
         "tags": [
-          "payment-methods"
+          "ecommerce-methods-handler"
         ],
         "operationId": "getAllPaymentMethods",
         "summary": "Retrieve all Payment Methods (by filter)",
