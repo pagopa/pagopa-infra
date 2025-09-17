@@ -216,7 +216,7 @@ locals {
           name                       = "AllowToolsCaePostgreSQL"
           priority                   = 406
           target_service             = "postgresql"
-          source_subnet_name         = "pagopa-${var.env_short}-tools-cae-snet"
+          source_subnet_name         = "pagopa-${var.env_short}-tools-cae-subnet"
           source_subnet_vnet_name    = "pagopa-${var.env_short}-vnet"
           description                = "Allow Container app tools to access PostgreSQL"
       }
@@ -245,10 +245,10 @@ locals {
           description                = "Allow gh runner weu to access PostgreSQL"
       }
       allow_data_factory_to_postgres = {
-          name                       = "AllowDataFActoryPostgreSQL"
+          name                       = "AllowDataFactoryPostgreSQL"
           priority                   = 410
           target_service             = "postgresql"
-          source_address_prefixes    = ["AzureDataFactory"]
+          source_address_prefixes    = ["DataFactory"]
           description                = "Allow data factory to access PostgreSQL"
       }
   }
