@@ -7,7 +7,6 @@ locals {
       watcher_enabled         = var.nsg_network_watcher_enabled
 
       inbound_rules  = concat([
-        local.nsg_rule_library.allow_all_to_postgres, #fixme remove after testing (all sng)
         local.nsg_rule_library.allow_vpn_to_postgres,
         local.nsg_rule_library.allow_azdo_to_postgres,
         local.nsg_rule_library.allow_tools_cae_to_postgres,
@@ -23,7 +22,6 @@ locals {
       watcher_enabled         = var.nsg_network_watcher_enabled
 
       inbound_rules  = concat([
-        local.nsg_rule_library.allow_all_to_postgres, #fixme remove after testing (all sng)
         local.nsg_rule_library.allow_vpn_to_postgres,
         local.nsg_rule_library.allow_azdo_to_postgres,
         local.nsg_rule_library.allow_tools_cae_to_postgres,
@@ -39,7 +37,6 @@ locals {
       watcher_enabled         = var.nsg_network_watcher_enabled
 
       inbound_rules  = concat([
-        local.nsg_rule_library.allow_all_to_postgres, #fixme remove after testing (all sng)
         local.nsg_rule_library.allow_vpn_to_postgres,
         local.nsg_rule_library.allow_azdo_to_postgres,
         local.nsg_rule_library.allow_tools_cae_to_postgres,
@@ -55,7 +52,6 @@ locals {
       watcher_enabled         = var.nsg_network_watcher_enabled
 
       inbound_rules  = concat([
-        local.nsg_rule_library.allow_all_to_postgres, #fixme remove after testing (all sng)
         local.nsg_rule_library.allow_vpn_to_postgres,
         local.nsg_rule_library.allow_azdo_to_postgres,
         local.nsg_rule_library.allow_tools_cae_to_postgres,
@@ -73,7 +69,6 @@ locals {
       watcher_enabled         = var.nsg_network_watcher_enabled
 
       inbound_rules  = concat([
-        local.nsg_rule_library.allow_all_to_postgres, #fixme remove after testing (all sng)
         local.nsg_rule_library.allow_vpn_to_postgres,
         local.nsg_rule_library.allow_azdo_to_postgres,
         local.nsg_rule_library.allow_tools_cae_to_postgres,
@@ -92,7 +87,6 @@ locals {
       watcher_enabled         = var.nsg_network_watcher_enabled
 
       inbound_rules  = concat([
-        local.nsg_rule_library.allow_all_to_postgres, #fixme remove after testing (all sng)
         local.nsg_rule_library.allow_vpn_to_postgres,
         local.nsg_rule_library.allow_azdo_to_postgres,
         local.nsg_rule_library.allow_tools_cae_to_postgres,
@@ -109,7 +103,6 @@ locals {
       watcher_enabled         = var.nsg_network_watcher_enabled
 
       inbound_rules  = concat([
-        local.nsg_rule_library.allow_all_to_postgres, #fixme remove after testing (all sng)
         local.nsg_rule_library.allow_vpn_to_postgres,
         local.nsg_rule_library.allow_azdo_to_postgres,
         local.nsg_rule_library.allow_tools_cae_to_postgres,
@@ -127,7 +120,6 @@ locals {
       watcher_enabled         = var.nsg_network_watcher_enabled
 
       inbound_rules  = concat([
-        local.nsg_rule_library.allow_all_to_postgres, #fixme remove after testing (all sng)
         local.nsg_rule_library.allow_vpn_to_postgres,
         local.nsg_rule_library.allow_azdo_to_postgres,
         local.nsg_rule_library.allow_tools_cae_to_postgres,
@@ -144,7 +136,6 @@ locals {
       watcher_enabled         = var.nsg_network_watcher_enabled
 
       inbound_rules  = concat([
-        local.nsg_rule_library.allow_all_to_postgres, #fixme remove after testing (all sng)
         local.nsg_rule_library.allow_vpn_to_postgres,
         local.nsg_rule_library.allow_azdo_to_postgres,
         local.nsg_rule_library.allow_tools_cae_to_postgres,
