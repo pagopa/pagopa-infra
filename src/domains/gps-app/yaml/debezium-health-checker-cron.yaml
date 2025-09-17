@@ -17,7 +17,7 @@ spec:
         spec:
           containers:
           - name: debezium-health-checker
-            image: bitnami/kubectl:1.33-debian-12
+            image: bitnamisecure/kubectl:latest
             command: ["/bin/bash", "/scripts/check_kafka_connect.sh"]
             volumeMounts:
             - name: script-volume
