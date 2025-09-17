@@ -396,7 +396,7 @@
     "/payment-methods/{id}": {
       "get": {
         "tags": [
-          "payment-methods"
+          "ecommerce-methods-handler"
         ],
         "operationId": "getPaymentMethod",
         "summary": "Get payment method by ID",
