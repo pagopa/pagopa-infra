@@ -15,4 +15,4 @@ metabase_pgflex_params = {
 }
 
 
-metabase_plan_idh_tier = "premium"
+metabase_plan_idh_tier = "premium_low_load"
