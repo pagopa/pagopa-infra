@@ -12,7 +12,7 @@ locals {
         local.nsg_rule_library.allow_azdo_to_postgres,
         local.nsg_rule_library.allow_tools_cae_to_postgres,
         local.nsg_rule_library.allow_aks_weu_to_postgres,
-        # fixme add application subnet (all nsg)
+        local.nsg_rule_library.allow_data_factory_to_postgres,
       ], var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [])
       outbound_rules = []
     }
@@ -28,7 +28,7 @@ locals {
         local.nsg_rule_library.allow_azdo_to_postgres,
         local.nsg_rule_library.allow_tools_cae_to_postgres,
         local.nsg_rule_library.allow_aks_weu_to_postgres,
-        # fixme add application subnet (all nsg)
+        local.nsg_rule_library.allow_data_factory_to_postgres,
       ], var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [])
       outbound_rules = []
     }
@@ -44,7 +44,7 @@ locals {
         local.nsg_rule_library.allow_azdo_to_postgres,
         local.nsg_rule_library.allow_tools_cae_to_postgres,
         local.nsg_rule_library.allow_aks_weu_to_postgres,
-        # fixme add application subnet (all nsg)
+        local.nsg_rule_library.allow_data_factory_to_postgres,
       ], var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [])
       outbound_rules = []
     }
@@ -60,7 +60,7 @@ locals {
         local.nsg_rule_library.allow_azdo_to_postgres,
         local.nsg_rule_library.allow_tools_cae_to_postgres,
         local.nsg_rule_library.allow_aks_weu_to_postgres,
-        # fixme add application subnet (all nsg)
+        local.nsg_rule_library.allow_data_factory_to_postgres,
       ], var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [])
       outbound_rules = []
     }
@@ -79,7 +79,7 @@ locals {
         local.nsg_rule_library.allow_tools_cae_to_postgres,
         local.nsg_rule_library.allow_aks_itn_system_to_postgres,
         local.nsg_rule_library.allow_aks_itn_user_to_postgres,
-        # fixme add application subnet (all nsg)
+        local.nsg_rule_library.allow_data_factory_to_postgres,
       ], var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [])
       outbound_rules = []
     }
@@ -98,7 +98,7 @@ locals {
         local.nsg_rule_library.allow_tools_cae_to_postgres,
         local.nsg_rule_library.allow_aks_itn_system_to_postgres,
         local.nsg_rule_library.allow_aks_itn_user_to_postgres,
-        # fixme add application subnet (all nsg)
+        local.nsg_rule_library.allow_data_factory_to_postgres,
       ], var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [])
       outbound_rules = []
     }
@@ -115,7 +115,7 @@ locals {
         local.nsg_rule_library.allow_tools_cae_to_postgres,
         local.nsg_rule_library.allow_aks_itn_system_to_postgres,
         local.nsg_rule_library.allow_aks_itn_user_to_postgres,
-        # fixme add application subnet (all nsg)
+        local.nsg_rule_library.allow_data_factory_to_postgres,
       ], var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [])
       outbound_rules = []
     }
@@ -133,7 +133,7 @@ locals {
         local.nsg_rule_library.allow_tools_cae_to_postgres,
         local.nsg_rule_library.allow_aks_itn_system_to_postgres,
         local.nsg_rule_library.allow_aks_itn_user_to_postgres,
-        # fixme add application subnet (all nsg)
+        local.nsg_rule_library.allow_data_factory_to_postgres,
       ], var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [])
       outbound_rules = []
     }
@@ -150,7 +150,7 @@ locals {
         local.nsg_rule_library.allow_tools_cae_to_postgres,
         local.nsg_rule_library.allow_aks_itn_system_to_postgres,
         local.nsg_rule_library.allow_aks_itn_user_to_postgres,
-        # fixme add application subnet (all nsg)
+        local.nsg_rule_library.allow_data_factory_to_postgres,
       ], var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [])
       outbound_rules = []
     }
@@ -252,6 +252,13 @@ locals {
           source_subnet_name         = "github-runner-snet"
           source_subnet_vnet_name    = "pagopa-${var.env_short}-vnet"
           description                = "Allow gh runner weu to access PostgreSQL"
+      }
+      allow_data_factory_to_postgres = {
+          name                       = "AllowDataFActoryPostgreSQL"
+          priority                   = 410
+          target_service             = "postgresql"
+          source_address_prefixes    = ["AzureDataFactory"]
+          description                = "Allow data factory to access PostgreSQL"
       }
   }
 
