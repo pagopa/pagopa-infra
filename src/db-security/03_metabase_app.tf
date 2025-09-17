@@ -40,6 +40,8 @@ module "metabase_app_service" {
   private_endpoint_dns_zone_id = data.azurerm_private_dns_zone.azurewebsites.id
   private_endpoint_subnet_id   = data.azurerm_subnet.private_endpoint_subnet.id
 
+  client_affinity_enabled = true
+
   autoscale_settings = {
     max_capacity                  = 3
     scale_up_requests_threshold   = 250
