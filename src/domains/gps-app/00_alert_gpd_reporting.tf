@@ -12,7 +12,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-reportin
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for /gpd-reporting/api/v1/organizations/ is less than or equal to threshold - <dashboard-link-here>"
+  description    = "Availability for /gpd-reporting/api/v1/organizations/ is less than or equal to threshold - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-gpd-reporting-analysis"
   enabled        = true
   query = (<<-QUERY
 let lowTrafficThreshold = 70; // the lower threshold that can be calculated regarding the number of invocations
