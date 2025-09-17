@@ -32,6 +32,11 @@
         "operationId": "getAllPaymentMethodsAuth",
         "summary": "Retrieve all Payment Methods (by filter)",
         "description": "API for retrieve payment method using the request query parameter filters",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -356,7 +361,7 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "description": "Authentication opaque token realeased by authorization service for checkout",
+        "description": "Authentication opaque token released by authorization service for checkout",
         "bearerFormat": "opaque token"
       }
     }
