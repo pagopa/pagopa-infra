@@ -27,7 +27,7 @@
     "/auth/payment-methods": {
       "post": {
         "tags": [
-          "payment-methods"
+          "ecommerce-methods-handler"
         ],
         "operationId": "getAllPaymentMethodsAuth",
         "summary": "Retrieve all Payment Methods (by filter)",
