@@ -196,7 +196,6 @@
       "PaymentMethodResponse": {
         "required": [
           "description",
-          "feeRange",
           "paymentTypeCode",
           "methodManagement",
           "name",
