@@ -174,3 +174,15 @@ resource "azurerm_key_vault_secret" "redis_std_checkout_hostname" {
   value        = module.pagopa_checkout_redis_std.hostname
   key_vault_id = module.key_vault.id
 }
+
+
+resource "azurerm_key_vault_secret" "checkout_feature_flags_map" {
+  name         = "checkout-feature-flags-map"
+  value        = "{}"
+  key_vault_id = module.key_vault.id
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
