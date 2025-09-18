@@ -67,6 +67,24 @@ module "apim_ecommerce_helpdesk_product" {
   policy_xml = file("./api_product/_base_policy.xml")
 }
 
+module "apim_ecommerce_payment_methods_handler_product" {
+  source = "./.terraform/modules/__v3__/api_management_product"
+
+  product_id   = "ecommerce-payment-methods-handler"
+  display_name = "ecommerce pagoPA payment methods handler"
+  description  = "Product for ecommerce pagoPA payment methods handler"
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = true
+  subscription_required = true
+  approval_required     = true
+  subscriptions_limit   = 1000
+
+  policy_xml = file("./api_product/_base_policy.xml")
+}
+
 ##############################
 ## API transactions service ##
 ##############################
@@ -723,6 +741,58 @@ module "apim_ecommerce_user_stats_service_api_v1" {
   })
 }
 
+
+#####################################
+## API payment methods handler ##
+#####################################
+locals {
+  apim_ecommerce_payment_methods_handler_api = {
+    display_name          = "ecommerce pagoPA - payment methods handler API"
+    description           = "API to support payment methods handler in ecommerce"
+    path                  = "ecommerce/payment-methods-handler"
+    subscription_required = true
+    service_url           = null
+  }
+}
+
+# Payment methods handler APIs
+resource "azurerm_api_management_api_version_set" "ecommerce_payment_methods_handler_api" {
+  name                = format("%s-payment-methods-handler-api", local.project)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = local.apim_ecommerce_payment_methods_handler_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+
+
+module "apim_ecommerce_payment_methods_handler_api_v1" {
+  source = "./.terraform/modules/__v3__/api_management_api"
+
+  name                  = format("%s-payment-methods-handler-api", local.project)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_ecommerce_product.product_id, module.apim_ecommerce_payment_methods_handler_product.product_id]
+  subscription_required = local.apim_ecommerce_payment_methods_handler_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.ecommerce_payment_methods_handler_api.id
+  api_version           = "v1"
+
+  description  = local.apim_ecommerce_payment_methods_handler_api.description
+  display_name = local.apim_ecommerce_payment_methods_handler_api.display_name
+  path         = local.apim_ecommerce_payment_methods_handler_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_ecommerce_payment_methods_handler_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/ecommerce-payment-methods-handler/v1/_openapi.json.tpl", {
+    hostname = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/ecommerce-payment-methods-handler/v1/_base_policy.xml.tpl", {
+    hostname = local.ecommerce_hostname
+  })
+}
+
 #################
 ## NAMED VALUE ##
 #################
@@ -854,5 +924,24 @@ resource "azurerm_api_management_named_value" "ecommerce_helpdesk_command_servic
   resource_group_name = local.pagopa_apim_rg
   display_name        = "ecommerce-helpdesk-command-service-api-key-value"
   value               = var.ecommerce_helpdesk_command_service_api_key_use_primary ? data.azurerm_key_vault_secret.ecommerce_helpdesk_command_service_primary_api_key.value : data.azurerm_key_vault_secret.ecommerce_helpdesk_command_service_secondary_api_key.value
+  secret              = true
+}
+
+data "azurerm_key_vault_secret" "ecommerce_payment_methods_handler_primary_api_key" {
+  name         = "ecommerce-payment-methods-handler-primary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "ecommerce_payment_methods_handler_secondary_api_key" {
+  name         = "ecommerce-payment-methods-handler-secondary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce_payment_methods_handler_api_key_value" {
+  name                = "ecommerce-payment-methods-handler-api-key-value"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-payment-methods-handler-api-key-value"
+  value               = var.ecommerce_payment_methods_handler_api_key_use_primary ? data.azurerm_key_vault_secret.ecommerce_payment_methods_handler_primary_api_key.value : data.azurerm_key_vault_secret.ecommerce_payment_methods_handler_secondary_api_key.value
   secret              = true
 }
