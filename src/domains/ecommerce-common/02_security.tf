@@ -1090,33 +1090,3 @@ resource "azurerm_key_vault_secret" "ecommerce_ratemyopenapi_api_key" {
   }
 }
 
-resource "random_password" "ecommerce_payment_methods_handler_primary_api_key_pass" {
-  length  = 32
-  special = false
-  #key-value string map used to track resource state: if one key-value change a resource regeneration is triggered
-  keepers = {
-    "version" : "1"
-  }
-}
-
-resource "random_password" "ecommerce_payment_methods_handler_secondary_api_key_pass" {
-  length  = 32
-  special = false
-  #key-value string map used to track resource state: if one key-value change a resource regeneration is triggered
-  keepers = {
-    "version" : "1"
-  }
-}
-
-resource "azurerm_key_vault_secret" "ecommerce_payment_methods_handler_primary_api_key" {
-  name         = "ecommerce-payment-methods-handler-primary-api-key"
-  value        = random_password.ecommerce_payment_methods_handler_primary_api_key_pass.result
-  key_vault_id = module.key_vault.id
-}
-
-resource "azurerm_key_vault_secret" "ecommerce_payment_methods_handler_secondary_api_key" {
-  name         = "ecommerce-payment-methods-handler-secondary-api-key"
-  value        = random_password.ecommerce_payment_methods_handler_secondary_api_key_pass.result
-  key_vault_id = module.key_vault.id
-}
-
