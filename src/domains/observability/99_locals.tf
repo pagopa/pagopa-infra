@@ -24,4 +24,8 @@ locals {
 
   vnet_italy_name                = "${local.product}-itn-vnet"
   vnet_italy_resource_group_name = "${local.product}-itn-vnet-rg"
+
+  linked_service_cruscotto_kv_name = "crusc8-${var.env_short}-key-vault"
+  kv_name_password_database        = "ls-cruscotto-password"
+  df_integration_runtime_name      = "AutoResolveIntegrationRuntime"
 }
