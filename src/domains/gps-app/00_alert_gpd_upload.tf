@@ -60,7 +60,7 @@ AzureDiagnostics
 | where availability < threshold
   QUERY
   )
-  severity    = 1
+  severity    = 0
   frequency   = 5
   time_window = 5
   trigger {
@@ -93,7 +93,7 @@ Error=countif(tostring(message) contains "[ServiceFunction] Processing function 
   | where Total > 0 and Error > 0
   QUERY
   )
-  severity    = 2
+  severity    = 0
   frequency   = 5
   time_window = 10
   trigger {
@@ -126,7 +126,7 @@ Error=countif(tostring(message) contains "[ValidationFunction] Processing functi
   | where Total > 0 and Error > 0
   QUERY
   )
-  severity    = 2
+  severity    = 0
   frequency   = 5
   time_window = 10
   trigger {
