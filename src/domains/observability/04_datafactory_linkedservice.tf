@@ -157,26 +157,26 @@ resource "azapi_resource" "ls_postgres_cruscotto" {
 
   body = {
     properties = {
-      type 	= "PostgreSqlV2"
+      type = "PostgreSqlV2"
       typeProperties = {
-      	server    = data.azurerm_key_vault_secret.cruscotto_db_host.value
-      	port      = data.azurerm_key_vault_secret.cruscotto_db_port.value
-      	database  = data.azurerm_key_vault_secret.cruscotto_db_database.value
-      	username  = data.azurerm_key_vault_secret.cruscotto_db_username.value
-      	password  = {
-      		type  = "AzureKeyVaultSecret"
-      		store = {
-      			referenceName = local.linked_service_cruscotto_kv_name
-      			type          = "LinkedServiceReference"
-      		}
-      		secretName = local.kv_name_password_database,
-      	}
-      	sslMode             = "2"
-      	authenticationType  = "Basic"
+        server   = data.azurerm_key_vault_secret.cruscotto_db_host.value
+        port     = data.azurerm_key_vault_secret.cruscotto_db_port.value
+        database = data.azurerm_key_vault_secret.cruscotto_db_database.value
+        username = data.azurerm_key_vault_secret.cruscotto_db_username.value
+        password = {
+          type = "AzureKeyVaultSecret"
+          store = {
+            referenceName = local.linked_service_cruscotto_kv_name
+            type          = "LinkedServiceReference"
+          }
+          secretName = local.kv_name_password_database,
+        }
+        sslMode            = "2"
+        authenticationType = "Basic"
       }
       connectVia = {
-      	referenceName = local.df_integration_runtime_name
-      	type          = "IntegrationRuntimeReference"
+        referenceName = local.df_integration_runtime_name
+        type          = "IntegrationRuntimeReference"
       }
     }
   }
