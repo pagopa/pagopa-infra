@@ -7,10 +7,10 @@ data "azurerm_resource_group" "rg_vnet" {
   name = local.vnet_resource_group_name
 }
 
-data "azurerm_virtual_network" "vnet_replica" {
-  count               = var.geo_replica_enabled ? 1 : 0
-  name                = local.vnet_replica_name
-  resource_group_name = local.vnet_resource_group_name
+
+data "azurerm_virtual_network" "vnet_italy" {
+  name                = local.vnet_italy_name
+  resource_group_name = local.vnet_italy_resource_group_name
 }
 
 data "azurerm_private_dns_zone" "internal" {

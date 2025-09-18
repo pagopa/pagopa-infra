@@ -63,10 +63,6 @@ log_analytics_workspace_name                = "pagopa-d-law"
 log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 
 
-#
-# replica settings
-#
-geo_replica_enabled = false
 
 
 #

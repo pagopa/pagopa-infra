@@ -65,7 +65,7 @@ module "pagopa_checkout_redis_std" {
 resource "azurerm_monitor_metric_alert" "redis_std_cache_used_memory_exceeded" {
   count = var.env_short == "p" ? 1 : 0
 
-  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.pagopa_checkout_redis.name}] Used Memory close to the threshold"
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.pagopa_checkout_redis_std.name}] Used Memory close to the threshold"
   resource_group_name = azurerm_resource_group.redis_std_checkout_rg.name
   scopes              = [module.pagopa_checkout_redis_std.id]
   description         = "The amount of cache memory in MB that is used for key/value pairs in the cache during the specified reporting interval, this amount is close to 200 MB so close to the threshold (250 MB)"
