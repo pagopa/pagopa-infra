@@ -45,11 +45,20 @@ variable "nsg_network_watcher_enabled" {
 variable "enabled_features" {
   type = object({
     metabase = bool
+    data_factory_proxy = bool
+    vpn_database_access = bool
   })
   default = {
     metabase = false
+    data_factory_proxy = false
+    vpn_database_access = true
   }
   description = "(Optional) Enable/Disable features"
+}
+
+variable "vpn_gateway_address_space" {
+  type = string
+  default = "172.16.1.0/24"
 }
 
 
