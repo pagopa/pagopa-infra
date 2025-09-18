@@ -36,7 +36,7 @@ locals {
 
       inbound_rules  = concat(
         local.weu_postgres_base_inbound_rules,
-        local.nsg_rule_library.allow_nodo_weu_to_postgres
+        [local.nsg_rule_library.allow_nodo_weu_to_postgres]
       )
       outbound_rules = []
     }
