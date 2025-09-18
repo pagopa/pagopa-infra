@@ -36,7 +36,7 @@
         "/payment-methods": {
             "post": {
                 "tags": [
-                    "payment-methods"
+                    "payment-methods-handler"
                 ],
                 "operationId": "getAllPaymentMethods",
                 "summary": "Retrieve all Payment Methods (by filter)",
