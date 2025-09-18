@@ -18,7 +18,7 @@
       <value>application/json</value>
     </set-header>
     <choose>
-      <when condition="@(context.Request.MatchedParameters["fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111111111112")">
+      <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111111111112")">
       <set-body template="liquid">
         {
         "organizationFiscalCode": "99999000013",
@@ -93,7 +93,7 @@
         }
       </set-body>
     </when>
-    <when condition="@(context.Request.MatchedParameters["fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111111111116")">
+    <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111111111116")">
     <set-body template="liquid">
       {
       "organizationFiscalCode": "99999000013",
@@ -230,7 +230,7 @@
       }
     </set-body>
   </when>
-  <when condition="@(context.Request.MatchedParameters["fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111111111111")">
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111111111111")">
     <set-body template="liquid">{
       "organizationFiscalCode": "99999000013",
       "companyName": "EC",
@@ -261,7 +261,7 @@
       ]
       }</set-body>
   </when>
-  <when condition="@(context.Request.MatchedParameters["fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111112222225")">
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111112222225")">
     <set-body>{
     "organizationFiscalCode": "99999000013",
     "companyName": "EC",
@@ -314,7 +314,7 @@
     ]
     }</set-body>
   </when>
-  <when condition="@(context.Request.MatchedParameters["fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999991")">
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999991")">
     <set-status code="400" reason="Error" />
     <set-body>{
     "httpStatusCode": 400,
@@ -325,7 +325,7 @@
     "errorMessage": "Errore di sintassi del modello nella risposta"
     }</set-body>
   </when>
-  <when condition="@(context.Request.MatchedParameters["fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999999")">
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999999")">
     <set-status code="400" reason="Error" />
     <set-body>{
     "httpStatusCode": 400,
@@ -336,7 +336,7 @@
     "errorMessage": "Errore per pagamento sconosciuto"
     }</set-body>
   </when>
-  <when condition="@(context.Request.MatchedParameters["fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999998")">
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999998")">
     <set-status code="400" reason="Error" />
     <set-body>{
     "httpStatusCode": 400,
@@ -347,7 +347,7 @@
     "errorMessage": "Errore per id dominio errato"
     }</set-body>
   </when>
-  <when condition="@(context.Request.MatchedParameters["fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999900")">
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999900")">
     <set-status code="400" reason="Error" />
     <set-body>{
     "httpStatusCode": 400,
@@ -358,7 +358,7 @@
     "errorMessage": "Errore per id intermediario errato"
     }</set-body>
   </when>
-  <when condition="@(context.Request.MatchedParameters["fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999995")">
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999995")">
     <set-status code="400" reason="Error" />
     <set-body>{
     "httpStatusCode": 400,
@@ -369,7 +369,7 @@
     "errorMessage": "Errore per pagamento annullato"
     }</set-body>
   </when>
-  <when condition="@(context.Request.MatchedParameters["fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999992")">
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999992")">
     <set-status code="400" reason="Error" />
     <set-body>{
     "httpStatusCode": 400,
@@ -380,7 +380,7 @@
     "errorMessage": "Errore per pagamento duplicato"
     }</set-body>
   </when>
-  <when condition="@(context.Request.MatchedParameters["fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999993")">
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999993")">
     <set-status code="400" reason="Error" />
     <set-body>{
     "httpStatusCode": 400,
@@ -391,7 +391,7 @@
     "errorMessage": "Errore per pagamento ancora in corso"
     }</set-body>
   </when>
-  <when condition="@(context.Request.MatchedParameters["fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999994")">
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999994")">
     <set-status code="400" reason="Error" />
     <set-body>{
     "httpStatusCode": 400,
@@ -402,7 +402,7 @@
     "errorMessage": "Errore per pagamento scaduto"
     }</set-body>
   </when>
-  <when condition="@(context.Request.MatchedParameters["fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999905")">
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999905")">
     <set-status code="400" reason="Error" />
     <set-body>{
     "httpStatusCode": 400,
@@ -413,7 +413,7 @@
     "errorMessage": "Errore semantica"
     }</set-body>
   </when>
-  <when condition="@(context.Request.MatchedParameters["fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999902")">
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999902")">
     <set-status code="400" reason="Error" />
     <set-body>{
     "httpStatusCode": 400,
