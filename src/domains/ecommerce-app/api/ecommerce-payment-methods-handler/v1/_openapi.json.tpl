@@ -40,7 +40,7 @@
                 ],
                 "operationId": "getAllPaymentMethods",
                 "summary": "Retrieve all Payment Methods (by filter)",
-                "description": "API for retrieve payment method using the request query parameter filters",
+                "description": "GET with request body, no resource will be created: API for retrieve payment method using the request query parameter filters",
                 "requestBody": {
                     "content": {
                         "application/json": {
