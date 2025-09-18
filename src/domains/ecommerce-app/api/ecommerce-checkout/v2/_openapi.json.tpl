@@ -334,11 +334,6 @@
         "operationId": "getAllPaymentMethods",
         "summary": "Retrieve all Payment Methods (by filter)",
         "description": "GET with body payload - no resources created: API for retrieve payment method using the request query parameter filters",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -401,11 +396,6 @@
         "operationId": "getPaymentMethod",
         "summary": "Get payment method by ID",
         "description": "API for retrieve payment method information for a given payment method ID",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "parameters": [
           {
             "name": "id",
