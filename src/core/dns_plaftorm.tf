@@ -68,3 +68,29 @@ resource "azurerm_dns_txt_record" "dns-txt-email-platform-pagopa-it-aws-ses" {
   }
   tags = module.tag_config.tags
 }
+
+# accounting reconciliation DCV TXT record
+resource "azurerm_dns_txt_record" "dns-txt-acc-recon-platform-pagopa-it-digicert" {
+  count               = var.env_short == "u" ? 1 : 0
+  name                = "accounting-reconciliation"
+  zone_name           = data.azurerm_dns_zone.public[0].name
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  record {
+    value = "_iovto2zqvvt3nymbfo8d3osk5xp459y"
+  }
+  tags = module.tag_config.tags
+}
+
+# accounting reconciliation www DCV TXT record
+resource "azurerm_dns_txt_record" "dns-txt-www-acc-recon-platform-pagopa-it-digicert" {
+  count               = var.env_short == "u" ? 1 : 0
+  name                = "www.accounting-reconciliation"
+  zone_name           = data.azurerm_dns_zone.public[0].name
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  record {
+    value = "_iovto2zqvvt3nymbfo8d3osk5xp459y"
+  }
+  tags = module.tag_config.tags
+}
