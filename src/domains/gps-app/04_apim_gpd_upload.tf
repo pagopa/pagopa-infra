@@ -46,5 +46,7 @@ module "apim_gpd_upload_api_v1" {
     host = local.apim_hostname
   })
 
-  xml_content = file("./api/gpd-upload-service/v1/_base_policy.xml")
+  xml_content = templatefile("./api/gpd-upload-service/v1/_base_policy.xml", {
+    service_type_value = "GPD"
+  })
 }
