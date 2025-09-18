@@ -328,7 +328,7 @@
           },
           "status": {
             "description": "Error status code",
-            "maximum": 600,
+            "maximum": 599,
             "minimum": 100,
             "type": "integer",
             "format": "int32",
