@@ -20,8 +20,10 @@ locals {
   monitor_action_group_email_name = "PagoPA"
 
   vnet_name                = "${local.product}-vnet"
-  vnet_replica_name        = "${local.product}-${var.location_replica_short}-core-replica-vnet"
   vnet_resource_group_name = "${local.product}-vnet-rg"
+
+  vnet_italy_name    = "${local.product}-${var.location_replica_short}-vnet"
+  vnet_italy_rg_name = "${local.product}-${var.location_replica_short}-vnet-rg"
 
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
