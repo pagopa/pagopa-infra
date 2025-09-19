@@ -25,7 +25,9 @@ locals {
       target_subnet_vnet_name = local.vnet_core_name
       watcher_enabled         = var.nsg_network_watcher_enabled
 
-      inbound_rules  = local.weu_postgres_base_inbound_rules
+      inbound_rules  = concat(local.weu_postgres_base_inbound_rules,
+        [local.nsg_rule_library.allow_nodo_storico_to_postgres]
+      )
       outbound_rules = []
     }
 
@@ -272,6 +274,14 @@ locals {
           source_subnet_name         = "pagopa-${var.env_short}-weu-nodo-pgres-flexible-snet"
           source_subnet_vnet_name    = "pagopa-${var.env_short}-vnet"
           description                = "Allow nodo weu to access PostgreSQL"
+      }
+      allow_nodo_storico_to_postgres = {
+          name                       = "AllowNodoStoricoPostgreSQL"
+          priority                   = 451
+          target_service             = "postgresql"
+          source_subnet_name         = "pagopa-${var.env_short}-weu-nodo-storico-pgres-flexible-snet"
+          source_subnet_vnet_name    = "pagopa-${var.env_short}-vnet"
+          description                = "Allow nodo storico to access PostgreSQL"
       }
       allow_all_to_postgres = {
           name                       = "AllowPostgreSQL"
