@@ -448,7 +448,7 @@
             "ApiKeyAuth": {
                 "type": "apiKey",
                 "in": "header",
-                "name": "x-api-key"
+                "name": "ocp-apim-subscription-key"
             }
         }
     }
