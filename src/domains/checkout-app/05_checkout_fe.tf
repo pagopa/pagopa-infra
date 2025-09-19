@@ -85,7 +85,7 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = local.content_security_policy_header_name
-        value  = "style-src 'self'  'unsafe-inline' https://privacyportalde-cdn.onetrust.com; font-src 'self' https://privacyportalde-cdn.onetrust.com; worker-src www.recaptcha.net blob:;"
+        value  = "style-src 'self'  'unsafe-inline' https://privacyportalde-cdn.onetrust.com https://uptime.betterstack.com; font-src 'self' https://privacyportalde-cdn.onetrust.com; worker-src www.recaptcha.net blob:;"
       },
       {
         action = "Overwrite"
