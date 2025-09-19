@@ -1,0 +1,399 @@
+<policies>
+  <inbound>
+    <base />
+
+    <return-response>
+      <set-status code="200" reason="OK" />
+      <set-header name="Content-Type" exists-action="override">
+        <value>application/json</value>
+      </set-header>
+      <set-body template="liquid">
+        {
+          "paymentMethods": [
+              {
+                  "id": "378d0b4f-8b69-46b0-8215-07785fe1aad4",
+                  "name": {
+                      "IT": "Carte",
+                      "EN": "Cards"
+                  },
+                  "description": {
+                      "IT": "Carta di credito o debito",
+                      "EN": "Credit or debit card"
+                  },
+                  "status": "ENABLED",
+                  "validityDateFrom": "2000-01-01",
+                  "paymentTypeCode": "CP",
+                  "paymentMethodTypes": [
+                      "CARTE"
+                  ],
+                  "paymentMethodAsset": "https://assets.cdn.platform.pagopa.it/creditcard/generic.png",
+                  "methodManagement": "ONBOARDABLE",
+                  "feeRange": {
+                      "min": 50,
+                      "max": 200
+                  },
+                  "disabledReason": null,
+                  "paymentMethodsBrandAssets": {
+                      "VISA": "https://assets.cdn.platform.pagopa.it/creditcard/visa.png",
+                      "MC": "https://assets.cdn.platform.pagopa.it/creditcard/mastercard.png",
+                      "DINERS": "https://assets.cdn.platform.pagopa.it/creditcard/diners.png",
+                      "AMEX": "https://assets.cdn.platform.pagopa.it/creditcard/amex.png",
+                      "MAESTRO": "https://assets.cdn.platform.pagopa.it/creditcard/maestro.png",
+                      "MASTERCARD": "https://assets.cdn.platform.pagopa.it/creditcard/mastercard.png"
+                  },
+                  "metadata": {}
+              },
+              {
+                  "id": "1c636589-8a81-4478-b725-33fb65d8a2d0",
+                  "name": {
+                      "IT": "Conto Intesa Sanpaolo",
+                      "EN": "Intesa Sanpaolo Account"
+                  },
+                  "description": {
+                      "IT": "Conto Intesa Sanpaolo",
+                      "EN": "Intesa Sanpaolo Account"
+                  },
+                  "status": "ENABLED",
+                  "validityDateFrom": "2000-01-01",
+                  "paymentTypeCode": "RPIC",
+                  "paymentMethodTypes": [
+                      "CONTO"
+                  ],
+                  "paymentMethodAsset": "https://assets.cdn.platform.pagopa.it/apm/intesasanpaolo.png",
+                  "methodManagement": "REDIRECT",
+                  "feeRange": {
+                      "min": 0,
+                      "max": 0
+                  },
+                  "disabledReason": null,
+                  "paymentMethodsBrandAssets": {},
+                  "metadata": {}
+              },
+              {
+                  "id": "3a199dbc-f17e-4fd8-9a6f-a677698144a5",
+                  "name": {
+                      "IT": "Conto Banca Popolare di Sondrio",
+                      "EN": "Banca Popolare di Sondrio Account"
+                  },
+                  "description": {
+                      "IT": "Conto Banca Popolare di Sondrio",
+                      "EN": "Banca Popolare di Sondrio Account"
+                  },
+                  "status": "ENABLED",
+                  "validityDateFrom": "2000-01-01",
+                  "paymentTypeCode": "RBPS",
+                  "paymentMethodTypes": [
+                      "CONTO"
+                  ],
+                  "paymentMethodAsset": "https://assets.cdn.platform.pagopa.it/apm/bpsondrioscrigno.png",
+                  "methodManagement": "REDIRECT",
+                  "feeRange": {
+                      "min": 90,
+                      "max": 90
+                  },
+                  "disabledReason": null,
+                  "paymentMethodsBrandAssets": {},
+                  "metadata": {}
+              },
+              {
+                  "id": "b6fd7e8e-7373-496d-b64f-111766b5ad9c",
+                  "name": {
+                      "IT": "Conto BancoPosta Impresa",
+                      "EN": "BancoPosta Impresa Account"
+                  },
+                  "description": {
+                      "IT": "Conto BancoPosta Impresa",
+                      "EN": "Conto BancoPosta Impresa"
+                  },
+                  "status": "ENABLED",
+                  "validityDateFrom": "2000-01-01",
+                  "paymentTypeCode": "RBPB",
+                  "paymentMethodTypes": [
+                      "CONTO"
+                  ],
+                  "paymentMethodAsset": "https://assets.cdn.platform.pagopa.it/apm/bancopostaimpresa.png",
+                  "methodManagement": "REDIRECT",
+                  "feeRange": {
+                      "min": 50,
+                      "max": 50
+                  },
+                  "disabledReason": null,
+                  "paymentMethodsBrandAssets": {},
+                  "metadata": {}
+              },
+              {
+                  "id": "79e8e075-9840-4eac-9c4e-8da637d68469",
+                  "name": {
+                      "IT": "Paga con Postepay",
+                      "EN": "Pay with Postepay"
+                  },
+                  "description": {
+                      "IT": "Paga con Postepay",
+                      "EN": "Pay with Postepay"
+                  },
+                  "status": "ENABLED",
+                  "validityDateFrom": "2000-01-01",
+                  "paymentTypeCode": "RBPP",
+                  "paymentMethodTypes": [
+                      "APP"
+                  ],
+                  "paymentMethodAsset": "https://assets.cdn.platform.pagopa.it/apm/pagaconpostepay.png",
+                  "methodManagement": "REDIRECT",
+                  "feeRange": {
+                      "min": 50,
+                      "max": 50
+                  },
+                  "disabledReason": null,
+                  "paymentMethodsBrandAssets": {},
+                  "metadata": {}
+              },
+              {
+                  "id": "86fb578f-e3c4-47bc-bce3-85a3171a4b13",
+                  "name": {
+                      "IT": "Conto BancoPosta",
+                      "EN": "BancoPosta Account"
+                  },
+                  "description": {
+                      "IT": "Conto BancoPosta",
+                      "EN": "BancoPosta Account"
+                  },
+                  "status": "ENABLED",
+                  "validityDateFrom": "2000-01-01",
+                  "paymentTypeCode": "RBPR",
+                  "paymentMethodTypes": [
+                      "CONTO"
+                  ],
+                  "paymentMethodAsset": "https://assets.cdn.platform.pagopa.it/apm/bancoposta.png",
+                  "methodManagement": "REDIRECT",
+                  "feeRange": {
+                      "min": 50,
+                      "max": 50
+                  },
+                  "disabledReason": null,
+                  "paymentMethodsBrandAssets": {},
+                  "metadata": {}
+              },
+              {
+                  "id": "8991c3f1-4ac4-418c-a359-5aaa9199bbeb",
+                  "name": {
+                      "IT": "PayPal",
+                      "EN": "PayPal"
+                  },
+                  "description": {
+                      "IT": "PayPal (anche in 3 rate)",
+                      "EN": "PayPal (also in 3 installments)"
+                  },
+                  "status": "ENABLED",
+                  "validityDateFrom": "2000-01-01",
+                  "paymentTypeCode": "PPAL",
+                  "paymentMethodTypes": [
+                      "APP"
+                  ],
+                  "paymentMethodAsset": "https://assets.cdn.platform.pagopa.it/apm/paypal.png",
+                  "methodManagement": "ONBOARDABLE",
+                  "feeRange": {
+                      "min": 150,
+                      "max": 150
+                  },
+                  "disabledReason": null,
+                  "paymentMethodsBrandAssets": null,
+                  "metadata": {
+                      "INSTALLMENTS": "true"
+                  }
+              },
+              {
+                  "id": "870d0704-e8af-4e00-a2d1-1af18e144789",
+                  "name": {
+                      "IT": "BANCOMAT Pay",
+                      "EN": "BANCOMAT Pay"
+                  },
+                  "description": {
+                      "IT": "BANCOMAT Pay",
+                      "EN": "BANCOMAT Pay"
+                  },
+                  "status": "ENABLED",
+                  "validityDateFrom": "2000-01-01",
+                  "paymentTypeCode": "BPAY",
+                  "paymentMethodTypes": [
+                      "APP"
+                  ],
+                  "paymentMethodAsset": "https://assets.cdn.platform.pagopa.it/apm/bancomatpay.png",
+                  "methodManagement": "ONBOARDABLE",
+                  "feeRange": {
+                      "min": 50,
+                      "max": 50
+                  },
+                  "disabledReason": null,
+                  "paymentMethodsBrandAssets": {},
+                  "metadata": {}
+              },
+              {
+                  "id": "2c61e6ed-f874-4b30-97ef-bdf89d488ee4",
+                  "name": {
+                      "IT": "MyBank",
+                      "EN": "MyBank"
+                  },
+                  "description": {
+                      "IT": "MyBank",
+                      "EN": "MyBank"
+                  },
+                  "status": "ENABLED",
+                  "validityDateFrom": "2000-01-01",
+                  "paymentTypeCode": "MYBK",
+                  "paymentMethodTypes": [
+                      "APP"
+                  ],
+                  "paymentMethodAsset": "https://assets.cdn.platform.pagopa.it/apm/mybank.png",
+                  "methodManagement": "NOT_ONBOARDABLE",
+                  "feeRange": {
+                      "min": 50,
+                      "max": 50
+                  },
+                  "disabledReason": null,
+                  "paymentMethodsBrandAssets": {},
+                  "metadata": {}
+              },
+              {
+                  "id": "6f74f31d-d700-4a21-b3ff-7517f8244ae3",
+                  "name": {
+                      "IT": "SATISPAY",
+                      "EN": "SATISPAY"
+                  },
+                  "description": {
+                      "IT": "Satispay",
+                      "EN": "Satispay"
+                  },
+                  "status": "ENABLED",
+                  "validityDateFrom": "2000-01-01",
+                  "paymentTypeCode": "SATY",
+                  "paymentMethodTypes": [
+                      "APP"
+                  ],
+                  "paymentMethodAsset": "https://assets.cdn.platform.pagopa.it/apm/satispay.png",
+                  "methodManagement": "NOT_ONBOARDABLE",
+                  "feeRange": {
+                      "min": 100,
+                      "max": 100
+                  },
+                  "disabledReason": null,
+                  "paymentMethodsBrandAssets": {},
+                  "metadata": {}
+              },
+              {
+                  "id": "47a92418-a5dd-41bd-a02e-578821ca2601",
+                  "name": {
+                      "IT": "APPLEPAY",
+                      "EN": "APPLEPAY"
+                  },
+                  "description": {
+                      "IT": "Apple Pay",
+                      "EN": "Apple Pay"
+                  },
+                  "status": "ENABLED",
+                  "validityDateFrom": "2000-01-01",
+                  "paymentTypeCode": "APPL",
+                  "paymentMethodTypes": [
+                      "APP"
+                  ],
+                  "paymentMethodAsset": "https://assets.cdn.platform.pagopa.it/apm/applepay.png",
+                  "methodManagement": "NOT_ONBOARDABLE",
+                  "feeRange": {
+                      "min": 100,
+                      "max": 150
+                  },
+                  "disabledReason": null,
+                  "paymentMethodsBrandAssets": {},
+                  "metadata": {}
+              },
+              {
+                  "id": "ea9af929-4402-426c-8fe2-a68cda3eac76",
+                  "name": {
+                      "IT": "Conto ICONTO",
+                      "EN": "ICONTO Account"
+                  },
+                  "description": {
+                      "IT": "Conto ICONTO",
+                      "EN": "ICONTO Account"
+                  },
+                  "status": "ENABLED",
+                  "validityDateFrom": "2000-01-01",
+                  "paymentTypeCode": "RICO",
+                  "paymentMethodTypes": [
+                      "CONTO"
+                  ],
+                  "paymentMethodAsset": "https://assets.cdn.platform.pagopa.it/apm/iconto.png",
+                  "methodManagement": "REDIRECT",
+                  "feeRange": {
+                      "min": 60,
+                      "max": 60
+                  },
+                  "disabledReason": null,
+                  "paymentMethodsBrandAssets": {},
+                  "metadata": {}
+              },
+              {
+                  "id": "26ab206e-9ff0-441a-9674-e696053a4f99",
+                  "name": {
+                      "IT": "GOOGLEPAY",
+                      "EN": "GOOGLEPAY"
+                  },
+                  "description": {
+                      "IT": "Google Pay",
+                      "EN": "Google Pay"
+                  },
+                  "status": "ENABLED",
+                  "validityDateFrom": "2000-01-01",
+                  "paymentTypeCode": "GOOG",
+                  "paymentMethodTypes": [
+                      "APP"
+                  ],
+                  "paymentMethodAsset": "https://assets.cdn.platform.pagopa.it/apm/googlepay.png",
+                  "methodManagement": "NOT_ONBOARDABLE",
+                  "feeRange": {
+                      "min": 100,
+                      "max": 100
+                  },
+                  "disabledReason": null,
+                  "paymentMethodsBrandAssets": {},
+                  "metadata": {}
+              },
+              {
+                  "id": "63e9e23b-f123-4f1e-a4e1-7951d6b67969",
+                  "name": {
+                      "IT": "KLARNA",
+                      "EN": "KLARNA"
+                  },
+                  "description": {
+                      "IT": "Klarna (anche a rate)",
+                      "EN": "Klarna (also in 3 installments)"
+                  },
+                  "status": "DISABLED",
+                  "validityDateFrom": "2000-01-01",
+                  "paymentTypeCode": "KLRN",
+                  "paymentMethodTypes": [
+                      "APP"
+                  ],
+                  "paymentMethodAsset": "https://assets.cdn.platform.pagopa.it/apm/klarna.png",
+                  "methodManagement": "REDIRECT",
+                  "feeRange": null,
+                  "disabledReason": "NO_BUNDLE_AVAILABLE",
+                  "paymentMethodsBrandAssets": null,
+                  "metadata": {
+                      "INSTALLMENTS": "true"
+                  }
+              }
+          ]
+      }
+      </set-body>
+    </return-response>
+  </inbound>
+  <outbound>
+    <base />
+  </outbound>
+  <backend>
+    <base />
+  </backend>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
