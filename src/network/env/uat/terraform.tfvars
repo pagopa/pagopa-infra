@@ -10,7 +10,7 @@ nsg_network_watcher_enabled = false
 
 
 enabled_features = {
-  metabase = false
+  nsg_metabase = false
   data_factory_proxy = true
   vpn_database_access = true
   nsg = true

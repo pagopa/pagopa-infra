@@ -53,7 +53,7 @@ locals {
       ]
       log_analytics_workspace_name = local.log_analytics_italy_workspace_name
       log_analytics_workspace_rg   = local.log_analytics_italy_workspace_resource_group_name
-      nsg = var.env_short == "p" ? merge(local.italynorth_nsg, local.italynorth_prod_nsg) : local.italynorth_nsg
+      nsg = local.italynorth_nsg
     }
   }
 

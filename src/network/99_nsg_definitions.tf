@@ -1,7 +1,6 @@
 
 locals {
   westeurope_nsg = {
-    # fixme add db replica with access from db main
     fdrWeuPostgre = {
       target_subnet_name      = "pagopa-${var.env_short}-weu-fdr-pgres-flexible-snet"
       target_subnet_vnet_name = local.vnet_core_name
@@ -44,7 +43,7 @@ locals {
     }
   }
 
-  italynorth_nsg = {
+  italynorth_nsg = merge({
     crusc8ItnPostgre = {
       target_subnet_name      = "pagopa-${var.env_short}-itn-crusc8-pgres-flexible-snet"
       target_subnet_vnet_name = local.vnet_italy_name
@@ -53,10 +52,37 @@ locals {
       inbound_rules  = local.itn_postgres_base_inbound_rules
       outbound_rules = []
     }
-  }
+  }, var.enabled_features.db_replica_nsg ? {
+      fdrItnPostgre = {
+        target_subnet_name      = "pagopa-${var.env_short}-itn-fdr-pgres-flexible-snet"
+        target_subnet_vnet_name = local.vnet_italy_name
+        watcher_enabled         = var.nsg_network_watcher_enabled
 
-  italynorth_prod_nsg = {
-    metabaseItnPostgre = {
+        inbound_rules  = local.itn_postgres_replica_base_inbound_rules
+        outbound_rules = []
+      }
+
+
+      gpsItnPostgre = {
+        target_subnet_name      = "pagopa-${var.env_short}-itn-gps-pgres-flexible-snet"
+        target_subnet_vnet_name = local.vnet_italy_name
+        watcher_enabled         = var.nsg_network_watcher_enabled
+
+        inbound_rules  = local.itn_postgres_replica_base_inbound_rules
+        outbound_rules = []
+      }
+
+      nodoItnPostgre = {
+        target_subnet_name      = "pagopa-${var.env_short}-itn-nodo-pgres-flexible-snet"
+        target_subnet_vnet_name = local.vnet_italy_name
+        watcher_enabled         = var.nsg_network_watcher_enabled
+
+        inbound_rules  = local.itn_postgres_replica_base_inbound_rules
+        outbound_rules = []
+      }
+  } : {},
+    var.enabled_features.nsg_metabase ? {
+      metabaseItnPostgre = {
       target_subnet_name      = "pagopa-${var.env_short}-itn-dbsecurity-pgflex-snet"
       target_subnet_vnet_name = local.vnet_italy_name
       watcher_enabled         = var.nsg_network_watcher_enabled
@@ -64,35 +90,9 @@ locals {
       inbound_rules  = local.itn_postgres_base_inbound_rules
       outbound_rules = []
     }
+    } : {}
+  )
 
-    fdrItnPostgre = {
-      target_subnet_name      = "pagopa-${var.env_short}-itn-fdr-pgres-flexible-snet"
-      target_subnet_vnet_name = local.vnet_italy_name
-      watcher_enabled         = var.nsg_network_watcher_enabled
-
-      inbound_rules  = local.itn_postgres_replica_base_inbound_rules
-      outbound_rules = []
-    }
-
-
-    gpsItnPostgre = {
-      target_subnet_name      = "pagopa-${var.env_short}-itn-gps-pgres-flexible-snet"
-      target_subnet_vnet_name = local.vnet_italy_name
-      watcher_enabled         = var.nsg_network_watcher_enabled
-
-      inbound_rules  = local.itn_postgres_replica_base_inbound_rules
-      outbound_rules = []
-    }
-
-    nodoItnPostgre = {
-      target_subnet_name      = "pagopa-${var.env_short}-itn-nodo-pgres-flexible-snet"
-      target_subnet_vnet_name = local.vnet_italy_name
-      watcher_enabled         = var.nsg_network_watcher_enabled
-
-      inbound_rules  = local.itn_postgres_replica_base_inbound_rules
-      outbound_rules = []
-    }
-  }
 
 
   weu_postgres_base_inbound_rules = concat([
@@ -103,7 +103,7 @@ locals {
         local.nsg_rule_library.deny_from_all_vnet,
         local.nsg_rule_library.allow_pe_subnet_to_postgres,
       ],
-          var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [],
+          var.enabled_features.nsg_metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [],
           var.enabled_features.data_factory_proxy ?[local.nsg_rule_library.allow_data_factory_proxy_to_postgres]: [],
           # inbound rule for vpn kept separated because the structure is different and terraform gives error if kept in the same list
           var.enabled_features.vpn_database_access ? [local.nsg_rule_library.allow_vpn_subnet_to_postgres] : [],
@@ -118,7 +118,7 @@ locals {
         local.nsg_rule_library.allow_data_factory_to_postgres,
         local.nsg_rule_library.deny_from_all_vnet,
       ],
-          var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [],
+          var.enabled_features.nsg_metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [],
           var.enabled_features.data_factory_proxy ?[local.nsg_rule_library.allow_data_factory_proxy_to_postgres]: [],
           # inbound rule for vpn kept separated because the structure is different and terraform gives error if kept in the same list
           var.enabled_features.vpn_database_access ? [local.nsg_rule_library.allow_vpn_subnet_to_postgres] : [],
