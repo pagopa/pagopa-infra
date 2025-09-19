@@ -68,7 +68,7 @@ locals {
       target_subnet_vnet_name = local.vnet_italy_name
       watcher_enabled         = var.nsg_network_watcher_enabled
 
-      inbound_rules  = local.itn_postgres_base_inbound_rules
+      inbound_rules  = local.itn_postgres_replica_base_inbound_rules
       outbound_rules = []
     }
 
@@ -78,7 +78,7 @@ locals {
       target_subnet_vnet_name = local.vnet_italy_name
       watcher_enabled         = var.nsg_network_watcher_enabled
 
-      inbound_rules  = local.itn_postgres_base_inbound_rules
+      inbound_rules  = local.itn_postgres_replica_base_inbound_rules
       outbound_rules = []
     }
 
@@ -87,7 +87,7 @@ locals {
       target_subnet_vnet_name = local.vnet_italy_name
       watcher_enabled         = var.nsg_network_watcher_enabled
 
-      inbound_rules  = local.itn_postgres_base_inbound_rules
+      inbound_rules  = local.itn_postgres_replica_base_inbound_rules
       outbound_rules = []
     }
   }
@@ -123,14 +123,14 @@ locals {
           var.enabled_features.vpn_database_access ? [local.nsg_rule_library.allow_vpn_gateway_to_postgres] : []
       )
 
+  itn_postgres_replica_base_inbound_rules =[
+        local.nsg_rule_library.deny_vpn_gateway_to_postgres,
+        local.nsg_rule_library.deny_vpn_subnet_to_postgres,
+        local.nsg_rule_library.allow_all_to_postgres
+      ]
+
   nsg_rule_library = {
-      allow_all_to_postgres = {
-          name                       = "AllowPostgreSQL"
-          priority                   = 100
-          target_service             = "postgresql"
-          source_address_prefixes    = ["*"]
-          description                = "Allow all subnets to access PostgreSQL"
-      }
+
       allow_vpn_subnet_to_postgres = {
         name                       = "AllowVpnSubnetPostgreSQL"
         priority                   = 300
@@ -145,6 +145,23 @@ locals {
           target_service             = "postgresql"
           source_address_prefixes    = [var.vpn_gateway_address_space]
           description                = "Allow vpn gw to access PostgreSQL"
+      }
+      deny_vpn_subnet_to_postgres = {
+        name                       = "DenyVpnSubnetPostgreSQL"
+        priority                   = 300
+        target_service             = "postgresql"
+        source_subnet_name         = "GatewaySubnet"
+        source_subnet_vnet_name    = "pagopa-${var.env_short}-vnet"
+        description                = "Deny vpn subnet to access PostgreSQL"
+        access                     = "Deny"
+      }
+      deny_vpn_gateway_to_postgres = {
+          name                       = "DenyVpnGWPostgreSQL"
+          priority                   = 301
+          target_service             = "postgresql"
+          source_address_prefixes    = [var.vpn_gateway_address_space]
+          description                = "Deny vpn gw to access PostgreSQL"
+          access                     = "Deny"
       }
       allow_aks_weu_to_postgres = {
           name                       = "AllowAKSWeuPostgreSQL"
@@ -256,10 +273,16 @@ locals {
           source_subnet_vnet_name    = "pagopa-${var.env_short}-vnet"
           description                = "Allow nodo weu to access PostgreSQL"
       }
-
+      allow_all_to_postgres = {
+          name                       = "AllowPostgreSQL"
+          priority                   = 4096
+          target_service             = "postgresql"
+          source_address_prefixes    = ["*"]
+          description                = "Allow all subnets to access PostgreSQL"
+      }
       deny_from_all_vnet = {
           name                       = "DenyFromAllVNet"
-          priority                   = 4096
+          priority                   = 4095
           destination_port_ranges    = ["*"]
           source_address_prefixes    = ["*"]
           protocol = "*"
