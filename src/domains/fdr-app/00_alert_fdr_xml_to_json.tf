@@ -19,9 +19,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_xmltojson_appe
       | where customDimensions.type == "FDR_XML_TO_JSON_ERROR"
       | order by timestamp desc
   QUERY
-  severity    = 1
-  frequency   = 15
-  time_window = 15
+  severity       = 1
+  frequency      = 15
+  time_window    = 15
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1
