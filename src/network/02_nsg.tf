@@ -1,5 +1,5 @@
 locals {
-  nsg_regions_to_create = { for region in var.nsg_regions : region => local.nsg_network_regions[region] }
+  nsg_regions_to_create = { for region in var.nsg_regions : region => local.nsg_network_regions[region] if var.enabled_features.nsg }
 }
 
 resource "azurerm_resource_group" "nsg_rg" {

@@ -5,3 +5,11 @@ location_short     = "weu"
 
 
 nsg_regions = ["westeurope", "italynorth"]
+
+
+enabled_features = {
+  metabase = true
+  data_factory_proxy = false
+  vpn_database_access = true
+  nsg = false
+}
