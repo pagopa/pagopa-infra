@@ -44,16 +44,18 @@ variable "nsg_network_watcher_enabled" {
 
 variable "enabled_features" {
   type = object({
-    metabase = bool
-    data_factory_proxy = bool
-    vpn_database_access = bool
-    nsg = bool
+    nsg_metabase = optional(bool, false)
+    data_factory_proxy = optional(bool, false)
+    vpn_database_access = optional(bool, true)
+    nsg = optional(bool, true)
+    db_replica_nsg = optional(bool, false)
   })
   default = {
-    metabase = false
+    nsg_metabase = false
     data_factory_proxy = false
     vpn_database_access = true
     nsg = true
+    db_replica_nsg = false
   }
   description = "(Optional) Enable/Disable features"
 }

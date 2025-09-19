@@ -8,7 +8,7 @@ nsg_regions = ["westeurope", "italynorth"]
 
 
 enabled_features = {
-  metabase = true
+  nsg_metabase = true
   data_factory_proxy = false
   vpn_database_access = true
   nsg = false
