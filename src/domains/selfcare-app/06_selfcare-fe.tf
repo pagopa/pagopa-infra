@@ -92,13 +92,13 @@ module "selfcare_cdn" {
       {
         action = "Overwrite"
         name   = "Content-Security-Policy-Report-Only"
-        value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api.${local.dns_zone_selfcare}.${local.external_domain}/ https://${local.dns_zone_selfcare}.${local.dns_zone_platform}.${local.external_domain}/;"
+        value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api.${local.dns_zone_selfcare}.${local.external_domain}/ https://${local.dns_zone_selfcare}.${local.dns_zone_platform}.${local.external_domain}/ *.platform.pagopa.it/;"
         # https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it
       },
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
-        value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare.pagopa.it/assets/font/; "
+        value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare.pagopa.it/assets/font/ *.platform.pagopa.it/;"
       },
       # {
       #   action = "Append"
