@@ -98,7 +98,7 @@
         "/payment-methods/{id}": {
             "get": {
                 "tags": [
-                    "payment-methods"
+                    "payment-methods-handler"
                 ],
                 "operationId": "getPaymentMethod",
                 "summary": "Get payment method by ID",
