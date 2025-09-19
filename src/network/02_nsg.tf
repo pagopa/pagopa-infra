@@ -47,5 +47,3 @@ module "network_security_group" {
 
   tags = module.tag_config.tags
 }
-
-
