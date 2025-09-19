@@ -219,9 +219,3 @@ variable "ecommerce_user_stats_service_api_key_use_primary" {
   description = "Whenever to use primary or secondary key invoking user-stats-service"
   default     = true
 }
-
-variable "ecommerce_payment_methods_handler_api_key_use_primary" {
-  type        = bool
-  description = "Whenever to use primary or secondary key invoking payment-method-handler-service"
-  default     = true
-}
