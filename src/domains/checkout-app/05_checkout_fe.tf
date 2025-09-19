@@ -60,7 +60,7 @@ module "checkout_cdn" {
       {
         action = "Overwrite"
         name   = local.content_security_policy_header_name
-        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it https://privacyportalde-cdn.onetrust.com https://privacyportal-de.onetrust.com", var.dns_zone_prefix, var.external_domain)
+        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it https://privacyportalde-cdn.onetrust.com https://privacyportal-de.onetrust.com https://uptime.betterstack.com", var.dns_zone_prefix, var.external_domain)
       },
       {
         action = "Append"
