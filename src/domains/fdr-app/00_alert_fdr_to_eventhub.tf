@@ -1,4 +1,3 @@
-// todo filter only the exceptions in last retry (!), at the moment we're querying all traces (sampled!) and don't get the last retry exception.
 resource "azurerm_monitor_scheduled_query_rules_alert" "fdr_1_exception_alert" {
   count = var.env_short == "p" ? 1 : 0
 
@@ -16,11 +15,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "fdr_1_exception_alert" {
   description    = "Error processing Blob in processFDR1BlobFiles function"
   enabled        = true
   query          = <<-QUERY
-      traces
-      | where timestamp > ago(5m)
-      | where cloud_RoleName == "pagopafdrtoeventhubfdr1blobtrigger"
-      | where message startswith "[FDR1-E1]"
-      | summarize Total=count() by length=bin(timestamp,5m)
+     customEvents
+      | where name == "FDR_TO_EVH_ALERT"
+      | where customDimensions.type == "FDR1-E1"
+      | order by timestamp desc
   QUERY
   severity       = 0
   frequency      = 5
@@ -48,11 +46,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "fdr_3_exception_alert" {
   description    = "Error processing Blob in processFDR3BlobFiles function"
   enabled        = true
   query          = <<-QUERY
-      traces
-      | where timestamp > ago(5m)
-      | where cloud_RoleName == "pagopafdrtoeventhubfdr3blobtrigger"
-      | where message startswith "[FDR3-E1]"
-      | summarize Total=count() by length=bin(timestamp,5m)
+     customEvents
+      | where name == "FDR_TO_EVH_ALERT"
+      | where customDimensions.type == "FDR3-E1"
+      | order by timestamp desc
   QUERY
   severity       = 0
   frequency      = 5
