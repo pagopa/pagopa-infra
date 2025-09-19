@@ -302,6 +302,7 @@
       "post" : {
         "tags" : [ "Payment Methods" ],
         "summary" : "Advanced search of payment methods",
+        "description" : "GET with body payload - no resources created",
         "operationId" : "searchPaymentMethods",
         "requestBody" : {
           "content" : {
