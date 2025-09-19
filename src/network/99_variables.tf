@@ -47,11 +47,13 @@ variable "enabled_features" {
     metabase = bool
     data_factory_proxy = bool
     vpn_database_access = bool
+    nsg = bool
   })
   default = {
     metabase = false
     data_factory_proxy = false
     vpn_database_access = true
+    nsg = true
   }
   description = "(Optional) Enable/Disable features"
 }

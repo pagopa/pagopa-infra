@@ -98,14 +98,15 @@ locals {
         local.nsg_rule_library.allow_tools_cae_to_postgres,
         local.nsg_rule_library.allow_aks_weu_to_postgres,
         local.nsg_rule_library.allow_data_factory_to_postgres,
-        local.nsg_rule_library.allow_data_factory_proxy_to_postgres,
         local.nsg_rule_library.deny_from_all_vnet,
         local.nsg_rule_library.allow_pe_subnet_to_postgres,
       ],
           var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [],
+          var.enabled_features.data_factory_proxy ?[local.nsg_rule_library.allow_data_factory_proxy_to_postgres]: [],
           # inbound rule for vpn kept separated because the structure is different and terraform gives error if kept in the same list
           var.enabled_features.vpn_database_access ? [local.nsg_rule_library.allow_vpn_subnet_to_postgres] : [],
-          var.enabled_features.vpn_database_access ? [local.nsg_rule_library.allow_vpn_gateway_to_postgres] : []
+          var.enabled_features.vpn_database_access ? [local.nsg_rule_library.allow_vpn_gateway_to_postgres] : [],
+
       )
   itn_postgres_base_inbound_rules = concat([
         local.nsg_rule_library.allow_azdo_to_postgres,
@@ -113,10 +114,10 @@ locals {
         local.nsg_rule_library.allow_aks_itn_system_to_postgres,
         local.nsg_rule_library.allow_aks_itn_user_to_postgres,
         local.nsg_rule_library.allow_data_factory_to_postgres,
-        local.nsg_rule_library.allow_data_factory_proxy_to_postgres,
         local.nsg_rule_library.deny_from_all_vnet,
       ],
           var.enabled_features.metabase ? [local.nsg_rule_library.allow_metabase_to_postgres] : [],
+          var.enabled_features.data_factory_proxy ?[local.nsg_rule_library.allow_data_factory_proxy_to_postgres]: [],
           # inbound rule for vpn kept separated because the structure is different and terraform gives error if kept in the same list
           var.enabled_features.vpn_database_access ? [local.nsg_rule_library.allow_vpn_subnet_to_postgres] : [],
           var.enabled_features.vpn_database_access ? [local.nsg_rule_library.allow_vpn_gateway_to_postgres] : []
