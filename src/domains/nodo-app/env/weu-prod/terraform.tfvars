@@ -144,6 +144,41 @@ route_aks = [
     address_prefix         = "10.101.175.0/24"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    # aks nodo nexi oracle storico onprem
+    name                   = "aks-outbound-to-nexi-oracle-onprem-storico-subnet"
+    address_prefix         = "10.79.45.124/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    # aks nodo nexi oracle storico onprem
+    name                   = "aks-outbound-to-nexi-oracle-onprem-storico-re-subnet"
+    address_prefix         = "10.79.45.117/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    # aks nodo nexi oracle storico onprem
+    name                   = "aks-outbound-to-nexi-oracle-onprem-storico-dr-subnet"
+    address_prefix         = "10.101.35.185/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    # aks nodo nexi oracle storico onprem
+    name                   = "aks-outbound-to-nexi-oracle-onprem-storico-re-dr-subnet"
+    address_prefix         = "10.101.35.213/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    # aks nodo nexi postgres 2 onprem
+    name                   = "aks-outbound-to-nexi-postgres-onprem-2-subnet"
+    address_prefix         = "10.222.209.84/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
   }
 
 ]
