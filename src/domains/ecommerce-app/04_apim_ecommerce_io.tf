@@ -208,3 +208,36 @@ resource "azurerm_api_management_api_operation_policy" "create_transactions_v2" 
     ecommerce_ingress_hostname = local.ecommerce_hostname
   })
 }
+
+###########################
+###                     ###
+### ECOMMERCE IO V3     ###
+###                     ###
+###########################
+
+module "apim_ecommerce_io_api_v3" {
+  source = "./.terraform/modules/__v3__/api_management_api"
+
+  name                  = "${local.project}-ecommerce-io-api"
+  resource_group_name   = local.pagopa_apim_rg
+  api_management_name   = local.pagopa_apim_name
+  product_ids           = [module.apim_ecommerce_io_product.product_id]
+  subscription_required = local.apim_ecommerce_io_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.ecommerce_io_api_v1.id
+  api_version           = "v3"
+  service_url           = local.apim_ecommerce_io_api.service_url
+
+  description  = local.apim_ecommerce_io_api.description
+  display_name = local.apim_ecommerce_io_api.display_name
+  path         = local.apim_ecommerce_io_api.path
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value = templatefile("./api/ecommerce-io/v3/_openapi.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/ecommerce-io/v3/_base_policy.xml.tpl", {
+    ecommerce_ingress_hostname = local.ecommerce_hostname
+  })
+}
