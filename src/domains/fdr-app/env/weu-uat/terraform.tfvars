@@ -13,7 +13,8 @@ reporting_fdr_function_always_on = true
 
 app_service_plan_info = {
   kind                         = "Linux"
-  sku_size                     = "S1"
+  sku_tier                     = "Basic"
+  sku_size                     = "B1"
   maximum_elastic_worker_count = 1
   worker_count                 = 1
   zone_balancing_enabled       = false
