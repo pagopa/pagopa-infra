@@ -99,3 +99,85 @@ resource "azurerm_data_factory_linked_service_cosmosdb" "afm_gec_cosmosdb_linked
   account_key      = data.azurerm_cosmosdb_account.afm_cosmos_account.primary_key
   database         = "db"
 }
+
+######### Datafactory & Cruscotto Config #########
+
+# assignment for datafactory to see kv
+
+resource "azurerm_key_vault_access_policy" "df_see_kv_cruscotto" {
+  key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azurerm_data_factory.qi_data_factory.identity[0].principal_id
+
+  secret_permissions = ["Get", "List"]
+}
+
+# create linked service to keyvault
+
+resource "azurerm_data_factory_linked_service_key_vault" "ls_df_to_kv" {
+  name            = local.linked_service_cruscotto_kv_name
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
+  key_vault_id    = data.azurerm_key_vault.cruscotto_kv.id
+}
+
+# fetch data config from kv for linked service to postgres
+
+data "azurerm_key_vault_secret" "cruscotto_db_host" {
+  name         = "ls-cruscotto-server"
+  key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
+}
+
+data "azurerm_key_vault_secret" "cruscotto_db_port" {
+  name         = "ls-cruscotto-port"
+  key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
+}
+
+data "azurerm_key_vault_secret" "cruscotto_db_database" {
+  name         = "ls-cruscotto-database"
+  key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
+}
+
+data "azurerm_key_vault_secret" "cruscotto_db_username" {
+  name         = "ls-cruscotto-username"
+  key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
+}
+
+data "azurerm_key_vault_secret" "cruscotto_db_password" {
+  name         = "ls-cruscotto-password"
+  key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
+}
+
+
+resource "azapi_resource" "ls_postgres_cruscotto" {
+
+  type      = "Microsoft.DataFactory/factories/linkedservices@2018-06-01"
+  name      = "LinkedService-Cruscotto-Fake"
+  parent_id = data.azurerm_data_factory.obeserv_data_factory.id
+
+  body = {
+    properties = {
+      type = "PostgreSqlV2"
+      typeProperties = {
+        server   = data.azurerm_key_vault_secret.cruscotto_db_host.value
+        port     = data.azurerm_key_vault_secret.cruscotto_db_port.value
+        database = data.azurerm_key_vault_secret.cruscotto_db_database.value
+        username = data.azurerm_key_vault_secret.cruscotto_db_username.value
+        password = {
+          type = "AzureKeyVaultSecret"
+          store = {
+            referenceName = local.linked_service_cruscotto_kv_name
+            type          = "LinkedServiceReference"
+          }
+          secretName = local.kv_name_password_database,
+        }
+        sslMode            = "2"
+        authenticationType = "Basic"
+      }
+      connectVia = {
+        referenceName = local.df_integration_runtime_name
+        type          = "IntegrationRuntimeReference"
+      }
+    }
+  }
+}
