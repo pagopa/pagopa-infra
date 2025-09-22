@@ -70,10 +70,6 @@ log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 ### VPN
 dns_forwarder_vm_image_name = "pagopa-u-dns-forwarder-ubuntu2204-image-v4"
 
-#
-# replica settings
-#
-geo_replica_enabled = false
 
 #
 # apim v2
@@ -685,7 +681,7 @@ eventhubs_04 = [
     name              = "fdr-qi-reported-iuv"
     partitions        = 3
     message_retention = 1
-    consumers         = ["fdr-qi-reported-iuv-rx"]
+    consumers         = ["fdr-qi-reported-iuv-rx", "gpd-reporting-sync"]
     keys = [
       {
         name   = "fdr-qi-reported-iuv-tx"
@@ -695,6 +691,12 @@ eventhubs_04 = [
       },
       {
         name   = "fdr-qi-reported-iuv-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "gpd-reporting-sync"
         listen = true
         send   = false
         manage = false

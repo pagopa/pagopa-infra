@@ -100,18 +100,6 @@ resource "azurerm_key_vault_secret" "checkout_opsgenie_webhook_token" {
   }
 }
 
-resource "azurerm_key_vault_secret" "redis_checkout_access_key" {
-  name         = "redis-checkout-access-key"
-  value        = module.pagopa_checkout_redis.primary_access_key
-  key_vault_id = module.key_vault.id
-}
-
-resource "azurerm_key_vault_secret" "redis_checkout_hostname" {
-  name         = "redis-checkout-hostname"
-  value        = module.pagopa_checkout_redis.hostname
-  key_vault_id = module.key_vault.id
-}
-
 resource "azurerm_key_vault_secret" "checkout_oneidentity_onboarding_api_key" {
   name         = "checkout-oneidentity-onboarding-api-key"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
@@ -185,4 +173,16 @@ resource "azurerm_key_vault_secret" "redis_std_checkout_hostname" {
   name         = "redis-std-checkout-hostname"
   value        = module.pagopa_checkout_redis_std.hostname
   key_vault_id = module.key_vault.id
+}
+
+
+resource "azurerm_key_vault_secret" "checkout_feature_flags_map" {
+  name         = "checkout-feature-flags-map"
+  value        = "{}"
+  key_vault_id = module.key_vault.id
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }
