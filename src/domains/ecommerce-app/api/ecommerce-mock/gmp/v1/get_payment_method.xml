@@ -9,38 +9,39 @@
       </set-header>
       <set-body template="liquid">
       {
-        "id": "378d0b4f-8b69-46b0-8215-07785fe1aad4",
+        "id": "2",
+        "group": "CP",
         "name": {
-          "IT": "Carte",
-          "EN": "Cards"
+            "IT": "Carte",
+            "EN": "Cards"
         },
         "description": {
-          "IT": "Carta di credito o debito",
-          "EN": "Credit or debit card"
+            "IT": "Carta di credito o debito",
+            "EN": "Credit or debit card"
         },
         "status": "ENABLED",
-        "validityDateFrom": "2000-01-01",
-        "paymentTypeCode": "CP",
-        "paymentMethodTypes": [
-          "CARTE"
-        ],
-        "paymentMethodAsset": "https://assets.cdn.platform.pagopa.it/creditcard/generic.png",
-        "methodManagement": "ONBOARDABLE",
-        "feeRange": {
-          "min": 0,
-          "max": 999999999
+        "target": null,
+        "metadata": {},
+        "payment_method_id": "f25399bf-c56f-4bd2-adc9-7aef87410609",
+        "user_touchpoint": ["IO"],
+        "user_device": ["IOS", "ANDROID", "WEB", "SAFARI"],
+        "payment_method_types": ["CARTE"],
+        "validity_date_from": "2000-01-01",
+        "range_amount": {
+            "min": 0,
+            "max": 100000
         },
-        "disabledReason": null,
-        "paymentMethodsBrandAssets": {
-          "VISA": "https://assets.cdn.platform.pagopa.it/creditcard/visa.png",
-          "MC": "https://assets.cdn.platform.pagopa.it/creditcard/mastercard.png",
-          "DINERS": "https://assets.cdn.platform.pagopa.it/creditcard/diners.png",
-          "AMEX": "https://assets.cdn.platform.pagopa.it/creditcard/amex.png",
-          "MAESTRO": "https://assets.cdn.platform.pagopa.it/creditcard/maestro.png",
-          "MASTERCARD": "https://assets.cdn.platform.pagopa.it/creditcard/mastercard.png"
-        },
-        "metadata": {}
-      }
+        "payment_method_asset": "https://assets.cdn.platform.pagopa.it/creditcard/generic.png",
+        "method_management": "ONBOARDABLE_ONLY",
+        "payment_methods_brand_assets": {
+            "VISA": "https://assets.cdn.platform.pagopa.it/creditcard/visa.png",
+            "MC": "https://assets.cdn.platform.pagopa.it/creditcard/mastercard.png",
+            "DINERS": "https://assets.cdn.platform.pagopa.it/creditcard/diners.png",
+            "AMEX": "https://assets.cdn.platform.pagopa.it/creditcard/amex.png",
+            "MAESTRO": "https://assets.cdn.platform.pagopa.it/creditcard/maestro.png",
+            "MASTERCARD": "https://assets.cdn.platform.pagopa.it/creditcard/mastercard.png"
+        }
+    }
       </set-body>
     </return-response>
   </inbound>
