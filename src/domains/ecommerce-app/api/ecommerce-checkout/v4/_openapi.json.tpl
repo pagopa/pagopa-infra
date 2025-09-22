@@ -37,6 +37,17 @@
             "bearerAuth": []
           }
         ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-rpt-ids",
+            "required": false,
+            "description": "Optional RPT ID used to track get payment-methods attempts to payment notices",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
