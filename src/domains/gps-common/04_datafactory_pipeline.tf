@@ -33,8 +33,8 @@ resource "azapi_resource" "gpd_postgres_linked_service" {
           },
           secretName = "${data.azurerm_key_vault_secret.gpd_db_pwd.name}"
         }
-        port     = "5432"
-        server   = "${module.postgres_flexible_server_private_db.fqdn}"
+        port     = "8432" // adhoc private endpoint port
+        server   = "172.205.217.81" // adhoc private endpoint host
         sslMode  = "2"
         username = "${data.azurerm_key_vault_secret.gpd_db_usr.value}"
       }
