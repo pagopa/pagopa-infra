@@ -181,3 +181,44 @@ resource "azapi_resource" "ls_postgres_cruscotto" {
     }
   }
 }
+
+
+
+resource "azapi_resource" "ls_postgres_cruscotto_tf" {
+  type      = "Microsoft.DataFactory/factories/linkedservices@2018-06-01"
+  name      = "LinkedService-Cruscotto"
+  parent_id = data.azurerm_data_factory.obeserv_data_factory.id
+
+  body = {
+    properties = {
+      annotations = []
+      connectVia = {
+        parameters    = {}
+        referenceName = "AutoResolveIntegrationRuntime"
+        type          = "IntegrationRuntimeReference"
+      }
+      type = "AzurePostgreSql"
+      typeProperties = {
+        #connectionString = "Host=${data.azurerm_key_vault_secret.cruscotto_db_host.value};Port=${data.azurerm_key_vault_secret.cruscotto_db_port.value};Database=${data.azurerm_key_vault_secret.cruscotto_db_database.value};UID=${data.azurerm_key_vault_secret.cruscotto_db_username.value};EncryptionMethod=6;Password=${data.azurerm_key_vault_secret.cruscotto_db_password.value}"
+        connectionString = "Host=${data.azurerm_key_vault_secret.cruscotto_db_host.value};Port=${data.azurerm_key_vault_secret.cruscotto_db_port.value};Database=${data.azurerm_key_vault_secret.cruscotto_db_database.value};UID=${data.azurerm_key_vault_secret.cruscotto_db_username.value};EncryptionMethod=6;ValidateServerCertificate=0"
+        password = {
+          type = "AzureKeyVaultSecret"
+          store = {
+            referenceName = local.linked_service_cruscotto_kv_name
+            type          = "LinkedServiceReference"
+          }
+          secretName = local.kv_name_password_database
+        }
+      }
+    }
+  }
+}
+
+
+
+#resource "azurerm_data_factory_linked_service_postgresql" "ls_postgres_cruscotto_azure" {
+#  name = "LinkedService-Cruscotto"
+#  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
+#  #connection_string = "Host=example;Port=5432;Database=example;UID=example;EncryptionMethod=0;Password=example"
+#  connection_string = "Host=${data.azurerm_key_vault_secret.cruscotto_db_host.value};Port=${data.azurerm_key_vault_secret.cruscotto_db_port.value};Database=${data.azurerm_key_vault_secret.cruscotto_db_database.value};UID=${data.azurerm_key_vault_secret.cruscotto_db_username.value};EncrhyptionMethod=2;Password=${data.azurerm_key_vault_secret.cruscotto_db_password.value}"
+#}
