@@ -2,7 +2,7 @@
 resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-gpd-reporting-analysis-rest-availability-getFlow" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-gpd-reporting-analysis-rest-availability @ _gpd"
+  name                = "pagopa-${var.env_short}-pagopa-gpd-reporting-analysis-rest-availability @ _gpd"
   location            = var.location
 
   action {
