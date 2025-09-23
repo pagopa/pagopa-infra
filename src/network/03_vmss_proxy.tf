@@ -15,10 +15,10 @@ module "vmss_snet" {
 
   name                                          = format("%s-vmss-snet", local.project)
   address_prefixes                              = ["10.1.131.0/28"]
-  resource_group_name                           = local.vnet_resource_group_name
+  resource_group_name                           = local.vnet_core_resource_group_name
   virtual_network_name                          = data.azurerm_virtual_network.vnet_integration.name
   private_link_service_network_policies_enabled = true
-  private_endpoint_network_policies_enabled     = false
+  private_endpoint_network_policies             = "Enabled"
 }
 
 module "vmss_pls_snet" {
@@ -26,10 +26,10 @@ module "vmss_pls_snet" {
 
   name                                          = format("%s-vmss-pls-snet", local.project)
   address_prefixes                              = ["10.1.131.16/28"]
-  resource_group_name                           = local.vnet_resource_group_name
+  resource_group_name                           = local.vnet_core_resource_group_name
   virtual_network_name                          = data.azurerm_virtual_network.vnet_integration.name
   private_link_service_network_policies_enabled = true
-  private_endpoint_network_policies_enabled     = false
+  private_endpoint_network_policies             = "Enabled"
 }
 
 data "azurerm_key_vault_secret" "vmss_admin_login" {
@@ -111,7 +111,7 @@ resource "azurerm_virtual_machine_scale_set_extension" "vmss-extension" {
 module "load_balancer_observ_egress" {
   source = "./.terraform/modules/__v4__/load_balancer"
 
-  resource_group_name                    = local.vnet_resource_group_name
+  resource_group_name                    = local.vnet_core_resource_group_name
   location                               = var.location
   name                                   = format("%s-egress-lb", local.project)
   frontend_name                          = "frontend_private_ip"
