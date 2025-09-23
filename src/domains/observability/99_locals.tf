@@ -28,4 +28,24 @@ locals {
   linked_service_cruscotto_kv_name = "crusc8-${var.env_short}-key-vault"
   kv_name_password_database        = "ls-cruscotto-password"
   df_integration_runtime_name      = "AutoResolveIntegrationRuntime"
+  crusc8_tables_list_datasets      = [
+    {
+      dataset_name        = "CRUSC8_RECORDED_TIMEOUT"
+      dataset_schema_file = "datafactory/datasets/crusc8/CRUSC8_RECORDED_TIMEOUT.json"
+      table_name          = "pagopa_recorded_timeout"
+      schema_name         = "cruscotto"
+    },
+    {
+      dataset_name        = "CRUSC8_PAYMENT_RECEIPT"
+      dataset_schema_file = "datafactory/datasets/crusc8/CRUSC8_PAYMENT_RECEIPT.json"
+      table_name          = "pagopa_payment_receipt"
+      schema_name         = "cruscotto"
+    },
+    {
+      dataset_name        = "CRUSC8_TAXONOMY_AGGREGATE_POSITION"
+      dataset_schema_file = "datafactory/datasets/crusc8/CRUSC8_TAXONOMY_AGGREGATE_POSITION.json"
+      table_name          = "pagopa_taxonomy_aggregate_position"
+      schema_name         = "cruscotto"
+    }
+  ]
 }
