@@ -65,6 +65,7 @@ cosmos_authorizer_db_params = {
   is_virtual_network_filter_enabled = false
 
   backup_continuous_enabled = false
+  burst_capacity_enabled    = false
 }
 
 
