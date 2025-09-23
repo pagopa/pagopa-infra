@@ -67,24 +67,6 @@ module "apim_ecommerce_helpdesk_product" {
   policy_xml = file("./api_product/_base_policy.xml")
 }
 
-module "apim_ecommerce_payment_methods_handler_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
-
-  product_id   = "ecommerce-payment-methods-handler"
-  display_name = "ecommerce pagoPA payment methods handler"
-  description  = "Product for ecommerce pagoPA payment methods handler"
-
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-
-  published             = true
-  subscription_required = true
-  approval_required     = true
-  subscriptions_limit   = 1000
-
-  policy_xml = file("./api_product/_base_policy.xml")
-}
-
 ##############################
 ## API transactions service ##
 ##############################
@@ -772,7 +754,7 @@ module "apim_ecommerce_payment_methods_handler_api_v1" {
   name                  = format("%s-payment-methods-handler-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_ecommerce_product.product_id, module.apim_ecommerce_payment_methods_handler_product.product_id]
+  product_ids           = [module.apim_ecommerce_product.product_id, module.apim_ecommerce_payment_methods_product.product_id]
   subscription_required = local.apim_ecommerce_payment_methods_handler_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.ecommerce_payment_methods_handler_api.id
   api_version           = "v1"
