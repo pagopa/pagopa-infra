@@ -1,7 +1,7 @@
 prefix         = "pagopa"
 env_short      = "p"
 env            = "prod"
-domain         = "core"
+domain         = "network"
 location       = "westeurope"
 location_short = "weu"
 instance       = "prod"

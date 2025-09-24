@@ -57,11 +57,11 @@ locals {
     }
   }
 
-  base64_db_script = base64encode(templatefile("${path.module}/network_proxy_forward.sh.tpl", {
-                  env         = var.env_short})
-                  )
-    
-  base64_ipfwd_script = base64encode(file("${path.module}/create_ip_fwd.sh"))
+  base64_db_script = templatefile("${path.module}/network_proxy_forward.sh.tpl", {
+                     env         = var.env_short}
+                     )
+  base64_ipfwd_script = file("${path.module}/create_ip_fwd.sh")
 
-  base64_script = "${local.base64_ipfwd_script} ${local.base64_db_script}"
+  base64_script_merge = "${local.base64_ipfwd_script}${local.base64_db_script}"
+  base64_script = base64encode(local.base64_script_merge)
 }

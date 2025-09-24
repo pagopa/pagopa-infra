@@ -101,7 +101,7 @@ resource "azurerm_virtual_machine_scale_set_extension" "vmss-extension" {
   virtual_machine_scale_set_id = azurerm_linux_virtual_machine_scale_set.vmss-egress.id
   publisher                    = "Microsoft.Azure.Extensions"
   type                         = "CustomScript"
-  type_handler_version         = "2.0"
+  type_handler_version         = "2.1"
   settings = jsonencode({
     "script" : "${local.base64_script}"
   })

@@ -1,7 +1,7 @@
 prefix         = "pagopa"
 env_short      = "u"
 env            = "uat"
-domain         = "core"
+domain         = "network"
 location       = "westeurope"
 location_short = "weu"
 instance       = "uat"

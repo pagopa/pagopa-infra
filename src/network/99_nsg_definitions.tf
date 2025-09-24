@@ -252,13 +252,14 @@ locals {
           source_address_prefixes    = ["DataFactory"]
           description                = "Allow data factory to access PostgreSQL"
       }
-      # allow_data_factory_proxy_to_postgres = var.enabled_features.data_factory_proxy ? {
-      #     name                       = "AllowDataFactoryProxyPostgreSQL"
-      #     priority                   = 411
-      #     target_service             = "postgresql"
-      #     source_address_prefixes    = [data.azurerm_virtual_machine.data_factory_proxy[0].private_ip_address]
-      #     description                = "Allow data factory proxy to access PostgreSQL"
-      # } : null
+      allow_data_factory_proxy_to_postgres = var.enabled_features.data_factory_proxy ? {
+          name                       = "AllowDataFactoryProxyPostgreSQL"
+          priority                   = 411
+          target_service             = "postgresql"
+          source_subnet_name         = module.vmss_snet.name
+          source_subnet_vnet_name    = "pagopa-${var.env_short}-vnet"
+          description                = "Allow data factory proxy VMSS to access PostgreSQL"
+      } : null
       allow_pe_subnet_to_postgres = {
           name                       = "AllowPESubnetPostgreSQL"
           priority                   = 412
