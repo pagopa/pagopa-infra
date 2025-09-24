@@ -66,16 +66,6 @@ data "azurerm_function_app" "reporting_analysis" {
   resource_group_name = format("%s-%s-%s-gps-gpd-rg", var.prefix, var.env_short, var.location_short)
 }
 
-data "azurerm_function_app" "reporting_batch" {
-  name                = format("%s-%s-%s-fn-gpd-batch", var.prefix, var.env_short, var.location_short)
-  resource_group_name = format("%s-%s-%s-gps-gpd-rg", var.prefix, var.env_short, var.location_short)
-}
-
-data "azurerm_function_app" "reporting_service" {
-  name                = format("%s-%s-%s-fn-gpd-service", var.prefix, var.env_short, var.location_short)
-  resource_group_name = format("%s-%s-%s-gps-gpd-rg", var.prefix, var.env_short, var.location_short)
-}
-
 data "azurerm_linux_function_app" "mockec" {
   count               = var.env_short != "p" ? 1 : 0
   name                = format("%s-%s-app-mock-ec", var.prefix, var.env_short)
@@ -160,8 +150,6 @@ module "apim_api_statuspage_api_v1" {
           "gpdenrollment"               = format("%s/pagopa-gpd-reporting-orgs-enrollment", format(local.aks_path, "gps"))
           "gpdupload"                   = format("%s/pagopa-gpd-upload", format(local.aks_path, "gps"))
           "gpdreportinganalysis"        = format("%s/", data.azurerm_function_app.reporting_analysis.default_hostname)
-          "gpdreportingbatch"           = format("%s/api/", data.azurerm_function_app.reporting_batch.default_hostname)
-          "gpdreportingservice"         = format("%s/api/", data.azurerm_function_app.reporting_service.default_hostname)
           "gpdingestionmanager"         = format("%s/pagopa-gpd-ingestion-manager", format(local.aks_path, "gps"))
           "gps"                         = format("%s/pagopa-spontaneous-payments-service", format(local.aks_path, "gps"))
           "gpsdonation"                 = format("%s/pagopa-gps-donation-service", format(local.aks_path, "gps"))

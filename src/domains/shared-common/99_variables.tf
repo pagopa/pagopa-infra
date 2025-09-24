@@ -203,6 +203,7 @@ variable "cosmos_authorizer_db_params" {
     public_network_access_enabled     = bool
     is_virtual_network_filter_enabled = bool
     backup_continuous_enabled         = bool
+    burst_capacity_enabled            = bool
   })
 }
 

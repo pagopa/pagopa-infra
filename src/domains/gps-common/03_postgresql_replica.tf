@@ -69,7 +69,6 @@ resource "azurerm_private_dns_cname_record" "cname_record" {
   zone_name           = "${var.env_short}.internal.postgresql.pagopa.it"
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
   ttl                 = 300
-  # record              = "${azurerm_postgresql_flexible_server_virtual_endpoint.virtual_endpoint[0].name}.writer.postgres.database.azure.com"
-  record = module.postgres_flexible_server_private_db.fqdn
+  record              = "${azurerm_postgresql_flexible_server_virtual_endpoint.virtual_endpoint[0].name}.writer.postgres.database.azure.com"
 }
 

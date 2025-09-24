@@ -16,6 +16,7 @@ locals {
     "pagopa-iuvgenerator",
     "pagopa-infra",
     "pagopa-anonymizer",
+    "pagopa-taxonomy"
   ]
 
   federations_01 = [
