@@ -105,5 +105,4 @@ iptables -t nat -A POSTROUTING -o ${ETH_IF} -j MASQUERADE
 echo -e "\e[32mDone!\e[0m"
 EOF
 
-chmod +x ip_fwd.sh
-sudo ./ip_fwd.sh -i eth0 -f 5432 -a bc6b41358263.private.postgres.database.azure.com. -b 5432 
+echo "Script created: ip_fwd.sh"
