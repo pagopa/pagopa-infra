@@ -2,7 +2,7 @@
   <inbound>
     <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
     <choose>
-      <when condition="@(((string)context.Request.Method).Equals("POST"))">
+      <when condition="@(((string)context.Variables["requestPath"]).Contains("/info"))">
         <rewrite-uri template="@((string)context.Variables["requestPath"]+"/v2")" copy-unmatched-params="true" />
       </when>
     </choose>
