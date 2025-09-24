@@ -54,13 +54,4 @@
 			newDataType="numeric" />
 	</changeSet>
 
-  <changeSet author="liquibase" id="20250728163960">
-    <sqlFile
-      encoding="UTF-8"
-      path="sql/offline_grant.sql"
-      relativeToChangelogFile="true"
-      splitStatements="true"
-      stripComments="true"/>
-  </changeSet>
-
 </databaseChangeLog>
