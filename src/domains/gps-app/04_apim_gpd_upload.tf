@@ -33,7 +33,7 @@ module "apim_gpd_upload_api_v1" {
   product_ids           = [module.apim_debt_positions_product.product_id, module.apim_gpd_integration_product.product_id]
   subscription_required = local.apim_gpd_upload_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.apim_gpd_upload_api.id
-  api_version           = "v2"
+  api_version           = "v1"
 
   description  = local.apim_gpd_upload_api.description
   display_name = local.apim_gpd_upload_api.display_name
@@ -60,7 +60,7 @@ module "apim_gpd_upload_api_v2" {
   product_ids           = [module.apim_debt_positions_product.product_id, module.apim_gpd_integration_product.product_id]
   subscription_required = local.apim_gpd_upload_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.apim_gpd_upload_api.id
-  api_version           = "v1"
+  api_version           = "v2"
 
   description  = local.apim_gpd_upload_api.description
   display_name = local.apim_gpd_upload_api.display_name
