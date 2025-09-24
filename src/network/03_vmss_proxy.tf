@@ -11,25 +11,27 @@ data "azurerm_virtual_network" "vnet_integration" {
 }
 
 module "vmss_snet" {
-  source = "./.terraform/modules/__v4__/subnet"
-
-  name                                          = format("%s-vmss-snet", local.project)
-  address_prefixes                              = ["10.1.131.0/28"]
+  source                                        = "./.terraform/modules/__v4__/IDH/subnet"
+  name                                          = "${local.project}-vmss-snet"
   resource_group_name                           = local.vnet_core_resource_group_name
   virtual_network_name                          = data.azurerm_virtual_network.vnet_integration.name
-  private_link_service_network_policies_enabled = true
-  private_endpoint_network_policies             = "Enabled"
+
+  idh_resource_tier = "slash28_privatelink_true"
+  product_name = local.prefix
+  env = var.env
+
 }
 
 module "vmss_pls_snet" {
-  source = "./.terraform/modules/__v4__/subnet"
-
-  name                                          = format("%s-vmss-pls-snet", local.project)
-  address_prefixes                              = ["10.1.131.16/28"]
+  source                                        = "./.terraform/modules/__v4__/IDH/subnet"
+  name                                          = "${local.project}-pls-snet"
   resource_group_name                           = local.vnet_core_resource_group_name
   virtual_network_name                          = data.azurerm_virtual_network.vnet_integration.name
-  private_link_service_network_policies_enabled = false
-  private_endpoint_network_policies             = "Enabled"
+
+  idh_resource_tier = "slash28_privatelink_false"
+  product_name = local.prefix
+  env = var.env
+
 }
 
 data "azurerm_key_vault_secret" "vmss_admin_login" {
@@ -118,11 +120,11 @@ module "load_balancer_observ_egress" {
   type                                   = "private"
   frontend_subnet_id                     = module.vmss_snet.id
   frontend_private_ip_address_allocation = "Static"
-  frontend_private_ip_address            = "10.1.131.14"
+  frontend_private_ip_address            = module.vmss_snet.last_ip_address
   lb_sku                                 = "Standard"
   pip_sku                                = "Standard"
   lb_port = {
-    lb_nodo = {
+    lb_network = {
       frontend_port     = "0"
       protocol          = "All"
       backend_port      = "0"
@@ -217,7 +219,7 @@ resource "azurerm_private_link_service" "vmss_pls" {
 
   nat_ip_configuration {
     name                       = "primary"
-    private_ip_address         = "10.1.131.30"
+    private_ip_address         = module.vmss_pls_snet.last_ip_address
     private_ip_address_version = "IPv4"
     subnet_id                  = module.vmss_pls_snet.id
     primary                    = true
