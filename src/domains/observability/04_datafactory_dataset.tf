@@ -114,11 +114,11 @@ resource "azurerm_data_factory_dataset_json" "afm_gec_paymenttypes_cdc_json" {
 #}
 
 resource "azurerm_data_factory_custom_dataset" "crusc8_tables_datasets" {
-    for_each            = { for ds in local.crusc8_tables_list_datasets : ds.dataset_name => ds }
-    name                = each.key
-    data_factory_id     = data.azurerm_data_factory.obeserv_data_factory.id
-    type                = "AzurePostgreSqlTable"
-    type_properties_json = <<JSON
+  for_each             = { for ds in local.crusc8_tables_list_datasets : ds.dataset_name => ds }
+  name                 = each.key
+  data_factory_id      = data.azurerm_data_factory.obeserv_data_factory.id
+  type                 = "AzurePostgreSqlTable"
+  type_properties_json = <<JSON
       { 
       "schema" : "${each.value.schema_name}",
       "table"  : "${each.value.table_name}"
