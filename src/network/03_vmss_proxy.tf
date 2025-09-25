@@ -11,26 +11,26 @@ data "azurerm_virtual_network" "vnet_integration" {
 }
 
 module "vmss_snet" {
-  source                                        = "./.terraform/modules/__v4__/IDH/subnet"
-  name                                          = "${local.project}-vmss-snet"
-  resource_group_name                           = local.vnet_core_resource_group_name
-  virtual_network_name                          = data.azurerm_virtual_network.vnet_integration.name
+  source               = "./.terraform/modules/__v4__/IDH/subnet"
+  name                 = "${local.project}-vmss-snet"
+  resource_group_name  = local.vnet_core_resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.vnet_integration.name
 
   idh_resource_tier = "slash28_privatelink_true"
-  product_name = local.prefix
-  env = var.env
+  product_name      = local.prefix
+  env               = var.env
 
 }
 
 module "vmss_pls_snet" {
-  source                                        = "./.terraform/modules/__v4__/IDH/subnet"
-  name                                          = "${local.project}-pls-snet"
-  resource_group_name                           = local.vnet_core_resource_group_name
-  virtual_network_name                          = data.azurerm_virtual_network.vnet_integration.name
+  source               = "./.terraform/modules/__v4__/IDH/subnet"
+  name                 = "${local.project}-pls-snet"
+  resource_group_name  = local.vnet_core_resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.vnet_integration.name
 
   idh_resource_tier = "slash28_privatelink_false"
-  product_name = local.prefix
-  env = var.env
+  product_name      = local.prefix
+  env               = var.env
 
 }
 

@@ -9,27 +9,27 @@ resource "azurerm_resource_group" "nsg_rg" {
 }
 
 module "network_watcher_storage_account" {
-  source = "./.terraform/modules/__V4__/IDH/storage_account"
-  for_each = local.nsg_regions_to_create
-  env = var.env
+  source            = "./.terraform/modules/__V4__/IDH/storage_account"
+  for_each          = local.nsg_regions_to_create
+  env               = var.env
   idh_resource_tier = "basic"
-  product_name = local.prefix
+  product_name      = local.prefix
 
-  domain = local.domain
-  name                            = replace("${local.product}-${each.value.short_name}-nwst", "-", "")
-  resource_group_name             = azurerm_resource_group.nsg_rg[each.key].name
-  location                        = azurerm_resource_group.nsg_rg[each.key].location
+  domain              = local.domain
+  name                = replace("${local.product}-${each.value.short_name}-nwst", "-", "")
+  resource_group_name = azurerm_resource_group.nsg_rg[each.key].name
+  location            = azurerm_resource_group.nsg_rg[each.key].location
 
   tags = module.tag_config.tags
 }
 
 
 module "network_security_group" {
-  source = "./.terraform/modules/__V4__/network_security_group"
-  for_each = local.nsg_regions_to_create
-  prefix              = "${local.project}"
+  source              = "./.terraform/modules/__V4__/network_security_group"
+  for_each            = local.nsg_regions_to_create
+  prefix              = local.project
   resource_group_name = azurerm_resource_group.nsg_rg[each.key].name
-  location           = azurerm_resource_group.nsg_rg[each.key].location
+  location            = azurerm_resource_group.nsg_rg[each.key].location
 
   vnets = each.value.vnets
 
@@ -41,7 +41,7 @@ module "network_security_group" {
     storage_account_id         = module.network_watcher_storage_account[each.key].id
     traffic_analytics_law_name = each.value.log_analytics_workspace_name
     traffic_analytics_law_rg   = each.value.log_analytics_workspace_rg
-    retention_days = local.flow_log_retention_days
+    retention_days             = local.flow_log_retention_days
 
   }
 

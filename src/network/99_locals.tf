@@ -1,5 +1,5 @@
 locals {
-  prefix = "pagopa"
+  prefix  = "pagopa"
   product = "${local.prefix}-${var.env_short}"
   domain  = "network"
   project = "${local.product}-${var.location_short}-${local.domain}"
@@ -37,10 +37,10 @@ locals {
       ]
       log_analytics_workspace_name = local.log_analytics_weu_workspace_name
       log_analytics_workspace_rg   = local.log_analytics_weu_workspace_resource_group_name
-      nsg = local.westeurope_nsg
+      nsg                          = local.westeurope_nsg
     }
     italynorth = {
-      short_name                   = "itn"
+      short_name = "itn"
       vnets = [
         {
           name    = local.vnet_italy_name
@@ -53,15 +53,15 @@ locals {
       ]
       log_analytics_workspace_name = local.log_analytics_italy_workspace_name
       log_analytics_workspace_rg   = local.log_analytics_italy_workspace_resource_group_name
-      nsg = local.italynorth_nsg
+      nsg                          = local.italynorth_nsg
     }
   }
 
   base64_db_script = templatefile("${path.module}/network_proxy_forward.sh.tpl", {
-                     env         = var.env_short}
-                     )
+    env = var.env_short }
+  )
   base64_ipfwd_script = file("${path.module}/create_ip_fwd.sh")
 
   base64_script_merge = "${local.base64_ipfwd_script}${local.base64_db_script}"
-  base64_script = base64encode(local.base64_script_merge)
+  base64_script       = base64encode(local.base64_script_merge)
 }
