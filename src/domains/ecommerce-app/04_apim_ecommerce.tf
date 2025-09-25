@@ -723,6 +723,58 @@ module "apim_ecommerce_user_stats_service_api_v1" {
   })
 }
 
+
+#####################################
+## API payment methods handler ##
+#####################################
+locals {
+  apim_ecommerce_payment_methods_handler_api = {
+    display_name          = "ecommerce pagoPA - payment methods handler API"
+    description           = "API to support payment methods handler in ecommerce"
+    path                  = "ecommerce/payment-methods-handler"
+    subscription_required = true
+    service_url           = null
+  }
+}
+
+# Payment methods handler APIs
+resource "azurerm_api_management_api_version_set" "ecommerce_payment_methods_handler_api" {
+  name                = format("%s-payment-methods-handler-api", local.project)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = local.apim_ecommerce_payment_methods_handler_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+
+
+module "apim_ecommerce_payment_methods_handler_api_v1" {
+  source = "./.terraform/modules/__v3__/api_management_api"
+
+  name                  = format("%s-payment-methods-handler-api", local.project)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_ecommerce_product.product_id, module.apim_ecommerce_payment_methods_product.product_id]
+  subscription_required = local.apim_ecommerce_payment_methods_handler_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.ecommerce_payment_methods_handler_api.id
+  api_version           = "v1"
+
+  description  = local.apim_ecommerce_payment_methods_handler_api.description
+  display_name = local.apim_ecommerce_payment_methods_handler_api.display_name
+  path         = local.apim_ecommerce_payment_methods_handler_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_ecommerce_payment_methods_handler_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/ecommerce-payment-methods-handler/v1/_openapi.json.tpl", {
+    hostname = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/ecommerce-payment-methods-handler/v1/_base_policy.xml.tpl", {
+    hostname = local.ecommerce_hostname
+  })
+}
+
 #################
 ## NAMED VALUE ##
 #################

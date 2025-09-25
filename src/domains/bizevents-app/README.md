@@ -26,7 +26,6 @@
 | <a name="module_apim_bizevents_product"></a> [apim\_bizevents\_product](#module\_apim\_bizevents\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_bizevents_product_all_in_one"></a> [apim\_bizevents\_product\_all\_in\_one](#module\_apim\_bizevents\_product\_all\_in\_one) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_lap_product"></a> [apim\_lap\_product](#module\_apim\_lap\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_pm_ingestion_product"></a> [apim\_pm\_ingestion\_product](#module\_apim\_pm\_ingestion\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_transactions_product"></a> [apim\_transactions\_product](#module\_apim\_transactions\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v3__/cert_mounter | n/a |
 | <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup | n/a |

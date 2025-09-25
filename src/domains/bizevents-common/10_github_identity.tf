@@ -16,7 +16,6 @@ data "azurerm_key_vault" "key_vault" {
 locals {
   repos_01 = [
     "pagopa-biz-events-service",
-    "pagopa-biz-pm-ingestion",
     "pagopa-biz-events-sync-nodo",
     "pagopa-biz-events-datastore",
     "pagopa-negative-biz-events-datastore"
