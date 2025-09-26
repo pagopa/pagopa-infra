@@ -19,7 +19,7 @@ parameters:
   - name: dbVersion
     displayName: Database Version
     type: string
-    default: '3.37.0'
+    default: '3.36.2'
   # version of liquibase db.changelog-master-*.xml to run
   - name: dbVersionSt
     displayName: Database Version Storico patch
@@ -28,7 +28,7 @@ parameters:
   - name: dbVersionPagoPA
     displayName: Database Version PagoPA patch
     type: string
-    default: '1.0.0'
+    default: '1.1.0'
   # liquibase context to run specific changelogs,default to '_' to run only uncontexted changelogs
   - name: lbContexts
     displayName: Liquibase Contexts
@@ -287,19 +287,6 @@ stages:
               PASSWORD: $(db-re-password)
               SCHEMA: $(RE_SCHEMA)
               TARGET_DB_TYPE: storico
-              lbContexts: ${{ parameters.lbContexts }}
-              lbLogLevel: ${{ parameters.lbLogLevel }}
-          # re as administrator
-          - template: ./templates/liquibase-status.yml
-            parameters:
-              DATABASE_NAME: re_admin
-              LIQUIBASE_FOLDER: $(liquibase_folder)
-              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
-              JDBC_URL: $(JDBC_URL)
-              USERNAME: $(ADMIN_USERNAME)
-              PASSWORD: $(db-administrator-login-password)
-              SCHEMA: $(RE_SCHEMA)
-              TARGET_DB_TYPE: main
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
           # partition status
@@ -621,18 +608,6 @@ stages:
               JDBC_URL: $(JDBC_URL_STORICO)
               USERNAME: $(RE_USERNAME)
               PASSWORD: $(db-re-password)
-              SCHEMA: $(RE_SCHEMA)
-              TARGET_DB_TYPE: storico
-              lbContexts: ${{ parameters.lbContexts }}
-              lbLogLevel: ${{ parameters.lbLogLevel }}
-          - template: ./templates/liquibase-apply.yml
-            parameters:
-              DATABASE_NAME: re_admin
-              LIQUIBASE_FOLDER: $(liquibase_folder)
-              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
-              JDBC_URL: $(JDBC_URL_STORICO)
-              USERNAME: $(ADMIN_USERNAME)
-              PASSWORD: $(db-administrator-login-password)
               SCHEMA: $(RE_SCHEMA)
               TARGET_DB_TYPE: storico
               lbContexts: ${{ parameters.lbContexts }}
