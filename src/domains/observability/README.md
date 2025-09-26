@@ -34,12 +34,15 @@
 | Name | Type |
 |------|------|
 | [azapi_resource.ls_postgres_cruscotto](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
+| [azapi_resource.ls_postgres_cruscotto_tf](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource.pdnd_cdc_gec_bundles_dataflow](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource.pdnd_cdc_gec_cibundles_dataflow](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource.pdnd_cdc_gec_paymenttypes_dataflow](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource.pdnd_cdc_gec_touchpoints_dataflow](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
+| [azapi_resource_action.approve_privatelink_private_endpoint_connection](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource_action) | resource |
 | [azurerm_api_management_api_version_set.app_forwarder_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_subscription.apim_app_forwarder_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/api_management_subscription) | resource |
+| [azurerm_data_factory_custom_dataset.crusc8_tables_datasets](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_custom_dataset) | resource |
 | [azurerm_data_factory_custom_dataset.qi_datasets](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_custom_dataset) | resource |
 | [azurerm_data_factory_custom_dataset.qi_datasets_cosmos](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_custom_dataset) | resource |
 | [azurerm_data_factory_dataset_json.afm_gec_bundle_cdc_json](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_dataset_json) | resource |
@@ -51,6 +54,7 @@
 | [azurerm_data_factory_linked_service_cosmosdb.cosmos_biz](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_linked_service_cosmosdb) | resource |
 | [azurerm_data_factory_linked_service_key_vault.ls_df_to_kv](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_linked_service_key_vault) | resource |
 | [azurerm_data_factory_linked_service_kusto.dataexp_ls](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_linked_service_kusto) | resource |
+| [azurerm_data_factory_managed_private_endpoint.private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_managed_private_endpoint) | resource |
 | [azurerm_data_factory_pipeline.pipeline_KPI_FDR_IMPORT_ESITI](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_pipeline) | resource |
 | [azurerm_data_factory_pipeline.pipeline_KPI_FDR_IMPORT_ESITI_DAILY_Manuale](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_pipeline) | resource |
 | [azurerm_data_factory_pipeline.pipeline_KPI_FDR_IMPORT_ESITI_Manuale](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_pipeline) | resource |
@@ -114,6 +118,7 @@
 | [azurerm_storage_container.blob-observability-st](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/storage_container) | resource |
 | [azurerm_subnet.eventhub_observability_gpd_snet](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/subnet) | resource |
 | [azurerm_subnet.eventhub_observability_snet](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/subnet) | resource |
+| [azapi_resource.privatelink_private_endpoint_connection](https://registry.terraform.io/providers/azure/azapi/latest/docs/data-sources/resource) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_operations](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
@@ -143,6 +148,7 @@
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_private_dns_zone.eventhub](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.storage](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_link_service.vmss_pls](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/private_link_service) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.rg_event_private_dns_zone](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.rg_node_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/resource_group) | data source |
