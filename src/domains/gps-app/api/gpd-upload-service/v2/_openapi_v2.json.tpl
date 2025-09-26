@@ -1,13 +1,92 @@
 {
-  "openapi": "3.0.1",
-  "info": {
-    "title": "pagopa-gpd-upload",
-    "version": "0.1.17"
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "GPD-Upload-API-v2",
+    "description" : "Microservice to manage PagoPA GPD Upload",
+    "termsOfService" : "https://www.pagopa.gov.it/",
+    "version" : "0.1.22"
   },
+  "servers" : [ {
+    "url" : "http://localhost:8080"
+  }, {
+    "url" : "https://{host}{basePath}",
+    "variables" : {
+      "basePath" : {
+        "default" : "/upload/gpd/debt-positions-service/v1",
+        "enum" : [ "/upload/gpd/debt-positions-service/v1", "/upload/aca/debt-positions-service/v1" ]
+      },
+      "host" : {
+        "default" : "api.dev.platform.pagopa.it",
+        "enum" : [ "api.dev.platform.pagopa.it", "api.uat.platform.pagopa.it", "api.platform.pagopa.it" ]
+      }
+    }
+  } ],
   "paths" : {
+    "/info" : {
+      "get" : {
+        "tags" : [ "Health check" ],
+        "summary" : "health check",
+        "description" : "Return OK if application is started",
+        "operationId" : "healthCheck",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AppInfo"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests.",
+            "content" : {
+              "text/json" : { }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/brokers/{broker-code}/organizations/{organization-fiscal-code}/debtpositions/file" : {
       "put" : {
-        "tags" : [ "Debt Positions CRUD via file upload API" ],
+        "tags" : [ "Massive operation APIs for Debt Positions - v2" ],
         "summary" : "The Organization updates the debt positions listed in the file.",
         "operationId" : "update-debt-positions-by-file-upload",
         "parameters" : [ {
@@ -15,6 +94,8 @@
           "in" : "path",
           "description" : "The broker code",
           "required" : true,
+          "style" : "simple",
+          "explode" : false,
           "schema" : {
             "minLength" : 1,
             "type" : "string"
@@ -24,6 +105,8 @@
           "in" : "path",
           "description" : "The organization fiscal code",
           "required" : true,
+          "style" : "simple",
+          "explode" : false,
           "schema" : {
             "minLength" : 1,
             "type" : "string"
@@ -44,7 +127,8 @@
               },
               "encoding" : {
                 "file" : {
-                  "contentType" : "application/octet-stream"
+                  "contentType" : "application/octet-stream",
+                  "style" : "form"
                 }
               }
             }
@@ -79,11 +163,7 @@
             "description" : "Forbidden",
             "content" : {
               "application/json" : {
-                "schema" : {
-                  "allOf" : [ ],
-                  "anyOf" : [ ],
-                  "oneOf" : [ ]
-                }
+                "schema" : { }
               }
             }
           },
@@ -116,12 +196,10 @@
         },
         "security" : [ {
           "ApiKey" : [ ]
-        }, {
-          "Authorization" : [ ]
         } ]
       },
       "post" : {
-        "tags" : [ "Debt Positions CRUD via file upload API" ],
+        "tags" : [ "Massive operation APIs for Debt Positions - v2" ],
         "summary" : "The Organization creates the debt positions listed in the file.",
         "operationId" : "create-debt-positions-by-file-upload",
         "parameters" : [ {
@@ -129,6 +207,8 @@
           "in" : "path",
           "description" : "The broker code",
           "required" : true,
+          "style" : "simple",
+          "explode" : false,
           "schema" : {
             "minLength" : 1,
             "type" : "string"
@@ -138,6 +218,8 @@
           "in" : "path",
           "description" : "The organization fiscal code",
           "required" : true,
+          "style" : "simple",
+          "explode" : false,
           "schema" : {
             "minLength" : 1,
             "type" : "string"
@@ -158,7 +240,8 @@
               },
               "encoding" : {
                 "file" : {
-                  "contentType" : "application/octet-stream"
+                  "contentType" : "application/octet-stream",
+                  "style" : "form"
                 }
               }
             }
@@ -193,11 +276,7 @@
             "description" : "Forbidden",
             "content" : {
               "application/json" : {
-                "schema" : {
-                  "allOf" : [ ],
-                  "anyOf" : [ ],
-                  "oneOf" : [ ]
-                }
+                "schema" : { }
               }
             }
           },
@@ -230,12 +309,10 @@
         },
         "security" : [ {
           "ApiKey" : [ ]
-        }, {
-          "Authorization" : [ ]
         } ]
       },
       "delete" : {
-        "tags" : [ "Debt Positions CRUD via file upload API" ],
+        "tags" : [ "Massive operation APIs for Debt Positions - v2" ],
         "summary" : "The Organization deletes the debt positions based on IUPD listed in the file.",
         "operationId" : "delete-debt-positions-by-file-upload",
         "parameters" : [ {
@@ -243,6 +320,8 @@
           "in" : "path",
           "description" : "The broker code",
           "required" : true,
+          "style" : "simple",
+          "explode" : false,
           "schema" : {
             "minLength" : 1,
             "type" : "string"
@@ -252,6 +331,8 @@
           "in" : "path",
           "description" : "The organization fiscal code",
           "required" : true,
+          "style" : "simple",
+          "explode" : false,
           "schema" : {
             "minLength" : 1,
             "type" : "string"
@@ -272,7 +353,8 @@
               },
               "encoding" : {
                 "file" : {
-                  "contentType" : "application/octet-stream"
+                  "contentType" : "application/octet-stream",
+                  "style" : "form"
                 }
               }
             }
@@ -307,11 +389,7 @@
             "description" : "Forbidden",
             "content" : {
               "application/json" : {
-                "schema" : {
-                  "allOf" : [ ],
-                  "anyOf" : [ ],
-                  "oneOf" : [ ]
-                }
+                "schema" : { }
               }
             }
           },
@@ -344,14 +422,12 @@
         },
         "security" : [ {
           "ApiKey" : [ ]
-        }, {
-          "Authorization" : [ ]
         } ]
       }
     },
     "/brokers/{broker-code}/organizations/{organization-fiscal-code}/debtpositions/file/{file-id}/report" : {
       "get" : {
-        "tags" : [ "Upload Status API" ],
+        "tags" : [ "Massive operation observability APIs - v2" ],
         "summary" : "Returns the debt positions upload report.",
         "operationId" : "get-debt-positions-upload-report",
         "parameters" : [ {
@@ -359,6 +435,8 @@
           "in" : "path",
           "description" : "The broker code",
           "required" : true,
+          "style" : "simple",
+          "explode" : false,
           "schema" : {
             "minLength" : 1,
             "type" : "string"
@@ -368,6 +446,8 @@
           "in" : "path",
           "description" : "The organization fiscal code",
           "required" : true,
+          "style" : "simple",
+          "explode" : false,
           "schema" : {
             "minLength" : 1,
             "type" : "string"
@@ -377,6 +457,8 @@
           "in" : "path",
           "description" : "The unique identifier for file upload",
           "required" : true,
+          "style" : "simple",
+          "explode" : false,
           "schema" : {
             "minLength" : 1,
             "type" : "string"
@@ -417,11 +499,7 @@
             "description" : "Forbidden",
             "content" : {
               "application/json" : {
-                "schema" : {
-                  "allOf" : [ ],
-                  "anyOf" : [ ],
-                  "oneOf" : [ ]
-                }
+                "schema" : { }
               }
             }
           },
@@ -454,14 +532,12 @@
         },
         "security" : [ {
           "ApiKey" : [ ]
-        }, {
-          "Authorization" : [ ]
         } ]
       }
     },
     "/brokers/{broker-code}/organizations/{organization-fiscal-code}/debtpositions/file/{file-id}/status" : {
       "get" : {
-        "tags" : [ "Upload Status API" ],
+        "tags" : [ "Massive operation observability APIs - v2" ],
         "summary" : "Returns the debt positions upload status.",
         "operationId" : "get-debt-positions-upload-status",
         "parameters" : [ {
@@ -469,6 +545,8 @@
           "in" : "path",
           "description" : "The broker code",
           "required" : true,
+          "style" : "simple",
+          "explode" : false,
           "schema" : {
             "minLength" : 1,
             "type" : "string"
@@ -478,6 +556,8 @@
           "in" : "path",
           "description" : "The organization fiscal code",
           "required" : true,
+          "style" : "simple",
+          "explode" : false,
           "schema" : {
             "minLength" : 1,
             "type" : "string"
@@ -487,6 +567,8 @@
           "in" : "path",
           "description" : "The unique identifier for file upload",
           "required" : true,
+          "style" : "simple",
+          "explode" : false,
           "schema" : {
             "minLength" : 1,
             "type" : "string"
@@ -527,11 +609,7 @@
             "description" : "Forbidden",
             "content" : {
               "application/json" : {
-                "schema" : {
-                  "allOf" : [ ],
-                  "anyOf" : [ ],
-                  "oneOf" : [ ]
-                }
+                "schema" : { }
               }
             }
           },
@@ -564,14 +642,26 @@
         },
         "security" : [ {
           "ApiKey" : [ ]
-        }, {
-          "Authorization" : [ ]
         } ]
       }
     }
   },
   "components" : {
     "schemas" : {
+      "AppInfo" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "version" : {
+            "type" : "string"
+          },
+          "environment" : {
+            "type" : "string"
+          }
+        }
+      },
       "ProblemJson" : {
         "type" : "object",
         "properties" : {
@@ -668,9 +758,9 @@
       }
     },
     "securitySchemes" : {
-      "Ocp-Apim-Subscription-Key" : {
+      "ApiKey" : {
         "type" : "apiKey",
-        "name" : "Ocp-Apim-Subscription-Key",
+        "name" : "ApiKey",
         "in" : "header"
       }
     }

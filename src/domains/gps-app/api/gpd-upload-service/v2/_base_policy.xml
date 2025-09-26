@@ -1,11 +1,7 @@
 <policies>
   <inbound>
     <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
-    <choose>
-      <when condition="@(((string)context.Variables["requestPath"]).Contains("/info"))">
-        <rewrite-uri template="@((string)context.Variables["requestPath"]+"/v2")" copy-unmatched-params="true" />
-      </when>
-    </choose>
+    <rewrite-uri template="@("v2/" + (string)context.Variables["requestPath"])" copy-unmatched-params="true" />
     <base />
     <!-- rate limit by subscription key -->
     <rate-limit calls="10" renewal-period="1" remaining-calls-variable-name="remainingCallsPerSubscription"/>

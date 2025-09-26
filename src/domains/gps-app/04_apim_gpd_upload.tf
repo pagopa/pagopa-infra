@@ -42,8 +42,9 @@ module "apim_gpd_upload_api_v1" {
   service_url  = local.apim_gpd_upload_api.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./api/gpd-upload-service/v1/_openapi.json.tpl", {
+  content_value = templatefile("./api/gpd-upload-service/v1/_openapi_v1.json.tpl", {
     host = local.apim_hostname
+    basePath = "/upload/gpd/debt-positions-service/v1"
   })
 
   xml_content = templatefile("./api/gpd-upload-service/v1/_base_policy.xml", {
@@ -69,8 +70,9 @@ module "apim_gpd_upload_api_v2" {
   service_url  = local.apim_gpd_upload_api.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./api/gpd-upload-service/v2/_openapi.json.tpl", {
+  content_value = templatefile("./api/gpd-upload-service/v2/_openapi_v2.json.tpl", {
     host = local.apim_hostname
+    basePath = "/upload/gpd/debt-positions-service/v2"
   })
 
   xml_content = templatefile("./api/gpd-upload-service/v2/_base_policy.xml", {
