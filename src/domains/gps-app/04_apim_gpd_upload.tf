@@ -43,7 +43,7 @@ module "apim_gpd_upload_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/gpd-upload-service/v1/_openapi_v1.json.tpl", {
-    host = local.apim_hostname
+    host     = local.apim_hostname
     basePath = "/upload/gpd/debt-positions-service/v1"
   })
 
@@ -71,7 +71,7 @@ module "apim_gpd_upload_api_v2" {
 
   content_format = "openapi"
   content_value = templatefile("./api/gpd-upload-service/v2/_openapi_v2.json.tpl", {
-    host = local.apim_hostname
+    host     = local.apim_hostname
     basePath = "/upload/gpd/debt-positions-service/v2"
   })
 
