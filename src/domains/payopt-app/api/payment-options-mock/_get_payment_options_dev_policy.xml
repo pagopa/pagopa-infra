@@ -318,121 +318,121 @@
     <set-status code="400" reason="Error" />
     <set-body>{
     "httpStatusCode": 400,
-    "httpStatusDescription": "ND",
-    "appErrorCode": "PAA_SINTASSI",
+    "httpStatusDescription": "Bad Request",
+    "appErrorCode": "ODP-101",
     "timestamp": 1724425035,
     "dateTime": "2024-08-23T14:57:15.635528",
-    "errorMessage": "Errore di sintassi del modello nella risposta"
+    "errorMessage": "PAA_SINTASSI Errore di sintassi del modello nella risposta"
     }</set-body>
   </when>
   <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "77777777777" && context.Request.MatchedParameters["notice-number"] == "311111111119999999")">
-    <set-status code="400" reason="Error" />
+    <set-status code="404" reason="Error" />
     <set-body>{
-    "httpStatusCode": 400,
-    "httpStatusDescription": "ND",
-    "appErrorCode": "PAA_PAGAMENTO_SCONOSCIUTO",
+    "httpStatusCode": 404,
+    "httpStatusDescription": "Not Found",
+    "appErrorCode": "ODP-107",
     "timestamp": 1724425035,
     "dateTime": "2024-08-23T14:57:15.635528",
-    "errorMessage": "Errore per pagamento sconosciuto"
+    "errorMessage": "PAA_PAGAMENTO_SCONOSCIUTO Errore per pagamento sconosciuto"
     }</set-body>
   </when>
   <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "77777777777" && context.Request.MatchedParameters["notice-number"] == "311111111119999998")">
     <set-status code="400" reason="Error" />
     <set-body>{
     "httpStatusCode": 400,
-    "httpStatusDescription": "ND",
-    "appErrorCode": "PAA_ID_DOMINIO_ERRATO",
+    "httpStatusDescription": "Bad Request",
+    "appErrorCode": "ODP-104",
     "timestamp": 1724425035,
     "dateTime": "2024-08-23T14:57:15.635528",
-    "errorMessage": "Errore per id dominio errato"
+    "errorMessage": "PAA_ID_DOMINIO_ERRATO Errore per id dominio errato"
     }</set-body>
   </when>
   <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "77777777777" && context.Request.MatchedParameters["notice-number"] == "311111111119999900")">
     <set-status code="400" reason="Error" />
     <set-body>{
     "httpStatusCode": 400,
-    "httpStatusDescription": "ND",
-    "appErrorCode": "PAA_ID_INTERMEDIARIO_ERRATO",
+    "httpStatusDescription": "Bad Request",
+    "appErrorCode": "ODP-105",
     "timestamp": 1724425035,
     "dateTime": "2024-08-23T14:57:15.635528",
-    "errorMessage": "Errore per id intermediario errato"
+    "errorMessage": "PAA_ID_INTERMEDIARIO_ERRATO Errore per id intermediario errato"
     }</set-body>
   </when>
   <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "77777777777" && context.Request.MatchedParameters["notice-number"] == "311111111119999995")">
-    <set-status code="400" reason="Error" />
+    <set-status code="422" reason="Error" />
     <set-body>{
-    "httpStatusCode": 400,
-    "httpStatusDescription": "ND",
-    "appErrorCode": "PAA_PAGAMENTO_ANNULLATO",
+    "httpStatusCode": 422,
+    "httpStatusDescription": "Unprocessable Entity",
+    "appErrorCode": "ODP-111",
     "timestamp": 1724425035,
     "dateTime": "2024-08-23T14:57:15.635528",
-    "errorMessage": "Errore per pagamento annullato"
+    "errorMessage": "PAA_PAGAMENTO_ANNULLATO Errore per pagamento annullato"
     }</set-body>
   </when>
   <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "77777777777" && context.Request.MatchedParameters["notice-number"] == "311111111119999992")">
-    <set-status code="400" reason="Error" />
+    <set-status code="409" reason="Error" />
     <set-body>{
-    "httpStatusCode": 400,
-    "httpStatusDescription": "ND",
-    "appErrorCode": "PAA_PAGAMENTO_DUPLICATO",
+    "httpStatusCode": 409,
+    "httpStatusDescription": "Conflict",
+    "appErrorCode": "ODP-108",
     "timestamp": 1724425035,
     "dateTime": "2024-08-23T14:57:15.635528",
-    "errorMessage": "Errore per pagamento duplicato"
+    "errorMessage": "PAA_PAGAMENTO_DUPLICATO Errore per pagamento duplicato"
     }</set-body>
   </when>
   <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "77777777777" && context.Request.MatchedParameters["notice-number"] == "311111111119999993")">
-    <set-status code="400" reason="Error" />
+    <set-status code="409" reason="Error" />
     <set-body>{
-    "httpStatusCode": 400,
-    "httpStatusDescription": "ND",
-    "appErrorCode": "PAA_PAGAMENTO_IN_CORSO",
+    "httpStatusCode": 409,
+    "httpStatusDescription": "Conflict",
+    "appErrorCode": "ODP-109",
     "timestamp": 1724425035,
     "dateTime": "2024-08-23T14:57:15.635528",
-    "errorMessage": "Errore per pagamento ancora in corso"
+    "errorMessage": "PAA_PAGAMENTO_IN_CORSO Errore per pagamento ancora in corso"
     }</set-body>
   </when>
   <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "77777777777" && context.Request.MatchedParameters["notice-number"] == "311111111119999994")">
-    <set-status code="400" reason="Error" />
+    <set-status code="422" reason="Error" />
     <set-body>{
-    "httpStatusCode": 400,
-    "httpStatusDescription": "ND",
-    "appErrorCode": "PAA_PAGAMENTO_SCADUTO",
+    "httpStatusCode": 422,
+    "httpStatusDescription": "Unprocessable Entity",
+    "appErrorCode": "ODP-110",
     "timestamp": 1724425035,
     "dateTime": "2024-08-23T14:57:15.635528",
-    "errorMessage": "Errore per pagamento scaduto"
+    "errorMessage": "PAA_PAGAMENTO_SCADUTO Errore per pagamento scaduto"
     }</set-body>
   </when>
   <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "77777777777" && context.Request.MatchedParameters["notice-number"] == "311111111119999905")">
-    <set-status code="400" reason="Error" />
+    <set-status code="422" reason="Error" />
     <set-body>{
-    "httpStatusCode": 400,
-    "httpStatusDescription": "ND",
-    "appErrorCode": "PAA_SEMANTICA",
+    "httpStatusCode": 422,
+    "httpStatusDescription": "Unprocessable Entity",
+    "appErrorCode": "ODP-102",
     "timestamp": 1724425035,
     "dateTime": "2024-08-23T14:57:15.635528",
-    "errorMessage": "Errore semantica"
+    "errorMessage": "PAA_SEMANTICA Errore semantica"
     }</set-body>
   </when>
   <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "77777777777" && context.Request.MatchedParameters["notice-number"] == "311111111119999902")">
     <set-status code="400" reason="Error" />
     <set-body>{
     "httpStatusCode": 400,
-    "httpStatusDescription": "ND",
-    "appErrorCode": "PAA_STAZIONE_INT_ERRATA",
+    "httpStatusDescription": "Bad Request",
+    "appErrorCode": "ODP-106",
     "timestamp": 1724425035,
     "dateTime": "2024-08-23T14:57:15.635528",
-    "errorMessage": "Errore per stazione errata"
+    "errorMessage": "PAA_STAZIONE_INT_ERRATA Errore per stazione errata"
     }</set-body>
   </when>
     <otherwise>
-    <set-status code="400" reason="Error" />
+    <set-status code="500" reason="Error" />
     <set-body>{
-      "httpStatusCode": 400,
-      "httpStatusDescription": "ND",
-      "appErrorCode": "PAA_SYSTEM_ERROR",
+      "httpStatusCode": 500,
+      "httpStatusDescription": "Internal Server Error",
+      "appErrorCode": "ODP-103",
       "timestamp": 1724425035,
       "dateTime": "2024-08-23T14:57:15.635528",
-      "errorMessage": "Errore generico"
+      "errorMessage": "PAA_SYSTEM_ERROR Errore generico"
       }</set-body>
     </otherwise>
     </choose>
