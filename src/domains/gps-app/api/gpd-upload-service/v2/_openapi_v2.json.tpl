@@ -644,6 +644,126 @@
           "ApiKey" : [ ]
         } ]
       }
+    },
+    "/brokers/{broker-code}/organizations/{organization-fiscal-code}/debtpositions/files" : {
+      "get" : {
+        "tags" : [ "Massive operation observability APIs - v2" ],
+        "summary" : "Returns the list of fileIds for a broker/organization in the given date range (max 7 days).",
+        "operationId" : "get-debt-positions-fileids",
+        "parameters" : [ {
+          "name" : "broker-code",
+          "in" : "path",
+          "description" : "The broker code",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "minLength" : 1,
+            "type" : "string"
+          }
+        }, {
+          "name" : "organization-fiscal-code",
+          "in" : "path",
+          "description" : "The organization fiscal code",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "minLength" : 1,
+            "type" : "string"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Start date (YYYY-MM-DD), Europe/Rome",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "2025-09-01"
+        }, {
+          "name" : "to",
+          "in" : "query",
+          "description" : "End date (YYYY-MM-DD), Europe/Rome",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "2025-09-06"
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "description" : "Max items per page (default 100, min 100, max 500)",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 100
+          }
+        }, {
+          "name" : "x-continuation-token",
+          "in" : "header",
+          "description" : "Continuation token (opaque). Pass it back to get the next page.",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "nullable" : true
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "FileIds retrieved.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FileIdListResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Wrong or missing function key.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
+      }
     }
   },
   "components" : {
@@ -661,6 +781,9 @@
             "type" : "string"
           }
         }
+      },
+      "FileIdListResponse" : {
+        "type" : "object"
       },
       "ProblemJson" : {
         "type" : "object",
