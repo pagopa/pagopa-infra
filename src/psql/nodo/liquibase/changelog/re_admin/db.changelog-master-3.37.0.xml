@@ -5,8 +5,8 @@
 
 
 
+   <property name="version" value="3.37.0" global="false"/>
 
-  <include file="./db.changelog-master-3.36.2.xml"/>
-
+  <include file="./${version}/db.changelog-20250925000000_storage_extended.xml" labels="${version}"/>
 
 </databaseChangeLog>
