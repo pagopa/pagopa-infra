@@ -1115,3 +1115,27 @@ resource "azurerm_key_vault_secret" "io-payment-methods-handler-api-key" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "ecommerce-helpdesk_service_api_key_for_watchdog" {
+  name         = "ecommerce-helpdesk-service-api-key-for-watchdog"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "nodo-helpdesk_service_api_key_for_watchdog" {
+  name         = "nodo-helpdesk-service-api-key-for-watchdog"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
