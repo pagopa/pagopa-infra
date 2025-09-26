@@ -9,6 +9,6 @@
 
   <include file="./db.changelog-master-3.36.2.xml"/>
 
-  <include file="./${version}/db.changelog-20240318000000_partizionamento.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20250925000000_storage_extended.xml" labels="${version}"/>
 
 </databaseChangeLog>
