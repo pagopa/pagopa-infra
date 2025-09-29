@@ -439,7 +439,7 @@
     <set-status code="400" reason="Error" />
     <set-body>{
     "httpStatusCode": 500,
-    "httpStatusDescription": "Bad Request",
+    "httpStatusDescription": "Internal Server Error",
     "appErrorCode": "ODP-102",
     "timestamp": 1724425035,
     "dateTime": "2024-08-23T14:57:15.635528",
