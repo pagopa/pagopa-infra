@@ -85,7 +85,7 @@ locals {
     {
       name               = "creditor_institutions",
       partition_key_path = "/fiscalCode",
-      default_ttl        = -1,  // the value is set to -1 -> items don’t expire by default
+      default_ttl        = -1, // the value is set to -1 -> items don’t expire by default
       autoscale_settings = { max_throughput = 1000 }
     },
     {
