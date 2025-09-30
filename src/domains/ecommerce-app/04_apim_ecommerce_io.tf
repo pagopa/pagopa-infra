@@ -26,6 +26,20 @@ resource "azurerm_api_management_named_value" "ecommerce-io-jwt-signing-key" {
   secret              = true
 }
 
+resource "azurerm_api_management_named_value" "ecommerce-methods-redirect-url-map" {
+  name                = "ecommerce-methods-redirect-url-map"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-methods-redirect-url-map"
+  value               = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 ##############
 ## Products ##
 ##############

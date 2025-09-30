@@ -2,6 +2,52 @@
     <inbound>
       <base />
       <!-- pagoPA platform get payment methods redirect url : START -->
+      <!-- Get Method Info : START -->
+      <set-variable name="paymentMethodId" value="@(context.Request.MatchedParameters["id"])" />
+      <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
+          <set-url>@($"https://${ecommerce_ingress_hostname}/pagopa-ecommerce-payment-methods-service/payment-methods/{(string)context.Variables["paymentMethodId"]}")</set-url>
+          <set-method>GET</set-method>
+          <set-header name="X-Client-Id" exists-action="override">
+              <value>IO</value>
+          </set-header>
+          <!-- Set payment-methods API Key header -->
+          <set-header name="x-api-key" exists-action="override">
+            <value>{{ecommerce-payment-methods-api-key-value}}</value>
+          </set-header>
+      </send-request>
+      <choose>
+        <when condition="@(((int)((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode) == 200)">
+            <set-variable name="paymentMethod" value="@((JObject)((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>())" />
+            <set-variable name="paymentTypeCode" value="@((string)((JObject)context.Variables["paymentMethod"])["paymentTypeCode"])" />
+        </when>
+        <when condition="@(((int)((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode) == 404)">
+            <return-response>
+                <set-status code="404" reason="Not found" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>application/json</value>
+                </set-header>
+                <set-body>{
+                    "title": "Unable to get payment method",
+                    "status": 404,
+                    "detail": "Payment method not found",
+                }</set-body>
+            </return-response>
+        </when>
+        <otherwise>
+            <return-response>
+                <set-status code="502" reason="Bad Request" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>application/json</value>
+                </set-header>
+                <set-body>{
+                    "title": "Bad gateway",
+                    "status": 502,
+                    "detail": "Payment method not available",
+                }</set-body>
+            </return-response>
+        </otherwise>
+      </choose>
+      <!-- Get Method Info: END -->
       <!-- Token JWT START-->
       <send-request ignore-error="true" timeout="10" response-variable-name="x-jwt-token" mode="new">
           <set-url>https://${ecommerce_ingress_hostname}/pagopa-jwt-issuer-service/tokens</set-url>
@@ -33,17 +79,48 @@
     </choose>
     <set-variable name="token" value="@( (string) ( ((IResponse)context.Variables["x-jwt-token"] ).Body.As<JObject>(preserveContent: true)) ["token"])" />
     <!-- Token JWT END-->
+    <set-variable name="baseUrl" value="@{
+        string ecommerceMethodsRedirectUrlMap = "{{ecommerce-methods-redirect-url-map}}";
+        string paymentTypeCode = context.Variables.GetValueOrDefault<string>("paymentTypeCode", string.Empty);
+        if (string.IsNullOrEmpty(ecommerceMethodsRedirectUrlMap) || string.IsNullOrEmpty(paymentTypeCode))
+        {
+            return null;
+        }
+        JObject urlsObject = JObject.Parse(ecommerceMethodsRedirectUrlMap);
+        return urlsObject.GetValue(paymentTypeCode, StringComparison.OrdinalIgnoreCase)?.ToString();
+    }" />
+    <choose>
+        <when condition="@(string.IsNullOrEmpty((string)context.Variables["baseUrl"]))">
+            <return-response>
+                <set-status code="404" reason="Not Found" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>application/json</value>
+                </set-header>
+                <set-body>@{
+                    return new JObject(
+                        new JProperty("error", "Configuration Not Found"),
+                        new JProperty("message", $"No redirect URL configured for the payment type: '{context.Variables.GetValueOrDefault<string>("paymentTypeCode", "N/A")}'.")
+                    ).ToString();
+                }</set-body>
+            </return-response>
+        </when>
+        <otherwise>
+            <return-response>
+              <set-header name="Content-Type" exists-action="override">
+                  <value>application/json</value>
+              </set-header>
+              <set-body>@{
+                  string sessionToken = context.Variables.GetValueOrDefault<string>("token", string.Empty);
+                  string finalRedirectUrl = (string)context.Variables["baseUrl"] + "&sessionToken=" + sessionToken;
+
+                  var response = new JObject();
+                  response["redirectUrl"] = finalRedirectUrl;
+                  return response.ToString();
+              }</set-body>
+            </return-response>
+        </otherwise>
+    </choose>
     <!-- pagoPA platform get payment methods redirect url : END -->
-    <return-response>
-      <set-header name="Content-Type" exists-action="override">
-          <value>application/json</value>
-      </set-header>
-      <set-body>@{
-          var response = new JObject();
-          response["redirectUrl"] = "redirectUrl" + "&sessionToken=" + ((string)context.Variables["token"]);
-          return response.ToString();
-      }</set-body>
-    </return-response>
     </inbound>
     <outbound>
       <base />
