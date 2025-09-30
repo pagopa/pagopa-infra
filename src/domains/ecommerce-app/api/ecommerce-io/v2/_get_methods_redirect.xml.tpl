@@ -33,7 +33,7 @@
     </choose>
     <set-variable name="token" value="@( (string) ( ((IResponse)context.Variables["x-jwt-token"] ).Body.As<JObject>(preserveContent: true)) ["token"])" />
     <!-- Token JWT END-->
-    <!-- pagoPA platform wallet JWT session token : END -->
+    <!-- pagoPA platform get payment methods redirect url : END -->
     <return-response>
       <set-header name="Content-Type" exists-action="override">
           <value>application/json</value>
