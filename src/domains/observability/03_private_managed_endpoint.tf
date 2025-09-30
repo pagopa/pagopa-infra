@@ -3,12 +3,19 @@ data "azurerm_private_link_service" "vmss_pls" {
   name                = "${local.product_network}-privatelink"
   resource_group_name = "${local.product_network}-vmss-rg"
 }
+
+data "azurerm_key_vault_secret" "database_proxy_fqdn" {
+  name         = "${var.prefix}-${var.env_short}-${var.location_short}-network-database-map"
+  key_vault_id = data.azurerm_key_vault.network_kv.id
+}
+
 resource "azurerm_data_factory_managed_private_endpoint" "private_endpoint" {
   name               = "AzureDataFactoryToVMSSProxy"
   data_factory_id    = data.azurerm_data_factory.obeserv_data_factory.id
   target_resource_id = data.azurerm_private_link_service.vmss_pls.id
-  fqdns              = ["crusc8-db.${var.env_short}.internal.postgresql.pagopa.it", "gpd-db.${var.env_short}.internal.postgresql.pagopa.it"]
+  fqdns              = [data.azurerm_key_vault_secret.database_proxy_fqdn.value]
 }
+
 
 data "azapi_resource" "privatelink_private_endpoint_connection" {
   type                   = "Microsoft.Network/privateLinkServices@2022-09-01"
