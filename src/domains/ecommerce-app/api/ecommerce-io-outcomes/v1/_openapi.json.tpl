@@ -79,6 +79,72 @@
           }
         }
       }
+    },
+    "/transactions/{transactionId}/payments/outcomes": {
+      "get": {
+        "tags": [
+          "ecommerce-transactions"
+        ],
+        "summary": "Redirection URL for transaction outcome related to payment flows without onboarding",
+        "description": "Return transaction outcome result as `outcome` query parameter",
+        "operationId": "getTransactionOutcomeNoOnboard",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Transaction ID"
+          },
+          {
+            "in": "query",
+            "name": "outcome",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12",
+                "13",
+                "14",
+                "17",
+                "25",
+                "99",
+                "116",
+                "117",
+                "121"
+              ]
+            },
+            "description": "`0` - Success `1` - Generic error `2` - Authorization error `3` - Invalid data `4` - Timeout `5` - Unsupported circuit `6` - Missing data `7` - Invalid card: expired card etc `8` - Canceled by the user `9` - Double transaction `10` - Excessive amount `11` - Order not present `12` - Invalid method `13` - Retriable KO `14` - Invalid session `17` - Taken in charge `25` - PSP Error `99` - Backend Error `116` - Balance not available `117` - CVV Error `121` - Limit exceeded\n",
+            "required": true
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Payment outcome without onboarding available (see outcome query parameter)",
+            "headers": {
+              "Location": {
+                "description": "URI with iowallet:// used by client to show result given outocome in query parameter",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
