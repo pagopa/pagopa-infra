@@ -129,6 +129,16 @@
             },
             "description": "`0` - Success `1` - Generic error `2` - Authorization error `3` - Invalid data `4` - Timeout `5` - Unsupported circuit `6` - Missing data `7` - Invalid card: expired card etc `8` - Canceled by the user `9` - Double transaction `10` - Excessive amount `11` - Order not present `12` - Invalid method `13` - Retriable KO `14` - Invalid session `17` - Taken in charge `25` - PSP Error `99` - Backend Error `116` - Balance not available `117` - CVV Error `121` - Limit exceeded\n",
             "required": true
+          },
+          {
+            "in": "query",
+            "name": "orderId",
+            "schema": {
+              "type": "string",
+              
+            },
+            "description": "Order ID related to NPG",
+            "required": true
           }
         ],
         "responses": {
@@ -136,7 +146,7 @@
             "description": "Payment outcome without onboarding available (see outcome query parameter)",
             "headers": {
               "Location": {
-                "description": "URI with iowallet:// used by client to show result given outocome in query parameter",
+                "description": "URI with iowallet:// used by client to show result outocome and NPG orderId in query parameter",
                 "schema": {
                   "type": "string"
                 }
