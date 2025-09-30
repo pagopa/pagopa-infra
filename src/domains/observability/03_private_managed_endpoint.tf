@@ -13,7 +13,7 @@ resource "azurerm_data_factory_managed_private_endpoint" "private_endpoint" {
   name               = "AzureDataFactoryToVMSSProxy"
   data_factory_id    = data.azurerm_data_factory.obeserv_data_factory.id
   target_resource_id = data.azurerm_private_link_service.vmss_pls.id
-  fqdns              = [data.azurerm_key_vault_secret.database_proxy_fqdn.value]
+  fqdns              = split(",", data.azurerm_key_vault_secret.database_proxy_fqdn.value)
 }
 
 
@@ -50,3 +50,4 @@ resource "azapi_resource_action" "approve_privatelink_private_endpoint_connectio
     }
   }
 }
+
