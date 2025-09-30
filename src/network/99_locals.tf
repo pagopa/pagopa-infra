@@ -57,45 +57,45 @@ locals {
     }
   }
 
-database_adf_proxy_mapping = [
-  {
-    fqdn = "crusc8-db.${var.env_short}.internal.postgresql.pagopa.it"
-    external_port = 5432
-    destination_port = 5432
-  },
-  {
-    fqdn = "gpd-db.${var.env_short}.internal.postgresql.pagopa.it"
-    external_port = 5433
-    destination_port = 5432
-  },
-  {
-    fqdn = "nodo-db.${var.env_short}.internal.postgresql.pagopa.it"
-    external_port = 5434
-    destination_port = 5432
-  },
-  {
-    fqdn = "fdr-db.${var.env_short}.internal.postgresql.pagopa.it"
-    external_port = 5435
-    destination_port = 5432
-  }
+  database_adf_proxy_mapping = [
+    {
+      fqdn             = "crusc8-db.${var.env_short}.internal.postgresql.pagopa.it"
+      external_port    = 5432
+      destination_port = 5432
+    },
+    {
+      fqdn             = "gpd-db.${var.env_short}.internal.postgresql.pagopa.it"
+      external_port    = 5433
+      destination_port = 5432
+    },
+    {
+      fqdn             = "nodo-db.${var.env_short}.internal.postgresql.pagopa.it"
+      external_port    = 5434
+      destination_port = 5432
+    },
+    {
+      fqdn             = "fdr-db.${var.env_short}.internal.postgresql.pagopa.it"
+      external_port    = 5435
+      destination_port = 5432
+    }
 
-]
+  ]
 
   dashboard_fqdn_port_map = flatten([
     for db in local.database_adf_proxy_mapping : {
-      db_map           = "${db.fqdn};${db.external_port};${db.destination_port}"
+      db_map = "${db.fqdn};${db.external_port};${db.destination_port}"
     }
   ])
 
   dashboard_fqdn_map = flatten([
     for db in local.database_adf_proxy_mapping : {
-      db_fqdn           = "${db.fqdn}"
+      db_fqdn = "${db.fqdn}"
     }
   ])
 
   base64_db_script = templatefile("${path.module}/network_proxy_forward.sh.tpl", {
     env = var.env_short
-    db_map = join(",", local.dashboard_fqdn_port_map[*].db_map)}
+    db_map = join(",", local.dashboard_fqdn_port_map[*].db_map) }
   )
 
   base64_ipfwd_script = file("${path.module}/create_ip_fwd.sh")
