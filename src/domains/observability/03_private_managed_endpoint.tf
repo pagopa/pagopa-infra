@@ -51,3 +51,9 @@ resource "azapi_resource_action" "approve_privatelink_private_endpoint_connectio
   }
 }
 
+resource "azapi_resource_action" "delete_privatelink_private_endpoint_connection" {
+  type        = "Microsoft.Network/privateLinkServices/privateEndpointConnections@2022-09-01"
+  resource_id = "${data.azurerm_private_link_service.vmss_pls.id}/privateEndpointConnections/${local.privatelink_private_endpoint_connection_name}"
+  method      = "DELETE"
+  when        = "destroy"
+}
