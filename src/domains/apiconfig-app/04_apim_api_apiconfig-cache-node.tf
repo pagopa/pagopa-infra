@@ -75,7 +75,6 @@ module "apim_api_apiconfig_cache_external_v1" {
   })
 
   xml_content = templatefile("./api/apiconfig-cache/external/_base_policy.xml", {
-    hostname = local.apiconfig_cache_locals.hostname
     hostname = format("%s/%s", local.apiconfig_cache_locals.hostname, "${local.apiconfig_cache_locals.path}/${local.postgres}")
   })
 }
