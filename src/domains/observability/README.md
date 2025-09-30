@@ -137,6 +137,7 @@
 | [azurerm_key_vault.gps_kv](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault.kv](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault.kv_shared](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault.network_kv](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault_secret.certificate_crt_app_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.certificate_key_app_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.cruscotto_db_database](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault_secret) | data source |
@@ -144,6 +145,7 @@
 | [azurerm_key_vault_secret.cruscotto_db_password](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.cruscotto_db_port](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.cruscotto_db_username](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.database_proxy_fqdn](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_private_dns_zone.eventhub](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/private_dns_zone) | data source |

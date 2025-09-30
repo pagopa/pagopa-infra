@@ -9,6 +9,8 @@ data "azurerm_key_vault_secret" "database_proxy_fqdn" {
   key_vault_id = data.azurerm_key_vault.network_kv.id
 }
 
+###
+### FQDN:  Changing this forces a new resource to be created.
 resource "azurerm_data_factory_managed_private_endpoint" "private_endpoint" {
   name               = "AzureDataFactoryToVMSSProxy"
   data_factory_id    = data.azurerm_data_factory.obeserv_data_factory.id
@@ -51,9 +53,9 @@ resource "azapi_resource_action" "approve_privatelink_private_endpoint_connectio
   }
 }
 
-resource "azapi_resource_action" "delete_privatelink_private_endpoint_connection" {
-  type        = "Microsoft.Network/privateLinkServices/privateEndpointConnections@2022-09-01"
-  resource_id = "${data.azurerm_private_link_service.vmss_pls.id}/privateEndpointConnections/${local.privatelink_private_endpoint_connection_name}"
-  method      = "DELETE"
-  when        = "destroy"
-}
+# resource "azapi_resource_action" "delete_privatelink_private_endpoint_connection" {
+#   type        = "Microsoft.Network/privateLinkServices/privateEndpointConnections@2022-09-01"
+#   resource_id = "${data.azurerm_private_link_service.vmss_pls.id}/privateEndpointConnections/${local.privatelink_private_endpoint_connection_name}"
+#   method      = "DELETE"
+#   when        = "destroy"
+# }
