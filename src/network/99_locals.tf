@@ -78,6 +78,12 @@ database_adf_proxy_mapping = [
     external_port = 5435
     destination_port = 5432
   }
+  ,
+  {
+    fqdn = "nodo-storico-db.${var.env_short}.internal.postgresql.pagopa.it"
+    external_port = 5436
+    destination_port = 5432
+  }
 ]
 
   dashboard_fqdn_port_map = flatten([
