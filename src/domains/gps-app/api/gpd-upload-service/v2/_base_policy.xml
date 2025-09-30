@@ -1,7 +1,7 @@
 <policies>
   <inbound>
     <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
-    <rewrite-uri template="@("v2/" + (string)context.Variables["requestPath"])" copy-unmatched-params="true" />
+    <!--<rewrite-uri template="@("v2/" + (string)context.Variables["requestPath"])" copy-unmatched-params="true" />-->
     <base />
     <!-- rate limit by subscription key -->
     <rate-limit calls="10" renewal-period="1" remaining-calls-variable-name="remainingCallsPerSubscription"/>
@@ -11,7 +11,7 @@
     <!-- Add query parameter serviceType to request -->
     <set-variable name="service_type_value" value="${service_type_value}" />
     <include-fragment fragment-id="service-type-set"/>
-    
+
     <choose>
       <!-- Making sure that will excludes all APIs that does not includes CI fiscal code -->
       <when condition="@(context.Request.MatchedParameters.ContainsKey("organization-fiscal-code") && !context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key", "").Equals(""))">
