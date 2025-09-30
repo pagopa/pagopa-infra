@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <!-- pagoPA platform wallet JWT post wallet token : START -->
+      <!-- pagoPA platform get payment methods redirect url : START -->
       <!-- Token JWT START-->
       <send-request ignore-error="true" timeout="10" response-variable-name="x-jwt-token" mode="new">
           <set-url>https://${ecommerce_ingress_hostname}/pagopa-jwt-issuer-service/tokens</set-url>
