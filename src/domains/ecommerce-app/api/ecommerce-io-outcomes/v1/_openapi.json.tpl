@@ -85,8 +85,8 @@
         "tags": [
           "ecommerce-transactions"
         ],
-        "summary": "Redirection URL for transaction outcome related to cards flows without onboarding",
-        "description": "Return transaction outcome result as `outcome` query parameter together with the orderId",
+        "summary": "Redirection URL for transaction outcomes related to card payment flows without onboarding",
+        "description": "Returns the transaction outcome result as an `outcome query` parameter along with the `orderId`",
         "operationId": "getTransactionOutcomeCardNoOnboard",
         "parameters": [
           {
@@ -124,7 +124,7 @@
         ],
         "responses": {
           "302": {
-            "description": "Payment - without onboarding - outcome available (see outcome query parameter)",
+            "description": "Payment outcome available for non-onboarded card transactions (see outcome query parameter)",
             "headers": {
               "Location": {
                 "description": "URI with iowallet:// used by client to show result outcome and NPG orderId in query parameter",
