@@ -88,7 +88,7 @@ database_adf_proxy_mapping = [
 
   dashboard_fqdn_map = flatten([
     for db in local.database_adf_proxy_mapping : {
-      db_fqdn           = "${db.fqdn}"
+      db_fqdn           = "\"${db.fqdn}\""
     }
   ])
 
