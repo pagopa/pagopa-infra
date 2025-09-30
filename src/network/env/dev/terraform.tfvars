@@ -13,3 +13,4 @@ enabled_features = {
   vpn_database_access = true
   nsg                 = false
 }
+

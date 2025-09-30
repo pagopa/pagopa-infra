@@ -67,4 +67,3 @@ variable "vpn_gateway_address_space" {
   default = "172.16.1.0/24"
 }
 
-

@@ -225,3 +225,11 @@ resource "azurerm_private_link_service" "vmss_pls" {
     primary                    = true
   }
 }
+
+resource "azurerm_key_vault_secret" "database_map_secret" {
+  name         = "${local.project}-database-map"
+  value        = join(",", local.dashboard_fqdn_map[*].db_fqdn)
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+}
