@@ -245,5 +245,5 @@ variable "custom_metric_alerts" {
 variable "postgres_dns_registration_enabled" {
   type        = bool
   description = "(Optional) If true, adds a CNAME record for the database FQDN in the db private dns"
-  default     = false
+  default     = true
 }
