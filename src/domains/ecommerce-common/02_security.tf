@@ -1090,3 +1090,52 @@ resource "azurerm_key_vault_secret" "ecommerce_ratemyopenapi_api_key" {
   }
 }
 
+resource "azurerm_key_vault_secret" "checkout_payment_methods_handler_api_key" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "checkout-payment-methods-handler-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "io-payment-methods-handler-api-key" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "io-payment-methods-handler-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "ecommerce-helpdesk_service_api_key_for_watchdog" {
+  name         = "ecommerce-helpdesk-service-api-key-for-watchdog"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "nodo-helpdesk_service_api_key_for_watchdog" {
+  name         = "nodo-helpdesk-service-api-key-for-watchdog"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}

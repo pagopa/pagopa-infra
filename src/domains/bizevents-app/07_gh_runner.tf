@@ -20,10 +20,6 @@ module "gh_runner_job" {
       short_name : "bizevt-svc"
     },
     {
-      name : "pagopa-biz-pm-ingestion",
-      short_name : "biz-pm-ingest"
-    },
-    {
       name : "pagopa-biz-events-sync-nodo",
       short_name : "biz-sync-nodo"
     },
