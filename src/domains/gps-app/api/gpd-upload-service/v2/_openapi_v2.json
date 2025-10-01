@@ -528,6 +528,16 @@
               }
             }
           },
+          "425" : {
+            "description" : "The report has not been generated yet, wait for the operations to complete.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "429" : {
             "description" : "Too many requests.",
             "content" : {
