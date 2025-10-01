@@ -98,8 +98,9 @@
                 </set-header>
                 <set-body>@{
                     return new JObject(
-                        new JProperty("error", "Configuration Not Found"),
-                        new JProperty("message", $"No redirect URL configured for the payment type: '{context.Variables.GetValueOrDefault<string>("paymentTypeCode", "N/A")}'.")
+                        new JProperty("title", "Configuration Not Found"),
+                        new JProperty("detail", $"No redirect URL configured for the payment type: '{context.Variables.GetValueOrDefault<string>("paymentTypeCode", "N/A")}'."),
+                        new JProperty("status", 404),
                     ).ToString();
                 }</set-body>
             </return-response>
