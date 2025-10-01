@@ -1,5 +1,6 @@
 locals {
   product = "${var.prefix}-${var.env_short}"
+  product_location = "${var.prefix}-${var.env_short}-${var.location_short}"
   domain  = "dbsecurity"
   project = "${local.product}-${var.location_short}-${local.domain}"
 

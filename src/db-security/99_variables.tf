@@ -41,11 +41,6 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-variable "metabase_db_idh_tier" {
-  type        = string
-  description = "(Required) IDH tier for Metabase Postgres Flexible Server"
-  default     = "pgflex2"
-}
 
 
 variable "metabase_pgflex_params" {
@@ -139,4 +134,14 @@ variable "metabase_pgflex_custom_metric_alerts" {
 variable "metabase_plan_idh_tier" {
   type        = string
   description = "IDH resource tier for metabase app service"
+}
+
+variable "enabled_features" {
+  description = "(Required) A map of enabled features in the environment"
+  type = object({
+    db_vdi            = optional(bool, false)
+  })
+  default = {
+    db_vdi = false
+  }
 }
