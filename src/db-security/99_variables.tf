@@ -145,3 +145,17 @@ variable "enabled_features" {
     db_vdi = false
   }
 }
+
+variable "db_vdi_settings" {
+  type = object({
+    size                = string
+    auto_shutdown_enabled = bool
+    auto_shutdown_time = optional(string, "1900")
+  })
+  default = {
+    size = "Standard_B4ms"
+    auto_shutdown_enabled = true
+    auto_shutdown_time = "1900"
+
+  }
+}

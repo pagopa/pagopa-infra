@@ -29,7 +29,8 @@ resource "azurerm_windows_virtual_machine" "db_vdi_vm" {
   computer_name       = "${local.product}-db-vdi"
   resource_group_name = azurerm_resource_group.db_vdi_rg[0].name
   location            = azurerm_resource_group.db_vdi_rg[0].location
-  size                = "Standard_B4ms"
+  size                = var.db_vdi_settings.size
+
   network_interface_ids = [
     azurerm_network_interface.vdi_nic[0].id,
   ]
@@ -72,16 +73,17 @@ resource "azurerm_virtual_machine_extension" "aad_join_extension" {
   tags = module.tag_config.tags
 }
 
-resource "azurerm_dev_test_global_vm_shutdown_schedule" "auto_shutdown" {
-  count = var.enabled_features.db_vdi ? 1 : 0
-  virtual_machine_id = azurerm_windows_virtual_machine.db_vdi_vm[0].id
-  location           = var.location
-  enabled            = var.auto_shutdown_enabled
-
-  daily_recurrence_time = var.auto_shutdown_time
-  timezone              = "Central European Standard Time"
-
-  notification_settings {
-    enabled = false
-  }
-}
+#not available in italynorth
+# resource "azurerm_dev_test_global_vm_shutdown_schedule" "auto_shutdown" {
+#   count = var.enabled_features.db_vdi ? 1 : 0
+#   virtual_machine_id = azurerm_windows_virtual_machine.db_vdi_vm[0].id
+#   location           = "westeurope"
+#   enabled            = var.db_vdi_settings.auto_shutdown_enabled
+#
+#   daily_recurrence_time = var.db_vdi_settings.auto_shutdown_time
+#   timezone              = "Central European Standard Time"
+#
+#   notification_settings {
+#     enabled = false
+#   }
+# }
