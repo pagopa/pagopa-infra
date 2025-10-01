@@ -29,7 +29,7 @@
       <rate-limit-by-key calls="10" renewal-period="5" counter-key="@((string) context.Variables["authToken"])" />
       <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
       <set-variable name="allowedClientIdFromClient" value="IO" />
-      <set-variable name="clientIdFromClient" value="@((string)context.Request.Headers.GetValueOrDefault("x-client-id-from-client","IO"))" />
+      <set-variable name="clientIdFromClient" value="@((string)context.Request.Headers.GetValueOrDefault("x-client-id-from-client",""))" />
       <choose>
         <when condition="@{
           HashSet<string> allowedClientIds = new HashSet<String>(((string)context.Variables["allowedClientIdFromClient"]).Split(','));
