@@ -8,7 +8,7 @@ locals {
   apim_gpd_upload_api = {
     display_name          = "GPD Upload pagoPA - Massive Upload"
     description           = "API to support Debt Positions massive upload for organizations"
-    path                  = "gpd/upload/debt-positions-service"
+    path                  = "upload/gpd/debt-positions-service"
     subscription_required = true
     service_url           = var.env == "prod" ? "https://weu${var.env}.gps.internal.platform.pagopa.it/pagopa-gpd-upload" : "https://weu${var.env}.gps.internal.${var.env}.platform.pagopa.it/pagopa-gpd-upload"
   }
