@@ -28,7 +28,7 @@ module "apim_aca_upload_api_v2" {
   service_url  = "${local.apim_aca_upload_api.service_url}/v2"
 
   content_format = "openapi"
-  content_value = file("./../gps-app/api/gpd-upload-service/v2/_openapi_v2.json")
+  content_value  = file("./../gps-app/api/gpd-upload-service/v2/_openapi_v2.json")
 
   xml_content = templatefile("./../gps-app/api/gpd-upload-service/v2/_base_policy.xml", {
     service_type_value = "ACA"
