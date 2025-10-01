@@ -107,7 +107,7 @@
         "operationId": "createSessionWebview",
         "security": [
           {
-            "bearerAuth": []
+            "eCommerceSessionToken": []
           }
         ],
         "summary": "Create frontend field data paired with a payment gateway session",

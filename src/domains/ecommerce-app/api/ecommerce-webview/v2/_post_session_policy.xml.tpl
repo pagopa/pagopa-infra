@@ -18,14 +18,8 @@
         </allowed-headers>
       </cors>
       <base />
+      <!-- Auth token is already validated in the base policy -->
       <set-variable name="authToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
-      <choose>
-        <when condition="@(((string)(context.Variables["authToken"])).Equals(""))">
-        <return-response>
-          <set-status code="401" reason="Unauthorized" />
-        </return-response>
-        </when>
-      </choose>
       <rate-limit-by-key calls="10" renewal-period="5" counter-key="@((string) context.Variables["authToken"])" />
       <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
       <set-variable name="allowedClientIdFromClient" value="IO" />
