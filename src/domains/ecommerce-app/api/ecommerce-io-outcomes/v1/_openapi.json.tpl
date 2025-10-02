@@ -80,14 +80,14 @@
         }
       }
     },
-    "/cards/transactions/outcomes": {
+    "/payments/cards/outcomes": {
       "get": {
         "tags": [
-          "ecommerce-transactions"
+          "ecommerce-payments"
         ],
         "summary": "Redirection URL for outcomes related to card payment flows without onboarding",
         "description": "Returns the outcome result as an `outcome query` parameter along with the `orderId`",
-        "operationId": "getTransactionOutcomeCardNoOnboard",
+        "operationId": "getPaymentOutcomeCardNoOnboard",
         "parameters": [
           {
             "in": "query",
@@ -124,7 +124,7 @@
         ],
         "responses": {
           "302": {
-            "description": "Payment outcome available for non-onboarded card transactions (see outcome query parameter)",
+            "description": "Payment outcome available for non-onboarded card payments (see outcome query parameter)",
             "headers": {
               "Location": {
                 "description": "URI with iowallet:// used by client to show result outcome and NPG orderId in query parameter",
