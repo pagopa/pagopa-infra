@@ -120,7 +120,7 @@ module "checkout_cdn" {
       conditions = [{
         condition_type   = "url_path_condition"
         operator         = "BeginsWith"
-        match_values     = ["/ecommerce-fe/gdi-check", "/ecommerce-fe/esito"]
+        match_values     = ["/ecommerce-fe/gdi-check", "/ecommerce-fe/esito", "/ecommerce-fe/inserimento-carta-no-onboarding", "/ecommerce-fe/salvataggio-carta"]
         transforms       = []
         negate_condition = false
       }]
