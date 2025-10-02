@@ -3,6 +3,11 @@ data "azurerm_virtual_network" "vnet_italy" {
   resource_group_name = local.vnet_italy_resource_group_name
 }
 
+data "azurerm_virtual_network" "vnet_core" {
+  name                = local.vnet_core_name
+  resource_group_name = local.vnet_core_resource_group_name
+}
+
 data "azurerm_resource_group" "rg_vnet_italy" {
   name = local.vnet_italy_resource_group_name
 }
@@ -58,8 +63,14 @@ data "azurerm_subnet" "private_endpoint_subnet" {
 
 data "azurerm_subnet" "tools_subnet" {
   count = var.enabled_features.db_vdi ? 1 : 0
-  name                 = "${local.product_location}-core-tools-cae-subnet"
-  resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
+  name                 = "${local.product}-tools-cae-subnet"
+  resource_group_name  = data.azurerm_resource_group.rg_vnet_core.name
+  virtual_network_name = data.azurerm_virtual_network.vnet_core.name
 
 }
+
+
+data "azuread_group" "admin_group" {
+  display_name = "${local.product}-adgroup-admin"
+}
+

@@ -3,6 +3,7 @@ locals {
   product_location = "${var.prefix}-${var.env_short}-${var.location_short}"
   domain  = "dbsecurity"
   project = "${local.product}-${var.location_short}-${local.domain}"
+  project_vdi = "${local.product}-${var.db_vdi_settings.location_short}-${local.domain}"
 
   vnet_italy_name                = "${local.product}-itn-vnet"
   vnet_italy_resource_group_name = "${local.product}-itn-vnet-rg"

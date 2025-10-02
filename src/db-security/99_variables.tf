@@ -146,16 +146,29 @@ variable "enabled_features" {
   }
 }
 
+
 variable "db_vdi_settings" {
   type = object({
+    location = optional(string, "westeurope")
+    location_short = optional(string, "weu")
     size                = string
     auto_shutdown_enabled = bool
     auto_shutdown_time = optional(string, "1900")
+    session_limit = optional(number, 1)
+    host_pool_type = optional(string, "Pooled")
   })
   default = {
+    location = "westeurope"
+    location_short = "weu"
     size = "Standard_B4ms"
     auto_shutdown_enabled = true
     auto_shutdown_time = "1900"
+    session_limit = 1
+    host_pool_type = "Pooled"
+  }
 
+  validation {
+    condition     = contains(["Personal", "Pooled"], var.db_vdi_settings.host_pool_type)
+    error_message = "db_vdi_settings.host_pool_type must be either \"Personal\" or \"Pooled\"."
   }
 }
