@@ -112,7 +112,8 @@
               </set-header>
               <set-body>@{
                   string sessionToken = context.Variables.GetValueOrDefault<string>("token", string.Empty);
-                  string finalRedirectUrl = (string)context.Variables["baseUrl"] + "#clientId=IO&sessionToken=" + sessionToken;
+                  string paymentMethodId = context.Variables.GetValueOrDefault<string>("paymentMethodId", string.Empty);
+                  string finalRedirectUrl = (string)context.Variables["baseUrl"] + "#clientId=IO&sessionToken=" + sessionToken + "&paymentMethodId=" + paymentMethodId;
 
                   var response = new JObject();
                   response["redirectUrl"] = finalRedirectUrl;
