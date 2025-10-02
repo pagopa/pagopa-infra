@@ -54,7 +54,7 @@ bizevents_datastore_cosmos_db_params = {
 
   container_default_ttl = 315576000 # 10 year in second
 
-  max_throughput          = 40000
+  max_throughput          = 42000
   max_throughput_view     = 44000
   max_throughput_view_alt = 80000
 }
@@ -88,7 +88,7 @@ negative_bizevents_datastore_cosmos_db_params = {
 
   container_default_ttl = 315576000 # 10 year in second
 
-  max_throughput = 3000
+  max_throughput = 4000
 }
 
 cidr_subnet_bizevents_datastore_cosmosdb = ["10.1.156.0/24"]
