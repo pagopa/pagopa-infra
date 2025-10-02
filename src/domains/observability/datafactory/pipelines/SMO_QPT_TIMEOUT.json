@@ -1,0 +1,233 @@
+{
+    "name": "Start Date Pipeline",
+    "description": "Configure trigger start date variable  ",
+    "type": "SetVariable",
+    "dependsOn": [],
+    "policy": {
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "variableName": "start_pipeline",
+        "value": {
+            "value": "@pipeline().TriggerTime",
+            "type": "Expression"
+        }
+    }
+},
+{
+    "name": "Run Id",
+    "description": "Retrieve the run id",
+    "type": "SetVariable",
+    "dependsOn": [
+        {
+            "activity": "Start Date Pipeline",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "variableName": "run_id",
+        "value": "@pipeline().RunId"
+    }
+},
+{
+    "name": "Copy Data on Postgres",
+    "type": "Copy",
+    "dependsOn": [
+        {
+            "activity": "Run Id",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "AzureDataExplorerSource",
+            "query": {
+                "value": "let trigger_start=bin(datetime_utc_to_local(datetime('@{variables('start_pipeline')}'), \"Europe/Rome\"), 15m);\nlet start_date=datetime_add(\"minute\", -15, trigger_start);\nlet end_date=datetime_add(\"minute\", 15, start_date);\nlet end_date_resp=datetime_add(\"minute\", 2, end_date);\nlet all_request = ReEvent\n| where insertedTimestamp between (start_date .. end_date)\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"REQ\"\n| where tipoEvento in (\"paVerifyPaymentNotice\", \"paGetPayment\", \"paGetPaymentV2\", \"verifyPaymentNotice\", \"activatePaymentNoticeV2\", \"activatePaymentNotice\");\nlet all_response = ReEvent\n| where insertedTimestamp between (start_date .. end_date)\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"RESP\"\n| where tipoEvento in (\"paVerifyPaymentNotice\", \"paGetPayment\", \"paGetPaymentV2\", \"verifyPaymentNotice\", \"activatePaymentNoticeV2\", \"activatePaymentNotice\");\nlet verify_EC_req = all_request\n| where tipoEvento == \"paVerifyPaymentNotice\"\n| extend INTERMEDIARIO_PA=tostring(split(stazione, \"_\")[0])\n| extend INTERMEDIARIO_PSP=tostring(split(canale, \"_\")[0])\n| project DATA_REQUEST=insertedTimestamp, METODO=tipoEvento, INTERMEDIARIO_PA, STAZIONE=stazione, DOMINIO=idDominio, IUV=iuv, INTERMEDIARIO_PSP, CANALE=canale, PSP=psp, SESSION_ID=sessionId;\nlet verify_EC_resp = all_response\n| where tipoEvento == \"paVerifyPaymentNotice\"\n| extend INTERMEDIARIO_PA=tostring(split(stazione, \"_\")[0])\n| extend INTERMEDIARIO_PSP=tostring(split(canale, \"_\")[0])\n| extend OUTCOME_RESP=extract(\"<outcome>([A-Za-z0-9]*)</outcome>\", 1, base64_decode_tostring(payload))\n| extend FAULT_CODE=extract(\"<faultCode>([A-Za-z0-9_]*)</faultCode>\", 1, base64_decode_tostring(payload))\n| project DATA_RESPONSE=insertedTimestamp, METODO=tipoEvento, INTERMEDIARIO_PA, STAZIONE=stazione, DOMINIO=idDominio, INTERMEDIARIO_PSP, CANALE=canale, PSP=psp, OUTCOME_RESP, FAULT_CODE, SESSION_ID=sessionId;\nlet verify_times = verify_EC_req\n| join kind=leftouter verify_EC_resp on SESSION_ID\n| extend IS_TIMEOUT=case(isempty(DATA_RESPONSE), true, false)\n| extend DIFF_TIME_IN_MS=datetime_diff(\"millisecond\", DATA_RESPONSE, DATA_REQUEST)\n| project DATA_REQUEST, DATA_RESPONSE, DIFF_TIME_IN_MS, METODO, INTERMEDIARIO_PA, STAZIONE, DOMINIO, IUV, INTERMEDIARIO_PSP, CANALE, PSP, OUTCOME_RESP, FAULT_CODE, IS_TIMEOUT, START_DATE=start_date, END_DATE=end_date;\nlet paGetV1_req = all_request\n| where tipoEvento == \"paGetPayment\"\n| extend INTERMEDIARIO_PA=tostring(split(stazione, \"_\")[0])\n| extend INTERMEDIARIO_PSP=tostring(split(canale, \"_\")[0])\n| project DATA_REQUEST=insertedTimestamp, METODO=tipoEvento, INTERMEDIARIO_PA, STAZIONE=stazione, DOMINIO=idDominio, IUV=iuv, TOKEN=paymentToken, INTERMEDIARIO_PSP, CANALE=canale, PSP=psp, SESSION_ID=sessionId;\nlet paGetV1_resp = all_response\n| where tipoEvento == \"paGetPayment\"\n| extend INTERMEDIARIO_PA=tostring(split(stazione, \"_\")[0])\n| extend INTERMEDIARIO_PSP=tostring(split(canale, \"_\")[0])\n| extend OUTCOME_RESP=extract(\"<outcome>([A-Za-z0-9]*)</outcome>\", 1, base64_decode_tostring(payload))\n| extend FAULT_CODE=extract(\"<faultCode>([A-Za-z0-9_]*)</faultCode>\", 1, base64_decode_tostring(payload))\n| project DATA_RESPONSE=insertedTimestamp, METODO=tipoEvento, INTERMEDIARIO_PA, STAZIONE=stazione, DOMINIO=idDominio, INTERMEDIARIO_PSP, CANALE=canale, PSP=psp, OUTCOME_RESP, FAULT_CODE, SESSION_ID=sessionId;\nlet paGetV1_times = paGetV1_req\n| join kind=leftouter paGetV1_resp on SESSION_ID\n| extend IS_TIMEOUT=case(isempty(DATA_RESPONSE), true, false)\n| extend DIFF_TIME_IN_MS=datetime_diff(\"millisecond\", DATA_RESPONSE, DATA_REQUEST)\n| project DATA_REQUEST, DATA_RESPONSE, DIFF_TIME_IN_MS, METODO, INTERMEDIARIO_PA, STAZIONE, DOMINIO, IUV, INTERMEDIARIO_PSP, CANALE, PSP, OUTCOME_RESP, FAULT_CODE, IS_TIMEOUT, START_DATE=start_date, END_DATE=end_date;\nlet paGetV2_req = all_request\n| where tipoEvento == \"paGetPaymentV2\"\n| extend INTERMEDIARIO_PA=tostring(split(stazione, \"_\")[0])\n| extend INTERMEDIARIO_PSP=tostring(split(canale, \"_\")[0])\n| project DATA_REQUEST=insertedTimestamp, METODO=tipoEvento, INTERMEDIARIO_PA, STAZIONE=stazione, DOMINIO=idDominio, IUV=iuv, TOKEN=paymentToken, INTERMEDIARIO_PSP, CANALE=canale, PSP=psp, SESSION_ID=sessionId;\nlet paGetV2_resp = all_response\n| where tipoEvento == \"paGetPaymentV2\"\n| extend INTERMEDIARIO_PA=tostring(split(stazione, \"_\")[0])\n| extend INTERMEDIARIO_PSP=tostring(split(canale, \"_\")[0])\n| extend OUTCOME_RESP=extract(\"<outcome>([A-Za-z0-9]*)</outcome>\", 1, base64_decode_tostring(payload))\n| extend FAULT_CODE=extract(\"<faultCode>([A-Za-z0-9_]*)</faultCode>\", 1, base64_decode_tostring(payload))\n| project DATA_RESPONSE=insertedTimestamp, METODO=tipoEvento, INTERMEDIARIO_PA, STAZIONE=stazione, DOMINIO=idDominio, INTERMEDIARIO_PSP, CANALE=canale, PSP=psp, OUTCOME_RESP, FAULT_CODE, SESSION_ID=sessionId;\nlet paGetV2_times = paGetV2_req\n| join kind=leftouter paGetV2_resp on SESSION_ID\n| extend IS_TIMEOUT=case(isempty(DATA_RESPONSE), true, false)\n| extend DIFF_TIME_IN_MS=datetime_diff(\"millisecond\", DATA_RESPONSE, DATA_REQUEST)\n| project DATA_REQUEST, DATA_RESPONSE, DIFF_TIME_IN_MS, METODO, INTERMEDIARIO_PA, STAZIONE, DOMINIO, IUV, INTERMEDIARIO_PSP, CANALE, PSP, OUTCOME_RESP, FAULT_CODE, IS_TIMEOUT, START_DATE=start_date, END_DATE=end_date;\nunion verify_times, paGetV1_times, paGetV2_times\n| summarize AVG_TIME=round(avg(DIFF_TIME_IN_MS),2), TOT_REQ=count(), REQ_OK=countif(IS_TIMEOUT == false), REQ_TIMEOUT=countif(IS_TIMEOUT == true) by METODO, INTERMEDIARIO_PA, STAZIONE, START_DATE, END_DATE\n",
+                "type": "Expression"
+            },
+            "queryTimeout": "01:00:00",
+            "noTruncation": true
+        },
+        "sink": {
+            "type": "AzurePostgreSqlSink",
+            "writeBatchSize": 1000000,
+            "writeBatchTimeout": "00:30:00",
+            "writeMethod": "BulkInsert"
+        },
+        "enableStaging": false,
+        "validateDataConsistency": false,
+        "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+                {
+                    "source": {
+                        "name": "INTERMEDIARIO_PA",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "cf_partner",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "STAZIONE",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "station",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "METODO",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "method",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "START_DATE",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    },
+                    "sink": {
+                        "name": "start_date",
+                        "type": "DateTime",
+                        "physicalType": "timestamp without time zone"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "END_DATE",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    },
+                    "sink": {
+                        "name": "end_date",
+                        "type": "DateTime",
+                        "physicalType": "timestamp without time zone"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "TOT_REQ",
+                        "type": "Int64",
+                        "physicalType": "long"
+                    },
+                    "sink": {
+                        "name": "tot_req",
+                        "type": "Int64",
+                        "physicalType": "bigint"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "REQ_OK",
+                        "type": "Int64",
+                        "physicalType": "long"
+                    },
+                    "sink": {
+                        "name": "req_ok",
+                        "type": "Int64",
+                        "physicalType": "bigint"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "AVG_TIME",
+                        "type": "Double",
+                        "physicalType": "real"
+                    },
+                    "sink": {
+                        "name": "avg_time",
+                        "type": "Double",
+                        "physicalType": "double precision"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "REQ_TIMEOUT",
+                        "type": "Int64",
+                        "physicalType": "long"
+                    },
+                    "sink": {
+                        "name": "req_timeout",
+                        "type": "Int64",
+                        "physicalType": "bigint"
+                    }
+                }
+            ],
+            "typeConversion": true,
+            "typeConversionSettings": {
+                "allowDataTruncation": true,
+                "treatBooleanAsNumber": false
+            }
+        }
+    },
+    "inputs": [
+        {
+            "referenceName": "${inputdataset}",
+            "type": "DatasetReference"
+        }
+    ],
+    "outputs": [
+        {
+            "referenceName": "${outputdataset}",
+            "type": "DatasetReference"
+        }
+    ]
+},
+{
+    "name": "Error Copy",
+    "description": "Log error if copy goes in error",
+    "type": "Fail",
+    "dependsOn": [
+        {
+            "activity": "Copy Data on Postgres",
+            "dependencyConditions": [
+                "Failed"
+            ]
+        }
+    ],
+    "userProperties": [],
+    "typeProperties": {
+        "message": {
+            "value": "@concat('Lette :' ,activity('Copy Data on Postgres').output.rowsRead, ' Scritte : ', activity('Copy Data on Postgres').output.rowsCopied)",
+            "type": "Expression"
+        },
+        "errorCode": {
+            "value": "412",
+            "type": "Expression"
+        }
+    }
+}
