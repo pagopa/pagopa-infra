@@ -80,24 +80,15 @@
         }
       }
     },
-    "/transactions/{transactionId}/cards/outcomes": {
+    "/cards/transactions/outcomes": {
       "get": {
         "tags": [
           "ecommerce-transactions"
         ],
-        "summary": "Redirection URL for transaction outcomes related to card payment flows without onboarding",
-        "description": "Returns the transaction outcome result as an `outcome query` parameter along with the `orderId`",
+        "summary": "Redirection URL for outcomes related to card payment flows without onboarding",
+        "description": "Returns the outcome result as an `outcome query` parameter along with the `orderId`",
         "operationId": "getTransactionOutcomeCardNoOnboard",
         "parameters": [
-          {
-            "in": "path",
-            "name": "transactionId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Transaction ID"
-          },
           {
             "in": "query",
             "name": "outcome",
@@ -115,10 +106,19 @@
             "in": "query",
             "name": "orderId",
             "schema": {
-              "type": "string",
+              "type": "string"
               
             },
             "description": "Order ID related to NPG",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "correlationId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "correlation id for a transaction executed with NPG",
             "required": true
           }
         ],
