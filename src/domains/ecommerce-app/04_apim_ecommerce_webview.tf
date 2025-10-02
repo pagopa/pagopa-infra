@@ -76,7 +76,8 @@ module "apim_ecommerce_webview_api_v1" {
   })
 
   xml_content = templatefile("./api/ecommerce-webview/v1/_base_policy.xml.tpl", {
-    ecommerce_ingress_hostname = local.ecommerce_hostname
+    ecommerce_ingress_hostname = local.ecommerce_hostname,
+    checkout_origin            = var.env_short == "d" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}"
   })
 }
 
@@ -103,17 +104,6 @@ module "apim_ecommerce_webview_api_v2" {
   })
 
   xml_content = templatefile("./api/ecommerce-webview/v2/_base_policy.xml.tpl", {
-    ecommerce_ingress_hostname = local.ecommerce_hostname
-  })
-}
-
-resource "azurerm_api_management_api_operation_policy" "create_session_webview" {
-  api_name            = "${local.project}-ecommerce-webview-api-v2"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  operation_id        = "createSessionWebview"
-
-  xml_content = templatefile("./api/ecommerce-webview/v2/_post_session_policy.xml.tpl", {
     ecommerce_ingress_hostname = local.ecommerce_hostname
   })
 }

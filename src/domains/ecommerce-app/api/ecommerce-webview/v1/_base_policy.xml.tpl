@@ -3,14 +3,18 @@
   <inbound>
     <cors>
       <allowed-origins>
-          <origin>*</origin>
+          <origin>${checkout_origin}</origin>
       </allowed-origins>
       <allowed-methods>
           <method>GET</method>
+          <method>POST</method>
+          <method>OPTION</method>
       </allowed-methods>
       <allowed-headers>
           <header>Content-Type</header>
           <header>Authorization</header>
+          <header>X-Client-Id</header>
+          <header>lang</header>
       </allowed-headers>
     </cors>
     <base />
