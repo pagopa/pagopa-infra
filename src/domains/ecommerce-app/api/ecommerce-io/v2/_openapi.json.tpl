@@ -712,6 +712,96 @@
         }
       }
     },
+    "/payment-methods/{id}/redirectUrl": {
+      "get": {
+        "tags": [
+          "ecommerce-payment-methods"
+        ],
+        "operationId": "getMethodRedirectUrl",
+        "summary": "Redirection URL for input payment method",
+        "description": "Return the URL to be followed for a specific method\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the payment method chosen for the payment process"
+          },
+          {
+            "in": "query",
+            "name": "rpt_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Payment request id"
+          },
+          {
+            "in": "query",
+            "name": "amount",
+            "schema": {
+                "type": "integer",
+                "format": "int64"
+            },
+            "required": true,
+            "description": "The amount to pay"
+          }
+        ],
+        "security": [
+          {
+            "pagoPAPlatformSessionToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "New payment method successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RedirectUrlResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
+          "404": {
+            "description": "Payment method not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/wallets": {
       "get": {
         "tags": [
@@ -1635,6 +1725,27 @@
               "detailType": "redirect",
               "paymentMethodId": "dbc12081-ea5c-4a73-ae0a-7d6a881a1160"
             }
+          },
+          {
+            "type": "object",
+            "description": "Additional payment authorization details for cards NPG authorization",
+            "properties": {
+              "detailType": {
+                "$ref": "#/components/schemas/CardsDetailType"
+              },
+              "orderId": {
+                "type": "string",
+                "description": "NPG transaction order id"
+              }
+            },
+            "required": [
+              "detailType",
+              "orderId"
+            ],
+            "example": {
+              "detailType": "cards",
+              "orderId": "order-id"
+            }
           }
         ]
       },
@@ -1657,6 +1768,13 @@
         "type": "string",
         "enum": [
           "redirect"
+        ]
+      },
+      "CardsDetailType": {
+        "description": "cards detail type discriminator field",
+        "type": "string",
+        "enum": [
+          "cards"
         ]
       },
       "UpdateAuthorizationRequest": {
@@ -2405,6 +2523,17 @@
         "enum": [
           "PAGOPA"
         ]
+      },
+      "RedirectUrlResponse": {
+        "type": "object",
+        "description": "Redirect URL response",
+        "properties": {
+          "redirectUrl": {
+            "type": "string",
+            "format": "url",
+            "description": "The redirection URL to be followed for the input method"
+          }
+        }
       }
     },
     "requestBodies": {
@@ -2444,6 +2573,16 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/UpdateAuthorizationRequest"
+            }
+          }
+        }
+      },
+      "RedirectUrlResponse": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/RedirectUrlResponse"
             }
           }
         }

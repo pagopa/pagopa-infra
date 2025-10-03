@@ -908,3 +908,22 @@ resource "azurerm_api_management_named_value" "ecommerce_helpdesk_command_servic
   value               = var.ecommerce_helpdesk_command_service_api_key_use_primary ? data.azurerm_key_vault_secret.ecommerce_helpdesk_command_service_primary_api_key.value : data.azurerm_key_vault_secret.ecommerce_helpdesk_command_service_secondary_api_key.value
   secret              = true
 }
+
+data "azurerm_key_vault_secret" "ecommerce_jwt_issuer_service_primary_api_key" {
+  name         = "ecommerce-jwt-issuer-service-primary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "ecommerce_jwt_issuer_service_secondary_api_key" {
+  name         = "ecommerce-jwt-issuer-service-secondary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce_jwt_issuer_api_key_value" {
+  name                = "ecommerce-jwt-issuer-api-key-value"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-jwt-issuer-api-key-value"
+  value               = var.ecommerce_jwt_issuer_api_key_use_primary ? data.azurerm_key_vault_secret.ecommerce_jwt_issuer_service_primary_api_key.value : data.azurerm_key_vault_secret.ecommerce_jwt_issuer_service_secondary_api_key.value
+  secret              = true
+}
