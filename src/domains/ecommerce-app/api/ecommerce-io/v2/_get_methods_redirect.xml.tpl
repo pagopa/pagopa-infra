@@ -4,6 +4,8 @@
       <!-- pagoPA platform get payment methods redirect url : START -->
       <!-- Get Method Info : START -->
       <set-variable name="paymentMethodId" value="@(context.Request.MatchedParameters["id"])" />
+      <set-variable name="rptId" value="@(context.Request.Url.Query.GetValueOrDefault("rptId", ""))" />
+      <set-variable name="amount" value="@(context.Request.Url.Query.GetValueOrDefault("amount", ""))" />
       <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
           <set-url>@($"https://${ecommerce_ingress_hostname}/pagopa-ecommerce-payment-methods-service/payment-methods/{(string)context.Variables["paymentMethodId"]}")</set-url>
           <set-method>GET</set-method>
@@ -113,7 +115,13 @@
               <set-body>@{
                   string sessionToken = context.Variables.GetValueOrDefault<string>("token", string.Empty);
                   string paymentMethodId = context.Variables.GetValueOrDefault<string>("paymentMethodId", string.Empty);
-                  string finalRedirectUrl = (string)context.Variables["baseUrl"] + "#clientId=IO&sessionToken=" + sessionToken + "&paymentMethodId=" + paymentMethodId;
+                  string rptId = context.Variables.GetValueOrDefault<string>("rptId", string.Empty);
+                  string amount = context.Variables.GetValueOrDefault<string>("amount", string.Empty);
+                  string finalRedirectUrl = (string)context.Variables["baseUrl"]
+                         + "#clientId=IO&sessionToken=" + sessionToken
+                         + "&paymentMethodId=" + paymentMethodId
+                         + "&rptId=" + rptId
+                         + "&amount=" + amount;
 
                   var response = new JObject();
                   response["redirectUrl"] = finalRedirectUrl;

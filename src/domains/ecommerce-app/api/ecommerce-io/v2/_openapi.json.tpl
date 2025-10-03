@@ -728,7 +728,26 @@
               "type": "string"
             },
             "required": true,
-            "description": "The ID of the payment method for which calculate fees"
+            "description": "The ID of the payment method chosen for the payment process"
+          },
+          {
+            "in": "query",
+            "name": "rpt_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Digital payment request id"
+          },
+          {
+            "in": "query",
+            "name": "amount",
+            "schema": {
+                "type": "integer",
+                "format": "int64"
+            },
+            "required": true,
+            "description": "The amount to pay"
           }
         ],
         "security": [
