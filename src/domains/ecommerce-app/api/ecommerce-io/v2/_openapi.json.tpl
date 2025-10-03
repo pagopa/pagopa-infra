@@ -737,7 +737,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "Digital payment request id"
+            "description": "Payment request id"
           },
           {
             "in": "query",
