@@ -348,7 +348,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     capacity {
       default = var.env_short == "p" ? 3 : 1
       minimum = var.env_short == "p" ? 3 : 1
-      maximum = var.env_short == "p" ? 12 : 1
+      maximum = var.env_short == "p" ? 24 : 1
     }
 
     # Requests
