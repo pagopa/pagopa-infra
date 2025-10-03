@@ -63,11 +63,13 @@
           </set-header>
           <set-body>@{
             var userId = ((string)context.Variables.GetValueOrDefault("xUserId",""));
+            var email = ((string)context.Variables.GetValueOrDefault("email",""));
             return new JObject(
                     new JProperty("audience", "ecommerce"),
                     new JProperty("duration", 900),
                     new JProperty("privateClaims", new JObject(
-                        new JProperty("userId", userId)
+                        new JProperty("userId", userId),
+                        new JProperty("email", email)
                     ))
                 ).ToString();
           }</set-body>
