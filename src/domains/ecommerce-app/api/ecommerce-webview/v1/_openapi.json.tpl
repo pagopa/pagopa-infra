@@ -29,6 +29,94 @@
   },
   "paths": {
     "/transactions/{transactionId}": {
+        "post": {
+        "tags": [
+          "ecommerce-transactions"
+        ],
+        "operationId": "newTransactionForEcommerceWebview",
+        "summary": "Create a new transaction",
+        "description": "Create a new transaction activating the payments notice by meaning of 'Nodo' ActivatePaymentNotice primitive",
+        "security": [
+          {
+            "eCommerceSessionToken": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewTransactionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "New transaction successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewTransactionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
+          "404": {
+            "description": "Node cannot find the services needed to process this request in its configuration. This error is most likely to occur when submitting a non-existing RPT id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeProblemJson404"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict on payment status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeProblemJson409"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "PagoPA services are not available or request is rejected by PagoPa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeProblemJson502"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "EC services are not available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartyConfigurationFaultPaymentProblemJson"
+                }
+              }
+            }
+          }
+        }
+      },
       "get": {
         "tags": [
           "ecommerce-transactions"
@@ -193,6 +281,29 @@
   },
   "components": {
     "schemas": {
+      "NewTransactionRequest": {
+        "type": "object",
+        "description": "Request body for creating a new transaction",
+        "properties": {
+          "paymentNotices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentNoticeInfo"
+            },
+            "minItems": 1,
+            "maxItems": 1,
+            "example": [
+              {
+                "rptId": "77777777777302012387654312384",
+                "amount": 12000
+              }
+            ]
+          }
+        },
+        "required": [
+          "paymentNotices"
+        ]
+      },
       "ProblemJson": {
         "type": "object",
         "properties": {
@@ -477,6 +588,18 @@
           "digitalStamp",
           "transferAmount"
         ]
+      }
+    },
+    "requestBodies": {
+      "NewTransactionRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/NewTransactionRequest"
+            }
+          }
+        }
       }
     },
     "securitySchemes": {
