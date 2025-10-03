@@ -103,6 +103,9 @@
             "description": "The card brand name",
             "type": "string"
           },
+          "contextualOnboardDetails": {
+            "$ref": "#/components/schemas/ContextualOnboardDetails"
+          },
           "paymentMethodData": {
             "type": "object",
             "oneOf": [
@@ -127,6 +130,18 @@
           "brand",
           "paymentMethodData"
         ]
+      },
+      "ContextualOnboardDetails": {
+        "type": "object",
+        "properties": {
+          "transactionId": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
       },
       "WalletAuthCardData": {
         "type": "object",
