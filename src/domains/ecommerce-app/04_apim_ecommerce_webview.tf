@@ -80,6 +80,16 @@ module "apim_ecommerce_webview_api_v1" {
   })
 }
 
+resource "azurerm_api_management_api_operation_policy" "webview_post_wallet_transactions_v1" {
+  api_name            = "${local.project}-ecommerce-webview-api"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "newTransactionForEcommerceWebview"
+
+  xml_content = templatefile("./api/ecommerce-webview/v1/post_transactions.xml.tpl", {
+  })
+}
+
 module "apim_ecommerce_webview_api_v2" {
   source = "./.terraform/modules/__v3__/api_management_api"
 
