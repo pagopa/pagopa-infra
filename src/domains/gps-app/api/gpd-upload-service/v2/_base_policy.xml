@@ -1,0 +1,31 @@
+<policies>
+  <inbound>
+    <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
+    <base />
+    <!-- rate limit by subscription key -->
+    <rate-limit calls="10" renewal-period="1" remaining-calls-variable-name="remainingCallsPerSubscription"/>
+    <!-- Calling Authorizer's fragment -->
+    <set-variable name="application_domain" value="gpd" />
+
+    <!-- Add query parameter serviceType to request -->
+    <set-variable name="service_type_value" value="${service_type_value}" />
+    <include-fragment fragment-id="service-type-set"/>
+
+    <choose>
+      <!-- Making sure that will exclude all APIs that does not include CI fiscal code -->
+      <when condition="@(context.Request.MatchedParameters.ContainsKey("organization-fiscal-code") && !context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key", "").Equals(""))">
+      <set-variable name="authorization_entity" value="@(context.Request.MatchedParameters["organization-fiscal-code"])" />
+      <include-fragment fragment-id="authorizer" />
+      </when>
+    </choose>
+  </inbound>
+  <outbound>
+    <base />
+  </outbound>
+  <backend>
+    <base />
+  </backend>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
