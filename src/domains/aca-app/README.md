@@ -18,7 +18,7 @@
 | <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 087a57940a67444c3b883030c54ceb78562c64ef |
 | <a name="module_apim_aca_api_v1"></a> [apim\_aca\_api\_v1](#module\_apim\_aca\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_aca_product"></a> [apim\_aca\_product](#module\_apim\_aca\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_aca_upload_api_v1"></a> [apim\_aca\_upload\_api\_v1](#module\_apim\_aca\_upload\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_aca_upload_api_v2"></a> [apim\_aca\_upload\_api\_v2](#module\_apim\_aca\_upload\_api\_v2) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_debt_positions_for_aca_api_v1"></a> [apim\_api\_debt\_positions\_for\_aca\_api\_v1](#module\_apim\_api\_debt\_positions\_for\_aca\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v3__/cert_mounter | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
