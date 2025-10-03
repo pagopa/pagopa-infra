@@ -1,6 +1,14 @@
 <policies>
     <inbound>
-        <base /><set-body>@{
+        <base />
+        <set-variable name="email" value="@{
+              var jwt = (Jwt)context.Variables["jwtToken"];
+              if(jwt.Claims.ContainsKey("email")){
+                  return jwt.Claims["email"][0];
+              }
+              return "";
+              }" />
+        <set-body>@{
           JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true);
           requestBody["emailToken"] = (String)context.Variables["email"];
           return requestBody.ToString();
