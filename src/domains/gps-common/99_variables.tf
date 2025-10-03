@@ -251,6 +251,12 @@ variable "gpd_db_name" {
   default     = "apd"
 }
 
+variable "gpd_upload_status_ttl" {
+  type        = number
+  description = "The default time in seconds to live of SQL container. If present and the value is set to -1, it is equal to infinity, and items don’t expire by default. "
+  default     = -1
+}
+
 variable "cosmos_gps_db_params" {
   type = object({
     kind           = string
