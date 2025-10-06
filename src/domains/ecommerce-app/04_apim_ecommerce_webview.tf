@@ -87,6 +87,7 @@ resource "azurerm_api_management_api_operation_policy" "webview_post_wallet_tran
   operation_id        = "newTransactionForEcommerceWebview"
 
   xml_content = templatefile("./api/ecommerce-webview/v1/post_transactions.xml.tpl", {
+    ecommerce_ingress_hostname = local.ecommerce_hostname
   })
 }
 

@@ -1,6 +1,7 @@
 <policies>
     <inbound>
         <base />
+        <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2.1")"/>
         <set-variable name="email" value="@{
               var jwt = (Jwt)context.Variables["jwtToken"];
               if(jwt.Claims.ContainsKey("email")){
@@ -10,6 +11,7 @@
               }" />
         <set-body>@{
           JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true);
+          requestBody["orderId"] = "ORDER_ID"; //To be removed since it is mandatory for transaction request body, but it should not be
           requestBody["emailToken"] = (String)context.Variables["email"];
           return requestBody.ToString();
         }</set-body>
