@@ -39,8 +39,6 @@ locals {
   apim_snet     = "${local.product}-apim-snet"
   nodo_hostname = var.env == "prod" ? "${var.location_short}${var.env}.${var.domain}.internal.platform.pagopa.it" : "${var.location_short}${var.env}.${var.domain}.internal.${var.env}.platform.pagopa.it"
 
-  nodo_datamigration_hostname = "${local.nodo_hostname}/datamigration"
-
   apim_for_node = {
     product_id            = "apim_for_node"
     display_name          = "APIM for Nodo"

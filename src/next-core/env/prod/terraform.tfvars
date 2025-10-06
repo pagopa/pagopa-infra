@@ -718,7 +718,7 @@ eventhubs_04 = [
     name              = "fdr-qi-reported-iuv"
     partitions        = 32
     message_retention = 7
-    consumers         = ["fdr-qi-reported-iuv-rx"]
+    consumers         = ["fdr-qi-reported-iuv-rx", "gpd-reporting-sync"]
     keys = [
       {
         name   = "fdr-qi-reported-iuv-tx"
@@ -728,6 +728,12 @@ eventhubs_04 = [
       },
       {
         name   = "fdr-qi-reported-iuv-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "gpd-reporting-sync"
         listen = true
         send   = false
         manage = false
@@ -776,7 +782,7 @@ app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it-stable"
 app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
 app_gateway_wfespgovit_certificate_name = "wfesp-pagopa-gov-it"
 app_gateway_min_capacity                = 8 # 5 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
-app_gateway_max_capacity                = 50
+app_gateway_max_capacity                = 100
 app_gateway_sku_name                    = "WAF_v2"
 app_gateway_sku_tier                    = "WAF_v2"
 app_gateway_waf_enabled                 = true

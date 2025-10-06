@@ -1,0 +1,44 @@
+[
+    {
+        "name": "id",
+        "type": "bigint",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "cf_partner",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "station",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "transfer_category",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "start_date",
+        "type": "timestamp without time zone",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "end_date",
+        "type": "timestamp without time zone",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "total",
+        "type": "bigint",
+        "precision": 0,
+        "scale": 0
+    }
+]

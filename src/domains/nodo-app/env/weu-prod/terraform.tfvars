@@ -232,12 +232,6 @@ pod_disruption_budgets = {
       "app.kubernetes.io/instance" = "nodo"
     }
   },
-  "nodo-cfg-data-migration" = {
-    minAvailable = 1
-    matchLabels = {
-      "app.kubernetes.io/instance" = "nodo-cfg-data-migration"
-    }
-  },
 
   "pagopawebbo" = {
     minAvailable = 1

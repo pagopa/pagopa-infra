@@ -4,7 +4,7 @@
     "title" : "PagoPA API Calculator Logic - API AFM-Calculator v1 Production",
     "description" : "Calculator Logic microservice for pagoPA AFM",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "2.11.8"
+    "version" : "2.11.28"
   },
   "servers" : [ {
     "url" : "http://localhost:8080"
@@ -302,6 +302,7 @@
       "post" : {
         "tags" : [ "Payment Methods" ],
         "summary" : "Advanced search of payment methods",
+        "description" : "GET with body payload - no resources created",
         "operationId" : "searchPaymentMethods",
         "requestBody" : {
           "content" : {
@@ -357,6 +358,146 @@
                 "description" : "This header identifies the call",
                 "schema" : {
                   "type" : "string"
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "Unable to process the request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
+      },
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
+    "/payment-methods/{paymentMethodId}" : {
+      "get" : {
+        "tags" : [ "Payment Methods" ],
+        "summary" : "Find payment method by id",
+        "operationId" : "getPaymentMethod",
+        "parameters" : [ {
+          "name" : "paymentMethodId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaymentMethodResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -628,7 +769,7 @@
         }
       },
       "TransferListItem" : {
-        "required" : [ "creditorInstitution", "transferCategory" ],
+        "required" : [ "creditorInstitution" ],
         "type" : "object",
         "properties" : {
           "creditorInstitution" : {
@@ -639,28 +780,6 @@
           },
           "digitalStamp" : {
             "type" : "boolean"
-          }
-        }
-      },
-      "ProblemJson" : {
-        "type" : "object",
-        "properties" : {
-          "title" : {
-            "type" : "string",
-            "description" : "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
-          },
-          "status" : {
-            "maximum" : 600,
-            "minimum" : 100,
-            "type" : "integer",
-            "description" : "The HTTP status code generated by the origin server for this occurrence of the problem.",
-            "format" : "int32",
-            "example" : 200
-          },
-          "detail" : {
-            "type" : "string",
-            "description" : "A human readable explanation specific to this occurrence of the problem.",
-            "example" : "There was an error processing the request"
           }
         }
       },
@@ -728,8 +847,30 @@
           }
         }
       },
+      "ProblemJson" : {
+        "type" : "object",
+        "properties" : {
+          "title" : {
+            "type" : "string",
+            "description" : "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
+          },
+          "status" : {
+            "maximum" : 600,
+            "minimum" : 100,
+            "type" : "integer",
+            "description" : "The HTTP status code generated by the origin server for this occurrence of the problem.",
+            "format" : "int32",
+            "example" : 200
+          },
+          "detail" : {
+            "type" : "string",
+            "description" : "A human readable explanation specific to this occurrence of the problem.",
+            "example" : "There was an error processing the request"
+          }
+        }
+      },
       "PaymentMethodRequest" : {
-        "required" : [ "bin", "paymentNotice", "totalAmount", "userDevice", "userTouchpoint" ],
+        "required" : [ "paymentNotice", "totalAmount", "userTouchpoint" ],
         "type" : "object",
         "properties" : {
           "userTouchpoint" : {
@@ -738,19 +879,16 @@
           },
           "userDevice" : {
             "type" : "string",
-            "enum" : [ "IOS", "ANDROID", "WEB" ]
-          },
-          "bin" : {
-            "type" : "string"
+            "enum" : [ "IOS", "ANDROID", "WEB", "SAFARI" ]
           },
           "totalAmount" : {
             "type" : "integer",
-            "format" : "int32"
+            "format" : "int64"
           },
           "paymentNotice" : {
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/PaymentNoticeItem"
+              "$ref" : "#/components/schemas/PaymentNoticeItemOptionalTransferList"
             }
           },
           "allCCp" : {
@@ -761,8 +899,8 @@
           }
         }
       },
-      "PaymentNoticeItem" : {
-        "required" : [ "paymentAmount", "primaryCreditorInstitution", "transferList" ],
+      "PaymentNoticeItemOptionalTransferList" : {
+        "required" : [ "paymentAmount", "primaryCreditorInstitution" ],
         "type" : "object",
         "properties" : {
           "paymentAmount" : {
@@ -795,7 +933,7 @@
         }
       },
       "PaymentMethodsItem" : {
-        "required" : [ "description", "feeRange", "group", "methodManagement", "name", "paymentMethodAsset", "paymentMethodId", "status", "validityDateFrom" ],
+        "required" : [ "description", "group", "methodManagement", "name", "paymentMethodAsset", "paymentMethodId", "paymentMethodTypes", "status", "validityDateFrom" ],
         "type" : "object",
         "properties" : {
           "paymentMethodId" : {
@@ -823,7 +961,14 @@
           },
           "group" : {
             "type" : "string",
-            "enum" : [ "CP", "MYBK", "BPAY", "PPAL", "RPIC", "RBPS", "SATY", "APPL", "RICO" ]
+            "enum" : [ "CP", "MYBK", "BPAY", "PPAL", "RPIC", "RBPS", "SATY", "APPL", "RICO", "RBPB", "RBPP", "RBPR", "GOOG", "KLRN" ]
+          },
+          "paymentMethodTypes" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "enum" : [ "CARTE", "CONTO", "APP" ]
+            }
           },
           "feeRange" : {
             "$ref" : "#/components/schemas/FeeRange"
@@ -911,6 +1056,91 @@
           },
           "idBrokerPsp" : {
             "type" : "string"
+          }
+        }
+      },
+      "PaymentMethodResponse" : {
+        "required" : [ "description", "group", "id", "methodManagement", "name", "paymentMethodAsset", "paymentMethodId", "paymentMethodTypes", "rangeAmount", "status", "userDevice", "userTouchpoint", "validityDateFrom" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "paymentMethodId" : {
+            "type" : "string"
+          },
+          "group" : {
+            "type" : "string",
+            "enum" : [ "CP", "MYBK", "BPAY", "PPAL", "RPIC", "RBPS", "SATY", "APPL", "RICO", "RBPB", "RBPP", "RBPR", "GOOG", "KLRN" ]
+          },
+          "name" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
+            }
+          },
+          "description" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
+            }
+          },
+          "userTouchpoint" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "enum" : [ "IO", "CHECKOUT", "CHECKOUT_CART" ]
+            }
+          },
+          "userDevice" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "enum" : [ "IOS", "ANDROID", "WEB", "SAFARI" ]
+            }
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "ENABLED", "DISABLED", "MAINTENANCE" ]
+          },
+          "paymentMethodTypes" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "enum" : [ "CARTE", "CONTO", "APP" ]
+            }
+          },
+          "validityDateFrom" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "target" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "rangeAmount" : {
+            "$ref" : "#/components/schemas/FeeRange"
+          },
+          "metadata" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
+            }
+          },
+          "paymentMethodAsset" : {
+            "type" : "string"
+          },
+          "methodManagement" : {
+            "type" : "string",
+            "enum" : [ "ONBOARDABLE", "ONBOARDABLE_ONLY", "NOT_ONBOARDABLE", "REDIRECT" ]
+          },
+          "paymentMethodsBrandAssets" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
+            }
           }
         }
       },
