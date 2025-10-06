@@ -214,6 +214,7 @@
 | <a name="input_gpd_sftp_sa_tier_to_archive"></a> [gpd\_sftp\_sa\_tier\_to\_archive](#input\_gpd\_sftp\_sa\_tier\_to\_archive) | Number of days after which the blob is moved to archive | `number` | `-1` | no |
 | <a name="input_gpd_sftp_sa_tier_to_cool"></a> [gpd\_sftp\_sa\_tier\_to\_cool](#input\_gpd\_sftp\_sa\_tier\_to\_cool) | Number of days after which the blob is moved to cool | `number` | n/a | yes |
 | <a name="input_gpd_upload_status_throughput"></a> [gpd\_upload\_status\_throughput](#input\_gpd\_upload\_status\_throughput) | Max container throughput (Cosmos-RU) | `number` | `1000` | no |
+| <a name="input_gpd_upload_status_ttl"></a> [gpd\_upload\_status\_ttl](#input\_gpd\_upload\_status\_ttl) | The default time in seconds to live of SQL container. If present and the value is set to -1, it is equal to infinity, and items don’t expire by default. | `number` | `-1` | no |
 | <a name="input_ingress_load_balancer_ip"></a> [ingress\_load\_balancer\_ip](#input\_ingress\_load\_balancer\_ip) | n/a | `string` | n/a | yes |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |

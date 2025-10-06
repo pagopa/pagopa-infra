@@ -85,11 +85,13 @@ locals {
     {
       name               = "creditor_institutions",
       partition_key_path = "/fiscalCode",
+      default_ttl        = -1, // the value is set to -1 -> items don’t expire by default
       autoscale_settings = { max_throughput = 1000 }
     },
     {
       name               = "services",
       partition_key_path = "/transferCategory",
+      default_ttl        = -1, // the value is set to -1 -> items don’t expire by default
       autoscale_settings = { max_throughput = 1000 }
     },
   ]
@@ -98,6 +100,7 @@ locals {
     {
       name               = "gpd_upload_status",
       partition_key_path = "/fiscalCode",
+      default_ttl        = var.gpd_upload_status_ttl,
       autoscale_settings = { max_throughput = var.gpd_upload_status_throughput }
     },
   ]
@@ -114,6 +117,7 @@ module "gpd_cosmosdb_containers" {
   database_name       = module.gpd_cosmosdb_database.name
   partition_key_path  = each.value.partition_key_path
   throughput          = lookup(each.value, "throughput", null)
+  default_ttl         = each.value.default_ttl
 
   autoscale_settings = contains(var.cosmos_gps_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
 }
