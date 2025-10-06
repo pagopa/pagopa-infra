@@ -140,6 +140,12 @@
           "amount": {
             "type": "integer",
             "format": "int64"
+          },
+          "orderId": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
           }
         }
       },
