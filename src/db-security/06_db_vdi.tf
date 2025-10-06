@@ -24,6 +24,8 @@ resource "azurerm_windows_virtual_machine" "db_vdi_vm" {
   resource_group_name = azurerm_resource_group.vdi_rg[0].name
   location            = azurerm_resource_group.vdi_rg[0].location
   size                = var.db_vdi_settings.size
+  admin_username      = "adminuser"
+  admin_password      = module.secret_core.values["db-vdi-admin-password"].value
 
   network_interface_ids = [
     azurerm_network_interface.vdi_nic[0].id,

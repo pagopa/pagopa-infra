@@ -25,6 +25,7 @@ module "secret_core" {
   secrets = [
     "metabase-db-admin-login",
     "metabase-db-admin-password",
+    "db-vdi-admin-password",
     # "metabase-db-login",
     # "metabase-db-password"
   ]
