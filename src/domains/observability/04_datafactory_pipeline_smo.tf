@@ -659,3 +659,121 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_WPNFDR" {
   description   = "Trigger for PDND_KPI_WPNFDR pipeline"
   pipeline_name = azurerm_data_factory_pipeline.pipeline_PDND_KPI_WPNFDR.name
 }
+
+
+
+########################### KPI QPT TIMEOUT ###########################
+
+resource "azurerm_data_factory_pipeline" "pipeline_SMO_QPT_TIMEOUT" {
+
+  name            = "SMO_QPT_TIMEOUT_Pipeline"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  variables = {
+    run_id            = "",
+    start_pipeline    = ""
+  }
+
+  activities_json = "[${templatefile("datafactory/pipelines/SMO_QPT_TIMEOUT.json", {
+    inputdataset  = "SMO_ReEvent_DataSet"
+    outputdataset = "CRUSC8_RECORDED_TIMEOUT"
+  })}]"
+
+  depends_on = [
+    azurerm_data_factory_custom_dataset.qi_datasets
+  ]
+}
+
+resource "azurerm_data_factory_trigger_schedule" "Trigger_SMO_QPT_TIMEOUT" {
+
+  name            = "Trigger_SMO_QPT_TIMEOUT"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  interval  = 15
+  frequency = "Minute"
+  activated = true
+  time_zone = "W. Europe Standard Time"
+  start_time = "2025-09-30T00:00:00Z"
+
+  description   = "Description of SMO_QPT_TIMEOUT"
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_SMO_QPT_TIMEOUT.name
+
+}
+
+
+########################### KPI QPT TAXONOMY ###########################
+
+resource "azurerm_data_factory_pipeline" "pipeline_SMO_QPT_TAXONOMY_AGGREGATE" {
+
+  name            = "SMO_QPT_TAXONOMY_AGGREGATE_Pipeline"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  variables = {
+    run_id            = "",
+    start_pipeline    = ""
+  }
+
+  activities_json = "[${templatefile("datafactory/pipelines/SMO_QPT_TAXONOMY_AGGREGATE.json", {
+    inputdataset  = "SMO_ReEvent_DataSet"
+    outputdataset = "CRUSC8_TAXONOMY_AGGREGATE_POSITION"
+  })}]"
+
+  depends_on = [
+    azurerm_data_factory_custom_dataset.qi_datasets
+  ]
+}
+
+resource "azurerm_data_factory_trigger_schedule" "Trigger_SMO_QPT_TAXONOMY_AGGREGATE" {
+
+  name            = "Trigger_SMO_QPT_TAXONOMY_AGGREGATE"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  interval  = 6
+  frequency = "Hour"
+  activated = true
+  time_zone = "W. Europe Standard Time"
+  start_time = "2025-09-30T00:00:00Z"
+
+  description   = "Description of SMO_QPT_TAXONOMY_AGGREGATE"
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_SMO_QPT_TAXONOMY_AGGREGATE.name
+
+}
+
+
+########################### KPI QPT RECEIPT ###########################
+
+resource "azurerm_data_factory_pipeline" "pipeline_SMO_QPT_RECEIPT" {
+
+  name            = "SMO_QPT_RECEIPT_Pipeline"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  variables = {
+    run_id            = "",
+    start_pipeline    = ""
+  }
+
+  activities_json = "[${templatefile("datafactory/pipelines/SMO_QPT_RECEIPT.json", {
+    inputdataset  = "SMO_ReEvent_DataSet"
+    outputdataset = "CRUSC8_PAYMENT_RECEIPT"
+  })}]"
+
+  depends_on = [
+    azurerm_data_factory_custom_dataset.qi_datasets
+  ]
+}
+
+resource "azurerm_data_factory_trigger_schedule" "Trigger_SMO_QPT_RECEIPT" {
+
+  name            = "Trigger_SMO_QPT_RECEIPT"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  interval  = 6
+  frequency = "Hour"
+  activated = true
+  time_zone = "W. Europe Standard Time"
+  start_time = "2025-09-30T00:00:00Z"
+
+  description   = "Description of SMO_QPT_RECEIPT"
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_SMO_QPT_RECEIPT.name
+
+}
