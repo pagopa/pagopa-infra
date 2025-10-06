@@ -45,6 +45,8 @@ cosmos_gps_db_params = {
   backup_continuous_enabled = false
 }
 
+gpd_upload_status_ttl = 604800 // 7 days
+
 # Postgres Flexible
 pgres_flex_params = {
 
