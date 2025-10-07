@@ -46,4 +46,32 @@ resource "azurerm_key_vault_secret" "apim_cache_subscription_key_kv" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
+#  'pagopa-standin-api-key-value'
+
+data "azurerm_api_management_api" "apim_standin_technical_support" {
+  name                = "${var.env_short}-technical-support-api-v1"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  revision            = "1"
+}
+
+resource "azurerm_api_management_subscription" "apim_standin_4_crusc8_subscription_key" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  api_id        = replace(data.azurerm_api_management_api.apim_standin_technical_support.id, ";rev=1", "")
+  display_name  = "pagoPA Stand-in Technical Support for Cruscotto"
+  allow_tracing = false
+  state         = "active"
+}
+
+resource "azurerm_key_vault_secret" "apim_standin_4_crusc8_subscription_key_kv" {
+  depends_on   = [azurerm_api_management_subscription.apim_standin_4_crusc8_subscription_key]
+  name         = "pagopa-standin-api-key-value"
+  value        = azurerm_api_management_subscription.apim_standin_4_crusc8_subscription_key.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
 
