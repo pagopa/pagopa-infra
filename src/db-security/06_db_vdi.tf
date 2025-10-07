@@ -20,7 +20,7 @@ resource "azurerm_windows_virtual_machine" "db_vdi_vm" {
 
 
   name                = "${local.project_vdi}-db-vdi"
-  computer_name       = "${local.product}-db2vdi"
+  computer_name       = "${local.product}-db-vdi"
   resource_group_name = azurerm_resource_group.vdi_rg[0].name
   location            = azurerm_resource_group.vdi_rg[0].location
   size                = var.db_vdi_settings.size
@@ -74,23 +74,23 @@ resource "azurerm_virtual_machine_extension" "aad_join_extension" {
   tags = module.tag_config.tags
 }
 
-resource "azurerm_virtual_machine_extension" "host_pool_join" {
-    count = var.enabled_features.db_vdi ? 1 : 0
-  name                       = "Microsoft.Powershell.DSC"
-  virtual_machine_id         = azurerm_windows_virtual_machine.db_vdi_vm[0].id
-  publisher                  = "Microsoft.Powershell"
-  type                       = "DSC"
-  type_handler_version       = "2.83"
-  auto_upgrade_minor_version = false
-  automatic_upgrade_enabled  = false
-  settings = templatefile("${path.module}/extension/host_pool_join.json.tpl", {
-    host_pool_name     = azurerm_virtual_desktop_host_pool.vdi_host_pool[0].name,
-    registration_token = azurerm_virtual_desktop_host_pool_registration_info.host_pool_registration_info[0].token,
-  })
-  depends_on = [azurerm_windows_virtual_machine.db_vdi_vm]
-
-  tags = module.tag_config.tags
-}
+# resource "azurerm_virtual_machine_extension" "host_pool_join" {
+#     count = var.enabled_features.db_vdi ? 1 : 0
+#   name                       = "Microsoft.Powershell.DSC"
+#   virtual_machine_id         = azurerm_windows_virtual_machine.db_vdi_vm[0].id
+#   publisher                  = "Microsoft.Powershell"
+#   type                       = "DSC"
+#   type_handler_version       = "2.83"
+#   auto_upgrade_minor_version = false
+#   automatic_upgrade_enabled  = false
+#   settings = templatefile("${path.module}/extension/host_pool_join.json.tpl", {
+#     host_pool_name     = azurerm_virtual_desktop_host_pool.vdi_host_pool[0].name,
+#     registration_token = azurerm_virtual_desktop_host_pool_registration_info.host_pool_registration_info[0].token,
+#   })
+#   depends_on = [azurerm_windows_virtual_machine.db_vdi_vm]
+#
+#   tags = module.tag_config.tags
+# }
 
 resource "azurerm_dev_test_global_vm_shutdown_schedule" "auto_shutdown" {
   count = var.enabled_features.db_vdi ? 1 : 0
