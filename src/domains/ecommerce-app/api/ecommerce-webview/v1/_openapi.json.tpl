@@ -1051,6 +1051,70 @@
           "PPT_ERRORE_EMESSO_DA_PAA",
           "PAA_SYSTEM_ERROR"
         ]
+      },
+      "CreateSessionResponse": {
+        "type": "object",
+        "description": "Form data needed to create a payment method input form",
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "description": "Identifier of the payment gateway session associated to the form"
+          },
+          "correlationId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identifier of the payment session associated to the transaction flow"
+          },
+          "paymentMethodData": {
+            "$ref": "#/components/schemas/CardFormFields"
+          }
+        },
+        "required": [
+          "paymentMethodData",
+          "orderId",
+          "correlationId"
+        ]
+      },
+      "CardFormFields": {
+        "type": "object",
+        "description": "Form fields for credit cards",
+        "properties": {
+          "paymentMethod": {
+            "type": "string"
+          },
+          "form": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Field"
+            }
+          }
+        },
+        "required": [
+          "paymentMethod",
+          "form"
+        ]
+      },
+      "Field": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "text"
+          },
+          "class": {
+            "type": "string",
+            "example": "cardData"
+          },
+          "id": {
+            "type": "string",
+            "example": "cardholderName"
+          },
+          "src": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://<fe>/field.html?id=CARDHOLDER_NAME&sid=052211e8-54c8-4e0a-8402-e10bcb8ff264"
+          }
+        }
       }
     },
     "requestBodies": {
@@ -1064,71 +1128,6 @@
           }
         }
       }
-      },
-      "CreateSessionResponse": {
-              "type": "object",
-              "description": "Form data needed to create a payment method input form",
-              "properties": {
-                "orderId": {
-                  "type": "string",
-                  "description": "Identifier of the payment gateway session associated to the form"
-                },
-                "correlationId": {
-                  "type": "string",
-                  "format": "uuid",
-                  "description": "Identifier of the payment session associated to the transaction flow"
-                },
-                "paymentMethodData": {
-                  "$ref": "#/components/schemas/CardFormFields"
-                }
-              },
-              "required": [
-                "paymentMethodData",
-                "orderId",
-                "correlationId"
-              ]
-            },
-            "CardFormFields": {
-              "type": "object",
-              "description": "Form fields for credit cards",
-              "properties": {
-                "paymentMethod": {
-                  "type": "string"
-                },
-                "form": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Field"
-                  }
-                }
-              },
-              "required": [
-                "paymentMethod",
-                "form"
-              ]
-            },
-            "Field": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "text"
-                },
-                "class": {
-                  "type": "string",
-                  "example": "cardData"
-                },
-                "id": {
-                  "type": "string",
-                  "example": "cardholderName"
-                },
-                "src": {
-                  "type": "string",
-                  "format": "uri",
-                  "example": "https://<fe>/field.html?id=CARDHOLDER_NAME&sid=052211e8-54c8-4e0a-8402-e10bcb8ff264"
-                }
-              }
-            }
     },
     "securitySchemes": {
       "eCommerceSessionToken": {
