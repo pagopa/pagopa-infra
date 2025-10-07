@@ -10,9 +10,11 @@ locals {
   vnet_core_resource_group_name  = "${local.product}-vnet-rg"
   vnet_core_name                 = "${local.product}-vnet"
 
-  key_vault_core_name    = "${local.product}-itn-core-kv"
-  key_vault_core_rg_name = "${local.product}-itn-core-sec-rg"
+  key_vault_core_itn_name    = "${local.product}-itn-core-kv"
+  key_vault_core_itn_rg_name = "${local.product}-itn-core-sec-rg"
 
+  key_vault_core_name    = "${local.product}-kv"
+  key_vault_core_rg_name = "${local.product}-sec-rg"
 
   log_analytics_italy_workspace_name                = "${local.product}-${var.location_short}-core-law"
   log_analytics_italy_workspace_resource_group_name = "${local.product}-${var.location_short}-core-monitor-rg"

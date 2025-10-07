@@ -24,8 +24,8 @@ module "metabase_app_service" {
 
   app_service_plan_name = "${local.project}-metabase-plan"
   app_settings = {
-    MB_DB_USER           = module.secret_core.values["metabase-db-admin-login"].value
-    MB_DB_PASS           = module.secret_core.values["metabase-db-admin-password"].value
+    MB_DB_USER           = module.secret_core_itn.values["metabase-db-admin-login"].value
+    MB_DB_PASS           = module.secret_core_itn.values["metabase-db-admin-password"].value
     MB_DB_CONNECTION_URI = "jdbc:postgresql://${module.metabase_postgres_db.fqdn}:5432/metabase?ssl=true&sslmode=require"
 
   }

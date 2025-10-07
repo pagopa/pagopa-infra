@@ -27,6 +27,9 @@ resource "azurerm_windows_virtual_machine" "db_vdi_vm" {
   admin_username      = "adminuser"
   admin_password      = module.secret_core.values["db-vdi-admin-password"].value
 
+  vtpm_enabled = false
+  secure_boot_enabled = false
+
   network_interface_ids = [
     azurerm_network_interface.vdi_nic[0].id,
   ]
@@ -101,4 +104,6 @@ resource "azurerm_dev_test_global_vm_shutdown_schedule" "auto_shutdown" {
   notification_settings {
     enabled = false
   }
+
+  tags = module.tag_config.tags
 }

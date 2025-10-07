@@ -23,9 +23,19 @@ module "secret_core" {
   key_vault_name = local.key_vault_core_name
 
   secrets = [
+    "db-vdi-admin-password"
+  ]
+}
+
+module "secret_core_itn" {
+  source = "./.terraform/modules/__v4__/key_vault_secrets_query"
+
+  resource_group = local.key_vault_core_itn_rg_name
+  key_vault_name = local.key_vault_core_itn_name
+
+  secrets = [
     "metabase-db-admin-login",
     "metabase-db-admin-password",
-    "db-vdi-admin-password",
     # "metabase-db-login",
     # "metabase-db-password"
   ]
