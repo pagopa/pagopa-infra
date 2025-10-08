@@ -48,7 +48,6 @@
             </required-claims>
         </validate-jwt>
 
-
         <choose>
             <when condition="@((string)context.Variables["orderIdPathParam"] != (string)context.Variables["orderIdBodyParam"])">
                 <return-response>
@@ -67,74 +66,6 @@
             </when>
         </choose>
 
-
-        <!-- Transform request body for transaction-service -->
-        <set-body>
-        @{
-            JObject requestBody = (JObject)context.Variables["npgAuthNotificationRequestBody"];
-            JObject operation = (JObject)requestBody["operation"];
-
-            string operationResult = (string)operation["operationResult"];
-            string operationId = (string)operation["operationId"];
-            string operationTime = (string)operation["operationTime"];
-
-            var additionalData = operation["additionalData"];
-            string timestampOperation = null;
-            string errorCode = null;
-            string authorizationCode = null;
-            string validationServiceId = null;
-            string orderId = null;
-
-            // Parse operation time to ISO 8601 UTC
-            if(operationTime != null) {
-                DateTime npgDateTime = DateTime.Parse(operationTime.Replace(" ","T"));
-                TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
-                DateTime utcDateTime = TimeZoneInfo.ConvertTimeToUtc(npgDateTime, zone);
-                DateTimeOffset dateTimeOffset = new DateTimeOffset(utcDateTime);
-                timestampOperation = dateTimeOffset.ToString("o");
-            }
-
-            // Extract additional data
-            if(additionalData != null && additionalData.Type != JTokenType.Null){
-                JObject receivedAdditionalData = (JObject)additionalData;
-                errorCode = (string)receivedAdditionalData["authorizationStatus"];
-                authorizationCode = (string)receivedAdditionalData["authorizationCode"];
-                validationServiceId = (string)receivedAdditionalData["validationServiceId"];
-            }
-
-            // Extract orderId from operation if present
-            orderId = (string)operation["orderId"];
-
-            // Build outcomeGateway object for NPG
-            JObject outcomeGateway = new JObject();
-            outcomeGateway["paymentGatewayType"] = "NPG";
-            outcomeGateway["operationResult"] = operationResult;
-            outcomeGateway["operationId"] = operationId;
-
-            // Add optional fields only if they exist
-            if(!String.IsNullOrEmpty(authorizationCode)) {
-                outcomeGateway["authorizationCode"] = authorizationCode;
-            }
-            if(!String.IsNullOrEmpty(errorCode)) {
-                outcomeGateway["errorCode"] = errorCode;
-            }
-            if(!String.IsNullOrEmpty(orderId)) {
-                outcomeGateway["orderId"] = orderId;
-            }
-            if(!String.IsNullOrEmpty(validationServiceId)) {
-                outcomeGateway["validationServiceId"] = validationServiceId;
-            }
-
-            // Build request for transaction-service PATCH auth-request
-            JObject transactionRequest = new JObject();
-            transactionRequest["outcomeGateway"] = outcomeGateway;
-            transactionRequest["timestampOperation"] = timestampOperation;
-
-            return transactionRequest.ToString();
-        }
-        </set-body>
-
-        <!-- end payment method verify session -->
         <!-- send transactions service PATCH request -->
         <set-backend-service base-url="@((string)context.Variables["transactionServiceBackendUri"])" />
         <rewrite-uri template="@(String.Format("/v2/transactions/{0}/auth-requests", (string)context.Variables["transactionId"]))" copy-unmatched-params="false"/>
