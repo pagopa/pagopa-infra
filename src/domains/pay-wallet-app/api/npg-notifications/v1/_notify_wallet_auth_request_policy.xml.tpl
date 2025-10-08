@@ -24,8 +24,6 @@
         return jwt?.Claims.GetValueOrDefault("iss", "");
         }" />
 
-        <set-variable name="sessionToken" value="@(context.Request.Url.Query.GetValueOrDefault("sessionToken",""))" />
-
         <!-- Store useOpenId as string 'true' or 'false' -->
         <set-variable name="useOpenId" value="@(
             (context.Variables.GetValueOrDefault<string>("jwtIssuer")?.Contains("jwt-issuer-service") == true).ToString()
@@ -85,6 +83,7 @@
             @{
               JObject requestBody = (JObject)context.Variables["npgNotificationRequestBody"];
               JObject operation = (JObject)requestBody["operation"];
+              string npgSecurityToken = (string)requestBody["securityToken"];
               string operationResult = (string)operation["operationResult"];
               string orderId = (string)operation["orderId"];
               string operationId = (string)operation["operationId"];
@@ -129,7 +128,6 @@
                   DateTimeOffset dateTimeOffset = new DateTimeOffset(utcDateTime);
                   timestampOperation = dateTimeOffset.ToString("o");
               }
-              string sessionToken = (string)context.Variables.GetValueOrDefault("sessionToken", null);
               JObject outcomeGateway = new JObject();
               outcomeGateway["paymentGatewayType"] = "NPG";
               outcomeGateway["operationResult"] = operationResult;
@@ -139,7 +137,7 @@
               outcomeGateway["authorizationCode"] = authorizationCode;
               outcomeGateway["paymentEndToEndId"] = paymentEndToEndId;
               outcomeGateway["cardId4"] = cardId4;
-              outcomeGateway["sessionToken"] = sessionToken;
+              outcomeGateway["securityToken"] = npgSecurityToken;
               outcomeGateway["rrn"] = rrn;
               outcomeGateway["validationServiceId"] = validationServiceId;
               JObject response = new JObject();

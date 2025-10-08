@@ -125,7 +125,7 @@
     },
     "/transactions/{transactionId}/wallets/{walletId}/sessions/{orderId}/notifications": {
       "post": {
-        "operationId": "notifyWalletAuthRequest",
+        "operationId": "notifyContextualOnboardingWallet",
         "summary": "NPG notification webhook for wallet contextual onboard with transaction",
         "parameters": [
           {

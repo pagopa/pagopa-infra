@@ -93,7 +93,7 @@ resource "azurerm_api_management_api_operation_policy" "notify_wallet_auth_reque
   api_name            = module.apim_wallet_service_notifications_api_v1.name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  operation_id        = "notifyWalletAuthRequest"
+  operation_id        = "notifyContextualOnboardingWallet"
 
   xml_content = templatefile("./api/npg-notifications/v1/_notify_wallet_auth_request_policy.xml.tpl", {
     hostname           = local.payment_wallet_hostname
