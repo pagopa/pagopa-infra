@@ -416,10 +416,6 @@
             "enum": [
               "CARDS_CTX"
             ]
-          },
-          "redirectUrl": {
-            "type": "string",
-            "description": "redirect url in order to continue the contextual payment."
           }
         }
       },
