@@ -173,9 +173,7 @@
                   bpayEndToEndId = (string)receivedAdditionalData["bpayEndToEndId"];
                   myBankEndToEndId = (string)receivedAdditionalData["myBankEndToEndId"];
                   // right now we support only card processes
-                  if (!String.IsNullOrEmpty(cardId4)) {
-                    cardId4 = (string)receivedAdditionalData["cardId4"];
-                  }
+                  cardId4 = (string)receivedAdditionalData["cardId4"];
               }
               string paymentEndToEndId = null;
               switch(paymentCircuit){
