@@ -109,12 +109,12 @@
           },
           {
             "in": "header",
-            "name": "x-npg-security-code",
+            "name": "x-npg-security-token",
             "schema": {
               "type": "string"
             },
             "required": true,
-            "description": "NPG security code header parameter"
+            "description": "NPG security token header parameter"
           }
         ],
         "requestBody": {
