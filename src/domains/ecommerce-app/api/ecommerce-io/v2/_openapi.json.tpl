@@ -144,91 +144,6 @@
         }
       }
     },
-    "/transactions/{transactionId}/wallets": {
-      "post": {
-        "tags": [
-          "wallets"
-        ],
-        "summary": "Create wallet for payment with contextual onboard",
-        "description": "Create wallet for payment with contextual onboard",
-        "security": [
-          {
-            "pagoPAPlatformSessionToken": []
-          }
-        ],
-        "operationId": "createWalletForTransactionsForIO",
-        "parameters": [
-          {
-            "name": "transactionId",
-            "in": "path",
-            "description": "ecommerce transaction id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Create a new wallet",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/WalletTransactionCreateRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Wallet created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WalletTransactionCreateResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Formally invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized, access token missing or invalid"
-          },
-          "500": {
-            "description": "Internal server error serving request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "Gateway error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Timeout serving request"
-          }
-        }
-      }
-    },
     "/transactions": {
       "post": {
         "tags": [
@@ -2249,45 +2164,6 @@
         "description": "Wallet identifier",
         "type": "string",
         "format": "uuid"
-      },
-      "WalletTransactionCreateRequest": {
-        "type": "object",
-        "description": "Wallet for transaction with contextual onboarding creation request",
-        "properties": {
-          "useDiagnosticTracing": {
-            "type": "boolean"
-          },
-          "paymentMethodId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "amount": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          }
-        },
-        "required": [
-          "useDiagnosticTracing",
-          "paymentMethodId",
-          "amount"
-        ]
-      },
-      "WalletTransactionCreateResponse": {
-        "type": "object",
-        "description": "Wallet for transaction with contextual onboarding creation response",
-        "properties": {
-          "walletId": {
-            "$ref": "#/components/schemas/WalletId"
-          },
-          "redirectUrl": {
-            "type": "string",
-            "format": "url",
-            "description": "Redirection URL to a payment gateway page where the user can input a payment instrument information with walletId and useDiagnosticTracing as query param",
-            "example": "http://localhost/inputPage?walletId=123&useDiagnosticTracing=true&sessionToken=sessionToken"
-          }
-        },
-        "required": [
-          "walletId"
-        ]
       },
       "Wallets": {
         "type": "object",

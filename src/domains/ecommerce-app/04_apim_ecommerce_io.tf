@@ -175,17 +175,6 @@ module "apim_ecommerce_io_api_v2" {
   })
 }
 
-resource "azurerm_api_management_api_operation_policy" "io_post_wallet_transactions_v2" {
-  api_name            = "${local.project}-ecommerce-io-api-v2"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  operation_id        = "createWalletForTransactionsForIO"
-
-  xml_content = templatefile("./api/ecommerce-io/v2/_wallet_transactions.xml.tpl", {
-    wallet-basepath = local.wallet_hostname
-  })
-}
-
 resource "azurerm_api_management_api_operation_policy" "io_transaction_authorization_request_v2" {
   api_name            = "${local.project}-ecommerce-io-api-v2"
   resource_group_name = local.pagopa_apim_rg

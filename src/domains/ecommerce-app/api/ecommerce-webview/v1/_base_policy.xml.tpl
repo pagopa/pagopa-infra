@@ -31,6 +31,7 @@
     </choose>
     <set-variable name="transactionsOperationId" value="getTransactionInfo,getTransactionOutcomes" />
     <set-variable name="paymentMethodsOperationId" value="createSessionWebview" />
+    <set-variable name="walletsOperationId" value="createWalletForTransactionsForIO" />
     <!-- Extract 'iss' claim -->
     <set-variable name="jwtIssuer" value="@{
         Jwt jwt;
@@ -89,6 +90,12 @@
             <value>{{ecommerce-payment-methods-api-key-value}}</value>
         </set-header>
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service")"/>
+        </when>
+        <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("walletsOperationId","").Split(','), operations => operations == context.Operation.Id))">
+            <set-backend-service base-url="@("https://${wallet_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-wallet-service")"/>
+            <set-header name="x-api-key" exists-action="override">
+                <value>{{payment-wallet-service-rest-api-key}}</value>
+            </set-header>
         </when>
     </choose>
   </inbound>
