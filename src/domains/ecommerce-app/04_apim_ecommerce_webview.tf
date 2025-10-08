@@ -77,7 +77,7 @@ module "apim_ecommerce_webview_api_v1" {
 
   xml_content = templatefile("./api/ecommerce-webview/v1/_base_policy.xml.tpl", {
     ecommerce_ingress_hostname = local.ecommerce_hostname,
-    wallet_ingress_hostname = local.wallet_hostname,
+    wallet_ingress_hostname    = local.wallet_hostname,
     checkout_origin            = var.env_short == "d" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}"
   })
 }
