@@ -105,8 +105,16 @@
             "schema": {
               "type": "string"
             },
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "x-npg-security-code",
+            "schema": {
+              "type": "string"
+            },
             "required": true,
-            "description": "Unique identifier of the npg session"
+            "description": "NPG security code header parameter"
           }
         ],
         "requestBody": {
