@@ -47,7 +47,7 @@
     "typeProperties": {
         "variableName": "endDate",
         "value": {
-            "value": "@addDays(startOfMonth(convertFromUtc(pipeline().TriggerTime, 'W. Europe Standard Time')), -1)",
+            "value": "@formatDateTime(startOfMonth(utcNow()), 'yyyy-MM-ddTHH:mm:ssZ')",
             "type": "Expression"
         }
     }
@@ -72,7 +72,7 @@
     "typeProperties": {
         "variableName": "startDate",
         "value": {
-            "value": "@startOfMonth(variables('endDate'))",
+            "value": "@formatDateTime(startOfMonth(addToTime(utcNow(), -1, 'Month')), 'yyyy-MM-ddTHH:mm:ssZ')",
             "type": "Expression"
         }
     }
