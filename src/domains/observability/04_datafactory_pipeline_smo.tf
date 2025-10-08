@@ -670,8 +670,8 @@ resource "azurerm_data_factory_pipeline" "pipeline_SMO_QPT_TIMEOUT" {
   data_factory_id = data.azurerm_data_factory.qi_data_factory.id
 
   variables = {
-    run_id         = "",
-    start_pipeline = ""
+    run_id            = "",
+    start_pipeline    = ""
   }
 
   activities_json = "[${templatefile("datafactory/pipelines/SMO_QPT_TIMEOUT.json", {
@@ -689,10 +689,10 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_SMO_QPT_TIMEOUT" {
   name            = "Trigger_SMO_QPT_TIMEOUT"
   data_factory_id = data.azurerm_data_factory.qi_data_factory.id
 
-  interval   = 15
-  frequency  = "Minute"
-  activated  = true
-  time_zone  = "W. Europe Standard Time"
+  interval  = 15
+  frequency = "Minute"
+  activated = true
+  time_zone = "W. Europe Standard Time"
   start_time = "2025-09-30T00:00:00Z"
 
   description   = "Description of SMO_QPT_TIMEOUT"
@@ -709,8 +709,8 @@ resource "azurerm_data_factory_pipeline" "pipeline_SMO_QPT_TAXONOMY_AGGREGATE" {
   data_factory_id = data.azurerm_data_factory.qi_data_factory.id
 
   variables = {
-    run_id         = "",
-    start_pipeline = ""
+    run_id            = "",
+    start_pipeline    = ""
   }
 
   activities_json = "[${templatefile("datafactory/pipelines/SMO_QPT_TAXONOMY_AGGREGATE.json", {
@@ -728,10 +728,10 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_SMO_QPT_TAXONOMY_AGGRE
   name            = "Trigger_SMO_QPT_TAXONOMY_AGGREGATE"
   data_factory_id = data.azurerm_data_factory.qi_data_factory.id
 
-  interval   = 6
-  frequency  = "Hour"
-  activated  = true
-  time_zone  = "W. Europe Standard Time"
+  interval  = 6
+  frequency = "Hour"
+  activated = true
+  time_zone = "W. Europe Standard Time"
   start_time = "2025-09-30T00:00:00Z"
 
   description   = "Description of SMO_QPT_TAXONOMY_AGGREGATE"
@@ -748,8 +748,8 @@ resource "azurerm_data_factory_pipeline" "pipeline_SMO_QPT_RECEIPT" {
   data_factory_id = data.azurerm_data_factory.qi_data_factory.id
 
   variables = {
-    run_id         = "",
-    start_pipeline = ""
+    run_id            = "",
+    start_pipeline    = ""
   }
 
   activities_json = "[${templatefile("datafactory/pipelines/SMO_QPT_RECEIPT.json", {
@@ -767,10 +767,10 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_SMO_QPT_RECEIPT" {
   name            = "Trigger_SMO_QPT_RECEIPT"
   data_factory_id = data.azurerm_data_factory.qi_data_factory.id
 
-  interval   = 6
-  frequency  = "Hour"
-  activated  = true
-  time_zone  = "W. Europe Standard Time"
+  interval  = 6
+  frequency = "Hour"
+  activated = true
+  time_zone = "W. Europe Standard Time"
   start_time = "2025-09-30T00:00:00Z"
 
   description   = "Description of SMO_QPT_RECEIPT"
