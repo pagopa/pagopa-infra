@@ -75,11 +75,31 @@ module "apim_wallet_service_notifications_api_v1" {
     hostname = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/npg-notifications/v1/_base_policy.xml.tpl", {
+  xml_content = file("./api/npg-notifications/v1/_base_policy.xml")
+}
+
+resource "azurerm_api_management_api_operation_policy" "notify_wallet" {
+  api_name            = module.apim_wallet_service_notifications_api_v1.name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "notifyWallet"
+
+  xml_content = templatefile("./api/npg-notifications/v1/_notify_wallet_policy.xml.tpl", {
     hostname = local.payment_wallet_hostname
   })
 }
 
+resource "azurerm_api_management_api_operation_policy" "notify_wallet_auth_request" {
+  api_name            = module.apim_wallet_service_notifications_api_v1.name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "notifyWalletAuthRequest"
+
+  xml_content = templatefile("./api/npg-notifications/v1/_notify_wallet_auth_request_policy.xml.tpl", {
+    hostname           = local.payment_wallet_hostname
+    ecommerce_hostname = local.ecommerce_hostname
+  })
+}
 
 #################################################
 ## API wallet service for Webview              ##
