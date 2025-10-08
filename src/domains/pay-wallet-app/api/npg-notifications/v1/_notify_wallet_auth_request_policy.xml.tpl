@@ -47,7 +47,7 @@
                 </claim>
             </required-claims>
         </validate-jwt>
-            
+
 
         <choose>
             <when condition="@((string)context.Variables["orderIdPathParam"] != (string)context.Variables["orderIdBodyParam"])">
@@ -67,7 +67,7 @@
             </when>
         </choose>
 
-        
+
         <!-- Transform request body for transaction-service -->
         <set-body>
         @{
@@ -84,8 +84,6 @@
             string authorizationCode = null;
             string validationServiceId = null;
             string orderId = null;
-
-            // TODO: guarda ecommerce cardId4
 
             // Parse operation time to ISO 8601 UTC
             if(operationTime != null) {
