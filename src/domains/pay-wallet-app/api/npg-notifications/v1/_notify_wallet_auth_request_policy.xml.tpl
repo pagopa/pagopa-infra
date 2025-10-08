@@ -24,6 +24,8 @@
         return jwt?.Claims.GetValueOrDefault("iss", "");
         }" />
 
+        <set-variable name="sessionToken" value="@(context.Request.Url.Query.GetValueOrDefault("sessionToken",""))" />
+
         <!-- Store useOpenId as string 'true' or 'false' -->
         <set-variable name="useOpenId" value="@(
             (context.Variables.GetValueOrDefault<string>("jwtIssuer")?.Contains("jwt-issuer-service") == true).ToString()
@@ -127,6 +129,7 @@
                   DateTimeOffset dateTimeOffset = new DateTimeOffset(utcDateTime);
                   timestampOperation = dateTimeOffset.ToString("o");
               }
+              string sessionToken = (string)context.Variables.GetValueOrDefault("sessionToken", null);
               JObject outcomeGateway = new JObject();
               outcomeGateway["paymentGatewayType"] = "NPG";
               outcomeGateway["operationResult"] = operationResult;
@@ -136,6 +139,7 @@
               outcomeGateway["authorizationCode"] = authorizationCode;
               outcomeGateway["paymentEndToEndId"] = paymentEndToEndId;
               outcomeGateway["cardId4"] = cardId4;
+              outcomeGateway["sessionToken"] = sessionToken;
               outcomeGateway["rrn"] = rrn;
               outcomeGateway["validationServiceId"] = validationServiceId;
               JObject response = new JObject();
