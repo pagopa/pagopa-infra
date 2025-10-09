@@ -130,9 +130,8 @@ stages:
               else
                 echo "File changelog_v${{ parameters.dbVersion }}.properties found in folder ${{ variables.LIQUIBASE_FOLDER }}!"
                 source src/psql/${{ variables.LIQUIBASE_FOLDER }}/changelog_v${{ parameters.dbVersion }}.properties
-                echo "Version nodo_cfg: ${nodo_cfg}"
-                echo "##vso[task.setvariable variable=gpd_apd]$(gpd_apd)"
-                echo "##vso[task.setvariable variable=nodo_cfg]$(nodo_cfg)"
+                echo "##vso[task.setvariable variable=gpd_apd]${gpd_apd}"
+                echo "##vso[task.setvariable variable=nodo_cfg]${nodo_cfg}"
               fi
             displayName: "Load database specific versions"
           - template: ./templates/generic-liquibase-status-with-kv.yml
