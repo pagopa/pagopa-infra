@@ -126,10 +126,10 @@ stages:
                 echo "Version ${{ parameters.dbVersion }} not defined"
                 echo "File changelog_v${{ parameters.dbVersion }}.properties not found in folder ${{ variables.LIQUIBASE_FOLDER }}!"
                 echo "##vso[task.setvariable variable=version_present]false"
-                exit 1
               else
                 echo "File changelog_v${{ parameters.dbVersion }}.properties found in folder ${{ variables.LIQUIBASE_FOLDER }}!"
                 source src/psql/${{ variables.LIQUIBASE_FOLDER }}/changelog_v${{ parameters.dbVersion }}.properties
+                echo "##vso[task.setvariable variable=version_present]true"
                 echo "##vso[task.setvariable variable=gpd_apd]${gpd_apd}"
                 echo "##vso[task.setvariable variable=nodo_cfg]${nodo_cfg}"
               fi
@@ -147,6 +147,7 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
+            condition: and(succeeded(), eq(variables.version_present, true))
 #      - job: approval
 #        dependsOn: liquibase_status_job
 #        condition: and(eq('${{ variables.REQUIRE_VALIDATION }}', 'true'), succeeded())
