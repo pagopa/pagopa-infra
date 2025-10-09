@@ -122,17 +122,18 @@ stages:
               echo "##vso[task.setvariable variable=JAVA_HOME;]$(Pipeline.Workspace)/java/jdk-11.0.2"
             displayName: "Install Java"
           - script: |
-              if [ ! -f src/psql/${{ parameters.LIQUIBASE_FOLDER }}/changelog_v${{ parameters.LIQUIBASE_DB_VERSION }}.properties ]; then
-                echo "Version ${{ parameters.LIQUIBASE_DB_VERSION }} not defined for ${{ parameters.DATABASE_NAME }}"
-                echo "File changelog_v${{ parameters.LIQUIBASE_DB_VERSION }}.properties not found in folder ${{ parameters.LIQUIBASE_FOLDER }}!"
+              if [ ! -f src/psql/${{ variables.LIQUIBASE_FOLDER }}/changelog_v${{ parameters.LIQUIBASE_DB_VERSION }}.properties ]; then
+                echo "Version ${{ parameters.LIQUIBASE_DB_VERSION }} not defined"
+                echo "File changelog_v${{ parameters.LIQUIBASE_DB_VERSION }}.properties not found in folder ${{ variables.LIQUIBASE_FOLDER }}!"
                 echo "##vso[task.setvariable variable=version_present]false"
                 exit 1
               else
-                echo "File changelog_v${{ parameters.LIQUIBASE_DB_VERSION }}.properties found in folder ${{ parameters.LIQUIBASE_FOLDER }}!"
-                source src/psql/${{ parameters.LIQUIBASE_FOLDER }}/changelog_v${{ parameters.LIQUIBASE_DB_VERSION }}.properties
+                echo "File changelog_v${{ parameters.LIQUIBASE_DB_VERSION }}.properties found in folder ${{ variables.LIQUIBASE_FOLDER }}!"
+                source src/psql/${{ variables.LIQUIBASE_FOLDER }}/changelog_v${{ parameters.LIQUIBASE_DB_VERSION }}.properties
                 echo "##vso[task.setvariable variable=gpd_apd]$(gpd_apd)"
                 echo "##vso[task.setvariable variable=nodo_cfg]$(nodo_cfg)"
               fi
+            displayName: "Load database specific versions"
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
               DATABASE_NAME: nodo
