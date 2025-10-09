@@ -1,0 +1,215 @@
+{
+  "name": "Until_PP_Migrated",
+  "type": "Until",
+  "dependsOn": [],
+  "userProperties": [],
+  "typeProperties": {
+    "expression": {
+      "value": "@equals(variables('processed_pp'), 0)",
+      "type": "Expression"
+    },
+    "activities": [
+      {
+        "name": "Call_PP_Migration",
+        "type": "Script",
+        "dependsOn": [],
+        "policy": {
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "linkedServiceName": {
+          "referenceName": "${linked_service_gpd}",
+          "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "Query",
+              "text": {
+                "value": "SELECT * FROM apd.migrate_payment_position_func(\n NULLIF('@{pipeline().parameters.fromDate}', 'NULL')::timestamp,\n NULLIF('@{pipeline().parameters.toDate}', 'NULL')::timestamp,\n @{pipeline().parameters.batchSize}\n);",
+                "type": "Expression"
+              }
+            }
+          ],
+          "scriptBlockExecutionTimeout": "00:30:00"
+        }
+      },
+      {
+        "name": "SetProcessedPP",
+        "type": "SetVariable",
+        "dependsOn": [
+          {
+            "activity": "Call_PP_Migration",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "processed_pp",
+          "value": {
+            "value": "@int(activity('Call_PP_Migration').output.resultSets[0].rows[0].processed_pp)",
+            "type": "Expression"
+          }
+        }
+      }
+    ],
+    "timeout": "0.12:00:00"
+  }
+},
+{
+  "name": "Until_PO_Migrated",
+  "type": "Until",
+  "dependsOn": [
+    {
+      "activity": "Until_PP_Migrated",
+      "dependencyConditions": [
+        "Succeeded"
+      ]
+    }
+  ],
+  "userProperties": [],
+  "typeProperties": {
+    "expression": {
+      "value": "@equals(variables('processed_po'), 0)",
+      "type": "Expression"
+    },
+    "activities": [
+      {
+        "name": "Call_PO_Migration",
+        "type": "Script",
+        "dependsOn": [],
+        "policy": {
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "linkedServiceName": {
+          "referenceName": "${linked_service_gpd}",
+          "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "Query",
+              "text": {
+                "value": "SELECT * FROM apd.migrate_payment_option_func(\n NULLIF('@{pipeline().parameters.fromDate}', 'NULL')::timestamp,\n NULLIF('@{pipeline().parameters.toDate}', 'NULL')::timestamp,\n @{pipeline().parameters.batchSize}\n);",
+                "type": "Expression"
+              }
+            }
+          ],
+          "scriptBlockExecutionTimeout": "00:30:00"
+        }
+      },
+      {
+        "name": "SetProcessedPO",
+        "type": "SetVariable",
+        "dependsOn": [
+          {
+            "activity": "Call_PO_Migration",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "processed_po",
+          "value": {
+            "value": "@int(activity('Call_PO_Migration').output.resultSets[0].rows[0].processed_po)",
+            "type": "Expression"
+          }
+        }
+      }
+    ],
+    "timeout": "0.12:00:00"
+  }
+},
+{
+  "name": "Until_Installment_Migrated",
+  "type": "Until",
+  "dependsOn": [
+    {
+      "activity": "Until_PO_Migrated",
+      "dependencyConditions": [
+        "Succeeded"
+      ]
+    }
+  ],
+  "userProperties": [],
+  "typeProperties": {
+    "expression": {
+      "value": "@equals(variables('processed_installment'), 0)",
+      "type": "Expression"
+    },
+    "activities": [
+      {
+        "name": "Call_Installment_Migration",
+        "type": "Script",
+        "dependsOn": [],
+        "policy": {
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "linkedServiceName": {
+          "referenceName": "${linked_service_gpd}",
+          "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "Query",
+              "text": {
+                "value": "SELECT * FROM apd.migrate_payment_installment_func(\n NULLIF('@{pipeline().parameters.fromDate}', 'NULL')::timestamp,\n NULLIF('@{pipeline().parameters.toDate}', 'NULL')::timestamp,\n @{pipeline().parameters.batchSize}\n);",
+                "type": "Expression"
+              }
+            }
+          ],
+          "scriptBlockExecutionTimeout": "00:30:00"
+        }
+      },
+      {
+        "name": "SetProcessedInstallment",
+        "type": "SetVariable",
+        "dependsOn": [
+          {
+            "activity": "Call_Installment_Migration",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "processed_installment",
+          "value": {
+            "value": "@int(activity('Call_Installment_Migration').output.resultSets[0].rows[0].processed_installment)",
+            "type": "Expression"
+          }
+        }
+      }
+    ],
+    "timeout": "0.12:00:00"
+  }
+}
