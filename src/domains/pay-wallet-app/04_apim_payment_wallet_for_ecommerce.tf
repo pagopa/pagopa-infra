@@ -46,3 +46,11 @@ module "apim_payment_wallet_for_ecommerce_api_v1" {
     hostname = local.payment_wallet_hostname
   })
 }
+
+resource "azurerm_api_management_api_operation_policy" "post_wallet_notification" {
+  api_name            = module.apim_payment_wallet_for_ecommerce_api_v1.name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "notifyWallet"
+  xml_content         = file("./api/payment-wallet-for-ecommerce/v1/_post_notification.xm.tpl")
+}
