@@ -80,7 +80,7 @@
         }
       }
     },
-    "/wallets/{walletId}/sessions/{orderId}/notifications": {
+    "/wallets/{walletId}/sessions/{orderId}/notifications/internal": {
       "post": {
         "tags": [
           "wallets"
@@ -106,15 +106,6 @@
               "type": "string"
             },
             "required": true
-          },
-          {
-            "in": "header",
-            "name": "x-npg-security-token",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "NPG security token header parameter"
           }
         ],
         "requestBody": {
