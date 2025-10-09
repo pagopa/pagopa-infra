@@ -60,7 +60,7 @@ variables:
   NODO_KEY_VAULT_NAME: pagopa-${{ variables.ENV }}-nodo-kv
   NODO_CFG_USERNAME: cfg
   NODO_CFG_SCHEMA: cfg
-  NODO_CFG_KV_KEY: db-cfg-password
+  NODO_CFG_KV_KEY: db-cfg-password-dev
   NODO_OFFLINE_USERNAME: offline
   NODO_OFFLINE_SCHEMA: offline
   NODO_OFFLINE_KV_KEY: db-offline-password
