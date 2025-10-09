@@ -29,7 +29,7 @@
             </return-response>
         </when>
     </choose>
-    <set-variable name="transactionsOperationId" value="getTransactionInfo,getTransactionOutcomes" />
+    <set-variable name="transactionsOperationId" value="getTransactionInfo,getTransactionOutcomes,newTransactionForEcommerceWebview" />
     <set-variable name="paymentMethodsOperationId" value="createSessionWebview" />
     <!-- Extract 'iss' claim -->
     <set-variable name="jwtIssuer" value="@{
