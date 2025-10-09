@@ -61,9 +61,9 @@ steps:
     inputs:
       azureSubscription: ${{ parameters.AZURE_SERVICE_CONNECTION }}
       keyVaultName: ${{parameters.KV_NAME}}
-      secretsFilter: '${{parameters.PASSWORD_KV_KEY}}'
+      secretsFilter: 'db-cfg-password'#${{parameters.PASSWORD_KV_KEY}}'
   - script: |
-      echo "retrieved: '$(db-cfg-password)'"
+      echo "retrieved: $(db-cfg-password)"
       if [ ! -f src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }}/db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml ]; then
         echo "Version ${{ parameters.LIQUIBASE_DB_VERSION }} not defined for ${{ parameters.DATABASE_NAME }}"
         echo "File db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml not found in folder ${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}!"
