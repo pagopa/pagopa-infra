@@ -363,7 +363,92 @@
             }
           }
         }
+      },
+    "/transactions/{transactionId}/wallets": {
+      "post": {
+        "tags": [
+          "wallets"
+        ],
+        "summary": "Create wallet for payment with contextual onboard",
+        "description": "Create wallet for payment with contextual onboard",
+        "security": [
+          {
+            "pagoPAPlatformSessionToken": []
+          }
+        ],
+        "operationId": "createWalletForTransactionsForIO",
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "description": "ecommerce transaction id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Create a new wallet",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WalletTransactionCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Wallet created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WalletTransactionCreateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
+          "500": {
+            "description": "Internal server error serving request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Gateway error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Timeout serving request"
+          }
+        }
       }
+    }
   },
   "components": {
     "schemas": {
@@ -1053,68 +1138,112 @@
         ]
       },
       "CreateSessionResponse": {
+              "type": "object",
+              "description": "Form data needed to create a payment method input form",
+              "properties": {
+                "orderId": {
+                  "type": "string",
+                  "description": "Identifier of the payment gateway session associated to the form"
+                },
+                "correlationId": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "Identifier of the payment session associated to the transaction flow"
+                },
+                "paymentMethodData": {
+                  "$ref": "#/components/schemas/CardFormFields"
+                }
+              },
+              "required": [
+                "paymentMethodData",
+                "orderId",
+                "correlationId"
+              ]
+            },
+            "CardFormFields": {
+              "type": "object",
+              "description": "Form fields for credit cards",
+              "properties": {
+                "paymentMethod": {
+                  "type": "string"
+                },
+                "form": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Field"
+                  }
+                }
+              },
+              "required": [
+                "paymentMethod",
+                "form"
+              ]
+            },
+            "Field": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "text"
+                },
+                "class": {
+                  "type": "string",
+                  "example": "cardData"
+                },
+                "id": {
+                  "type": "string",
+                  "example": "cardholderName"
+                },
+                "src": {
+                  "type": "string",
+                  "format": "uri",
+                  "example": "https://<fe>/field.html?id=CARDHOLDER_NAME&sid=052211e8-54c8-4e0a-8402-e10bcb8ff264"
+                }
+              }
+            },
+      "WalletTransactionCreateRequest": {
         "type": "object",
-        "description": "Form data needed to create a payment method input form",
+        "description": "Wallet for transaction with contextual onboarding creation request",
         "properties": {
-          "orderId": {
-            "type": "string",
-            "description": "Identifier of the payment gateway session associated to the form"
+          "useDiagnosticTracing": {
+            "type": "boolean"
           },
-          "correlationId": {
+          "paymentMethodId": {
             "type": "string",
-            "format": "uuid",
-            "description": "Identifier of the payment session associated to the transaction flow"
+            "format": "uuid"
           },
-          "paymentMethodData": {
-            "$ref": "#/components/schemas/CardFormFields"
+          "amount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
           }
         },
         "required": [
-          "paymentMethodData",
-          "orderId",
-          "correlationId"
+          "useDiagnosticTracing",
+          "paymentMethodId",
+          "amount"
         ]
       },
-      "CardFormFields": {
+      "WalletTransactionCreateResponse": {
         "type": "object",
-        "description": "Form fields for credit cards",
+        "description": "Wallet for transaction with contextual onboarding creation response",
         "properties": {
-          "paymentMethod": {
-            "type": "string"
+          "walletId": {
+            "$ref": "#/components/schemas/WalletId"
           },
-          "form": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Field"
-            }
+          "redirectUrl": {
+            "type": "string",
+            "format": "url",
+            "description": "Redirection URL to a payment gateway page where the user can input a payment instrument information with walletId and useDiagnosticTracing as query param",
+            "example": "http://localhost/inputPage?walletId=123&useDiagnosticTracing=true&sessionToken=sessionToken"
           }
         },
         "required": [
-          "paymentMethod",
-          "form"
+          "walletId"
         ]
       },
-      "Field": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "example": "text"
-          },
-          "class": {
-            "type": "string",
-            "example": "cardData"
-          },
-          "id": {
-            "type": "string",
-            "example": "cardholderName"
-          },
-          "src": {
-            "type": "string",
-            "format": "uri",
-            "example": "https://<fe>/field.html?id=CARDHOLDER_NAME&sid=052211e8-54c8-4e0a-8402-e10bcb8ff264"
-          }
-        }
+      "WalletId": {
+        "description": "Wallet identifier",
+        "type": "string",
+        "format": "uuid"
       }
     },
     "requestBodies": {
@@ -1134,6 +1263,11 @@
         "type": "http",
         "scheme": "bearer",
         "description": "JWT session token taken from /sessions response body"
+      },
+      "pagoPAPlatformSessionToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "JWT session token taken according to pagoPA platform auth for IO app"
       }
     }
   }
