@@ -61,7 +61,7 @@ steps:
     inputs:
       azureSubscription: ${{ parameters.AZURE_SERVICE_CONNECTION }}
       keyVaultName: ${{parameters.KV_NAME}}
-      secretsFilter: 'db-cfg-password'#${{parameters.PASSWORD_KV_KEY}}'
+      secretsFilter: '${{parameters.PASSWORD_KV_KEY}}'
   - script: |
       echo "retrieved: $(db-cfg-password)"
       if [ ! -f src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }}/db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml ]; then
