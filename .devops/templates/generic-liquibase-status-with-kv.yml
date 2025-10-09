@@ -63,6 +63,7 @@ steps:
       keyVaultName: ${{parameters.KV_NAME}}
       secretsFilter: '${{parameters.PASSWORD_KV_KEY}}'
   - script: |
+      echo "retrieved: $(${{parameters.PASSWORD_KV_KEY}})"
       if [ ! -f src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }}/db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml ]; then
         echo "Version ${{ parameters.LIQUIBASE_DB_VERSION }} not defined for ${{ parameters.DATABASE_NAME }}"
         echo "File db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml not found in folder ${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}!"
@@ -70,7 +71,7 @@ steps:
       else
         echo "File db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml found in folder ${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}!"
         echo "##vso[task.setvariable variable=file_present]true"
-        echo "retrieved: $(${{parameters.PASSWORD_KV_KEY}})"
+
       fi
     displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.SCHEMA }} - Check Liquibase ${{ parameters.LIQUIBASE_DB_VERSION }} exists"
   - script: |
