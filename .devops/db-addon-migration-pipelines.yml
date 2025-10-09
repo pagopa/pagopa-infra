@@ -39,17 +39,17 @@ parameters:
 
 variables:
   ${{ if eq(parameters.env, 'dev') }}:
-    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
     poolImage: 'pagopa-dev-linux-infra'
     REQUIRE_VALIDATION: false
     ENV: 'd'
   ${{ elseif eq(parameters.env, 'uat') }}:
-    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
     poolImage: 'pagopa-uat-linux-infra'
     REQUIRE_VALIDATION: false
     ENV: 'u'
   ${{ elseif eq(parameters.env, 'prd') }}:
-    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
     poolImage: 'pagopa-prod-linux-infra'
     REQUIRE_VALIDATION: true
     ENV: 'p'
