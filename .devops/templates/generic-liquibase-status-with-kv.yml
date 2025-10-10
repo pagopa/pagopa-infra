@@ -100,27 +100,28 @@ steps:
     displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.SCHEMA }} - Set variables"
     condition: and(succeeded(), eq(variables.file_present, true))
   - task: Bash@3
-    targetType: 'inline'
     displayName: "${{ parameters.DATABASE_NAME }} - db status"
     env:
       DB_PWD: $(${{parameters.PASSWORD_KV_KEY}})
-    script: |
-      set -x
-      echo "key: ${{parameters.PASSWORD_KV_KEY}}"
-      echo "value: $(db-cfg-password)"
-      liquibase \
-        --url="${{ parameters.JDBC_URL }}" \
-        --username="${{ parameters.USERNAME }}" \
-        --password=$DB_PWD \
-        --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }} \
-        --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
-        --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
-        --defaultSchemaName="${{ parameters.SCHEMA }}" \
-        --contexts="${{ parameters.lbContexts }}" \
-        --log-level=${{ parameters.lbLogLevel }} \
-        --database-changelog-lock-table-name="$(CHANGELOG_LOCK_TABLE)"  \
-        --database-changelog-table-name="$(CHANGELOG_TABLE)" \
-        status -Dschema=${{ parameters.SCHEMA }}
+    inputs:
+      targetType: 'inline'
+      script: |
+        set -x
+        echo "key: ${{parameters.PASSWORD_KV_KEY}}"
+        echo "value: $(db-cfg-password)"
+        liquibase \
+          --url="${{ parameters.JDBC_URL }}" \
+          --username="${{ parameters.USERNAME }}" \
+          --password=$DB_PWD \
+          --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }} \
+          --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
+          --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
+          --defaultSchemaName="${{ parameters.SCHEMA }}" \
+          --contexts="${{ parameters.lbContexts }}" \
+          --log-level=${{ parameters.lbLogLevel }} \
+          --database-changelog-lock-table-name="$(CHANGELOG_LOCK_TABLE)"  \
+          --database-changelog-table-name="$(CHANGELOG_TABLE)" \
+          status -Dschema=${{ parameters.SCHEMA }}
 
 
 
