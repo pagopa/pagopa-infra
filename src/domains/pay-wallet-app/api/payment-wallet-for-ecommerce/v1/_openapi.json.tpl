@@ -86,8 +86,8 @@
           "wallets"
         ],
         "summary": "Update Wallet on NPG onboarding authorization response",
-        "description": "Update Wallet on NPG onboarding authorization response",
-        "operationId": "notifyWallet",
+        "description": "Update Wallet on NPG onboarding authorization response - internal api, means to be called in B2B interactions with internal systems",
+        "operationId": "notifyWalletInternal",
         "parameters": [
           {
             "in": "path",
