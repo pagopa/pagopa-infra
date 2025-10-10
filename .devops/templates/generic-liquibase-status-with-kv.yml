@@ -63,7 +63,7 @@ steps:
       keyVaultName: ${{parameters.KV_NAME}}
       secretsFilter: ${{parameters.PASSWORD_KV_KEY}}
   - script: |
-      echo "retrieved: $(${{parameters.PASSWORD_KV_KEY}})"
+      echo "retrieved: ${{parameters.PASSWORD_KV_KEY}}"
       if [ ! -f src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }}/db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml ]; then
         echo "Version ${{ parameters.LIQUIBASE_DB_VERSION }} not defined for ${{ parameters.DATABASE_NAME }}"
         echo "File db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml not found in folder ${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}!"
@@ -104,7 +104,7 @@ steps:
       liquibase \
       --url="${{ parameters.JDBC_URL }}" \
       --username="${{ parameters.USERNAME }}" \
-      --password=$($[parameters.PASSWORD_KV_KEY]) \
+      --password=${{{parameters.PASSWORD_KV_KEY}}} \
       --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }} \
       --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
       --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
@@ -120,7 +120,7 @@ steps:
       liquibase \
       --url="${{ parameters.JDBC_URL }}" \
       --username="${{ parameters.USERNAME }}" \
-      --password=$($[parameters.PASSWORD_KV_KEY]) \
+      --password=${{{parameters.PASSWORD_KV_KEY}}} \
       --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }} \
       --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
       --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
