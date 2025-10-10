@@ -105,11 +105,12 @@ steps:
       scriptLocation: inlineScript
       scriptType: bash
       inlineScript: |
+        echo "key: ${{parameters.PASSWORD_KV_KEY}}"
         status(){
           liquibase \
          --url="${{ parameters.JDBC_URL }}" \
          --username="${{ parameters.USERNAME }}" \
-         --password="$[variables.${{parameters.PASSWORD_KV_KEY}}]" \
+         --password="$(db-cfg-password)" \
          --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }} \
          --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
          --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
