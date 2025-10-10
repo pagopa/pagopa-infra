@@ -1,7 +1,127 @@
+# ======================================================================================================================
+# COME AGGIUNGERE UNA NUOVA VERSIONE DEL DATABASE
+# ======================================================================================================================
+# Per aggiungere una nuova versione del database (es. 1.0.1), segui questi passaggi:
+#
+# 1. Crea un nuovo file di properties:
+#    Nella cartella `src/psql/analytics-addon/`, crea un file chiamato `changelog_v<TUA_VERSIONE>.properties`.
+#    Ad esempio: `changelog_v1.0.1.properties`.
+#
+# 2. Definisci le versioni degli schemi:
+#    All'interno del nuovo file `.properties`, specifica la versione del changelog master da usare per ogni schema
+#    del database che vuoi aggiornare.
+#    Esempio di contenuto per `changelog_v1.0.1.properties` utilizzando il formato <nome_db>_<nome_schema>=<versione_changelog>:
+#    ```properties
+#    gpd_apd=1.0.1
+#    nodo_cfg=1.0.0
+#    # Aggiungi qui altre variabili per altri schemi/db se necessario
+#    ```
+#    Questo significa che per la versione `1.0.1` della pipeline, verrà usato il changelog `1.0.1` per `gpd_apd`
+#    e la versione `1.0.0` per `nodo_cfg`.
+#
+# 3. Aggiorna il parametro di default (opzionale):
+#    Puoi aggiornare il valore di default del parametro `dbVersion` in questo file per riflettere la nuova versione.
+#    ```yaml
+#    # ...
+#    - name: dbVersion
+#      displayName: Database Version
+#      type: string
+#      default: '1.0.1' # Aggiornato da '1.0.0'
+#    # ...
+#    ```
+#
+# 4. Definisci il nuovo changelog.xml per il database in oggetto:
+#     nella cartella `src/psql/analytics-addon/<db_name>/<schema_name>/db.changelog-master-<nuova_versione>.xml`.
+#
+# ======================================================================================================================
+# COME AGGIUNGERE UN NUOVO DATABASE O SCHEMA
+# ======================================================================================================================
+# Per aggiungere la gestione di un nuovo database o di un nuovo schema, segui questi passaggi:
+#
+# 1. Aggiungi le variabili di connessione:
+#    Nella sezione `variables`, aggiungi un nuovo blocco di variabili per il nuovo database/schema,
+#    seguendo l'esempio di `NODO`, `CRUSC8`, `FDR`, `GPD`.
+#    Esempio per un nuovo database `MYDB` con schema `MYSCHEMA`:
+#    ```yaml
+#    # ...
+#    MYDB_JDBC_URL: jdbc:postgresql://pagopa-${{ variables.ENV }}-weu-mydb-flexible-postgresql.postgres.database.azure.com:5432/mydb?sslmode=require&prepareThreshold=0
+#    MYDB_KV_NAME: pagopa-${{ variables.ENV }}-mydb-kv
+#    MYDB_MYSCHEMA_KV_KEY: db-myschema-password
+#    MYDB_MYSCHEMA_USERNAME: myschema_user
+#    MYDB_MYSCHEMA_SCHEMA: myschema
+#    # ...
+#    ```
+#
+# 2. Aggiorna lo script di caricamento versione:
+#    Nello script `load_db_specific_version` (job `liquibase_status_job`), aggiungi una riga per esportare la versione
+#    del nuovo schema come variabile di output. Il nome della variabile nel file `.properties` (es. `mydb_myschema`)
+#    deve corrispondere.
+#    ```bash
+#    # ...
+#    echo "##vso[task.setvariable variable=gpd_apd;isOutput=true]${gpd_apd}"
+#    echo "##vso[task.setvariable variable=nodo_cfg;isOutput=true]${nodo_cfg}"
+#    echo "##vso[task.setvariable variable=mydb_myschema;isOutput=true]${mydb_myschema}" # Aggiungi questa riga
+#    # ...
+#    ```
+#
+# 3. Aggiungi i task di Liquibase:
+#    Nelle fasi `liquibase_status` e `liquibase_apply`, aggiungi le chiamate ai template per il nuovo schema.
+#
+#    a. In `liquibase_status_job`:
+#       ```yaml
+#       # ... (dopo il template per NODO)
+#       - template: ./templates/generic-liquibase-status-with-kv.yml
+#         parameters:
+#           DATABASE_NAME: mydb
+#           SCHEMA: ${{variables.MYDB_MYSCHEMA_SCHEMA}}
+#           LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+#           LIQUIBASE_DB_VERSION: "$(mydb_myschema)" # Usa la variabile di output
+#           JDBC_URL: ${{variables.MYDB_JDBC_URL}}
+#           USERNAME: ${{variables.MYDB_MYSCHEMA_USERNAME}}
+#           KV_NAME: ${{variables.MYDB_KV_NAME}}
+#           PASSWORD_KV_KEY: ${{variables.MYDB_MYSCHEMA_KV_KEY}}
+#           AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+#           lbContexts: ${{ parameters.lbContexts }}
+#           lbLogLevel: ${{ parameters.lbLogLevel }}
+#       ```
+#
+#    b. In `liquibase_apply` job:
+#       - Prima, mappa la variabile di output dalla fase di status:
+#         ```yaml
+#         # ...
+#         variables:
+#             gpd_apd: $[ dependencies.liquibase_status_job.outputs['load_db_specific_version.gpd_apd'] ]
+#             nodo_cfg: $[ dependencies.liquibase_status_job.outputs['load_db_specific_version.nodo_cfg'] ]
+#             mydb_myschema: $[ dependencies.liquibase_status_job.outputs['load_db_specific_version.mydb_myschema'] ] # Aggiungi questa riga
+#         # ...
+#         ```
+#       - Poi, aggiungi la chiamata al template di apply:
+#         ```yaml
+#         # ... (dopo il template per NODO)
+#         - template: ./templates/generic-liquibase-apply-with-kv.yml
+#           parameters:
+#             DATABASE_NAME: mydb
+#             SCHEMA: ${{variables.MYDB_MYSCHEMA_SCHEMA}}
+#             LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+#             LIQUIBASE_DB_VERSION: $(mydb_myschema)
+#             JDBC_URL: ${{variables.MYDB_JDBC_URL}}
+#             USERNAME: ${{variables.MYDB_MYSCHEMA_USERNAME}}
+#             KV_NAME: ${{variables.MYDB_KV_NAME}}
+#             PASSWORD_KV_KEY: ${{variables.MYDB_MYSCHEMA_KV_KEY}}
+#             AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+#             lbContexts: ${{ parameters.lbContexts }}
+#             lbLogLevel: ${{ parameters.lbLogLevel }}
+#         ```
+#
+# 4. Aggiorna i file di properties:
+#    Assicurati che tutti i file `changelog_v*.properties` esistenti e futuri contengano la nuova variabile
+#    (es. `mydb_myschema=...`) con la versione del changelog appropriata.
+# ======================================================================================================================
+
+
+
 pr: none
 trigger: none
-#trigger:
-#  - develop
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -149,6 +269,7 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
+
       - job: approval
         dependsOn: liquibase_status_job
         condition: and(eq('${{ variables.REQUIRE_VALIDATION }}', 'true'), succeeded())
@@ -163,7 +284,8 @@ stages:
                 $(APPROVE_NOTIFY_ADMIN)
               instructions: "Please check liquibase status and validation for each database and resume if correct"
               onTimeout: 'reject'
-      - job: initialization
+
+      - job: liquibase_apply
         pool: $(poolImage)
         ${{ if eq(variables.REQUIRE_VALIDATION, 'true') }}:
           dependsOn: [liquibase_status_job,approval]
