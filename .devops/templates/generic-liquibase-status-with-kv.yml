@@ -119,8 +119,7 @@ steps:
          --database-changelog-lock-table-name="$(CHANGELOG_LOCK_TABLE)"  \
          --database-changelog-table-name="$(CHANGELOG_TABLE)" \
          status -Dschema=${{ parameters.SCHEMA }}
-       displayName: "${{ parameters.DATABASE_NAME }} - db status"
-       condition: and(succeeded(), eq(variables.file_present, true))
+    condition: and(succeeded(), eq(variables.file_present, true))
 #  - script: |
 #      liquibase \
 #      --url="${{ parameters.JDBC_URL }}" \
