@@ -102,6 +102,8 @@ steps:
       set -x
       echo "key: ${{parameters.PASSWORD_KV_KEY}}"
       echo "value: $(db-cfg-password)"
+      echo "value interpreted: $(${{parameters.PASSWORD_KV_KEY}})"
+      $(echo "--password=$(${{parameters.PASSWORD_KV_KEY}})")
       liquibase \
         --url="${{ parameters.JDBC_URL }}" \
         --username="${{ parameters.USERNAME }}" \
