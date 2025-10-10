@@ -401,10 +401,6 @@
           "cardId4": {
             "description": "NPG unique card identifier",
             "type": "string"
-          },
-          "securityToken": {
-            "description": "NPG security token",
-            "type": "string"
           }
         },
         "required": [
