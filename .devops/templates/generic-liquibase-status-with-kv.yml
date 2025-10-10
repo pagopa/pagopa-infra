@@ -101,18 +101,14 @@ steps:
     condition: and(succeeded(), eq(variables.file_present, true))
   - task: Bash@3
     displayName: "${{ parameters.DATABASE_NAME }} - db status"
-    env:
-      DB_PWD: $(${{parameters.PASSWORD_KV_KEY}})
     inputs:
       targetType: 'inline'
       script: |
         set -x
-        echo "key: ${{parameters.PASSWORD_KV_KEY}}"
-        echo "value: $(db-cfg-password)"
         liquibase \
           --url="${{ parameters.JDBC_URL }}" \
           --username="${{ parameters.USERNAME }}" \
-          --password=$DB_PWD \
+          --password=$(${{parameters.PASSWORD_KV_KEY}}) \
           --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }} \
           --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
           --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
