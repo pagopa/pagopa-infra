@@ -70,6 +70,7 @@ steps:
       else
         echo "File db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml found in folder ${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}!"
         echo "##vso[task.setvariable variable=file_present]true"
+        echo "##vso[task.setvariable variable=DB_PWD]$(${{parameters.PASSWORD_KV_KEY}})"
       fi
     displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.SCHEMA }} - Check Liquibase version exists"
   - script: |
@@ -102,12 +103,11 @@ steps:
       set -x
       echo "key: ${{parameters.PASSWORD_KV_KEY}}"
       echo "value: $(db-cfg-password)"
-      echo "value interpreted: $(${{parameters.PASSWORD_KV_KEY}})"
-      $(echo "--password=$(${{parameters.PASSWORD_KV_KEY}})")
+      echo "value interpreted: $(DB_PWD)"
       liquibase \
         --url="${{ parameters.JDBC_URL }}" \
         --username="${{ parameters.USERNAME }}" \
-        --password=$(${{parameters.PASSWORD_KV_KEY}}) \
+        --password=$(DB_PWD) \
         --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }} \
         --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
         --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
