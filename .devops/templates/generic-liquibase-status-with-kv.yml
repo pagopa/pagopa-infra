@@ -105,7 +105,7 @@ steps:
       liquibase \
         --url="${{ parameters.JDBC_URL }}" \
         --username="${{ parameters.USERNAME }}" \
-        --password=\$${{parameters.PASSWORD_KV_KEY}} \
+        --password=$( ${{ parameters.PASSWORD_KV_KEY }} ) \
         --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }} \
         --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
         --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
