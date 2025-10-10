@@ -108,10 +108,12 @@ steps:
     displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.SCHEMA }} - Set variables"
     condition: and(succeeded(), eq(variables.file_present, true))
   - script: |
+      SECRET_NAME="${{ parameters.PASSWORD_KV_KEY }}"
+      PASSWORD_VALUE=${!SECRET_NAME}
       liquibase \
       --url="${{ parameters.JDBC_URL }}" \
       --username="${{ parameters.USERNAME }}" \
-      --password=$(db-cfg-password) \
+      --password=${!PASSWORD_VALUE} \
       --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }} \
       --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
       --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
@@ -124,10 +126,12 @@ steps:
     displayName: "${{ parameters.DATABASE_NAME }} - db status"
     condition: and(succeeded(), eq(variables.file_present, true))
   - script: |
+      SECRET_NAME="${{ parameters.PASSWORD_KV_KEY }}"
+      PASSWORD_VALUE=${!SECRET_NAME}
       liquibase \
       --url="${{ parameters.JDBC_URL }}" \
       --username="${{ parameters.USERNAME }}" \
-      --password=$(db-cfg-password) \
+      --password=${!PASSWORD_VALUE} \
       --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }} \
       --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
       --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
