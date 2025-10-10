@@ -85,7 +85,6 @@
             @{
               JObject requestBody = (JObject)context.Variables["npgAuthNotificationRequestBody"];
               JObject operation = (JObject)requestBody["operation"];
-              string npgSecurityToken = (string)requestBody["securityToken"];
               string operationResult = (string)operation["operationResult"];
               string orderId = (string)operation["orderId"];
               string operationId = (string)operation["operationId"];
@@ -139,7 +138,6 @@
               outcomeGateway["authorizationCode"] = authorizationCode;
               outcomeGateway["paymentEndToEndId"] = paymentEndToEndId;
               outcomeGateway["cardId4"] = cardId4;
-              outcomeGateway["securityToken"] = npgSecurityToken;
               outcomeGateway["rrn"] = rrn;
               outcomeGateway["validationServiceId"] = validationServiceId;
               JObject response = new JObject();
