@@ -311,7 +311,7 @@ locals {
   ]
 }
 
-module "cosmosdb_ecommerce_watchdog_collections_collections" {
+module "cosmosdb_ecommerce_watchdog_collections" {
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v8.42.3"
 
