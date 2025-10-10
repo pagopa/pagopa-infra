@@ -106,7 +106,7 @@ steps:
       liquibase \
       --url="${{ parameters.JDBC_URL }}" \
       --username="${{ parameters.USERNAME }}" \
-      --password=${db-cfg-password} \
+      --password=$(db-cfg-password) \
       --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }} \
       --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
       --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
@@ -122,7 +122,7 @@ steps:
       liquibase \
       --url="${{ parameters.JDBC_URL }}" \
       --username="${{ parameters.USERNAME }}" \
-      --password=${db-cfg-password} \
+      --password=$(db-cfg-password) \
       --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }} \
       --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
       --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
