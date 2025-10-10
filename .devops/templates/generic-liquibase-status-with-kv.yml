@@ -56,7 +56,12 @@ parameters:
 
 
 steps:
-
+  - task: AzureKeyVault@2
+    displayName: "Get ${{parameters.KV_NAME}} secrets"
+    inputs:
+      azureSubscription: ${{ parameters.AZURE_SERVICE_CONNECTION }}
+      keyVaultName: ${{parameters.KV_NAME}}
+      secretsFilter: ${{parameters.PASSWORD_KV_KEY}}
   - script: |
       if [ ! -f src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }}/db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml ]; then
         echo "Version ${{ parameters.LIQUIBASE_DB_VERSION }} not defined for ${{ parameters.DATABASE_NAME }}"
@@ -93,34 +98,24 @@ steps:
       fi
     displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.SCHEMA }} - Set variables"
     condition: and(succeeded(), eq(variables.file_present, true))
-  - task: AzureKeyVault@2
-    displayName: "Get ${{parameters.KV_NAME}} secrets"
-    inputs:
-      azureSubscription: ${{ parameters.AZURE_SERVICE_CONNECTION }}
-      keyVaultName: ${{parameters.KV_NAME}}
-      secretsFilter: ${{parameters.PASSWORD_KV_KEY}}
-  - task: AzureCLI@2
-    displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.SCHEMA }} - db status"
-    inputs:
-      azureSubscription: ${{ parameters.AZURE_SERVICE_CONNECTION }}
-      scriptLocation: inlineScript
-      scriptType: bash
-      inlineScript: |
-         echo "key: ${{parameters.PASSWORD_KV_KEY}}"
-         echo "value: $(db-cfg-password)"
-         liquibase \
-         --url="${{ parameters.JDBC_URL }}" \
-         --username="${{ parameters.USERNAME }}" \
-         --password=$(${{parameters.PASSWORD_KV_KEY}}) \
-         --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }} \
-         --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
-         --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
-         --defaultSchemaName="${{ parameters.SCHEMA }}" \
-         --contexts="${{ parameters.lbContexts }}" \
-         --log-level=${{ parameters.lbLogLevel }} \
-         --database-changelog-lock-table-name="$(CHANGELOG_LOCK_TABLE)"  \
-         --database-changelog-table-name="$(CHANGELOG_TABLE)" \
-         status -Dschema=${{ parameters.SCHEMA }}
+  - script: |
+      set -x
+      echo "key: ${{parameters.PASSWORD_KV_KEY}}"
+      echo "value: $(db-cfg-password)"
+      liquibase \
+        --url="${{ parameters.JDBC_URL }}" \
+        --username="${{ parameters.USERNAME }}" \
+        --password=$(${{parameters.PASSWORD_KV_KEY}}) \
+        --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }} \
+        --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
+        --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
+        --defaultSchemaName="${{ parameters.SCHEMA }}" \
+        --contexts="${{ parameters.lbContexts }}" \
+        --log-level=${{ parameters.lbLogLevel }} \
+        --database-changelog-lock-table-name="$(CHANGELOG_LOCK_TABLE)"  \
+        --database-changelog-table-name="$(CHANGELOG_TABLE)" \
+        status -Dschema=${{ parameters.SCHEMA }}
+    displayName: "${{ parameters.DATABASE_NAME }} - db status"
     condition: and(succeeded(), eq(variables.file_present, true))
 #  - script: |
 #      liquibase \
