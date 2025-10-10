@@ -5,7 +5,7 @@
         <set-variable name="walletId" value="@(context.Request.MatchedParameters["walletId"])" />
         <set-variable name="npgNotificationRequestBody" value="@((JObject)context.Request.Body.As<JObject>(true))" />
         <set-variable name="orderIdBodyParam" value="@((string)((JObject)((JObject)context.Variables["npgNotificationRequestBody"])["operation"])["orderId"])" />
-        <!--  Check if Authorization header is present -->
+        <!--  Check if session token is present -->
         <choose>
             <when condition="@(!context.Request.Url.Query.ContainsKey("sessionToken"))">
                 <return-response>
