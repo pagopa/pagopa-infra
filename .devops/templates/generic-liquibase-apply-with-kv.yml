@@ -71,7 +71,7 @@ steps:
         echo "File db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml found in folder ${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}!"
         echo "##vso[task.setvariable variable=file_present]true"
       fi
-    displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.SCHEMA }} - Check Liquibase ${{ parameters.LIQUIBASE_DB_VERSION }} exists"
+    displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.SCHEMA }} - Check Liquibase version exists"
   - script: |
       if [[ "${{ parameters.LIQUIBASE_SCHEMA_NAME }}" == "-" ]]; then
         echo "Liquibase schema name is not set, using default schema: ${{ parameters.SCHEMA }}"

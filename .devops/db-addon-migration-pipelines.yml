@@ -198,7 +198,7 @@ stages:
               DATABASE_NAME: nodo
               SCHEMA: ${{variables.NODO_CFG_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
-              LIQUIBASE_DB_VERSION: "$(nodo_cfg)"
+              LIQUIBASE_DB_VERSION: $(nodo_cfg)
               JDBC_URL: ${{variables.NODO_JDBC_URL}}
               USERNAME: ${{variables.NODO_CFG_USERNAME}}
               KV_NAME: ${{variables.NODO_KEY_VAULT_NAME}}
