@@ -325,7 +325,7 @@ module "cosmosdb_ecommerce_watchdog_collections" {
   resource_group_name = azurerm_resource_group.cosmosdb_ecommerce_rg.name
 
   cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb.name
-  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.ecommerce_history.name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.ecommerce_watchdog.name
 
   indexes             = each.value.indexes
   shard_key           = each.value.shard_key
