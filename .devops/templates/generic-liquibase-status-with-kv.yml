@@ -105,8 +105,8 @@ steps:
       scriptLocation: inlineScript
       scriptType: bash
       inlineScript: |
-         echo "pw: $(${{parameters.PASSWORD_KV_KEY}})"
-         liquibase \
+        status(){
+          liquibase \
          --url="${{ parameters.JDBC_URL }}" \
          --username="${{ parameters.USERNAME }}" \
          --password=$(${{parameters.PASSWORD_KV_KEY}}) \
@@ -119,6 +119,8 @@ steps:
          --database-changelog-lock-table-name="$(CHANGELOG_LOCK_TABLE)"  \
          --database-changelog-table-name="$(CHANGELOG_TABLE)" \
          status -Dschema=${{ parameters.SCHEMA }}
+        }
+        status
     condition: and(succeeded(), eq(variables.file_present, true))
 #  - script: |
 #      liquibase \
