@@ -144,7 +144,7 @@ stages:
               JDBC_URL: $(NODO_JDBC_URL)
               USERNAME: $(NODO_CFG_USERNAME)
               KV_NAME: $(NODO_KEY_VAULT_NAME)
-              PASSWORD_KV_KEY: $(NODO_CFG_KV_KEY)
+              PASSWORD_KV_KEY: ${{variables.NODO_CFG_KV_KEY}}
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
