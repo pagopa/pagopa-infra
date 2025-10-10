@@ -64,7 +64,7 @@ steps:
       secretsFilter: ${{parameters.PASSWORD_KV_KEY}}
   - script: |
       # Accedi alla variabile d'ambiente usando 'indirect variable expansion'
-      PASSWORD_VALUE=$(printenv '${{ parameters.PASSWORD_KV_KEY }}')
+      PASSWORD_VALUE=$(${{parameters.PASSWORD_KV_KEY}})
       echo "retrieved2: ${!PASSWORD_VALUE}"
 
       if [ ! -f src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }}/db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml ]; then
@@ -105,7 +105,7 @@ steps:
     displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.SCHEMA }} - Set variables"
     condition: and(succeeded(), eq(variables.file_present, true))
   - script: |
-      PASSWORD_VALUE=$(printenv '${{ parameters.PASSWORD_KV_KEY }}')
+      PASSWORD_VALUE=$(${{parameters.PASSWORD_KV_KEY}})
       liquibase \
       --url="${{ parameters.JDBC_URL }}" \
       --username="${{ parameters.USERNAME }}" \
@@ -122,7 +122,7 @@ steps:
     displayName: "${{ parameters.DATABASE_NAME }} - db status"
     condition: and(succeeded(), eq(variables.file_present, true))
   - script: |
-      PASSWORD_VALUE=$(printenv '${{ parameters.PASSWORD_KV_KEY }}')
+      PASSWORD_VALUE=$(${{parameters.PASSWORD_KV_KEY}})
       liquibase \
       --url="${{ parameters.JDBC_URL }}" \
       --username="${{ parameters.USERNAME }}" \
