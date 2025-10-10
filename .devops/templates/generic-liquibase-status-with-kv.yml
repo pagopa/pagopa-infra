@@ -63,11 +63,8 @@ steps:
       keyVaultName: ${{parameters.KV_NAME}}
       secretsFilter: ${{parameters.PASSWORD_KV_KEY}}
   - script: |
-      echo "retrieved: ${db-cfg-password}"
-      SECRET_NAME="${{ parameters.PASSWORD_KV_KEY }}"
-
       # Accedi alla variabile d'ambiente usando 'indirect variable expansion'
-      PASSWORD_VALUE=${!SECRET_NAME}
+      PASSWORD_VALUE=$(printenv '${{ parameters.PASSWORD_KV_KEY }}')
       echo "retrieved2: ${!PASSWORD_VALUE}"
 
       if [ ! -f src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }}/db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml ]; then
