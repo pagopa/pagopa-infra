@@ -64,6 +64,12 @@ steps:
       secretsFilter: ${{parameters.PASSWORD_KV_KEY}}
   - script: |
       echo "retrieved: ${db-cfg-password}"
+      SECRET_NAME="${{ parameters.PASSWORD_KV_KEY }}"
+
+      # Accedi alla variabile d'ambiente usando 'indirect variable expansion'
+      PASSWORD_VALUE=${!SECRET_NAME}
+      echo "retrieved2: ${!PASSWORD_VALUE}"
+
       if [ ! -f src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }}/db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml ]; then
         echo "Version ${{ parameters.LIQUIBASE_DB_VERSION }} not defined for ${{ parameters.DATABASE_NAME }}"
         echo "File db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml not found in folder ${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}!"
@@ -76,7 +82,6 @@ steps:
       fi
     displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.SCHEMA }} - Check Liquibase version exists"
   - script: |
-      echo "retrieved2: $(pwd)"
       if [[ "${{ parameters.LIQUIBASE_SCHEMA_NAME }}" == "-" ]]; then
         echo "Liquibase schema name is not set, using default schema: ${{ parameters.SCHEMA }}"
         echo "##vso[task.setvariable variable=LIQUIBASE_SCHEMA_NAME]${{ parameters.SCHEMA }}"
