@@ -131,10 +131,11 @@ stages:
                 echo "File changelog_v${{ parameters.dbVersion }}.properties found in folder ${{ variables.LIQUIBASE_FOLDER }}!"
                 source src/psql/${{ variables.LIQUIBASE_FOLDER }}/changelog_v${{ parameters.dbVersion }}.properties
                 echo "##vso[task.setvariable variable=version_present]true"
-                echo "##vso[task.setvariable variable=gpd_apd]${gpd_apd}"
-                echo "##vso[task.setvariable variable=nodo_cfg]${nodo_cfg}"
+                echo "##vso[task.setvariable variable=gpd_apd;isOutput=true]${gpd_apd}"
+                echo "##vso[task.setvariable variable=nodo_cfg;isOutput=true]${nodo_cfg}"
               fi
             displayName: "Load database specific versions"
+            name: load_db_specific_version
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
               DATABASE_NAME: nodo
@@ -169,6 +170,9 @@ stages:
         ${{ else }}:
           dependsOn: [liquibase_status_job]
         condition: succeeded()
+        variables:
+            gpd_apd: $[ dependencies.liquibase_status_job.outputs['load_db_specific_version.gpd_apd'] ]
+            nodo_cfg: $[ dependencies.liquibase_status_job.outputs['load_db_specific_version.nodo_cfg'] ]
         displayName: "Update nodo DB ${{ parameters.env }}"
         steps:
           - checkout: self
