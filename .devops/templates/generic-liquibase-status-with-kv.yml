@@ -105,7 +105,7 @@ steps:
       scriptLocation: inlineScript
       scriptType: bash
       inlineScript: |
-         set -x
+         echo "pw: $(${{parameters.PASSWORD_KV_KEY}})"
          liquibase \
          --url="${{ parameters.JDBC_URL }}" \
          --username="${{ parameters.USERNAME }}" \
