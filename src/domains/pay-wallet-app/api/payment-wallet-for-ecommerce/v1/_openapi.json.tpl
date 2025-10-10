@@ -80,14 +80,14 @@
         }
       }
     },
-    "/wallets/{walletId}/sessions/{orderId}/notifications": {
+    "/wallets/{walletId}/sessions/{orderId}/notifications/internal": {
       "post": {
         "tags": [
           "wallets"
         ],
         "summary": "Update Wallet on NPG onboarding authorization response",
-        "description": "Update Wallet on NPG onboarding authorization response",
-        "operationId": "notifyWallet",
+        "description": "Update Wallet on NPG onboarding authorization response - internal api, means to be called in B2B interactions with internal systems",
+        "operationId": "notifyWalletInternal",
         "parameters": [
           {
             "in": "path",
@@ -106,15 +106,6 @@
               "type": "string"
             },
             "required": true
-          },
-          {
-            "in": "header",
-            "name": "x-npg-security-token",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "NPG security token header parameter"
           }
         ],
         "requestBody": {
