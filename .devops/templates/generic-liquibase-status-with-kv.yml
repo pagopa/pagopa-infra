@@ -102,7 +102,7 @@ steps:
   - task: Bash@3
     displayName: "${{ parameters.DATABASE_NAME }} - db status"
     env:
-      DB_PWD: $(${{parameters.PASSWORD_KV_KEY}})
+      DB_PWD: $[variables.${{parameters.PASSWORD_KV_KEY}}]
     inputs:
       targetType: 'inline'
       script: |
