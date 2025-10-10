@@ -128,5 +128,5 @@ steps:
       --database-changelog-lock-table-name="$(CHANGELOG_LOCK_TABLE)"  \
       --database-changelog-table-name="$(CHANGELOG_TABLE)" \
       tag ${{ parameters.LIQUIBASE_DB_VERSION }}
-    displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.SCHEMA }}- db tag"
+    displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.SCHEMA }} - db tag"
     condition: and(succeeded(), eq(variables.file_present, true))

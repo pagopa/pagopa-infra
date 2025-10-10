@@ -148,60 +148,61 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
-#      - job: approval
-#        dependsOn: liquibase_status_job
-#        condition: and(eq('${{ variables.REQUIRE_VALIDATION }}', 'true'), succeeded())
-#        pool: server
-#        displayName: "Approval"
-#        timeoutInMinutes: 16
-#        steps:
-#          - task: ManualValidation@0
-#            timeoutInMinutes: 15
-#            inputs:
-#              notifyUsers: |
-#                $(APPROVE_NOTIFY_ADMIN)
-#              instructions: "Please check liquibase status and validation for each database and resume if correct"
-#              onTimeout: 'reject'
-#      - job: initialization
-#        pool: $(poolImage)
-#        ${{ if eq(variables.REQUIRE_VALIDATION, 'true') }}:
-#          dependsOn: [liquibase_status_job,approval]
-#        ${{ else }}:
-#          dependsOn: [liquibase_status_job]
-#        condition: succeeded()
-#        displayName: "Update nodo DB ${{ parameters.env }}"
-#        steps:
-#          - checkout: self
-#            clean: true
-#            persistCredentials: true
-#          - script: |
-#              cd $(Pipeline.Workspace)
-#              mkdir liquibase-app
-#              wget -c https://github.com/liquibase/liquibase/releases/download/v4.17.1/liquibase-4.17.1.tar.gz
-#              tar -xzf liquibase-4.17.1.tar.gz -C liquibase-app
-#              rm -rf liquibase-4.17.1.tar.gz
-#              ls -la liquibase-app
-#              echo "##vso[task.prependpath]$(Pipeline.Workspace)/liquibase-app"
-#            displayName: "Install Liquibase"
-#          - script: |
-#              cd $(Pipeline.Workspace)
-#              mkdir java
-#              wget -c https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_linux-x64_bin.tar.gz
-#              tar -xzf openjdk-11.0.2_linux-x64_bin.tar.gz -C java
-#              rm -rf openjdk-11.0.2_linux-x64_bin.tar.gz
-#              ls -la java
-#              echo "##vso[task.prependpath]$(Pipeline.Workspace)/java/jdk-11.0.2/bin"
-#              echo "##vso[task.setvariable variable=JAVA_HOME;]$(Pipeline.Workspace)/java/jdk-11.0.2"
-#            displayName: "Install Java"
-#          - template: ./templates/generic-liquibase-apply-with-kv.yml
-#            parameters:
-#              DATABASE_NAME: nodo
-#              SCHEMA: $(NODO_CFG_SCHEMA)
-#              LIQUIBASE_FOLDER: $(LIQUIBASE_FOLDER)
-#              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
-#              JDBC_URL: $(NODO_JDBC_URL)
-#              USERNAME: $(NODO_CFG_USERNAME)
-#              PASSWORD_KV_KEY: $(NODO_CFG_KV_KEY)
-#              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
-#              lbContexts: ${{ parameters.lbContexts }}
-#              lbLogLevel: ${{ parameters.lbLogLevel }}
+      - job: approval
+        dependsOn: liquibase_status_job
+        condition: and(eq('${{ variables.REQUIRE_VALIDATION }}', 'true'), succeeded())
+        pool: server
+        displayName: "Approval"
+        timeoutInMinutes: 16
+        steps:
+          - task: ManualValidation@0
+            timeoutInMinutes: 15
+            inputs:
+              notifyUsers: |
+                $(APPROVE_NOTIFY_ADMIN)
+              instructions: "Please check liquibase status and validation for each database and resume if correct"
+              onTimeout: 'reject'
+      - job: initialization
+        pool: $(poolImage)
+        ${{ if eq(variables.REQUIRE_VALIDATION, 'true') }}:
+          dependsOn: [liquibase_status_job,approval]
+        ${{ else }}:
+          dependsOn: [liquibase_status_job]
+        condition: succeeded()
+        displayName: "Update nodo DB ${{ parameters.env }}"
+        steps:
+          - checkout: self
+            clean: true
+            persistCredentials: true
+          - script: |
+              cd $(Pipeline.Workspace)
+              mkdir liquibase-app
+              wget -c https://github.com/liquibase/liquibase/releases/download/v4.17.1/liquibase-4.17.1.tar.gz
+              tar -xzf liquibase-4.17.1.tar.gz -C liquibase-app
+              rm -rf liquibase-4.17.1.tar.gz
+              ls -la liquibase-app
+              echo "##vso[task.prependpath]$(Pipeline.Workspace)/liquibase-app"
+            displayName: "Install Liquibase"
+          - script: |
+              cd $(Pipeline.Workspace)
+              mkdir java
+              wget -c https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_linux-x64_bin.tar.gz
+              tar -xzf openjdk-11.0.2_linux-x64_bin.tar.gz -C java
+              rm -rf openjdk-11.0.2_linux-x64_bin.tar.gz
+              ls -la java
+              echo "##vso[task.prependpath]$(Pipeline.Workspace)/java/jdk-11.0.2/bin"
+              echo "##vso[task.setvariable variable=JAVA_HOME;]$(Pipeline.Workspace)/java/jdk-11.0.2"
+            displayName: "Install Java"
+          - template: ./templates/generic-liquibase-apply-with-kv.yml
+            parameters:
+              DATABASE_NAME: nodo
+              SCHEMA: ${{variables.NODO_CFG_SCHEMA}}
+              LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+              LIQUIBASE_DB_VERSION: "$(nodo_cfg)"
+              JDBC_URL: ${{variables.NODO_JDBC_URL}}
+              USERNAME: ${{variables.NODO_CFG_USERNAME}}
+              KV_NAME: ${{variables.NODO_KEY_VAULT_NAME}}
+              PASSWORD_KV_KEY: ${{variables.NODO_CFG_KV_KEY}}
+              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
