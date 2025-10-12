@@ -107,6 +107,7 @@ resource "azurerm_virtual_machine_scale_set_extension" "vmss-extension" {
   })
 }
 
+
 #
 # create load balancer (NVA) with tcp/0 ports
 #
@@ -232,4 +233,96 @@ resource "azurerm_key_vault_secret" "database_map_secret" {
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv_core.id
+}
+
+data "azurerm_cosmosdb_account" "cosmos_account" {
+  for_each = local.mongodb_trino_map
+  name                = each.key
+  resource_group_name = each.value
+}
+
+locals {
+
+  mongodb_trino_map = { for mongodb in local.mongodb_adf_trino_mapping : mongodb.fqdn => mongodb.mongodb_rg }
+
+  mongodb_fqdn_url_map = [
+
+    for mongo in data.azurerm_cosmosdb_account.cosmos_account : {
+      db_fqdn_connection       = "${mongo.name}|${mongo.primary_readonly_mongodb_connection_string}"
+    }
+  ]
+
+  base64_mongodb_script = templatefile("${path.module}/mongodb_trino_connection.sh.tpl", {
+    mongodb_map = join(",", local.mongodb_fqdn_url_map[*].db_fqdn_connection) 
+  })
+
+  ## Database Postgres Flexible mapping for ADF proxy
+  ##
+  database_adf_proxy_mapping = [
+    {
+      fqdn             = "crusc8-db.${var.env_short}.internal.postgresql.pagopa.it"
+      external_port    = 5432
+      destination_port = 5432
+    },
+    {
+      fqdn             = "gpd-db.${var.env_short}.internal.postgresql.pagopa.it"
+      external_port    = 5433
+      destination_port = 5432
+    },
+    {
+      fqdn             = "nodo-db.${var.env_short}.internal.postgresql.pagopa.it"
+      external_port    = 5434
+      destination_port = 5432
+    },
+    {
+      fqdn             = "fdr-db.${var.env_short}.internal.postgresql.pagopa.it"
+      external_port    = 5435
+      destination_port = 5432
+    }
+
+  ]
+
+  mongodb_adf_trino_mapping = [
+    {
+      fqdn             = "pagopa-${var.env_short}-itn-pay-wallet-cosmos-account"
+      mongodb_rg       = "pagopa-${var.env_short}-itn-pay-wallet-cosmosdb-rg"
+    },
+    {
+      fqdn             = "pagopa-${var.env_short}-itn-printit-cosmos-account"
+      mongodb_rg       = "pagopa-${var.env_short}-itn-printit-db-rg"
+    },
+    {
+      fqdn             = "pagopa-${var.env_short}-weu-ecommerce-cosmos-account"
+      mongodb_rg       = "pagopa-${var.env_short}-weu-ecommerce-cosmosdb-rg"
+    },
+    {
+      fqdn             = "pagopa-${var.env_short}-weu-fdr-re-cosmos-account"
+      mongodb_rg       = "pagopa-${var.env_short}-weu-fdr-db-rg"
+    }
+
+  ]
+
+  dashboard_fqdn_port_map = flatten([
+    for db in local.database_adf_proxy_mapping : {
+      db_map = "${db.fqdn};${db.external_port};${db.destination_port}"
+    }
+  ])
+
+  dashboard_fqdn_map = flatten([
+    for db in local.database_adf_proxy_mapping : {
+      db_fqdn = "${db.fqdn}"
+    }
+  ])
+
+  base64_db_script = templatefile("${path.module}/network_proxy_forward.sh.tpl", {
+    env = var.env_short
+    db_map = join(",", local.dashboard_fqdn_port_map[*].db_map) }
+  )
+
+  base64_ipfwd_script = file("${path.module}/create_ip_fwd.sh")
+  base64_trino_script = file("${path.module}/trino_installation.sh")
+
+  base64_script_merge = "${local.base64_ipfwd_script}${local.base64_db_script}${local.base64_trino_script}${local.base64_mongodb_script}"
+  base64_script       = base64encode(local.base64_script_merge)
+
 }
