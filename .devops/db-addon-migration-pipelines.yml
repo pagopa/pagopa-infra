@@ -450,7 +450,7 @@ stages:
               echo "##vso[task.setvariable variable=JAVA_HOME;]$(Pipeline.Workspace)/java/jdk-11.0.2"
             displayName: "Install Java"
           # nodo db cfg addon
-          - template: ./templates/generic-liquibase-status-with-kv.yml
+          - template: ./templates/generic-liquibase-apply-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_CFG_SCHEMA}}
