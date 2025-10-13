@@ -1,6 +1,6 @@
 parameters:
-  - name: DATABASE_NAME
-    displayName: 'Database name'
+  - name: DATABASE_FOLDER_NAME
+    displayName: 'Database folder name'
     type: string
   - name: LIQUIBASE_FOLDER
     displayName: 'Liquibase folder'
@@ -64,15 +64,15 @@ steps:
       secretsFilter: '${{parameters.PASSWORD_KV_KEY}}'
 
   - script: |
-      if [ ! -f src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }}/db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml ]; then
-        echo "Version ${{ parameters.LIQUIBASE_DB_VERSION }} not defined for ${{ parameters.DATABASE_NAME }}"
-        echo "File db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml not found in folder ${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}!"
+      if [ ! -f src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_FOLDER_NAME }}/${{ parameters.SCHEMA }}/db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml ]; then
+        echo "Version ${{ parameters.LIQUIBASE_DB_VERSION }} not defined for ${{ parameters.DATABASE_FOLDER_NAME }}"
+        echo "File db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml not found in folder ${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_FOLDER_NAME }}!"
         echo "##vso[task.setvariable variable=file_present]false"
       else
-        echo "File db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml found in folder ${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}!"
+        echo "File db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml found in folder ${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_FOLDER_NAME }}!"
         echo "##vso[task.setvariable variable=file_present]true"
       fi
-    displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.SCHEMA }} - Check Liquibase version exists"
+    displayName: "${{ parameters.DATABASE_FOLDER_NAME }} ${{ parameters.SCHEMA }} - Check Liquibase version exists"
   - script: |
       if [[ "${{ parameters.LIQUIBASE_SCHEMA_NAME }}" == "-" ]]; then
         echo "Liquibase schema name is not set, using default schema: ${{ parameters.SCHEMA }}"
@@ -97,7 +97,7 @@ steps:
         echo "Using Liquibase changelog table name: ${{ parameters.CHANGELOG_TABLE }}"
         echo "##vso[task.setvariable variable=CHANGELOG_TABLE]${{ parameters.CHANGELOG_TABLE }}"
       fi
-    displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.SCHEMA }} - Set variables"
+    displayName: "${{ parameters.DATABASE_FOLDER_NAME }} ${{ parameters.SCHEMA }} - Set variables"
     condition: and(succeeded(), eq(variables.file_present, true))
   - script: |
       set -x
@@ -105,7 +105,7 @@ steps:
         --url="${{ parameters.JDBC_URL }}" \
         --username="${{ parameters.USERNAME }}" \
         --password="$(${{parameters.PASSWORD_KV_KEY}})" \
-        --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }} \
+        --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_FOLDER_NAME }}/${{ parameters.SCHEMA }} \
         --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
         --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
         --defaultSchemaName="${{ parameters.SCHEMA }}" \
@@ -114,7 +114,7 @@ steps:
         --database-changelog-lock-table-name="$(CHANGELOG_LOCK_TABLE)"  \
         --database-changelog-table-name="$(CHANGELOG_TABLE)" \
         status -Dschema=${{ parameters.SCHEMA }}
-    displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.SCHEMA }} - db status"
+    displayName: "${{ parameters.DATABASE_FOLDER_NAME }} ${{ parameters.SCHEMA }} - db status"
     condition: and(succeeded(), eq(variables.file_present, true))
   - script: |
       set -x
@@ -122,7 +122,7 @@ steps:
       --url="${{ parameters.JDBC_URL }}" \
       --username="${{ parameters.USERNAME }}" \
       --password="$(${{parameters.PASSWORD_KV_KEY}})" \
-      --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/${{ parameters.SCHEMA }} \
+      --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_FOLDER_NAME }}/${{ parameters.SCHEMA }} \
       --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
       --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
       --defaultSchemaName="${{ parameters.SCHEMA }}" \
@@ -131,5 +131,5 @@ steps:
       --database-changelog-lock-table-name="$(CHANGELOG_LOCK_TABLE)"  \
       --database-changelog-table-name="$(CHANGELOG_TABLE)" \
       validate -Dschema=${{ parameters.SCHEMA }}
-    displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.SCHEMA }} - db validate"
+    displayName: "${{ parameters.DATABASE_FOLDER_NAME }} ${{ parameters.SCHEMA }} - db validate"
     condition: and(succeeded(), eq(variables.file_present, true))

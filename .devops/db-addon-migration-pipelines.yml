@@ -72,7 +72,7 @@
 #       # ... (dopo il template per NODO)
 #       - template: ./templates/generic-liquibase-status-with-kv.yml
 #         parameters:
-#           DATABASE_NAME: mydb
+#           DATABASE_FOLDER_NAME: mydb
 #           SCHEMA: ${{variables.MYDB_MYSCHEMA_SCHEMA}}
 #           LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
 #           LIQUIBASE_DB_VERSION: "$(mydb_myschema)" # Usa la variabile di output
@@ -100,7 +100,7 @@
 #         # ... (dopo il template per NODO)
 #         - template: ./templates/generic-liquibase-apply-with-kv.yml
 #           parameters:
-#             DATABASE_NAME: mydb
+#             DATABASE_FOLDER_NAME: mydb
 #             SCHEMA: ${{variables.MYDB_MYSCHEMA_SCHEMA}}
 #             LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
 #             LIQUIBASE_DB_VERSION: $(mydb_myschema)
@@ -285,7 +285,7 @@ stages:
           # nodo db cfg addon
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
-              DATABASE_NAME: nodo
+              DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_CFG_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(nodo_cfg)"
@@ -299,7 +299,7 @@ stages:
           # nodo db offline addon
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
-              DATABASE_NAME: nodo
+              DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_OFFLINE_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(nodo_offline)"
@@ -313,7 +313,7 @@ stages:
           # nodo db online addon
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
-              DATABASE_NAME: nodo
+              DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_ONLINE_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(nodo_online)"
@@ -327,7 +327,7 @@ stages:
           # nodo db re addon
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
-              DATABASE_NAME: nodo
+              DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_RE_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(nodo_re)"
@@ -341,7 +341,7 @@ stages:
           # crusc8 db cruscotto addon
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
-              DATABASE_NAME: cruscotto
+              DATABASE_FOLDER_NAME: cruscotto
               SCHEMA: ${{variables.CRUSC8_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(crusc8_cruscotto)"
@@ -355,7 +355,7 @@ stages:
           # fdr db fdr addon
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
-              DATABASE_NAME: fdr
+              DATABASE_FOLDER_NAME: fdr
               SCHEMA: ${{variables.FDR_FDR1_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(fdr_fdr)"
@@ -369,7 +369,7 @@ stages:
           # fdr db fdr3 addon
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
-              DATABASE_NAME: fdr
+              DATABASE_FOLDER_NAME: fdr
               SCHEMA: ${{variables.FDR_FDR3_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(fdr_fdr3)"
@@ -383,7 +383,7 @@ stages:
           # gpd db apd addon
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
-              DATABASE_NAME: gpd
+              DATABASE_FOLDER_NAME: gpd
               SCHEMA: ${{variables.GPD_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(gpd_apd)"
@@ -453,7 +453,7 @@ stages:
           # nodo db cfg addon
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
-              DATABASE_NAME: nodo
+              DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_CFG_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(nodo_cfg)"
@@ -467,7 +467,7 @@ stages:
           # nodo db offline addon
           - template: ./templates/generic-liquibase-apply-with-kv.yml
             parameters:
-              DATABASE_NAME: nodo
+              DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_OFFLINE_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(nodo_offline)"
@@ -481,7 +481,7 @@ stages:
           # nodo db online addon
           - template: ./templates/generic-liquibase-apply-with-kv.yml
             parameters:
-              DATABASE_NAME: nodo
+              DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_ONLINE_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(nodo_online)"
@@ -495,7 +495,7 @@ stages:
           # nodo db re addon
           - template: ./templates/generic-liquibase-apply-with-kv.yml
             parameters:
-              DATABASE_NAME: nodo
+              DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_RE_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(nodo_re)"
@@ -509,7 +509,7 @@ stages:
           # crusc8 db cruscotto addon
           - template: ./templates/generic-liquibase-apply-with-kv.yml
             parameters:
-              DATABASE_NAME: cruscotto
+              DATABASE_FOLDER_NAME: cruscotto
               SCHEMA: ${{variables.CRUSC8_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(crusc8_cruscotto)"
@@ -523,7 +523,7 @@ stages:
           # fdr db fdr addon
           - template: ./templates/generic-liquibase-apply-with-kv.yml
             parameters:
-              DATABASE_NAME: fdr
+              DATABASE_FOLDER_NAME: fdr
               SCHEMA: ${{variables.FDR_FDR1_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(fdr_fdr)"
@@ -537,7 +537,7 @@ stages:
           # fdr db fdr3 addon
           - template: ./templates/generic-liquibase-apply-with-kv.yml
             parameters:
-              DATABASE_NAME: fdr
+              DATABASE_FOLDER_NAME: fdr
               SCHEMA: ${{variables.FDR_FDR3_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(fdr_fdr3)"
@@ -551,7 +551,7 @@ stages:
           # gpd db apd addon
           - template: ./templates/generic-liquibase-apply-with-kv.yml
             parameters:
-              DATABASE_NAME: gpd
+              DATABASE_FOLDER_NAME: gpd
               SCHEMA: ${{variables.GPD_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(gpd_apd)"
