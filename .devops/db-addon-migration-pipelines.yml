@@ -201,8 +201,9 @@ variables:
   CRUSC8_USERNAME: cruscotto
   CRUSC8_SCHEMA: cruscotto
 
-  FDR_JDBC_URL: jdbc:postgresql://pagopa-${{ variables.ENV }}-weu-fdr-flexible-postgresql.postgres.database.azure.com:5432/fdr?sslmode=require&prepareThreshold=0
   FDR_KV_NAME: pagopa-${{ variables.ENV }}-fdr-kv
+  FDR_FDR1_JDBC_URL: jdbc:postgresql://pagopa-${{ variables.ENV }}-weu-fdr-flexible-postgresql.postgres.database.azure.com:5432/fdr?sslmode=require&prepareThreshold=0
+  FDR_FDR3_JDBC_URL: jdbc:postgresql://pagopa-${{ variables.ENV }}-weu-fdr-flexible-postgresql.postgres.database.azure.com:5432/fdr3?sslmode=require&prepareThreshold=0
   FDR_FDR1_KV_KEY: db-fdr-password
   FDR_FDR1_USERNAME: fdr
   FDR_FDR1_SCHEMA: fdr
@@ -358,7 +359,7 @@ stages:
               SCHEMA: ${{variables.FDR_FDR1_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(fdr_fdr)"
-              JDBC_URL: ${{variables.FDR_JDBC_URL}}
+              JDBC_URL: ${{variables.FDR_FDR1_JDBC_URL}}
               USERNAME: ${{variables.FDR_FDR1_USERNAME}}
               KV_NAME: ${{variables.FDR_KV_NAME}}
               PASSWORD_KV_KEY: ${{variables.FDR_FDR1_KV_KEY}}
@@ -368,11 +369,11 @@ stages:
           # fdr db fdr3 addon
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
-              DATABASE_NAME: fdr3
+              DATABASE_NAME: fdr
               SCHEMA: ${{variables.FDR_FDR3_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(fdr_fdr3)"
-              JDBC_URL: ${{variables.FDR_JDBC_URL}}
+              JDBC_URL: ${{variables.FDR_FDR3_JDBC_URL}}
               USERNAME: ${{variables.FDR_FDR3_USERNAME}}
               KV_NAME: ${{variables.FDR_KV_NAME}}
               PASSWORD_KV_KEY: ${{variables.FDR_FDR3_KV_KEY}}
@@ -526,7 +527,7 @@ stages:
               SCHEMA: ${{variables.FDR_FDR1_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(fdr_fdr)"
-              JDBC_URL: ${{variables.FDR_JDBC_URL}}
+              JDBC_URL: ${{variables.FDR_FDR1_JDBC_URL}}
               USERNAME: ${{variables.FDR_FDR1_USERNAME}}
               KV_NAME: ${{variables.FDR_KV_NAME}}
               PASSWORD_KV_KEY: ${{variables.FDR_FDR1_KV_KEY}}
@@ -536,11 +537,11 @@ stages:
           # fdr db fdr3 addon
           - template: ./templates/generic-liquibase-apply-with-kv.yml
             parameters:
-              DATABASE_NAME: fdr3
+              DATABASE_NAME: fdr
               SCHEMA: ${{variables.FDR_FDR3_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(fdr_fdr3)"
-              JDBC_URL: ${{variables.FDR_JDBC_URL}}
+              JDBC_URL: ${{variables.FDR_FDR3_JDBC_URL}}
               USERNAME: ${{variables.FDR_FDR3_USERNAME}}
               KV_NAME: ${{variables.FDR_KV_NAME}}
               PASSWORD_KV_KEY: ${{variables.FDR_FDR3_KV_KEY}}
