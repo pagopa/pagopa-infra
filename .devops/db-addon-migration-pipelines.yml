@@ -260,7 +260,6 @@ stages:
                 echo "##vso[task.setvariable variable=nodo_online;isOutput=true]${nodo_online}"
                 echo "##vso[task.setvariable variable=nodo_re;isOutput=true]${nodo_re}"
                 echo "##vso[task.setvariable variable=crusc8_cruscotto;isOutput=true]${crusc8_cruscotto}"
-                echo "##vso[task.setvariable variable=crusc8_cruscotto;isOutput=true]${crusc8_cruscotto}"
                 echo "##vso[task.setvariable variable=fdr_fdr;isOutput=true]${fdr_fdr}"
                 echo "##vso[task.setvariable variable=fdr_fdr3;isOutput=true]${fdr_fdr3}"
               fi
@@ -331,7 +330,7 @@ stages:
               LIQUIBASE_DB_VERSION: "$(crusc8_cruscotto)"
               JDBC_URL: ${{variables.CRUSC8_JDBC_URL}}
               USERNAME: ${{variables.CRUSC8_USERNAME}}
-              KV_NAME: ${{variables.CRUSC8_KEY_VAULT_NAME}}
+              KV_NAME: ${{variables.CRUSC8_KV_NAME}}
               PASSWORD_KV_KEY: ${{variables.CRUSC8_KV_KEY}}
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
@@ -485,7 +484,7 @@ stages:
               LIQUIBASE_DB_VERSION: "$(crusc8_cruscotto)"
               JDBC_URL: ${{variables.CRUSC8_JDBC_URL}}
               USERNAME: ${{variables.CRUSC8_USERNAME}}
-              KV_NAME: ${{variables.CRUSC8_KEY_VAULT_NAME}}
+              KV_NAME: ${{variables.CRUSC8_KV_NAME}}
               PASSWORD_KV_KEY: ${{variables.CRUSC8_KV_KEY}}
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
