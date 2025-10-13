@@ -344,7 +344,7 @@ stages:
               LIQUIBASE_DB_VERSION: "$(fdr_fdr)"
               JDBC_URL: ${{variables.FDR_JDBC_URL}}
               USERNAME: ${{variables.FDR_FDR1_USERNAME}}
-              KV_NAME: ${{variables.FDR_KEY_VAULT_NAME}}
+              KV_NAME: ${{variables.FDR_KV_NAME}}
               PASSWORD_KV_KEY: ${{variables.FDR_FDR1_KV_KEY}}
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
@@ -358,7 +358,7 @@ stages:
               LIQUIBASE_DB_VERSION: "$(fdr_fdr3)"
               JDBC_URL: ${{variables.FDR_JDBC_URL}}
               USERNAME: ${{variables.FDR_FDR3_USERNAME}}
-              KV_NAME: ${{variables.FDR_KEY_VAULT_NAME}}
+              KV_NAME: ${{variables.FDR_KV_NAME}}
               PASSWORD_KV_KEY: ${{variables.FDR_FDR3_KV_KEY}}
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
@@ -498,7 +498,7 @@ stages:
               LIQUIBASE_DB_VERSION: "$(fdr_fdr)"
               JDBC_URL: ${{variables.FDR_JDBC_URL}}
               USERNAME: ${{variables.FDR_FDR1_USERNAME}}
-              KV_NAME: ${{variables.FDR_KEY_VAULT_NAME}}
+              KV_NAME: ${{variables.FDR_KV_NAME}}
               PASSWORD_KV_KEY: ${{variables.FDR_FDR1_KV_KEY}}
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
@@ -512,7 +512,7 @@ stages:
               LIQUIBASE_DB_VERSION: "$(fdr_fdr3)"
               JDBC_URL: ${{variables.FDR_JDBC_URL}}
               USERNAME: ${{variables.FDR_FDR3_USERNAME}}
-              KV_NAME: ${{variables.FDR_KEY_VAULT_NAME}}
+              KV_NAME: ${{variables.FDR_KV_NAME}}
               PASSWORD_KV_KEY: ${{variables.FDR_FDR3_KV_KEY}}
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
