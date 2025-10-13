@@ -379,6 +379,20 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
+          # gpd db apd addon
+          - template: ./templates/generic-liquibase-status-with-kv.yml
+            parameters:
+              DATABASE_NAME: apd
+              SCHEMA: ${{variables.GPD_SCHEMA}}
+              LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+              LIQUIBASE_DB_VERSION: "$(gpd_apd)"
+              JDBC_URL: ${{variables.GPD_JDBC_URL}}
+              USERNAME: ${{variables.GPD_USERNAME}}
+              KV_NAME: ${{variables.GPD_KV_NAME}}
+              PASSWORD_KV_KEY: ${{variables.GPD_KV_KEY}}
+              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
 
       - job: approval
         dependsOn: liquibase_status_job
@@ -530,6 +544,20 @@ stages:
               USERNAME: ${{variables.FDR_FDR3_USERNAME}}
               KV_NAME: ${{variables.FDR_KV_NAME}}
               PASSWORD_KV_KEY: ${{variables.FDR_FDR3_KV_KEY}}
+              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          # gpd db apd addon
+          - template: ./templates/generic-liquibase-apply-with-kv.yml
+            parameters:
+              DATABASE_NAME: apd
+              SCHEMA: ${{variables.GPD_SCHEMA}}
+              LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+              LIQUIBASE_DB_VERSION: "$(gpd_apd)"
+              JDBC_URL: ${{variables.GPD_JDBC_URL}}
+              USERNAME: ${{variables.GPD_USERNAME}}
+              KV_NAME: ${{variables.GPD_KV_NAME}}
+              PASSWORD_KV_KEY: ${{variables.GPD_KV_KEY}}
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
