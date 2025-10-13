@@ -100,6 +100,7 @@ steps:
     displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.SCHEMA }} - Set variables"
     condition: and(succeeded(), eq(variables.file_present, true))
   - script: |
+      set -x
       liquibase \
         --url="${{ parameters.JDBC_URL }}" \
         --username="${{ parameters.USERNAME }}" \
@@ -116,6 +117,7 @@ steps:
     displayName: "${{ parameters.DATABASE_NAME }} - db status"
     condition: and(succeeded(), eq(variables.file_present, true))
   - script: |
+      set -x
       liquibase \
       --url="${{ parameters.JDBC_URL }}" \
       --username="${{ parameters.USERNAME }}" \
