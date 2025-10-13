@@ -4,7 +4,7 @@
       <!-- pagoPA platform get payment methods redirect url : START -->
       <!-- Get Method Info : START -->
       <set-variable name="paymentMethodId" value="@(context.Request.MatchedParameters["id"])" />
-      <set-variable name="rptId" value="@(context.Request.Url.Query.GetValueOrDefault("rptId", ""))" />
+      <set-variable name="rptId" value="@(context.Request.Url.Query.GetValueOrDefault("rpt_id", ""))" />
       <set-variable name="amount" value="@(context.Request.Url.Query.GetValueOrDefault("amount", ""))" />
       <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
           <set-url>@($"https://${ecommerce_ingress_hostname}/pagopa-ecommerce-payment-methods-service/payment-methods/{(string)context.Variables["paymentMethodId"]}")</set-url>
