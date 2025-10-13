@@ -1,16 +1,16 @@
 env_short      = "p"
 env            = "prod"
-location       = "italynorth"
-location_short = "itn"
+location       = "westeurope"
+location_short = "weu"
 
 
 nsg_regions = ["westeurope", "italynorth"]
 
 
 enabled_features = {
-  nsg_metabase             = true
-  data_factory_proxy       = false
+  nsg_metabase             = false
+  data_factory_proxy       = true
   vpn_database_access      = false
-  nsg                      = true
+  nsg                      = false
   all_vnet_database_access = true
 }
