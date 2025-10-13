@@ -382,7 +382,7 @@ stages:
           # gpd db apd addon
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
-              DATABASE_NAME: apd
+              DATABASE_NAME: gpd
               SCHEMA: ${{variables.GPD_SCHEMA}}
               LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
               LIQUIBASE_DB_VERSION: "$(gpd_apd)"
