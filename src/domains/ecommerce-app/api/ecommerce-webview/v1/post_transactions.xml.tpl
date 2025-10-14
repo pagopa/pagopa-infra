@@ -15,11 +15,15 @@
           return context.Request.Body.As<JObject>(preserveContent:true);
           }" />
 
-        <set-variable name="rptId_request" value="@{
+        
+        
+        <set-variable name="rptId" value="@{
           var b = (JObject)context.Variables["reqBody"];
           return (string)b?["rptId"] ?? "";
           }" />
-        <set-variable name="amount_request" value="@{
+        
+        
+        <set-variable name="amount" value="@{
           var b = (JObject)context.Variables["reqBody"];
           long a = 0;
           var t = b?["amount"];

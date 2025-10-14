@@ -72,7 +72,7 @@
                     new JProperty("privateClaims", new JObject(
                         new JProperty("userId", userId),
                         new JProperty("email", email),
-                        new JProperty("rptId", rptId),
+                        new JProperty("rptId", rptId), 
                         new JProperty("amount", amount)
                     ))
                 ).ToString();
