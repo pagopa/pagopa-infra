@@ -1,6 +1,60 @@
 <policies>
     <inbound>
       <base />
+
+      <!-- allor in questo modo leggo la request body e salvo il contesto -->
+      <set-variable name="reqBody" value="@{
+        return context.Request.Body.As<JObject>(preserveContent:true);
+      }" />
+
+      <!-- in questo modo estraggo dal contesto rptId e amount dalla richiesta -->
+      <set-variable name="rptId" value="@{
+        var body = (JObject)context.Variables["reqBody"];
+        return (string)body?["rptId"] ?? "";
+      }" />
+      <set-variable name="amount" value="@{
+        var body = (JObject)context.Variables["reqBody"];
+        long a = 0;
+        var token = body?["amount"];
+        if (token != null) long.TryParse(token.ToString(), out a);
+        return a;
+      }" />
+
+        <!-- sono abbastanza sicuro di questo ma ho bisogno di conferem -->
+      <send-request mode="new" response-variable-name="issuerResponse" timeout="10" ignore-error="false">
+        <set-url>@("https://${ecommerce_ingress_hostname}/pagopa-jwt-issuer-service/tokens")</set-url>
+        <set-method>POST</set-method>
+        <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+        </set-header>
+        <set-body>@{
+
+            var rptId = ((string)context.Variables.GetValueOrDefault("rptId",""));
+            var amount = ((long)context.Variables.GetValueOrDefault("amount",""));
+
+            return new JObject(
+                new JProperty("audience","ecommerce")
+                new JProperty("duration","900")
+                new JProperty("privateClaims", new JObject(
+                    new JProperty("rptId", rptId),
+                    new JProperty("amount", amount),
+                ))
+            ).ToString()
+        }</set-body>
+      </send-request>
+
+        <!-- sono abbastanza insicuro di questo e di quyello sotto-->
+      <set-variable name="sessionToken" value="@{
+        var resp = (IResponse)context.Variables["issuerResponse"];
+        var json = resp.Body.As<JObject>();
+        return (string)json?["token"] ?? "";
+        }" />
+
+      <set-header name="X-Session-Token" exists-action="override">
+        <value>@((string)context.Variables["sessionToken"])</value>
+      </set-header>
+
+
       <!-- pagoPA platform get payment methods redirect url : START -->
       <!-- Get Method Info : START -->
       <set-variable name="paymentMethodId" value="@(context.Request.MatchedParameters["id"])" />
