@@ -73,7 +73,7 @@
         }
       }
     },
-    "/transactions/wallets/{walletId}/outcomes": {
+    "/transactions/{transactionId}/wallets/{walletId}/outcomes": {
       "get": {
         "tags": [
           "wallets"
@@ -87,7 +87,17 @@
               "type": "string",
               "format": "uuid"
             },
-            "required": true
+            "required": true,
+            "description": "created payment wallet unique id"
+          },
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "activated eCommerce transaction associated to the created wallet id"
           },
           {
             "in": "query",
@@ -99,14 +109,8 @@
                 "1"
               ]
             },
+            "required": true,
             "description": "`0` - Success `1` - Generic error\n"
-          },
-          {
-            "in": "query",
-            "name": "saveMethod",
-            "schema": {
-              "type": "boolean"
-            }
           }
         ],
         "summary": "Redirection URL for onboarding with transaction  outcome",
