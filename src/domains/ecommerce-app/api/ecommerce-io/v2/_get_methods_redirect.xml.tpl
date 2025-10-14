@@ -73,7 +73,7 @@
                         new JProperty("userId", userId),
                         new JProperty("email", email),
                         new JProperty("rptId", rptId),
-                        new JProperty("amount", amount),
+                        new JProperty("amount", amount)
                     ))
                 ).ToString();
           }</set-body>
