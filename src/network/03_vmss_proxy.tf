@@ -229,7 +229,7 @@ resource "azurerm_private_link_service" "vmss_pls" {
 
 resource "azurerm_key_vault_secret" "database_map_secret" {
   name         = "${local.project}-database-map"
-  value        = join(",", local.dashboard_fqdn_map[*].db_fqdn)
+  value        = join(",", local.postgres_fqdn_map[*].db_fqdn)
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv_core.id
@@ -243,21 +243,35 @@ data "azurerm_cosmosdb_account" "cosmos_account" {
 
 locals {
 
-  mongodb_trino_map = { for mongodb in local.mongodb_adf_trino_mapping : mongodb.fqdn => mongodb.mongodb_rg }
-
-  mongodb_fqdn_url_map = [
-
-    for mongo in data.azurerm_cosmosdb_account.cosmos_account : {
-      db_fqdn_connection       = "${mongo.name}|${mongo.primary_readonly_mongodb_connection_string}"
+## Only MongoDb version 4.2 or higher is supported in Trino
+  mongodb_adf_trino_mapping = [
+    {
+      fqdn             = "pagopa-${var.env_short}-itn-pay-wallet-cosmos-account"
+      mongodb_rg       = "pagopa-${var.env_short}-itn-pay-wallet-cosmosdb-rg"
+    },
+    {
+      fqdn             = "pagopa-${var.env_short}-weu-ecommerce-cosmos-account"
+      mongodb_rg       = "pagopa-${var.env_short}-weu-ecommerce-cosmosdb-rg"
     }
   ]
 
-  base64_mongodb_script = templatefile("${path.module}/mongodb_trino_connection.sh.tpl", {
+## Mongodb FQDN to Resource Group mapping for Trino connection with fqdn key and resource group value
+  mongodb_trino_map = { for mongodb in local.mongodb_adf_trino_mapping : mongodb.fqdn => mongodb.mongodb_rg }
+
+## Mongodb FQDN to Connection String mapping for Trino connection
+  mongodb_fqdn_url_map = [
+    for mongo in data.azurerm_cosmosdb_account.cosmos_account : {
+      db_fqdn_connection       = "${mongo.name}|${mongo.secondary_mongodb_connection_string}"
+    }
+  ]
+
+## Generate script for mongodb trino connection
+  mongodb_script = templatefile("${path.module}/mongodb_trino_connection.sh.tpl", {
     mongodb_map = join(",", local.mongodb_fqdn_url_map[*].db_fqdn_connection) 
   })
 
-  ## Database Postgres Flexible mapping for ADF proxy
-  ##
+## Database Postgres Flexible mapping for ADF proxy
+## Each DB has a different external port to be mapped to the same destination port 5432
   database_adf_proxy_mapping = [
     {
       fqdn             = "crusc8-db.${var.env_short}.internal.postgresql.pagopa.it"
@@ -282,47 +296,34 @@ locals {
 
   ]
 
-  mongodb_adf_trino_mapping = [
-    {
-      fqdn             = "pagopa-${var.env_short}-itn-pay-wallet-cosmos-account"
-      mongodb_rg       = "pagopa-${var.env_short}-itn-pay-wallet-cosmosdb-rg"
-    },
-    {
-      fqdn             = "pagopa-${var.env_short}-itn-printit-cosmos-account"
-      mongodb_rg       = "pagopa-${var.env_short}-itn-printit-db-rg"
-    },
-    {
-      fqdn             = "pagopa-${var.env_short}-weu-ecommerce-cosmos-account"
-      mongodb_rg       = "pagopa-${var.env_short}-weu-ecommerce-cosmosdb-rg"
-    },
-    {
-      fqdn             = "pagopa-${var.env_short}-weu-fdr-re-cosmos-account"
-      mongodb_rg       = "pagopa-${var.env_short}-weu-fdr-db-rg"
-    }
-
-  ]
-
-  dashboard_fqdn_port_map = flatten([
+## Postgres FQDN to Port mapping for ADF proxy
+  postgres_fqdn_port_map = flatten([
     for db in local.database_adf_proxy_mapping : {
       db_map = "${db.fqdn};${db.external_port};${db.destination_port}"
     }
   ])
 
-  dashboard_fqdn_map = flatten([
+## Postgres FQDN list for Key Vault secret
+  postgres_fqdn_map = flatten([
     for db in local.database_adf_proxy_mapping : {
       db_fqdn = "${db.fqdn}"
     }
   ])
 
-  base64_db_script = templatefile("${path.module}/network_proxy_forward.sh.tpl", {
+## Generate script for port forwarding
+  postgres_forward_port_script = templatefile("${path.module}/network_proxy_forward.sh.tpl", {
     env = var.env_short
-    db_map = join(",", local.dashboard_fqdn_port_map[*].db_map) }
+    db_map = join(",", local.postgres_fqdn_port_map[*].db_map) }
   )
 
-  base64_ipfwd_script = file("${path.module}/create_ip_fwd.sh")
-  base64_trino_script = file("${path.module}/trino_installation.sh")
+## Script to enable IP Forwarding on VMSS
+  ipfwd_script = file("${path.module}/create_ip_fwd.sh")
+## Script to install and configure Trino
+  trino_script = file("${path.module}/trino_installation.sh")
 
-  base64_script_merge = "${local.base64_ipfwd_script}${local.base64_db_script}${local.base64_trino_script}${local.base64_mongodb_script}"
-  base64_script       = base64encode(local.base64_script_merge)
+## Merge all scripts
+  script_merge = "${local.ipfwd_script}${local.postgres_forward_port_script}${local.trino_script}${local.mongodb_script}"
+## Base64 encode the merged script
+  base64_script       = base64encode(local.script_merge)
 
 }
