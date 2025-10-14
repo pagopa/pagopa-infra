@@ -40,6 +40,19 @@
             return "";
             }" />
 
+        <choose>
+            <when condition="@(
+                (string)context.Variables["rptIdPostTransactions"] != (string)context.Variables["rptIdFromClaim"]
+                || (string)context.Variables["amountPostTransactions"] != (string)context.Variables["amountFromClaim"]
+            )">
+                <return-response>
+                    <set-status code="401" reason="Unauthorized" />
+                </return-response>
+            </when>
+        </choose>
+
+
+
 
         <set-body>@{
           JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true);
