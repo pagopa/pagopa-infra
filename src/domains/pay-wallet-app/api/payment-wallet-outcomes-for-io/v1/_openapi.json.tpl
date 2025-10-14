@@ -73,7 +73,7 @@
         }
       }
     },
-    "/transactions/wallets/{walletId}/outcomes": {
+    "/transactions/{transactionId}/wallets/{walletId}/outcomes": {
       "get": {
         "tags": [
           "wallets"
@@ -87,6 +87,16 @@
               "type": "string",
               "format": "uuid"
             },
+            "description": "id of the created wallet",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "id of the activated transaction eCommerce side",
             "required": true
           },
           {
@@ -99,17 +109,29 @@
                 "1"
               ]
             },
+            "required": true,
             "description": "`0` - Success `1` - Generic error\n"
           },
           {
             "in": "query",
-            "name": "saveMethod",
+            "name": "faultCodeCategory",
             "schema": {
-              "type": "boolean"
-            }
+              "type": "string"
+            },
+            "description": "Fault code categorization for the PagoPA ActivatePaymentNotice operation. \nex: PAYMENT_EXPIRED\nThis field have the same semantic of the same field returned by eCommerce transactions-service in POST /transactions error responses and is valued only in case of errors in payment notice activation processing\n",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "faultCodeDetail",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Details for the fault code obtained in ActivatePaymentNotice operation. \nex: PPT_STAZIONE_INT_PA_TIMEOUT\nThis field have the same semantic of the same field returned by eCommerce transactions-service in POST /transactions error responses and is valued only in case of errors in payment notice activation processing\n",
+            "required": false
           }
         ],
-        "summary": "Redirection URL for onboarding with transaction  outcome",
+        "summary": "Redirection URL for onboarding with transaction outcome",
         "description": "Return onboarding outcome related to eCommerce transaction result as `outcome` query parameter",
         "responses": {
           "302": {
