@@ -103,7 +103,7 @@ module "wallet_fe_cdn" {
   delivery_rule = [
     {
       name  = "CorsFontForNPG"
-      order = 5
+      order = 3
 
       // conditions
       url_path_conditions       = []
