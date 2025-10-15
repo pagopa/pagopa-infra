@@ -21,6 +21,7 @@
 | <a name="module_apim_io_payment_wallet_api_v1"></a> [apim\_io\_payment\_wallet\_api\_v1](#module\_apim\_io\_payment\_wallet\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_io_payment_wallet_product"></a> [apim\_io\_payment\_wallet\_product](#module\_apim\_io\_payment\_wallet\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_pay_wallet_healthcheck_api_v1"></a> [apim\_pay\_wallet\_healthcheck\_api\_v1](#module\_apim\_pay\_wallet\_healthcheck\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_payment_wallet_for_checkout_api_v1"></a> [apim\_payment\_wallet\_for\_checkout\_api\_v1](#module\_apim\_payment\_wallet\_for\_checkout\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_payment_wallet_for_ecommerce_api_v1"></a> [apim\_payment\_wallet\_for\_ecommerce\_api\_v1](#module\_apim\_payment\_wallet\_for\_ecommerce\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_payment_wallet_migrations_api_v1"></a> [apim\_payment\_wallet\_migrations\_api\_v1](#module\_apim\_payment\_wallet\_migrations\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_payment_wallet_migrations_for_cstar_api_v1"></a> [apim\_payment\_wallet\_migrations\_for\_cstar\_api\_v1](#module\_apim\_payment\_wallet\_migrations\_for\_cstar\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
@@ -47,6 +48,7 @@
 | [azurerm_api_management_api_version_set.io_payment_wallet_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.npg_notifications_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.pay_wallet_healthcheck_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.payment_wallet_for_checkout_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.payment_wallet_for_ecommerce_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.payment_wallet_migrations_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.payment_wallet_migrations_for_cstar_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
@@ -94,6 +96,7 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_apim_dns_zone_prefix"></a> [apim\_dns\_zone\_prefix](#input\_apim\_dns\_zone\_prefix) | The dns subdomain for apim. | `string` | `null` | no |
+| <a name="input_dns_zone_checkout"></a> [dns\_zone\_checkout](#input\_dns\_zone\_checkout) | the checkout dns zone | `string` | `null` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The wallet dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |

@@ -138,6 +138,12 @@ variable "dns_zone_prefix" {
   description = "The wallet dns subdomain."
 }
 
+variable "dns_zone_checkout" {
+  type        = string
+  default     = null
+  description = "the checkout dns zone"
+}
+
 variable "payment_wallet_migrations_enabled" {
   type        = bool
   default     = false
