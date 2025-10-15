@@ -73,32 +73,13 @@
         }
       }
     },
-    "/transactions/{transactionId}/wallets/{walletId}/outcomes": {
+    "/transactions/wallets/contextual-onboard/outcomes": {
       "get": {
         "tags": [
           "wallets"
         ],
-        "operationId": "getOnboardingwithTransactionOutcome",
+        "operationId": "transactionsWithContextualOnboarding",
         "parameters": [
-          {
-            "in": "path",
-            "name": "walletId",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "description": "id of the created wallet",
-            "required": true
-          },
-          {
-            "in": "path",
-            "name": "transactionId",
-            "schema": {
-              "type": "string"
-            },
-            "description": "id of the activated transaction eCommerce side",
-            "required": true
-          },
           {
             "in": "query",
             "name": "outcome",
@@ -129,10 +110,29 @@
             },
             "description": "Details for the fault code obtained in ActivatePaymentNotice operation. \nex: PPT_STAZIONE_INT_PA_TIMEOUT\nThis field have the same semantic of the same field returned by eCommerce transactions-service in POST /transactions error responses and is valued only in case of errors in payment notice activation processing\n",
             "required": false
+          },
+          {
+            "in": "query",
+            "name": "walletId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "id of the created wallet",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "id of the activated transaction eCommerce side",
+            "required": false
           }
         ],
-        "summary": "Redirection URL for onboarding with transaction outcome",
-        "description": "Return onboarding outcome related to eCommerce transaction result as `outcome` query parameter",
+        "summary": "Redirection URL for payment with contextual onboarding flow",
+        "description": "Return onboarding outcome related to eCommerce transaction result as `outcome` query parameter and payment with contextual onboarding operation result data",
         "responses": {
           "302": {
             "description": "Onboarding outcome available (see outcome query parameter)",
