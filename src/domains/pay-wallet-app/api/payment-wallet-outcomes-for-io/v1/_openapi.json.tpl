@@ -73,7 +73,7 @@
         }
       }
     },
-    "/transactions/wallets/contextual-onboard/outcomes": {
+    "/wallets/contextual-onboard/outcomes": {
       "get": {
         "tags": [
           "wallets"
