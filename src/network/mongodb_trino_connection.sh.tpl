@@ -13,6 +13,3 @@ done
 EOF
 chmod +x define_mongodb.sh
 ./define_mongodb.sh
-# kill old trino process if exists
-sudo pkill -f 'trino'
-./trino-server-477/bin/launcher start

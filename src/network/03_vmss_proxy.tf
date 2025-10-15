@@ -319,10 +319,14 @@ locals {
 ## Script to enable IP Forwarding on VMSS
   ipfwd_script = file("${path.module}/create_ip_fwd.sh")
 ## Script to install and configure Trino
-  trino_script = file("${path.module}/trino_installation.sh")
+  trino_installation_script = file("${path.module}/trino_installation.sh")
 
+  trino_configuration_script = templatefile("${path.module}/trino_configuration.sh.tpl", {
+    env      = var.env
+    trino_xmx = var.trino_xmx
+  })
 ## Merge all scripts
-  script_merge = "${local.ipfwd_script}${local.postgres_forward_port_script}${local.trino_script}${local.mongodb_script}"
+  script_merge = "${local.ipfwd_script}${local.postgres_forward_port_script}${local.trino_installation_script}${local.mongodb_script}${local.trino_configuration_script}"
 ## Base64 encode the merged script
   base64_script       = base64encode(local.script_merge)
 
