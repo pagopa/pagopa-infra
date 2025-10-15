@@ -26,7 +26,7 @@
             isPaymentMethodsHandlerEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enablePaymentMethodsHandlerWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
             isMaintenancePageEnabled = false,
             isScheduledMaintenanceBannerEnabled = false,
-            isWalletEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enableWalletWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
+            isWalletEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enableWalletWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", ""))
         };
 
         return JsonConvert.SerializeObject(response);
