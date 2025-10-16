@@ -18,8 +18,8 @@
           var body = (JObject)context.Variables["reqBody"];
           return (string)body["paymentNotices"][0]["rptId"];
           }" />
-        
-        
+
+
         <set-variable name="amountPostTransactions" value="@{
            var body = (JObject)context.Variables["reqBody"];
            return (string)body["paymentNotices"][0]["amount"];
@@ -55,7 +55,7 @@
 
 
         <set-body>@{
-          JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true);
+          JObject requestBody = (JObject)context.Variables["reqBody"];
           requestBody["orderId"] = "ORDER_ID"; //To be removed since it is mandatory for transaction request body, but it should not be
           requestBody["emailToken"] = (String)context.Variables["email"];
           return requestBody.ToString();
