@@ -58,7 +58,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss-egress" {
   name                            = format("%s-vmss", local.project)
   resource_group_name             = azurerm_resource_group.vmss_rg.name
   location                        = azurerm_resource_group.vmss_rg.location
-  sku                             = "Standard_D2ds_v5"
+  sku                             = var.vmss_size
   instances                       = 1
   admin_username                  = data.azurerm_key_vault_secret.vmss_admin_login.value
   admin_password                  = data.azurerm_key_vault_secret.vmss_admin_password.value
