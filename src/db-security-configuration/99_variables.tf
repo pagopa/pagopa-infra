@@ -43,6 +43,8 @@ variable "location_short" {
 
 
 
+
+
 variable "databases" {
   type = map(object({
     type = string
@@ -51,18 +53,36 @@ variable "databases" {
     schema_name = string
     username = string
     password_required = bool
-    password_secret_key = optional(stirng, null)
+    password_secret_kv_name = optional(string, null)
+    password_secret_kv_rg = optional(string, null)
+    password_secret_key = optional(string, null)
+    catalog = optional(string, null)
   }))
 
   description = "Map of database name and connection properties to be added to metabase"
 
   validation {
-    condition = alltrue([for db in var.databases: contains([keys(local.database_properties), db.type])])
+    condition = alltrue([for db in var.databases: contains(keys(local.database_properties), db.type)])
     error_message = "Allowed database type are: ${join(",", keys(local.database_properties))}"
   }
 
   validation {
     condition = alltrue([for db in var.databases: (db.password_required ? db.password_secret_key != null :  true )])
-    error_message = "Field password_Secret_key must be defined when password_required is true"
+    error_message = "Field password_secret_key must be defined when password_required is true"
+  }
+
+  validation {
+    condition = alltrue([for db in var.databases: (db.password_required ? db.password_secret_kv_name != null :  true )])
+    error_message = "Field password_secret_kv_name must be defined when password_required is true"
+  }
+
+   validation {
+    condition = alltrue([for db in var.databases: (db.password_required ? db.password_secret_kv_rg != null :  true )])
+    error_message = "Field password_secret_kv_rg must be defined when password_required is true"
+  }
+
+  validation {
+    condition = alltrue([ for db in var.databases : (db.type == "mongodb" ? db.catalog != null : true )])
+    error_message = "Field catalog must be defined when type is mongodb"
   }
 }

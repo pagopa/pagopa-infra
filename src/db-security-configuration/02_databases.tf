@@ -1,20 +1,18 @@
 
 
-resource "restapi_object" "database" {
+resource "restapi_object" "databases" {
   for_each = var.databases
 
   path = "/api/database/"
 
-  #"{ \"id\": \"55555\", \"first\": \"Foo\", \"last\": \"Bar\" }"
   data = jsonencode(merge(
     {
       name = each.key
       is_on_demand = false
-      cache_ttl = 1 # FIXME?
-      engine = local.database_properties[each.value.type].engine
-      details = jsonencode({
+      engine = local.database_properties[each.value.type].driver
+      details = {
         ssl-use-client-auth = false
-        ssl = true
+        ssl = local.database_properties[each.value.type].ssl
         password = each.value.password_required ? data.azurerm_key_vault_secret.database_password[each.key].value : null
         destination-database = false
         port = each.value.port
@@ -25,8 +23,9 @@ resource "restapi_object" "database" {
         tunnel-enabled = false
         user = each.value.username
         ssl-mode = "require"
+        catalog = lookup(each.value, "catalog", null)
+      }
 
-      }) #todo alcuni statici da mergiare con locals, altri dinamici - controllare quali valori servono per mongo e redis
       is_full_sync = local.database_properties[each.value.type].full_sync
       connection_source = "admin"
       auto_run_queries = false
@@ -35,8 +34,9 @@ resource "restapi_object" "database" {
   ))
 
 
-  destroy_path = "/api/database/" #FIXME mettere l'id, se serve usando idattribute
-  id_attribute = "" #TODO
+
+  # destroy_path = "/api/database/" #FIXME mettere l'id, se serve usando idattribute
+  # id_attribute = "" #TODO
 }
 
 

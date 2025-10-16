@@ -10,17 +10,20 @@ locals {
 
 
   database_properties = {
-    postgres = {
+    postgresql = {
       driver = "postgres"
       full_sync = true
+      ssl = true
     }
     mongodb = {
-      driver = "trino"
+      driver = "starburst"
       full_sync = true
+      ssl = false
     }
     redis = {
-      driver = "trino"
+      driver = "starburst"
       full_sync = true
+      ssl = true
     }
   }
 }
