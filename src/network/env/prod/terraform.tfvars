@@ -14,3 +14,6 @@ enabled_features = {
   nsg                      = false
   all_vnet_database_access = true
 }
+
+trino_xmx   = "8G"
+vmss_size   = "Standard_D4ds_v5"

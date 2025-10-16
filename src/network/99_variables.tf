@@ -71,3 +71,7 @@ variable "trino_xmx" {
   type    = string
   default = "4G"
 }
+variable "vmss_size" {
+  type    = string
+  default = "Standard_D2ds_v5"
+}
