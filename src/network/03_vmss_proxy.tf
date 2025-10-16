@@ -10,6 +10,11 @@ data "azurerm_virtual_network" "vnet_integration" {
   resource_group_name = local.vnet_core_resource_group_name
 }
 
+data "azurerm_nat_gateway" "pagopa_nat" {
+  name                = "${local.product}-natgw"
+  resource_group_name = local.vnet_core_resource_group_name
+}
+
 module "vmss_snet" {
   source               = "./.terraform/modules/__v4__/IDH/subnet"
   name                 = "${local.project}-vmss-snet"
@@ -20,6 +25,11 @@ module "vmss_snet" {
   product_name      = local.prefix
   env               = var.env
 
+}
+
+resource "azurerm_subnet_nat_gateway_association" "vmss_snet_nat" {
+  subnet_id      = module.vmss_snet.id
+  nat_gateway_id = data.azurerm_nat_gateway.pagopa_nat.id
 }
 
 module "vmss_pls_snet" {
