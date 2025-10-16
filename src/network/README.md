@@ -54,6 +54,7 @@
 | <a name="input_nsg_network_watcher_enabled"></a> [nsg\_network\_watcher\_enabled](#input\_nsg\_network\_watcher\_enabled) | (Optional) Enable Network Watcher for all NSG (subnet associated to nsg) | `bool` | `false` | no |
 | <a name="input_nsg_regions"></a> [nsg\_regions](#input\_nsg\_regions) | (Optional) Regions where NSG must be created | `list(string)` | <pre>[<br/>  "westeurope"<br/>]</pre> | no |
 | <a name="input_trino_xmx"></a> [trino\_xmx](#input\_trino\_xmx) | n/a | `string` | `"4G"` | no |
+| <a name="input_vmss_size"></a> [vmss\_size](#input\_vmss\_size) | n/a | `string` | `"Standard_D2ds_v5"` | no |
 | <a name="input_vpn_gateway_address_space"></a> [vpn\_gateway\_address\_space](#input\_vpn\_gateway\_address\_space) | n/a | `string` | `"172.16.1.0/24"` | no |
 
 ## Outputs
