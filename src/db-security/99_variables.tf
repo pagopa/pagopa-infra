@@ -139,7 +139,7 @@ variable "metabase_plan_idh_tier" {
 variable "enabled_features" {
   description = "(Required) A map of enabled features in the environment"
   type = object({
-    db_vdi            = optional(bool, false)
+    db_vdi = optional(bool, false)
   })
   default = {
     db_vdi = false
@@ -149,22 +149,22 @@ variable "enabled_features" {
 
 variable "db_vdi_settings" {
   type = object({
-    location = optional(string, "westeurope")
-    location_short = optional(string, "weu")
-    size                = string
+    location              = optional(string, "westeurope")
+    location_short        = optional(string, "weu")
+    size                  = string
     auto_shutdown_enabled = bool
-    auto_shutdown_time = optional(string, "1900")
-    session_limit = optional(number, 1)
-    host_pool_type = optional(string, "Pooled")
+    auto_shutdown_time    = optional(string, "1900")
+    session_limit         = optional(number, 1)
+    host_pool_type        = optional(string, "Pooled")
   })
   default = {
-    location = "westeurope"
-    location_short = "weu"
-    size = "Standard_B4ms"
+    location              = "westeurope"
+    location_short        = "weu"
+    size                  = "Standard_B4ms"
     auto_shutdown_enabled = true
-    auto_shutdown_time = "1900"
-    session_limit = 1
-    host_pool_type = "Pooled"
+    auto_shutdown_time    = "1900"
+    session_limit         = 1
+    host_pool_type        = "Pooled"
   }
 
   validation {

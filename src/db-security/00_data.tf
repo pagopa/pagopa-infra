@@ -73,7 +73,7 @@ data "azurerm_subnet" "private_endpoint_subnet" {
 
 
 data "azurerm_subnet" "tools_subnet" {
-  count = var.enabled_features.db_vdi ? 1 : 0
+  count                = var.enabled_features.db_vdi ? 1 : 0
   name                 = "${local.product}-tools-cae-subnet"
   resource_group_name  = data.azurerm_resource_group.rg_vnet_core.name
   virtual_network_name = data.azurerm_virtual_network.vnet_core.name

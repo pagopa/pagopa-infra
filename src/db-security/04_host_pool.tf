@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "vdi_rg" {
-      count = var.enabled_features.db_vdi ? 1 : 0
+  count    = var.enabled_features.db_vdi ? 1 : 0
   name     = "${local.project_vdi}-vdi-rg"
   location = var.db_vdi_settings.location
 
@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "vdi_rg" {
 
 
 resource "azurerm_virtual_desktop_workspace" "workspace" {
-      count = var.enabled_features.db_vdi ? 1 : 0
+  count               = var.enabled_features.db_vdi ? 1 : 0
   name                = "${local.project_vdi}-vdi-workspace"
   location            = var.db_vdi_settings.location
   resource_group_name = azurerm_resource_group.vdi_rg[0].name
@@ -21,7 +21,7 @@ resource "azurerm_virtual_desktop_workspace" "workspace" {
 }
 
 resource "azurerm_virtual_desktop_application_group" "application_group" {
-  count = var.enabled_features.db_vdi ? 1 : 0
+  count               = var.enabled_features.db_vdi ? 1 : 0
   name                = "${local.project_vdi}-vdi-application-group"
   location            = var.db_vdi_settings.location
   resource_group_name = azurerm_resource_group.vdi_rg[0].name
@@ -37,13 +37,13 @@ resource "azurerm_virtual_desktop_application_group" "application_group" {
 }
 
 resource "azurerm_virtual_desktop_workspace_application_group_association" "application_group_assignment" {
-      count = var.enabled_features.db_vdi ? 1 : 0
+  count                = var.enabled_features.db_vdi ? 1 : 0
   workspace_id         = azurerm_virtual_desktop_workspace.workspace[0].id
   application_group_id = azurerm_virtual_desktop_application_group.application_group[0].id
 }
 
 resource "azurerm_virtual_desktop_host_pool" "vdi_host_pool" {
-  count = var.enabled_features.db_vdi ? 1 : 0
+  count               = var.enabled_features.db_vdi ? 1 : 0
   name                = "${local.project_vdi}-vdi-hostpool"
   location            = var.db_vdi_settings.location
   resource_group_name = azurerm_resource_group.vdi_rg[0].name
@@ -72,7 +72,7 @@ resource "azurerm_virtual_desktop_host_pool" "vdi_host_pool" {
 
 
 resource "azurerm_virtual_desktop_host_pool_registration_info" "host_pool_registration_info" {
-  count = var.enabled_features.db_vdi ? 1 : 0
+  count           = var.enabled_features.db_vdi ? 1 : 0
   hostpool_id     = azurerm_virtual_desktop_host_pool.vdi_host_pool[0].id
   expiration_date = timeadd(timestamp(), "2h")
 
@@ -81,14 +81,14 @@ resource "azurerm_virtual_desktop_host_pool_registration_info" "host_pool_regist
 
 
 resource "azurerm_role_assignment" "vdi_users" {
-      count = var.enabled_features.db_vdi ? 1 : 0
+  count                = var.enabled_features.db_vdi ? 1 : 0
   scope                = azurerm_virtual_desktop_application_group.application_group[0].id
   role_definition_name = "Desktop Virtualization Contributor"
   principal_id         = data.azuread_group.admin_group.object_id
 }
 
 resource "azurerm_role_assignment" "vdi_login" {
-      count = var.enabled_features.db_vdi ? 1 : 0
+  count                = var.enabled_features.db_vdi ? 1 : 0
   scope                = azurerm_resource_group.vdi_rg[0].id
   role_definition_name = "Virtual Machine User Login"
   principal_id         = data.azuread_group.admin_group.object_id
@@ -98,7 +98,7 @@ resource "azurerm_role_assignment" "vdi_login" {
 # Assigning this role at any level lower than your subscription, such as the resource group, host pool, or VM, will prevent Start VM on Connect from working properly.
 # https://learn.microsoft.com/en-us/azure/virtual-desktop/start-virtual-machine-connect?tabs=azure-portal#assign-the-desktop-virtualization-power-on-contributor-role-with-the-azure-portal
 resource "azurerm_role_assignment" "assign_power_on_role" {
-      count = var.enabled_features.db_vdi ? 1 : 0
+  count                = var.enabled_features.db_vdi ? 1 : 0
   scope                = "/subscriptions/${data.azurerm_subscription.current.subscription_id}"
   role_definition_name = "Desktop Virtualization Power On Contributor"
   # this is the principal id for Azure Virtual Desktop managed identity, required to have this role to start the VMs

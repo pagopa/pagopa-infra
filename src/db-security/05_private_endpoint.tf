@@ -1,19 +1,19 @@
 resource "azurerm_private_dns_zone" "private_dns_vdi" {
-  count = var.enabled_features.db_vdi ? 1 : 0
+  count               = var.enabled_features.db_vdi ? 1 : 0
   name                = "privatelink.wvd.microsoft.com"
   resource_group_name = local.vnet_core_resource_group_name
   tags                = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone" "private_dns_vdi_global" {
-  count = var.enabled_features.db_vdi ? 1 : 0
+  count               = var.enabled_features.db_vdi ? 1 : 0
   name                = "privatelink-global.wvd.microsoft.com"
   resource_group_name = local.vnet_core_resource_group_name
   tags                = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "vdi_local_to_core_vnet" {
-  count = var.enabled_features.db_vdi ? 1 : 0
+  count                 = var.enabled_features.db_vdi ? 1 : 0
   name                  = local.vnet_core_name
   resource_group_name   = local.vnet_core_resource_group_name
   private_dns_zone_name = azurerm_private_dns_zone.private_dns_vdi[0].name
@@ -24,7 +24,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vdi_local_to_core_vnet
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "vdi_global_to_core_vnet" {
-  count = var.enabled_features.db_vdi ? 1 : 0
+  count                 = var.enabled_features.db_vdi ? 1 : 0
   name                  = local.vnet_core_name
   resource_group_name   = local.vnet_core_resource_group_name
   private_dns_zone_name = azurerm_private_dns_zone.private_dns_vdi_global[0].name
@@ -35,7 +35,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vdi_global_to_core_vne
 }
 
 resource "azurerm_private_endpoint" "host_pool_pe" {
-    count = var.enabled_features.db_vdi ? 1 : 0
+  count               = var.enabled_features.db_vdi ? 1 : 0
   name                = "${local.project_vdi}-hosptool-pe"
   location            = var.db_vdi_settings.location
   resource_group_name = azurerm_resource_group.vdi_rg[0].name
@@ -57,7 +57,7 @@ resource "azurerm_private_endpoint" "host_pool_pe" {
 }
 
 resource "azurerm_private_endpoint" "workspace_pe" {
-    count = var.enabled_features.db_vdi ? 1 : 0
+  count               = var.enabled_features.db_vdi ? 1 : 0
   name                = "${local.project_vdi}-workspace-feed-pe"
   location            = var.db_vdi_settings.location
   resource_group_name = azurerm_resource_group.vdi_rg[0].name
@@ -78,7 +78,7 @@ resource "azurerm_private_endpoint" "workspace_pe" {
 }
 
 resource "azurerm_private_endpoint" "workspace_global_pe" {
-    count = var.enabled_features.db_vdi ? 1 : 0
+  count               = var.enabled_features.db_vdi ? 1 : 0
   name                = "${local.project_vdi}-workspace-global-pe"
   location            = var.db_vdi_settings.location
   resource_group_name = azurerm_resource_group.vdi_rg[0].name

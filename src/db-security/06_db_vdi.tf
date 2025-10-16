@@ -1,6 +1,6 @@
 
 resource "azurerm_network_interface" "vdi_nic" {
-    count = var.enabled_features.db_vdi ? 1 : 0
+  count = var.enabled_features.db_vdi ? 1 : 0
 
   name                = "${local.project_vdi}-db-vdi-nic"
   location            = azurerm_resource_group.vdi_rg[0].location
@@ -16,18 +16,17 @@ resource "azurerm_network_interface" "vdi_nic" {
 }
 
 resource "azurerm_windows_virtual_machine" "db_vdi_vm" {
-    count = var.enabled_features.db_vdi ? 1 : 0
-
+  count = var.enabled_features.db_vdi ? 1 : 0
 
   name                = "${local.project_vdi}-db-vdi"
-  computer_name       = "${local.product}-db-vdi"
+  computer_name       = "${local.product}-db-sec"
   resource_group_name = azurerm_resource_group.vdi_rg[0].name
   location            = azurerm_resource_group.vdi_rg[0].location
   size                = var.db_vdi_settings.size
   admin_username      = "adminuser"
   admin_password      = module.secret_core.values["db-vdi-admin-password"].value
 
-  vtpm_enabled = false
+  vtpm_enabled        = false
   secure_boot_enabled = false
 
   network_interface_ids = [
@@ -57,7 +56,7 @@ resource "azurerm_windows_virtual_machine" "db_vdi_vm" {
 
 
 resource "azurerm_virtual_machine_extension" "aad_join_extension" {
-    count = var.enabled_features.db_vdi ? 1 : 0
+  count = var.enabled_features.db_vdi ? 1 : 0
 
   name                 = "AADLoginForWindows"
   virtual_machine_id   = azurerm_windows_virtual_machine.db_vdi_vm[0].id
@@ -75,7 +74,7 @@ resource "azurerm_virtual_machine_extension" "aad_join_extension" {
 }
 
 resource "azurerm_virtual_machine_extension" "host_pool_join" {
-    count = var.enabled_features.db_vdi ? 1 : 0
+  count                      = var.enabled_features.db_vdi ? 1 : 0
   name                       = "Microsoft.Powershell.DSC"
   virtual_machine_id         = azurerm_windows_virtual_machine.db_vdi_vm[0].id
   publisher                  = "Microsoft.Powershell"
@@ -93,7 +92,7 @@ resource "azurerm_virtual_machine_extension" "host_pool_join" {
 }
 
 resource "azurerm_dev_test_global_vm_shutdown_schedule" "auto_shutdown" {
-  count = var.enabled_features.db_vdi ? 1 : 0
+  count              = var.enabled_features.db_vdi ? 1 : 0
   virtual_machine_id = azurerm_windows_virtual_machine.db_vdi_vm[0].id
   location           = azurerm_resource_group.vdi_rg[0].location
   enabled            = var.db_vdi_settings.auto_shutdown_enabled

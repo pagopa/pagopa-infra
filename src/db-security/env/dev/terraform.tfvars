@@ -19,5 +19,5 @@ metabase_plan_idh_tier = "basic_high_performance"
 
 
 enabled_features = {
-  db_vdi = true
+  db_vdi = false
 }
