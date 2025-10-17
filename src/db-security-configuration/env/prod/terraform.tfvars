@@ -5,14 +5,24 @@ location       = "italynorth"
 location_short = "itn"
 
 
-metabase_pgflex_params = {
-  idh_tier                               = "pgflex2" # https://github.com/pagopa/terraform-azurerm-v4/blob/44df8cdf0615a2d1c39efd05996edc4bf28e0dec/IDH/postgres_flexible_server/LIBRARY.md
-  db_version                             = "16"
-  pgres_flex_diagnostic_settings_enabled = false
-  alerts_enabled                         = true
-  private_dns_registration_enabled       = false
-  storage_mb                             = 32768
+databases = {
+  gpd = {
+    type = "postgresql"
+    host = "pagopa-d-weu-gpd-pgflex.postgres.database.azure.com"
+    schema_name = "apd"
+    username = "apduser"
+    password_required = true
+    password_secret_kv_name = "pagopa-d-gps-kv"
+    password_secret_kv_rg = "pagopa-d-gps-sec-rg"
+    password_secret_key = "db-apd-user-password"
+  }
+  paymenttrinoTF = {
+    type = "mongodb"
+    host = "10.1.131.14"
+    port = "8080"
+    schema_name = "payment-wallet"
+    username = "admin"
+    password_required = false
+    catalog = "pagopa-d-itn-pay-wallet-cosmos-account"
+  }
 }
-
-
-metabase_plan_idh_tier = "premium_low_load"
