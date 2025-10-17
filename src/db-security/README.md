@@ -1,4 +1,26 @@
-# synthetic monitoring
+# DB security
+
+
+## Setup DB access VDI
+
+After creating the VM, login as admin user and follow these instructions:
+- disable "Network Level Authentication":
+  ```
+  Control panel ->  System and Security -> System / Allow remote access -> uncheck "Allow network connections only from computer running remote desktop with network level authentication"
+  ```
+
+- Configure auto-logoff inactive sessions
+  ```
+  Start -> Group policy editor -> Local Computer Policy 
+   =>  Computer Configuration 
+     =>  Administrative Templates 
+	      =>  Windows Components 
+          =>  Remote Desktop Services 
+            =>  Remote Desktop Session Host 
+              =>  Session Time Limits
+  ```
+  - Enable and set "Set time limit for active for disconnected sessions" to 1 minute
+  - Enable and set "Set time limit for active but idle Remote Desktop Services sessions" to 1 minute
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -13,7 +35,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | ea24c24f7bcbf2ed5148d5971e625a620ce1368a |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | a4b4d4eeb688973df4c4f70cb996086497d84bd4 |
 | <a name="module_app_service_snet"></a> [app\_service\_snet](#module\_app\_service\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_metabase_app_service"></a> [metabase\_app\_service](#module\_metabase\_app\_service) | ./.terraform/modules/__v4__/IDH/app_service_webapp | n/a |
 | <a name="module_metabase_postgres_db"></a> [metabase\_postgres\_db](#module\_metabase\_postgres\_db) | ./.terraform/modules/__v4__/IDH/postgres_flexible_server | n/a |

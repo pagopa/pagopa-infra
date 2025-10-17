@@ -14,13 +14,14 @@ module "app_service_snet" {
 }
 
 module "metabase_app_service" {
-  source              = "./.terraform/modules/__v4__/IDH/app_service_webapp"
-  env                 = var.env
-  idh_resource_tier   = var.metabase_plan_idh_tier
-  location            = var.location
-  name                = "${local.project}-metabase-webapp"
-  product_name        = var.prefix
-  resource_group_name = azurerm_resource_group.metabase_rg.name
+  source                  = "./.terraform/modules/__v4__/IDH/app_service_webapp"
+  env                     = var.env
+  idh_resource_tier       = var.metabase_plan_idh_tier
+  location                = var.location
+  name                    = "${local.project}-metabase-webapp"
+  product_name            = var.prefix
+  resource_group_name     = azurerm_resource_group.metabase_rg.name
+  client_affinity_enabled = true
 
   app_service_plan_name = "${local.project}-metabase-plan"
   app_settings = {

@@ -13,7 +13,7 @@ resource "azurerm_virtual_desktop_workspace" "workspace" {
   location            = var.db_vdi_settings.location
   resource_group_name = azurerm_resource_group.vdi_rg[0].name
 
-  friendly_name                 = "${var.env} ${var.location_short} DB VDI workspace"
+  friendly_name                 = "${var.env} ${var.prefix} DB VDI workspace"
   public_network_access_enabled = false
 
 
@@ -75,8 +75,6 @@ resource "azurerm_virtual_desktop_host_pool_registration_info" "host_pool_regist
   count           = var.enabled_features.db_vdi ? 1 : 0
   hostpool_id     = azurerm_virtual_desktop_host_pool.vdi_host_pool[0].id
   expiration_date = timeadd(timestamp(), "2h")
-
-
 }
 
 
