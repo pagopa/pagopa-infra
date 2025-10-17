@@ -18,7 +18,7 @@
 
               <otherwise>
                 <return-response>
-                  <set-status code="404" />
+                  <set-status code="404" reason="Not found" />
                 </return-response>
               </otherwise>
 
@@ -33,11 +33,11 @@
               </set-header>
             </return-response>
           </otherwise>
-        
+
         </choose>
 
 
-        
+
     </inbound>
     <outbound>
       <base />
