@@ -5,6 +5,10 @@
       <set-header name="x-api-key" exists-action="override">
         <value>{{payment-wallet-service-rest-api-key}}</value>
       </set-header>
+      <!-- as for now payment with contextual onboarding are performed on app IO only -->
+      <set-header name="x-client-id" exists-action="override" >
+        <value>IO</value>
+      </set-header>
     </inbound>
     <outbound>
       <base />
