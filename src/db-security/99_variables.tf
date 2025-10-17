@@ -41,11 +41,6 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-variable "metabase_db_idh_tier" {
-  type        = string
-  description = "(Required) IDH tier for Metabase Postgres Flexible Server"
-  default     = "pgflex2"
-}
 
 
 variable "metabase_pgflex_params" {
@@ -139,4 +134,41 @@ variable "metabase_pgflex_custom_metric_alerts" {
 variable "metabase_plan_idh_tier" {
   type        = string
   description = "IDH resource tier for metabase app service"
+}
+
+variable "enabled_features" {
+  description = "(Required) A map of enabled features in the environment"
+  type = object({
+    db_vdi = optional(bool, false)
+  })
+  default = {
+    db_vdi = false
+  }
+}
+
+
+variable "db_vdi_settings" {
+  type = object({
+    location              = optional(string, "westeurope")
+    location_short        = optional(string, "weu")
+    size                  = string
+    auto_shutdown_enabled = bool
+    auto_shutdown_time    = optional(string, "1900")
+    session_limit         = optional(number, 1)
+    host_pool_type        = optional(string, "Pooled")
+  })
+  default = {
+    location              = "westeurope"
+    location_short        = "weu"
+    size                  = "Standard_B4ms"
+    auto_shutdown_enabled = true
+    auto_shutdown_time    = "1900"
+    session_limit         = 1
+    host_pool_type        = "Pooled"
+  }
+
+  validation {
+    condition     = contains(["Personal", "Pooled"], var.db_vdi_settings.host_pool_type)
+    error_message = "db_vdi_settings.host_pool_type must be either \"Personal\" or \"Pooled\"."
+  }
 }
