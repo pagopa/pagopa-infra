@@ -16,3 +16,8 @@ metabase_pgflex_params = {
 
 
 metabase_plan_idh_tier = "basic_high_performance"
+
+
+enabled_features = {
+  db_vdi = false
+}
