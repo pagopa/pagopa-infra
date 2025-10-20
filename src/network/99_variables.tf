@@ -67,3 +67,11 @@ variable "vpn_gateway_address_space" {
   default = "172.16.1.0/24"
 }
 
+variable "trino_xmx" {
+  type    = string
+  default = "4G"
+}
+variable "vmss_size" {
+  type    = string
+  default = "Standard_D2ds_v5"
+}
