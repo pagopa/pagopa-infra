@@ -30,6 +30,12 @@ parameters:
   - name: AZURE_SERVICE_CONNECTION
     displayName: "Azure service connection name"
     type: string
+  - name: LIQUIBASE_ACTION
+    displayName: "Liquibase action to perform"
+    type: string
+    values:
+      - status
+      - apply
   # liquibase log level if needed finer logs
   - name: lbLogLevel
     displayName: Liquibase Log Level
@@ -62,7 +68,6 @@ steps:
       azureSubscription: ${{ parameters.AZURE_SERVICE_CONNECTION }}
       keyVaultName: ${{parameters.KV_NAME}}
       secretsFilter: '${{parameters.PASSWORD_KV_KEY}}'
-
   - script: |
       if [ ! -f src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_FOLDER_NAME }}/${{ parameters.SCHEMA }}/db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml ]; then
         echo "Version ${{ parameters.LIQUIBASE_DB_VERSION }} not defined for ${{ parameters.DATABASE_FOLDER_NAME }}"
@@ -99,8 +104,25 @@ steps:
       fi
     displayName: "${{ parameters.DATABASE_FOLDER_NAME }} ${{ parameters.SCHEMA }} - Set variables"
     condition: and(succeeded(), eq(variables.file_present, true))
-  - script: |
-      liquibase \
+  - ${{ if eq(parameters.LIQUIBASE_ACTION, 'status') }}:
+    - script: |
+        liquibase \
+          --url="${{ parameters.JDBC_URL }}" \
+          --username="${{ parameters.USERNAME }}" \
+          --password="$(${{parameters.PASSWORD_KV_KEY}})" \
+          --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_FOLDER_NAME }}/${{ parameters.SCHEMA }} \
+          --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
+          --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
+          --defaultSchemaName="${{ parameters.SCHEMA }}" \
+          --contexts="${{ parameters.lbContexts }}" \
+          --log-level=${{ parameters.lbLogLevel }} \
+          --database-changelog-lock-table-name="$(CHANGELOG_LOCK_TABLE)"  \
+          --database-changelog-table-name="$(CHANGELOG_TABLE)" \
+          status -Dschema=${{ parameters.SCHEMA }}
+      displayName: "${{ parameters.DATABASE_FOLDER_NAME }} ${{ parameters.SCHEMA }} - db status"
+      condition: and(succeeded(), eq(variables.file_present, true))
+    - script: |
+        liquibase \
         --url="${{ parameters.JDBC_URL }}" \
         --username="${{ parameters.USERNAME }}" \
         --password="$(${{parameters.PASSWORD_KV_KEY}})" \
@@ -112,22 +134,39 @@ steps:
         --log-level=${{ parameters.lbLogLevel }} \
         --database-changelog-lock-table-name="$(CHANGELOG_LOCK_TABLE)"  \
         --database-changelog-table-name="$(CHANGELOG_TABLE)" \
-        status -Dschema=${{ parameters.SCHEMA }}
-    displayName: "${{ parameters.DATABASE_FOLDER_NAME }} ${{ parameters.SCHEMA }} - db status"
-    condition: and(succeeded(), eq(variables.file_present, true))
-  - script: |
-      liquibase \
-      --url="${{ parameters.JDBC_URL }}" \
-      --username="${{ parameters.USERNAME }}" \
-      --password="$(${{parameters.PASSWORD_KV_KEY}})" \
-      --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_FOLDER_NAME }}/${{ parameters.SCHEMA }} \
-      --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
-      --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
-      --defaultSchemaName="${{ parameters.SCHEMA }}" \
-      --contexts="${{ parameters.lbContexts }}" \
-      --log-level=${{ parameters.lbLogLevel }} \
-      --database-changelog-lock-table-name="$(CHANGELOG_LOCK_TABLE)"  \
-      --database-changelog-table-name="$(CHANGELOG_TABLE)" \
-      validate -Dschema=${{ parameters.SCHEMA }}
-    displayName: "${{ parameters.DATABASE_FOLDER_NAME }} ${{ parameters.SCHEMA }} - db validate"
-    condition: and(succeeded(), eq(variables.file_present, true))
+        validate -Dschema=${{ parameters.SCHEMA }}
+      displayName: "${{ parameters.DATABASE_FOLDER_NAME }} ${{ parameters.SCHEMA }} - db validate"
+      condition: and(succeeded(), eq(variables.file_present, true))
+  - ${{ if eq(parameters.LIQUIBASE_ACTION, 'apply') }}:
+    - script: |
+        liquibase \
+        --url="${{ parameters.JDBC_URL }}" \
+        --username="${{ parameters.USERNAME }}" \
+        --password="$(${{parameters.PASSWORD_KV_KEY}})" \
+        --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_FOLDER_NAME }}/${{ parameters.SCHEMA }} \
+        --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
+        --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
+        --defaultSchemaName="${{ parameters.SCHEMA }}" \
+        --contexts="${{ parameters.lbContexts }}" \
+        --log-level=${{ parameters.lbLogLevel }} \
+        --database-changelog-lock-table-name="$(CHANGELOG_LOCK_TABLE)"  \
+        --database-changelog-table-name="$(CHANGELOG_TABLE)" \
+        update -Dschema=${{ parameters.SCHEMA }}
+      displayName: "${{ parameters.DATABASE_FOLDER_NAME }} ${{ parameters.SCHEMA }} - db update"
+      condition: and(succeeded(), eq(variables.file_present, true))
+    - script: |
+        liquibase \
+        --url="${{ parameters.JDBC_URL }}" \
+        --username="${{ parameters.USERNAME }}" \
+        --password="$(${{parameters.PASSWORD_KV_KEY}})" \
+        --classpath=src/psql/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_FOLDER_NAME }}/${{ parameters.SCHEMA }} \
+        --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
+        --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
+        --defaultSchemaName="${{ parameters.SCHEMA }}" \
+        --contexts="${{ parameters.lbContexts }}" \
+        --log-level=${{ parameters.lbLogLevel }} \
+        --database-changelog-lock-table-name="$(CHANGELOG_LOCK_TABLE)"  \
+        --database-changelog-table-name="$(CHANGELOG_TABLE)" \
+        tag ${{ parameters.LIQUIBASE_DB_VERSION }}
+      displayName: "${{ parameters.DATABASE_FOLDER_NAME }} ${{ parameters.SCHEMA }} - db tag"
+      condition: and(succeeded(), eq(variables.file_present, true))

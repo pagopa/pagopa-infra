@@ -295,6 +295,7 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'status'
           # nodo db offline addon
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
@@ -309,6 +310,7 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'status'
           # nodo db online addon
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
@@ -323,6 +325,7 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'status'
           # nodo db re addon
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
@@ -337,6 +340,7 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'status'
           # crusc8 db cruscotto addon
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
@@ -351,6 +355,7 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'status'
           # fdr db fdr addon
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
@@ -365,6 +370,7 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'status'
           # fdr db fdr3 addon
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
@@ -379,6 +385,7 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'status'
           # gpd db apd addon
           - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
@@ -393,6 +400,7 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'status'
 
       - job: approval
         dependsOn: liquibase_status_job
@@ -463,8 +471,9 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'apply'
           # nodo db offline addon
-          - template: ./templates/generic-liquibase-apply-with-kv.yml
+          - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_OFFLINE_SCHEMA}}
@@ -477,8 +486,9 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'apply'
           # nodo db online addon
-          - template: ./templates/generic-liquibase-apply-with-kv.yml
+          - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_ONLINE_SCHEMA}}
@@ -491,8 +501,9 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'apply'
           # nodo db re addon
-          - template: ./templates/generic-liquibase-apply-with-kv.yml
+          - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_RE_SCHEMA}}
@@ -505,8 +516,9 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'apply'
           # crusc8 db cruscotto addon
-          - template: ./templates/generic-liquibase-apply-with-kv.yml
+          - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: cruscotto
               SCHEMA: ${{variables.CRUSC8_SCHEMA}}
@@ -519,8 +531,9 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'apply'
           # fdr db fdr addon
-          - template: ./templates/generic-liquibase-apply-with-kv.yml
+          - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: fdr
               SCHEMA: ${{variables.FDR_FDR1_SCHEMA}}
@@ -533,8 +546,9 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'apply'
           # fdr db fdr3 addon
-          - template: ./templates/generic-liquibase-apply-with-kv.yml
+          - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: fdr
               SCHEMA: ${{variables.FDR_FDR3_SCHEMA}}
@@ -547,8 +561,9 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'apply'
           # gpd db apd addon
-          - template: ./templates/generic-liquibase-apply-with-kv.yml
+          - template: ./templates/generic-liquibase-status-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: gpd
               SCHEMA: ${{variables.GPD_SCHEMA}}
@@ -561,3 +576,4 @@ stages:
               AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'apply'
