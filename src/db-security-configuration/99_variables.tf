@@ -25,38 +25,21 @@ variable "env" {
   type = string
 }
 
-variable "location" {
-  type        = string
-  description = "One of westeurope, northeurope"
-}
-
-variable "location_short" {
-  type = string
-  validation {
-    condition = (
-      length(var.location_short) == 3
-    )
-    error_message = "Length must be 3 chars."
-  }
-  description = "One of wue, neu"
-}
-
-
-
-
-
 variable "databases" {
   type = map(object({
     type = string
     host = string
     port = optional(string, null)
-    schema_name = string
+    db_name = optional(string, null)
     username = string
     password_required = bool
     password_secret_kv_name = optional(string, null)
     password_secret_kv_rg = optional(string, null)
     password_secret_key = optional(string, null)
     catalog = optional(string, null)
+    schema = optional(string, null)
+    user_control_scheduling = optional(bool, null)
+    advanced_options = optional(bool, null)
   }))
 
   description = "Map of database name and connection properties to be added to metabase"
@@ -84,5 +67,10 @@ variable "databases" {
   validation {
     condition = alltrue([ for db in var.databases : (db.type == "mongodb" ? db.catalog != null : true )])
     error_message = "Field catalog must be defined when type is mongodb"
+  }
+
+  validation {
+    condition = alltrue([ for db in var.databases : (db.type == "postgresql" ? db.db_name != null : true )])
+    error_message = "Field db_name must be defined when type is postgresql"
   }
 }

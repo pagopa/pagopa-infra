@@ -1,7 +1,6 @@
 locals {
   product = "${var.prefix}-${var.env_short}"
   domain  = "dbsecconf"
-  project = "${local.product}-${var.location_short}-${local.domain}"
 
   key_vault_itn_core_name    = "${local.product}-itn-core-kv"
   key_vault_itn_core_rg_name = "${local.product}-itn-core-sec-rg"
@@ -15,14 +14,19 @@ locals {
       full_sync = true
       ssl = true
     }
+    nexi = {
+      driver = "starburst"
+      full_sync = false
+      ssl = false
+    }
     mongodb = {
       driver = "starburst"
-      full_sync = true
+      full_sync = false
       ssl = false
     }
     redis = {
       driver = "starburst"
-      full_sync = true
+      full_sync = false
       ssl = true
     }
   }

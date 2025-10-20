@@ -17,26 +17,33 @@ resource "restapi_object" "databases" {
         destination-database = false
         port = each.value.port
         advanced-options = false
-        schema-filter-type = "all"
-        dbname = each.value.schema_name
+        schema-filter-type = lookup(each.value, "schema", null) != null ? null : "all"
+        dbname = each.value.db_name
         host = each.value.host
         tunnel-enabled = false
         user = each.value.username
         ssl-mode = "require"
+        schema = lookup(each.value, "schema", null)
         catalog = lookup(each.value, "catalog", null)
+        let-user-control-scheduling = true
+        advanced-options = true
       }
 
       is_full_sync = local.database_properties[each.value.type].full_sync
       connection_source = "admin"
       auto_run_queries = false
+      schedules = {
+        metadata_sync = {
+          schedule_day    = null
+          schedule_frame  = null
+          schedule_hour   = 1
+          schedule_minute = 0
+          schedule_type   = "daily"
+        }
+      }
     },
     local.database_properties[each.value.type]
   ))
-
-
-
-  # destroy_path = "/api/database/" #FIXME mettere l'id, se serve usando idattribute
-  # id_attribute = "" #TODO
 }
 
 
