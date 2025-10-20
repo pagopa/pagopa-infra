@@ -116,6 +116,10 @@
           "expiryInMinutes": {
             "type": "integer",
             "description": "Expiration in minutes for JWT"
+          },
+          "userEmail": {
+            "type": "string",
+            "description": "User email"
           }
         }
       },
