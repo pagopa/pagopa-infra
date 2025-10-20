@@ -8,3 +8,7 @@ data "azurerm_subnet" "apim_vnet" {
   resource_group_name  = local.pagopa_vnet_rg
   virtual_network_name = local.pagopa_vnet_integration
 }
+
+data "azurerm_resource_group" "rg_vnet" {
+  name = format("%s-vnet-rg", local.product)
+}

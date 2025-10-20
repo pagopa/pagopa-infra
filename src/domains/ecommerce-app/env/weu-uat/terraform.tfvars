@@ -17,6 +17,7 @@ log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
 apim_dns_zone_prefix     = "uat.platform"
+dns_zone_prefix          = "uat.platform"
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
@@ -29,7 +30,13 @@ tls_cert_check_helm = {
 ecommerce_xpay_psps_list = "CIPBITMM"
 ecommerce_vpos_psps_list = "BNLIITRR,BCITITMM,UNCRITMM,BPPIITRRXXX,PPAYITR1XXX,BIC36019"
 
-dns_zone_checkout = "uat.checkout"
+dns_zone_checkout  = "uat.checkout"
+dns_zone_ecommerce = "uat.ecommerce"
+
+
+# Ecommerce
+
+ecommerce_enabled = true
 
 io_backend_base_path         = "https://api-app.io.pagopa.it"
 ecommerce_io_with_pm_enabled = false

@@ -130,6 +130,12 @@ variable "dns_zone_checkout" {
   description = "The checkout dns subdomain."
 }
 
+variable "dns_zone_ecommerce" {
+  type        = string
+  default     = null
+  description = "The ecommerce dns subdomain."
+}
+
 variable "pod_disruption_budgets" {
   type = map(object({
     name         = optional(string, null)
@@ -224,4 +230,21 @@ variable "ecommerce_jwt_issuer_api_key_use_primary" {
   type        = bool
   description = "Whenever to use primary or secondary key invoking ecommerce-jwt-issuer-service"
   default     = true
+}
+
+variable "ecommerce_cdn_storage_replication_type" {
+  type        = string
+  default     = "GRS"
+  description = "(Optional) Checkout cnd storage replication type"
+}
+
+variable "dns_zone_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain."
+}
+
+variable "ecommerce_enabled" {
+  type    = bool
+  default = false
 }
