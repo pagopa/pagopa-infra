@@ -282,7 +282,7 @@ stages:
               echo "##vso[task.setvariable variable=JAVA_HOME;]$(Pipeline.Workspace)/java/jdk-11.0.2"
             displayName: "Install Java"
           # nodo db cfg addon
-          - template: ./templates/generic-liquibase-status-with-kv.yml
+          - template: ./templates/generic-liquibase-action-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_CFG_SCHEMA}}
@@ -297,7 +297,7 @@ stages:
               lbLogLevel: ${{ parameters.lbLogLevel }}
               LIQUIBASE_ACTION: 'status'
           # nodo db offline addon
-          - template: ./templates/generic-liquibase-status-with-kv.yml
+          - template: ./templates/generic-liquibase-action-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_OFFLINE_SCHEMA}}
@@ -312,7 +312,7 @@ stages:
               lbLogLevel: ${{ parameters.lbLogLevel }}
               LIQUIBASE_ACTION: 'status'
           # nodo db online addon
-          - template: ./templates/generic-liquibase-status-with-kv.yml
+          - template: ./templates/generic-liquibase-action-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_ONLINE_SCHEMA}}
@@ -327,7 +327,7 @@ stages:
               lbLogLevel: ${{ parameters.lbLogLevel }}
               LIQUIBASE_ACTION: 'status'
           # nodo db re addon
-          - template: ./templates/generic-liquibase-status-with-kv.yml
+          - template: ./templates/generic-liquibase-action-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_RE_SCHEMA}}
@@ -342,7 +342,7 @@ stages:
               lbLogLevel: ${{ parameters.lbLogLevel }}
               LIQUIBASE_ACTION: 'status'
           # crusc8 db cruscotto addon
-          - template: ./templates/generic-liquibase-status-with-kv.yml
+          - template: ./templates/generic-liquibase-action-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: cruscotto
               SCHEMA: ${{variables.CRUSC8_SCHEMA}}
@@ -357,7 +357,7 @@ stages:
               lbLogLevel: ${{ parameters.lbLogLevel }}
               LIQUIBASE_ACTION: 'status'
           # fdr db fdr addon
-          - template: ./templates/generic-liquibase-status-with-kv.yml
+          - template: ./templates/generic-liquibase-action-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: fdr
               SCHEMA: ${{variables.FDR_FDR1_SCHEMA}}
@@ -372,7 +372,7 @@ stages:
               lbLogLevel: ${{ parameters.lbLogLevel }}
               LIQUIBASE_ACTION: 'status'
           # fdr db fdr3 addon
-          - template: ./templates/generic-liquibase-status-with-kv.yml
+          - template: ./templates/generic-liquibase-action-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: fdr
               SCHEMA: ${{variables.FDR_FDR3_SCHEMA}}
@@ -387,7 +387,7 @@ stages:
               lbLogLevel: ${{ parameters.lbLogLevel }}
               LIQUIBASE_ACTION: 'status'
           # gpd db apd addon
-          - template: ./templates/generic-liquibase-status-with-kv.yml
+          - template: ./templates/generic-liquibase-action-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: gpd
               SCHEMA: ${{variables.GPD_SCHEMA}}
@@ -458,7 +458,7 @@ stages:
               echo "##vso[task.setvariable variable=JAVA_HOME;]$(Pipeline.Workspace)/java/jdk-11.0.2"
             displayName: "Install Java"
           # nodo db cfg addon
-          - template: ./templates/generic-liquibase-status-with-kv.yml
+          - template: ./templates/generic-liquibase-action-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_CFG_SCHEMA}}
@@ -473,7 +473,7 @@ stages:
               lbLogLevel: ${{ parameters.lbLogLevel }}
               LIQUIBASE_ACTION: 'apply'
           # nodo db offline addon
-          - template: ./templates/generic-liquibase-status-with-kv.yml
+          - template: ./templates/generic-liquibase-action-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_OFFLINE_SCHEMA}}
@@ -488,7 +488,7 @@ stages:
               lbLogLevel: ${{ parameters.lbLogLevel }}
               LIQUIBASE_ACTION: 'apply'
           # nodo db online addon
-          - template: ./templates/generic-liquibase-status-with-kv.yml
+          - template: ./templates/generic-liquibase-action-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_ONLINE_SCHEMA}}
@@ -503,7 +503,7 @@ stages:
               lbLogLevel: ${{ parameters.lbLogLevel }}
               LIQUIBASE_ACTION: 'apply'
           # nodo db re addon
-          - template: ./templates/generic-liquibase-status-with-kv.yml
+          - template: ./templates/generic-liquibase-action-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: nodo
               SCHEMA: ${{variables.NODO_RE_SCHEMA}}
@@ -518,7 +518,7 @@ stages:
               lbLogLevel: ${{ parameters.lbLogLevel }}
               LIQUIBASE_ACTION: 'apply'
           # crusc8 db cruscotto addon
-          - template: ./templates/generic-liquibase-status-with-kv.yml
+          - template: ./templates/generic-liquibase-action-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: cruscotto
               SCHEMA: ${{variables.CRUSC8_SCHEMA}}
@@ -533,7 +533,7 @@ stages:
               lbLogLevel: ${{ parameters.lbLogLevel }}
               LIQUIBASE_ACTION: 'apply'
           # fdr db fdr addon
-          - template: ./templates/generic-liquibase-status-with-kv.yml
+          - template: ./templates/generic-liquibase-action-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: fdr
               SCHEMA: ${{variables.FDR_FDR1_SCHEMA}}
@@ -548,7 +548,7 @@ stages:
               lbLogLevel: ${{ parameters.lbLogLevel }}
               LIQUIBASE_ACTION: 'apply'
           # fdr db fdr3 addon
-          - template: ./templates/generic-liquibase-status-with-kv.yml
+          - template: ./templates/generic-liquibase-action-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: fdr
               SCHEMA: ${{variables.FDR_FDR3_SCHEMA}}
@@ -563,7 +563,7 @@ stages:
               lbLogLevel: ${{ parameters.lbLogLevel }}
               LIQUIBASE_ACTION: 'apply'
           # gpd db apd addon
-          - template: ./templates/generic-liquibase-status-with-kv.yml
+          - template: ./templates/generic-liquibase-action-with-kv.yml
             parameters:
               DATABASE_FOLDER_NAME: gpd
               SCHEMA: ${{variables.GPD_SCHEMA}}
