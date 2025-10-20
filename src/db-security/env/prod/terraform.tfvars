@@ -16,3 +16,17 @@ metabase_pgflex_params = {
 
 
 metabase_plan_idh_tier = "premium_low_load"
+
+enabled_features = {
+  db_vdi = true
+}
+
+db_vdi_settings = {
+  location              = "westeurope"
+  location_short        = "weu"
+  size                  = "Standard_B4ms"
+  auto_shutdown_enabled = true
+  auto_shutdown_time    = "1900"
+  session_limit         = 1
+  host_pool_type        = "Pooled"
+}
