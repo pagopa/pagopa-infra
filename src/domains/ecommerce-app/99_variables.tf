@@ -136,6 +136,12 @@ variable "dns_zone_ecommerce" {
   description = "The ecommerce dns subdomain."
 }
 
+variable "dns_default_ttl_sec" {
+  type        = number
+  description = "The DNS default TTL in seconds"
+  default     = 3600
+}
+
 variable "pod_disruption_budgets" {
   type = map(object({
     name         = optional(string, null)
