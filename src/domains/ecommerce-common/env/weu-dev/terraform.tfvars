@@ -19,6 +19,7 @@ ingress_load_balancer_ip = "10.1.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
+dns_zone_ecommerce       = "dev.ecommerce"
 
 ### Cosmos
 
