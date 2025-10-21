@@ -658,8 +658,8 @@
             "in": "query",
             "name": "amount",
             "schema": {
-                "type": "integer",
-                "format": "int64"
+              "type": "integer",
+              "format": "int64"
             },
             "required": true,
             "description": "The amount to pay"
@@ -1894,6 +1894,10 @@
           "isAllCCP": {
             "description": "Flag for the inclusion of Poste bundles. false -> excluded, true -> included",
             "type": "boolean"
+          },
+          "orderId": {
+            "type": "string",
+            "description": "NPG order id associated to not onboarded payments session used to retrieve user inserted card bin, returned in outcome url for not onboarded card payment flow"
           }
         },
         "required": [
