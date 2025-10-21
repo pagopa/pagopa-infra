@@ -86,7 +86,7 @@ variable "external_domain" {
 variable "dns_zone_internal_prefix" {
   type        = string
   default     = null
-  description = "The dns internal åsubdomain."
+  description = "The dns internal subdomain."
 }
 
 variable "dns_zone_ecommerce" {
