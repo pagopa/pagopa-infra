@@ -50,6 +50,8 @@
         </choose>
         <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
         <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["walletId"])" />
+        <!-- valued for payment without onboarded card -->
+        <set-variable name="orderId" value="@((string)((JObject) context.Variables["body"])["orderId"])" />
         <choose>
             <when condition="@((bool)context.Variables["isCard"] && !String.IsNullOrEmpty((string)context.Variables["walletId"]))">
                 <send-request ignore-error="false" timeout="10" response-variable-name="authDataResponse">
@@ -93,6 +95,51 @@
                     </otherwise>
                 </choose>
             </when>
+            <when condition="@((bool)context.Variables["isCard"] && !String.IsNullOrEmpty((string)context.Variables["orderId"]))">
+                <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodSessionResponse">
+                    <set-url>@($"https://${ecommerce-basepath}/pagopa-ecommerce-payment-methods-service/payment-methods/{(string)context.Variables["paymentMethodId"]}/sessions/{(string)context.Variables["orderId"]}")</set-url>
+                    <set-method>GET</set-method>
+                     <set-header name="X-Client-Id" exists-action="override">
+                        <value>IO</value>
+                    </set-header>
+                    <!-- Set payment-methods API Key header -->
+                    <set-header name="x-api-key" exists-action="override">
+                    <value>{{ecommerce-payment-methods-api-key-value}}</value>
+                    </set-header>
+                </send-request>
+                <choose>
+                    <when condition="@(((int)((IResponse)context.Variables["paymentMethodSessionResponse"]).StatusCode) == 200)">
+                        <set-variable name="paymentMethodSessionResponseBody" value="@((JObject)((IResponse)context.Variables["paymentMethodSessionResponse"]).Body.As<JObject>())" />
+                        <set-variable name="bin" value="@((string)((JObject)context.Variables["paymentMethodSessionResponseBody"])["bin"])" />
+                    </when>
+                    <when condition="@(((int)((IResponse)context.Variables["paymentMethodSessionResponseBody"]).StatusCode) == 404)">
+                        <return-response>
+                            <set-status code="404" reason="Not found" />
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
+                            <set-body>{
+                                "title": "Unable to get payment methods session data",
+                                "status": 404,
+                                "detail": "Unable to get payment methods session data",
+                            }</set-body>
+                        </return-response>
+                    </when>
+                    <otherwise>
+                        <return-response>
+                            <set-status code="502" reason="Bad Gateway" />
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
+                            <set-body>{
+                                "title": "Bad gateway",
+                                "status": 502,
+                                "detail": "Payment methods service not available",
+                            }</set-body>
+                        </return-response>
+                    </otherwise>
+                </choose>
+            </when>
         </choose>
         <set-query-parameter name="maxOccurrences" exists-action="override">
             <value>100</value>
@@ -101,6 +148,7 @@
             var bin = (string)context.Variables.GetValueOrDefault("bin", "");
             JObject inBody = (JObject)context.Variables["body"];
             inBody.Remove("walletId");
+            inBody.Remove("orderId");
             inBody.Remove("paymentToken");
             inBody.Remove("language");
             inBody.Add("touchpoint","IO");
