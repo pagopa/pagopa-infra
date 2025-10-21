@@ -10,24 +10,24 @@ locals {
 
   database_properties = {
     postgresql = {
-      driver = "postgres"
+      driver    = "postgres"
       full_sync = true
-      ssl = true
+      ssl       = true
     }
     nexi = {
-      driver = "starburst"
+      driver    = "starburst"
       full_sync = false
-      ssl = false
+      ssl       = false
     }
     mongodb = {
-      driver = "starburst"
+      driver    = "starburst"
       full_sync = false
-      ssl = false
+      ssl       = false
     }
     redis = {
-      driver = "starburst"
+      driver    = "starburst"
       full_sync = false
-      ssl = true
+      ssl       = true
     }
   }
 }

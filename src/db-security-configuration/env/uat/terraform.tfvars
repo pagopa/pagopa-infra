@@ -1,4 +1,4 @@
-prefix         = "pagopa"
-env_short      = "u"
-env            = "uat"
+prefix    = "pagopa"
+env_short = "u"
+env       = "uat"
 

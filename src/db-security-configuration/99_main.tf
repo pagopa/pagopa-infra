@@ -35,7 +35,7 @@ provider "restapi" {
   debug                = true
 
   headers = {
-    "x-api-key" = data.azurerm_key_vault_secret.metabase_api_key.value,
+    "x-api-key"    = data.azurerm_key_vault_secret.metabase_api_key.value,
     "Content-Type" = "application/json"
   }
 
