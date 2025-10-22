@@ -2,7 +2,7 @@
 locals {
   npg_sdk_hostname                    = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
   content_security_policy_header_name = "Content-Security-Policy"
-  cdn_storage_account_name            = "${local.project}ecommercecdnsa"
+  cdn_storage_account_name            = "${local.project}cdnsa"
   cdn_index_document                  = "index.html"
   cdn_error_document                  = "index.html"
   # DNS Zone Key for the main CDN (the one configured in the module)
