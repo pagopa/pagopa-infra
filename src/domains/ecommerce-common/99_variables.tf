@@ -86,19 +86,7 @@ variable "external_domain" {
 variable "dns_zone_internal_prefix" {
   type        = string
   default     = null
-  description = "The dns internal subdomain."
-}
-
-variable "dns_zone_ecommerce" {
-  type        = string
-  default     = null
   description = "The dns subdomain."
-}
-
-variable "dns_default_ttl_sec" {
-  type        = number
-  description = "value"
-  default     = 3600
 }
 
 # CosmosDb
