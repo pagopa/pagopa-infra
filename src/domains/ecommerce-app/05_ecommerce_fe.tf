@@ -8,7 +8,7 @@ locals {
   # DNS Zone Key for the main CDN (the one configured in the module)
   dns_zone_key = "${var.dns_zone_ecommerce}.${var.external_domain}"
   # ecommerce zones apex
-  # TO BE DEFINED all_bonus_zones_apex = data.azurerm_dns_zone.bonus_elettrodomestici_apex
+  # TO BE DEFINED ecommerce_zones_apex = data.azurerm_dns_zone.bonus_elettrodomestici_apex
   custom_domains = [
     {
       domain_name             = local.dns_zone_key
