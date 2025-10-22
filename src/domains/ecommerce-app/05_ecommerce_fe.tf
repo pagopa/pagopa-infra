@@ -7,7 +7,7 @@ locals {
   cdn_error_document                  = "index.html"
   # DNS Zone Key for the main CDN (the one configured in the module)
   dns_zone_key = "${var.dns_zone_ecommerce}.${var.external_domain}"
-  # All bonus elettrodomestici zones apex
+  # ecommerce zones apex
   # TO BE DEFINED all_bonus_zones_apex = data.azurerm_dns_zone.bonus_elettrodomestici_apex
   custom_domains = [
     {
