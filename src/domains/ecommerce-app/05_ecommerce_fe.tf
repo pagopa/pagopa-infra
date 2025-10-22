@@ -11,7 +11,7 @@ locals {
   # TO BE DEFINED all_bonus_zones_apex = data.azurerm_dns_zone.bonus_elettrodomestici_apex
   custom_domains = [
     {
-      domain_name             = "ecommerce"
+      domain_name             = local.dns_zone_key
       dns_name                = data.azurerm_dns_zone.ecommerce_public[0].name
       dns_resource_group_name = data.azurerm_dns_zone.ecommerce_public[0].resource_group_name
       ttl                     = var.dns_default_ttl_sec
@@ -43,7 +43,13 @@ locals {
           action = "Append"
           name   = local.content_security_policy_header_name
           value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.sia.eu *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;"
-        },
+        }
+      ]
+    },
+    {
+      order = 2
+      # HSTS
+      modify_response_header_actions = [
         {
           action = "Append"
           name   = local.content_security_policy_header_name
@@ -65,7 +71,8 @@ locals {
           value  = "SAMEORIGIN"
         },
       ]
-  }]
+    }
+  ]
 
   delivery_custom_rules = [
     {
