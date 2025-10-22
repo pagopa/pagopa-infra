@@ -133,7 +133,7 @@ module "ecommerce_cdn" {
   count = var.ecommerce_enabled ? 1 : 0
 
   #name                  = "ecommerce"
-  cdn_prefix_name     = local.product
+  cdn_prefix_name     = local.project
   resource_group_name = azurerm_resource_group.ecommerce_fe_rg[0].name
   location            = var.location
 
