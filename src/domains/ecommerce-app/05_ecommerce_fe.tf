@@ -2,7 +2,7 @@
 locals {
   npg_sdk_hostname                    = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
   content_security_policy_header_name = "Content-Security-Policy"
-  cdn_storage_account_name            = "ecommerce"
+  cdn_storage_account_name            = "${local.project}ecommercecdnsa"
   cdn_index_document                  = "index.html"
   cdn_error_document                  = "index.html"
   # DNS Zone Key for the main CDN (the one configured in the module)
@@ -142,7 +142,7 @@ module "ecommerce_cdn" {
   keyvault_id = data.azurerm_key_vault.kv.id
   tenant_id   = data.azurerm_client_config.current.tenant_id
 
-  querystring_caching_behaviour = "BypassCaching"
+  querystring_caching_behaviour = "IgnoreQueryString"
 
   custom_domains        = local.custom_domains
   global_delivery_rules = local.global_delivery_rules
