@@ -77,7 +77,7 @@ locals {
   delivery_custom_rules = [
     {
       name  = "CorsFontForNPG"
-      order = 2
+      order = 3
 
       // conditions
       url_path_conditions       = []
