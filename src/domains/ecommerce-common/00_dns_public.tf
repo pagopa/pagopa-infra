@@ -5,39 +5,7 @@ resource "azurerm_dns_zone" "ecommerce_public" {
 
   tags = module.tag_config.tags
 }
-/*
-//Prod ONLY record to DEV public DNS delegation
-resource "azurerm_dns_ns_record" "dev_ecommerce" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "dev"
-  zone_name           = azurerm_dns_zone.ecommerce_public[0].name
-  resource_group_name = data.azurerm_resource_group.rg_vnet.name
-  records = [
-    "ns1-07.azure-dns.com.",
-    "ns2-07.azure-dns.net.",
-    "ns3-07.azure-dns.org.",
-    "ns4-07.azure-dns.info."
-  ]
-  ttl = var.dns_default_ttl_sec
-  tags = module.tag_config.tags
-}
 
-//Prod ONLY record to UAT public DNS delegation
-resource "azurerm_dns_ns_record" "uat_ecommerce" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "uat"
-  zone_name           = azurerm_dns_zone.ecommerce_public[0].name
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  records = [
-    "ns1-01.azure-dns.com.",
-    "ns2-01.azure-dns.net.",
-    "ns3-01.azure-dns.org.",
-    "ns4-01.azure-dns.info."
-  ]
-  ttl = var.dns_default_ttl_sec
-  tags = module.tag_config.tags
-}
-*/
 resource "azurerm_dns_caa_record" "ecommerce_pagopa_it" {
   name                = "@"
   zone_name           = azurerm_dns_zone.ecommerce_public[0].name
