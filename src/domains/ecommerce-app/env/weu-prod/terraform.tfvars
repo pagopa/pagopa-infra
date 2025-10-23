@@ -45,8 +45,6 @@ dns_zone_ecommerce = "ecommerce"
 
 # Ecommerce
 
-ecommerce_enabled = true
-
 pod_disruption_budgets = {
   "pagopaecommerceeventdispatcherservice" = {
     minAvailable = 3

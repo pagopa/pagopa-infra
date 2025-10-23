@@ -117,7 +117,6 @@ locals {
  * Ecommerce resource group
  **/
 resource "azurerm_resource_group" "ecommerce_fe_rg" {
-  count    = var.ecommerce_enabled ? 1 : 0
   name     = format("%s-ecommerce-fe-rg", local.product)
   location = var.location
 
@@ -130,11 +129,9 @@ resource "azurerm_resource_group" "ecommerce_fe_rg" {
 module "ecommerce_cdn" {
   source = "./.terraform/modules/__v4__/cdn_frontdoor"
 
-  count = var.ecommerce_enabled ? 1 : 0
-
   #name                  = "ecommerce"
   cdn_prefix_name     = local.project
-  resource_group_name = azurerm_resource_group.ecommerce_fe_rg[0].name
+  resource_group_name = azurerm_resource_group.ecommerce_fe_rg.name
   location            = var.location
 
   https_rewrite_enabled = true
