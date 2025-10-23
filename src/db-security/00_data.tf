@@ -3,6 +3,11 @@ data "azurerm_virtual_network" "vnet_italy" {
   resource_group_name = local.vnet_italy_resource_group_name
 }
 
+data "azurerm_virtual_network" "vnet_core" {
+  name                = local.vnet_core_name
+  resource_group_name = local.vnet_core_resource_group_name
+}
+
 data "azurerm_resource_group" "rg_vnet_italy" {
   name = local.vnet_italy_resource_group_name
 }
@@ -16,6 +21,17 @@ module "secret_core" {
 
   resource_group = local.key_vault_core_rg_name
   key_vault_name = local.key_vault_core_name
+
+  secrets = [
+    "db-vdi-admin-password"
+  ]
+}
+
+module "secret_core_itn" {
+  source = "./.terraform/modules/__v4__/key_vault_secrets_query"
+
+  resource_group = local.key_vault_core_itn_rg_name
+  key_vault_name = local.key_vault_core_itn_name
 
   secrets = [
     "metabase-db-admin-login",
@@ -54,3 +70,18 @@ data "azurerm_subnet" "private_endpoint_subnet" {
   virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
   resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
 }
+
+
+data "azurerm_subnet" "tools_subnet" {
+  count                = var.enabled_features.db_vdi ? 1 : 0
+  name                 = "${local.product}-tools-cae-subnet"
+  resource_group_name  = data.azurerm_resource_group.rg_vnet_core.name
+  virtual_network_name = data.azurerm_virtual_network.vnet_core.name
+
+}
+
+
+data "azuread_group" "admin_group" {
+  display_name = "${local.product}-adgroup-admin"
+}
+
