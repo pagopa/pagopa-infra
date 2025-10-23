@@ -19,6 +19,9 @@ dns_zone_internal_prefix = "internal.platform"
 dns_zone_prefix          = "payment-wallet"
 apim_dns_zone_prefix     = "platform"
 
+# checkout
+dns_zone_checkout = "checkout"
+
 ### Aks
 
 ingress_load_balancer_ip = "10.3.2.250"
