@@ -231,7 +231,6 @@
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_ecommerce_cdn_storage_replication_type"></a> [ecommerce\_cdn\_storage\_replication\_type](#input\_ecommerce\_cdn\_storage\_replication\_type) | (Optional) Checkout cnd storage replication type | `string` | `"GRS"` | no |
-| <a name="input_ecommerce_enabled"></a> [ecommerce\_enabled](#input\_ecommerce\_enabled) | n/a | `bool` | `false` | no |
 | <a name="input_ecommerce_helpdesk_command_service_api_key_use_primary"></a> [ecommerce\_helpdesk\_command\_service\_api\_key\_use\_primary](#input\_ecommerce\_helpdesk\_command\_service\_api\_key\_use\_primary) | Whenever to use primary or secondary key invoking helpdesk-command-service | `bool` | `true` | no |
 | <a name="input_ecommerce_helpdesk_service_api_key_use_primary"></a> [ecommerce\_helpdesk\_service\_api\_key\_use\_primary](#input\_ecommerce\_helpdesk\_service\_api\_key\_use\_primary) | If true the current active API key used for helpdesk service requests will be the primary one. | `bool` | `true` | no |
 | <a name="input_ecommerce_io_with_pm_enabled"></a> [ecommerce\_io\_with\_pm\_enabled](#input\_ecommerce\_io\_with\_pm\_enabled) | ecommerce for IO using Payment Manager enabled | `bool` | `false` | no |

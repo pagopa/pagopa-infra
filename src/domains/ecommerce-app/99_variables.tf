@@ -249,8 +249,3 @@ variable "dns_zone_prefix" {
   default     = null
   description = "The dns subdomain."
 }
-
-variable "ecommerce_enabled" {
-  type    = bool
-  default = false
-}
