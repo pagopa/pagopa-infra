@@ -17,7 +17,7 @@ resource "azurerm_api_management_named_value" "ecommerce-webview-jwt-signing-key
 ##############
 
 module "apim_ecommerce_webview_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "ecommerce-webview"
   display_name = "eCommerce for webview"
@@ -54,7 +54,7 @@ resource "azurerm_api_management_api_version_set" "apim_ecommerce_webview_api" {
 }
 
 module "apim_ecommerce_webview_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-ecommerce-webview-api"
   resource_group_name   = local.pagopa_apim_rg
@@ -105,7 +105,7 @@ resource "azurerm_api_management_api_operation_policy" "webview_post_wallet_tran
 }
 
 module "apim_ecommerce_webview_api_v2" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-ecommerce-webview-api"
   resource_group_name   = local.pagopa_apim_rg
