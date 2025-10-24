@@ -88,6 +88,11 @@
                     authDetail.Remove("paymentMethodId");
                     requestBodyDetails = authDetail;
                     break;
+                case "cards":
+                    paymentMethodId = (string)authDetail["paymentMethodId"];
+                    authDetail.Remove("paymentMethodId");
+                    requestBodyDetails = authDetail;
+                    break;
                 default:
                     break;
             }
