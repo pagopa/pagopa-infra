@@ -1,12 +1,6 @@
 #!/bin/bash
 
 # This script patches a KEDA ScaledObject to increment maxReplicaCount by 1
-# Usage: ./aks-increate-max-keda-pod-scaling.sh <namespace> <scaled-object-name>
-
-if [ $# -ne 1 ]; then
-    echo "Usage: $0 <namespace>"
-    exit 1
-fi
 
 NAMESPACE=$AKS_NAMESPACE
 HPA=$AKS_HPA
