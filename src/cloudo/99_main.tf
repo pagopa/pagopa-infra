@@ -20,3 +20,5 @@ provider "azurerm" {
     }
   }
 }
+
+data "azurerm_subscription" "current" {}

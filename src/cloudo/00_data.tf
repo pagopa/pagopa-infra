@@ -9,6 +9,18 @@ data "azurerm_key_vault_secret" "github_pat" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "cloudo_slack_token" {
+  name         = "cloudo-slack-token"
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+
+}
+
+data "azurerm_key_vault_secret" "opsgenie_token" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "opsgenie-webhook-token"
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
 
 data "azurerm_application_insights" "app_insight" {
   name                = var.application_insisght_name

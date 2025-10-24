@@ -31,6 +31,15 @@
       "run_args": "-n 1000 --repeats 1000",
       "worker": "Runbook",
       "oncall": "false"
+    },
+    {
+      "id": "pagopa-d-appgw-total-request-info",
+      "name": "total request pagopa-app-gw",
+      "description": "Get Total request from pagopa appgw!",
+      "runbook": "azure/application_gateway_info.sh",
+      "run_args": "pagopa-d-app-gw pagopa-d-vnet-rg",
+      "worker": "Runbook",
+      "oncall": "false"
     }]
   },
   {
