@@ -117,7 +117,7 @@ locals {
  * Ecommerce resource group
  **/
 resource "azurerm_resource_group" "ecommerce_fe_rg" {
-  name     = format("%s-ecommerce-fe-rg", local.product)
+  name     = "${local.product}-ecommerce-fe-rg"
   location = var.location
 
   tags = module.tag_config.tags
