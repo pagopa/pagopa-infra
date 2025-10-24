@@ -10,12 +10,12 @@ locals {
   # ecommerce zones apex
   # TO BE DEFINED ecommerce_zones_apex = data.azurerm_dns_zone.ecommerce_apex
   custom_domains = [
-    # {
-    #   domain_name             = local.dns_zone_key
-    #   dns_name                = data.azurerm_dns_zone.ecommerce_public.name
-    #   dns_resource_group_name = data.azurerm_dns_zone.ecommerce_public.resource_group_name
-    #   ttl                     = var.dns_default_ttl_sec
-    # }
+    {
+      domain_name             = local.dns_zone_key
+      dns_name                = data.azurerm_dns_zone.ecommerce_public[0].name
+      dns_resource_group_name = data.azurerm_dns_zone.ecommerce_public[0].resource_group_name
+      ttl                     = var.dns_default_ttl_sec
+    }
   ]
 
   global_delivery_rules = [
@@ -153,4 +153,48 @@ module "ecommerce_cdn" {
   delivery_custom_rules = local.delivery_custom_rules
 
   tags = module.tag_config.tags
+}
+
+resource "azurerm_application_insights_web_test" "ecommerce_fe_web_test" {
+  count                   = var.env_short == "p" ? 1 : 0
+  name                    = format("%s-ecommerce-fe-web-test", local.product)
+  location                = var.location
+  resource_group_name     = data.azurerm_resource_group.monitor_rg.name
+  application_insights_id = data.azurerm_application_insights.application_insights.id
+  kind                    = "ping"
+  frequency               = 300
+  timeout                 = 10
+  enabled                 = true
+  geo_locations           = ["emea-nl-ams-azr"]
+
+  configuration = <<XML
+<WebTest Name="ecommerce_fe_web_test" Id="ABD48585-0831-40CB-9069-682EA6BB3583" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="10" WorkItemIds=""
+    xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="" ResultsLocale="">
+    <Items>
+        <Request Method="GET" Guid="a5f10126-e4cd-570d-961c-cea43999a200" Version="1.1" Url="${format("https://%s.%s/index.html", var.dns_zone_ecommerce, var.external_domain)}" ThinkTime="0" Timeout="10" ParseDependentRequests="False" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="200" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False" />
+    </Items>
+</WebTest>
+XML
+
+}
+
+module "ecommerce_fe_web_test" {
+  count                                 = var.env_short == "p" ? 1 : 0
+  source                                = "./.terraform/modules/__v4__/application_insights_standard_web_test"
+  https_endpoint                        = "https://${module.ecommerce_cdn.fqdn}"
+  https_endpoint_path                   = "/index.html"
+  alert_name                            = "${local.project}-fe-web-test"
+  location                              = var.location
+  alert_enabled                         = true
+  application_insights_resource_group   = data.azurerm_resource_group.monitor_rg.name
+  application_insights_id               = data.azurerm_application_insights.application_insights.id
+  application_insights_action_group_ids = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id] #missing opsgenie link
+  https_probe_method                    = "GET"
+  timeout                               = 10
+  frequency                             = 300
+  https_probe_threshold                 = 99
+  metric_frequency                      = "PT5M"
+  metric_window_size                    = "PT1H"
+  retry_enabled                         = true
+
 }
