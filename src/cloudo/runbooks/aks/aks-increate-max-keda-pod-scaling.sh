@@ -29,6 +29,7 @@ if [ "$MONITOR_CONDITION" = "Resolved" ]; then
 else
   # Increment maxReplicaCount by 1
   NEW_MAX=$((CURRENT_MAX + 1))
+fi
 
 # Patch ScaledObject with new maxReplicaCount
 kubectl patch scaledobject $SCALED_OBJECT_NAME -n $NAMESPACE --type='json' -p="[{'op': 'replace', 'path': '/spec/maxReplicaCount', 'value': $NEW_MAX}]"
