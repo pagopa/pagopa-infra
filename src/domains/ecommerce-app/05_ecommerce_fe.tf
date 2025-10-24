@@ -10,12 +10,12 @@ locals {
   # ecommerce zones apex
   # TO BE DEFINED ecommerce_zones_apex = data.azurerm_dns_zone.ecommerce_apex
   custom_domains = [
-    # {
-    #   domain_name             = local.dns_zone_key
-    #   dns_name                = data.azurerm_dns_zone.ecommerce_public.name
-    #   dns_resource_group_name = data.azurerm_dns_zone.ecommerce_public.resource_group_name
-    #   ttl                     = var.dns_default_ttl_sec
-    # }
+    {
+      domain_name             = local.dns_zone_key
+      dns_name                = data.azurerm_dns_zone.ecommerce_public[0].name
+      dns_resource_group_name = data.azurerm_dns_zone.ecommerce_public[0].resource_group_name
+      ttl                     = var.dns_default_ttl_sec
+    }
   ]
 
   global_delivery_rules = [
