@@ -21,7 +21,11 @@ fi
 
 if [ "$MONITOR_CONDITION" = "Resolved" ]; then
   # Increment maxReplicaCount by 1
-  NEW_MAX=$((CURRENT_MAX - 1))
+  if [ "$CURRENT_MAX" -gt 1 ]; then
+    NEW_MAX=$((CURRENT_MAX - 1))
+  else
+    NEW_MAX=1
+  fi
 else
   # Increment maxReplicaCount by 1
   NEW_MAX=$((CURRENT_MAX + 1))
