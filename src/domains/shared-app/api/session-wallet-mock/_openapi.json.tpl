@@ -120,6 +120,10 @@
           "userEmail": {
             "type": "string",
             "description": "User email"
+          },
+          "usePDV": {
+            "type": "boolean",
+            "description": "True to use PDV tokenization, false otherwise"
           }
         }
       },

@@ -2,12 +2,12 @@
     <inbound>
       <base />
         <set-variable name="tokenRequest" value="@(context.Request.Body.As<JObject>())" />
-        <set-variable name="usePDV" value="@(context.Request.Headers.GetValueOrDefault("use-pdv","false"))"/>
+        <set-variable name="usePDV" value="@((bool?)((JObject)context.Variables["tokenRequest"])["usePDV"] ?? false)" />
         <set-variable name="email" value="@(((JObject)context.Variables["tokenRequest"])["userEmail"]?.ToString() ?? "c7223203-4842-484e-a635-2ec07fa3d08c")" />
         <set-variable name="userId" value="@(((JObject)context.Variables["tokenRequest"])["userId"]?.ToString() ?? "")" />
         <!-- Token JWT START-->
         <choose>
-          <when condition="@(bool.Parse(context.Variables.GetValueOrDefault<string>("usePDV")))">
+          <when condition="@(context.Variables.GetValueOrDefault<bool>("usePDV"))">
             <!-- user fiscal code tokenization with PDV START -->
             <!-- Post Token PDV : START-->
             <send-request ignore-error="true" timeout="10" response-variable-name="pdv-token" mode="new">
