@@ -18,21 +18,17 @@ function resolver(incomingItem, existingItem, isTombstone, conflictingItems) {
     // 1) existingItem (older committed)
     // 2) conflictingItems (other committed variants)
     // 3) incomingItem (incoming should override any previous item with same key)
-    var indexedCartItems = Object.create(null);
-    var bizEventIds = [];
+    var indexedCartItems = new Map();
 
     function indexCartItem(items) {
-    if (!items || !Array.isArray(items)) return;
-    for (var i = 0; i < items.length; i++) {
-        var it = items[i];
-        if (!it) continue;
-        var key = it.bizEventId;
-        if (!key) continue;
-        if (!indexedCartItems.hasOwnProperty(key)) {
-            bizEventIds.push(key);
+        if (!items || !Array.isArray(items)) return;
+        for (var i = 0; i < items.length; i++) {
+            var it = items[i];
+            if (!it) continue;
+            var key = it.bizeventId;
+            if (!key) continue;
+            indexedCartItems.set(key, it); // later indexing (incoming) overwrites earlier
         }
-        indexedCartItems[key] = it; // later indexing (incoming) overwrites earlier
-      }
     }
 
 
@@ -41,7 +37,7 @@ function resolver(incomingItem, existingItem, isTombstone, conflictingItems) {
     // If incoming is null => It is a delete operation so delete the existing committed doc (if any)
     if (!incomingItem) {
         if (existingItem) {
-            collection.deleteDocument(existingItem._self, {}, function(err, resp) {
+            collection.deleteDocument(existingItem._self, {}, function (err, resp) {
                 if (err) throw err;
             });
         }
@@ -68,13 +64,7 @@ function resolver(incomingItem, existingItem, isTombstone, conflictingItems) {
     indexCartItem(getCartIdValidElseReturnEmpty(incomingItem));
 
     // Build merged array preserving insertion order
-    var merged = [];
-    for (var ki = 0; ki < bizEventIds.length; ki++) {
-        var k = bizEventIds[ki];
-        if (indexedCartItems.hasOwnProperty(k)) {
-            merged.push(indexed[k]);
-        }
-    }
+    var merged = [...indexedCartItems.values()];
 
     // Safety: limit merged size to avoid runaway RU/time costs
     if (merged.length > MAX_ITEMS) {
