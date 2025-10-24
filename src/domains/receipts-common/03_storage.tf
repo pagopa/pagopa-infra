@@ -104,8 +104,18 @@ resource "azurerm_storage_queue" "queue-receipt-waiting-4-gen" {
   storage_account_name = module.receipts_datastore_fn_sa.name
 }
 
+resource "azurerm_storage_queue" "queue-cart-receipt-waiting-4-gen" {
+  name                 = "${local.project}-queue-cart-receipt-waiting-4-gen"
+  storage_account_name = module.receipts_datastore_fn_sa.name
+}
+
 resource "azurerm_storage_queue" "queue-receipt-io-notifier-error" {
   name                 = "${local.project}-queue-receipt-io-notifier-error"
+  storage_account_name = module.receipts_datastore_fn_sa.name
+}
+
+resource "azurerm_storage_queue" "queue-cart-receipt-io-notifier-error" {
+  name                 = "${local.project}-queue-cart-receipt-io-notifier-error"
   storage_account_name = module.receipts_datastore_fn_sa.name
 }
 
