@@ -177,3 +177,24 @@ resource "azurerm_application_insights_web_test" "ecommerce_fe_web_test" {
 XML
 
 }
+
+module "ecommerce_fe_web_test" {
+  count                                 = var.env_short == "p" ? 1 : 0
+  source                                = "./.terraform/modules/__v4__/application_insights_standard_web_test"
+  https_endpoint                        = "https://${module.ecommerce_cdn.fqdn}"
+  https_endpoint_path                   = "/index.html"
+  alert_name                            = "${local.project}-fe-web-test"
+  location                              = var.location
+  alert_enabled                         = true
+  application_insights_resource_group   = data.azurerm_resource_group.monitor_rg.name
+  application_insights_id               = data.azurerm_application_insights.application_insights.id
+  application_insights_action_group_ids = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id]
+  https_probe_method                    = "GET"
+  timeout                               = 10
+  frequency                             = 300
+  https_probe_threshold                 = 99
+  metric_frequency                      = "PT5M"
+  metric_window_size                    = "PT1H"
+  retry_enabled                         = true
+
+}
