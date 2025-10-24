@@ -1,0 +1,156 @@
+
+locals {
+  npg_sdk_hostname                    = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
+  content_security_policy_header_name = "Content-Security-Policy"
+  cdn_storage_account_name            = "${local.project}cdnsa"
+  cdn_index_document                  = "index.html"
+  cdn_error_document                  = "index.html"
+  # DNS Zone Key for the main CDN (the one configured in the module)
+  dns_zone_key = "${var.dns_zone_ecommerce}.${var.external_domain}"
+  # ecommerce zones apex
+  # TO BE DEFINED ecommerce_zones_apex = data.azurerm_dns_zone.ecommerce_apex
+  custom_domains = [
+    # {
+    #   domain_name             = local.dns_zone_key
+    #   dns_name                = data.azurerm_dns_zone.ecommerce_public.name
+    #   dns_resource_group_name = data.azurerm_dns_zone.ecommerce_public.resource_group_name
+    #   ttl                     = var.dns_default_ttl_sec
+    # }
+  ]
+
+  global_delivery_rules = [
+    {
+      order = 1
+      # HSTS
+      modify_response_header_actions = [
+        {
+          action = "Overwrite"
+          name   = "Strict-Transport-Security"
+          value  = "max-age=31536000"
+        },
+        # Content-Security-Policy
+        {
+          action = "Overwrite"
+          name   = local.content_security_policy_header_name
+          value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com", var.dns_zone_prefix, var.external_domain)
+        },
+        {
+          action = "Append"
+          name   = local.content_security_policy_header_name
+          value  = "https://recaptcha.net/;"
+        },
+        {
+          action = "Append"
+          name   = local.content_security_policy_header_name
+          value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.sia.eu *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;"
+        }
+      ]
+    },
+    {
+      order = 2
+      # HSTS
+      modify_response_header_actions = [
+        {
+          action = "Append"
+          name   = local.content_security_policy_header_name
+          value  = "img-src 'self' https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it"
+        },
+        {
+          action = "Append"
+          name   = local.content_security_policy_header_name
+          value  = "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://${local.npg_sdk_hostname};"
+        },
+        {
+          action = "Append"
+          name   = local.content_security_policy_header_name
+          value  = "style-src 'self' 'unsafe-inline'; worker-src www.recaptcha.net blob:;"
+        },
+        {
+          action = "Overwrite"
+          name   = "X-Frame-Options"
+          value  = "SAMEORIGIN"
+        },
+      ]
+    }
+  ]
+
+  delivery_custom_rules = [
+    {
+      name  = "CorsFontForNPG"
+      order = 3
+
+      // conditions
+      url_path_conditions       = []
+      cookies_conditions        = []
+      device_conditions         = []
+      http_version_conditions   = []
+      post_arg_conditions       = []
+      query_string_conditions   = []
+      remote_address_conditions = []
+      request_body_conditions   = []
+      request_header_conditions = [{
+        selector         = "Origin"
+        operator         = "Equal"
+        match_values     = ["https://${local.npg_sdk_hostname}"]
+        transforms       = []
+        negate_condition = false
+      }]
+      request_method_conditions     = []
+      request_scheme_conditions     = []
+      request_uri_conditions        = []
+      url_file_extension_conditions = []
+      url_file_name_conditions      = []
+
+      // actions
+      modify_response_header_actions = [{
+        action = "Overwrite"
+        name   = "Access-Control-Allow-Origin"
+        value  = "https://${local.npg_sdk_hostname}"
+      }]
+      url_redirect_actions = []
+      url_rewrite_actions  = []
+    }
+  ]
+}
+
+/**
+ * Ecommerce resource group
+ **/
+resource "azurerm_resource_group" "ecommerce_fe_rg" {
+  name     = "${local.product}-ecommerce-fe-rg"
+  location = var.location
+
+  tags = module.tag_config.tags
+}
+
+/**
+ * CDN
+ */
+module "ecommerce_cdn" {
+  source = "./.terraform/modules/__v4__/cdn_frontdoor"
+
+  #name                  = "ecommerce"
+  cdn_prefix_name     = local.project
+  resource_group_name = azurerm_resource_group.ecommerce_fe_rg.name
+  location            = var.location
+
+  https_rewrite_enabled = true
+
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
+
+  storage_account_name               = local.cdn_storage_account_name
+  storage_account_index_document     = local.cdn_index_document
+  storage_account_error_404_document = local.cdn_error_document
+  storage_account_replication_type   = var.ecommerce_cdn_storage_replication_type
+
+  keyvault_id = data.azurerm_key_vault.kv.id
+  tenant_id   = data.azurerm_client_config.current.tenant_id
+
+  querystring_caching_behaviour = "IgnoreQueryString"
+
+  custom_domains        = local.custom_domains
+  global_delivery_rules = local.global_delivery_rules
+  delivery_custom_rules = local.delivery_custom_rules
+
+  tags = module.tag_config.tags
+}
