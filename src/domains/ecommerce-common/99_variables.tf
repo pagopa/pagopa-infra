@@ -152,6 +152,15 @@ variable "cosmos_mongo_db_ecommerce_history_params" {
   })
 }
 
+variable "cosmos_mongo_db_ecommerce_watchdog_params" {
+  type = object({
+    enable_serverless  = bool
+    enable_autoscaling = bool
+    throughput         = number
+    max_throughput     = number
+  })
+}
+
 # Redis
 variable "cidr_subnet_redis_ecommerce" {
   type        = list(string)
