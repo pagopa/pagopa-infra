@@ -1139,3 +1139,44 @@ resource "azurerm_key_vault_secret" "nodo-helpdesk_service_api_key_for_watchdog"
     ]
   }
 }
+
+resource "azurerm_key_vault_certificate" "ecommerce-watchdog-deadletter-jwt-certificate" {
+  name         = "watchdog-jwt-cert"
+  key_vault_id = module.key_vault.id
+
+  certificate_policy {
+    issuer_parameters {
+      name = "Self"
+    }
+
+    key_properties {
+      exportable = true
+      key_size   = 256
+      key_type   = "EC"
+      reuse_key  = false
+      curve      = "P-256"
+    }
+
+    lifetime_action {
+      action {
+        action_type = "AutoRenew"
+      }
+
+      trigger {
+        days_before_expiry = 2
+      }
+    }
+
+    secret_properties {
+      content_type = "application/x-pkcs12"
+    }
+
+    x509_certificate_properties {
+      key_usage = [
+        "digitalSignature"
+      ]
+      subject            = "CN=${var.env}-${var.domain}-watchdog-deadletter"
+      validity_in_months = 1
+    }
+  }
+}
