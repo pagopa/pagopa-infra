@@ -34,7 +34,6 @@ tls_cert_check_helm = {
 pdv_api_base_path    = "https://api.uat.tokenizer.pdv.pagopa.it/tokenizer/v1"
 io_backend_base_path = "https://api-app.io.pagopa.it"
 
-payment_wallet_migrations_enabled         = true
 enabled_payment_wallet_method_ids_pm      = "f25399bf-c56f-4bd2-adc9-7aef87410609,0d1450f4-b993-4f89-af5a-1770a45f5d71,5bdc0d63-a5b8-4221-bbb1-3e8b45a1b40f"
 pay_wallet_jwt_issuer_api_key_use_primary = true
 
