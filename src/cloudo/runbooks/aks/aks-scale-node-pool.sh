@@ -53,6 +53,8 @@ scale_node_pool() {
         --query 'enableAutoScaling' \
         --output tsv)
 
+    echo "Current nodepool mode -> $mode"
+
     if [[ "$mode" == "true" ]]; then
         az aks nodepool update \
             --resource-group "$resource_group" \
