@@ -67,6 +67,13 @@ cosmos_mongo_db_ecommerce_history_params = {
   throughput         = 1000
 }
 
+cosmos_mongo_db_ecommerce_watchdog_params = {
+  enable_serverless  = false
+  enable_autoscaling = true
+  max_throughput     = 1000
+  throughput         = 1000
+}
+
 redis_ecommerce_params = {
   capacity   = 1
   sku_name   = "Premium"
