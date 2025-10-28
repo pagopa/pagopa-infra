@@ -72,7 +72,7 @@ scale_node_pool() {
             --cluster-name "$cluster_name" \
             --name "$nodepool_name" \
             --max-count "$new_count" \
-            --min_count "$min_count"
+            --min-count "$min_count"
     else
         az aks nodepool scale \
             --resource-group "$resource_group" \
