@@ -165,7 +165,7 @@ module "ecommerce_fe_web_test" {
   alert_enabled                         = true
   application_insights_resource_group   = data.azurerm_resource_group.monitor_rg.name
   application_insights_id               = data.azurerm_application_insights.application_insights.id
-  application_insights_action_group_ids = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.ecommerce_opsgenie.id] #missing opsgenie link
+  application_insights_action_group_ids = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.ecommerce_opsgenie[0].id] # ,   missing opsgenie link
   https_probe_method                    = "GET"
   timeout                               = 10
   frequency                             = 300
