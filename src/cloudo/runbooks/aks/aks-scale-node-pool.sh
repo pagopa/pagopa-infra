@@ -23,21 +23,6 @@ if [[ -n "${AZURE_SUBSCRIPTION_ID:-}" ]]; then
 fi
 
 # Function to get current node count
-get_current_max_node_count() {
-    local resource_group=$1
-    local cluster_name=$2
-    local nodepool_name=$3
-
-    current_count=$(az aks nodepool show \
-        --resource-group "$resource_group" \
-        --cluster-name "$cluster_name" \
-        --name "$nodepool_name" \
-        --query 'count' \
-        --output tsv)
-
-    echo "$current_count"
-}
-
 get_current_node_count() {
     local resource_group=$1
     local cluster_name=$2
@@ -61,9 +46,9 @@ scale_node_pool() {
     local nodepool_name=$3
 
     # Get current node count
-    current_count=$(get_current_max_node_count "$RESOURCE_GROUP" "$CLUSTER_NAME" "$NODEPOOL_NAME" "count")
-    max_count=$(get_current_min_node_count "$RESOURCE_GROUP" "$CLUSTER_NAME" "$NODEPOOL_NAME" "maxCount")
-    min_count=$(get_current_min_node_count "$RESOURCE_GROUP" "$CLUSTER_NAME" "$NODEPOOL_NAME" "minCount")
+    current_count=$(get_current_node_count "$RESOURCE_GROUP" "$CLUSTER_NAME" "$NODEPOOL_NAME" "count")
+    max_count=$(get_current_node_count "$RESOURCE_GROUP" "$CLUSTER_NAME" "$NODEPOOL_NAME" "maxCount")
+    min_count=$(get_current_node_count "$RESOURCE_GROUP" "$CLUSTER_NAME" "$NODEPOOL_NAME" "minCount")
 
     # Scale by 1
     new_count=$((current_count + 1))
