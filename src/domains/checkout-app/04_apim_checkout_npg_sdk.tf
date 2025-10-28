@@ -56,11 +56,11 @@ module "apim_checkout_npg_sdk_v1" {
   })
 
   xml_content = templatefile("./api/checkout/checkout_npg_sdk/v1/_base_policy.xml.tpl", {
-    checkout_origin           = "https://${var.dns_zone_checkout}.${var.external_domain}"
+    checkout_origin = "https://${var.dns_zone_checkout}.${var.external_domain}"
   })
 }
 
-resource "azurerm_api_management_api_operation_policy" "checkout_get_sdk_api_v1" {  
+resource "azurerm_api_management_api_operation_policy" "checkout_get_sdk_api_v1" {
   depends_on = [
     module.apim_checkout_npg_sdk_v1
   ]
@@ -69,7 +69,7 @@ resource "azurerm_api_management_api_operation_policy" "checkout_get_sdk_api_v1"
   resource_group_name = data.azurerm_resource_group.rg_api.name
   operation_id        = "getSdk"
 
-  xml_content = templatefile("./api/checkout/checkout_npg_sdk/v1/_get_sdk_from_npg.xml.tpl",{
+  xml_content = templatefile("./api/checkout/checkout_npg_sdk/v1/_get_sdk_from_npg.xml.tpl", {
     npg_hostname = local.npg_sdk_hostname
   })
 }
@@ -82,7 +82,7 @@ resource "azurerm_api_management_api_operation_policy" "checkout_get_sdk_sri_inf
   resource_group_name = data.azurerm_resource_group.rg_api.name
   operation_id        = "getSdkSriInfo"
 
-  xml_content = templatefile("./api/checkout/checkout_npg_sdk/v1/_get_sdk_sri.xml.tpl",{
+  xml_content = templatefile("./api/checkout/checkout_npg_sdk/v1/_get_sdk_sri.xml.tpl", {
     npg_hostname = local.npg_sdk_hostname
   })
 }
