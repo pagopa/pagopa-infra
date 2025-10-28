@@ -73,6 +73,7 @@ scale_node_pool() {
             --resource-group "$resource_group" \
             --cluster-name "$cluster_name" \
             --name "$nodepool_name" \
+            --update-cluster-autoscaler \
             --max-count "$new_count" \
             --min-count "$min_count"
     else
