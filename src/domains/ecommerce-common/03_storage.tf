@@ -416,6 +416,7 @@ locals {
       "fetch_time_window" = 75
       "frequency"         = 15
       "threshold"         = 40
+      "dynamic_threshold" = 1.0
     },
     {
       "queue_key"         = "notifications-service-retry-queue"
@@ -424,6 +425,7 @@ locals {
       "fetch_time_window" = 75
       "frequency"         = 15
       "threshold"         = 10
+      "dynamic_threshold" = 1.0
     },
     {
       "queue_key"         = "transaction-notifications-retry-queue"
@@ -432,6 +434,7 @@ locals {
       "fetch_time_window" = 75
       "frequency"         = 15
       "threshold"         = 20
+      "dynamic_threshold" = 1.0
     },
     {
       "queue_key"         = "transactions-refund-retry-queue"
@@ -440,6 +443,7 @@ locals {
       "fetch_time_window" = 75
       "frequency"         = 15
       "threshold"         = 10
+      "dynamic_threshold" = 1.0
     },
     {
       "queue_key"         = "transactions-close-payment-retry-queue"
@@ -448,6 +452,7 @@ locals {
       "fetch_time_window" = 75
       "frequency"         = 15
       "threshold"         = 10
+      "dynamic_threshold" = 1.0
     }
   ] : []
 }
@@ -497,7 +502,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_enqueue_rate_a
         | project PutCount, DeleteCount, Diff
     };
     MessageRateForQueue("%s", startPut, endPut, startDelete, endDelete)
-    | where Diff > ${each.value.threshold}
+    | where Diff > max_of(PutCount*(${each.value.dynamic_threshold}/100.0), ${each.value.threshold})
     QUERY
     , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
   )
