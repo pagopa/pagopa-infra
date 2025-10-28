@@ -23,7 +23,7 @@ if [[ -n "${AZURE_SUBSCRIPTION_ID:-}" ]]; then
 fi
 
 # Function to get current node count
-get_current_node_count() {
+get_current_max_node_count() {
     local resource_group=$1
     local cluster_name=$2
     local nodepool_name=$3
@@ -38,12 +38,35 @@ get_current_node_count() {
     echo "$current_count"
 }
 
+get_current_node_count() {
+    local resource_group=$1
+    local cluster_name=$2
+    local nodepool_name=$3
+    local query=$4
+
+    current_count=$(az aks nodepool show \
+        --resource-group "$resource_group" \
+        --cluster-name "$cluster_name" \
+        --name "$nodepool_name" \
+        --query "$query" \
+        --output tsv)
+
+    echo "$current_count"
+}
+
 # Function to scale node pool
 scale_node_pool() {
     local resource_group=$1
     local cluster_name=$2
     local nodepool_name=$3
-    local new_count=$4
+
+    # Get current node count
+    current_count=$(get_current_max_node_count "$RESOURCE_GROUP" "$CLUSTER_NAME" "$NODEPOOL_NAME" "count")
+    max_count=$(get_current_min_node_count "$RESOURCE_GROUP" "$CLUSTER_NAME" "$NODEPOOL_NAME" "maxCount")
+    min_count=$(get_current_min_node_count "$RESOURCE_GROUP" "$CLUSTER_NAME" "$NODEPOOL_NAME" "minCount")
+
+    # Scale by 1
+    new_count=$((current_count + 1))
 
     # Check if node pool is in autoscale mode
     local mode=$(az aks nodepool show \
@@ -56,11 +79,15 @@ scale_node_pool() {
     echo "Current nodepool mode -> $mode"
 
     if [[ "$mode" == "true" ]]; then
+        # Scale max count instead by 1
+        new_count=$((max_count + 1))
+
         az aks nodepool update \
             --resource-group "$resource_group" \
             --cluster-name "$cluster_name" \
             --name "$nodepool_name" \
-            --max-count "$new_count"
+            --max-count "$new_count" \
+            --min_count "$min_count"
     else
         az aks nodepool scale \
             --resource-group "$resource_group" \
@@ -80,12 +107,6 @@ RESOURCE_GROUP=$AKS_RG
 CLUSTER_NAME=$AKS_NAME
 NODEPOOL_NAME=$1
 
-# Get current node count
-current_count=$(get_current_node_count "$RESOURCE_GROUP" "$CLUSTER_NAME" "$NODEPOOL_NAME")
-
-# Scale by 1
-new_count=$((current_count + 1))
-
 # Scale the node pool
 echo "Scaling node pool from $current_count to $new_count nodes..."
-scale_node_pool "$RESOURCE_GROUP" "$CLUSTER_NAME" "$NODEPOOL_NAME" "$new_count"
+scale_node_pool "$RESOURCE_GROUP" "$CLUSTER_NAME" "$NODEPOOL_NAME"
