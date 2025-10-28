@@ -1651,11 +1651,17 @@
               "orderId": {
                 "type": "string",
                 "description": "NPG transaction order id"
+              },
+              "paymentMethodId": {
+                "description": "User selected payment method id",
+                "type": "string",
+                "format": "uuid"
               }
             },
             "required": [
               "detailType",
-              "orderId"
+              "orderId",
+              "paymentMethodId"
             ],
             "example": {
               "detailType": "cards",
