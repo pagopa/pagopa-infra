@@ -88,8 +88,8 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
-RESOURCE_GROUP=$AKS_RG
-CLUSTER_NAME=$AKS_NAME
+RESOURCE_GROUP=$RESOURCE_RG
+CLUSTER_NAME=$RESOURCE_NAME
 NODEPOOL_NAME=$1
 
 # Scale the node pool
