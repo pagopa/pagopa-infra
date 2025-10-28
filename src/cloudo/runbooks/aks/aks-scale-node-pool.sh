@@ -67,6 +67,8 @@ scale_node_pool() {
         # Scale max count instead by 1
         new_count=$((max_count + 1))
 
+        echo "Set min: $min_count & max: $new_count"
+
         az aks nodepool update \
             --resource-group "$resource_group" \
             --cluster-name "$cluster_name" \
