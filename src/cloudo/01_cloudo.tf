@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "cloudo" {
-  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=47d6b92700eac281c7a90ab9eb05785666ae9da5"
+  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=99b48d8e5e80f1af1a63ea7a21bf0fa04d13dd3d"
 
   prefix                    = local.product
   env                       = var.env
@@ -20,8 +20,8 @@ module "cloudo" {
 
   github_repo_info = {
     repo_name    = "pagopa/pagopa-infra"
-    repo_branch  = "main"
-    repo_token   = "PAYMCLOUD-541-cloudo-first-deploy-on-pagopa-dev-subscription"
+    repo_branch  = "PAYMCLOUD-541-cloudo-first-deploy-on-pagopa-dev-subscription"
+    repo_token   = ""
     runbook_path = "src/cloudo/runbooks"
   }
 
@@ -51,7 +51,7 @@ module "cloudo" {
 
   orchestrator_image = {
     image_name        = "pagopa/cloudo-orchestrator"
-    image_tag         = "0.2.4"
+    image_tag         = "0.0.0"
     registry_url      = "https://ghcr.io"
     registry_username = "payments-cloud-bot"
     registry_password = data.azurerm_key_vault_secret.github_pat.value
@@ -59,7 +59,7 @@ module "cloudo" {
 
   worker_image = {
     image_name        = "pagopa/cloudo-worker"
-    image_tag         = "0.1.6"
+    image_tag         = "0.0.0"
     registry_url      = "https://ghcr.io"
     registry_username = "payments-cloud-bot"
     registry_password = data.azurerm_key_vault_secret.github_pat.value

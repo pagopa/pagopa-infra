@@ -40,6 +40,15 @@
       "run_args": "pagopa-d-app-gw pagopa-d-vnet-rg",
       "worker": "Runbook",
       "oncall": "false"
+    },
+     {
+      "id": "scale-pagopa-d-aks-user01-nodepool",
+      "name": "scale the user01 nodepool on DEV",
+      "description": "",
+      "runbook": "aks/aks-scale-node-pool.sh",
+      "run_args": "user01",
+      "worker": "Runbook",
+      "oncall": "false"
     }]
   },
   {

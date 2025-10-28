@@ -45,22 +45,38 @@ scale_node_pool() {
     local nodepool_name=$3
     local new_count=$4
 
-    az aks nodepool scale \
+    # Check if node pool is in autoscale mode
+    local mode=$(az aks nodepool show \
         --resource-group "$resource_group" \
         --cluster-name "$cluster_name" \
         --name "$nodepool_name" \
-        --node-count "$new_count"
+        --query 'enableAutoScaling' \
+        --output tsv)
+
+    if [[ "$mode" == "true" ]]; then
+        az aks nodepool update \
+            --resource-group "$resource_group" \
+            --cluster-name "$cluster_name" \
+            --name "$nodepool_name" \
+            --max-count "$new_count"
+    else
+        az aks nodepool scale \
+            --resource-group "$resource_group" \
+            --cluster-name "$cluster_name" \
+            --name "$nodepool_name" \
+            --node-count "$new_count"
+    fi
 }
 
 # Main script execution
-if [ "$#" -ne 3 ]; then
-    echo "Usage: $0 <resource-group> <cluster-name> <nodepool-name>"
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <nodepool-name>"
     exit 1
 fi
 
-RESOURCE_GROUP=$1
-CLUSTER_NAME=$2
-NODEPOOL_NAME=$3
+RESOURCE_GROUP=$AKS_RG
+CLUSTER_NAME=$AKS_NAME
+NODEPOOL_NAME=$1
 
 # Get current node count
 current_count=$(get_current_node_count "$RESOURCE_GROUP" "$CLUSTER_NAME" "$NODEPOOL_NAME")
