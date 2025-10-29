@@ -32,12 +32,12 @@ locals {
         {
           action = "Overwrite"
           name   = local.content_security_policy_header_name
-          value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com", var.dns_zone_prefix, var.external_domain)
+          value  = "default-src 'self'; connect-src 'self' https://api.${var.dns_zone_prefix}.${var.external_domain} https://api-eu.mixpanel.com"
         },
         {
           action = "Append"
           name   = local.content_security_policy_header_name
-          value  = "https://recaptcha.net/;"
+          value  = " https://recaptcha.net/;"
         },
         {
           action = "Append"
@@ -165,7 +165,7 @@ module "ecommerce_fe_web_test" {
   alert_enabled                         = true
   application_insights_resource_group   = data.azurerm_resource_group.monitor_rg.name
   application_insights_id               = data.azurerm_application_insights.application_insights.id
-  application_insights_action_group_ids = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.ecommerce_opsgenie[0].id] 
+  application_insights_action_group_ids = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
   https_probe_method                    = "GET"
   timeout                               = 10
   frequency                             = 300
