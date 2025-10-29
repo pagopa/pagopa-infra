@@ -16,7 +16,6 @@ locals {
   api_info_log = [
     module.apim_pm_restapicd_internal_api_v1.name,
     module.apim_pm_restapicd_internal_api_v2.name,
-    module.apim_pm_ptg_api_v1.name,
   ]
 
 }
