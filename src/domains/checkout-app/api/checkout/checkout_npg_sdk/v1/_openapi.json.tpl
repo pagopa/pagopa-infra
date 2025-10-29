@@ -21,31 +21,6 @@
     }
   ],
   "paths": {
-    "/npg/resources/sdk": {
-      "get": {
-        "tags": [
-          "npgSDK"
-        ],
-        "operationId": "getSdk",
-        "summary": "Retrieve NPG SDK",
-        "description": "GET NPG SDK resource",
-        "responses": {
-          "200": {
-            "description": "SDK resource returned successfully"
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/npg/resources/sdk/sri": {
       "get": {
         "tags": [
