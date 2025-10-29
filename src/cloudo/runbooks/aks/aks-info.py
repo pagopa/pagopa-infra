@@ -4,7 +4,6 @@ import json
 
 
 def run_kubectl(cmd, env=None):
-    print(f"Running: {' '.join(cmd)}")
     result = subprocess.run(
         cmd,
         stdout=subprocess.PIPE,
@@ -20,22 +19,17 @@ def run_kubectl(cmd, env=None):
 def get_namespace_info(namespace):
     try:
         env = os.environ.copy()
-        print(f"KUBECONFIG={env.get('KUBECONFIG')}, AKS_NAMESPACE={namespace}")
 
-        ns_info = run_kubectl(['kubectl', 'get', 'namespace', namespace, '-o', 'json'], env=env)
         quotas = run_kubectl(['kubectl', 'get', 'resourcequota', '-n', namespace, '-o', 'json'], env=env)
         pods = run_kubectl(['kubectl', 'get', 'pods', '-n', namespace, '-o', 'json'], env=env)
         deployments = run_kubectl(['kubectl', 'get', 'deployments', '-n', namespace, '-o', 'json'], env=env)
 
-        ns_data = json.loads(ns_info)
         quota_data = json.loads(quotas)
         pod_data = json.loads(pods)
         deployment_data = json.loads(deployments)
 
         print(f"\nNamespace Information for: {namespace}")
         print("-" * 50)
-        print(f"Status: {ns_data['status']['phase']}")
-        print(f"Created: {ns_data['metadata']['creationTimestamp']}")
 
         print(f"\nPods Total: {len(pod_data['items'])}")
         running_pods = sum(1 for pod in pod_data['items'] if pod['status']['phase'] == 'Running')
