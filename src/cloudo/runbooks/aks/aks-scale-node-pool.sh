@@ -52,8 +52,6 @@ scale_node_pool() {
 
     # Scale by 1
     new_count=$((current_count + 1))
-
-    echo "Scaling node pool from $current_count to $new_count nodes..."
     # Check if node pool is in autoscale mode
     local mode=$(az aks nodepool show \
         --resource-group "$resource_group" \
@@ -68,6 +66,7 @@ scale_node_pool() {
         # Scale max count instead by 1
         new_count=$((max_count + 1))
 
+        echo "Scaling node pool from $max_count to $new_count nodes..."
         echo "Set min: $min_count & max: $new_count"
 
         az aks nodepool update \
@@ -78,6 +77,7 @@ scale_node_pool() {
             --max-count "$new_count" \
             --min-count "$min_count"
     else
+        echo "Scaling node pool from $current_count to $new_count nodes..."
         az aks nodepool scale \
             --resource-group "$resource_group" \
             --cluster-name "$cluster_name" \
