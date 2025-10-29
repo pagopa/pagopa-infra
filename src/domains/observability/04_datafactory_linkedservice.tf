@@ -200,7 +200,7 @@ resource "azapi_resource" "ls_postgres_cruscotto_tf" {
       type = "AzurePostgreSql"
       typeProperties = {
         #connectionString = "Host=${data.azurerm_key_vault_secret.cruscotto_db_host.value};Port=${data.azurerm_key_vault_secret.cruscotto_db_port.value};Database=${data.azurerm_key_vault_secret.cruscotto_db_database.value};UID=${data.azurerm_key_vault_secret.cruscotto_db_username.value};EncryptionMethod=6;Password=${data.azurerm_key_vault_secret.cruscotto_db_password.value}"
-        connectionString = "Host=${data.azurerm_key_vault_secret.cruscotto_db_host.value};Port=${data.azurerm_key_vault_secret.cruscotto_db_port.value};Database=${data.azurerm_key_vault_secret.cruscotto_db_database.value};UID=${data.azurerm_key_vault_secret.cruscotto_db_username.value};EncryptionMethod=6;ValidateServerCertificate=0"
+        connectionString = "Host=${data.azurerm_key_vault_secret.cruscotto_db_host.value};Port=${data.azurerm_key_vault_secret.cruscotto_db_port.value};Database=${data.azurerm_key_vault_secret.cruscotto_db_database.value};UID=${data.azurerm_key_vault_secret.cruscotto_db_username.value};EncryptionMethod=1;ValidateServerCertificate=1"
         password = {
           type = "AzureKeyVaultSecret"
           store = {
