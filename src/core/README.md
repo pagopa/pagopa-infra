@@ -63,7 +63,6 @@
 | <a name="module_apim_pm_cobadge_api_v4"></a> [apim\_pm\_cobadge\_api\_v4](#module\_apim\_pm\_cobadge\_api\_v4) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_pm_events_v1"></a> [apim\_pm\_events\_v1](#module\_apim\_pm\_events\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_pm_fesp_api_v1"></a> [apim\_pm\_fesp\_api\_v1](#module\_apim\_pm\_fesp\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
-| <a name="module_apim_pm_logging_api_v1"></a> [apim\_pm\_logging\_api\_v1](#module\_apim\_pm\_logging\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_pm_mock_services_api_v1"></a> [apim\_pm\_mock\_services\_api\_v1](#module\_apim\_pm\_mock\_services\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_pm_mock_services_fe"></a> [apim\_pm\_mock\_services\_fe](#module\_apim\_pm\_mock\_services\_fe) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_pm_paypalpsp_api_v1"></a> [apim\_pm\_paypalpsp\_api\_v1](#module\_apim\_pm\_paypalpsp\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
@@ -271,7 +270,6 @@
 | [azurerm_key_vault_secret.monitor_notification_email](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.monitor_notification_slack_email](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.monitor_pm_opsgenie_webhook_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
-| [azurerm_key_vault_secret.pm_logging_ip](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.pm_restapi_ip](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.pm_wisp_metadata](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.sec_storage_id](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
