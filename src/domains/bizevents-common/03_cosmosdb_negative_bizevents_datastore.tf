@@ -20,6 +20,8 @@ module "negative_bizevents_datastore_cosmosdb_account" {
   additional_geo_locations   = var.negative_bizevents_datastore_cosmos_db_params.additional_geo_locations
   backup_continuous_enabled  = var.negative_bizevents_datastore_cosmos_db_params.backup_continuous_enabled
 
+  burst_capacity_enabled     = var.negative_bizevents_datastore_cosmos_db_params.burst_capacity_enabled
+
   is_virtual_network_filter_enabled = var.negative_bizevents_datastore_cosmos_db_params.is_virtual_network_filter_enabled
 
   ip_range = ""

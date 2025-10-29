@@ -42,6 +42,7 @@ module "bizevents_datastore_cosmosdb_account" {
   main_geo_location_location = var.location
   additional_geo_locations   = var.bizevents_datastore_cosmos_db_params.additional_geo_locations
   backup_continuous_enabled  = var.bizevents_datastore_cosmos_db_params.backup_continuous_enabled
+  burst_capacity_enabled     = var.bizevents_datastore_cosmos_db_params.burst_capacity_enabled
 
   is_virtual_network_filter_enabled = var.bizevents_datastore_cosmos_db_params.is_virtual_network_filter_enabled
 

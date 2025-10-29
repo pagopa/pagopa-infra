@@ -121,6 +121,7 @@ variable "bizevents_datastore_cosmos_db_params" {
     max_throughput                    = number
     max_throughput_view               = number
     max_throughput_view_alt           = number
+    burst_capacity_enabled            = bool
   })
 }
 
@@ -148,6 +149,7 @@ variable "negative_bizevents_datastore_cosmos_db_params" {
     backup_continuous_enabled         = bool
     container_default_ttl             = number
     max_throughput                    = number
+    burst_capacity_enabled            = bool
   })
 }
 
