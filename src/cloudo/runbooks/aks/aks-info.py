@@ -38,6 +38,7 @@ def get_namespace_info(namespace):
             print(f"Deployment: {deploy['metadata']['name']}")
             print(f"  Replicas: {deploy['status'].get('replicas', 0)}/{deploy['status'].get('availableReplicas', 0)}")
 
+        return True
     except subprocess.CalledProcessError as e:
         print(f"Error executing kubectl command: {e}\nstderr: {e.stderr.strip()}")
         return None
