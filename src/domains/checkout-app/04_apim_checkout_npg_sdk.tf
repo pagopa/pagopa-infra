@@ -60,19 +60,6 @@ module "apim_checkout_npg_sdk_v1" {
   })
 }
 
-resource "azurerm_api_management_api_operation_policy" "checkout_get_sdk_api_v1" {
-  depends_on = [
-    module.apim_checkout_npg_sdk_v1
-  ]
-  api_name            = "${local.project_short}-npg-sdk-resource-api-v1"
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  operation_id        = "getSdk"
-
-  xml_content = templatefile("./api/checkout/checkout_npg_sdk/v1/_get_sdk_from_npg.xml.tpl", {
-    npg_hostname = local.npg_sdk_hostname
-  })
-}
 resource "azurerm_api_management_api_operation_policy" "checkout_get_sdk_sri_info_api_v1" {
   depends_on = [
     module.apim_checkout_npg_sdk_v1
@@ -86,5 +73,3 @@ resource "azurerm_api_management_api_operation_policy" "checkout_get_sdk_sri_inf
     npg_hostname = local.npg_sdk_hostname
   })
 }
-
-#TODO aggiungere named value per api key NPG pagopa

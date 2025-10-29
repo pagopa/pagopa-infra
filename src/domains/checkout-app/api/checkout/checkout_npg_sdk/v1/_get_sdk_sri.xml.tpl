@@ -1,6 +1,7 @@
 <policies>
     <inbound>
         <base />
+        <cache-lookup vary-by-developer="false" vary-by-developer-groups="false" caching-type="internal" />
         <send-request ignore-error="true" timeout="10" response-variable-name="sdk-sri" mode="new">
             <set-url>https://${npg_hostname}/api/phoenix-0.0/psp/api/v1/build/integrity</set-url>
             <set-method>GET</set-method>
@@ -46,7 +47,7 @@
     </backend>
     <outbound>
         <base />
-
+        <cache-store duration="10" />
     </outbound>
     <on-error>
         <base />
