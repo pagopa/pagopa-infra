@@ -49,6 +49,15 @@
       "run_args": "user01",
       "worker": "Runbook",
       "oncall": "false"
+    },
+    {
+      "id": "aks-info-dev",
+      "name": "Aks info on DEV",
+      "description": "Get aks namespace information.",
+      "runbook": "aks/aks-info.py",
+      "run_args": "",
+      "worker": "Runbook",
+      "oncall": "false"
     }]
   },
   {
