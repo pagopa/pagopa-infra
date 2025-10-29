@@ -26,56 +26,6 @@ data "azurerm_key_vault_secret" "pm_restapi_ip" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
-#####################################
-## API restapi                     ##
-#####################################
-locals {
-  apim_pm_restapi_api = {
-    # params for all api versions
-    display_name          = "Payment Manager restapi API"
-    description           = "API to support payment trasactions for Checkout and Wisp"
-    path                  = "payment-manager/pp-restapi"
-    subscription_required = false
-    service_url           = null
-  }
-}
-
-resource "azurerm_api_management_api_version_set" "pm_restapi_api" {
-
-  name                = "${local.project}-pm-restapi-api"
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  display_name        = local.apim_pm_restapi_api.display_name
-  versioning_scheme   = "Segment"
-}
-
-module "apim_pm_restapi_api_v4" {
-
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
-
-  name                  = "${local.project}-pm-restapi-api"
-  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_payment_manager_product.product_id]
-  subscription_required = local.apim_pm_restapi_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.pm_restapi_api.id
-  api_version           = "v4"
-  service_url           = local.apim_pm_restapi_api.service_url
-
-  description  = local.apim_pm_restapi_api.description
-  display_name = local.apim_pm_restapi_api.display_name
-  path         = local.apim_pm_restapi_api.path
-  protocols    = ["https"]
-
-  content_format = "swagger-json"
-  content_value = templatefile("./api/payment_manager_api/restapi/v4/_swagger.json.tpl", {
-    host = local.api_domain
-  })
-
-  xml_content = templatefile("./api/payment_manager_api/restapi/v4/_base_policy.xml.tpl", {
-    origin = "https://${var.dns_zone_checkout}.${var.external_domain}/"
-  })
-}
 
 #####################################
 ## API restapi old                 ##
