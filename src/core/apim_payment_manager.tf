@@ -793,55 +793,6 @@ module "apim_pm_per_nodo_v1" {
   xml_content = file("./api/payment_manager_api/pm-per-nodo/v1/_base_policy.xml.tpl")
 }
 
-######################
-## API PM events  ##
-######################
-locals {
-  apim_pm_events_api = {
-    # params for all api versions
-    display_name          = "Payment Manager - PM events API"
-    description           = "API PM events"
-    path                  = "payment-manager/events"
-    subscription_required = true
-    service_url           = null
-  }
-}
-
-resource "azurerm_api_management_api_version_set" "pm_events_api" {
-
-  name                = "${local.project}-pm-events-api"
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  display_name        = local.apim_pm_events_api.display_name
-  versioning_scheme   = "Segment"
-}
-
-module "apim_pm_events_v1" {
-
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
-
-  name                  = "${local.project}-pm-events-api"
-  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_payment_manager_product.product_id]
-  subscription_required = local.apim_pm_events_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.pm_events_api.id
-  api_version           = "v1"
-  service_url           = local.apim_pm_events_api.service_url
-
-  description  = local.apim_pm_events_api.description
-  display_name = local.apim_pm_events_api.display_name
-  path         = local.apim_pm_events_api.path
-  protocols    = ["https"]
-
-  content_format = "openapi"
-  content_value = templatefile("./api/payment_manager_api/payment-events/v1/_openapi.json.tpl", {
-    host = local.api_domain
-  })
-
-  xml_content = file("./api/payment_manager_api/payment-events/v1/_base_policy.xml.tpl")
-}
-
 module "apim_pm_per_nodo_v2" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
