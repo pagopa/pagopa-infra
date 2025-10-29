@@ -585,64 +585,6 @@ module "apim_pm_logging_api_v1" {
   xml_content = file("./api/payment_manager_api/logging/v1/_base_policy.xml.tpl")
 }
 
-############################
-## API admin panel        ##
-############################
-locals {
-  apim_pm_adminpanel_api = {
-    display_name          = "Payment Manager - Admin pPnel "
-    description           = "Frontend to support PM operations"
-    path                  = "pp-admin-panel"
-    subscription_required = false
-    service_url           = null
-  }
-}
-
-resource "azurerm_api_management_api_version_set" "pm_adminpanel_api" {
-
-  name                = "${local.project}-pm-adminpanel-api"
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  display_name        = local.apim_pm_adminpanel_api.display_name
-  versioning_scheme   = "Segment"
-}
-
-module "apim_pm_adminpanel_api_v1" {
-
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
-
-  name                  = "${local.project}-pm-adminpanel-api"
-  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_payment_manager_product.product_id]
-  subscription_required = local.apim_pm_adminpanel_api.subscription_required
-  service_url           = local.apim_pm_adminpanel_api.service_url
-
-  description  = local.apim_pm_adminpanel_api.description
-  display_name = local.apim_pm_adminpanel_api.display_name
-  path         = local.apim_pm_adminpanel_api.path
-  protocols    = ["https"]
-
-  content_format = "swagger-json"
-  content_value = templatefile("./api/payment_manager_api/admin-panel/_swagger.json.tpl", {
-    host = local.api_domain
-  })
-
-  xml_content = templatefile("./api/payment_manager_api/admin-panel/_base_policy.xml.tpl", {
-    allowed_ip_1  = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[0]  # PagoPA on prem VPN
-    allowed_ip_2  = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[1]  # PagoPA on prem VPN DR
-    allowed_ip_3  = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[2]  # CSTAR
-    allowed_ip_4  = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[3]  # Softlab L1 Pagamenti VPN
-    allowed_ip_5  = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[4]  # Softlab L1 Pagamenti VPN
-    allowed_ip_6  = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[5]  # Softlab L1 Pagamenti VPN
-    allowed_ip_7  = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[6]  # Softlab L1 Pagamenti VPN
-    allowed_ip_8  = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[7]  # Softlab L1 Pagamenti VPN
-    allowed_ip_9  = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[8]  # NEXI VPN
-    allowed_ip_10 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[9]  # NEXI VPN
-    allowed_ip_11 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[11] # Softlab L1 Pagamenti VPN backup
-  })
-}
-
 #####################
 ## API wisp        ##
 #####################
