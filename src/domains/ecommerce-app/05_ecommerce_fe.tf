@@ -10,12 +10,12 @@ locals {
   # ecommerce zones apex
   # TO BE DEFINED ecommerce_zones_apex = data.azurerm_dns_zone.ecommerce_apex
   custom_domains = [
-    # {
-    #   domain_name             = local.dns_zone_key
-    #   dns_name                = data.azurerm_dns_zone.ecommerce_public.name
-    #   dns_resource_group_name = data.azurerm_dns_zone.ecommerce_public.resource_group_name
-    #   ttl                     = var.dns_default_ttl_sec
-    # }
+    {
+      domain_name             = local.dns_zone_key
+      dns_name                = data.azurerm_dns_zone.ecommerce_public[0].name
+      dns_resource_group_name = data.azurerm_dns_zone.ecommerce_public[0].resource_group_name
+      ttl                     = var.dns_default_ttl_sec
+    }
   ]
 
   global_delivery_rules = [
@@ -32,12 +32,12 @@ locals {
         {
           action = "Overwrite"
           name   = local.content_security_policy_header_name
-          value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com", var.dns_zone_prefix, var.external_domain)
+          value  = "default-src 'self'; connect-src 'self' https://api.${var.dns_zone_prefix}.${var.external_domain} https://api-eu.mixpanel.com"
         },
         {
           action = "Append"
           name   = local.content_security_policy_header_name
-          value  = "https://recaptcha.net/;"
+          value  = " https://recaptcha.net/;"
         },
         {
           action = "Append"
@@ -153,4 +153,24 @@ module "ecommerce_cdn" {
   delivery_custom_rules = local.delivery_custom_rules
 
   tags = module.tag_config.tags
+}
+
+module "ecommerce_fe_web_test" {
+  count                                 = var.env_short == "p" ? 1 : 0
+  source                                = "./.terraform/modules/__v4__/application_insights_standard_web_test"
+  https_endpoint                        = "https://${module.ecommerce_cdn.fqdn}"
+  https_endpoint_path                   = "/index.html"
+  alert_name                            = "${local.project}-fe-web-test"
+  location                              = var.location
+  alert_enabled                         = true
+  application_insights_resource_group   = data.azurerm_resource_group.monitor_rg.name
+  application_insights_id               = data.azurerm_application_insights.application_insights.id
+  application_insights_action_group_ids = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
+  https_probe_method                    = "GET"
+  timeout                               = 10
+  frequency                             = 300
+  https_probe_threshold                 = 99
+  metric_frequency                      = "PT5M"
+  metric_window_size                    = "PT1H"
+  retry_enabled                         = true
 }
