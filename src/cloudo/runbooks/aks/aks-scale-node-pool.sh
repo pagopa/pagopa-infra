@@ -53,6 +53,7 @@ scale_node_pool() {
     # Scale by 1
     new_count=$((current_count + 1))
 
+    echo "Scaling node pool from $current_count to $new_count nodes..."
     # Check if node pool is in autoscale mode
     local mode=$(az aks nodepool show \
         --resource-group "$resource_group" \
@@ -96,5 +97,4 @@ CLUSTER_NAME=$RESOURCE_NAME
 NODEPOOL_NAME=$1
 
 # Scale the node pool
-echo "Scaling node pool from $current_count to $new_count nodes..."
 scale_node_pool "$RESOURCE_GROUP" "$CLUSTER_NAME" "$NODEPOOL_NAME"
