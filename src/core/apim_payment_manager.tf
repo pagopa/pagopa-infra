@@ -945,56 +945,6 @@ module "apim_pmclient_iobpd_api_v1" {
   })
 }
 
-#####################################
-## API paypal psp                  ##
-#####################################
-locals {
-  apim_pm_paypalpsp_api = {
-    display_name          = "Payment Manager paypal PSP API"
-    description           = "API to support payment and onboarding paypal"
-    path                  = "payment-manager/clients/paypal-psp"
-    subscription_required = false
-    service_url           = null
-  }
-}
-
-resource "azurerm_api_management_api_version_set" "apim_pm_paypalpsp_api" {
-
-  name                = format("%s-pm-paypalpsp-api", local.project)
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  display_name        = local.apim_pm_paypalpsp_api.display_name
-  versioning_scheme   = "Segment"
-}
-
-module "apim_pm_paypalpsp_api_v1" {
-
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
-
-  name                  = format("%s-pm-paypalpsp-api", local.project)
-  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_payment_manager_product.product_id]
-  subscription_required = local.apim_pm_paypalpsp_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.apim_pm_paypalpsp_api.id
-  api_version           = "v1"
-  service_url           = local.apim_pm_paypalpsp_api.service_url
-
-  description  = local.apim_pm_paypalpsp_api.description
-  display_name = local.apim_pm_paypalpsp_api.display_name
-  path         = local.apim_pm_paypalpsp_api.path
-  protocols    = ["https"]
-
-  content_format = "openapi"
-  content_value = templatefile("./api/payment_manager_api/clients/paypal-psp/v1/_openapi.json.tpl", {
-    host = local.api_domain
-  })
-
-  xml_content = templatefile("./api/payment_manager_api/clients/paypal-psp/v1/_base_policy.xml.tpl", {
-    endpoint = format("https://%s", var.paytipper_hostname)
-  })
-}
-
 ##############################
 ## API xpay                 ##
 ##############################
