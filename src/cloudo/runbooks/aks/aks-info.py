@@ -3,33 +3,30 @@ import subprocess
 import json
 
 
+def run_kubectl(cmd, env=None):
+    print(f"Running: {' '.join(cmd)}")
+    result = subprocess.run(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
+        env=env
+    )
+    if result.returncode != 0:
+        raise subprocess.CalledProcessError(result.returncode, cmd, output=result.stdout, stderr=result.stderr)
+    return result.stdout
+
+
 def get_namespace_info(namespace):
     try:
-        # Get namespace details
-        ns_info = subprocess.check_output(
-            ['kubectl', 'get', 'namespace', namespace, '-o', 'json'],
-            universal_newlines=True
-        )
+        env = os.environ.copy()
+        print(f"KUBECONFIG={env.get('KUBECONFIG')}, AKS_NAMESPACE={namespace}")
 
-        # Get resource quotas
-        quotas = subprocess.check_output(
-            ['kubectl', 'get', 'resourcequota', '-n', namespace, '-o', 'json'],
-            universal_newlines=True
-        )
+        ns_info = run_kubectl(['kubectl', 'get', 'namespace', namespace, '-o', 'json'], env=env)
+        quotas = run_kubectl(['kubectl', 'get', 'resourcequota', '-n', namespace, '-o', 'json'], env=env)
+        pods = run_kubectl(['kubectl', 'get', 'pods', '-n', namespace, '-o', 'json'], env=env)
+        deployments = run_kubectl(['kubectl', 'get', 'deployments', '-n', namespace, '-o', 'json'], env=env)
 
-        # Get pod count
-        pods = subprocess.check_output(
-            ['kubectl', 'get', 'pods', '-n', namespace, '-o', 'json'],
-            universal_newlines=True
-        )
-
-        # Get deployments
-        deployments = subprocess.check_output(
-            ['kubectl', 'get', 'deployments', '-n', namespace, '-o', 'json'],
-            universal_newlines=True
-        )
-
-        # Parse the JSON outputs
         ns_data = json.loads(ns_info)
         quota_data = json.loads(quotas)
         pod_data = json.loads(pods)
@@ -58,7 +55,7 @@ def get_namespace_info(namespace):
                         print(f"  {resource}: {limit}")
 
     except subprocess.CalledProcessError as e:
-        print(f"Error executing kubectl command: {e}")
+        print(f"Error executing kubectl command: {e}\nstderr: {e.stderr.strip()}")
         return None
     except json.JSONDecodeError as e:
         print(f"Error parsing JSON response: {e}")
@@ -70,9 +67,11 @@ def get_namespace_info(namespace):
 
 if __name__ == "__main__":
     namespace = os.getenv('AKS_NAMESPACE')
-
     if not namespace:
         print("Error: AKS_NAMESPACE environment variable not set")
         exit(1)
 
-    get_namespace_info(namespace)
+    if get_namespace_info(namespace) is None:
+        exit(1)
+    else:
+        exit(0)
