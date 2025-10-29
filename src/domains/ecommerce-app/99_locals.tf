@@ -39,4 +39,6 @@ locals {
   ecommerce_hostname = "${var.location_short}${var.env}.ecommerce.internal.${var.apim_dns_zone_prefix}.${var.external_domain}"
   wallet_hostname    = "itn${var.env}.pay-wallet.internal.${var.apim_dns_zone_prefix}.${var.external_domain}"
   checkout_hostname  = "${var.location_short}${var.env}.checkout.internal.${var.apim_dns_zone_prefix}.${var.external_domain}"
+  checkout_origin    = "https://${var.dns_zone_checkout}.${var.external_domain}"
+  ecommerce_origin   = "https://${var.dns_zone_ecommerce}.${var.external_domain}"
 }
