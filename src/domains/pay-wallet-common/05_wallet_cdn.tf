@@ -97,6 +97,39 @@ module "wallet_fe_cdn" {
     }
   }]
 
+  delivery_rule_rewrite = [{
+    name = "RewriteRulesForFontCors"
+    order = 3
+
+    conditions = [{
+      condition_type   = "url_path_conditions"
+      operator         = "BeginsWith"
+      match_values     = ["/static/fonts/"]
+      negate_condition = false
+      transforms       = []
+    },
+    {
+      condition_type   = "request_header_conditions"
+      operator         = "Equal"
+      match_values     = ["https://${local.npg_sdk_hostname}"]
+      transforms       = []
+      negate_condition = false
+    },
+    {
+      condition_type   = "url_file_extension_conditions"
+      operator         = "Equal"
+      match_values     = ["ttf"]
+      negate_condition = false
+      transforms       = []
+    },
+    {
+      condition_type   = "modify_response_header_actions"
+      action           = "Overwrite"
+      name             = "Access-Control-Allow-Origin"
+      value            = "https://${local.npg_sdk_hostname}"
+    }]
+  }]
+
   tags = module.tag_config.tags
 }
 

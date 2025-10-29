@@ -157,7 +157,12 @@ module "checkout_cdn" {
       order = 5
 
       // conditions
-      url_path_conditions       = []
+      url_path_conditions = [{
+      operator         = "BeginsWith"
+      match_values     = ["/static/fonts/"]
+      negate_condition = false
+      transforms       = []
+    }]
       cookies_conditions        = []
       device_conditions         = []
       http_version_conditions   = []
@@ -175,7 +180,12 @@ module "checkout_cdn" {
       request_method_conditions     = []
       request_scheme_conditions     = []
       request_uri_conditions        = []
-      url_file_extension_conditions = []
+      url_file_extension_conditions = [{
+      operator         = "Equal"
+      match_values     = ["ttf"]
+      negate_condition = false
+      transforms       = []
+    }]
       url_file_name_conditions      = []
 
       // actions
