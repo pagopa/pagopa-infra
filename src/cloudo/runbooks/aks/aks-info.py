@@ -20,11 +20,9 @@ def get_namespace_info(namespace):
     try:
         env = os.environ.copy()
 
-        quotas = run_kubectl(['kubectl', 'get', 'resourcequota', '-n', namespace, '-o', 'json'], env=env)
         pods = run_kubectl(['kubectl', 'get', 'pods', '-n', namespace, '-o', 'json'], env=env)
         deployments = run_kubectl(['kubectl', 'get', 'deployments', '-n', namespace, '-o', 'json'], env=env)
 
-        quota_data = json.loads(quotas)
         pod_data = json.loads(pods)
         deployment_data = json.loads(deployments)
 
@@ -39,14 +37,6 @@ def get_namespace_info(namespace):
         for deploy in deployment_data['items']:
             print(f"Deployment: {deploy['metadata']['name']}")
             print(f"  Replicas: {deploy['status'].get('replicas', 0)}/{deploy['status'].get('availableReplicas', 0)}")
-
-        if quota_data['items']:
-            print("\nResource Quotas:")
-            for quota in quota_data['items']:
-                print(f"\nQuota Name: {quota['metadata']['name']}")
-                if 'hard' in quota['status']:
-                    for resource, limit in quota['status']['hard'].items():
-                        print(f"  {resource}: {limit}")
 
     except subprocess.CalledProcessError as e:
         print(f"Error executing kubectl command: {e}\nstderr: {e.stderr.strip()}")
