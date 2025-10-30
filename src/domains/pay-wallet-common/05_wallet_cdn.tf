@@ -1,3 +1,7 @@
+locals {
+  npg_sdk_hostname = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
+}
+
 /**
  * wallet resource group
  **/
