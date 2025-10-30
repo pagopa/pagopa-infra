@@ -394,7 +394,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
         | project PutCount, DeleteCount, Diff
     };
     MessageRateForQueue("%s", startPut, endPut, startDelete, endDelete)
-    | where Diff > max_of(PutCount*(${each.value.dynamic_threshold}/100.0), ${each.value.threshold})
+    | extend threshold = max_of(PutCount*(${each.value.dynamic_threshold}/100.0), ${each.value.threshold})
+    | where Diff > threshold
     QUERY
     , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
   )
@@ -416,7 +417,7 @@ locals {
       "fetch_time_window" = 75
       "frequency"         = 15
       "threshold"         = 40
-      "dynamic_threshold" = 1.0
+      "dynamic_threshold" = 3.0
     },
     {
       "queue_key"         = "notifications-service-retry-queue"
@@ -502,7 +503,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_enqueue_rate_a
         | project PutCount, DeleteCount, Diff
     };
     MessageRateForQueue("%s", startPut, endPut, startDelete, endDelete)
-    | where Diff > max_of(PutCount*(${each.value.dynamic_threshold}/100.0), ${each.value.threshold})
+    | extend  threshold = max_of(PutCount*(${each.value.dynamic_threshold}/100.0), ${each.value.threshold})
+    | where Diff > threshold
     QUERY
     , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
   )
