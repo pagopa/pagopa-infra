@@ -159,7 +159,7 @@ module "checkout_cdn" {
       // conditions
       url_path_conditions = [{
       operator         = "BeginsWith"
-      match_values     = ["/static/fonts/"]
+      match_values     = ["/fonts/"]
       negate_condition = false
       transforms       = []
     }]
