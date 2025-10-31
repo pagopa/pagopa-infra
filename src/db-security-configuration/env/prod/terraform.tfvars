@@ -64,7 +64,7 @@ databases = {
     password_secret_kv_rg   = "pagopa-p-itn-core-sec-rg"
     password_secret_key     = "metabase-reader-password"
   }
-  NodoNexi-online = {
+  NodoOnline = {
     type              = "nexi"
     host              = "10.1.131.14"
     port              = "8080"
@@ -73,7 +73,7 @@ databases = {
     schema            = "nodo_online"
     catalog           = "nexi"
   }
-  NodoNexi-offline = {
+  NodoOffline = {
     type              = "nexi"
     host              = "10.1.131.14"
     port              = "8080"
@@ -100,4 +100,5 @@ databases = {
     password_required = false
     catalog           = "pagopa-p-weu-ecommerce-cosmos-account"
   }
+
 }

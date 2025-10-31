@@ -7,7 +7,7 @@ resource "restapi_object" "databases" {
 
   data = jsonencode(merge(
     {
-      name         = each.key
+      name         = "${each.key}-${each.value.type}"
       is_on_demand = false
       engine       = local.database_properties[each.value.type].driver
       details = {
@@ -45,5 +45,3 @@ resource "restapi_object" "databases" {
     local.database_properties[each.value.type]
   ))
 }
-
-
