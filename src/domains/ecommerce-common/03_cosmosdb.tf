@@ -155,6 +155,10 @@ locals {
           unique = false
         },
         {
+          keys   = ["creationDate"]
+          unique = false
+        },
+        {
           keys   = ["paymentNotices.rptId"]
           unique = false
         },
