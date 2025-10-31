@@ -345,55 +345,6 @@ module "apim_pm_restapicd_internal_api_v2" {
   xml_content = file("./api/payment_manager_api/restapi-cd-internal/v2/_base_policy.xml.tpl")
 }
 
-############################
-## API restapi-server     ##
-############################
-locals {
-  apim_pm_restapi_server_api = {
-    # params for all api versions
-    display_name          = "Payment Manager restapi server API"
-    description           = "API to support payment trasactions monitoring"
-    path                  = "payment-manager/pp-restapi-server"
-    subscription_required = false
-    service_url           = null
-  }
-}
-
-resource "azurerm_api_management_api_version_set" "pm_restapi_server_api" {
-
-  name                = "${local.project}-pm-restapi-server-api"
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  display_name        = local.apim_pm_restapi_server_api.display_name
-  versioning_scheme   = "Segment"
-}
-
-module "apim_pm_restapi_server_api_v4" {
-
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
-
-  name                  = "${local.project}-pm-restapi-server-api"
-  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_payment_manager_product.product_id]
-  subscription_required = local.apim_pm_restapi_server_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.pm_restapi_server_api.id
-  api_version           = "v4"
-  service_url           = local.apim_pm_restapi_server_api.service_url
-
-  description  = local.apim_pm_restapi_server_api.description
-  display_name = local.apim_pm_restapi_server_api.display_name
-  path         = local.apim_pm_restapi_server_api.path
-  protocols    = ["https"]
-
-  content_format = "openapi"
-  content_value = templatefile("./api/payment_manager_api/restapi-server/v4/_openapi.json.tpl", {
-    host = local.api_domain
-  })
-
-  xml_content = file("./api/payment_manager_api/restapi-server/v4/_base_policy.xml.tpl")
-}
-
 #####################################
 ## API restapi RTD                  ##
 #####################################
