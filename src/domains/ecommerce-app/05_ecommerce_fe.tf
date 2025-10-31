@@ -37,12 +37,7 @@ locals {
         {
           action = "Append"
           name   = local.content_security_policy_header_name
-          value  = " https://recaptcha.net/;"
-        },
-        {
-          action = "Append"
-          name   = local.content_security_policy_header_name
-          value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.sia.eu *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;"
+          value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' *.platform.pagopa.it *.sia.eu *.nexigroup.com; "
         }
       ]
     },
@@ -53,17 +48,17 @@ locals {
         {
           action = "Append"
           name   = local.content_security_policy_header_name
-          value  = "img-src 'self' https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it"
+          value  = "img-src 'self' https://assets.cdn.io.italia.it data: https://assets.cdn.platform.pagopa.it; "
         },
         {
           action = "Append"
           name   = local.content_security_policy_header_name
-          value  = "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://${local.npg_sdk_hostname};"
+          value  = "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://${local.npg_sdk_hostname}; "
         },
         {
           action = "Append"
           name   = local.content_security_policy_header_name
-          value  = "style-src 'self' 'unsafe-inline'; worker-src www.recaptcha.net blob:;"
+          value  = "style-src 'self' 'unsafe-inline';"
         },
         {
           action = "Overwrite"
