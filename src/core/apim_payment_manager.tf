@@ -543,48 +543,6 @@ module "apim_pm_auth_rtd_api_v2" {
   xml_content = file("./api/payment_manager_api/auth-rtd/v2/_base_policy.xml.tpl")
 }
 
-#####################################
-## API logging                  ##
-#####################################
-locals {
-  apim_pm_logging_api = {
-    display_name          = "Payment Manager logging API"
-    description           = "API to support PM logging"
-    path                  = "payment-manager/db-logging"
-    subscription_required = false
-    service_url           = null
-  }
-}
-
-data "azurerm_key_vault_secret" "pm_logging_ip" {
-  name         = "pm-logging-ip"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
-module "apim_pm_logging_api_v1" {
-
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
-
-  name                  = "${local.project}-pm-logging-api"
-  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_payment_manager_product.product_id]
-  subscription_required = local.apim_pm_logging_api.subscription_required
-  service_url           = local.apim_pm_logging_api.service_url
-
-  description  = local.apim_pm_logging_api.description
-  display_name = local.apim_pm_logging_api.display_name
-  path         = local.apim_pm_logging_api.path
-  protocols    = ["https"]
-
-  content_format = "swagger-json"
-  content_value = templatefile("./api/payment_manager_api/logging/v1/_swagger.json.tpl", {
-    host = local.api_domain
-  })
-
-  xml_content = file("./api/payment_manager_api/logging/v1/_base_policy.xml.tpl")
-}
-
 ############################
 ## API admin panel        ##
 ############################
