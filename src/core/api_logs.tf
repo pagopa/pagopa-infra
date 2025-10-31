@@ -13,9 +13,7 @@ locals {
     module.apim_nodo_per_pm_api_v1.name,
   ]
 
-  api_info_log = [
-    module.apim_pm_ptg_api_v1.name,
-  ]
+  api_info_log = []
 
 }
 
