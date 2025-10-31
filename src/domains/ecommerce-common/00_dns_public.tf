@@ -7,7 +7,7 @@ resource "azurerm_dns_zone" "ecommerce_public" {
 }
 
 //Prod ONLY record to DEV public DNS delegation
-resource "azurerm_dns_ns_record" "dev_checkout" {
+resource "azurerm_dns_ns_record" "dev_ecommerce" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "dev"
   zone_name           = azurerm_dns_zone.ecommerce_public[0].name
@@ -23,7 +23,7 @@ resource "azurerm_dns_ns_record" "dev_checkout" {
 }
 
 //Prod ONLY record to UAT public DNS delegation
-resource "azurerm_dns_ns_record" "uat_checkout" {
+resource "azurerm_dns_ns_record" "uat_ecommerce" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "uat"
   zone_name           = azurerm_dns_zone.ecommerce_public[0].name
