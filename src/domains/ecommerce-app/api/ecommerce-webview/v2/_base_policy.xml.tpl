@@ -3,7 +3,7 @@
   <inbound>
     <cors>
       <allowed-origins>
-          <origin>*</origin>
+          ${origins}
       </allowed-origins>
       <allowed-methods>
           <method>GET</method>
