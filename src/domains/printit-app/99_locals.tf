@@ -71,6 +71,7 @@ locals {
     # waitForRender params
     CHECK_SIZE_INTERVAL        = 100
     MIN_STABLE_SIZE_ITERATIONS = 3
+    FOLDERS_TO_LOAD            = "notices"
 
   }
 

@@ -119,7 +119,7 @@ locals {
     # waitForRender params
     CHECK_SIZE_INTERVAL        = 100
     MIN_STABLE_SIZE_ITERATIONS = 3
-
+    FOLDERS_TO_LOAD            = "receipts"
   }
 
   shared_pdf_engine_app_settings_java = {
