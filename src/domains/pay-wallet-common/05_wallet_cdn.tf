@@ -1,3 +1,7 @@
+locals {
+  npg_sdk_hostname = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
+}
+
 /**
  * wallet resource group
  **/
@@ -77,7 +81,6 @@ module "wallet_fe_cdn" {
       }
     ]
   }
-
   delivery_rule_rewrite = [{
     name  = "RewriteRulesForReactRouting"
     order = 2
@@ -96,6 +99,56 @@ module "wallet_fe_cdn" {
       preserve_unmatched_path = false
     }
   }]
+  delivery_rule = [
+    {
+      name  = "CorsFontForNPG"
+      order = 3
+
+      // conditions
+      url_path_conditions = [{
+        operator         = "BeginsWith"
+        match_values     = ["/fonts/"]
+        negate_condition = false
+        transforms       = []
+      }]
+      cookies_conditions        = []
+      device_conditions         = []
+      http_version_conditions   = []
+      post_arg_conditions       = []
+      query_string_conditions   = []
+      remote_address_conditions = []
+      request_body_conditions   = []
+      request_header_conditions = [{
+        selector         = "Origin"
+        operator         = "Equal"
+        match_values     = ["https://${local.npg_sdk_hostname}"]
+        transforms       = []
+        negate_condition = false
+      }]
+      request_method_conditions = []
+      request_scheme_conditions = []
+      request_uri_conditions    = []
+      url_file_extension_conditions = [{
+        operator         = "Equal"
+        match_values     = ["ttf"]
+        negate_condition = false
+        transforms       = []
+      }]
+      url_file_name_conditions = []
+
+      // actions
+      modify_response_header_actions = [{
+        action = "Overwrite"
+        name   = "Access-Control-Allow-Origin"
+        value  = "https://${local.npg_sdk_hostname}"
+      }]
+      cache_expiration_actions       = []
+      cache_key_query_string_actions = []
+      modify_request_header_actions  = []
+      url_redirect_actions           = []
+      url_rewrite_actions            = []
+    }
+  ]
 
   tags = module.tag_config.tags
 }
