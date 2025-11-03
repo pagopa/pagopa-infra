@@ -76,7 +76,7 @@ fdr_soap_request_psp_whitelist = "*"
 fdr_soap_request_ci_whitelist  = "*"
 apim_fdr_nodo_pagopa_enable    = true # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 
-ftp_organization = "99999999999,80078750587,88888888888,97532760580,12300020158,00488410010"
+ftp_organization = "99999999999,80078750587,88888888888,97532760580,00488410010"
 
 # fdr xml to json
 fdr_xml_to_json_function_subnet                   = ["10.1.182.0/24"]
