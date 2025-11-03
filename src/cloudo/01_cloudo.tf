@@ -34,6 +34,16 @@ module "cloudo" {
     }
   }
 
+  custom_roles_per_aks = {
+    "weu" = [
+      "Contributor"
+    ]
+    "itn" = [
+      "Reader"
+    ]
+  }
+
+
   app_service_logs = {
     retention_period_days = 3
     disk_quota_mb         = 35
