@@ -328,57 +328,6 @@ resource "terraform_data" "sha256_send_payment_result_api_v2_wisp_policy" {
 }
 
 
-########################
-## client IO bpd API  ##
-########################
-locals {
-  apim_pmclient_iobpd_api = {
-    display_name          = "Payment Manager - IO BPD client"
-    description           = "API to support BPD for Payment Manager"
-    path                  = "payment-manager/clients/io-bpd"
-    subscription_required = false
-    service_url           = null
-    io_bpd_hostname       = var.io_bpd_hostname
-  }
-}
-
-resource "azurerm_api_management_api_version_set" "pmclient_iobpd_api" {
-
-  name                = format("%s-pmclient-iobpd-api", local.project)
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  display_name        = local.apim_pmclient_iobpd_api.display_name
-  versioning_scheme   = "Segment"
-}
-
-module "apim_pmclient_iobpd_api_v1" {
-
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
-
-  name                  = format("%s-pmclient-iobpd-api", local.project)
-  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_payment_manager_product.product_id]
-  subscription_required = local.apim_pmclient_iobpd_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.pmclient_iobpd_api.id
-  api_version           = "v1"
-  service_url           = local.apim_pmclient_iobpd_api.service_url
-
-  description  = local.apim_pmclient_iobpd_api.description
-  display_name = local.apim_pmclient_iobpd_api.display_name
-  path         = local.apim_pmclient_iobpd_api.path
-  protocols    = ["https"]
-
-  content_format = "swagger-json"
-  content_value = templatefile("./api/payment_manager_api/clients/io-bpd/_swagger.json.tpl", {
-    host = local.api_domain
-  })
-
-  xml_content = templatefile("./api/payment_manager_api/clients/io-bpd/_base_policy.xml.tpl", {
-    endpoint = format("https://%s/pagopa/api/v1", local.apim_pmclient_iobpd_api.io_bpd_hostname)
-  })
-}
-
 ############################
 ## API COBAdGE            ##
 ############################
