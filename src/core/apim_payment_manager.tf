@@ -128,43 +128,6 @@ module "apim_pm_restapi_api_old_v4" {
   })
 }
 
-##########################################
-## API static resources for restapi-cd  ##
-##########################################
-locals {
-  apim_pm_restapicd_assets_api = {
-    display_name          = "Payment Manager - restapi-cd static resources"
-    description           = "Static resources to support PM webviews"
-    path                  = "pp-restapi-CD/assets"
-    subscription_required = false
-    service_url           = null
-  }
-}
-
-module "apim_pm_restapi_cd_assets" {
-
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
-
-  name                  = "${local.project}-pm-cd-assets-restapi"
-  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_payment_manager_product.product_id]
-  subscription_required = local.apim_pm_restapicd_assets_api.subscription_required
-  service_url           = local.apim_pm_restapicd_assets_api.service_url
-
-  description  = local.apim_pm_restapicd_assets_api.description
-  display_name = local.apim_pm_restapicd_assets_api.display_name
-  path         = local.apim_pm_restapicd_assets_api.path
-  protocols    = ["https"]
-
-  content_format = "swagger-json"
-  content_value = templatefile("./api/payment_manager_api/restapi-cd-assets/_swagger.json.tpl", {
-    host = local.api_domain
-  })
-
-  xml_content = file("./api/payment_manager_api/restapi-cd-assets/_base_policy.xml.tpl")
-}
-
 #####################################
 ## API restapi CD internal         ##
 #####################################

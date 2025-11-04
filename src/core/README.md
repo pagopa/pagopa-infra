@@ -64,7 +64,6 @@
 | <a name="module_apim_pm_ptg_api_v1"></a> [apim\_pm\_ptg\_api\_v1](#module\_apim\_pm\_ptg\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_pm_restapi_api_old_v4"></a> [apim\_pm\_restapi\_api\_old\_v4](#module\_apim\_pm\_restapi\_api\_old\_v4) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_pm_restapi_api_v4"></a> [apim\_pm\_restapi\_api\_v4](#module\_apim\_pm\_restapi\_api\_v4) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
-| <a name="module_apim_pm_restapi_cd_assets"></a> [apim\_pm\_restapi\_cd\_assets](#module\_apim\_pm\_restapi\_cd\_assets) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_pm_restapicd_internal_api_v1"></a> [apim\_pm\_restapicd\_internal\_api\_v1](#module\_apim\_pm\_restapicd\_internal\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_pm_restapicd_internal_api_v2"></a> [apim\_pm\_restapicd\_internal\_api\_v2](#module\_apim\_pm\_restapicd\_internal\_api\_v2) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_pmclient_iobpd_api_v1"></a> [apim\_pmclient\_iobpd\_api\_v1](#module\_apim\_pmclient\_iobpd\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
