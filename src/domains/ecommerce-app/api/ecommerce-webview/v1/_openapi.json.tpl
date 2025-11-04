@@ -671,6 +671,9 @@
               "NOT_RECEIVED"
             ]
           },
+          "authToken": {
+            "type": "string"
+          },
           "authorizationCode": {
             "type": "string",
             "description": "Payment gateway-specific authorization code related to the transaction"
