@@ -9,7 +9,15 @@
 
 
 NAMESPACE=$AKS_NAMESPACE
+
 DEPLOYMENT_NAME=$AKS_DEPLOYMENT
+if [ -z $AKS_DEPLOYMENS ]; then
+  DEPLOYMENT_NAME=$1
+fi
+
+if [ "$MONITOR_CONDITION" == "Resolved" ]; then
+  exit 0
+fi
 
 # Perform deployment rollout
 echo "Performing rollout for deployment $DEPLOYMENT_NAME in namespace $NAMESPACE..."

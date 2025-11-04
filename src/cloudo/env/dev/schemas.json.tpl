@@ -8,7 +8,8 @@
       "description": "Hello Pippo V1!",
       "runbook": "check_sys.sh",
       "worker": "Runbook",
-      "oncall": "false"
+      "oncall": "false",
+      "require_approval": "true"
     },
     {
       "id": "000-0000-0e0e00wa-wqesd",
@@ -68,6 +69,15 @@
       "name": "smart-alert",
       "description": "SMART!",
       "runbook": "check_sys.sh",
+      "worker": "Runbook",
+      "oncall": "false"
+    },
+    {
+      "id": "restart-pod",
+      "name": "[DEV] restart api config dev pod",
+      "description": "This runbook restart api config postgres pod",
+      "runbook": "aks/aks-deployments-rollout.sh",
+      "run_args": "cache-postgresql",
       "worker": "Runbook",
       "oncall": "false"
     }]
