@@ -50,7 +50,7 @@ aks_user_node_pool = {
 
 aks_cidr_subnet = ["10.1.0.0/17"]
 
-aks_kubernetes_version = "1.31.8"
+aks_kubernetes_version = "1.32.4"
 
 # Subnet aks
 subnet_private_endpoint_network_policies_enabled = true
