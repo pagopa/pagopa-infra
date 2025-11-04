@@ -138,7 +138,7 @@ locals {
         }
       ]
       shard_key           = "transactionId",
-      default_ttl_seconds = "315360000"  #10 years
+      default_ttl_seconds = "315360000" #10 years
     },
     {
       name = "transactions-view"
