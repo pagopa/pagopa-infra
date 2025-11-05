@@ -1,0 +1,954 @@
+{
+  "properties": {
+    "lenses": [
+      {
+        "order": 0,
+        "parts": [
+          {
+            "position": { "x": 0, "y": 4, "colSpan": 6, "rowSpan": 4 },
+            "metadata": {
+              "inputs": [
+                { "name": "resourceTypeMode", "isOptional": true },
+                { "name": "ComponentId", "isOptional": true },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                { "name": "PartId", "isOptional": true },
+                { "name": "Version", "value": "2.0", "isOptional": true },
+                { "name": "TimeRange", "value": "PT4H", "isOptional": true },
+                { "name": "DashboardId", "isOptional": true },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": { "scope": "hierarchy" },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.99;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions\"\n| summarize Total=count(), Success=count(httpStatus_d < 500) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n",
+                  "isOptional": true
+                },
+                { "name": "ControlType", "value": "FrameControlChart", "isOptional": true },
+                { "name": "SpecificChart", "value": "Line", "isOptional": true },
+                { "name": "PartTitle", "value": "Availability (5m) - v3", "isOptional": true },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/gpd/debt-positions-service/v3/organizations/{organizationfiscalcode}/debtpositions",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+                    "yAxis": [
+                      { "name": "availability", "type": "real" },
+                      { "name": "watermark", "type": "real" }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": { "isEnabled": true, "position": "Bottom" },
+                  "isOptional": true
+                },
+                { "name": "IsQueryContainTimeRange", "value": false, "isOptional": true }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "PartTitle": "Availability (5m) - v3",
+                  "Query": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.99;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions\"\n| summarize Total=count(), Success=count(httpStatus_d < 500) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n"
+                }
+              }
+            }
+          },
+          {
+            "position": { "x": 6, "y": 4, "colSpan": 6, "rowSpan": 4 },
+            "metadata": {
+              "inputs": [
+                { "name": "resourceTypeMode", "isOptional": true },
+                { "name": "ComponentId", "isOptional": true },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                { "name": "PartId", "isOptional": true },
+                { "name": "Version", "value": "2.0", "isOptional": true },
+                { "name": "TimeRange", "value": "PT4H", "isOptional": true },
+                { "name": "DashboardId", "isOptional": true },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": { "scope": "hierarchy" },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet api_url = \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+                  "isOptional": true
+                },
+                { "name": "ControlType", "value": "FrameControlChart", "isOptional": true },
+                { "name": "SpecificChart", "value": "Pie", "isOptional": true },
+                { "name": "PartTitle", "value": "Response Codes (5m) - v3", "isOptional": true },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/gpd/debt-positions-service/v3/organizations/{organizationfiscalcode}/debtpositions",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": { "name": "httpStatus_d", "type": "string" },
+                    "yAxis": [{ "name": "count_", "type": "long" }]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": { "isEnabled": true, "position": "Bottom" },
+                  "isOptional": true
+                },
+                { "name": "IsQueryContainTimeRange", "value": false, "isOptional": true }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [{ "name": "HTTPStatus", "type": "string" }],
+                    "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+                    "yAxis": [{ "name": "count_", "type": "long" }]
+                  },
+                  "PartTitle": "Response Codes (5m) - v3",
+                  "Query": "\nlet api_url = \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+                  "SpecificChart": "StackedArea"
+                }
+              }
+            }
+          },
+          {
+            "position": { "x": 12, "y": 4, "colSpan": 6, "rowSpan": 4 },
+            "metadata": {
+              "inputs": [
+                { "name": "resourceTypeMode", "isOptional": true },
+                { "name": "ComponentId", "isOptional": true },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                { "name": "PartId", "isOptional": true },
+                { "name": "Version", "value": "2.0", "isOptional": true },
+                { "name": "TimeRange", "value": "PT4H", "isOptional": true },
+                { "name": "DashboardId", "isOptional": true },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": { "scope": "hierarchy" },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 2.3;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions\"\n| summarize watermark=threshold, duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n",
+                  "isOptional": true
+                },
+                { "name": "ControlType", "value": "FrameControlChart", "isOptional": true },
+                { "name": "SpecificChart", "value": "StackedColumn", "isOptional": true },
+                { "name": "PartTitle", "value": "Percentile Response Time (5m) - v3", "isOptional": true },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/gpd/debt-positions-service/v3/organizations/{organizationfiscalcode}/debtpositions",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+                    "yAxis": [
+                      { "name": "watermark", "type": "real" },
+                      { "name": "duration_percentile_95", "type": "real" }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": { "isEnabled": true, "position": "Bottom" },
+                  "isOptional": true
+                },
+                { "name": "IsQueryContainTimeRange", "value": false, "isOptional": true }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+                    "yAxis": [
+                      { "name": "watermark", "type": "real" },
+                      { "name": "duration_percentile_95", "type": "real" }
+                    ]
+                  },
+                  "PartTitle": "Percentile Response Time (5m) - v3",
+                  "Query": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 2.3;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions\"\n| summarize watermark=threshold, duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n",
+                  "SpecificChart": "Line"
+                }
+              }
+            }
+          },
+
+		        {
+		          "position": { "x": 0, "y": 8, "colSpan": 6, "rowSpan": 4 },
+		          "metadata": {
+		            "inputs": [
+		              { "name": "resourceTypeMode", "isOptional": true },
+		              { "name": "ComponentId", "isOptional": true },
+		              {
+		                "name": "Scope",
+		                "value": {
+		                  "resourceIds": [
+		                    "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+		                  ]
+		                },
+		                "isOptional": true
+		              },
+		              { "name": "PartId", "isOptional": true },
+		              { "name": "Version", "value": "2.0", "isOptional": true },
+		              { "name": "TimeRange", "value": "PT4H", "isOptional": true },
+		              { "name": "DashboardId", "isOptional": true },
+		              {
+		                "name": "DraftRequestParameters",
+		                "value": { "scope": "hierarchy" },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "Query",
+		                "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.99;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions/[^/]+\"\n| summarize Total=count(), Success=count(httpStatus_d < 500) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n",
+		                "isOptional": true
+		              },
+		              { "name": "ControlType", "value": "FrameControlChart", "isOptional": true },
+		              { "name": "SpecificChart", "value": "Line", "isOptional": true },
+		              { "name": "PartTitle", "value": "Availability (5m) - v3", "isOptional": true },
+		              {
+		                "name": "PartSubTitle",
+		                "value": "/gpd/debt-positions-service/v3/organizations/{organizationfiscalcode}/debtpositions/{iupd}",
+		                "isOptional": true
+		              },
+		              {
+		                "name": "Dimensions",
+		                "value": {
+		                  "aggregation": "Sum",
+		                  "splitBy": [],
+		                  "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+		                  "yAxis": [
+		                    { "name": "availability", "type": "real" },
+		                    { "name": "watermark", "type": "real" }
+		                  ]
+		                },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "LegendOptions",
+		                "value": { "isEnabled": true, "position": "Bottom" },
+		                "isOptional": true
+		              },
+		              { "name": "IsQueryContainTimeRange", "value": false, "isOptional": true }
+		            ],
+		            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+		            "settings": {
+		              "content": {
+		                "PartTitle": "Availability (5m) - v3",
+		                "Query": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.99;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions/[^/]+\"\n| summarize Total=count(), Success=count(httpStatus_d < 500) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n"
+		              }
+		            }
+		          }
+		        },
+		        {
+		          "position": { "x": 6, "y": 8, "colSpan": 6, "rowSpan": 4 },
+		          "metadata": {
+		            "inputs": [
+		              { "name": "resourceTypeMode", "isOptional": true },
+		              { "name": "ComponentId", "isOptional": true },
+		              {
+		                "name": "Scope",
+		                "value": {
+		                  "resourceIds": [
+		                    "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+		                  ]
+		                },
+		                "isOptional": true
+		              },
+		              { "name": "PartId", "isOptional": true },
+		              { "name": "Version", "value": "2.0", "isOptional": true },
+		              { "name": "TimeRange", "value": "PT4H", "isOptional": true },
+		              { "name": "DashboardId", "isOptional": true },
+		              {
+		                "name": "DraftRequestParameters",
+		                "value": { "scope": "hierarchy" },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "Query",
+		                "value": "\nlet api_url = \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions/[^/]+\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+		                "isOptional": true
+		              },
+		              { "name": "ControlType", "value": "FrameControlChart", "isOptional": true },
+		              { "name": "SpecificChart", "value": "Pie", "isOptional": true },
+		              { "name": "PartTitle", "value": "Response Codes (5m) - v3", "isOptional": true },
+		              {
+		                "name": "PartSubTitle",
+		                "value": "/gpd/debt-positions-service/v3/organizations/{organizationfiscalcode}/debtpositions/{iupd}",
+		                "isOptional": true
+		              },
+		              {
+		                "name": "Dimensions",
+		                "value": {
+		                  "aggregation": "Sum",
+		                  "splitBy": [],
+		                  "xAxis": { "name": "httpStatus_d", "type": "string" },
+		                  "yAxis": [{ "name": "count_", "type": "long" }]
+		                },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "LegendOptions",
+		                "value": { "isEnabled": true, "position": "Bottom" },
+		                "isOptional": true
+		              },
+		              { "name": "IsQueryContainTimeRange", "value": false, "isOptional": true }
+		            ],
+		            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+		            "settings": {
+		              "content": {
+		                "Dimensions": {
+		                  "aggregation": "Sum",
+		                  "splitBy": [{ "name": "HTTPStatus", "type": "string" }],
+		                  "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+		                  "yAxis": [{ "name": "count_", "type": "long" }]
+		                },
+		                "PartTitle": "Response Codes (5m) - v3",
+		                "Query": "\nlet api_url = \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions/[^/]+\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+		                "SpecificChart": "StackedArea"
+		              }
+		            }
+		          }
+		        },
+		        {
+		          "position": { "x": 12, "y": 8, "colSpan": 6, "rowSpan": 4 },
+		          "metadata": {
+		            "inputs": [
+		              { "name": "resourceTypeMode", "isOptional": true },
+		              { "name": "ComponentId", "isOptional": true },
+		              {
+		                "name": "Scope",
+		                "value": {
+		                  "resourceIds": [
+		                    "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+		                  ]
+		                },
+		                "isOptional": true
+		              },
+		              { "name": "PartId", "isOptional": true },
+		              { "name": "Version", "value": "2.0", "isOptional": true },
+		              { "name": "TimeRange", "value": "PT4H", "isOptional": true },
+		              { "name": "DashboardId", "isOptional": true },
+		              {
+		                "name": "DraftRequestParameters",
+		                "value": { "scope": "hierarchy" },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "Query",
+		                "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 2.3;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions/[^/]+\"\n| summarize watermark=threshold, duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n",
+		                "isOptional": true
+		              },
+		              { "name": "ControlType", "value": "FrameControlChart", "isOptional": true },
+		              { "name": "SpecificChart", "value": "StackedColumn", "isOptional": true },
+		              { "name": "PartTitle", "value": "Percentile Response Time (5m) - v3", "isOptional": true },
+		              {
+		                "name": "PartSubTitle",
+		                "value": "/gpd/debt-positions-service/v3/organizations/{organizationfiscalcode}/debtpositions/{iupd}",
+		                "isOptional": true
+		              },
+		              {
+		                "name": "Dimensions",
+		                "value": {
+		                  "aggregation": "Sum",
+		                  "splitBy": [],
+		                  "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+		                  "yAxis": [
+		                    { "name": "watermark", "type": "real" },
+		                    { "name": "duration_percentile_95", "type": "real" }
+		                  ]
+		                },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "LegendOptions",
+		                "value": { "isEnabled": true, "position": "Bottom" },
+		                "isOptional": true
+		              },
+		              { "name": "IsQueryContainTimeRange", "value": false, "isOptional": true }
+		            ],
+		            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+		            "settings": {
+		              "content": {
+		                "Dimensions": {
+		                  "aggregation": "Sum",
+		                  "splitBy": [],
+		                  "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+		                  "yAxis": [
+		                    { "name": "watermark", "type": "real" },
+		                    { "name": "duration_percentile_95", "type": "real" }
+		                  ]
+		                },
+		                "PartTitle": "Percentile Response Time (5m) - v3",
+		                "Query": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 2.3;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions/[^/]+\"\n| summarize watermark=threshold, duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n",
+		                "SpecificChart": "Line"
+		              }
+		            }
+		          }
+		        },
+
+		        {
+		          "position": { "x": 0, "y": 16, "colSpan": 6, "rowSpan": 4 },
+		          "metadata": {
+		            "inputs": [
+		              { "name": "resourceTypeMode", "isOptional": true },
+		              { "name": "ComponentId", "isOptional": true },
+		              {
+		                "name": "Scope",
+		                "value": {
+		                  "resourceIds": [
+		                    "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+		                  ]
+		                },
+		                "isOptional": true
+		              },
+		              { "name": "PartId", "isOptional": true },
+		              { "name": "Version", "value": "2.0", "isOptional": true },
+		              { "name": "TimeRange", "value": "PT4H", "isOptional": true },
+		              { "name": "DashboardId", "isOptional": true },
+		              {
+		                "name": "DraftRequestParameters",
+		                "value": { "scope": "hierarchy" },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "Query",
+		                "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.99;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions/[^/]+/publish\"\n| summarize Total=count(), Success=count(httpStatus_d < 500) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n",
+		                "isOptional": true
+		              },
+		              { "name": "ControlType", "value": "FrameControlChart", "isOptional": true },
+		              { "name": "SpecificChart", "value": "Line", "isOptional": true },
+		              { "name": "PartTitle", "value": "Availability (5m) - v3", "isOptional": true },
+		              {
+		                "name": "PartSubTitle",
+		                "value": "/gpd/debt-positions-service/v3/organizations/{organizationfiscalcode}/debtpositions/{iupd}/publish",
+		                "isOptional": true
+		              },
+		              {
+		                "name": "Dimensions",
+		                "value": {
+		                  "aggregation": "Sum",
+		                  "splitBy": [],
+		                  "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+		                  "yAxis": [
+		                    { "name": "availability", "type": "real" },
+		                    { "name": "watermark", "type": "real" }
+		                  ]
+		                },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "LegendOptions",
+		                "value": { "isEnabled": true, "position": "Bottom" },
+		                "isOptional": true
+		              },
+		              { "name": "IsQueryContainTimeRange", "value": false, "isOptional": true }
+		            ],
+		            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+		            "settings": {
+		              "content": {
+		                "PartTitle": "Availability (5m) - v3",
+		                "Query": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.99;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions/[^/]+/publish\"\n| summarize Total=count(), Success=count(httpStatus_d < 500) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n"
+		              }
+		            }
+		          }
+		        },
+		        {
+		          "position": { "x": 6, "y": 16, "colSpan": 6, "rowSpan": 4 },
+		          "metadata": {
+		            "inputs": [
+		              { "name": "resourceTypeMode", "isOptional": true },
+		              { "name": "ComponentId", "isOptional": true },
+		              {
+		                "name": "Scope",
+		                "value": {
+		                  "resourceIds": [
+		                    "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+		                  ]
+		                },
+		                "isOptional": true
+		              },
+		              { "name": "PartId", "isOptional": true },
+		              { "name": "Version", "value": "2.0", "isOptional": true },
+		              { "name": "TimeRange", "value": "PT4H", "isOptional": true },
+		              { "name": "DashboardId", "isOptional": true },
+		              {
+		                "name": "DraftRequestParameters",
+		                "value": { "scope": "hierarchy" },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "Query",
+		                "value": "\nlet api_url = \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions/[^/]+/publish\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+		                "isOptional": true
+		              },
+		              { "name": "ControlType", "value": "FrameControlChart", "isOptional": true },
+		              { "name": "SpecificChart", "value": "Pie", "isOptional": true },
+		              { "name": "PartTitle", "value": "Response Codes (5m) - v3", "isOptional": true },
+		              {
+		                "name": "PartSubTitle",
+		                "value": "/gpd/debt-positions-service/v3/organizations/{organizationfiscalcode}/debtpositions/{iupd}/publish",
+		                "isOptional": true
+		              },
+		              {
+		                "name": "Dimensions",
+		                "value": {
+		                  "aggregation": "Sum",
+		                  "splitBy": [],
+		                  "xAxis": { "name": "httpStatus_d", "type": "string" },
+		                  "yAxis": [{ "name": "count_", "type": "long" }]
+		                },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "LegendOptions",
+		                "value": { "isEnabled": true, "position": "Bottom" },
+		                "isOptional": true
+		              },
+		              { "name": "IsQueryContainTimeRange", "value": false, "isOptional": true }
+		            ],
+		            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+		            "settings": {
+		              "content": {
+		                "Dimensions": {
+		                  "aggregation": "Sum",
+		                  "splitBy": [{ "name": "HTTPStatus", "type": "string" }],
+		                  "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+		                  "yAxis": [{ "name": "count_", "type": "long" }]
+		                },
+		                "PartTitle": "Response Codes (5m) - v3",
+		                "Query": "\nlet api_url = \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions/[^/]+/publish\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+		                "SpecificChart": "StackedArea"
+		              }
+		            }
+		          }
+		        },
+		        {
+		          "position": { "x": 12, "y": 16, "colSpan": 6, "rowSpan": 4 },
+		          "metadata": {
+		            "inputs": [
+		              { "name": "resourceTypeMode", "isOptional": true },
+		              { "name": "ComponentId", "isOptional": true },
+		              {
+		                "name": "Scope",
+		                "value": {
+		                  "resourceIds": [
+		                    "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+		                  ]
+		                },
+		                "isOptional": true
+		              },
+		              { "name": "PartId", "isOptional": true },
+		              { "name": "Version", "value": "2.0", "isOptional": true },
+		              { "name": "TimeRange", "value": "PT4H", "isOptional": true },
+		              { "name": "DashboardId", "isOptional": true },
+		              {
+		                "name": "DraftRequestParameters",
+		                "value": { "scope": "hierarchy" },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "Query",
+		                "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 2.3;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions/[^/]+/publish\"\n| summarize watermark=threshold, duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n",
+		                "isOptional": true
+		              },
+		              { "name": "ControlType", "value": "FrameControlChart", "isOptional": true },
+		              { "name": "SpecificChart", "value": "StackedColumn", "isOptional": true },
+		              { "name": "PartTitle", "value": "Percentile Response Time (5m) - v3", "isOptional": true },
+		              {
+		                "name": "PartSubTitle",
+		                "value": "/gpd/debt-positions-service/v3/organizations/{organizationfiscalcode}/debtpositions/{iupd}/publish",
+		                "isOptional": true
+		              },
+		              {
+		                "name": "Dimensions",
+		                "value": {
+		                  "aggregation": "Sum",
+		                  "splitBy": [],
+		                  "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+		                  "yAxis": [
+		                    { "name": "watermark", "type": "real" },
+		                    { "name": "duration_percentile_95", "type": "real" }
+		                  ]
+		                },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "LegendOptions",
+		                "value": { "isEnabled": true, "position": "Bottom" },
+		                "isOptional": true
+		              },
+		              { "name": "IsQueryContainTimeRange", "value": false, "isOptional": true }
+		            ],
+		            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+		            "settings": {
+		              "content": {
+		                "Dimensions": {
+		                  "aggregation": "Sum",
+		                  "splitBy": [],
+		                  "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+		                  "yAxis": [
+		                    { "name": "watermark", "type": "real" },
+		                    { "name": "duration_percentile_95", "type": "real" }
+		                  ]
+		                },
+		                "PartTitle": "Percentile Response Time (5m) - v3",
+		                "Query": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 2.3;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions/[^/]+/publish\"\n| summarize watermark=threshold, duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n",
+		                "SpecificChart": "Line"
+		              }
+		            }
+		          }
+		        },
+
+		        {
+		          "position": { "x": 0, "y": 20, "colSpan": 18, "rowSpan": 4 },
+		          "metadata": {
+		            "inputs": [
+		              { "name": "resourceTypeMode", "isOptional": true },
+		              { "name": "ComponentId", "isOptional": true },
+		              {
+		                "name": "Scope",
+		                "value": {
+		                  "resourceIds": [
+		                    "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+		                  ]
+		                },
+		                "isOptional": true
+		              },
+		              { "name": "PartId", "isOptional": true },
+		              { "name": "Version", "value": "2.0", "isOptional": true },
+		              { "name": "TimeRange", "value": "PT4H", "isOptional": true },
+		              { "name": "DashboardId", "isOptional": true },
+		              {
+		                "name": "DraftRequestParameters",
+		                "value": { "scope": "hierarchy" },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "Query",
+		                "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/.*\"\n| where httpStatus_d >= 500\n| summarize count() by bin(TimeGenerated, 1m)\n| render timechart with (xtitle = \"time\", ytitle= \"5xx per minute\")\n",
+		                "isOptional": true
+		              },
+		              { "name": "ControlType", "value": "FrameControlChart", "isOptional": true },
+		              { "name": "SpecificChart", "value": "Line", "isOptional": true },
+		              { "name": "PartTitle", "value": "Burst 5xx - v3", "isOptional": true },
+		              { "name": "PartSubTitle", "value": "All v3 endpoints", "isOptional": true },
+		              {
+		                "name": "Dimensions",
+		                "value": {
+		                  "aggregation": "Sum",
+		                  "splitBy": [],
+		                  "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+		                  "yAxis": [{ "name": "count_", "type": "long" }]
+		                },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "LegendOptions",
+		                "value": { "isEnabled": true, "position": "Bottom" },
+		                "isOptional": true
+		              },
+		              { "name": "IsQueryContainTimeRange", "value": false, "isOptional": true }
+		            ],
+		            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+		            "settings": {
+		              "content": {
+		                "Dimensions": {
+		                  "aggregation": "Sum",
+		                  "splitBy": [],
+		                  "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+		                  "yAxis": [{ "name": "count_", "type": "long" }]
+		                },
+		                "PartTitle": "Burst 5xx - v3",
+		                "Query": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/.*\"\n| where httpStatus_d >= 500\n| summarize count() by bin(TimeGenerated, 1m)\n| render timechart with (xtitle = \"time\", ytitle= \"5xx per minute\")\n"
+		              }
+		            }
+		          }
+		        },
+
+		        {
+		          "position": { "x": 0, "y": 24, "colSpan": 6, "rowSpan": 4 },
+		          "metadata": {
+		            "inputs": [
+		              { "name": "resourceTypeMode", "isOptional": true },
+		              { "name": "ComponentId", "isOptional": true },
+		              {
+		                "name": "Scope",
+		                "value": {
+		                  "resourceIds": [
+		                    "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+		                  ]
+		                },
+		                "isOptional": true
+		              },
+		              { "name": "PartId", "isOptional": true },
+		              { "name": "Version", "value": "2.0", "isOptional": true },
+		              { "name": "TimeRange", "value": "PT4H", "isOptional": true },
+		              { "name": "DashboardId", "isOptional": true },
+		              {
+		                "name": "DraftRequestParameters",
+		                "value": { "scope": "hierarchy" },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "Query",
+		                "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions\"\n| where httpStatus_d >= 500\n| summarize count() by bin(TimeGenerated, 1m)\n| render timechart with (xtitle = \"time\", ytitle= \"5xx per minute\")\n",
+		                "isOptional": true
+		              },
+		              { "name": "ControlType", "value": "FrameControlChart", "isOptional": true },
+		              { "name": "SpecificChart", "value": "Line", "isOptional": true },
+		              { "name": "PartTitle", "value": "Burst 5xx - v3", "isOptional": true },
+		              {
+		                "name": "PartSubTitle",
+		                "value": "/gpd/debt-positions-service/v3/organizations/{organizationfiscalcode}/debtpositions",
+		                "isOptional": true
+		              },
+		              {
+		                "name": "Dimensions",
+		                "value": {
+		                  "aggregation": "Sum",
+		                  "splitBy": [],
+		                  "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+		                  "yAxis": [{ "name": "count_", "type": "long" }]
+		                },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "LegendOptions",
+		                "value": { "isEnabled": true, "position": "Bottom" },
+		                "isOptional": true
+		              },
+		              { "name": "IsQueryContainTimeRange", "value": false, "isOptional": true }
+		            ],
+		            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+		            "settings": {
+		              "content": {
+		                "Dimensions": {
+		                  "aggregation": "Sum",
+		                  "splitBy": [],
+		                  "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+		                  "yAxis": [{ "name": "count_", "type": "long" }]
+		                },
+		                "PartTitle": "Burst 5xx - v3",
+		                "Query": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions\"\n| where httpStatus_d >= 500\n| summarize count() by bin(TimeGenerated, 1m)\n| render timechart with (xtitle = \"time\", ytitle= \"5xx per minute\")\n"
+		              }
+		            }
+		          }
+		        },
+		        {
+		          "position": { "x": 6, "y": 24, "colSpan": 6, "rowSpan": 4 },
+		          "metadata": {
+		            "inputs": [
+		              { "name": "resourceTypeMode", "isOptional": true },
+		              { "name": "ComponentId", "isOptional": true },
+		              {
+		                "name": "Scope",
+		                "value": {
+		                  "resourceIds": [
+		                    "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+		                  ]
+		                },
+		                "isOptional": true
+		              },
+		              { "name": "PartId", "isOptional": true },
+		              { "name": "Version", "value": "2.0", "isOptional": true },
+		              { "name": "TimeRange", "value": "PT4H", "isOptional": true },
+		              { "name": "DashboardId", "isOptional": true },
+		              {
+		                "name": "DraftRequestParameters",
+		                "value": { "scope": "hierarchy" },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "Query",
+		                "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions/[^/]+\"\n| where httpStatus_d >= 500\n| summarize count() by bin(TimeGenerated, 1m)\n| render timechart with (xtitle = \"time\", ytitle= \"5xx per minute\")\n",
+		                "isOptional": true
+		              },
+		              { "name": "ControlType", "value": "FrameControlChart", "isOptional": true },
+		              { "name": "SpecificChart", "value": "Line", "isOptional": true },
+		              { "name": "PartTitle", "value": "Burst 5xx - v3", "isOptional": true },
+		              {
+		                "name": "PartSubTitle",
+		                "value": "/gpd/debt-positions-service/v3/organizations/{organizationfiscalcode}/debtpositions/{iupd}",
+		                "isOptional": true
+		              },
+		              {
+		                "name": "Dimensions",
+		                "value": {
+		                  "aggregation": "Sum",
+		                  "splitBy": [],
+		                  "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+		                  "yAxis": [{ "name": "count_", "type": "long" }]
+		                },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "LegendOptions",
+		                "value": { "isEnabled": true, "position": "Bottom" },
+		                "isOptional": true
+		              },
+		              { "name": "IsQueryContainTimeRange", "value": false, "isOptional": true }
+		            ],
+		            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+		            "settings": {
+		              "content": {
+		                "Dimensions": {
+		                  "aggregation": "Sum",
+		                  "splitBy": [],
+		                  "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+		                  "yAxis": [{ "name": "count_", "type": "long" }]
+		                },
+		                "PartTitle": "Burst 5xx - v3",
+		                "Query": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions/[^/]+\"\n| where httpStatus_d >= 500\n| summarize count() by bin(TimeGenerated, 1m)\n| render timechart with (xtitle = \"time\", ytitle= \"5xx per minute\")\n"
+		              }
+		            }
+		          }
+		        },
+		        {
+		          "position": { "x": 12, "y": 24, "colSpan": 6, "rowSpan": 4 },
+		          "metadata": {
+		            "inputs": [
+		              { "name": "resourceTypeMode", "isOptional": true },
+		              { "name": "ComponentId", "isOptional": true },
+		              {
+		                "name": "Scope",
+		                "value": {
+		                  "resourceIds": [
+		                    "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+		                  ]
+		                },
+		                "isOptional": true
+		              },
+		              { "name": "PartId", "isOptional": true },
+		              { "name": "Version", "value": "2.0", "isOptional": true },
+		              { "name": "TimeRange", "value": "PT4H", "isOptional": true },
+		              { "name": "DashboardId", "isOptional": true },
+		              {
+		                "name": "DraftRequestParameters",
+		                "value": { "scope": "hierarchy" },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "Query",
+		                "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions/[^/]+/publish\"\n| where httpStatus_d >= 500\n| summarize count() by bin(TimeGenerated, 1m)\n| render timechart with (xtitle = \"time\", ytitle= \"5xx per minute\")\n",
+		                "isOptional": true
+		              },
+		              { "name": "ControlType", "value": "FrameControlChart", "isOptional": true },
+		              { "name": "SpecificChart", "value": "Line", "isOptional": true },
+		              { "name": "PartTitle", "value": "Burst 5xx - v3", "isOptional": true },
+		              {
+		                "name": "PartSubTitle",
+		                "value": "/gpd/debt-positions-service/v3/organizations/{organizationfiscalcode}/debtpositions/{iupd}/publish",
+		                "isOptional": true
+		              },
+		              {
+		                "name": "Dimensions",
+		                "value": {
+		                  "aggregation": "Sum",
+		                  "splitBy": [],
+		                  "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+		                  "yAxis": [{ "name": "count_", "type": "long" }]
+		                },
+		                "isOptional": true
+		              },
+		              {
+		                "name": "LegendOptions",
+		                "value": { "isEnabled": true, "position": "Bottom" },
+		                "isOptional": true
+		              },
+		              { "name": "IsQueryContainTimeRange", "value": false, "isOptional": true }
+		            ],
+		            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+		            "settings": {
+		              "content": {
+		                "Dimensions": {
+		                  "aggregation": "Sum",
+		                  "splitBy": [],
+		                  "xAxis": { "name": "TimeGenerated", "type": "datetime" },
+		                  "yAxis": [{ "name": "count_", "type": "long" }]
+		                },
+		                "PartTitle": "Burst 5xx - v3",
+		                "Query": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/gpd/debt-positions-service/v3/organizations/[^/]+/debtpositions/[^/]+/publish\"\n| where httpStatus_d >= 500\n| summarize count() by bin(TimeGenerated, 1m)\n| render timechart with (xtitle = \"time\", ytitle= \"5xx per minute\")\n"
+		              }
+		            }
+		          }
+		        }
+		      ]
+		    }
+		  ],
+		  "metadata": {
+		    "model": {
+		      "timeRange": {
+		        "value": { "relative": { "duration": 24, "timeUnit": 1 } },
+		        "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+		      },
+		      "filterLocale": { "value": "en-us" },
+		      "filters": {
+		        "value": {
+		          "MsPortalFx_TimeRange": {
+		            "model": { "format": "local", "granularity": "auto", "relative": "30m" },
+		            "displayCache": { "name": "Local Time", "value": "Past 30 minutes" },
+		            "filteredPartIds": [
+		              "StartboardPart-LogsDashboardPart-7abcc284-46d1-43d7-94f1-717abb1c8099",
+		              "StartboardPart-LogsDashboardPart-7abcc284-46d1-43d7-94f1-717abb1c809b",
+		              "StartboardPart-LogsDashboardPart-7abcc284-46d1-43d7-94f1-717abb1c809d",
+		              "StartboardPart-LogsDashboardPart-7abcc284-46d1-43d7-94f1-717abb1c809f",
+		              "StartboardPart-LogsDashboardPart-7abcc284-46d1-43d7-94f1-717abb1c80a1",
+		              "StartboardPart-LogsDashboardPart-7abcc284-46d1-43d7-94f1-717abb1c80a3",
+		              "StartboardPart-LogsDashboardPart-7abcc284-46d1-43d7-94f1-717abb1c80a5"
+		            ]
+		          }
+		        }
+		      }
+		    }
+		  }
+  },
+  "name": "pagopa-p-opex_pagopa-debt-position-v3",
+  "type": "Microsoft.Portal/dashboards",
+  "location": "westeurope",
+  "tags": { "hidden-title": "pagopa-p-opex_pagopa-debt-position-v3" },
+  "apiVersion": "2022-12-01-preview"
+}
