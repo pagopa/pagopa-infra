@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "rg_payment_wallet_alerts" {
   count    = var.env_short == "p" ? 1 : 0
   name     = "${local.project}-alerts-rg"
   location = var.location
-  tags     = var.tags
+  tags     = module.tag_config.tags
 }
 
 data "azurerm_key_vault_secret" "monitor_payment_wallet_opsgenie_webhook_key" {
@@ -28,7 +28,7 @@ resource "azurerm_monitor_action_group" "payment_wallet_opsgenie" {
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #Availability API payment wallet for IO app V1
@@ -62,7 +62,7 @@ AzureDiagnostics
     by Time = bin(TimeGenerated, 15m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
-| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability)) 
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
   QUERY
@@ -108,7 +108,7 @@ AzureDiagnostics
     by Time = bin(TimeGenerated, 15m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
-| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability)) 
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
   QUERY
@@ -157,7 +157,7 @@ AzureDiagnostics
     by Time = bin(TimeGenerated, 15m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
-| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability)) 
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
   QUERY
@@ -188,8 +188,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_npg_notif
   description    = "Payment Wallet NPG Notifications - Availability less than 99% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
-let thresholdTrafficMin = 5;
-let thresholdTrafficLinear = 20;
+let thresholdTrafficMin = 10;
+let thresholdTrafficLinear = 100;
 let lowTrafficAvailability = 80;
 let highTrafficAvailability = 99;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
@@ -199,10 +199,10 @@ AzureDiagnostics
 | summarize
     Total=count(),
     Success=countif(responseCode_d < 500 and DurationMs < 350)
-    by Time = bin(TimeGenerated, 15m)
+    by Time = bin(TimeGenerated, 10m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
-| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability)) 
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
   QUERY
@@ -212,7 +212,7 @@ AzureDiagnostics
   time_window = 30
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 2
+    threshold = 3
   }
 }
 
@@ -247,7 +247,7 @@ AzureDiagnostics
     by Time = bin(TimeGenerated, 15m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
-| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability)) 
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
   QUERY

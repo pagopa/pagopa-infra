@@ -7,13 +7,6 @@ location_short  = "itn"
 location_string = "Italy North"
 instance        = "prod"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/pay-wallet-app"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -43,7 +36,6 @@ io_backend_base_path = "https://api-app.io.pagopa.it"
 
 payment_wallet_with_pm_enabled = true
 
-payment_wallet_migrations_enabled    = true
 enabled_payment_wallet_method_ids_pm = "6920b555-c972-4e2b-980c-b0e0037a111a,0ff153c2-4c5e-49a5-8720-788b6f190264,b63dbc2b-0b89-4431-a196-a5d73ff7ce9c"
 
 ### PDB
@@ -61,4 +53,13 @@ pod_disruption_budgets = {
       "app.kubernetes.io/instance" = "pagopawalletservice"
     }
   },
+  "pagopapaymentwalletcdcservice" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopapaymentwalletcdcservice"
+    }
+  },
 }
+pay_wallet_jwt_issuer_api_key_use_primary = true
+
+payment_wallet_service_api_key_use_primary = true

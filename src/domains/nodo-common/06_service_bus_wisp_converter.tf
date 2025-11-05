@@ -41,7 +41,7 @@ resource "azurerm_resource_group" "service_bus_rg" {
   name     = local.sb_resource_group_name
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-quotas
@@ -57,7 +57,7 @@ resource "azurerm_servicebus_namespace" "service_bus_wisp" {
   premium_messaging_partitions = var.service_bus_wisp.premium_messaging_partitions
 
   dynamic "network_rule_set" {
-    for_each = var.env_short != "d" ? [1] : []
+    for_each = var.env_short == "p" ? [1] : []
     content {
       trusted_services_allowed = true
 
@@ -71,7 +71,7 @@ resource "azurerm_servicebus_namespace" "service_bus_wisp" {
     }
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     azurerm_resource_group.service_bus_rg

@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "bopagopa_rg" {
   name     = "${local.project}-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 locals {
@@ -10,7 +10,7 @@ locals {
 }
 
 module "bopagopa_cosmosdb_mongodb_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+  source               = "./.terraform/modules/__v3__/subnet"
   name                 = "${local.project}-datastore-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_mongodb
   resource_group_name  = local.vnet_resource_group_name
@@ -27,7 +27,7 @@ module "bopagopa_cosmosdb_mongodb_snet" {
 
 
 module "bopagopa_cosmosdb_mongo_account" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.7.0"
+  source   = "./.terraform/modules/__v3__/cosmosdb_account"
   name     = "${local.project}-cosmos-account"
   location = var.location
   domain   = var.domain
@@ -40,7 +40,8 @@ module "bopagopa_cosmosdb_mongo_account" {
 
   main_geo_location_zone_redundant = var.bopagopa_datastore_cosmos_db_params.main_geo_location_zone_redundant
 
-  enable_free_tier = var.bopagopa_datastore_cosmos_db_params.enable_free_tier
+  enable_free_tier       = var.bopagopa_datastore_cosmos_db_params.enable_free_tier
+  burst_capacity_enabled = var.env_short == "p"
 
   public_network_access_enabled = var.bopagopa_datastore_cosmos_db_params.public_network_access_enabled
 
@@ -58,11 +59,14 @@ module "bopagopa_cosmosdb_mongo_account" {
   allowed_virtual_network_subnet_ids = var.bopagopa_datastore_cosmos_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
 
-  private_endpoint_enabled = var.bopagopa_datastore_cosmos_db_params.private_endpoint_enabled
-  subnet_id                = module.bopagopa_cosmosdb_mongodb_snet.id
-  private_dns_zone_ids     = [data.azurerm_private_dns_zone.cosmos.id]
+  private_endpoint_enabled              = var.bopagopa_datastore_cosmos_db_params.private_endpoint_enabled
+  subnet_id                             = module.bopagopa_cosmosdb_mongodb_snet.id
+  private_dns_zone_mongo_ids            = [data.azurerm_private_dns_zone.cosmos.id]
+  private_endpoint_mongo_name           = "${local.project}-cosmos-account-private-endpoint" # forced after update module vers
+  private_service_connection_mongo_name = "${local.project}-cosmos-account-private-endpoint" # forced after update module vers
 
-  tags = var.tags
+
+  tags = module.tag_config.tags
 }
 
 
@@ -96,7 +100,7 @@ resource "azurerm_management_lock" "mongodb_pagopa_backoffice" {
 
 # Collections
 module "mongdb_collection_products" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.7.0"
+  source = "./.terraform/modules/__v3__/cosmosdb_mongodb_collection"
 
   name                = "wrappers"
   resource_group_name = azurerm_resource_group.bopagopa_rg.name
@@ -118,7 +122,7 @@ module "mongdb_collection_products" {
 }
 
 module "mongdb_collection_brokeribans" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.7.0"
+  source = "./.terraform/modules/__v3__/cosmosdb_mongodb_collection"
 
   name                = "brokerIbans"
   resource_group_name = azurerm_resource_group.bopagopa_rg.name
@@ -140,7 +144,7 @@ module "mongdb_collection_brokeribans" {
 }
 
 module "mongdb_collection_brokerinstitutions" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.7.0"
+  source = "./.terraform/modules/__v3__/cosmosdb_mongodb_collection"
 
   name                = "brokerInstitutions"
   resource_group_name = azurerm_resource_group.bopagopa_rg.name
@@ -163,7 +167,7 @@ module "mongdb_collection_brokerinstitutions" {
 }
 
 module "mongdb_collection_maintenance" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.7.0"
+  source = "./.terraform/modules/__v3__/cosmosdb_mongodb_collection"
 
   name                = "maintenance"
   resource_group_name = azurerm_resource_group.bopagopa_rg.name

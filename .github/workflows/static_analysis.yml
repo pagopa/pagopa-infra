@@ -1,13 +1,16 @@
-name: Static Analysis
+name: Static Analysis Main
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   static_analysis:
     runs-on: ubuntu-latest
+    env:
+      TF_PLUGIN_CACHE_DIR: /tmp/.terraform.d/plugin-cache
 
     steps:
     - name: ⚡ Checkout code
@@ -24,22 +27,32 @@ jobs:
       with:
         terraform_version: "${{ env.TERRAFORM_VERSION }}"
 
+    - name: 🧹 Clean provider directories
+      run: |
+        find . -type d -name ".terraform" -exec rm -rf {} +
+        find . -type f -name ".terraform.lock.hcl" -exec rm -f {} +
+        rm -rf /tmp/.terraform.d/plugin-cache/*
+
+    - name: 💾 Cache Terraform plugins
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.terraform.d/plugin-cache
+        key: ${{ runner.os }}-terraform-${{ env.TERRAFORM_VERSION }}-${{ hashFiles('**/.terraform.lock.hcl') }}
+        restore-keys: |
+          ${{ runner.os }}-terraform-${{ env.TERRAFORM_VERSION }}-
+          ${{ runner.os }}-terraform-
+
+    - name: 🔧 Setup Terraform plugin cache directory
+      run: |
+        mkdir -p /tmp/.terraform.d/plugin-cache
+        echo 'plugin_cache_dir = "/tmp/.terraform.d/plugin-cache"' > ~/.terraformrc
+
     - name: 🏁 Init terraform folders
       id: init_terraform_folders
       shell: bash
       run: |
-
-        echo -e "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-"
-        echo    "+ 🔨 CREATE CACHE FOLDER         +"
-        echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-\n"
-
-        export TF_PLUGIN_CACHE_DIR="/tmp/.terraform.d/plugin-cache"
-        mkdir -p ${TF_PLUGIN_CACHE_DIR}
-        ls -la ${TF_PLUGIN_CACHE_DIR}
-
         echo "📢 Show space"
         df -h
-        du -h ${TF_PLUGIN_CACHE_DIR}
 
         echo -e "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-"
         echo    "+ 🏁 INIT TERRAFORM FOLDERS 🏁   +"
@@ -56,10 +69,13 @@ jobs:
         for f in $FOLDERS; do
           pushd "$(pwd)/${f}"
             sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-            terraform init -upgrade &
-            pids+=($!)
+            terraform init -upgrade -lockfile=true &&
+            terraform providers lock \
+              -platform=darwin_arm64 \
+              -platform=darwin_amd64 \
+              -platform=linux_amd64 \
+              -platform=linux_arm64
           popd
-
         done
 
         # Wait for each specific process to terminate.
@@ -75,11 +91,6 @@ jobs:
           #
           wait "$pid"
         done
-
-        echo "📢 Show space 3"
-        df -h
-        ls -la /tmp/.terraform.d/plugin-cache
-        du -h -d 5 ${TF_PLUGIN_CACHE_DIR}
 
     - name: Show precommit version
       shell: bash
@@ -98,8 +109,6 @@ jobs:
         echo -e "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
         echo    "+- 🚨 PRECOMMIT TERRAFORM 🚨 -+"
         echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
-
-        export TF_PLUGIN_CACHE_DIR="/tmp/.terraform.d/plugin-cache"
 
         TAG=v1.96.2@sha256:01f870b7689b5a09c1a370914fcddcac42c4b6478c9d369e1d2590dd0a66ffd0
         docker run \

@@ -11,9 +11,10 @@ locals {
     "51.144.56.176/28",
   ]
 
-  monitor_action_group_slack_name = "SlackPagoPA"
-  monitor_action_group_email_name = "PagoPA"
-  monitor_appinsights_name        = "${local.product}-appinsights"
+  monitor_action_group_slack_name    = "SlackPagoPA"
+  monitor_action_group_email_name    = "PagoPA"
+  monitor_action_group_opsgenie_name = "Opsgenie"
+  monitor_appinsights_name           = "${local.product}-appinsights"
 
   vnet_name                = "${local.product}-vnet"
   vnet_resource_group_name = "${local.product}-vnet-rg"
@@ -43,5 +44,12 @@ locals {
     path                  = "aca/debt-positions-service"
     subscription_required = true
     service_url           = var.env == "prod" ? "https://weu${var.env}.gps.internal.platform.pagopa.it/pagopa-gpd-core" : "https://weu${var.env}.gps.internal.${var.env}.platform.pagopa.it/pagopa-gpd-core"
+  }
+  apim_aca_upload_api = {
+    display_name          = "ACA Upload pagoPA - Massive Upload"
+    description           = "APIs to support ACA's Debt Positions massive upload for organizations"
+    path                  = "upload/aca/debt-positions-service"
+    subscription_required = true
+    service_url           = var.env == "prod" ? "https://weu${var.env}.gps.internal.platform.pagopa.it/pagopa-gpd-upload" : "https://weu${var.env}.gps.internal.${var.env}.platform.pagopa.it/pagopa-gpd-upload"
   }
 }

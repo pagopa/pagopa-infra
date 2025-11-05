@@ -6,13 +6,6 @@ location       = "westeurope"
 location_short = "weu"
 instance       = "uat"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/nodo-common"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -28,7 +21,8 @@ external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
 
 ## CIDR nodo per database pgsql
-cidr_subnet_flex_dbms = ["10.1.160.0/24"]
+cidr_subnet_flex_dbms         = ["10.1.160.0/24"]
+cidr_subnet_flex_storico_dbms = ["10.1.176.0/24"]
 
 ## CIDR storage subnet
 cidr_subnet_storage_account = ["10.1.137.16/29"]
@@ -37,11 +31,11 @@ cidr_subnet_storage_account = ["10.1.137.16/29"]
 pgres_flex_params = {
 
   enabled    = true
-  sku_name   = "GP_Standard_D4ds_v4"
+  sku_name   = "GP_Standard_D8ds_v4"
   db_version = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
-  storage_mb                                       = 1048576
+  storage_mb                                       = 2097152
   zone                                             = 1
   standby_ha_zone                                  = 2
   backup_retention_days                            = 7
@@ -54,6 +48,31 @@ pgres_flex_params = {
   max_connections                                  = 5000
   enable_private_dns_registration                  = true
   enable_private_dns_registration_virtual_endpoint = false
+  max_worker_processes                             = 16
+
+}
+
+pgres_flex_storico_params = {
+
+  enabled    = true
+  sku_name   = "GP_Standard_D2ds_v5"
+  db_version = "16"
+  # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
+  # 2097152, 4194304, 8388608, 16777216, and 33554432.
+  storage_mb                             = 1048576
+  zone                                   = 1
+  standby_ha_zone                        = 2
+  backup_retention_days                  = 7
+  geo_redundant_backup_enabled           = false
+  create_mode                            = "Default"
+  pgres_flex_private_endpoint_enabled    = true
+  pgres_flex_ha_enabled                  = false
+  pgres_flex_pgbouncer_enabled           = true
+  pgres_flex_diagnostic_settings_enabled = false
+  max_connections                        = 850
+  enable_private_dns_registration        = true
+  max_worker_processes                   = 16
+  public_network_access_enabled          = false
 }
 
 sftp_account_replication_type = "LRS"
@@ -205,6 +224,7 @@ wisp_converter_cosmos_nosql_db_params = {
   public_network_access_enabled     = false
   is_virtual_network_filter_enabled = true
 
+  burst_capacity_enabled    = true
   backup_continuous_enabled = false
 
   data_ttl                           = 2592000 # 30 days in second
@@ -276,7 +296,7 @@ wisp_converter_storage_account = {
   blob_versioning_enabled       = false
   advanced_threat_protection    = true
   blob_delete_retention_days    = 90
-  public_network_access_enabled = true
+  public_network_access_enabled = false
   backup_enabled                = false
   backup_retention_days         = 0
 }
@@ -293,6 +313,19 @@ nodo_storico_storage_account = {
   backup_retention              = 0
 }
 
+mbd_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "ZRS"
+  blob_versioning_enabled       = true
+  advanced_threat_protection    = false
+  blob_delete_retention_days    = 90
+  public_network_access_enabled = false
+  backup_enabled                = true
+  backup_retention_days         = 7
+  use_legacy_defender_version   = false
+}
+
 redis_ha_enabled = false
 
 
@@ -305,12 +338,12 @@ enabled_features = {
 Service Bus
 *****************/
 service_bus_wisp = {
-  sku                                  = "Premium"
+  sku                                  = "Standard"
   requires_duplicate_detection         = false
   dead_lettering_on_message_expiration = false
-  queue_default_message_ttl            = null # default is good
-  capacity                             = 1
-  premium_messaging_partitions         = 1
+  queue_default_message_ttl            = "P7D" # default for Standard P10675199DT2H48M5.4775807S
+  capacity                             = 0
+  premium_messaging_partitions         = 0
 }
 # queue_name shall be <domain>_<service>_<name>
 # producer shall have only send authorization

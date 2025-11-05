@@ -22,24 +22,35 @@ resource "azurerm_api_management_named_value" "list_trx_for_io_api_key_secret" {
 ##    API Biz Events & Transaction ##
 #####################################
 locals {
-  apim_bizevents_service_api = { // EC
+  apim_bizevents_service_api = {
+    // EC
     display_name          = "Biz Events Service"
     description           = "API to handle biz events payments"
     path                  = "bizevents/service"
     subscription_required = true
     service_url           = null
   }
-  apim_bizevents_helpdesk_api = { // Helpdesk
+  apim_bizevents_helpdesk_api = {
+    // Helpdesk
     display_name          = "Biz Events Helpdesk"
     description           = "API for helpdesk on biz events payments"
     path                  = "bizevents/helpdesk"
     subscription_required = true
     service_url           = null
   }
-  apim_transaction_service_api = { // AppIO
+  apim_transaction_service_api = {
+    // AppIO
     display_name          = "Biz Events Transaction Service"
     description           = "API to handle biz events transactions"
     path                  = "bizevents/tx-service"
+    subscription_required = true
+    service_url           = null
+  }
+  apim_bizevents_nodo_sync_product = {
+    // BizEvent-NdP synchronization - manual API
+    display_name          = "Biz Events-NdP Sync"
+    description           = "API to handle manual sync from NdP to Biz Events"
+    path                  = "bizevents/nodo-sync"
     subscription_required = true
     service_url           = null
   }
@@ -49,7 +60,8 @@ locals {
 ## Products ##
 ##############
 
-module "apim_bizevents_product_all_in_one" { # only for test
+module "apim_bizevents_product_all_in_one" {
+  # only for test
   count  = var.env_short != "p" ? 1 : 0
   source = "./.terraform/modules/__v3__/api_management_product"
 
@@ -125,6 +137,24 @@ module "apim_transactions_product" {
   policy_xml = file("./api_product/transaction-service/_base_policy.xml")
 }
 
+// BizEvent-NdP synchronization - manual API
+module "apim_bizevents_nodo_sync_product" {
+  source = "./.terraform/modules/__v3__/api_management_product"
+
+  product_id   = "bizevents-nodo-sync"
+  display_name = local.apim_bizevents_nodo_sync_product.display_name
+  description  = local.apim_bizevents_nodo_sync_product.description
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = true
+  subscription_required = local.apim_bizevents_nodo_sync_product.subscription_required
+  approval_required     = true
+  subscriptions_limit   = 1000
+
+  policy_xml = file("./api_product/nodo-sync/_base_policy.xml")
+}
 
 ##############
 ## Api Vers ##
@@ -181,10 +211,15 @@ resource "azurerm_api_management_api_version_set" "api_bizevents_transactions_jw
 module "apim_api_bizevents_api_v1" {
   source = "./.terraform/modules/__v3__/api_management_api"
 
-  name                  = format("%s-bizevents-service-api", local.project)
-  api_management_name   = local.pagopa_apim_name
-  resource_group_name   = local.pagopa_apim_rg
-  product_ids           = var.env_short == "p" ? [module.apim_bizevents_product.product_id] : [module.apim_bizevents_product.product_id, module.apim_bizevents_product_all_in_one[0].product_id]
+  name                = format("%s-bizevents-service-api", local.project)
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  product_ids = var.env_short == "p" ? [
+    module.apim_bizevents_product.product_id
+    ] : [
+    module.apim_bizevents_product.product_id,
+    module.apim_bizevents_product_all_in_one[0].product_id
+  ]
   subscription_required = local.apim_bizevents_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_bizevents_api.id
   api_version           = "v1"
@@ -208,10 +243,17 @@ module "apim_api_bizevents_api_v1" {
 module "apim_api_bizevents_helpdesk_api_v1" {
   source = "./.terraform/modules/__v3__/api_management_api"
 
-  name                  = format("%s-bizevents-helpdesk-api", local.project)
-  api_management_name   = local.pagopa_apim_name
-  resource_group_name   = local.pagopa_apim_rg
-  product_ids           = var.env_short == "p" ? [module.apim_bizevents_helpdesk_product.product_id, data.azurerm_api_management_product.technical_support_api_product.product_id] : [module.apim_bizevents_helpdesk_product.product_id, module.apim_bizevents_product_all_in_one[0].product_id, data.azurerm_api_management_product.technical_support_api_product.product_id]
+  name                = format("%s-bizevents-helpdesk-api", local.project)
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  product_ids = var.env_short == "p" ? [
+    module.apim_bizevents_helpdesk_product.product_id,
+    data.azurerm_api_management_product.technical_support_api_product.product_id
+    ] : [
+    module.apim_bizevents_helpdesk_product.product_id,
+    module.apim_bizevents_product_all_in_one[0].product_id,
+    data.azurerm_api_management_product.technical_support_api_product.product_id
+  ]
   subscription_required = local.apim_bizevents_helpdesk_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_bizevents_helpdesk_api.id
   api_version           = "v1"
@@ -235,10 +277,16 @@ module "apim_api_bizevents_helpdesk_api_v1" {
 module "apim_api_bizevents_transactions_api_v1" {
   source = "./.terraform/modules/__v3__/api_management_api"
 
-  name                  = format("%s-bizevents-transaction-service-api", local.project)
-  api_management_name   = local.pagopa_apim_name
-  resource_group_name   = local.pagopa_apim_rg
-  product_ids           = var.env_short == "p" ? [module.apim_transactions_product.product_id, "technical_support_api"] : [module.apim_transactions_product.product_id, module.apim_bizevents_product_all_in_one[0].product_id, "technical_support_api"]
+  name                = format("%s-bizevents-transaction-service-api", local.project)
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  product_ids = var.env_short == "p" ? [
+    module.apim_transactions_product.product_id, "technical_support_api"
+    ] : [
+    module.apim_transactions_product.product_id,
+    module.apim_bizevents_product_all_in_one[0].product_id,
+    "technical_support_api"
+  ]
   subscription_required = local.apim_transaction_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_bizevents_transactions_api.id
   api_version           = "v1"

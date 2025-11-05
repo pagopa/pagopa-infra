@@ -65,7 +65,7 @@ module "canoneunico_function" {
 
   allowed_ips = []
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     azurerm_app_service_plan.canoneunico_service_plan

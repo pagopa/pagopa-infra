@@ -6,13 +6,6 @@ location       = "westeurope"
 location_short = "weu"
 instance       = "prod"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/gps"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -56,6 +49,7 @@ cosmos_gps_db_params = {
 }
 
 gpd_upload_status_throughput = 10000
+gpd_upload_status_ttl        = 7776000 // 90 days
 
 # Postgres Flexible
 # https://docs.microsoft.com/it-it/azure/postgresql/flexible-server/concepts-high-availability
@@ -65,25 +59,25 @@ pgres_flex_params = {
 
   private_endpoint_enabled = true
   sku_name                 = "GP_Standard_D8ds_v4"
-  db_version               = "13"
+  db_version               = "15"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   # https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compute-storage#storage
   storage_mb                                       = 1048576 # 1Tib
-  zone                                             = 2
+  zone                                             = 1
   backup_retention_days                            = 30
   geo_redundant_backup_enabled                     = true
   create_mode                                      = "Default"
   high_availability_enabled                        = true
-  standby_availability_zone                        = 1
+  standby_availability_zone                        = 2
   pgbouncer_enabled                                = true
   alerts_enabled                                   = true
   max_connections                                  = 5000
   enable_private_dns_registration                  = false
   enable_private_dns_registration_virtual_endpoint = true
   max_worker_process                               = 32
-  wal_level                                        = null
-  shared_preoload_libraries                        = null
+  wal_level                                        = "logical"                     # gpd_cdc_enabled
+  shared_preoload_libraries                        = "pg_failover_slots,pglogical" # gpd_cdc_enabled 👀 https://pagopa.atlassian.net/browse/PAGOPA-3078
   public_network_access_enabled                    = false
 }
 
@@ -146,9 +140,9 @@ reporting_storage_account = {
 }
 
 geo_replica_enabled                = true
-location_replica                   = "northeurope"
-location_replica_short             = "neu"
-geo_replica_cidr_subnet_postgresql = ["10.2.141.0/24"]
+location_replica                   = "italynorth"
+location_replica_short             = "itn"
+geo_replica_cidr_subnet_postgresql = ["10.3.5.128/27"]
 postgresql_sku_name                = "GP_Gen5_2"
 
 # GPD Storage Account SFTP
@@ -165,4 +159,89 @@ gpd_sftp_sa_delete                                             = 60
 
 # GPD Archive account
 gpd_archive_replication_type = "GZRS"
-gpd_sftp_ip_rules = ["37.179.98.148"]
+gpd_sftp_ip_rules            = ["37.179.98.148"]
+gpd_cdc_enabled              = true
+
+### EventHub
+
+# RTP EventHub
+eventhubs_rtp = [
+  {
+    name              = "rtp-events"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["rtp-events-processor"]
+    keys = [
+      {
+        name   = "rtp-events-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "rtp-events-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  }
+]
+
+eventhub_namespace_rtp = {
+  auto_inflate_enabled     = true
+  sku_name                 = "Standard"
+  capacity                 = 5
+  maximum_throughput_units = 5
+  public_network_access    = true
+  private_endpoint_created = true
+  metric_alerts_create     = true
+  metric_alerts = {
+    no_trx = {
+      aggregation = "Total"
+      metric_name = "IncomingMessages"
+      description = "No transactions received from acquirer in the last 24h"
+      operator    = "LessThanOrEqual"
+      threshold   = 1000
+      frequency   = "PT1H"
+      window_size = "P1D"
+      dimension   = [],
+    },
+    active_connections = {
+      aggregation = "Average"
+      metric_name = "ActiveConnections"
+      description = null
+      operator    = "LessThanOrEqual"
+      threshold   = 0
+      frequency   = "PT5M"
+      window_size = "PT15M"
+      dimension   = [],
+    },
+    error_trx = {
+      aggregation = "Total"
+      metric_name = "IncomingMessages"
+      description = "Transactions rejected from one acquirer file received. trx write on eventhub. check immediately"
+      operator    = "GreaterThan"
+      threshold   = 0
+      frequency   = "PT5M"
+      window_size = "PT30M"
+      dimension   = [],
+    },
+  }
+}
+
+redis_ha_enabled = true
+
+rtp_storage_account = {
+  account_kind                       = "StorageV2"
+  account_tier                       = "Standard"
+  account_replication_type           = "GZRS"
+  blob_versioning_enabled            = true
+  advanced_threat_protection         = false
+  advanced_threat_protection_enabled = false
+  public_network_access_enabled      = false
+  blob_delete_retention_days         = 90
+  enable_low_availability_alert      = true
+  backup_enabled                     = false
+  backup_retention                   = 0
+}

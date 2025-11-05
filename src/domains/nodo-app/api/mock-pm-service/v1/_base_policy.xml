@@ -2,7 +2,7 @@
     <inbound>
         <base />
         <!-- https://weudev.nodo.internal.dev.platform.pagopa.it/mock-pm(/|$)(.*) -->
-        <set-backend-service base-url="https://${hostname}/mock-pm" />
+        <set-backend-service base-url="https://${hostname}/mock-pm-replica" />
     </inbound>
     <outbound>
         <base />

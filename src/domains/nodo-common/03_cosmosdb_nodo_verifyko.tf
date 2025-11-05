@@ -2,11 +2,11 @@ resource "azurerm_resource_group" "nodo_verifyko_to_datastore_rg" {
   name     = "${local.project}-verifyko-to-datastore-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "cosmosdb_account_nodo_verifyko" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v7.77.0"
+  source              = "./.terraform/modules/__v3__/cosmosdb_account"
   domain              = var.domain
   name                = "${local.project}-verifyko-cosmos-account"
   location            = var.location
@@ -38,12 +38,12 @@ module "cosmosdb_account_nodo_verifyko" {
 
   backup_continuous_enabled = var.verifyko_cosmos_nosql_db_params.backup_continuous_enabled
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # cosmosdb database for nodo_verify_ko
 module "cosmosdb_account_nodo_verifyko_db" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v7.77.0"
+  source              = "./.terraform/modules/__v3__/cosmosdb_sql_database"
   name                = "nodo_verifyko"
   resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
   account_name        = module.cosmosdb_account_nodo_verifyko.name
@@ -65,7 +65,7 @@ locals {
 
 # cosmosdb container for nodo re datastore
 module "cosmosdb_account_nodo_verifyko_containers" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.77.0"
+  source   = "./.terraform/modules/__v3__/cosmosdb_sql_container"
   for_each = { for c in local.nodo_verify_ko_containers : c.name => c }
 
   name                = each.value.name

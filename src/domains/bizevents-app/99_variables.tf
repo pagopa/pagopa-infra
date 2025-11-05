@@ -60,12 +60,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 ### External resources
 
@@ -132,4 +126,10 @@ variable "pdv_api_base_path" {
   type        = string
   default     = null
   description = "Personal data vault api base path"
+}
+
+variable "gh_runner_job_location" {
+  type        = string
+  description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
+  default     = "westeurope"
 }

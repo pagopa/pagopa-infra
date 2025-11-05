@@ -6,13 +6,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_internal_avail
   location            = var.location
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.action_groups_slack_pagopa_pagamenti_alert
     email_subject          = "FdR Internal - Error"
     custom_webhook_payload = "{}"
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for /fdr-internal/service is less than or equal to 99% - [DASHBOARD LINK]"
+  description    = "Availability for /fdr-internal/service is less than or equal to 99% - 📚 Runbook : https://pagopa.atlassian.net/wiki/x/v4A9Kg"
   enabled        = true
   query = (<<-QUERY
       let threshold = 0.99;
@@ -26,7 +26,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_internal_avail
       | where availability < threshold
     QUERY
   )
-  severity    = 3
+  severity    = 1
   frequency   = 15
   time_window = 15
   trigger {
@@ -43,13 +43,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_psp_availabili
   location            = var.location
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.action_groups_opsgenie
     email_subject          = "FdR PSP - Error"
     custom_webhook_payload = "{}"
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for /fdr-psp/service is less than or equal to 99% - [DASHBOARD LINK]"
+  description    = "Availability for /fdr-psp/service is less than or equal to 99% - 📚 Runbook : https://pagopa.atlassian.net/wiki/x/v4A9Kg"
   enabled        = true
   query = (<<-QUERY
       let threshold = 0.99;
@@ -63,7 +63,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_psp_availabili
       | where availability < threshold
     QUERY
   )
-  severity    = 3
+  severity    = 0
   frequency   = 15
   time_window = 15
   trigger {
@@ -80,13 +80,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_org_availabili
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group           = local.action_groups_opsgenie
     email_subject          = "FdR Orgs - Error"
     custom_webhook_payload = "{}"
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for /fdr-org/service is less than or equal to 99% - [DASHBOARD LINK]"
+  description    = "Availability for /fdr-org/service is less than or equal to 99% - 📚 Runbook : https://pagopa.atlassian.net/wiki/x/v4A9Kg"
   enabled        = true
   query = (<<-QUERY
       let threshold = 0.99;
@@ -100,7 +100,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_org_availabili
       | where availability < threshold
     QUERY
   )
-  severity    = 3
+  severity    = 0
   frequency   = 15
   time_window = 15
   trigger {

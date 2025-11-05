@@ -8,13 +8,6 @@ location_itn       = "italynorth" # itn
 location_short_itn = "itn"        # itn
 instance           = "uat"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/observability"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -70,7 +63,7 @@ ehns_sku_name = "Standard"
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
 ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
-ehns_capacity                 = 1
+ehns_capacity                 = 3
 ehns_alerts_enabled           = false
 ehns_zone_redundant           = false
 
@@ -286,7 +279,7 @@ eventhubs_gpd = [
     name              = "gpd-ingestion.apd.payment_option"
     partitions        = 1
     message_retention = 1
-    consumers         = ["gpd-ingestion.apd.payment_option-rx-dl", ]
+    consumers         = ["gpd-ingestion.apd.payment_option-rx-dl"]
     keys = [
       {
         name   = "gpd-ingestion.apd.payment_option-rx-dl"
@@ -306,7 +299,7 @@ eventhubs_gpd = [
     name              = "gpd-ingestion.apd.payment_position"
     partitions        = 1
     message_retention = 1
-    consumers         = ["gpd-ingestion.apd.payment_position-rx-dl", ]
+    consumers         = ["gpd-ingestion.apd.payment_position-rx-dl"]
     keys = [
       {
         name   = "gpd-ingestion.apd.payment_position-rx-dl"
@@ -326,7 +319,7 @@ eventhubs_gpd = [
     name              = "gpd-ingestion.apd.transfer"
     partitions        = 1
     message_retention = 1
-    consumers         = ["gpd-ingestion.apd.transfer-rx-dl", ]
+    consumers         = ["gpd-ingestion.apd.transfer-rx-dl"]
     keys = [
       {
         name   = "gpd-ingestion.apd.transfer-rx-dl"
@@ -344,54 +337,53 @@ eventhubs_gpd = [
   },
 ]
 
-
-# alert evh
-# ehns_metric_alerts_gpd = {
-#   no_trx = {
-#     aggregation = "Total"
-#     metric_name = "IncomingMessages"
-#     description = "No transactions received from acquirer in the last 24h"
-#     operator    = "LessThanOrEqual"
-#     threshold   = 1000
-#     frequency   = "PT1H"
-#     window_size = "P1D"
-#     dimension = [
-#       {
-#         name     = "EntityName"
-#         operator = "Include"
-#         values   = ["gec-ingestion-bundles-evt-tx", "gec-ingestion-cibundles-evt-tx", "gec-ingestion-paymenttypes-evt-tx", "gec-ingestion-touchpoints-evt-tx"]
-#       }
-#     ],
-#   },
-#   active_connections = {
-#     aggregation = "Average"
-#     metric_name = "ActiveConnections"
-#     description = null
-#     operator    = "LessThanOrEqual"
-#     threshold   = 0
-#     frequency   = "PT5M"
-#     window_size = "PT15M"
-#     dimension   = [],
-#   },
-#   error_trx = {
-#     aggregation = "Total"
-#     metric_name = "IncomingMessages"
-#     description = "Transactions rejected from one acquirer file received. trx write on eventhub. check immediately"
-#     operator    = "GreaterThan"
-#     threshold   = 0
-#     frequency   = "PT5M"
-#     window_size = "PT30M"
-#     dimension = [
-#       {
-#         name     = "EntityName"
-#         operator = "Include"
-#         values = [
-#           "gec-ingestion-bundles-evt-rx-pdnd",
-#           "gec-ingestion-cibundles-evt-rx-pdnd",
-#           "gec-ingestion-paymenttypes-evt-rx-pdnd",
-#           "gec-ingestion-touchpoints-evt-rx-pdnd"
-#         ]
-#       }
-#     ],
-#   },
-# }
+app_forwarder_ip_restriction_default_action = "Allow"
+#  alert evh
+ehns_metric_alerts_gpd = {
+  no_trx = {
+    aggregation = "Total"
+    metric_name = "IncomingMessages"
+    description = "No transactions received from acquirer in the last 24h"
+    operator    = "LessThanOrEqual"
+    threshold   = 1000
+    frequency   = "PT1H"
+    window_size = "P1D"
+    dimension = [
+      {
+        name     = "EntityName"
+        operator = "Include"
+        values   = ["gpd-ingestion.apd.payment_option-tx", "gpd-ingestion.apd.payment_position-tx", "gpd-ingestion.apd.transfer-tx"]
+      }
+    ],
+  },
+  active_connections = {
+    aggregation = "Average"
+    metric_name = "ActiveConnections"
+    description = null
+    operator    = "LessThanOrEqual"
+    threshold   = 0
+    frequency   = "PT5M"
+    window_size = "PT15M"
+    dimension   = [],
+  },
+  error_trx = {
+    aggregation = "Total"
+    metric_name = "IncomingMessages"
+    description = "Transactions rejected from one acquirer file received. trx write on eventhub. check immediately"
+    operator    = "GreaterThan"
+    threshold   = 0
+    frequency   = "PT5M"
+    window_size = "PT30M"
+    dimension = [
+      {
+        name     = "EntityName"
+        operator = "Include"
+        values = [
+          "gpd-ingestion.apd.payment_option-rx-dl",
+          "gpd-ingestion.apd.payment_position-rx-dl",
+          "gpd-ingestion.apd.transfer-rx-dl"
+        ]
+      }
+    ],
+  },
+}

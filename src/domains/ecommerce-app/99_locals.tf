@@ -11,9 +11,10 @@ locals {
     "51.144.56.176/28",
   ]
 
-  monitor_action_group_slack_name = "SlackPagoPA"
-  monitor_action_group_email_name = "PagoPA"
-  monitor_appinsights_name        = "${local.product}-appinsights"
+  monitor_action_group_slack_name    = "SlackPagoPA"
+  monitor_action_group_email_name    = "PagoPA"
+  monitor_action_group_opsgenie_name = "EcomOpsgenie"
+  monitor_appinsights_name           = "${local.product}-appinsights"
 
   vnet_name                = "${local.product}-vnet"
   vnet_resource_group_name = "${local.product}-vnet-rg"
@@ -37,5 +38,5 @@ locals {
   apim_hostname      = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   ecommerce_hostname = "${var.location_short}${var.env}.ecommerce.internal.${var.apim_dns_zone_prefix}.${var.external_domain}"
   wallet_hostname    = "itn${var.env}.pay-wallet.internal.${var.apim_dns_zone_prefix}.${var.external_domain}"
-
+  checkout_hostname  = "${var.location_short}${var.env}.checkout.internal.${var.apim_dns_zone_prefix}.${var.external_domain}"
 }

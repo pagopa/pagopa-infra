@@ -26,12 +26,26 @@ resource "azurerm_api_management_named_value" "ecommerce-io-jwt-signing-key" {
   secret              = true
 }
 
+resource "azurerm_api_management_named_value" "ecommerce-methods-redirect-url-map" {
+  name                = "ecommerce-methods-redirect-url-map"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-methods-redirect-url-map"
+  value               = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 ##############
 ## Products ##
 ##############
 
 module "apim_ecommerce_io_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "ecommerce-io"
   display_name = "eCommerce for IO App"
@@ -58,14 +72,6 @@ locals {
     service_url           = null
   }
 
-  apim_ecommerce_io_webview_pay = {
-    display_name          = "eCommerce-PM web view for IO App"
-    description           = "Web view designed to aid compatibility between eCommerce API for IO App and Payment Manager"
-    path                  = "ecommerce/io-webview"
-    subscription_required = false
-    service_url           = null
-  }
-
   apim_ecommerce_io_outcomes = {
     display_name          = "eCommerce API for app IO outcomes"
     description           = "API's exposed from eCommerce services to app IO to handle pagoPA payment outcomes"
@@ -81,41 +87,6 @@ resource "azurerm_api_management_api_version_set" "ecommerce_io_api_v1" {
   api_management_name = local.pagopa_apim_name
   display_name        = local.apim_ecommerce_io_api.display_name
   versioning_scheme   = "Segment"
-}
-
-resource "azurerm_api_management_api_version_set" "ecommerce_io_webview_pay_v1" {
-  name                = "${local.project}-io-api-webview-pay"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  display_name        = local.apim_ecommerce_io_webview_pay.display_name
-  versioning_scheme   = "Segment"
-}
-
-module "apim_ecommerce_io_webview_pay_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
-
-  name                  = "${local.project}-io-api-webiew-pay"
-  resource_group_name   = local.pagopa_apim_rg
-  api_management_name   = local.pagopa_apim_name
-  product_ids           = [module.apim_ecommerce_io_product.product_id]
-  subscription_required = local.apim_ecommerce_io_webview_pay.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.ecommerce_io_webview_pay_v1.id
-  api_version           = "v1"
-  service_url           = local.apim_ecommerce_io_webview_pay.service_url
-
-  description  = local.apim_ecommerce_io_webview_pay.description
-  display_name = local.apim_ecommerce_io_webview_pay.display_name
-  path         = local.apim_ecommerce_io_webview_pay.path
-  protocols    = ["https"]
-
-  content_format = "openapi"
-  content_value = templatefile("./api/ecommerce-io/v1/_webview_openapi.json.tpl", {
-    hostname = local.apim_hostname
-  })
-
-  xml_content = templatefile("./api/ecommerce-io/v1/pay-pm-webview.xml.tpl", {
-    pm_webview_path = "${local.apim_hostname}/pp-restapi-CD/v3/webview/transactions/pay"
-  })
 }
 
 data "azurerm_key_vault_secret" "ecommerce_io_sessions_jwt_secret" {
@@ -145,7 +116,7 @@ resource "azurerm_api_management_api_version_set" "ecommerce_io_outcomes_api" {
 }
 
 module "apim_ecommerce_io_outcomes_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-ecommerce-io-outcomes-api"
   api_management_name   = local.pagopa_apim_name
@@ -177,7 +148,7 @@ module "apim_ecommerce_io_outcomes_api_v1" {
 ###########################
 
 module "apim_ecommerce_io_api_v2" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-ecommerce-io-api"
   resource_group_name   = local.pagopa_apim_rg
@@ -201,17 +172,6 @@ module "apim_ecommerce_io_api_v2" {
   xml_content = templatefile("./api/ecommerce-io/v2/_base_policy.xml.tpl", {
     ecommerce_ingress_hostname = local.ecommerce_hostname
     wallet_ingress_hostname    = local.wallet_hostname
-  })
-}
-
-resource "azurerm_api_management_api_operation_policy" "io_post_wallet_transactions_v2" {
-  api_name            = "${local.project}-ecommerce-io-api-v2"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  operation_id        = "createWalletForTransactionsForIO"
-
-  xml_content = templatefile("./api/ecommerce-io/v2/_wallet_transactions.xml.tpl", {
-    wallet-basepath = local.wallet_hostname
   })
 }
 
@@ -241,28 +201,6 @@ resource "azurerm_api_management_api_operation_policy" "io_calculate_fee_v2" {
   )
 }
 
-resource "azurerm_api_management_api_operation_policy" "delete_transactions_v2" {
-  api_name            = "${local.project}-ecommerce-io-api-v2"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  operation_id        = "requestTransactionUserCancellationForIO"
-
-  xml_content = templatefile("./api/ecommerce-io/v2/_delete_transaction.xml.tpl", {
-    wallet-basepath = local.wallet_hostname
-  })
-}
-
-resource "azurerm_api_management_api_operation_policy" "get_transactions_v2" {
-  api_name            = "${local.project}-ecommerce-io-api-v2"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  operation_id        = "getTransactionInfoForIO"
-
-  xml_content = templatefile("./api/ecommerce-io/v2/get_transaction.xml.tpl", {
-    wallet-basepath = local.wallet_hostname
-  })
-}
-
 resource "azurerm_api_management_api_operation_policy" "create_transactions_v2" {
   api_name            = "${local.project}-ecommerce-io-api-v2"
   resource_group_name = local.pagopa_apim_rg
@@ -274,24 +212,46 @@ resource "azurerm_api_management_api_operation_policy" "create_transactions_v2" 
   })
 }
 
-resource "azurerm_api_management_api_operation_policy" "io_wallets_by_user_v2" {
+resource "azurerm_api_management_api_operation_policy" "get_methods_redirect_v2" {
   api_name            = "${local.project}-ecommerce-io-api-v2"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  operation_id        = "getWalletsByIdIOUser"
+  operation_id        = "getMethodRedirectUrl"
 
-  xml_content = templatefile("./api/ecommerce-io/v2/_get_wallets_by_user_with_pm.xml.tpl", {
-    ecommerce-hostname = local.ecommerce_hostname
+  xml_content = templatefile("./api/ecommerce-io/v2/_get_methods_redirect.xml.tpl", {
+    ecommerce_ingress_hostname = local.ecommerce_hostname
   })
 }
 
-resource "azurerm_api_management_api_operation_policy" "io_get_all_payment_methods" {
-  api_name            = "${local.project}-ecommerce-io-api-v2"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  operation_id        = "getAllPaymentMethodsForIO"
+###########################
+###                     ###
+### ECOMMERCE IO V3     ###
+###                     ###
+###########################
 
-  xml_content = templatefile("./api/ecommerce-io/v2/_get_payment_methods.xml.tpl", {
-    enabled_payment_wallet_method_ids_pm = var.enabled_payment_wallet_method_ids_pm
+module "apim_ecommerce_io_api_v3" {
+  source = "./.terraform/modules/__v4__/api_management_api"
+
+  name                  = "${local.project}-ecommerce-io-api"
+  resource_group_name   = local.pagopa_apim_rg
+  api_management_name   = local.pagopa_apim_name
+  product_ids           = [module.apim_ecommerce_io_product.product_id]
+  subscription_required = local.apim_ecommerce_io_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.ecommerce_io_api_v1.id
+  api_version           = "v3"
+  service_url           = local.apim_ecommerce_io_api.service_url
+
+  description  = local.apim_ecommerce_io_api.description
+  display_name = local.apim_ecommerce_io_api.display_name
+  path         = local.apim_ecommerce_io_api.path
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value = templatefile("./api/ecommerce-io/v3/_openapi.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/ecommerce-io/v3/_base_policy.xml.tpl", {
+    ecommerce_ingress_hostname = local.ecommerce_hostname
   })
 }

@@ -4,7 +4,7 @@ data "azurerm_resource_group" "reporting_fdr_rg" {
 
 ## Flows Storage Account
 module "fdr_flows_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.17.0"
+  source = "./.terraform/modules/__v3__/storage_account"
 
   name                            = replace("${local.product}-fdr-flows-sa", "-", "")
   account_kind                    = "StorageV2"
@@ -20,7 +20,7 @@ module "fdr_flows_sa" {
   blob_delete_retention_days    = var.reporting_fdr_storage_account.blob_delete_retention_days
   public_network_access_enabled = true
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## blob container flows
@@ -141,5 +141,5 @@ resource "azurerm_resource_group" "data" {
   name     = "${local.product}-data-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

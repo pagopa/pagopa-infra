@@ -7,13 +7,6 @@ location_short = "itn"
 cdn_location   = "westeurope"
 instance       = "prod"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/pay-wallet-common"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### FEATURES FLAGS
 is_feature_enabled = {
@@ -69,15 +62,15 @@ cosmos_mongo_db_params = {
   is_virtual_network_filter_enabled            = true
   backup_continuous_enabled                    = true
   enable_provisioned_throughput_exceeded_alert = false
-  ip_range_filter                              = "104.42.195.92,40.76.54.131,52.176.6.30,52.169.50.45,52.187.184.26,13.88.56.148,40.91.218.243,13.91.105.215,4.210.172.107,40.80.152.199,13.95.130.121,20.245.81.54,40.118.23.126"
+  ip_range_filter                              = ["104.42.195.92", "40.76.54.131", "52.176.6.30", "52.169.50.45", "52.187.184.26", "13.88.56.148", "40.91.218.243", "13.91.105.215", "4.210.172.107", "40.80.152.199", "13.95.130.121", "20.245.81.54", "40.118.23.126"]
 
 }
 
 cosmos_mongo_db_pay_wallet_params = {
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 10000
-  throughput         = 1000
+  max_throughput     = 20000
+  throughput         = 2000
 }
 
 
@@ -92,6 +85,14 @@ redis_pay_wallet_params = {
   zones      = [1, 2, 3]
 }
 
+redis_std_pay_wallet_params = {
+  capacity   = 0
+  sku_name   = "Standard"
+  family     = "C"
+  version    = 6
+  ha_enabled = true
+  zones      = []
+}
 
 ### Storage
 
@@ -121,3 +122,6 @@ aks_user_node_pool = {
   node_taints     = ["paymentWalletOnly=true:NoSchedule"],
   node_tags       = { payWallet : "true" },
 }
+payment_wallet_service_api_key_use_primary = true
+
+pay_wallet_jwt_issuer_api_key_use_primary = true

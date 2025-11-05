@@ -28,6 +28,96 @@
     "description": "Design review"
   },
   "paths": {
+    "/transactions": {
+      "post": {
+        "tags": [
+          "ecommerce-transactions"
+        ],
+        "operationId": "newTransactionForEcommerceWebview",
+        "summary": "Create a new transaction",
+        "description": "Create a new transaction activating the payments notice by meaning of 'Nodo' ActivatePaymentNotice primitive",
+        "security": [
+          {
+            "eCommerceSessionToken": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewTransactionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "New transaction successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewTransactionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
+          "404": {
+            "description": "Node cannot find the services needed to process this request in its configuration. This error is most likely to occur when submitting a non-existing RPT id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeProblemJson404"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict on payment status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeProblemJson409"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "PagoPA services are not available or request is rejected by PagoPa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeProblemJson502"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "EC services are not available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartyConfigurationFaultPaymentProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/transactions/{transactionId}": {
       "get": {
         "tags": [
@@ -98,10 +188,317 @@
           }
         }
       }
+    },
+    "/transactions/{transactionId}/outcomes": {
+      "get": {
+        "tags": [
+          "ecommerce-transactions"
+        ],
+        "operationId": "getTransactionOutcomes",
+        "summary": "Get transaction outcome",
+        "description": "Return outcome information for the input specific transaction resource",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Transaction ID"
+          }
+        ],
+        "security": [
+          {
+            "eCommerceSessionToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction authorization request successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionOutcomeInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid transaction id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Bad gateway",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Gateway timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment-methods/{id}/sessions": {
+        "post": {
+          "tags": [
+            "ecommerce-methods"
+          ],
+          "operationId": "createSessionWebview",
+          "security": [
+            {
+              "eCommerceSessionToken": []
+            }
+          ],
+          "summary": "Create frontend field data paired with a payment gateway session",
+          "description": "This endpoint returns an object containing data on how a frontend can build a form\nto allow direct exchanging of payment information to the payment gateway without eCommerce\nhaving to store PCI data (or other sensitive data tied to the payment method).\nThe returned data is tied to a session on the payment gateway identified by the field `orderId`.",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "Payment Method id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "in": "header",
+              "name": "lang",
+              "required": false,
+              "description": "Language requested by the user",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "x-client-id",
+              "in": "header",
+              "description": "client id related to a given touchpoint",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "IO",
+                  "CHECKOUT",
+                  "CHECKOUT_CART"
+                ]
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Payment form data successfully created",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/CreateSessionResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized, access token missing or invalid"
+            },
+            "404": {
+              "description": "Payment method not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ProblemJson"
+                  }
+                }
+              }
+            },
+            "502": {
+              "description": "Payment gateway did return error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ProblemJson"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+    "/transactions/{transactionId}/wallets": {
+      "post": {
+        "tags": [
+          "wallets"
+        ],
+        "summary": "Create wallet for payment with contextual onboard",
+        "description": "Create wallet for payment with contextual onboard",
+        "security": [
+          {
+            "pagoPAPlatformSessionToken": []
+          }
+        ],
+        "operationId": "createWalletForTransactionsForIO",
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "description": "ecommerce transaction id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Create a new wallet",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WalletTransactionCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Wallet created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WalletTransactionCreateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
+          "500": {
+            "description": "Internal server error serving request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Gateway error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Timeout serving request"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "PaymentNoticeInfo": {
+        "description": "Informations about a single payment notice",
+        "type": "object",
+        "properties": {
+          "rptId": {
+            "$ref": "#/components/schemas/RptId"
+          },
+          "paymentContextCode": {
+            "$ref": "#/components/schemas/PaymentContextCode"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          }
+        },
+        "required": [
+          "rptId",
+          "amount"
+        ],
+        "example": {
+          "rptId": "string",
+          "paymentContextCode": "12345678901234567890123456789012",
+          "amount": 100
+        }
+      },
+      "NewTransactionRequest": {
+        "type": "object",
+        "description": "Request body for creating a new transaction",
+        "properties": {
+          "paymentNotices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentNoticeInfo"
+            },
+            "minItems": 1,
+            "maxItems": 1,
+            "example": [
+              {
+                "rptId": "77777777777302012387654312384",
+                "amount": 12000
+              }
+            ]
+          }
+        },
+        "required": [
+          "paymentNotices"
+        ]
+      },
       "ProblemJson": {
         "type": "object",
         "properties": {
@@ -143,6 +540,12 @@
       "RptId": {
         "type": "string",
         "pattern": "([a-zA-Z0-9]{1,35})|(RFd{2}[a-zA-Z0-9]{1,21})"
+      },
+      "PaymentContextCode": {
+        "description": "Payment context code used for verifivaRPT/attivaRPT",
+        "type": "string",
+        "minLength": 32,
+        "maxLength": 32
       },
       "PaymentInfo": {
         "description": "Informations about transaction payments",
@@ -279,11 +682,52 @@
           "payments"
         ]
       },
+      "TransactionOutcomeInfo": {
+        "type": "object",
+        "description": "Transaction outcome info returned when querying for an existing transaction outcome status. The field totalAmount, if present, is intended as the total amount paid for the transaction in eurocents fees excluded. Fees too, if present, is in eurocents",
+        "properties": {
+          "outcome": {
+            "type": "number",
+            "enum": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              7,
+              8,
+              10,
+              17,
+              18,
+              25,
+              99,
+              116,
+              117,
+              121
+            ],
+            "description": "`0` - Success `1` - Generic error `2` - Authorization error `3` - Invalid data `4` - Timeout `7` - Invalid card: expired card etc `8` - Canceled by the user `10` - Excessive amount `17` - Taken in charge `18` - Refunded `25` - PSP Error `99` - Backend Error `116` - Balance not available `117` - CVV Error `121` - Limit exceeded"
+          },
+          "isFinalStatus": {
+            "type": "boolean",
+            "description": "A flag that describe the outcome as final or not. If true, the outcome will not change in the future and the client can interrupt polling."
+          },
+          "totalAmount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          },
+          "fees": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          }
+        },
+        "required": [
+          "outcome",
+          "isFinalStatus"
+        ]
+      },
       "AmountEuroCents": {
         "description": "Amount for payments, in euro cents",
         "type": "integer",
         "minimum": 0,
-        "maximum": 99999999
+        "maximum": 99999999999
       },
       "TransactionStatus": {
         "type": "string",
@@ -359,6 +803,459 @@
           "digitalStamp",
           "transferAmount"
         ]
+      },
+      "NodeProblemJson404": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/ValidationFaultPaymentDataErrorProblemJson"
+          },
+          {
+            "$ref": "#/components/schemas/ValidationFaultPaymentUnknownProblemJson"
+          }
+        ]
+      },
+      "NodeProblemJson409": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/PaymentOngoingStatusFaultPaymentProblemJson"
+          },
+          {
+            "$ref": "#/components/schemas/PaymentExpiredStatusFaultPaymentProblemJson"
+          },
+          {
+            "$ref": "#/components/schemas/PaymentCanceledStatusFaultPaymentProblemJson"
+          },
+          {
+            "$ref": "#/components/schemas/PaymentDuplicatedStatusFaultPaymentProblemJson"
+          }
+        ]
+      },
+      "NodeProblemJson502": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/GatewayFaultPaymentProblemJson"
+          },
+          {
+            "$ref": "#/components/schemas/ValidationFaultPaymentUnavailableProblemJson"
+          }
+        ]
+      },
+      "ValidationFaultPaymentDataErrorProblemJson": {
+        "description": "A PaymentProblemJson-like type specific for the GetPayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to validation errors.",
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
+          },
+          "faultCodeCategory": {
+            "type": "string",
+            "enum": [
+              "PAYMENT_DATA_ERROR"
+            ]
+          },
+          "faultCodeDetail": {
+            "$ref": "#/components/schemas/ValidationFaultPaymentDataError"
+          }
+        },
+        "required": [
+          "faultCodeCategory",
+          "faultCodeDetail"
+        ]
+      },
+      "ValidationFaultPaymentUnknownProblemJson": {
+        "description": "A PaymentProblemJson-like type specific for the GetPayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to validation errors.",
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
+          },
+          "faultCodeCategory": {
+            "type": "string",
+            "enum": [
+              "PAYMENT_UNKNOWN"
+            ]
+          },
+          "faultCodeDetail": {
+            "$ref": "#/components/schemas/ValidationFaultPaymentUnknown"
+          }
+        },
+        "required": [
+          "faultCodeCategory",
+          "faultCodeDetail"
+        ]
+      },
+      "PaymentOngoingStatusFaultPaymentProblemJson": {
+        "description": "A PaymentProblemJson-like type specific for the GetPayment and ActivatePayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to Nodo errors related to payment status conflicts.",
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
+          },
+          "faultCodeCategory": {
+            "type": "string",
+            "enum": [
+              "PAYMENT_ONGOING"
+            ]
+          },
+          "faultCodeDetail": {
+            "$ref": "#/components/schemas/PaymentOngoingStatusFault"
+          }
+        },
+        "required": [
+          "faultCodeCategory",
+          "faultCodeDetail"
+        ]
+      },
+      "PaymentExpiredStatusFaultPaymentProblemJson": {
+        "description": "A PaymentProblemJson-like type specific for the GetPayment and ActivatePayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to Nodo errors related to payment status conflicts.",
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
+          },
+          "faultCodeCategory": {
+            "type": "string",
+            "enum": [
+              "PAYMENT_EXPIRED"
+            ]
+          },
+          "faultCodeDetail": {
+            "$ref": "#/components/schemas/PaymentExpiredStatusFault"
+          }
+        },
+        "required": [
+          "faultCodeCategory",
+          "faultCodeDetail"
+        ]
+      },
+      "PaymentCanceledStatusFaultPaymentProblemJson": {
+        "description": "A PaymentProblemJson-like type specific for the GetPayment and ActivatePayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to Nodo errors related to payment status conflicts.",
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
+          },
+          "faultCodeCategory": {
+            "type": "string",
+            "enum": [
+              "PAYMENT_CANCELED"
+            ]
+          },
+          "faultCodeDetail": {
+            "$ref": "#/components/schemas/PaymentCanceledStatusFault"
+          }
+        },
+        "required": [
+          "faultCodeCategory",
+          "faultCodeDetail"
+        ]
+      },
+      "PaymentDuplicatedStatusFaultPaymentProblemJson": {
+        "description": "A PaymentProblemJson-like type specific for the GetPayment and ActivatePayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to Nodo errors related to payment status conflicts.",
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
+          },
+          "faultCodeCategory": {
+            "type": "string",
+            "enum": [
+              "PAYMENT_DUPLICATED"
+            ]
+          },
+          "faultCodeDetail": {
+            "$ref": "#/components/schemas/PaymentDuplicatedStatusFault"
+          }
+        },
+        "required": [
+          "faultCodeCategory",
+          "faultCodeDetail"
+        ]
+      },
+      "GatewayFaultPaymentProblemJson": {
+        "description": "A PaymentProblemJson-like type specific for the GetPayment and ActivatePayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to Nodo errors.",
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
+          },
+          "faultCodeCategory": {
+            "type": "string",
+            "enum": [
+              "GENERIC_ERROR"
+            ]
+          },
+          "faultCodeDetail": {
+            "$ref": "#/components/schemas/GatewayFault"
+          }
+        },
+        "required": [
+          "faultCodeCategory",
+          "faultCodeDetail"
+        ]
+      },
+      "PartyConfigurationFaultPaymentProblemJson": {
+        "description": "A PaymentProblemJson-like type specific for the GetPayment",
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
+          },
+          "faultCodeCategory": {
+            "type": "string",
+            "enum": [
+              "DOMAIN_UNKNOWN"
+            ]
+          },
+          "faultCodeDetail": {
+            "$ref": "#/components/schemas/PartyConfigurationFault"
+          }
+        },
+        "required": [
+          "faultCodeCategory",
+          "faultCodeDetail"
+        ]
+      },
+      "ValidationFaultPaymentUnavailableProblemJson": {
+        "description": "A PaymentProblemJson-like type specific for the GetPayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to validation errors.",
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
+          },
+          "faultCodeCategory": {
+            "type": "string",
+            "enum": [
+              "PAYMENT_UNAVAILABLE"
+            ]
+          },
+          "faultCodeDetail": {
+            "$ref": "#/components/schemas/ValidationFaultPaymentUnavailable"
+          }
+        },
+        "required": [
+          "faultCodeCategory",
+          "faultCodeDetail"
+        ]
+      },
+      "ValidationFaultPaymentDataError": {
+        "description": "Fault codes for errors related to well-formed requests to ECs not present inside Nodo, should be mapped to 404 HTTP status code.\nMost of the time these are generated when users input a wrong fiscal code or notice number.\nFor further information visit https://docs.pagopa.it/gestionedeglierrori/struttura-degli-errori/fault-code.\nPossible fault codes are:\n- `PPT_SINTASSI_EXTRAXSD`\n- `PPT_SINTASSI_XSD`\n- `PPT_DOMINIO_SCONOSCIUTO`\n- `PPT_STAZIONE_INT_PA_SCONOSCIUTA`",
+        "type": "string",
+        "enum": [
+          "PPT_SINTASSI_EXTRAXSD",
+          "PPT_SINTASSI_XSD",
+          "PPT_DOMINIO_SCONOSCIUTO",
+          "PPT_STAZIONE_INT_PA_SCONOSCIUTA"
+        ]
+      },
+      "ValidationFaultPaymentUnknown": {
+        "description": "Fault codes for errors related to well-formed requests to ECs not present inside Nodo, should be mapped to 404 HTTP status code.\nMost of the time these are generated when users input a wrong fiscal code or notice number.\nFor further information visit https://docs.pagopa.it/gestionedeglierrori/struttura-degli-errori/fault-code.\nPossible fault codes are:\n- `PAA_PAGAMENTO_SCONOSCIUTO`",
+        "type": "string",
+        "enum": [
+          "PAA_PAGAMENTO_SCONOSCIUTO"
+        ]
+      },
+      "PaymentOngoingStatusFault": {
+        "description": "Fault codes for errors related to payment attempts that cause conflict with the current payment status,\nsuch as a duplicated payment attempt or a payment attempt made while another attempt is still being processed.\nShould be mapped to 409 HTTP status code.\nFor further information visit https://docs.pagopa.it/gestionedeglierrori/struttura-degli-errori/fault-code.\nPossible fault codes are:\n- `PPT_PAGAMENTO_IN_CORSO`\n- `PAA_PAGAMENTO_IN_CORSO`",
+        "type": "string",
+        "enum": [
+          "PPT_PAGAMENTO_IN_CORSO",
+          "PAA_PAGAMENTO_IN_CORSO"
+        ]
+      },
+      "PaymentExpiredStatusFault": {
+        "description": "Fault codes for errors related to payment attempts that cause conflict with the current payment status,\nsuch as a duplicated payment attempt or a payment attempt made while another attempt is still being processed.\nShould be mapped to 409 HTTP status code.\nFor further information visit https://docs.pagopa.it/gestionedeglierrori/struttura-degli-errori/fault-code.\nPossible fault codes are:\n- `PAA_PAGAMENTO_SCADUTO`",
+        "type": "string",
+        "enum": [
+          "PAA_PAGAMENTO_SCADUTO"
+        ]
+      },
+      "PaymentCanceledStatusFault": {
+        "description": "Fault codes for errors related to payment attempts that cause conflict with the current payment status,\nsuch as a duplicated payment attempt or a payment attempt made while another attempt is still being processed.\nShould be mapped to 409 HTTP status code.\nFor further information visit https://docs.pagopa.it/gestionedeglierrori/struttura-degli-errori/fault-code.\nPossible fault codes are:\n- `PAA_PAGAMENTO_ANNULLATO`",
+        "type": "string",
+        "enum": [
+          "PAA_PAGAMENTO_ANNULLATO"
+        ]
+      },
+      "PaymentDuplicatedStatusFault": {
+        "description": "Fault codes for errors related to payment attempts that cause conflict with the current payment status,\nsuch as a duplicated payment attempt or a payment attempt made while another attempt is still being processed.\nShould be mapped to 409 HTTP status code.\nFor further information visit https://docs.pagopa.it/gestionedeglierrori/struttura-degli-errori/fault-code.\nPossible fault codes are:\n- `PAA_PAGAMENTO_DUPLICATO`\n- `PPT_PAGAMENTO_DUPLICATO`",
+        "type": "string",
+        "enum": [
+          "PAA_PAGAMENTO_DUPLICATO",
+          "PPT_PAGAMENTO_DUPLICATO"
+        ]
+      },
+      "GatewayFault": {
+        "description": "Fault codes for generic downstream services errors, should be mapped to 502 HTTP status code.\nFor further information visit https://docs.pagopa.it/gestionedeglierrori/struttura-degli-errori/fault-code.",
+        "type": "string"
+      },
+      "ValidationFaultPaymentUnavailable": {
+        "description": "Fault codes for errors related to well-formed requests to ECs not present inside Nodo, should be mapped to 404 HTTP status code.\nMost of the time these are generated when users input a wrong fiscal code or notice number.\nFor further information visit https://docs.pagopa.it/gestionedeglierrori/struttura-degli-errori/fault-code.\nPossible fault codes are:\n- `PPT_PSP_SCONOSCIUTO`\n- `PPT_PSP_DISABILITATO`\n- `PPT_INTERMEDIARIO_PSP_SCONOSCIUTO`\n- `PPT_INTERMEDIARIO_PSP_DISABILITATO`\n- `PPT_CANALE_SCONOSCIUTO`\n- `PPT_CANALE_DISABILITATO`\n- `PPT_AUTENTICAZIONE`\n- `PPT_AUTORIZZAZIONE`\n- `PPT_DOMINIO_DISABILITATO`\n- `PPT_INTERMEDIARIO_PA_DISABILITATO`\n- `PPT_STAZIONE_INT_PA_DISABILITATA`\n- `PPT_CODIFICA_PSP_SCONOSCIUTA`\n- `PPT_SEMANTICA`\n- `PPT_SYSTEM_ERROR`\n- `PAA_SEMANTICA`",
+        "type": "string",
+        "enum": [
+          "PPT_PSP_SCONOSCIUTO",
+          "PPT_PSP_DISABILITATO",
+          "PPT_INTERMEDIARIO_PSP_SCONOSCIUTO",
+          "PPT_INTERMEDIARIO_PSP_DISABILITATO",
+          "PPT_CANALE_SCONOSCIUTO",
+          "PPT_CANALE_DISABILITATO",
+          "PPT_AUTENTICAZIONE",
+          "PPT_AUTORIZZAZIONE",
+          "PPT_DOMINIO_DISABILITATO",
+          "PPT_INTERMEDIARIO_PA_DISABILITATO",
+          "PPT_STAZIONE_INT_PA_DISABILITATA",
+          "PPT_CODIFICA_PSP_SCONOSCIUTA",
+          "PPT_SEMANTICA",
+          "PPT_SYSTEM_ERROR",
+          "PAA_SEMANTICA"
+        ]
+      },
+      "PartyConfigurationFault": {
+        "description": "Fault codes for fatal errors from ECs, should be mapped to 503 HTTP status code.\nFor further information visit https://docs.pagopa.it/gestionedeglierrori/struttura-degli-errori/fault-code.\nPossible fault codes are:\n- `PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE`\n- `PPT_STAZIONE_INT_PA_TIMEOUT`\n- `PPT_STAZIONE_INT_PA_ERRORE_RESPONSE`\n- `PPT_IBAN_NON_CENSITO`\n- `PAA_SINTASSI_EXTRAXSD`\n- `PAA_SINTASSI_XSD`\n- `PAA_ID_DOMINIO_ERRATO`\n- `PAA_ID_INTERMEDIARIO_ERRATO`\n- `PAA_STAZIONE_INT_ERRATA`\n- `PAA_ATTIVA_RPT_IMPORTO_NON_VALIDO`\n- `PPT_ERRORE_EMESSO_DA_PAA`\n- `PAA_SYSTEM_ERROR`",
+        "type": "string",
+        "enum": [
+          "PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE",
+          "PPT_STAZIONE_INT_PA_TIMEOUT",
+          "PPT_STAZIONE_INT_PA_ERRORE_RESPONSE",
+          "PPT_IBAN_NON_CENSITO",
+          "PAA_SINTASSI_EXTRAXSD",
+          "PAA_SINTASSI_XSD",
+          "PAA_ID_DOMINIO_ERRATO",
+          "PAA_ID_INTERMEDIARIO_ERRATO",
+          "PAA_STAZIONE_INT_ERRATA",
+          "PAA_ATTIVA_RPT_IMPORTO_NON_VALIDO",
+          "PPT_ERRORE_EMESSO_DA_PAA",
+          "PAA_SYSTEM_ERROR"
+        ]
+      },
+      "CreateSessionResponse": {
+              "type": "object",
+              "description": "Form data needed to create a payment method input form",
+              "properties": {
+                "orderId": {
+                  "type": "string",
+                  "description": "Identifier of the payment gateway session associated to the form"
+                },
+                "correlationId": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "Identifier of the payment session associated to the transaction flow"
+                },
+                "paymentMethodData": {
+                  "$ref": "#/components/schemas/CardFormFields"
+                }
+              },
+              "required": [
+                "paymentMethodData",
+                "orderId",
+                "correlationId"
+              ]
+            },
+            "CardFormFields": {
+              "type": "object",
+              "description": "Form fields for credit cards",
+              "properties": {
+                "paymentMethod": {
+                  "type": "string"
+                },
+                "form": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Field"
+                  }
+                }
+              },
+              "required": [
+                "paymentMethod",
+                "form"
+              ]
+            },
+            "Field": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "text"
+                },
+                "class": {
+                  "type": "string",
+                  "example": "cardData"
+                },
+                "id": {
+                  "type": "string",
+                  "example": "cardholderName"
+                },
+                "src": {
+                  "type": "string",
+                  "format": "uri",
+                  "example": "https://<fe>/field.html?id=CARDHOLDER_NAME&sid=052211e8-54c8-4e0a-8402-e10bcb8ff264"
+                }
+              }
+            },
+      "WalletTransactionCreateRequest": {
+        "type": "object",
+        "description": "Wallet for transaction with contextual onboarding creation request",
+        "properties": {
+          "useDiagnosticTracing": {
+            "type": "boolean"
+          },
+          "paymentMethodId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          }
+        },
+        "required": [
+          "useDiagnosticTracing",
+          "paymentMethodId",
+          "amount"
+        ]
+      },
+      "WalletTransactionCreateResponse": {
+        "type": "object",
+        "description": "Wallet for transaction with contextual onboarding creation response",
+        "properties": {
+          "walletId": {
+            "$ref": "#/components/schemas/WalletId"
+          },
+          "redirectUrl": {
+            "type": "string",
+            "format": "url",
+            "description": "Redirection URL to a payment gateway page where the user can input a payment instrument information with walletId and useDiagnosticTracing as query param",
+            "example": "http://localhost/inputPage?walletId=123&useDiagnosticTracing=true&sessionToken=sessionToken"
+          }
+        },
+        "required": [
+          "walletId"
+        ]
+      },
+      "WalletId": {
+        "description": "Wallet identifier",
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "requestBodies": {
+      "NewTransactionRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/NewTransactionRequest"
+            }
+          }
+        }
       }
     },
     "securitySchemes": {
@@ -366,6 +1263,11 @@
         "type": "http",
         "scheme": "bearer",
         "description": "JWT session token taken from /sessions response body"
+      },
+      "pagoPAPlatformSessionToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "JWT session token taken according to pagoPA platform auth for IO app"
       }
     }
   }

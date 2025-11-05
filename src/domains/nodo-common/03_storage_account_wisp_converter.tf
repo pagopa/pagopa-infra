@@ -1,6 +1,6 @@
 module "wisp_converter_storage_account" {
   count  = var.create_wisp_converter ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.77.0"
+  source = "./.terraform/modules/__v3__/storage_account"
 
   name                            = replace(format("%s-wisp-conv-st", local.project), "-", "")
   account_kind                    = var.wisp_converter_storage_account.account_kind
@@ -24,7 +24,7 @@ module "wisp_converter_storage_account" {
     blob_restore_policy_days   = var.wisp_converter_storage_account.backup_retention_days
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     azurerm_resource_group.wisp_converter_rg
@@ -51,13 +51,14 @@ resource "azurerm_private_endpoint" "wispconv_private_endpoint_container" {
     subresource_names              = ["blob"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     azurerm_resource_group.wisp_converter_rg,
     module.wisp_converter_storage_account
   ]
 }
+
 
 # table wispconverter
 resource "azurerm_storage_table" "wisp_converter_table" {
@@ -70,6 +71,34 @@ resource "azurerm_storage_table" "wisp_converter_table" {
   ]
 }
 
+resource "azurerm_private_endpoint" "wispconv_private_endpoint_table" {
+  count = var.env_short == "d" ? 0 : var.create_wisp_converter ? 1 : 0
+
+  name                = "${local.project}-wisp-converter-private-endpoint-table"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.wisp_converter_rg[0].name
+  subnet_id           = data.azurerm_subnet.private_endpoint_snet.id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-wisp-converter-private-dns-zone-group-table"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_table_azure_com.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-wisp-converter-private-service-connection-table"
+    private_connection_resource_id = module.wisp_converter_storage_account[0].id
+    is_manual_connection           = false
+    subresource_names              = ["table"]
+  }
+
+  tags = module.tag_config.tags
+
+  depends_on = [
+    azurerm_resource_group.wisp_converter_rg,
+    module.wisp_converter_storage_account
+  ]
+}
+
 # blob wispconverter
 resource "azurerm_storage_container" "wisp_converter_container" {
   count                = var.create_wisp_converter ? 1 : 0
@@ -77,6 +106,34 @@ resource "azurerm_storage_container" "wisp_converter_container" {
   storage_account_name = module.wisp_converter_storage_account[0].name
 
   depends_on = [
+    module.wisp_converter_storage_account
+  ]
+}
+
+resource "azurerm_private_endpoint" "wispconv_private_endpoint_blob" {
+  count = var.env_short == "d" ? 0 : var.create_wisp_converter ? 1 : 0
+
+  name                = "${local.project}-wisp-converter-private-endpoint-blob"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.wisp_converter_rg[0].name
+  subnet_id           = data.azurerm_subnet.private_endpoint_snet.id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-wisp-converter-private-dns-zone-group-blob"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_azure_com.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-wisp-converter-private-service-connection-blob"
+    private_connection_resource_id = module.wisp_converter_storage_account[0].id
+    is_manual_connection           = false
+    subresource_names              = ["blob"]
+  }
+
+  tags = module.tag_config.tags
+
+  depends_on = [
+    azurerm_resource_group.wisp_converter_rg,
     module.wisp_converter_storage_account
   ]
 }

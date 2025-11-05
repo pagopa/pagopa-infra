@@ -146,70 +146,6 @@
           }
         }
       }
-    },
-    "/carts/{id_cart}": {
-      "get": {
-        "tags": [
-          "payment-requests"
-        ],
-        "operationId": "GetCarts",
-        "summary": "Get a cart data",
-        "description": "Retrieve cart information",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id_cart",
-            "description": "Unique identifier for cart",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Cart data",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CartRequest"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Formally invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Cart not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -242,11 +178,17 @@
             "minLength": 1,
             "maxLength": 140
           },
+          "paymentContextCode": {
+            "description": "Payment context code",
+            "type": "string",
+            "minLength": 32,
+            "maxLength": 32
+          },
           "amount": {
             "description": "Payment notice amount",
             "type": "integer",
             "minimum": 0,
-            "maximum": 99999999
+            "maximum": 99999999999
           },
           "dueDate": {
             "description": "Payment notice due date",
@@ -256,8 +198,7 @@
           }
         },
         "required": [
-          "amount",
-          "paymentContextCode"
+          "amount"
         ]
       },
       "ValidationFaultPaymentUnavailableProblemJson": {
@@ -640,124 +581,6 @@
           "PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO",
           "GENERIC_ERROR"
         ]
-      },
-      "CartRequest": {
-        "description": "Cart request body",
-        "type": "object",
-        "required": [
-          "paymentNotices",
-          "returnUrls"
-        ],
-        "properties": {
-          "emailNotice": {
-            "description": "Email to which send the payment receipt",
-            "type": "string",
-            "format": "email",
-            "example": "my_email@mail.it"
-          },
-          "paymentNotices": {
-            "description": "List of payment notices in the cart",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PaymentNotice"
-            },
-            "minItems": 1,
-            "maxItems": 5,
-            "example": [
-              {
-                "noticeNumber": "302012387654312384",
-                "fiscalCode": "77777777777",
-                "amount": 10000,
-                "companyName": "companyName",
-                "description": "description"
-              },
-              {
-                "noticeNumber": "302012387654312385",
-                "fiscalCode": "77777777777",
-                "amount": 5000,
-                "companyName": "companyName",
-                "description": "description"
-              }
-            ]
-          },
-          "returnUrls": {
-            "description": "Structure containing all the returning URL's to which user will be redirect after payment process has been completed",
-            "type": "object",
-            "required": [
-              "returnOkUrl",
-              "returnCancelUrl",
-              "returnErrorUrl"
-            ],
-            "properties": {
-              "returnOkUrl": {
-                "description": "Return URL in case of payment operation is completed successfully",
-                "type": "string",
-                "format": "uri",
-                "example": "https://www.comune.di.prova.it/pagopa/success.html"
-              },
-              "returnCancelUrl": {
-                "description": "Return URL in case of payment operation is cancelled",
-                "type": "string",
-                "format": "uri",
-                "example": "https://www.comune.di.prova.it/pagopa/cancel.html"
-              },
-              "returnErrorUrl": {
-                "description": "Return URL in case an error occurred during payment operation processing",
-                "type": "string",
-                "format": "uri",
-                "example": "https://www.comune.di.prova.it/pagopa/error.html"
-              }
-            }
-          },
-          "idCart": {
-            "type": "string",
-            "example": "id_cart"
-          },
-          "allCCP": {
-            "type": "boolean",
-            "example": "false"
-          }
-        }
-      },
-      "PaymentNotice": {
-        "description": "Payment notice informations",
-        "type": "object",
-        "required": [
-          "noticeNumber",
-          "fiscalCode",
-          "amount",
-          "companyName",
-          "description"
-        ],
-        "properties": {
-          "noticeNumber": {
-            "description": "Payment notice number",
-            "type": "string",
-            "minLength": 18,
-            "maxLength": 18
-          },
-          "fiscalCode": {
-            "description": "Payment notice fiscal code",
-            "type": "string",
-            "minLength": 11,
-            "maxLength": 11
-          },
-          "amount": {
-            "description": "Payment notice amount",
-            "type": "integer",
-            "minimum": 1
-          },
-          "companyName": {
-            "description": "Payment notice company name",
-            "type": "string",
-            "maxLength": 140
-          },
-          "description": {
-            "description": "Payment notice description",
-            "type": "string",
-            "maxLength": 140
-          }
-        }
       }
     },
     "securitySchemes": {

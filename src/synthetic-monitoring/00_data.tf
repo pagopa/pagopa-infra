@@ -16,9 +16,21 @@ data "azurerm_monitor_action_group" "slack" {
   name                = local.monitor_action_group_slack_name
 }
 
+data "azurerm_monitor_action_group" "infra_opsgenie" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = local.monitor_resource_group_name
+  name                = local.monitor_action_group_infra_opsgenie_name
+}
+
 data "azurerm_monitor_action_group" "email" {
   resource_group_name = local.monitor_resource_group_name
   name                = local.monitor_action_group_email_name
+}
+
+data "azurerm_monitor_action_group" "opsgenie" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = local.monitor_resource_group_name
+  name                = local.monitor_action_group_opsgenie_name
 }
 
 data "azurerm_resource_group" "rg_vnet_core" {
@@ -41,5 +53,19 @@ data "azurerm_subnet" "private_endpoint_subnet" {
   name                 = "${local.product}-common-private-endpoint-snet"
   resource_group_name  = data.azurerm_resource_group.rg_vnet_core.name
   virtual_network_name = data.azurerm_virtual_network.vnet_core.name
+}
+
+data "azurerm_public_ip" "appgateway_public_ip" {
+  name                = format("%s-appgateway-pip", local.product)
+  resource_group_name = data.azurerm_resource_group.rg_vnet_core.name
+}
+
+#
+# 🔒 Secrets
+#
+
+data "azurerm_key_vault" "key_vault" {
+  name                = local.key_vault_name
+  resource_group_name = local.key_vault_rg_name
 }
 

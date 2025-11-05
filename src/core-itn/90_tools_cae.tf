@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "tools_rg" {
   name     = "${local.project}-tools-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_container_app_environment" "tools_cae" {
@@ -17,4 +17,6 @@ resource "azurerm_container_app_environment" "tools_cae" {
 
   log_analytics_workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
   infrastructure_subnet_id   = azurerm_subnet.subnet_container_app_tools.id
+
+  tags = module.tag_config.tags
 }

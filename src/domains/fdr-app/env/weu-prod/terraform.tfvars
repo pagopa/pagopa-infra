@@ -7,13 +7,7 @@ location_short  = "weu"
 location_string = "West Europe"
 instance        = "prod"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/fdr"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
+gh_runner_job_location = "italynorth"
 
 
 # function app
@@ -21,6 +15,7 @@ reporting_fdr_function_always_on = true
 
 app_service_plan_info = {
   kind                         = "Linux"
+  sku_tier                     = "PremiumV3"
   sku_size                     = "P1v3"
   maximum_elastic_worker_count = 1
   worker_count                 = 1
@@ -34,7 +29,7 @@ storage_account_info = {
   account_replication_type          = "GZRS"
   access_tier                       = "Hot"
   advanced_threat_protection_enable = true
-  use_legacy_defender_version       = false
+  use_legacy_defender_version       = true
   public_network_access_enabled     = false
 }
 
@@ -44,12 +39,11 @@ reporting_fdr_storage_account_info = {
   account_replication_type          = "GZRS"
   access_tier                       = "Hot"
   advanced_threat_protection_enable = true
-  use_legacy_defender_version       = false
+  use_legacy_defender_version       = true
   public_network_access_enabled     = false
 }
 
 ### External resources
-
 monitor_resource_group_name                 = "pagopa-p-monitor-rg"
 log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
@@ -76,24 +70,15 @@ tls_cert_check_helm = {
 image_name = "reporting-fdr"
 image_tag  = "latest"
 
-apim_fdr_nodo_pagopa_enable = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
+# FDR ( phase#1 and phase#3 cfg )
 
-# fdr re
-fdr_re_function = {
-  always_on                    = true
-  kind                         = "Linux"
-  sku_size                     = "P1v3"
-  sku_tier                     = "Basic"
-  maximum_elastic_worker_count = 0
-}
-fdr_re_function_always_on                = true
-fdr_re_function_subnet                   = ["10.1.181.0/24"]
-fdr_re_function_network_policies_enabled = false
-fdr_re_function_autoscale = {
-  default = 1
-  minimum = 1
-  maximum = 10
-}
+enable_fdr_ci_soap_request     = true
+enable_fdr_psp_soap_request    = true
+fdr_soap_request_psp_whitelist = "*" # Switching all traffic on FdR-Fase1
+fdr_soap_request_ci_whitelist  = "*"
+apim_fdr_nodo_pagopa_enable    = true # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
+
+ftp_organization = "80078750587,00488410010,97532760580,12300020158"
 
 # fdr xml to json
 fdr_xml_to_json_function_subnet                   = ["10.1.182.0/24"]
@@ -111,25 +96,4 @@ fdr_xml_to_json_function_autoscale = {
   minimum = 1
   maximum = 10
 }
-
-# fdr json to xml
-fdr_json_to_xml_function_subnet                   = ["10.1.185.0/24"]
-fdr_json_to_xml_function_network_policies_enabled = true
-fdr_json_to_xml_function = {
-  always_on                    = true
-  kind                         = "Linux"
-  sku_size                     = "B1"
-  sku_tier                     = "Basic"
-  maximum_elastic_worker_count = 0
-}
-
-fdr_json_to_xml_function_autoscale = {
-  default = 1
-  minimum = 1
-  maximum = 10
-}
-
-
-
-ftp_organization = "80078750587,00488410010,97532760580,12300020158"
 

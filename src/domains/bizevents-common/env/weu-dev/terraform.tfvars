@@ -6,13 +6,6 @@ location       = "westeurope"
 location_short = "weu"
 instance       = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/bizevents"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -53,8 +46,9 @@ bizevents_datastore_cosmos_db_params = {
 
   container_default_ttl = 2629800 # 1 month in second
 
-  max_throughput     = 1000
-  max_throughput_alt = 1000
+  max_throughput          = 1000
+  max_throughput_view     = 1000
+  max_throughput_view_alt = 1000
 }
 
 # CosmosDB Negative Biz Events Datastore

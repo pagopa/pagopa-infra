@@ -55,12 +55,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 ### External resources
 
@@ -125,7 +119,8 @@ variable "bizevents_datastore_cosmos_db_params" {
     container_default_ttl             = number
     ip_range_filter                   = string
     max_throughput                    = number
-    max_throughput_alt                = number
+    max_throughput_view               = number
+    max_throughput_view_alt           = number
   })
 }
 

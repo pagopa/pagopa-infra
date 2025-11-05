@@ -59,7 +59,7 @@ resource "azurerm_api_management_named_value" "default_nodo_backend" {
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "default-nodo-backend"
   # in PROD Nodo have not the context-path
-  value = var.env_short == "p" ? azurerm_api_management_named_value.schema_ip_nexi.value : "${azurerm_api_management_named_value.schema_ip_nexi.value}${azurerm_api_management_named_value.base_path_nodo_oncloud.value}"
+  value = azurerm_api_management_named_value.schema_ip_nexi.value
 }
 
 resource "azurerm_api_management_named_value" "default_nodo_backend_prf" {
@@ -67,7 +67,7 @@ resource "azurerm_api_management_named_value" "default_nodo_backend_prf" {
   api_management_name = module.apim[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "default-nodo-backend-prf"
-  value               = var.env_short == "u" ? "${azurerm_api_management_named_value.schema_ip_nexi.value}/nodo-prf" : "http://fake.address"
+  value               = var.env_short == "u" ? "${azurerm_api_management_named_value.schema_ip_nexi.value}" : "http://fake.address"
   # /webservices/input is set in API policy
 }
 
@@ -216,24 +216,6 @@ resource "azurerm_api_management_named_value" "checkout_google_recaptcha_secret"
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "google-recaptcha-secret"
   value               = data.azurerm_key_vault_secret.google_recaptcha_secret.value
-  secret              = true
-}
-
-resource "azurerm_api_management_named_value" "pagopa_fn_buyerbanks_url_value" {
-  name                = "pagopa-fn-buyerbanks-url"
-  api_management_name = module.apim[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  display_name        = "pagopa-fn-buyerbanks-url"
-  value               = format("https://pagopa-%s-fn-buyerbanks.azurewebsites.net", var.env_short)
-}
-
-
-resource "azurerm_api_management_named_value" "pagopa_fn_buyerbanks_key" {
-  name                = "pagopa-fn-buyerbanks-key"
-  api_management_name = module.apim[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  display_name        = "pagopa-fn-buyerbanks-key"
-  value               = data.azurerm_key_vault_secret.fn_buyerbanks_key.value
   secret              = true
 }
 

@@ -74,12 +74,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 #
 # CIRDs
@@ -99,12 +93,6 @@ variable "cidr_printit_redis_italy" {
   type        = list(string)
   description = "Address prefixes for all redis accounts in italy."
 }
-
-variable "cidr_printit_postgresql_italy" {
-  type        = list(string)
-  description = "Address prefixes for all postgresql accounts in italy."
-}
-
 variable "cidr_printit_pdf_engine_italy" {
   type        = list(string)
   description = "Address prefixes for all pdf engine accounts in italy."

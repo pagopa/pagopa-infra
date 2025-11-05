@@ -1,11 +1,11 @@
 #!/bin/bash
 ############################################################
 # Terraform script for managing infrastructure on Azure
-# Fingerprint: d2hhdHlvdXdhbnQ/Cg==
+# md5: 065397c756f4c6a1ba29f44d1e00ef74
 ############################################################
 # Global variables
 # Version format x.y accepted
-vers="1.11"
+vers="3.0"
 script_name=$(basename "$0")
 git_repo="https://raw.githubusercontent.com/pagopa/eng-common-scripts/main/azure/${script_name}"
 tmp_file="${script_name}.new"
@@ -16,11 +16,50 @@ else
   FILE_ACTION=false
 fi
 
+# Define colors and styles
+# fixme find a way to color output on local and on devops agent, where tput returns an error
+bold=""
+normal=""
+red=""
+black=""
+green=""
+yellow=""
+blue=""
+magenta=""
+cyan=""
+white=""
+
+os_type=$(uname)
+ if [ "$os_type" == "Darwin" ]; then
+    # Define colors and styles
+    # fixme find a way to color output on local and on devops agent, where tput returns an error
+    bold="$(tput bold)"
+    normal="$(tput sgr0)"
+    red="$(tput setaf 1)"
+    black="$(tput setaf 0)"
+    green="$(tput setaf 2)"
+    yellow="$(tput setaf 3)"
+    blue="$(tput setaf 4)"
+    magenta="$(tput setaf 5)"
+    cyan="$(tput setaf 6)"
+    white="$(tput setaf 7)"
+fi
+
 # Define functions
 function clean_environment() {
   rm -rf .terraform
   rm tfplan 2>/dev/null
   echo "cleaned!"
+}
+
+
+
+day() {
+  date +"%Y-%m-%d"
+}
+
+hour() {
+  date +"%H:%M:%S"
 }
 
 function download_tool() {
@@ -144,9 +183,230 @@ function list_env() {
   done
 }
 
+function audit_pre_apply() {
+  file_name=$1
+  partition_key=$2
+  row_key=$3
+  skip_policy=$4
+
+  # load audit config
+  source "$root_folder/.terraform-audit"
+  # save plan to readable file
+  terraform show -no-color "$file_name.tfplan" > "$file_name.plan"
+
+  branch_name=$(git rev-parse --abbrev-ref HEAD)
+  commit_hash=$(git rev-parse HEAD)
+  git_project=$(git remote get-url origin)
+  # get the current apply folder
+  root_folder_length=${#root_folder}
+  root_folder_index=$((root_folder_length + 1))
+  current_folder=$(pwd | cut -c $root_folder_index- )
+  # azure user applying the changes
+  current_user=$(az ad signed-in-user show --query userPrincipalName -o tsv)
+
+  echo "Auditing apply operation..."
+  # save apply parameters to audit table
+  entity_insert=$(az storage entity insert --account-name "$audit_storage_account_name" \
+    --table-name "$audit_table_name" \
+    --auth-mode key \
+    --only-show-errors \
+    --entity PartitionKey="$partition_key" RowKey="$row_key" BranchName="$branch_name" CommitHash="$commit_hash" SkipPolicy="$skip_policy" SkipPolicy@odata.type=Edm.Boolean Watched="false" Watched@odata.type=Edm.Boolean PlanFile="$file_name.plan" ApplyFile="$file_name.apply" Arguments="$other" User="$current_user" Folder="$current_folder" Project="$git_project")
+  # save plan to audit container
+  plan_upload=$(az storage blob upload --account-name "$audit_storage_account_name" \
+  --container-name "$audit_container_name" \
+  --auth-mode key \
+  --only-show-errors \
+  --file "$file_name.plan" \
+  --name "$file_name.plan" \
+  --overwrite true)
+}
+
+function audit_post_apply() {
+  file_name=$1
+  partition_key=$2
+  row_key=$3
+
+  # load audit config
+  source "$root_folder/.terraform-audit"
+
+  apply_success=$(grep -c "Apply complete!" "$file_name.apply")
+  echo "Apply completed, auditing apply result..."
+  # save apply result to audit container
+  entity_update=$(az storage entity merge --account-name "$audit_storage_account_name" \
+    --table-name "$audit_table_name" \
+    --auth-mode key \
+    --only-show-errors \
+    --entity PartitionKey="$partition_key" RowKey="$row_key" ApplySuccess="$([ "$apply_success" = 1 ] && echo "true" || echo "false")" ApplySuccess@odata.type=Edm.Boolean )
+
+  apply_upload=$(az storage blob upload --account-name "$audit_storage_account_name" \
+  --container-name "$audit_container_name" \
+  --file "$file_name.apply" \
+  --name "$file_name.apply" \
+  --auth-mode key \
+  --only-show-errors \
+  --overwrite true)
+}
+
+function check_arguments() {
+  # avoid auto approve in prod environment
+  if [[ "$other" == *"-auto-approve"* ]]; then
+    echo "${red}${bold}ERROR: -auto-approve parameter not allowed in prod environment!${normal}"
+    exit 1
+  fi
+  # avoid -out parameter, used internally to save the plan file for auditing purposes
+  if [[ "$other" == *"-out="* ]]; then
+    echo "${red}${bold}ERROR: -out parameter not allowed in prod apply. Already used for auditing purposes!${normal}"
+    exit 1
+  fi
+}
+
+function check_plan_output(){
+  plan_exitcode=$1
+  # check if changes are present
+  if [ "$plan_exitcode" == 0 ]; then
+    echo "${bold}No changes to apply!${normal}"
+    rm "$file_name.tfplan" 2>/dev/null
+    exit 0
+  fi
+  if [ "$plan_exitcode" == 1 ]; then
+    rm "$file_name.tfplan" 2>/dev/null
+    exit 1
+  fi
+}
+
+function check_conftest_output(){
+  opa_global_exitcode=$1
+  # check if changes are present
+  if [ $opa_global_exitcode == 0 ]; then
+    echo "${bold}${blue}OPEN Policy Test SUCCESS!${normal}"
+  fi
+  if [ $opa_global_exitcode -gt 0 ]; then
+    echo "${bold}${red}OPEN Policy Test FAILURE!${black}${normal}"
+    read -p "${bold}${red}Are you sure to continue? (only yes will be accepted): ${normal}" skip_confirmation
+    if [ "$skip_confirmation" != "yes" ]; then
+        clean_audit_files  "$file_name"
+        exit 1
+    else
+        skip_policy="true"
+    fi
+
+
+  fi
+}
+
+function clean_audit_files() {
+  file_name=$1
+  # cleanup temporary files
+  rm "$file_name.plan" 2>/dev/null
+  rm "$file_name.apply" 2>/dev/null
+  rm "$file_name.tfplan" 2>/dev/null
+  rm "$file_name.json" 2>/dev/null
+  rm "$file_name.jq" 2>/dev/null
+  rm "$file_name.opa" 2>/dev/null
+
+}
+
+function opa_check_policy() {
+
+        # load opa config
+        if ! command -v opa &> /dev/null && [ ! -f "opa" ]; then
+          brew install opa --quiet
+          if [ $? -ne 0 ]; then
+            echo "${red}Error: Failed to install opa!!"
+            exit 1
+          else
+            echo "Install opa ${green}SUCCESS!"
+          fi
+        fi
+
+        source "$root_folder/.terraform-opa"
+
+        terraform show -json "$file_name.tfplan" > "$file_name.json"
+
+        # checkout opa policies
+        git clone -c advice.detachedHead=false --branch "$opa_policy_version" https://github.com/pagopa/opa-policy.git  "$root_folder/$opa_policy_clone_folder" --quiet
+
+        # calcolo score
+        score=$(opa eval --data "$root_folder/$opa_policy_folder/global/opa.terraform/apply_score.rego" --input "$file_name.json" "data.pagopa.score.opa.terraform.plan.apply_score.score" --format pretty)
+        authz=$(opa eval --data "$root_folder/$opa_policy_folder/global/opa.terraform/apply_score.rego" --input "$file_name.json" "data.pagopa.score.opa.terraform.plan.apply_score.authz" --format pretty)
+        if [ "$authz" != "true" ]; then
+          scorecolor="${red}"
+        else
+          scorecolor="${green}"
+        fi
+        read -p "${bold}Apply Score: ${scorecolor}${score}${normal} Continue (only yes will be accepted): ${normal}" score_confirmation
+
+        if [ "$score_confirmation" != "yes" ]; then
+          clean_audit_files  "$file_name"
+          exit 1
+        fi
+
+        #policy evaluation
+        opa eval --data $root_folder/$opa_policy_folder --input "$file_name.json" "data.azure.global.opa" --format values --fail-defined > $file_name.jq
+        opa_exitcode=$?
+        opa eval --data $root_folder/$opa_policy_folder --input "$file_name.json" "data.azure.$opa_service_tag.opa" --format values --fail-defined >> $file_name.jq
+        opa_custom_exitcode=$?
+
+        cat $file_name.jq | jq -r '..|.deny? | select(. != null) '| jq -r ' ( .[])| @tsv' | awk -v FS="|" 'BEGIN{print ""}{printf "%s\t%s\n","\033[33m"$1,"\033[31m"$2}' | tee $file_name.opa
+        awk 'NF {exit 1}' $file_name.opa && opa_global_exitcode=0 || opa_global_exitcode=1
+        
+        rm -rf "$root_folder/$opa_policy_clone_folder" 2>/dev/null
+        check_conftest_output "$opa_global_exitcode"
+
+
+}
+
+
 function other_actions() {
   if [ -n "$env" ] && [ -n "$action" ]; then
-    terraform "$action" -var-file="./env/$env/terraform.tfvars" -compact-warnings $other
+    root_folder=$(git rev-parse --show-toplevel)
+    # if apply in prod environment and audit settings are defined
+    if [ "$action" == "apply" ] && [[ "$env" == *"prod" ]] && [ -f "$root_folder/.terraform-audit" ]; then
+
+      check_arguments
+      # skip_policy to false by default
+      skip_policy="false"
+      # parameters for audit
+      uuid=$(uuidgen)
+      # unique record keys
+      partition_key=$(day)
+      row_key="$(hour)_$uuid"
+      # plan and apply file name
+      file_name="$partition_key-$row_key"
+
+      # plan to file
+      terraform plan -var-file="./env/$env/terraform.tfvars" -compact-warnings -out="$file_name.tfplan" -detailed-exitcode $other
+      plan_exitcode=$?
+      check_plan_output "$plan_exitcode"
+
+      echo ""
+
+      if [ -f "$root_folder/.terraform-opa" ]
+      then
+
+        opa_check_policy
+
+      fi
+
+
+      # ask user confirmation before applying changes
+      read -p "${bold}Apply these changes (only yes will be accepted): ${normal}" apply_confirmation
+      if [ "$apply_confirmation" == "yes" ]; then
+        audit_pre_apply "$file_name" "$partition_key" "$row_key" "$skip_policy"
+        terraform apply -auto-approve "$file_name.tfplan" -compact-warnings | tee "$file_name.apply"
+        audit_post_apply "$file_name" "$partition_key" "$row_key"
+        # cleanup temporary files
+        clean_audit_files "$file_name"
+      else
+        echo "${bold}Apply canceled${normal}"
+      fi
+      # clean plan file
+      clean_audit_files "$file_name"
+    else
+      terraform "$action" -var-file="./env/$env/terraform.tfvars" -compact-warnings $other
+    fi
+
+
   else
     echo "ERROR: no env or action configured!"
     exit 1
@@ -283,6 +543,7 @@ if [ -n "$env" ]; then
     exit 1
   fi
   az account set -s "${subscription}"
+  export ARM_SUBSCRIPTION_ID=$(az account list --query "[?isDefault].id" --output tsv)
 fi
 
 # Call appropriate function based on action

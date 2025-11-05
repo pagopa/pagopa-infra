@@ -8,11 +8,11 @@ terraform {
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "<= 2.30.0"
+      version = "~> 2.53"
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "<= 3.116.0"
+      version = "~> 3.116"
     }
     helm = {
       source  = "hashicorp/helm"
@@ -20,11 +20,11 @@ terraform {
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "<= 2.11.0"
+      version = "~> 2.36.0"
     }
     null = {
       source  = "hashicorp/null"
-      version = "<= 3.2.1"
+      version = "~> 3.2"
     }
     github = {
       source  = "integrations/github"
@@ -63,6 +63,9 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 module "__v3__" {
-  # v8.60.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=551a56a4bf841cd431b51ec951639e74260daf6a"
+  # v8.83.1
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=087a57940a67444c3b883030c54ceb78562c64ef"
+
+  # v8.99.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=f97230b8a5838fe3c616b5aa01bef8caeff8bc6b"
 }

@@ -1,19 +1,13 @@
-prefix          = "pagopa"
-env_short       = "p"
-env             = "prod"
-domain          = "shared"
-location        = "westeurope"
-location_short  = "weu"
-location_string = "West Europe"
-instance        = "prod"
+prefix                 = "pagopa"
+env_short              = "p"
+env                    = "prod"
+domain                 = "shared"
+location               = "westeurope"
+location_short         = "weu"
+location_string        = "West Europe"
+instance               = "prod"
+gh_runner_job_location = "italynorth"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/shared"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -87,13 +81,11 @@ pod_disruption_budgets = {
   },
 }
 
-pagopa_shared_toolbox_enabled     = false
-robots_indexed_paths              = []
-pdf_engine_app_ha_enabled         = true
-pdf_engine_zone_balancing_enabled = true
+pagopa_shared_toolbox_enabled = false
+robots_indexed_paths          = []
 
 // wallet session token
 io_backend_base_path = "https://api-app.io.pagopa.it"
 pdv_api_base_path    = "https://api.tokenizer.pdv.pagopa.it/tokenizer/v1"
 
-ecommerce_for_io_pm_npg = "NPG"
+function_app_ip_restriction_default_action = "Deny"

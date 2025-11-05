@@ -26,5 +26,5 @@ resource "azurerm_public_ip" "aks_outbound" {
   allocation_method   = "Static"
   zones               = [1, 2, 3]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

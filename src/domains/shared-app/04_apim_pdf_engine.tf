@@ -29,14 +29,14 @@ locals {
     description           = "PDF Engine Service pagoPA - API"
     path                  = "shared/pdf-engine"
     subscription_required = true
-    service_url           = var.pdf_engine_app_ha_enabled ? module.shared_pdf_engine_app_service_java_ha[0].default_site_hostname : module.shared_pdf_engine_app_service_java[0].default_site_hostname
+    service_url           = module.shared_pdf_engine_app_service_java[0].default_site_hostname
   }
   apim_pdf_engine_node_service_api = { # node
     display_name          = "PDF Engine Node Service pagoPA - API"
     description           = "PDF Engine Node Service pagoPA - API"
     path                  = "shared/pdf-engine-node"
     subscription_required = true
-    service_url           = var.pdf_engine_app_ha_enabled ? module.shared_pdf_engine_app_service_ha[0].default_site_hostname : module.shared_pdf_engine_app_service[0].default_site_hostname
+    service_url           = module.shared_pdf_engine_app_service[0].default_site_hostname
   }
 }
 

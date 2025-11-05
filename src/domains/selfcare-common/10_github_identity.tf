@@ -47,7 +47,7 @@ locals {
 
 # create a module for each 20 repos
 module "identity_cd_01" {
-  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v7.45.0"
+  source = "./.terraform/modules/__v3__/github_federated_identity"
   # pagopa-<ENV><DOMAIN>-<COUNTER>-github-<PERMS>-identity
   prefix    = var.prefix
   env_short = var.env_short
@@ -62,7 +62,7 @@ module "identity_cd_01" {
     resource_groups    = local.environment_cd_roles.resource_groups
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     data.azurerm_resource_group.identity_rg
@@ -71,7 +71,7 @@ module "identity_cd_01" {
 
 
 resource "azurerm_key_vault_access_policy" "gha_iac_managed_identities" {
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = module.identity_cd_01.identity_principal_id
 
@@ -133,7 +133,7 @@ module "identity_pr_01" {
     resource_groups    = local.environment_cd_roles.resource_groups
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     data.azurerm_resource_group.identity_rg
@@ -142,7 +142,7 @@ module "identity_pr_01" {
 
 
 resource "azurerm_key_vault_access_policy" "gha_pr_iac_managed_identities" {
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = module.identity_pr_01.identity_principal_id
 

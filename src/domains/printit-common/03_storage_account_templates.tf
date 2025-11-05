@@ -1,5 +1,5 @@
 module "templates_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.22.0"
+  source = "./.terraform/modules/__v3__//storage_account"
   count  = var.is_feature_enabled.storage_templates ? 1 : 0
 
   name                       = replace("${local.project_short}-templates", "-", "")
@@ -26,7 +26,7 @@ module "templates_sa" {
     blob_restore_policy_days   = var.templates_storage_account.backup_retention
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "templates_blob_private_endpoint" {
@@ -49,7 +49,7 @@ resource "azurerm_private_endpoint" "templates_blob_private_endpoint" {
     subresource_names              = ["blob"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     module.templates_sa
@@ -77,7 +77,7 @@ resource "azurerm_private_endpoint" "notices_table_private_endpoint" {
     subresource_names              = ["table"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     module.templates_sa

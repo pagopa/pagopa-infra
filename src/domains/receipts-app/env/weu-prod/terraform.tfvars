@@ -1,19 +1,13 @@
-prefix          = "pagopa"
-env_short       = "p"
-env             = "prod"
-domain          = "receipts"
-location        = "westeurope"
-location_short  = "weu"
-location_string = "West Europe"
-instance        = "prod"
+prefix                 = "pagopa"
+env_short              = "p"
+env                    = "prod"
+domain                 = "receipts"
+location               = "westeurope"
+location_short         = "weu"
+location_string        = "West Europe"
+instance               = "prod"
+gh_runner_job_location = "italynorth"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/receipts"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 

@@ -55,12 +55,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 ### External resources
 
@@ -92,7 +86,19 @@ variable "external_domain" {
 variable "dns_zone_internal_prefix" {
   type        = string
   default     = null
+  description = "The dns internal subdomain."
+}
+
+variable "dns_zone_ecommerce" {
+  type        = string
+  default     = null
   description = "The dns subdomain."
+}
+
+variable "dns_default_ttl_sec" {
+  type        = number
+  description = "value"
+  default     = 3600
 }
 
 # CosmosDb
@@ -138,6 +144,15 @@ variable "cosmos_mongo_db_ecommerce_params" {
 }
 
 variable "cosmos_mongo_db_ecommerce_history_params" {
+  type = object({
+    enable_serverless  = bool
+    enable_autoscaling = bool
+    throughput         = number
+    max_throughput     = number
+  })
+}
+
+variable "cosmos_mongo_db_ecommerce_watchdog_params" {
   type = object({
     enable_serverless  = bool
     enable_autoscaling = bool
@@ -217,4 +232,10 @@ variable "enable_iac_pipeline" {
   type        = bool
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
+}
+
+variable "ecommerce_jwt_issuer_api_key_use_primary" {
+  type        = bool
+  description = "If true the current active API key used for jwt issuer service will be the primary one."
+  default     = true
 }

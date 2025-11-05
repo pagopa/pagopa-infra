@@ -1,0 +1,38 @@
+parameters:
+  - name: TIME_OUT
+    displayName: 'Timeout in minutes'
+    type: number
+  - name: AZ_SERVICE_CONNECTION
+    displayName: 'Azure Service Connection'
+    type: string
+  - name: RUNNER_RG
+    displayName: 'Runner Resource Group'
+    type: string
+
+jobs:
+  - job: clean_runner
+    displayName: runner cleanup
+    strategy:
+      parallel: 1
+    timeoutInMinutes: ${{ parameters.TIME_OUT }}
+    condition: succeeded()
+    steps:
+      - task: AzureCLI@2
+        displayName: "clean all runner"
+        inputs:
+          azureSubscription: ${{parameters.AZ_SERVICE_CONNECTION}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |
+            apps=$(az containerapp list -g "${{parameters.RUNNER_RG}}" --query "[].name" -o tsv)
+            echo "runners: $apps"
+            if [ -z "$apps" ]; then
+              echo "no runners to delete"
+              exit 0
+            fi
+            while IFS= read -r line ;
+            do
+              echo "deleting runner $line"
+              echo "command: az containerapp delete -g \"${{parameters.RUNNER_RG}}\" -n \"${line}\" -y --no-wait"
+              az containerapp delete -g "${{parameters.RUNNER_RG}}" -n "${line}" -y --no-wait
+            done <<< "$apps"

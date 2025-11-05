@@ -1,0 +1,190 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 46,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "filterable": true,
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 20,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 2,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "enablePagination": true,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.7.0",
+            "query": "IBAN_VALIDI\n| where ID_DOMINIO in ($DOMINIO)\n| where IBAN_ACCREDITO contains \"$IBAN\"\n| join kind=inner PA on ID_DOMINIO\n| extend DESCR_PA=case(isempty(RAGIONE_SOCIALE), DESCRIZIONE, RAGIONE_SOCIALE)\n| project ID_DOMINIO, IBAN_ACCREDITO, DATA_INIZIO_VALIDITA, DATA_PUBBLICAZIONE, RAGIONE_SOCIALE, DESCRIZIONE",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "IBAN VALIDI - $IBAN",
+        "type": "table"
+      }
+    ],
+    "refresh": "",
+    "revision": 1,
+    "schemaVersion": 39,
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "",
+            "value": ""
+          },
+          "description": "Filtro Iban",
+          "hide": 0,
+          "label": "Filtro Iban",
+          "name": "IBAN",
+          "options": [
+            {
+              "selected": true,
+              "text": "",
+              "value": ""
+            }
+          ],
+          "query": "",
+          "skipUrlSync": false,
+          "type": "textbox"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "definition": "PA\n| where ENABLED == \"Y\"\n| extend l = strcat(ID_DOMINIO,\"|\", \"(\", ID_DOMINIO,\") \", DESCRIZIONE)\n| project l",
+          "hide": 0,
+          "includeAll": true,
+          "multi": false,
+          "name": "DOMINIO",
+          "options": [],
+          "query": "PA\n| where ENABLED == \"Y\"\n| extend l = strcat(ID_DOMINIO,\"|\", \"(\", ID_DOMINIO,\") \", DESCRIZIONE)\n| project l",
+          "refresh": 1,
+          "regex": "/(?<value>.*)\\|(?<text>.*)/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "[CONFIG] - IBAN Attivi Produzione",
+    "uid": "QTFcdkh4z",
+    "weekStart": ""
+  }

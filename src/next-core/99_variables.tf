@@ -89,12 +89,6 @@ variable "lock_enable" {
   description = "Apply locks to block accedentaly deletions."
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 ### Network
 
 variable "cidr_vnet_italy" {
@@ -235,42 +229,6 @@ variable "dns_forwarder_vm_image_name" {
   type        = string
   description = "Image name for dns forwarder"
   default     = null
-}
-
-
-#
-# replica variables
-#
-variable "geo_replica_enabled" {
-  type        = bool
-  description = "(Optional) True if geo replica should be active for key data components i.e. PostgreSQL Flexible servers"
-  default     = false
-}
-
-variable "geo_replica_location" {
-  type        = string
-  description = "(Optional) Location of the geo replica"
-  default     = "northeurope"
-}
-
-variable "geo_replica_location_short" {
-  type        = string
-  description = "(Optional) Short Location of the geo replica"
-  default     = "neu"
-}
-
-variable "geo_replica_cidr_vnet" {
-  type        = list(string)
-  description = "(Required) Cidr block for replica vnet address space"
-  default     = null
-}
-
-variable "geo_replica_ddos_protection_plan" {
-  type = object({
-    id     = string
-    enable = bool
-  })
-  default = null
 }
 
 
@@ -535,10 +493,6 @@ variable "app_gateway_wisp2govit_certificate_name" {
 variable "app_gateway_wfespgovit_certificate_name" {
   type        = string
   description = "Application gateway wfespgovit certificate name on Key Vault"
-}
-variable "app_gateway_kibana_certificate_name" {
-  type        = string
-  description = "Application gateway api certificate name on Key Vault"
   default     = ""
 }
 
@@ -756,18 +710,72 @@ variable "eventhubs_04" {
   default = []
 }
 
-variable "ehns_alerts_enabled" {
+variable "eventhubs_prf" {
+  description = "A list of event hubs to add to namespace."
+  type = list(object({
+    name              = string
+    partitions        = number
+    message_retention = number
+    consumers         = list(string)
+    keys = list(object({
+      name   = string
+      listen = bool
+      send   = bool
+      manage = bool
+    }))
+  }))
+  default = []
+}
+
+variable "ehns03_alerts_enabled" {
   type        = bool
   default     = false
-  description = "Event hub alerts enabled?"
+  description = "Event hub 03 alerts enabled?"
 }
+
+variable "ehns04_alerts_enabled" {
+  type        = bool
+  default     = false
+  description = "Event hub 04 alerts enabled?"
+}
+
 
 variable "ehns_public_network_access" {
   type        = bool
   description = "(Required) enables public network access to the event hubs"
 }
 
-variable "ehns_metric_alerts" {
+variable "ehns03_metric_alerts" {
+  default = {}
+
+  description = <<EOD
+Map of name = criteria objects
+EOD
+
+  type = map(object({
+    # criteria.*.aggregation to be one of [Average Count Minimum Maximum Total]
+    aggregation = string
+    metric_name = string
+    description = string
+    # criteria.0.operator to be one of [Equals NotEquals GreaterThan GreaterThanOrEqual LessThan LessThanOrEqual]
+    operator  = string
+    threshold = number
+    # Possible values are PT1M, PT5M, PT15M, PT30M and PT1H
+    frequency = string
+    # Possible values are PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H and P1D.
+    window_size = string
+
+    dimension = list(object(
+      {
+        name     = string
+        operator = string
+        values   = list(string)
+      }
+    ))
+  }))
+}
+
+variable "ehns04_metric_alerts" {
   default = {}
 
   description = <<EOD
@@ -922,12 +930,6 @@ variable "app_gateway_deny_paths" {
   default     = []
 }
 
-variable "app_gateway_kibana_deny_paths" {
-  type        = list(string)
-  description = "Deny paths on app gateway kibana"
-  default     = []
-}
-
 # needs to be less than 512 characters. For more details refer to the documentation here: https://aka.ms/appgwheadercrud."
 variable "app_gateway_deny_paths_2" {
   type        = list(string)
@@ -957,11 +959,11 @@ variable "app_gateway_allowed_paths_upload" {
     "/nodo-auth/node-for-psp/.*",
     "/nodo-auth/nodo-per-psp/.*",
     "/nodo/nodo-per-psp/.*",
-    "/fdr-legacy/nodo-per-pa/.*",
     "/nodo/nodo-per-pa/.*",
     "/nodo-auth/nodo-per-pa/.*",
     "/nodo-auth/node-for-pa/.*",
-  "/nodo/node-for-psp/.*"]
+    "/nodo/node-for-psp/.*",
+  ]
 }
 
 
@@ -1116,3 +1118,14 @@ variable "enable_node_forwarder_debug_instance" {
   default     = false
   description = "Enable the creation of a separate 'debug' instance of node forwarder"
 }
+
+variable "route_tools" {
+  type = list(object({
+    name                   = string
+    address_prefix         = string
+    next_hop_type          = string
+    next_hop_in_ip_address = string
+  }))
+  description = "AKS routing table"
+}
+

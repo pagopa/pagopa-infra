@@ -8,15 +8,6 @@ data "azurerm_key_vault" "core_kv" {
   resource_group_name = "${local.product}-sec-rg"
 }
 
-resource "azurerm_key_vault_secret" "apiconfig_client_secret" {
-  name         = "apiconfig-core-client-secret"
-  value        = "TODO" # TODO
-  content_type = "text/plain"
-
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
-
-
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "db_nodo_usr" {
   name         = "db-nodo-usr"

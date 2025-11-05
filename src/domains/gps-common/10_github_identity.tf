@@ -15,10 +15,11 @@ locals {
     "pagopa-gpd-payments-pull",
     "pagopa-gps-donation-service",
     "pagopa-gpd-payments",
-    "pagopa-gpd-reporting-batch",
     "pagopa-gpd-reporting-analysis",
-    "pagopa-gpd-reporting-service",
-    "pagopa-gpd-ingestion-manager"
+    "pagopa-gpd-ingestion-manager",
+    "pagopa-spontaneous-payments",
+    "pagopa-debt-position",
+    "pagopa-gpd-rtp"
   ]
 
   federations_01 = [
@@ -28,7 +29,13 @@ locals {
     }
   ]
 
-  # to avoid subscription Contributor -> https://github.com/microsoft/azure-container-apps/issues/35
+  federations_01_oidc = [
+    for repo in local.repos_01 : {
+      repository = repo
+      subject    = "oidc"
+    }
+  ]
+
   environment_cd_roles = {
     subscription = [
       "Contributor"
@@ -61,7 +68,30 @@ module "identity_cd_01" {
     resource_groups    = local.environment_cd_roles.resource_groups
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
+
+  depends_on = [
+    data.azurerm_resource_group.identity_rg
+  ]
+}
+
+# create a module for each 20 repos
+module "identity_oidc_01" {
+  source    = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v8.36.1"
+  prefix    = var.prefix
+  env_short = var.env_short
+  domain    = "${var.domain}-01-oidc"
+
+  identity_role = "cd"
+
+  github_federations = local.federations_01_oidc
+
+  cd_rbac_roles = {
+    subscription_roles = local.environment_cd_roles.subscription
+    resource_groups    = local.environment_cd_roles.resource_groups
+  }
+
+  tags = module.tag_config.tags
 
   depends_on = [
     data.azurerm_resource_group.identity_rg
@@ -81,6 +111,8 @@ resource "azurerm_key_vault_access_policy" "gha_iac_managed_identities" {
 
   storage_permissions = []
 }
+
+
 
 resource "null_resource" "github_runner_app_permissions_to_namespace_cd_01" {
   triggers = {
@@ -113,4 +145,14 @@ resource "null_resource" "github_runner_app_permissions_to_namespace_cd_01" {
   depends_on = [
     module.identity_cd_01
   ]
+}
+
+# WL-IDENTITY
+# https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/1227751458/Migrazione+pod+Identity+vs+workload+Identity#Init-workload-identity
+module "workload_identity" {
+  source = "./.terraform/modules/__v3__/kubernetes_workload_identity_init"
+
+  workload_identity_name_prefix         = var.domain
+  workload_identity_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name
+  workload_identity_location            = var.location
 }

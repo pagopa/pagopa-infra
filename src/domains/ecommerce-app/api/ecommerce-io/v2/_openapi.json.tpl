@@ -3,7 +3,7 @@
   "info": {
     "version": "0.0.1",
     "title": "Pagopa eCommerce services for app IO with payment wallet",
-    "description": "API's exposed from eCommerce services to app IO to allow pagoPA payment with payment wallet.\n\nThe payment workflow ends with a outcome returned as query params in a webview, for example \n \n - /outcomes?outcome=0. \n\nThe possible outcome are:\n- SUCCESS(0) → payment completed successfully\n- GENERIC_ERROR(1),\n- AUTH_ERROR(2) → authorization denied\n- INVALID_DATA(3) → incorrect data\n- TIMEOUT(4) → timeout \n- CIRCUIT_ERROR(5) → Unsupported circuit (should never happen)\n- MISSING_FIELDS(6) → missing data (should never happen) \n- INVALID_CARD(7) → expired card (or similar)\n- CANCELED_BY_USER(8) → canceled by the user\n- DUPLICATE_ORDER(9) → Double transaction (should never happen)\n- EXCESSIVE_AMOUNT(10) → Excess of availability \n- ORDER_NOT_PRESENT(11) → (should never happen)\n- INVALID_METHOD(12) → (should never happen)\n- KO_RETRIABLE(13) → transaction failed, but the transaction is theoretically recoverable. For the user it is a KO\n- INVALID_SESSION(14)",
+    "description": "API's exposed from eCommerce services to app IO to allow pagoPA payment with payment wallet.",
     "contact": {
       "name": "pagoPA - Touchpoints team"
     }
@@ -140,91 +140,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/transactions/{transactionId}/wallets": {
-      "post": {
-        "tags": [
-          "wallets"
-        ],
-        "summary": "Create wallet for payment with contextual onboard",
-        "description": "Create wallet for payment with contextual onboard",
-        "security": [
-          {
-            "pagoPAPlatformSessionToken": []
-          }
-        ],
-        "operationId": "createWalletForTransactionsForIO",
-        "parameters": [
-          {
-            "name": "transactionId",
-            "in": "path",
-            "description": "ecommerce transaction id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Create a new wallet",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/WalletTransactionCreateRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Wallet created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WalletTransactionCreateResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Formally invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized, access token missing or invalid"
-          },
-          "500": {
-            "description": "Internal server error serving request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "Gateway error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Timeout serving request"
           }
         }
       }
@@ -712,6 +627,96 @@
         }
       }
     },
+    "/payment-methods/{id}/redirectUrl": {
+      "get": {
+        "tags": [
+          "ecommerce-payment-methods"
+        ],
+        "operationId": "getMethodRedirectUrl",
+        "summary": "Redirection URL for input payment method",
+        "description": "Return the URL to be followed for a specific method\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the payment method chosen for the payment process"
+          },
+          {
+            "in": "query",
+            "name": "rpt_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Payment request id"
+          },
+          {
+            "in": "query",
+            "name": "amount",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "required": true,
+            "description": "The amount to pay"
+          }
+        ],
+        "security": [
+          {
+            "pagoPAPlatformSessionToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "New payment method successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RedirectUrlResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
+          "404": {
+            "description": "Payment method not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/wallets": {
       "get": {
         "tags": [
@@ -1008,7 +1013,7 @@
             "description": "Payment notice amount",
             "type": "integer",
             "minimum": 0,
-            "maximum": 99999999
+            "maximum": 99999999999
           },
           "dueDate": {
             "description": "Payment notice due date",
@@ -1635,6 +1640,33 @@
               "detailType": "redirect",
               "paymentMethodId": "dbc12081-ea5c-4a73-ae0a-7d6a881a1160"
             }
+          },
+          {
+            "type": "object",
+            "description": "Additional payment authorization details for cards NPG authorization",
+            "properties": {
+              "detailType": {
+                "$ref": "#/components/schemas/CardsDetailType"
+              },
+              "orderId": {
+                "type": "string",
+                "description": "NPG transaction order id"
+              },
+              "paymentMethodId": {
+                "description": "User selected payment method id",
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "detailType",
+              "orderId",
+              "paymentMethodId"
+            ],
+            "example": {
+              "detailType": "cards",
+              "orderId": "order-id"
+            }
           }
         ]
       },
@@ -1657,6 +1689,13 @@
         "type": "string",
         "enum": [
           "redirect"
+        ]
+      },
+      "CardsDetailType": {
+        "description": "cards detail type discriminator field",
+        "type": "string",
+        "enum": [
+          "cards"
         ]
       },
       "UpdateAuthorizationRequest": {
@@ -1861,6 +1900,10 @@
           "isAllCCP": {
             "description": "Flag for the inclusion of Poste bundles. false -> excluded, true -> included",
             "type": "boolean"
+          },
+          "orderId": {
+            "type": "string",
+            "description": "NPG order id associated to not onboarded payments session used to retrieve user inserted card bin, returned in outcome url for not onboarded card payment flow"
           }
         },
         "required": [
@@ -2132,45 +2175,6 @@
         "type": "string",
         "format": "uuid"
       },
-      "WalletTransactionCreateRequest": {
-        "type": "object",
-        "description": "Wallet for transaction with contextual onboarding creation request",
-        "properties": {
-          "useDiagnosticTracing": {
-            "type": "boolean"
-          },
-          "paymentMethodId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "amount": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          }
-        },
-        "required": [
-          "useDiagnosticTracing",
-          "paymentMethodId",
-          "amount"
-        ]
-      },
-      "WalletTransactionCreateResponse": {
-        "type": "object",
-        "description": "Wallet for transaction with contextual onboarding creation response",
-        "properties": {
-          "walletId": {
-            "$ref": "#/components/schemas/WalletId"
-          },
-          "redirectUrl": {
-            "type": "string",
-            "format": "url",
-            "description": "Redirection URL to a payment gateway page where the user can input a payment instrument information with walletId and useDiagnosticTracing as query param",
-            "example": "http://localhost/inputPage?walletId=123&useDiagnosticTracing=true&sessionToken=sessionToken"
-          }
-        },
-        "required": [
-          "walletId"
-        ]
-      },
       "Wallets": {
         "type": "object",
         "description": "Wallets information",
@@ -2405,6 +2409,17 @@
         "enum": [
           "PAGOPA"
         ]
+      },
+      "RedirectUrlResponse": {
+        "type": "object",
+        "description": "Redirect URL response",
+        "properties": {
+          "redirectUrl": {
+            "type": "string",
+            "format": "url",
+            "description": "The redirection URL to be followed for the input method"
+          }
+        }
       }
     },
     "requestBodies": {
@@ -2444,6 +2459,16 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/UpdateAuthorizationRequest"
+            }
+          }
+        }
+      },
+      "RedirectUrlResponse": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/RedirectUrlResponse"
             }
           }
         }

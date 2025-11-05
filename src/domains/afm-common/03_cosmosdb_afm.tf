@@ -2,11 +2,11 @@ resource "azurerm_resource_group" "afm_rg" {
   name     = "${local.project}-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "afm_marketplace_cosmosdb_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+  source               = "./.terraform/modules/__v3__/subnet"
   name                 = "${local.project}-marketplace-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_afm_marketplace_cosmosdb
   resource_group_name  = local.vnet_resource_group_name
@@ -30,14 +30,15 @@ module "afm_marketplace_cosmosdb_account" {
   resource_group_name = azurerm_resource_group.afm_rg.name
   domain              = var.domain
 
-  offer_type                 = var.afm_marketplace_cosmos_db_params.offer_type
-  kind                       = var.afm_marketplace_cosmos_db_params.kind
-  capabilities               = var.afm_marketplace_cosmos_db_params.capabilities
-  enable_free_tier           = var.afm_marketplace_cosmos_db_params.enable_free_tier
+  offer_type       = var.afm_marketplace_cosmos_db_params.offer_type
+  kind             = var.afm_marketplace_cosmos_db_params.kind
+  capabilities     = var.afm_marketplace_cosmos_db_params.capabilities
+  enable_free_tier = var.afm_marketplace_cosmos_db_params.enable_free_tier
+
   analytical_storage_enabled = var.afm_marketplace_cosmos_db_params.analytical_storage_enabled
 
-  private_endpoint_sql_name            = "${local.project}-marketplace-cosmos-sql-endpoint" # forced after update module vers
-  private_service_connection_sql_name  = "${local.project}-marketplace-cosmos-sql-endpoint" # forced after update module vers
+  private_endpoint_sql_name           = "${local.project}-marketplace-cosmos-sql-endpoint" # forced after update module vers
+  private_service_connection_sql_name = "${local.project}-marketplace-cosmos-sql-endpoint" # forced after update module vers
 
   public_network_access_enabled      = var.afm_marketplace_cosmos_db_params.public_network_access_enabled
   private_endpoint_enabled           = var.afm_marketplace_cosmos_db_params.private_endpoint_enabled
@@ -55,12 +56,12 @@ module "afm_marketplace_cosmosdb_account" {
   enable_automatic_failover = true
   ip_range                  = ""
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # cosmosdb database for marketplace
 module "afm_marketplace_cosmosdb_database" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=add-analytical_storage_enabled-2-cosmos"
+  source = "./.terraform/modules/__v3__/cosmosdb_sql_database"
 
   name                = "db"
   resource_group_name = azurerm_resource_group.afm_rg.name
@@ -94,8 +95,8 @@ locals {
       autoscale_settings = {
         max_throughput = 1000
       },
-      analytical_storage_ttl = -1,  # ingested_2_DL
-      partition_key_version  = null      
+      analytical_storage_ttl = -1, # ingested_2_DL
+      partition_key_version  = null
     },
     {
       name               = "archivedcibundles",
@@ -146,7 +147,7 @@ locals {
       name               = "validbundles",
       partition_key_path = "/idPsp",
       autoscale_settings = {
-        max_throughput = 1000
+        max_throughput = var.env_short != "p" ? 1000 : 2000
       },
       analytical_storage_ttl = -1,
       partition_key_version  = null # 1,2
@@ -155,18 +156,18 @@ locals {
       name               = "touchpoints",
       partition_key_path = "/name",
       autoscale_settings = {
-        max_throughput = 1000
+        max_throughput = var.env_short != "p" ? 1000 : 2000
       },
-      analytical_storage_ttl = -1,  # ingested_2_DL
+      analytical_storage_ttl = -1, # ingested_2_DL
       partition_key_version  = null
     },
     {
       name               = "paymenttypes",
       partition_key_path = "/name",
       autoscale_settings = {
-        max_throughput = 1000
+        max_throughput = var.env_short != "p" ? 1000 : 2000
       },
-      analytical_storage_ttl = -1,  # ingested_2_DL
+      analytical_storage_ttl = -1, # ingested_2_DL
       partition_key_version  = null
     },
     {
@@ -174,6 +175,24 @@ locals {
       partition_key_path = "/idPsp",
       autoscale_settings = {
         max_throughput = 1000
+      },
+      analytical_storage_ttl = null,
+      partition_key_version  = null # 1,2
+    },
+    {
+      name               = "paymentmethods",
+      partition_key_path = "/group",
+      autoscale_settings = {
+        max_throughput = var.env_short != "p" ? 1000 : 2000
+      },
+      analytical_storage_ttl = null,
+      partition_key_version  = null # 1,2
+    },
+    {
+      name               = "privacypsp",
+      partition_key_path = "/idPsp",
+      autoscale_settings = {
+        max_throughput = var.env_short != "p" ? 1000 : 2000
       },
       analytical_storage_ttl = null,
       partition_key_version  = null # 1,2
@@ -220,7 +239,7 @@ module "afm_marketplace_cosmosdb_containers" {
 #     subresource_names              = ["Analytical"]
 #   }
 
-#   tags = var.tags
+#   tags = module.tag_config.tags
 
 #   depends_on = [
 #     module.afm_marketplace_cosmosdb_account

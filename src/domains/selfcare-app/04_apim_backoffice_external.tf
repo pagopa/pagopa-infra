@@ -70,3 +70,26 @@ module "apim_selfcare_backoffice_helpdesk_product" {
 
   policy_xml = file("./api_product/_base_policy.xml")
 }
+
+# SubKey 4 https://uptime.betterstack.com/team/263223/monitors recover maintenance
+# Status Page Improvement https://pagopa.atlassian.net/wiki/x/AoBBSQ
+
+data "azurerm_api_management_api" "apim_backoffice-helpdesk_v1" { # <env>-backoffice-helpdesk-api-v1
+  name                = "${var.env_short}-backoffice-helpdesk-api-v1"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  revision            = "1"
+}
+
+resource "azurerm_api_management_subscription" "status_page_improvement_api_key_subkey" {
+  count = var.env_short == "p" ? 1 : 0
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  # product_id    = module.apim_selfcare_backoffice_helpdesk_product.id
+  api_id        = replace(data.azurerm_api_management_api.apim_backoffice-helpdesk_v1.id, ";rev=1", "")
+  display_name  = "Status Page Improvement API Key for Backoffice Helpdesk"
+  allow_tracing = false
+  state         = "active"
+}

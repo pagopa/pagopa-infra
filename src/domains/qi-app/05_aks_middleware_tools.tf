@@ -1,3 +1,5 @@
+# WL-IDENTITY
+# https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/1227751458/Migrazione+pod+Identity+vs+workload+Identity#%F0%9F%94%AE-tls-cheker
 module "tls_checker" {
   source = "./.terraform/modules/__v3__/tls_checker"
 
@@ -16,50 +18,37 @@ module "tls_checker" {
   application_insights_action_group_ids                     = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id]
   keyvault_name                                             = data.azurerm_key_vault.kv.name
   keyvault_tenant_id                                        = data.azurerm_client_config.current.tenant_id
-}
 
-resource "helm_release" "cert_mounter" {
-  name         = "cert-mounter-blueprint"
-  repository   = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
-  chart        = "cert-mounter-blueprint"
-  version      = "1.0.4"
-  namespace    = var.domain
-  timeout      = 120
-  force_update = true
+  workload_identity_enabled              = true
+  workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
+  workload_identity_client_id            = module.workload_identity.workload_identity_client_id
 
-  values = [
-    "${
-      templatefile("${path.root}/helm/cert-mounter.yaml.tpl", {
-        NAMESPACE        = var.domain,
-        DOMAIN           = var.domain
-        CERTIFICATE_NAME = replace(local.qi_hostname, ".", "-"),
-        ENV_SHORT        = var.env_short,
-      })
-    }"
-  ]
+  depends_on = [module.workload_identity]
 }
 
 
-module "pod_identity" {
-  source = "./.terraform/modules/__v3__/kubernetes_pod_identity"
+# WL-IDENTITY
+# https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/1227751458/Migrazione+pod+Identity+vs+workload+Identity#%3Acertificate%3A-cert-mounter
+module "cert_mounter" {
+  source = "./.terraform/modules/__v3__/cert_mounter"
 
-  resource_group_name = local.aks_resource_group_name
-  location            = var.location
-  tenant_id           = data.azurerm_subscription.current.tenant_id
-  cluster_name        = local.aks_name
+  namespace        = var.domain
+  certificate_name = replace(local.qi_hostname, ".", "-")
+  kv_name          = data.azurerm_key_vault.kv.name
+  tenant_id        = data.azurerm_subscription.current.tenant_id
 
-  identity_name = "${kubernetes_namespace.namespace.metadata[0].name}-pod-identity" // TODO add env in name
-  namespace     = kubernetes_namespace.namespace.metadata[0].name
-  key_vault_id  = data.azurerm_key_vault.kv.id
+  workload_identity_enabled              = true
+  workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
+  workload_identity_client_id            = module.workload_identity.workload_identity_client_id
 
-  secret_permissions = ["Get"]
+  depends_on = [module.workload_identity]
 }
 
 resource "helm_release" "reloader" {
   name       = "reloader"
   repository = "https://stakater.github.io/stakater-charts"
   chart      = "reloader"
-  version    = "v1.0.48"
+  version    = "v1.0.69"
   namespace  = kubernetes_namespace.namespace.metadata[0].name
 
   set {

@@ -16,7 +16,11 @@
         "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611287199/-servizio+transactions+service",
         "description": "Technical specifications"
       }
-    }
+    },
+    {
+      "name": "ecommerce-methods-handler",
+      "description": "Api's for retrieve payment methods for performing transactions payment",
+    },
   ],
   "servers": [
     {
@@ -28,6 +32,77 @@
     "description": "Design review"
   },
   "paths": {
+    "/transactions/{transactionId}": {
+      "get": {
+        "tags": [
+          "ecommerce-transactions"
+        ],
+        "operationId": "getTransactionInfo",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Transaction ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Get transaction information",
+        "description": "Return information for the input specific transaction resource",
+        "responses": {
+          "200": {
+            "description": "Transaction data successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid transaction id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Gateway timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      },
+    },
     "/transactions": {
       "post": {
         "tags": [
@@ -250,6 +325,155 @@
           }
         }
       }
+    },
+    "/payment-methods": {
+      "post": {
+        "tags": [
+          "ecommerce-methods-handler"
+        ],
+        "operationId": "getAllPaymentMethods",
+        "summary": "Retrieve all Payment Methods (by filter)",
+        "description": "GET with body payload - no resources created: API for retrieve payment method using the request query parameter filters",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentMethodsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Payment method successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentMethodsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment-methods/{id}": {
+      "get": {
+        "tags": [
+          "ecommerce-methods-handler"
+        ],
+        "operationId": "getPaymentMethod",
+        "summary": "Get payment method by ID",
+        "description": "API for retrieve payment method information for a given payment method ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Payment Method ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-client-id",
+            "in": "header",
+            "description": "client id related to a given touchpoint",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "IO",
+                "CHECKOUT",
+                "CHECKOUT_CART"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment method successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentMethodResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment method not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -349,6 +573,123 @@
         "required": [
           "faultCodeCategory",
           "faultCodeDetail"
+        ]
+      },
+      "TransactionInfo": {
+        "description": "Transaction data returned when querying for an existing transaction",
+        "type": "object",
+        "properties": {
+          "transactionId": {
+            "type": "string"
+          },
+          "payments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentInfo"
+            },
+            "minItems": 1,
+            "maxItems": 5,
+            "example": [
+              {
+                "rptId": "77777777777302012387654312384",
+                "paymentToken": "paymentToken1",
+                "reason": "reason1",
+                "amount": 600,
+                "transferList": [
+                  {
+                    "paFiscalCode": "77777777777",
+                    "digitalStamp": false,
+                    "transferCategory": "transferCategory1",
+                    "transferAmount": 500
+                  },
+                  {
+                    "paFiscalCode": "11111111111",
+                    "digitalStamp": true,
+                    "transferCategory": "transferCategory2",
+                    "transferAmount": 100
+                  }
+                ]
+              }
+            ]
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          },
+          "feeTotal": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          },
+          "idCart": {
+            "description": "Cart identifier provided by creditor institution",
+            "type": "string",
+            "example": "idCartFromCreditorInstitution"
+          },
+          "clientId": {
+            "description": "transaction client id",
+            "type": "string",
+            "enum": [
+              "IO",
+              "CHECKOUT",
+              "CHECKOUT_CART",
+              "UNKNOWN"
+            ]
+          },
+          "nodeInfo":{
+            "type": "object",
+            "description": "Node operation info",
+            "properties": {
+              "closePaymentResultError": {
+                "type": "object",
+                "description": "Error details for close payment result",
+                "properties": {
+                  "statusCode": {
+                    "description": "Status code (4xx, 5xx) of the error received on the node",
+                    "type": "number"
+                  },
+                  "description": {
+                    "description": "Description of the error received on the node",
+                    "type": "string"
+                  }
+                }
+              },
+              "sendPaymentResultOutcome": {
+                "description": "The outcome of sendPaymentResult api (OK, KO, NOT_RECEIVED)",
+                "type": "string",
+                "enum": [
+                  "OK",
+                  "KO",
+                  "NOT_RECEIVED"
+                ]
+              },
+            }
+          },
+          "gatewayInfo":{
+            "type": "object",
+            "description": "Gateway infos",
+            "properties": {
+              "gateway": {
+                "type": "string",
+                "pattern": "NPG|REDIRECT",
+                "description": "Payment gateway identifier"
+              },
+              "authorizationStatus": {
+                "type": "string",
+                "description": "Payment gateway authorization status"
+              },
+              "authorizationCode": {
+                "type": "string",
+                "description": "Payment gateway-specific authorization code related to the transaction"
+              },
+              "errorCode": {
+                "type": "string",
+                "description": "Payment gateway-specific error code from the gateway"
+              },
+            }
+          },
+        },
+        "required": [
+          "status",
+          "transactionId",
+          "payments"
         ]
       },
       "ValidationFaultPaymentUnknownProblemJson": {
@@ -894,7 +1235,7 @@
         "description": "Amount for payments, in euro cents",
         "type": "integer",
         "minimum": 0,
-        "maximum": 99999999
+        "maximum": 99999999999
       },
       "TransactionStatus": {
         "type": "string",
@@ -1141,6 +1482,225 @@
           "paymentMethodStatus",
           "asset"
         ]
+      },
+      "PaymentMethodsRequest": {
+        "required": [
+          "paymentNotice",
+          "totalAmount",
+          "userTouchpoint"
+        ],
+        "type": "object",
+        "properties": {
+          "userTouchpoint": {
+            "type": "string",
+            "enum": [
+              "IO",
+              "CHECKOUT",
+              "CHECKOUT_CART"
+            ]
+          },
+          "userDevice": {
+            "type": "string",
+            "enum": [
+              "IOS",
+              "ANDROID",
+              "WEB",
+              "SAFARI"
+            ]
+          },
+          "totalAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "paymentNotice": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentNoticeItem"
+            }
+          },
+          "allCCp": {
+            "type": "boolean"
+          },
+          "targetKey": {
+            "type": "string"
+          }
+        }
+      },
+      "PaymentNoticeItem": {
+        "required": [
+          "paymentAmount",
+          "primaryCreditorInstitution"
+        ],
+        "type": "object",
+        "properties": {
+          "paymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "primaryCreditorInstitution": {
+            "type": "string"
+          },
+          "transferList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferListItem"
+            }
+          }
+        }
+      },
+      "FeeRange": {
+        "required": [
+          "max",
+          "min"
+        ],
+        "type": "object",
+        "properties": {
+          "min": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "max": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "PaymentMethodResponse": {
+        "required": [
+          "description",
+          "paymentTypeCode",
+          "methodManagement",
+          "name",
+          "paymentMethodAsset",
+          "id",
+          "paymentMethodTypes",
+          "status",
+          "validityDateFrom"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "description": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ENABLED",
+              "DISABLED",
+              "MAINTENANCE"
+            ]
+          },
+          "validityDateFrom": {
+            "type": "string",
+            "format": "date"
+          },
+          "paymentTypeCode": {
+            "type": "string",
+            "enum": [
+              "CP",
+              "MYBK",
+              "BPAY",
+              "PPAL",
+              "RPIC",
+              "RBPS",
+              "SATY",
+              "APPL",
+              "RICO",
+              "RBPB",
+              "RBPP",
+              "RBPR",
+              "GOOG",
+              "KLRN"
+            ]
+          },
+          "paymentMethodTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "CARTE",
+                "CONTO",
+                "APP"
+              ]
+            }
+          },
+          "feeRange": {
+            "$ref": "#/components/schemas/FeeRange"
+          },
+          "paymentMethodAsset": {
+            "type": "string"
+          },
+          "methodManagement": {
+            "type": "string",
+            "enum": [
+              "ONBOARDABLE",
+              "ONBOARDABLE_ONLY",
+              "NOT_ONBOARDABLE",
+              "REDIRECT"
+            ]
+          },
+          "disabledReason": {
+            "type": "string",
+            "enum": [
+              "AMOUNT_OUT_OF_BOUND",
+              "MAINTENANCE_IN_PROGRESS",
+              "METHOD_DISABLED",
+              "NOT_YET_VALID",
+              "TARGET_PREVIEW",
+              "NO_BUNDLE_AVAILABLE"
+            ]
+          },
+          "paymentMethodsBrandAssets": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PaymentMethodsResponse": {
+        "required": [
+          "paymentMethods"
+        ],
+        "type": "object",
+        "properties": {
+          "paymentMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentMethodResponse"
+            }
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "PaymentMethodsRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PaymentMethodsRequest"
+            }
+          }
+        }
       }
     },
     "securitySchemes": {

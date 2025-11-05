@@ -1,19 +1,13 @@
-prefix          = "pagopa"
-env_short       = "p"
-env             = "prod"
-domain          = "gps"
-location        = "westeurope"
-location_short  = "weu"
-location_string = "West Europe"
-instance        = "prod"
+prefix                 = "pagopa"
+env_short              = "p"
+env                    = "prod"
+domain                 = "gps"
+location               = "westeurope"
+location_short         = "weu"
+location_string        = "West Europe"
+instance               = "prod"
+gh_runner_job_location = "italynorth"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/gps"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -34,16 +28,12 @@ tls_cert_check_helm = {
 }
 
 # function_app docker
-reporting_batch_image    = "pagopa/pagopa-gpd-reporting-batch"
-reporting_service_image  = "pagopagpdreportingservice"
 reporting_analysis_image = "pagopagpdreportinganalysis"
 
 # gpd-reporting-functions
 gpd_paa_id_intermediario = "15376371009"
 gpd_paa_stazione_int     = "15376371009_07"
 
-reporting_batch_function_always_on    = true
-reporting_service_function_always_on  = true
 reporting_analysis_function_always_on = true
 
 cidr_subnet_reporting_functions = ["10.1.177.0/24"]
@@ -112,6 +102,7 @@ fn_app_storage_account_info = {
   advanced_threat_protection_enable = true
 }
 
+
 ### debezium kafka conn
 zookeeper_replicas       = 3
 zookeeper_request_memory = "512Mi"
@@ -121,11 +112,15 @@ zookeeper_limits_cpu     = 1
 zookeeper_jvm_xms        = "512m"
 zookeeper_jvm_xmx        = "1024m"
 zookeeper_storage_size   = "100Gi"
-replicas                 = 3
-request_cpu              = 0.5
-request_memory           = "512Mi"
-limits_memory            = "1024Mi"
-limits_cpu               = 1
-postgres_db_name         = "apd"
-tasks_max                = "1"
-container_registry       = "pagopapcommonacr.azurecr.io"
+
+### debezium kafka_connect_yaml
+replicas           = 1 # set 2 in PROD iif want a new istance replicate
+request_cpu        = 0.5
+limits_cpu         = 2
+request_memory     = "512Mi"
+limits_memory      = "3072Mi"
+postgres_db_name   = "apd"
+tasks_max          = "1"
+container_registry = "pagopapcommonacr.azurecr.io"
+max_threads        = 10
+gpd_cdc_enabled    = true

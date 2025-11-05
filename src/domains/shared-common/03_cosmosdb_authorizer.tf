@@ -15,10 +15,12 @@ module "authorizer_cosmosdb_snet" {
 }
 
 module "authorizer_cosmosdb_account" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.53.0"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.93.1"
   name     = "${local.project}-auth-cosmos-account"
   location = var.location
   domain   = "shared"
+
+  burst_capacity_enabled = var.cosmos_authorizer_db_params.burst_capacity_enabled
 
   resource_group_name = azurerm_resource_group.shared_rg.name
   offer_type          = var.cosmos_authorizer_db_params.offer_type
@@ -53,7 +55,7 @@ module "authorizer_cosmosdb_account" {
   subnet_id                           = module.authorizer_cosmosdb_snet.id
   private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos.id]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "authorizer_cosmosdb_database" {

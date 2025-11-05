@@ -71,22 +71,7 @@ locals {
       }
     }
 
-    kibana = {
-      protocol           = "Https"
-      host               = format("kibana.%s.%s", var.dns_zone_prefix, var.external_domain)
-      port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.product)
-      firewall_policy_id = null
 
-      certificate = {
-        name = var.app_gateway_kibana_certificate_name
-        id = replace(
-          data.azurerm_key_vault_certificate.kibana.secret_id,
-          "/${data.azurerm_key_vault_certificate.kibana.version}",
-          ""
-        )
-      }
-    }
   }
   public_listeners_apiprf = {
     apiprf = {
@@ -105,7 +90,6 @@ locals {
       }
     }
   }
-
 
   public_listeners_wisp2govit = {
     wisp2govit = {
@@ -193,12 +177,7 @@ locals {
       priority              = 60
     }
 
-    kibana = {
-      listener              = "kibana"
-      backend               = "kibana"
-      rewrite_rule_set_name = "rewrite-rule-set-kibana"
-      priority              = 40
-    }
+
   }
 
   public_routes_apiprf = {
@@ -277,17 +256,7 @@ locals {
       pick_host_name_from_backend = false
     }
 
-    kibana = {
-      protocol                    = "Https"
-      host                        = var.env == "prod" ? "weu${var.env}.kibana.internal.platform.pagopa.it" : "weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
-      port                        = 443
-      ip_addresses                = [var.ingress_elk_load_balancer_ip]
-      fqdns                       = [var.env == "prod" ? "weu${var.env}.kibana.internal.platform.pagopa.it" : "weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"]
-      probe                       = "/kibana"
-      probe_name                  = "probe-kibana"
-      request_timeout             = 10
-      pick_host_name_from_backend = false
-    }
+
   }
 
   public_backends_upload = {
@@ -304,100 +273,9 @@ locals {
     }
   }
 
-}
+  ## rewrite rule sets
 
-data "azurerm_user_assigned_identity" "public_appgateway" {
-  resource_group_name = azurerm_resource_group.sec_rg.name
-  name                = format("%s-appgateway-identity", local.product)
-
-}
-
-## Application gateway public ip ##
-resource "azurerm_public_ip" "appgateway_public_ip" {
-  name                = format("%s-appgateway-pip", local.product)
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  location            = azurerm_resource_group.rg_vnet.location
-  sku                 = "Standard"
-  allocation_method   = "Static"
-  zones               = [1, 2, 3]
-
-  tags = var.tags
-}
-
-# Subnet to host the application gateway
-module "appgateway_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.8.0"
-  name                                      = format("%s-appgateway-snet", local.product)
-  address_prefixes                          = var.cidr_subnet_appgateway
-  resource_group_name                       = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                      = module.vnet.name
-  private_endpoint_network_policies_enabled = true
-}
-
-# Application gateway: Multilistener configuraiton
-module "app_gw" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v8.8.0"
-
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  location            = azurerm_resource_group.rg_vnet.location
-  name                = format("%s-app-gw", local.product)
-
-  # SKU
-  sku_name = var.app_gateway_sku_name
-  sku_tier = var.app_gateway_sku_tier
-
-  zones = var.env_short == "p" ? [1, 2, 3] : null
-
-  # WAF
-  waf_enabled = var.app_gateway_waf_enabled
-
-  # Networking
-  subnet_id    = module.appgateway_snet.id
-  public_ip_id = azurerm_public_ip.appgateway_public_ip.id
-
-  # Configure 3.backends
-  backends = merge(
-    local.public_backends,
-    var.upload_endpoint_enabled ? local.public_backends_upload : {},
-  )
-
-  ssl_profiles = [{
-    name                             = format("%s-ssl-profile", local.product)
-    trusted_client_certificate_names = null
-    verify_client_cert_issuer_dn     = false
-    ssl_policy = {
-      disabled_protocols = []
-      policy_type        = "Custom"
-      policy_name        = "" # with Custom type set empty policy_name (not required by the provider)
-      cipher_suites = [
-        "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
-        "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
-      ]
-      min_protocol_version = "TLSv1_2"
-    }
-  }]
-
-  trusted_client_certificates = []
-
-  # Configure listeners
-  listeners = merge(
-    local.public_listeners,
-    var.dns_zone_prefix_prf != "" ? local.public_listeners_apiprf : {},
-    var.app_gateway_wisp2govit_certificate_name != "" ? local.public_listeners_wisp2govit : {},
-    var.app_gateway_wfespgovit_certificate_name != "" ? local.public_listeners_wfespgovit : {},
-    var.upload_endpoint_enabled ? local.public_listeners_apiupload : {},
-  )
-
-  # maps listener to backend
-  routes = merge(
-    local.public_routes,
-    var.dns_zone_prefix_prf != "" ? local.public_routes_apiprf : {},
-    var.app_gateway_wisp2govit_certificate_name != "" ? local.public_routes_wisp2govit : {},
-    var.app_gateway_wfespgovit_certificate_name != "" ? local.public_routes_wfespgovit : {},
-    var.upload_endpoint_enabled ? local.public_routes_apiupload : {},
-  )
-
-  rewrite_rule_sets = [
+  rewrite_rule_set = [
     {
       name = "rewrite-rule-set-api"
       rewrite_rules = [
@@ -474,7 +352,7 @@ module "app_gw" {
             },
             {
               header_name  = "X-Environment"
-              header_value = lower(var.tags["Environment"])
+              header_value = lower(module.tag_config.tags["Environment"])
             },
           ]
           response_header_configurations = []
@@ -535,30 +413,105 @@ module "app_gw" {
           }
         },
       ]
-    },
-    {
-      name = "rewrite-rule-set-kibana"
-      rewrite_rules = [
-        {
-          name          = "http-kibana-deny-path"
-          rule_sequence = 1
-          conditions = [{
-            variable    = "var_uri_path"
-            pattern     = join("|", var.app_gateway_kibana_deny_paths)
-            ignore_case = true
-            negate      = false
-          }]
-          request_header_configurations  = []
-          response_header_configurations = []
-          url = {
-            path         = "notfound"
-            query_string = null
-          }
-        },
-      ]
-    },
-
+    }
   ]
+}
+
+data "azurerm_user_assigned_identity" "public_appgateway" {
+  resource_group_name = azurerm_resource_group.sec_rg.name
+  name                = format("%s-appgateway-identity", local.product)
+
+}
+
+## Application gateway public ip ##
+resource "azurerm_public_ip" "appgateway_public_ip" {
+  name                = format("%s-appgateway-pip", local.product)
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  location            = azurerm_resource_group.rg_vnet.location
+  sku                 = "Standard"
+  allocation_method   = "Static"
+  zones               = [1, 2, 3]
+
+  tags = module.tag_config.tags
+}
+
+# Subnet to host the application gateway
+module "appgateway_snet" {
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.8.0"
+  name                                      = format("%s-appgateway-snet", local.product)
+  address_prefixes                          = var.cidr_subnet_appgateway
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = module.vnet.name
+  private_endpoint_network_policies_enabled = true
+}
+
+# Application gateway: Multilistener configuraiton
+module "app_gw" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v8.8.0"
+
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  location            = azurerm_resource_group.rg_vnet.location
+  name                = format("%s-app-gw", local.product)
+
+  # SKU
+  sku_name = var.app_gateway_sku_name
+  sku_tier = var.app_gateway_sku_tier
+
+  zones = var.env_short == "p" ? [1, 2, 3] : null
+
+  # WAF
+  waf_enabled = var.app_gateway_waf_enabled
+
+  # Networking
+  subnet_id    = module.appgateway_snet.id
+  public_ip_id = azurerm_public_ip.appgateway_public_ip.id
+
+  # Configure 3.backends
+  backends = merge(
+    local.public_backends,
+    var.upload_endpoint_enabled ? local.public_backends_upload : {}
+  )
+
+  ssl_profiles = [{
+    name                             = format("%s-ssl-profile", local.product)
+    trusted_client_certificate_names = null
+    verify_client_cert_issuer_dn     = false
+    ssl_policy = {
+      disabled_protocols = []
+      policy_type        = "Custom"
+      policy_name        = "" # with Custom type set empty policy_name (not required by the provider)
+      cipher_suites = [
+        "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+        "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+      ]
+      min_protocol_version = "TLSv1_2"
+    }
+  }]
+
+  trusted_client_certificates = []
+
+  # Configure listeners
+  listeners = merge(
+    local.public_listeners,
+    var.dns_zone_prefix_prf != "" ? local.public_listeners_apiprf : {},
+    var.app_gateway_wisp2govit_certificate_name != "" ? local.public_listeners_wisp2govit : {},
+    var.app_gateway_wfespgovit_certificate_name != "" ? local.public_listeners_wfespgovit : {},
+    var.upload_endpoint_enabled ? local.public_listeners_apiupload : {},
+  )
+
+  # maps listener to backend
+  routes = merge(
+    local.public_routes,
+    var.dns_zone_prefix_prf != "" ? local.public_routes_apiprf : {},
+    var.app_gateway_wisp2govit_certificate_name != "" ? local.public_routes_wisp2govit : {},
+    var.app_gateway_wfespgovit_certificate_name != "" ? local.public_routes_wfespgovit : {},
+    var.upload_endpoint_enabled ? local.public_routes_apiupload : {},
+  )
+
+  rewrite_rule_sets = concat(
+    local.rewrite_rule_set,
+  )
+
   # TLS
   identity_ids = [data.azurerm_user_assigned_identity.public_appgateway.id]
 
@@ -593,6 +546,25 @@ module "app_gw" {
   # metrics docs
   # https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftnetworkapplicationgateways
   monitor_metric_alert_criteria = {
+
+    compute_units_usage_critical = {
+      description   = "${module.app_gw_integration.name} Critical compute units usage, probably an high traffic peak"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 1
+      auto_mitigate = true
+
+      criteria = [
+        {
+          aggregation = "Average"
+          metric_name = "ComputeUnits"
+          operator    = "GreaterThan"
+          threshold   = floor(var.app_gateway_max_capacity * 90 / 100)
+          dimension   = []
+        }
+      ]
+      dynamic_criteria = []
+    }
 
     compute_units_usage = {
       description   = "${module.app_gw.name} Abnormal compute units usage, probably an high traffic peak"
@@ -659,7 +631,7 @@ module "app_gw" {
       description   = "${module.app_gw.name} Abnormal failed requests"
       frequency     = "PT5M"
       window_size   = "PT5M"
-      severity      = 1
+      severity      = 2
       auto_mitigate = true
 
       criteria = []
@@ -669,8 +641,8 @@ module "app_gw" {
           metric_name              = "FailedRequests"
           operator                 = "GreaterThan"
           alert_sensitivity        = "High"
-          evaluation_total_count   = 2
-          evaluation_failure_count = 2
+          evaluation_total_count   = 4
+          evaluation_failure_count = 4
           dimension                = []
         }
       ]
@@ -678,5 +650,5 @@ module "app_gw" {
 
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

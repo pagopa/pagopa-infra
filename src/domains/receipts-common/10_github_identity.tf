@@ -7,6 +7,11 @@ data "azurerm_kubernetes_cluster" "aks" {
   resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
 }
 
+data "azurerm_key_vault" "key_vault" {
+  name                = "${local.product}-${var.domain}-kv"
+  resource_group_name = "${local.product}-${var.domain}-sec-rg"
+}
+
 # repos must be lower than 20 items
 locals {
   repos_01 = [
@@ -36,7 +41,7 @@ locals {
       # ],
       # "${local.product}-${var.location_short}-bizevents-rg" = [
       #   "Contributor"
-      # ],      
+      # ],
       "${local.product}-${var.domain}-sec-rg" = [
         "Key Vault Reader"
       ],
@@ -49,7 +54,7 @@ locals {
 
 # create a module for each 20 repos
 module "identity_cd_01" {
-  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v7.45.0"
+  source = "./.terraform/modules/__v3__/github_federated_identity"
   # pagopa-<ENV><DOMAIN>-<COUNTER>-github-<PERMS>-identity
   prefix    = var.prefix
   env_short = var.env_short
@@ -64,11 +69,27 @@ module "identity_cd_01" {
     resource_groups    = local.environment_cd_roles.resource_groups
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     data.azurerm_resource_group.identity_rg
   ]
+}
+
+
+resource "azurerm_key_vault_access_policy" "gha_iac_managed_identities" {
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = module.identity_cd_01.identity_principal_id
+
+  secret_permissions = ["Get", "List", "Set", ]
+
+  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get"]
+  key_permissions = [
+    "Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy"
+  ]
+
+  storage_permissions = []
 }
 
 resource "null_resource" "github_runner_app_permissions_to_namespace_cd_01" {
@@ -102,4 +123,14 @@ resource "null_resource" "github_runner_app_permissions_to_namespace_cd_01" {
   depends_on = [
     module.identity_cd_01
   ]
+}
+
+# WL-IDENTITY
+# https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/1227751458/Migrazione+pod+Identity+vs+workload+Identity#Init-workload-identity
+module "workload_identity" {
+  source = "./.terraform/modules/__v3__/kubernetes_workload_identity_init"
+
+  workload_identity_name_prefix         = var.domain
+  workload_identity_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name
+  workload_identity_location            = var.location
 }

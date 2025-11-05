@@ -7,13 +7,6 @@ location_short     = "itn"
 location_ita       = "italynorth"
 location_short_ita = "itn"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "PROD"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### Feature Flag
 is_feature_enabled = {
@@ -23,7 +16,8 @@ is_feature_enabled = {
 #
 # CIRDs
 #
-cidr_vnet_italy = ["10.3.0.0/16"]
+cidr_vnet_italy                   = ["10.3.0.0/16"]
+cidr_vnet_italy_cstar_integration = ["10.4.0.0/16"]
 
 cidr_aks_system      = ["10.3.1.0/24"] #see aks-leonardo
 cidr_aks_user        = ["10.3.2.0/24"] #see aks-leonardo
@@ -34,6 +28,7 @@ cidr_cosmosdb_wallet_italy         = ["10.3.8.0/24"]  #placeholder
 cird_redis_wallet_italy            = ["10.3.9.0/24"]  #placeholder
 cidr_storage_wallet_italy          = ["10.3.10.0/24"] #placeholder
 cidr_subnet_pdf_engine_app_service = ["10.3.11.0/27"] #placeholder
+cidr_common_private_endpoint_snet  = ["10.3.144.0/23"]
 
 cird_printit_domain = ["10.3.12.0/24"] #placeholder for domain printit
 

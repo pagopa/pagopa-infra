@@ -1,0 +1,444 @@
+<!--
+    - Policies are applied in the order they appear.
+    - Position <base/> inside a section to inherit policies from the outer scope.
+    - Comments within policies are not preserved.
+-->
+<!-- Add policies as children to the <inbound>, <outbound>, <backend>, and <on-error> elements -->
+<policies>
+  <!-- Throttle, authorize, validate, cache, or transform the requests -->
+  <inbound>
+    <base />
+  </inbound>
+  <!-- Control if and how the requests are forwarded to services  -->
+  <backend />
+  <!-- Customize the responses -->
+  <outbound>
+    <base />
+    <set-header name="Content-Type" exists-action="override">
+      <value>application/json</value>
+    </set-header>
+    <choose>
+      <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111111111112")">
+      <set-body template="liquid">
+        {
+        "organizationFiscalCode": "99999000013",
+        "companyName": "EC",
+        "officeName": "EC",
+        "paymentOptions": [
+        {
+        "description": "Test PayOpt - Opzione 1 - Soluzione Unica",
+        "numberOfInstallments": 1,
+        "amount": 120,
+        "dueDate": "2024-10-30T23:59:59",
+        "validFrom":"2024-09-30T23:59:59",
+        "status":"PO_UNPAID",
+        "statusReason":"Non pagato",
+        "allCCP": "false",
+        "installments": [
+        {
+        "nav": "311111111111111112",
+        "iuv": "11111111111111112",
+        "amount": 120,
+        "description": "Test Opt Inst - soluzione unica",
+        "dueDate": "2024-10-30T23:59:59",
+        "validFrom":"2024-09-30T23:59:59",
+        "status":"POI_UNPAID",
+        "statusReason":"Non pagato"
+        }
+        ]
+        },
+        {
+        "description": "Test PayOpt - Opzione 2 - Piano Rateale",
+        "numberOfInstallments": 3,
+        "amount": 120,
+        "dueDate": "2024-12-31T23:59:59",
+        "validFrom":"2024-09-30T23:59:59",
+        "status":"PO_UNPAID",
+        "statusReason":"Non pagatp",
+        "allCCP": "false",
+        "installments": [
+        {
+        "nav": "311111111111111113",
+        "iuv": "11111111111111113",
+        "amount": 40,
+        "description": "rata 1",
+        "dueDate": "2024-10-31T23:59:59",
+        "validFrom":"2024-09-30T23:59:59",
+        "status":"POI_UNPAID",
+        "statusReason":"Non pagato"
+        },
+        {
+        "nav": "311111111111111114",
+        "iuv": "311111111111111114",
+        "amount": 40,
+        "description": "rata 2",
+        "dueDate": "2024-11-31T23:59:59",
+        "validFrom":"2024-09-30T23:59:59",
+        "status":"POI_UNPAID",
+        "statusReason":"Non pagato"
+        },
+        {
+        "nav": "311111111111111115",
+        "iuv": "11111111111111115",
+        "amount": 40,
+        "description": "rata 3",
+        "dueDate": "2024-12-31T23:59:59",
+        "validFrom":"2024-09-30T23:59:59",
+        "status":"POI_UNPAID",
+        "statusReason":"Non pagato"
+        }
+        ]
+        }
+        ]
+        }
+      </set-body>
+    </when>
+    <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111111111116")">
+    <set-body template="liquid">
+      {
+      "organizationFiscalCode": "99999000013",
+      "companyName": "EC",
+      "officeName": "EC",
+      "paymentOptions": [
+      {
+      "description": "Test PayOpt - Opzione 1 - Soluzione Unica",
+      "numberOfInstallments": 1,
+      "amount": 120,
+      "dueDate": "2024-10-30T23:59:59",
+      "validFrom":"2024-09-30T23:59:59",
+      "status":"PO_UNPAID",
+      "statusReason":"Non pagato",
+      "allCCP": "false",
+      "installments": [
+      {
+      "nav": "311111111111111112",
+      "iuv": "11111111111111112",
+      "amount": 120,
+      "description": "Test Opt Inst - soluzione unica",
+      "dueDate": "2024-10-30T23:59:59",
+      "validFrom":"2024-09-30T23:59:59",
+      "status":"POI_UNPAID",
+      "statusReason":"Non pagato"
+      }
+      ]
+      },
+      {
+      "description": "Test PayOpt - Opzione 2 - Piano Rateale",
+      "numberOfInstallments": 3,
+      "amount": 120,
+      "dueDate": "2024-12-31T23:59:59",
+      "validFrom":"2024-09-30T23:59:59",
+      "status":"PO_UNPAID",
+      "statusReason":"Non pagatp",
+      "allCCP": "false",
+      "installments": [
+      {
+      "nav": "311111111111111113",
+      "iuv": "11111111111111113",
+      "amount": 40,
+      "description": "rata 1",
+      "dueDate": "2024-10-31T23:59:59",
+      "validFrom":"2024-09-30T23:59:59",
+      "status":"POI_UNPAID",
+      "statusReason":"Non pagato"
+      },
+      {
+      "nav": "311111111111111114",
+      "iuv": "311111111111111114",
+      "amount": 40,
+      "description": "rata 2",
+      "dueDate": "2024-11-31T23:59:59",
+      "validFrom":"2024-09-30T23:59:59",
+      "status":"POI_UNPAID",
+      "statusReason":"Non pagato"
+      },
+      {
+      "nav": "311111111111111115",
+      "iuv": "11111111111111115",
+      "amount": 40,
+      "description": "rata 3",
+      "dueDate": "2024-12-31T23:59:59",
+      "validFrom":"2024-09-30T23:59:59",
+      "status":"POI_UNPAID",
+      "statusReason":"Non pagato"
+      }
+      ]
+      },
+      {
+      "description": "Test PayOpt - Opzione 3 - Piano Rateale - 5 rate",
+      "numberOfInstallments": 5,
+      "amount": 90,
+      "dueDate": "2024-12-31T23:59:59",
+      "validFrom":"2024-09-30T23:59:59",
+      "status": "PO_UNPAID",
+      "statusReason": "Non pagato",
+      "allCCP": "false",
+      "installments": [
+      {
+      "nav": "311111111111111120",
+      "iuv": "311111111111111120",
+      "amount": 18,
+      "description": "rata 1",
+      "dueDate": "2024-10-31T23:59:59",
+      "validFrom":"2024-09-30T23:59:59",
+      "status": "POI_UNPAID",
+      "statusReason": "Non pagato"
+      },
+      {
+      "nav": "311111111111111121",
+      "iuv": "311111111111111121",
+      "amount": 18,
+      "description": "rata 2",
+      "dueDate": "2024-11-31T23:59:59",
+      "validFrom":"2024-09-30T23:59:59",
+      "status": "POI_UNPAID",
+      "statusReason": "Non pagato"
+      },
+      {
+      "nav": "311111111111111122",
+      "iuv": "311111111111111122",
+      "amount": 18,
+      "description": "rata 3",
+      "dueDate": "2024-12-31T23:59:59",
+      "validFrom":"2024-09-30T23:59:59",
+      "status": "POI_UNPAID",
+      "statusReason": "Non pagato"
+      },
+      {
+      "nav": "311111111111111123",
+      "iuv": "311111111111111123",
+      "amount": 18,
+      "description": "rata 4",
+      "dueDate": "2025-01-31T23:59:59",
+      "validFrom":"2024-09-30T23:59:59",
+      "status": "POI_UNPAID",
+      "statusReason": "Non pagato"
+      },
+      {
+      "nav": "311111111111111124",
+      "iuv": "311111111111111124",
+      "amount": 18,
+      "description": "rata 5",
+      "dueDate": "2025-02-31T23:59:59",
+      "validFrom":"2024-09-30T23:59:59",
+      "status": "POI_UNPAID",
+      "statusReason": "Non pagato"
+      }
+      ]
+      }
+      ]
+      }
+    </set-body>
+  </when>
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111111111111")">
+    <set-body template="liquid">{
+      "organizationFiscalCode": "99999000013",
+      "companyName": "EC",
+      "officeName": "EC",
+      "paymentOptions": [
+      {
+      "description": "Test PayOpt - unica opzione",
+      "numberOfInstallments": 1,
+      "amount": 120,
+      "dueDate": "2024-10-30T23:59:59",
+      "validFrom": "2024-09-30T23:59:59",
+      "status": "PO_UNPAID",
+      "statusReason": "Non Pagato",
+      "allCCP": "false",
+      "installments": [
+      {
+      "nav": "311111111111111111",
+      "iuv": "311111111111111111",
+      "amount": 120,
+      "description": "Test Opt Inst - unica opzione",
+      "dueDate": "2024-10-30T23:59:59",
+      "validFrom": "2024-09-30T23:59:59",
+      "status": "POI_UNPAID",
+      "statusReason": "Non Pagato"
+      }
+      ]
+      }
+      ]
+      }</set-body>
+  </when>
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111112222225")">
+    <set-body>{
+    "organizationFiscalCode": "99999000013",
+    "companyName": "EC",
+    "officeName": "EC",
+    "paymentOptions": [
+    {
+    "description": "Test PayOpt - Opzione 1 - CO-Obbligato 1",
+    "numberOfInstallments": 1,
+    "amount": 120,
+    "dueDate": "2024-10-30T23:59:59",
+    "validFrom":"2024-09-30T23:59:59",
+    "status": "PO_UNPAID",
+    "statusReason": "Non pagato",
+    "allCCP": "false",
+    "installments": [
+    {
+    "nav": "311111111111111125",
+    "iuv": "311111111111111125",
+    "amount": 120,
+    "description": "Test PayOpt - Opzione 1 - CO-Obbligato 1",
+    "dueDate": "2024-10-30T23:59:59",
+    "validFrom":"2024-09-30T23:59:59",
+    "status": "POI_UNPAID",
+    "statusReason": "Non pagato"
+    }
+    ]
+    },
+    {
+    "description": "Test PayOpt - Opzione 2 - CO-Obbligato 2",
+    "numberOfInstallments": 1,
+    "amount": 120,
+    "dueDate": "2024-10-30T23:59:59",
+    "validFrom":"2024-09-30T23:59:59",
+    "status": "PO_UNPAID",
+    "statusReason": "Non pagato",
+    "allCCP": "false",
+    "installments": [
+    {
+    "nav": "311111111111111126",
+    "iuv": "311111111111111126",
+    "amount": 120,
+    "description": "Test PayOpt - Opzione 2 - CO-Obbligato 2",
+    "dueDate": "2024-10-30T23:59:59",
+    "validFrom":"2024-09-30T23:59:59",
+    "status": "POI_UNPAID",
+    "statusReason": "Non pagato"
+    }
+    ]
+    }
+    ]
+    }</set-body>
+  </when>
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999991")">
+    <set-status code="400" reason="Error" />
+    <set-body>{
+    "httpStatusCode": 400,
+    "httpStatusDescription": "ND",
+    "appErrorCode": "PAA_SINTASSI",
+    "timestamp": 1724425035,
+    "dateTime": "2024-08-23T14:57:15.635528",
+    "errorMessage": "Errore di sintassi del modello nella risposta"
+    }</set-body>
+  </when>
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999999")">
+    <set-status code="400" reason="Error" />
+    <set-body>{
+    "httpStatusCode": 400,
+    "httpStatusDescription": "ND",
+    "appErrorCode": "PAA_PAGAMENTO_SCONOSCIUTO",
+    "timestamp": 1724425035,
+    "dateTime": "2024-08-23T14:57:15.635528",
+    "errorMessage": "Errore per pagamento sconosciuto"
+    }</set-body>
+  </when>
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999998")">
+    <set-status code="400" reason="Error" />
+    <set-body>{
+    "httpStatusCode": 400,
+    "httpStatusDescription": "ND",
+    "appErrorCode": "PAA_ID_DOMINIO_ERRATO",
+    "timestamp": 1724425035,
+    "dateTime": "2024-08-23T14:57:15.635528",
+    "errorMessage": "Errore per id dominio errato"
+    }</set-body>
+  </when>
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999900")">
+    <set-status code="400" reason="Error" />
+    <set-body>{
+    "httpStatusCode": 400,
+    "httpStatusDescription": "ND",
+    "appErrorCode": "PAA_ID_INTERMEDIARIO_ERRATO",
+    "timestamp": 1724425035,
+    "dateTime": "2024-08-23T14:57:15.635528",
+    "errorMessage": "Errore per id intermediario errato"
+    }</set-body>
+  </when>
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999995")">
+    <set-status code="400" reason="Error" />
+    <set-body>{
+    "httpStatusCode": 400,
+    "httpStatusDescription": "ND",
+    "appErrorCode": "PAA_PAGAMENTO_ANNULLATO",
+    "timestamp": 1724425035,
+    "dateTime": "2024-08-23T14:57:15.635528",
+    "errorMessage": "Errore per pagamento annullato"
+    }</set-body>
+  </when>
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999992")">
+    <set-status code="400" reason="Error" />
+    <set-body>{
+    "httpStatusCode": 400,
+    "httpStatusDescription": "ND",
+    "appErrorCode": "PAA_PAGAMENTO_DUPLICATO",
+    "timestamp": 1724425035,
+    "dateTime": "2024-08-23T14:57:15.635528",
+    "errorMessage": "Errore per pagamento duplicato"
+    }</set-body>
+  </when>
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999993")">
+    <set-status code="400" reason="Error" />
+    <set-body>{
+    "httpStatusCode": 400,
+    "httpStatusDescription": "ND",
+    "appErrorCode": "PAA_PAGAMENTO_IN_CORSO",
+    "timestamp": 1724425035,
+    "dateTime": "2024-08-23T14:57:15.635528",
+    "errorMessage": "Errore per pagamento ancora in corso"
+    }</set-body>
+  </when>
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999994")">
+    <set-status code="400" reason="Error" />
+    <set-body>{
+    "httpStatusCode": 400,
+    "httpStatusDescription": "ND",
+    "appErrorCode": "PAA_PAGAMENTO_SCADUTO",
+    "timestamp": 1724425035,
+    "dateTime": "2024-08-23T14:57:15.635528",
+    "errorMessage": "Errore per pagamento scaduto"
+    }</set-body>
+  </when>
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999905")">
+    <set-status code="400" reason="Error" />
+    <set-body>{
+    "httpStatusCode": 400,
+    "httpStatusDescription": "ND",
+    "appErrorCode": "PAA_SEMANTICA",
+    "timestamp": 1724425035,
+    "dateTime": "2024-08-23T14:57:15.635528",
+    "errorMessage": "Errore semantica"
+    }</set-body>
+  </when>
+  <when condition="@(context.Request.MatchedParameters["organization-fiscal-code"] == "99999000013" && context.Request.MatchedParameters["notice-number"] == "311111111119999902")">
+    <set-status code="400" reason="Error" />
+    <set-body>{
+    "httpStatusCode": 400,
+    "httpStatusDescription": "ND",
+    "appErrorCode": "PAA_STAZIONE_INT_ERRATA",
+    "timestamp": 1724425035,
+    "dateTime": "2024-08-23T14:57:15.635528",
+    "errorMessage": "Errore per stazione errata"
+    }</set-body>
+  </when>
+    <otherwise>
+    <set-status code="400" reason="Error" />
+    <set-body>{
+      "httpStatusCode": 400,
+      "httpStatusDescription": "ND",
+      "appErrorCode": "PAA_SYSTEM_ERROR",
+      "timestamp": 1724425035,
+      "dateTime": "2024-08-23T14:57:15.635528",
+      "errorMessage": "Errore generico"
+      }</set-body>
+    </otherwise>
+    </choose>
+  </outbound>
+  <!-- Handle exceptions and customize error responses  -->
+  <on-error>
+    <base />
+  </on-error>
+</policies>

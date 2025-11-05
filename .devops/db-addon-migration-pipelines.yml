@@ -1,0 +1,579 @@
+# ======================================================================================================================
+# COME AGGIUNGERE UNA NUOVA VERSIONE DEL DATABASE
+# ======================================================================================================================
+# Per aggiungere una nuova versione del database (es. 1.0.1), segui questi passaggi:
+#
+# 1. Crea un nuovo file di properties:
+#    Nella cartella `src/psql/analytics-addon/`, crea un file chiamato `changelog_v<TUA_VERSIONE>.properties`.
+#    Ad esempio: `changelog_v1.0.1.properties`.
+#
+# 2. Definisci le versioni degli schemi:
+#    All'interno del nuovo file `.properties`, specifica la versione del changelog master da usare per ogni schema
+#    del database che vuoi aggiornare.
+#    Esempio di contenuto per `changelog_v1.0.1.properties` utilizzando il formato <nome_db>_<nome_schema>=<versione_changelog>:
+#    ```properties
+#    gpd_apd=1.0.1
+#    nodo_cfg=1.0.0
+#    # Aggiungi qui altre variabili per altri schemi/db se necessario
+#    ```
+#    Questo significa che per la versione `1.0.1` della pipeline, verrà usato il changelog `1.0.1` per `gpd_apd`
+#    e la versione `1.0.0` per `nodo_cfg`.
+#
+# 3. Aggiorna il parametro di default (opzionale, ma consigliato):
+#    Puoi aggiornare il valore di default del parametro `dbVersion` in questo file per riflettere la nuova versione.
+#    ```yaml
+#    # ...
+#    - name: dbVersion
+#      displayName: Database Version
+#      type: string
+#      default: '1.0.1' # Aggiornato da '1.0.0'
+#    # ...
+#    ```
+#
+# 4. Definisci il nuovo changelog.xml per il database in oggetto:
+#     nella cartella `src/psql/analytics-addon/<db_name>/<schema_name>/db.changelog-master-<nuova_versione>.xml`.
+#
+# ======================================================================================================================
+# COME AGGIUNGERE UN NUOVO DATABASE O SCHEMA
+# ======================================================================================================================
+# Per aggiungere la gestione di un nuovo database o di un nuovo schema, segui questi passaggi:
+#
+# 1. Aggiungi le variabili di connessione:
+#    Nella sezione `variables`, aggiungi un nuovo blocco di variabili per il nuovo database/schema,
+#    seguendo l'esempio di `NODO`, `CRUSC8`, `FDR`, `GPD`.
+#    Esempio per un nuovo database `MYDB` con schema `MYSCHEMA`:
+#    ```yaml
+#    # ...
+#    MYDB_JDBC_URL: jdbc:postgresql://pagopa-${{ variables.ENV }}-weu-mydb-flexible-postgresql.postgres.database.azure.com:5432/mydb?sslmode=require&prepareThreshold=0
+#    MYDB_KV_NAME: pagopa-${{ variables.ENV }}-mydb-kv
+#    MYDB_MYSCHEMA_KV_KEY: db-myschema-password
+#    MYDB_MYSCHEMA_USERNAME: myschema_user
+#    MYDB_MYSCHEMA_SCHEMA: myschema
+#    # ...
+#    ```
+#
+# 2. Aggiorna lo script di caricamento versione:
+#    Nello script `load_db_specific_version` (job `liquibase_version_job`), aggiungi una riga per esportare la versione
+#    del nuovo schema come variabile di output. Il nome della variabile nel file `.properties` (es. `mydb_myschema`)
+#    deve corrispondere.
+#    ```bash
+#    # ...
+#    echo "##vso[task.setvariable variable=gpd_apd;isOutput=true]${gpd_apd}"
+#    echo "##vso[task.setvariable variable=nodo_cfg;isOutput=true]${nodo_cfg}"
+#    echo "##vso[task.setvariable variable=mydb_myschema;isOutput=true]${mydb_myschema}" # Aggiungi questa riga
+#    # ...
+#    ```
+#
+# 3. Mappa la variabile di output dalla fase di status:
+#         ```yaml
+#         # ...
+#         variables:
+#             gpd_apd: $[ dependencies.liquibase_status_job.outputs['load_db_specific_version.gpd_apd'] ]
+#             nodo_cfg: $[ dependencies.liquibase_status_job.outputs['load_db_specific_version.nodo_cfg'] ]
+#             mydb_myschema: $[ dependencies.liquibase_status_job.outputs['load_db_specific_version.mydb_myschema'] ] # Aggiungi questa riga
+#         # ...
+#         ```
+# 4. Aggiungi i task di Liquibase:
+#    Nelle fasi `liquibase_status` e `liquibase_apply`, aggiungi le chiamate ai template per il nuovo schema.
+#
+#    a. In `liquibase_status_job`:
+#       ```yaml
+#       # ...
+#       - template: ./templates/generic-liquibase-status-with-kv.yml
+#         parameters:
+#           DATABASE_FOLDER_NAME: mydb
+#           SCHEMA: ${{variables.MYDB_MYSCHEMA_SCHEMA}}
+#           LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+#           LIQUIBASE_DB_VERSION: "$(mydb_myschema)" # Usa la variabile di output
+#           JDBC_URL: ${{variables.MYDB_JDBC_URL}}
+#           USERNAME: ${{variables.MYDB_MYSCHEMA_USERNAME}}
+#           KV_NAME: ${{variables.MYDB_KV_NAME}}
+#           PASSWORD_KV_KEY: ${{variables.MYDB_MYSCHEMA_KV_KEY}}
+#           AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+#           lbContexts: ${{ parameters.lbContexts }}
+#           lbLogLevel: ${{ parameters.lbLogLevel }}
+#       ```
+#
+#    b. In `liquibase_apply` job:
+#         ```yaml
+#         # ... (dopo il template per NODO)
+#         - template: ./templates/generic-liquibase-apply-with-kv.yml
+#           parameters:
+#             DATABASE_FOLDER_NAME: mydb
+#             SCHEMA: ${{variables.MYDB_MYSCHEMA_SCHEMA}}
+#             LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+#             LIQUIBASE_DB_VERSION: $(mydb_myschema)
+#             JDBC_URL: ${{variables.MYDB_JDBC_URL}}
+#             USERNAME: ${{variables.MYDB_MYSCHEMA_USERNAME}}
+#             KV_NAME: ${{variables.MYDB_KV_NAME}}
+#             PASSWORD_KV_KEY: ${{variables.MYDB_MYSCHEMA_KV_KEY}}
+#             AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+#             lbContexts: ${{ parameters.lbContexts }}
+#             lbLogLevel: ${{ parameters.lbLogLevel }}
+#         ```
+#
+# 5. Aggiorna i file di properties:
+#    Assicurati che tutti i file `changelog_v*.properties` esistenti e futuri contengano la nuova variabile
+#    (es. `mydb_myschema=...`) con la versione del changelog appropriata.
+#
+# 6. Definisci il nuovo changelog.xml per il database in oggetto:
+#     nella cartella `src/psql/analytics-addon/<db_name>/<schema_name>/db.changelog-master-<nuova_versione>.xml`.
+# ======================================================================================================================
+
+
+
+pr: none
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+parameters:
+  - name: env
+    displayName: Environment
+    type: string
+    default: dev
+    values:
+      - dev
+      - uat
+      - prd
+  # version of liquibase db.changelog-master-*.xml to run
+  - name: dbVersion
+    displayName: Database Version
+    type: string
+    default: '1.0.0'
+
+  # liquibase context to run specific changelogs,default to '_' to run only uncontexted changelogs
+  - name: lbContexts
+    displayName: Liquibase Contexts
+    type: string
+    default: '_'
+  # liquibase log level if needed finer logs
+  - name: lbLogLevel
+    displayName: Liquibase Log Level
+    type: string
+    default: INFO
+    values:
+      - INFO
+      - FINE
+      - WARNING
+      - SEVERE
+
+variables:
+  ${{ if eq(parameters.env, 'dev') }}:
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
+    poolImage: 'pagopa-dev-linux-infra'
+    REQUIRE_VALIDATION: false
+    ENV: 'd'
+  ${{ elseif eq(parameters.env, 'uat') }}:
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
+    poolImage: 'pagopa-uat-linux-infra'
+    REQUIRE_VALIDATION: false
+    ENV: 'u'
+  ${{ elseif eq(parameters.env, 'prd') }}:
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
+    poolImage: 'pagopa-prod-linux-infra'
+    REQUIRE_VALIDATION: true
+    ENV: 'p'
+
+  APPROVE_NOTIFY_ADMIN: '[pagoPA-iac]\Project Administrators'
+  LIQUIBASE_FOLDER: 'analytics-addon'
+  NODO_JDBC_URL: jdbc:postgresql://pagopa-${{ variables.ENV }}-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
+  NODO_KEY_VAULT_NAME: pagopa-${{ variables.ENV }}-nodo-kv
+  NODO_CFG_USERNAME: cfg
+  NODO_CFG_SCHEMA: cfg
+  NODO_CFG_KV_KEY: db-cfg-password
+  NODO_OFFLINE_USERNAME: offline
+  NODO_OFFLINE_SCHEMA: offline
+  NODO_OFFLINE_KV_KEY: db-offline-password
+  NODO_ONLINE_USERNAME: online
+  NODO_ONLINE_SCHEMA: online
+  NODO_ONLINE_KV_KEY: db-online-password
+  NODO_RE_USERNAME: re
+  NODO_RE_SCHEMA: re
+  NODO_RE_KV_KEY: db-re-password
+
+
+  CRUSC8_JDBC_URL: jdbc:postgresql://pagopa-${{ variables.ENV }}-itn-crusc8-flexible-postgresql.postgres.database.azure.com:5432/cruscotto?sslmode=require&prepareThreshold=0
+  CRUSC8_KV_NAME: pagopa-${{ variables.ENV }}-itn-crusc8-kv
+  CRUSC8_KV_KEY: db-cruscotto-password
+  CRUSC8_USERNAME: cruscotto
+  CRUSC8_SCHEMA: cruscotto
+
+  FDR_KV_NAME: pagopa-${{ variables.ENV }}-fdr-kv
+  FDR_FDR1_JDBC_URL: jdbc:postgresql://pagopa-${{ variables.ENV }}-weu-fdr-flexible-postgresql.postgres.database.azure.com:5432/fdr?sslmode=require&prepareThreshold=0
+  FDR_FDR3_JDBC_URL: jdbc:postgresql://pagopa-${{ variables.ENV }}-weu-fdr-flexible-postgresql.postgres.database.azure.com:5432/fdr3?sslmode=require&prepareThreshold=0
+  FDR_FDR1_KV_KEY: db-fdr-password
+  FDR_FDR1_USERNAME: fdr
+  FDR_FDR1_SCHEMA: fdr
+  FDR_FDR3_KV_KEY: db-fdr3-password
+  FDR_FDR3_USERNAME: fdr3
+  FDR_FDR3_SCHEMA: fdr3
+
+  GPD_JDBC_URL: jdbc:postgresql://pagopa-${{ variables.ENV }}-weu-gpd-pgflex.postgres.database.azure.com:5432/apd?sslmode=require&prepareThreshold=0
+  GPD_KV_NAME: pagopa-${{ variables.ENV }}-gps-kv
+  GPD_KV_KEY: db-apd-user-password
+  GPD_USERNAME: apduser
+  GPD_SCHEMA: apd
+
+stages:
+  - stage: liquibase_status
+    displayName: "Liquibase status"
+    jobs:
+      - job: liquibase_version_job
+        displayName: "Check liquibase version defined"
+        pool: $(poolImage)
+        steps:
+          - checkout: self
+          - script: |
+              if [ ! -f src/psql/${{ variables.LIQUIBASE_FOLDER }}/changelog_v${{ parameters.dbVersion }}.properties ]; then
+                echo "Version ${{ parameters.dbVersion }} not defined"
+                echo "File changelog_v${{ parameters.dbVersion }}.properties not found in folder ${{ variables.LIQUIBASE_FOLDER }}!"
+                echo "##vso[task.setvariable variable=version_present]false"
+                exit 1
+              else
+                echo "File changelog_v${{ parameters.dbVersion }}.properties found in folder ${{ variables.LIQUIBASE_FOLDER }}!"
+                source src/psql/${{ variables.LIQUIBASE_FOLDER }}/changelog_v${{ parameters.dbVersion }}.properties
+                echo "##vso[task.setvariable variable=version_present]true"
+                echo "##vso[task.setvariable variable=gpd_apd;isOutput=true]${gpd_apd}"
+                echo "##vso[task.setvariable variable=nodo_cfg;isOutput=true]${nodo_cfg}"
+                echo "##vso[task.setvariable variable=nodo_offline;isOutput=true]${nodo_offline}"
+                echo "##vso[task.setvariable variable=nodo_online;isOutput=true]${nodo_online}"
+                echo "##vso[task.setvariable variable=nodo_re;isOutput=true]${nodo_re}"
+                echo "##vso[task.setvariable variable=crusc8_cruscotto;isOutput=true]${crusc8_cruscotto}"
+                echo "##vso[task.setvariable variable=fdr_fdr;isOutput=true]${fdr_fdr}"
+                echo "##vso[task.setvariable variable=fdr_fdr3;isOutput=true]${fdr_fdr3}"
+              fi
+            displayName: "Load database specific versions"
+            name: load_db_specific_version
+      - job: liquibase_status_job
+        dependsOn: [liquibase_version_job]
+        pool: $(poolImage)
+        displayName: "Liquibase status and validation"
+        condition: succeeded()
+        variables:
+          gpd_apd: $[ dependencies.liquibase_version_job.outputs['load_db_specific_version.gpd_apd'] ]
+          nodo_cfg: $[ dependencies.liquibase_version_job.outputs['load_db_specific_version.nodo_cfg'] ]
+          nodo_offline: $[ dependencies.liquibase_version_job.outputs['load_db_specific_version.nodo_offline'] ]
+          nodo_online: $[ dependencies.liquibase_version_job.outputs['load_db_specific_version.nodo_online'] ]
+          nodo_re: $[ dependencies.liquibase_version_job.outputs['load_db_specific_version.nodo_re'] ]
+          crusc8_cruscotto: $[ dependencies.liquibase_version_job.outputs['load_db_specific_version.crusc8_cruscotto'] ]
+          fdr_fdr: $[ dependencies.liquibase_version_job.outputs['load_db_specific_version.fdr_fdr'] ]
+          fdr_fdr3: $[ dependencies.liquibase_version_job.outputs['load_db_specific_version.fdr_fdr3'] ]
+        steps:
+          - checkout: self
+          - script: |
+              cd $(Pipeline.Workspace)
+              mkdir liquibase-app
+              wget -c https://github.com/liquibase/liquibase/releases/download/v4.17.1/liquibase-4.17.1.tar.gz
+              tar -xzf liquibase-4.17.1.tar.gz -C liquibase-app
+              rm -rf liquibase-4.17.1.tar.gz
+              ls -la liquibase-app
+              echo "##vso[task.prependpath]$(Pipeline.Workspace)/liquibase-app"
+            displayName: "Install Liquibase"
+          - script: |
+              cd $(Pipeline.Workspace)
+              mkdir java
+              wget -c https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_linux-x64_bin.tar.gz
+              tar -xzf openjdk-11.0.2_linux-x64_bin.tar.gz -C java
+              rm -rf openjdk-11.0.2_linux-x64_bin.tar.gz
+              ls -la java
+              echo "##vso[task.prependpath]$(Pipeline.Workspace)/java/jdk-11.0.2/bin"
+              echo "##vso[task.setvariable variable=JAVA_HOME;]$(Pipeline.Workspace)/java/jdk-11.0.2"
+            displayName: "Install Java"
+          # nodo db cfg addon
+          - template: ./templates/generic-liquibase-action-with-kv.yml
+            parameters:
+              DATABASE_FOLDER_NAME: nodo
+              SCHEMA: ${{variables.NODO_CFG_SCHEMA}}
+              LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+              LIQUIBASE_DB_VERSION: "$(nodo_cfg)"
+              JDBC_URL: ${{variables.NODO_JDBC_URL}}
+              USERNAME: ${{variables.NODO_CFG_USERNAME}}
+              KV_NAME: ${{variables.NODO_KEY_VAULT_NAME}}
+              PASSWORD_KV_KEY: ${{variables.NODO_CFG_KV_KEY}}
+              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'status'
+          # nodo db offline addon
+          - template: ./templates/generic-liquibase-action-with-kv.yml
+            parameters:
+              DATABASE_FOLDER_NAME: nodo
+              SCHEMA: ${{variables.NODO_OFFLINE_SCHEMA}}
+              LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+              LIQUIBASE_DB_VERSION: "$(nodo_offline)"
+              JDBC_URL: ${{variables.NODO_JDBC_URL}}
+              USERNAME: ${{variables.NODO_OFFLINE_USERNAME}}
+              KV_NAME: ${{variables.NODO_KEY_VAULT_NAME}}
+              PASSWORD_KV_KEY: ${{variables.NODO_OFFLINE_KV_KEY}}
+              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'status'
+          # nodo db online addon
+          - template: ./templates/generic-liquibase-action-with-kv.yml
+            parameters:
+              DATABASE_FOLDER_NAME: nodo
+              SCHEMA: ${{variables.NODO_ONLINE_SCHEMA}}
+              LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+              LIQUIBASE_DB_VERSION: "$(nodo_online)"
+              JDBC_URL: ${{variables.NODO_JDBC_URL}}
+              USERNAME: ${{variables.NODO_ONLINE_USERNAME}}
+              KV_NAME: ${{variables.NODO_KEY_VAULT_NAME}}
+              PASSWORD_KV_KEY: ${{variables.NODO_ONLINE_KV_KEY}}
+              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'status'
+          # nodo db re addon
+          - template: ./templates/generic-liquibase-action-with-kv.yml
+            parameters:
+              DATABASE_FOLDER_NAME: nodo
+              SCHEMA: ${{variables.NODO_RE_SCHEMA}}
+              LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+              LIQUIBASE_DB_VERSION: "$(nodo_re)"
+              JDBC_URL: ${{variables.NODO_JDBC_URL}}
+              USERNAME: ${{variables.NODO_RE_USERNAME}}
+              KV_NAME: ${{variables.NODO_KEY_VAULT_NAME}}
+              PASSWORD_KV_KEY: ${{variables.NODO_RE_KV_KEY}}
+              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'status'
+          # crusc8 db cruscotto addon
+          - template: ./templates/generic-liquibase-action-with-kv.yml
+            parameters:
+              DATABASE_FOLDER_NAME: cruscotto
+              SCHEMA: ${{variables.CRUSC8_SCHEMA}}
+              LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+              LIQUIBASE_DB_VERSION: "$(crusc8_cruscotto)"
+              JDBC_URL: ${{variables.CRUSC8_JDBC_URL}}
+              USERNAME: ${{variables.CRUSC8_USERNAME}}
+              KV_NAME: ${{variables.CRUSC8_KV_NAME}}
+              PASSWORD_KV_KEY: ${{variables.CRUSC8_KV_KEY}}
+              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'status'
+          # fdr db fdr addon
+          - template: ./templates/generic-liquibase-action-with-kv.yml
+            parameters:
+              DATABASE_FOLDER_NAME: fdr
+              SCHEMA: ${{variables.FDR_FDR1_SCHEMA}}
+              LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+              LIQUIBASE_DB_VERSION: "$(fdr_fdr)"
+              JDBC_URL: ${{variables.FDR_FDR1_JDBC_URL}}
+              USERNAME: ${{variables.FDR_FDR1_USERNAME}}
+              KV_NAME: ${{variables.FDR_KV_NAME}}
+              PASSWORD_KV_KEY: ${{variables.FDR_FDR1_KV_KEY}}
+              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'status'
+          # fdr db fdr3 addon
+          - template: ./templates/generic-liquibase-action-with-kv.yml
+            parameters:
+              DATABASE_FOLDER_NAME: fdr
+              SCHEMA: ${{variables.FDR_FDR3_SCHEMA}}
+              LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+              LIQUIBASE_DB_VERSION: "$(fdr_fdr3)"
+              JDBC_URL: ${{variables.FDR_FDR3_JDBC_URL}}
+              USERNAME: ${{variables.FDR_FDR3_USERNAME}}
+              KV_NAME: ${{variables.FDR_KV_NAME}}
+              PASSWORD_KV_KEY: ${{variables.FDR_FDR3_KV_KEY}}
+              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'status'
+          # gpd db apd addon
+          - template: ./templates/generic-liquibase-action-with-kv.yml
+            parameters:
+              DATABASE_FOLDER_NAME: gpd
+              SCHEMA: ${{variables.GPD_SCHEMA}}
+              LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+              LIQUIBASE_DB_VERSION: "$(gpd_apd)"
+              JDBC_URL: ${{variables.GPD_JDBC_URL}}
+              USERNAME: ${{variables.GPD_USERNAME}}
+              KV_NAME: ${{variables.GPD_KV_NAME}}
+              PASSWORD_KV_KEY: ${{variables.GPD_KV_KEY}}
+              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'status'
+
+      - job: approval
+        dependsOn: liquibase_status_job
+        condition: and(eq('${{ variables.REQUIRE_VALIDATION }}', 'true'), succeeded())
+        pool: server
+        displayName: "Approval"
+        timeoutInMinutes: 16
+        steps:
+          - task: ManualValidation@0
+            timeoutInMinutes: 15
+            inputs:
+              notifyUsers: |
+                $(APPROVE_NOTIFY_ADMIN)
+              instructions: "Please check liquibase status and validation for each database and resume if correct"
+              onTimeout: 'reject'
+
+      - job: liquibase_apply
+        pool: $(poolImage)
+        ${{ if eq(variables.REQUIRE_VALIDATION, 'true') }}:
+          dependsOn: [liquibase_status_job,liquibase_version_job,approval]
+        ${{ else }}:
+          dependsOn: [liquibase_status_job,liquibase_version_job]
+        condition: succeeded()
+        variables:
+            gpd_apd: $[ dependencies.liquibase_version_job.outputs['load_db_specific_version.gpd_apd'] ]
+            nodo_cfg: $[ dependencies.liquibase_version_job.outputs['load_db_specific_version.nodo_cfg'] ]
+            nodo_offline: $[ dependencies.liquibase_version_job.outputs['load_db_specific_version.nodo_offline'] ]
+            nodo_online: $[ dependencies.liquibase_version_job.outputs['load_db_specific_version.nodo_online'] ]
+            nodo_re: $[ dependencies.liquibase_version_job.outputs['load_db_specific_version.nodo_re'] ]
+            crusc8_cruscotto: $[ dependencies.liquibase_version_job.outputs['load_db_specific_version.crusc8_cruscotto'] ]
+            fdr_fdr: $[ dependencies.liquibase_version_job.outputs['load_db_specific_version.fdr_fdr'] ]
+            fdr_fdr3: $[ dependencies.liquibase_version_job.outputs['load_db_specific_version.fdr_fdr3'] ]
+        displayName: "Apply liquibase addons ${{ parameters.env }}"
+        steps:
+          - checkout: self
+            clean: true
+            persistCredentials: true
+          - script: |
+              cd $(Pipeline.Workspace)
+              mkdir liquibase-app
+              wget -c https://github.com/liquibase/liquibase/releases/download/v4.17.1/liquibase-4.17.1.tar.gz
+              tar -xzf liquibase-4.17.1.tar.gz -C liquibase-app
+              rm -rf liquibase-4.17.1.tar.gz
+              ls -la liquibase-app
+              echo "##vso[task.prependpath]$(Pipeline.Workspace)/liquibase-app"
+            displayName: "Install Liquibase"
+          - script: |
+              cd $(Pipeline.Workspace)
+              mkdir java
+              wget -c https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_linux-x64_bin.tar.gz
+              tar -xzf openjdk-11.0.2_linux-x64_bin.tar.gz -C java
+              rm -rf openjdk-11.0.2_linux-x64_bin.tar.gz
+              ls -la java
+              echo "##vso[task.prependpath]$(Pipeline.Workspace)/java/jdk-11.0.2/bin"
+              echo "##vso[task.setvariable variable=JAVA_HOME;]$(Pipeline.Workspace)/java/jdk-11.0.2"
+            displayName: "Install Java"
+          # nodo db cfg addon
+          - template: ./templates/generic-liquibase-action-with-kv.yml
+            parameters:
+              DATABASE_FOLDER_NAME: nodo
+              SCHEMA: ${{variables.NODO_CFG_SCHEMA}}
+              LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+              LIQUIBASE_DB_VERSION: "$(nodo_cfg)"
+              JDBC_URL: ${{variables.NODO_JDBC_URL}}
+              USERNAME: ${{variables.NODO_CFG_USERNAME}}
+              KV_NAME: ${{variables.NODO_KEY_VAULT_NAME}}
+              PASSWORD_KV_KEY: ${{variables.NODO_CFG_KV_KEY}}
+              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'apply'
+          # nodo db offline addon
+          - template: ./templates/generic-liquibase-action-with-kv.yml
+            parameters:
+              DATABASE_FOLDER_NAME: nodo
+              SCHEMA: ${{variables.NODO_OFFLINE_SCHEMA}}
+              LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+              LIQUIBASE_DB_VERSION: "$(nodo_offline)"
+              JDBC_URL: ${{variables.NODO_JDBC_URL}}
+              USERNAME: ${{variables.NODO_OFFLINE_USERNAME}}
+              KV_NAME: ${{variables.NODO_KEY_VAULT_NAME}}
+              PASSWORD_KV_KEY: ${{variables.NODO_OFFLINE_KV_KEY}}
+              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'apply'
+          # nodo db online addon
+          - template: ./templates/generic-liquibase-action-with-kv.yml
+            parameters:
+              DATABASE_FOLDER_NAME: nodo
+              SCHEMA: ${{variables.NODO_ONLINE_SCHEMA}}
+              LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+              LIQUIBASE_DB_VERSION: "$(nodo_online)"
+              JDBC_URL: ${{variables.NODO_JDBC_URL}}
+              USERNAME: ${{variables.NODO_ONLINE_USERNAME}}
+              KV_NAME: ${{variables.NODO_KEY_VAULT_NAME}}
+              PASSWORD_KV_KEY: ${{variables.NODO_ONLINE_KV_KEY}}
+              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'apply'
+          # nodo db re addon
+          - template: ./templates/generic-liquibase-action-with-kv.yml
+            parameters:
+              DATABASE_FOLDER_NAME: nodo
+              SCHEMA: ${{variables.NODO_RE_SCHEMA}}
+              LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+              LIQUIBASE_DB_VERSION: "$(nodo_re)"
+              JDBC_URL: ${{variables.NODO_JDBC_URL}}
+              USERNAME: ${{variables.NODO_RE_USERNAME}}
+              KV_NAME: ${{variables.NODO_KEY_VAULT_NAME}}
+              PASSWORD_KV_KEY: ${{variables.NODO_RE_KV_KEY}}
+              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'apply'
+          # crusc8 db cruscotto addon
+          - template: ./templates/generic-liquibase-action-with-kv.yml
+            parameters:
+              DATABASE_FOLDER_NAME: cruscotto
+              SCHEMA: ${{variables.CRUSC8_SCHEMA}}
+              LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+              LIQUIBASE_DB_VERSION: "$(crusc8_cruscotto)"
+              JDBC_URL: ${{variables.CRUSC8_JDBC_URL}}
+              USERNAME: ${{variables.CRUSC8_USERNAME}}
+              KV_NAME: ${{variables.CRUSC8_KV_NAME}}
+              PASSWORD_KV_KEY: ${{variables.CRUSC8_KV_KEY}}
+              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'apply'
+          # fdr db fdr addon
+          - template: ./templates/generic-liquibase-action-with-kv.yml
+            parameters:
+              DATABASE_FOLDER_NAME: fdr
+              SCHEMA: ${{variables.FDR_FDR1_SCHEMA}}
+              LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+              LIQUIBASE_DB_VERSION: "$(fdr_fdr)"
+              JDBC_URL: ${{variables.FDR_FDR1_JDBC_URL}}
+              USERNAME: ${{variables.FDR_FDR1_USERNAME}}
+              KV_NAME: ${{variables.FDR_KV_NAME}}
+              PASSWORD_KV_KEY: ${{variables.FDR_FDR1_KV_KEY}}
+              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'apply'
+          # fdr db fdr3 addon
+          - template: ./templates/generic-liquibase-action-with-kv.yml
+            parameters:
+              DATABASE_FOLDER_NAME: fdr
+              SCHEMA: ${{variables.FDR_FDR3_SCHEMA}}
+              LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+              LIQUIBASE_DB_VERSION: "$(fdr_fdr3)"
+              JDBC_URL: ${{variables.FDR_FDR3_JDBC_URL}}
+              USERNAME: ${{variables.FDR_FDR3_USERNAME}}
+              KV_NAME: ${{variables.FDR_KV_NAME}}
+              PASSWORD_KV_KEY: ${{variables.FDR_FDR3_KV_KEY}}
+              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'apply'
+          # gpd db apd addon
+          - template: ./templates/generic-liquibase-action-with-kv.yml
+            parameters:
+              DATABASE_FOLDER_NAME: gpd
+              SCHEMA: ${{variables.GPD_SCHEMA}}
+              LIQUIBASE_FOLDER: ${{variables.LIQUIBASE_FOLDER}}
+              LIQUIBASE_DB_VERSION: "$(gpd_apd)"
+              JDBC_URL: ${{variables.GPD_JDBC_URL}}
+              USERNAME: ${{variables.GPD_USERNAME}}
+              KV_NAME: ${{variables.GPD_KV_NAME}}
+              PASSWORD_KV_KEY: ${{variables.GPD_KV_KEY}}
+              AZURE_SERVICE_CONNECTION: $(AZURE_SERVICE_CONNECTION)
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_ACTION: 'apply'

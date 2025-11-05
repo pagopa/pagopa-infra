@@ -6,13 +6,6 @@ location       = "italynorth"
 location_short = "itn"
 instance       = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/printit-common"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### 🚩Feautures flags
 
@@ -29,7 +22,6 @@ is_feature_enabled = {
 cidr_printit_cosmosdb_italy   = ["10.3.12.0/27"]
 cidr_printit_storage_italy    = ["10.3.12.32/27"]
 cidr_printit_redis_italy      = ["10.3.12.64/27"]
-cidr_printit_postgresql_italy = ["10.3.12.96/27"]
 cidr_printit_pdf_engine_italy = ["10.3.12.128/27"]
 cidr_printit_eventhub_italy   = ["10.3.12.160/27"]
 

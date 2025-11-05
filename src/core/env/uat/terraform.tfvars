@@ -6,13 +6,6 @@ location_short     = "weu"
 location_ita       = "italynorth"
 location_short_ita = "itn"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 #
 # Feature flag
@@ -28,7 +21,6 @@ enabled_features = {
 
 # common
 cidr_subnet_postgresql           = ["10.1.129.0/24"]
-cidr_subnet_buyerbanks           = ["10.1.134.0/24"]
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"] #placeholder
 
 
@@ -99,14 +91,6 @@ nodo_auth_subscription_limit = 10000
 ecommerce_ingress_hostname = "weuuat.ecommerce.internal.uat.platform.pagopa.it"
 
 
-# buyerbanks functions
-buyerbanks_function_kind              = "Linux"
-buyerbanks_function_sku_tier          = "Basic"
-buyerbanks_function_sku_size          = "B1"
-buyerbanks_function_autoscale_minimum = 1
-buyerbanks_function_autoscale_maximum = 3
-buyerbanks_function_autoscale_default = 1
-buyerbanks_delete_retention_days      = 30
 
 
 

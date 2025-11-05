@@ -12,7 +12,7 @@ resource "azurerm_resource_group" "checkout_fe_rg" {
   name     = format("%s-checkout-fe-rg", local.parent_project)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 /**
@@ -60,12 +60,12 @@ module "checkout_cdn" {
       {
         action = "Overwrite"
         name   = local.content_security_policy_header_name
-        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", var.dns_zone_prefix, var.external_domain)
+        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it https://privacyportalde-cdn.onetrust.com https://privacyportal-de.onetrust.com", var.dns_zone_prefix, var.external_domain)
       },
       {
         action = "Append"
         name   = local.content_security_policy_header_name
-        value  = " https://acardste.vaservices.eu:* https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://geolocation.onetrust.com;"
+        value  = " https://acardste.vaservices.eu:* https://recaptcha.net/;"
       },
       {
         action = "Append"
@@ -75,17 +75,17 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = local.content_security_policy_header_name
-        value  = "img-src 'self' https://cdn.cookielaw.org https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it;"
+        value  = "img-src 'self' https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it https://privacyportalde-cdn.onetrust.com;"
       },
       {
         action = "Append"
         name   = local.content_security_policy_header_name
-        value  = "script-src 'self' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://${local.npg_sdk_hostname};"
+        value  = "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://privacyportalde-cdn.onetrust.com https://${local.npg_sdk_hostname};"
       },
       {
         action = "Append"
         name   = local.content_security_policy_header_name
-        value  = "style-src 'self'  'unsafe-inline'; worker-src www.recaptcha.net blob:;"
+        value  = "style-src 'self'  'unsafe-inline' https://privacyportalde-cdn.onetrust.com; font-src 'self' https://privacyportalde-cdn.onetrust.com; worker-src www.recaptcha.net blob:;"
       },
       {
         action = "Overwrite"
@@ -120,7 +120,7 @@ module "checkout_cdn" {
       conditions = [{
         condition_type   = "url_path_condition"
         operator         = "BeginsWith"
-        match_values     = ["/ecommerce-fe/gdi-check", "/ecommerce-fe/esito"]
+        match_values     = ["/ecommerce-fe/gdi-check", "/ecommerce-fe/esito", "/ecommerce-fe/inserimento-carta", "/ecommerce-fe/scelta-salvataggio-carta"]
         transforms       = []
         negate_condition = false
       }]
@@ -130,13 +130,31 @@ module "checkout_cdn" {
         destination             = "/ecommerce-fe/index.html"
         preserve_unmatched_path = false
       }
+    },
+    {
+      name  = "RewriteRulesTerms"
+      order = 4
+
+      conditions = [{
+        condition_type   = "url_path_condition"
+        operator         = "Equal"
+        match_values     = ["/termini-di-servizio"]
+        transforms       = []
+        negate_condition = false
+      }]
+
+      url_rewrite_action = {
+        source_pattern          = "/"
+        destination             = "/terms/it.html"
+        preserve_unmatched_path = false
+      }
     }
   ]
 
   delivery_rule = [
     {
       name  = "CorsFontForNPG"
-      order = 4
+      order = 5
 
       // conditions
       url_path_conditions       = []
@@ -174,7 +192,7 @@ module "checkout_cdn" {
     }
   ]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_application_insights_web_test" "checkout_fe_web_test" {

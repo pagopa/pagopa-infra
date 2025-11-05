@@ -17,6 +17,11 @@ data "azurerm_monitor_action_group" "slack" {
   name                = local.monitor_action_group_slack_name
 }
 
+data "azurerm_monitor_action_group" "slack_pagopa_pagamenti_alert" {
+  resource_group_name = var.monitor_resource_group_name
+  name                = local.monitor_action_group_slack_pagamenti_alert_name
+}
+
 data "azurerm_monitor_action_group" "email" {
   resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_email_name
@@ -26,4 +31,39 @@ data "azurerm_monitor_action_group" "opsgenie" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_opsgenie_name
+}
+
+data "azurerm_monitor_action_group" "smo_opsgenie" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = var.monitor_resource_group_name
+  name                = "SmoOpsgenie"
+}
+
+resource "azurerm_portal_dashboard" "fdr-dashboard" { # FDR1
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "FLussiDiRendicontazione-${var.env}-FdR"
+  resource_group_name = var.monitor_resource_group_name
+  location            = var.location
+  tags = {
+    source = "terraform"
+  }
+  dashboard_properties = templatefile("./dashboard/dashboard-apim-fdr.tpl", {
+    subscription_id = data.azurerm_subscription.current.subscription_id,
+    env_short       = var.env_short
+  })
+}
+
+resource "azurerm_portal_dashboard" "fdr-general-dashboard" { # FDR3
+  name                = "General-Dashboard-FDR-${var.env}"
+  resource_group_name = var.monitor_resource_group_name
+  location            = var.location
+  tags = {
+    source = "terraform"
+  }
+  dashboard_properties = templatefile("./dashboard/dashboard-general-fdr.json", {
+    subscription_id = data.azurerm_subscription.current.subscription_id,
+    env_short       = var.env_short
+    env_elk         = var.env_short == "p" ? "p" : "s"
+    env             = var.env
+  })
 }

@@ -1,10 +1,13 @@
+# Please consider these API are deprecated and will be removed in the future
+# The new API is defined in the file apim_nodo_services_auth_09_node_for_ecommerce
+
 ######################
 ## Nodo per PM API  ##
 ######################
 locals {
   apim_nodo_per_pm_api = {
-    display_name          = "Nodo per Payment Manager API"
-    description           = "API to support Payment Manager"
+    display_name          = "[Deprecated] Nodo per Payment Manager API"
+    description           = "[Deprecated] API to support Payment Manager"
     path                  = "nodo/nodo-per-pm"
     subscription_required = var.nodo_pagamenti_subkey_required
     service_url           = null
@@ -20,6 +23,13 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pm_api" {
   versioning_scheme   = "Segment"
 }
 
+#fetch technical support api product APIM product
+data "azurerm_api_management_product" "technical_support_api_product" {
+  product_id          = "technical_support_api"
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+}
+
 module "apim_nodo_per_pm_api_v1" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
@@ -27,6 +37,7 @@ module "apim_nodo_per_pm_api_v1" {
   name                  = format("%s-nodo-per-pm-api", local.project)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name   = data.azurerm_resource_group.rg_api.name
+  product_ids           = [data.azurerm_api_management_product.technical_support_api_product.product_id]
   subscription_required = local.apim_nodo_per_pm_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.nodo_per_pm_api.id
   api_version           = "v1"

@@ -84,7 +84,7 @@ resource "azurerm_resource_group" "rg_vnet" {
   name     = "${local.product}-vnet-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # vnet
@@ -96,7 +96,7 @@ module "vnet" {
   address_space        = var.cidr_vnet
   ddos_protection_plan = var.ddos_protection_plan
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # vnet integration
@@ -108,7 +108,7 @@ module "vnet_integration" {
   address_space        = var.cidr_vnet_integration
   ddos_protection_plan = var.ddos_protection_plan
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #
@@ -149,7 +149,7 @@ module "route_table_peering_sia" {
 
   routes = concat(local.route_table_peering_sia_routes, var.route_table_peering_sia_additional_routes)
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # subnet acr
@@ -164,4 +164,10 @@ module "common_private_endpoint_snet" {
 
 
   service_endpoints = var.env_short == "p" ? ["Microsoft.Storage"] : []
+}
+
+# RT sia associated to app gw integration
+resource "azurerm_subnet_route_table_association" "rt_sia_for_appgw_integration" {
+  subnet_id      = module.integration_appgateway_snet.id
+  route_table_id = module.route_table_peering_sia.id
 }

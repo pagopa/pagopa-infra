@@ -60,12 +60,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 ### Features flags
 
@@ -223,3 +217,4 @@ variable "app_service_ip_restriction_default_action" {
   default     = "Allow"
   description = "(Optional) The Default action for traffic that does not match any ip_restriction rule. possible values include Allow and Deny. Defaults to Allow."
 }
+

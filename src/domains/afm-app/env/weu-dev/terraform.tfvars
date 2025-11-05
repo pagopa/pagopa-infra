@@ -1,19 +1,13 @@
-prefix          = "pagopa"
-env_short       = "d"
-env             = "dev"
-domain          = "afm"
-location        = "westeurope"
-location_short  = "weu"
-location_string = "West Europe"
-instance        = "dev"
+prefix                 = "pagopa"
+env_short              = "d"
+env                    = "dev"
+domain                 = "afm"
+location               = "westeurope"
+location_short         = "weu"
+location_string        = "West Europe"
+instance               = "dev"
+gh_runner_job_location = "westeurope"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagopa"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/afm"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 

@@ -6,13 +6,6 @@ location       = "westeurope"
 location_short = "weu"
 instance       = "prod"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/nodo-common"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -28,7 +21,8 @@ external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"
 
 ## CIDR nodo per database pgsql
-cidr_subnet_flex_dbms = ["10.1.160.0/24"]
+cidr_subnet_flex_dbms         = ["10.1.160.0/24"]
+cidr_subnet_flex_storico_dbms = ["10.1.176.0/28"]
 
 ## CIDR storage subnet
 cidr_subnet_storage_account = ["10.1.137.16/29"]
@@ -37,8 +31,8 @@ cidr_subnet_storage_account = ["10.1.137.16/29"]
 pgres_flex_params = {
 
   enabled    = true
-  sku_name   = "GP_Standard_D16ds_v4"
-  db_version = "13"
+  sku_name   = "GP_Standard_D8ds_v4"
+  db_version = "16"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                                       = 1048576
@@ -54,6 +48,29 @@ pgres_flex_params = {
   max_connections                                  = 5000
   enable_private_dns_registration                  = false
   enable_private_dns_registration_virtual_endpoint = true
+}
+
+pgres_flex_storico_params = {
+
+  enabled    = true
+  sku_name   = "GP_Standard_D2ds_v5"
+  db_version = "16"
+  # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
+  # 2097152, 4194304, 8388608, 16777216, and 33554432.
+  storage_mb                             = 1048576
+  zone                                   = 1
+  standby_ha_zone                        = 2
+  backup_retention_days                  = 7
+  geo_redundant_backup_enabled           = false
+  create_mode                            = "Default"
+  pgres_flex_private_endpoint_enabled    = true
+  pgres_flex_ha_enabled                  = false
+  pgres_flex_pgbouncer_enabled           = true
+  pgres_flex_diagnostic_settings_enabled = false
+  max_connections                        = 850
+  enable_private_dns_registration        = true
+  max_worker_processes                   = 16
+  public_network_access_enabled          = false
 }
 
 sftp_account_replication_type = "GZRS"
@@ -219,12 +236,13 @@ wisp_converter_cosmos_nosql_db_params = {
   is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = true
+  burst_capacity_enabled    = true
 
   data_ttl                           = 10368000 # 120 days in second
   data_max_throughput                = 2000
   re_ttl                             = 31536000 # 1 year in second
-  re_max_throughput                  = 10000
-  receipt_ttl                        = -1 # max
+  re_max_throughput                  = 25000    # aligned to prod actual value
+  receipt_ttl                        = -1       # max
   receipt_max_throughput             = 2000
   receipt_dead_letter_ttl            = 7884000 # 3 months in second
   receipt_dead_letter_max_throughput = 1000
@@ -293,9 +311,9 @@ sftp_sa_backup_retention_days = 30
 
 
 geo_replica_enabled                = true
-location_replica                   = "northeurope"
-location_replica_short             = "neu"
-geo_replica_cidr_subnet_postgresql = ["10.2.160.0/24"]
+location_replica                   = "italynorth"
+location_replica_short             = "itn"
+geo_replica_cidr_subnet_postgresql = ["10.3.7.32/27"]
 postgresql_sku_name                = "GP_Gen5_2"
 
 nodo_cfg_sync_storage_account = {
@@ -320,6 +338,19 @@ wisp_converter_storage_account = {
   public_network_access_enabled = false
   backup_enabled                = true
   backup_retention_days         = 30
+}
+
+mbd_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "GZRS"
+  blob_versioning_enabled       = true
+  advanced_threat_protection    = true
+  blob_delete_retention_days    = 90
+  public_network_access_enabled = false
+  backup_enabled                = true
+  backup_retention_days         = 60
+  use_legacy_defender_version   = false
 }
 
 redis_ha_enabled = true

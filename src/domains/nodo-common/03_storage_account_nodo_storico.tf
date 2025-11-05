@@ -3,11 +3,11 @@ resource "azurerm_resource_group" "nodo_storico_rg" {
   name     = format("%s-storico-rg", local.project)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "nodo_storico_storage_account" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.77.0"
+  source = "./.terraform/modules/__v3__/storage_account"
   count  = var.env_short == "d" ? 0 : 1
 
   enable_low_availability_alert = false
@@ -40,7 +40,7 @@ module "nodo_storico_storage_account" {
     virtual_network_subnet_ids = [data.azurerm_subnet.private_endpoint_snet.id]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "nodo_storico_private_endpoint" {
@@ -63,7 +63,7 @@ resource "azurerm_private_endpoint" "nodo_storico_private_endpoint" {
     subresource_names              = ["blob"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     module.nodo_storico_storage_account

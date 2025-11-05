@@ -11,8 +11,17 @@
                   <value>WISP_REDIRECT</value>
               </set-header>
           </when>
+          <otherwise>
+              <set-header name="x-client-id" exists-action="override">
+                  <value>CHECKOUT_CART</value>
+              </set-header>
+          </otherwise>
           <!-- add here handling for future api clients to be integrated, such as SEND -->
       </choose>
+      <!-- Set payment-requests API Key header -->
+      <set-header name="x-api-key" exists-action="override">
+        <value>{{ecommerce-payment-requests-api-key-value}}</value>
+      </set-header>
   </inbound>
 
   <outbound>
@@ -27,7 +36,7 @@
                 @{
                     return new JObject(
                         new JProperty(
-                            "checkoutRedirectUrl", 
+                            "checkoutRedirectUrl",
                             (string)context.Response.Headers.GetValueOrDefault("Location","")
                         )
                     ).ToString();

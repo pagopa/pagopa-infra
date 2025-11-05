@@ -67,12 +67,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 ### External resources
 
@@ -266,6 +260,7 @@ variable "app_service_plan_info" {
   type = object({
     kind                         = string # The kind of the App Service Plan to create. Possible values are Windows (also available as App), Linux, elastic (for Premium Consumption) and FunctionApp (for a Consumption Plan).
     sku_size                     = string # Specifies the plan's instance size.
+    sku_tier                     = string
     maximum_elastic_worker_count = number # The maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan.
     worker_count                 = number # The number of Workers (instances) to be allocated.
     zone_balancing_enabled       = bool   # Should the Service Plan balance across Availability Zones in the region. Changing this forces a new resource to be created.
@@ -275,6 +270,7 @@ variable "app_service_plan_info" {
 
   default = {
     kind                         = "Linux"
+    sku_tier                     = "PremiumV3"
     sku_size                     = "P1v3"
     maximum_elastic_worker_count = 0
     worker_count                 = 0
@@ -295,51 +291,6 @@ variable "nodo_pagamenti_subkey_required" {
   default     = false
 }
 
-# FdR RE
-variable "fdr_re_function_subnet" {
-  type        = list(string)
-  description = "Address prefixes subnet"
-  default     = null
-}
-
-variable "fdr_re_function_network_policies_enabled" {
-  type        = bool
-  description = "Network policies enabled"
-  default     = false
-}
-
-variable "fdr_re_function" {
-  type = object({
-    always_on = bool
-    kind      = string
-    sku_size  = string
-    #    sku_tier                     = string
-    maximum_elastic_worker_count = number
-  })
-  description = "FdR RE function"
-  default = {
-    always_on = true
-    kind      = "Linux"
-    sku_size  = "B1"
-    #    sku_tier                     = "Basic"
-    maximum_elastic_worker_count = 1
-  }
-}
-
-variable "fdr_re_function_app_image_tag" {
-  type        = string
-  default     = "latest"
-  description = "FdR RE to Datastore function app docker image tag. Defaults to 'latest'"
-}
-
-variable "fdr_re_function_autoscale" {
-  type = object({
-    default = number
-    minimum = number
-    maximum = number
-  })
-  description = "FdR function autoscaling parameters"
-}
 
 # FdR xml to json
 variable "fdr_xml_to_json_function_subnet" {
@@ -386,50 +337,6 @@ variable "fdr_xml_to_json_function_autoscale" {
   description = "FdR function autoscaling parameters"
 }
 
-# FdR json to xml
-variable "fdr_json_to_xml_function_subnet" {
-  type        = list(string)
-  description = "Address prefixes subnet"
-  default     = null
-}
-
-variable "fdr_json_to_xml_function_network_policies_enabled" {
-  type        = bool
-  description = "Network policies enabled"
-  default     = false
-}
-variable "fdr_json_to_xml_function" {
-  type = object({
-    always_on                    = bool
-    kind                         = string
-    sku_size                     = string
-    sku_tier                     = string
-    maximum_elastic_worker_count = number
-  })
-  description = "FdR JSON to XML function"
-  default = {
-    always_on                    = true
-    kind                         = "Linux"
-    sku_size                     = "B1"
-    sku_tier                     = "Basic"
-    maximum_elastic_worker_count = 1
-  }
-}
-
-variable "fdr_json_to_xml_function_app_image_tag" {
-  type        = string
-  default     = "latest"
-  description = "FdR JSON to XML function app docker image tag. Defaults to 'latest'"
-}
-
-variable "fdr_json_to_xml_function_autoscale" {
-  type = object({
-    default = number
-    minimum = number
-    maximum = number
-  })
-  description = "FdR JSON to XML function autoscaling parameters"
-}
 
 variable "function_app_storage_account_replication_type" {
   type        = string
@@ -459,4 +366,32 @@ variable "enabled_features" {
   default = {
   }
   description = "Features enabled in this domain"
+}
+
+variable "gh_runner_job_location" {
+  type        = string
+  description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
+  default     = "westeurope"
+}
+
+variable "enable_fdr_ci_soap_request" {
+  type        = bool
+  description = "Switch to pagoPA FdR SOAP request for Orgs"
+}
+
+variable "enable_fdr_psp_soap_request" {
+  type        = bool
+  description = "Switch to pagoPA FdR SOAP request for PSP"
+}
+
+variable "fdr_soap_request_psp_whitelist" {
+  type = string
+  # default     = "*" # No Default to explicits set into ENV settings
+  description = "String list comma separated"
+}
+
+variable "fdr_soap_request_ci_whitelist" {
+  type = string
+  # default     = "*" # No Default to explicits set into ENV settings
+  description = "String list comma separated"
 }

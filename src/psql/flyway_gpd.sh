@@ -51,8 +51,8 @@ printf "Resource Group Name: %s\n" "${resource_group_name}"
 printf ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>       1\n"
 
 # flexible-server
-psql_server_name=$(az postgres flexible-server list -o tsv --query "[?contains(name,'pgflex')].{Name:name}" | grep gpd | head -1)
-psql_server_private_fqdn=$(az postgres flexible-server list -o tsv --query "[?contains(name,'pgflex')].{Name:fullyQualifiedDomainName}" | grep gpd | head -1)
+psql_server_name=$(az postgres flexible-server list -o tsv --query "[?contains(name,'pgflex')].{Name:name}" | grep "weu-gpd" | head -1)
+psql_server_private_fqdn=$(az postgres flexible-server list -o tsv --query "[?contains(name,'pgflex')].{Name:fullyQualifiedDomainName}" | grep "weu-gpd" | head -1)
 
 # kv
 keyvault_name=$(az keyvault list -o tsv --query "[?contains(name,'gps')].{Name:name}")

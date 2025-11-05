@@ -1,20 +1,318 @@
 {
   "openapi" : "3.0.1",
   "info" : {
-    "title" : "PagoPA API Calculator Logic ${service}",
+    "title" : "PagoPA API Calculator Logic - API AFM-Calculator v2",
     "description" : "Calculator Logic microservice for pagoPA AFM",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "2.10.19"
+    "version" : "2.11.28"
   },
   "servers" : [ {
-    "url": "${host}",
-    "description" : "Generated server url"
+    "url" : "http://localhost:8080"
+  }, {
+    "url" : "https://{host}{basePath}",
+    "variables" : {
+      "host" : {
+        "default" : "api.dev.platform.pagopa.it",
+        "enum" : [ "api.dev.platform.pagopa.it", "api.uat.platform.pagopa.it", "api.platform.pagopa.it" ]
+      },
+      "basePath" : {
+        "default" : "afm/calculator-service",
+        "enum" : [ "afm/calculator-service" ]
+      }
+    }
   } ],
   "tags" : [ {
     "name" : "Calculator",
     "description" : "Everything about Calculator business logic"
   } ],
   "paths" : {
+    "/fees" : {
+      "post" : {
+        "tags" : [ "Calculator" ],
+        "summary" : "Get taxpayer fees of all or specified idPSP with ECs contributions",
+        "operationId" : "getFeesMulti",
+        "parameters" : [ {
+          "name" : "maxOccurrences",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
+          }
+        }, {
+          "name" : "allCcp",
+          "in" : "query",
+          "description" : "Flag for the exclusion of Poste bundles: false -> excluded, true or null -> included",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "true"
+          }
+        }, {
+          "name" : "onUsFirst",
+          "in" : "query",
+          "description" : "Affects the sorting logic [default = true]. true â if the onus bundle is present, it is returned in the first position, regardless of the chosen sorting logic. false â the sorting logic is also applied to the onus bundle, which may therefore appear in positions other than the first",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "true"
+          }
+        }, {
+          "name" : "orderBy",
+          "in" : "query",
+          "description" : "Sorting logic to be applied to the bundles [default = RANDOM]. random â bundles are sorted randomly. fee â sorted by increasing fee, if fees are equal then by PSP name. pspname â sorted by PSP name.",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "random"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PaymentOptionMulti"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Ok",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BundleOption"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "Unable to process the request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
+      },
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
+    "/info" : {
+      "get" : {
+        "tags" : [ "Home" ],
+        "summary" : "health check",
+        "description" : "Return OK if application is started",
+        "operationId" : "healthCheck",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AppInfo"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
+      },
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
     "/psps/{idPsp}/fees" : {
       "post" : {
         "tags" : [ "Calculator" ],
@@ -46,6 +344,24 @@
             "type" : "string",
             "default" : "true"
           }
+        }, {
+          "name" : "onUsFirst",
+          "in" : "query",
+          "description" : "Affects the sorting logic [default = true]. true â if the onus bundle is present, it is returned in the first position, regardless of the chosen sorting logic. false â the sorting logic is also applied to the onus bundle, which may therefore appear in positions other than the first",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "true"
+          }
+        }, {
+          "name" : "orderBy",
+          "in" : "query",
+          "description" : "Sorting logic to be applied to the bundles [default = RANDOM]. random â bundles are sorted randomly. fee â sorted by increasing fee, if fees are equal then by PSP name. pspname â sorted by PSP name.",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "random"
+          }
         } ],
         "requestBody" : {
           "content" : {
@@ -58,14 +374,16 @@
           "required" : true
         },
         "responses" : {
-          "429" : {
-            "description" : "Too many requests"
-          },
-          "401" : {
-            "description" : "Unauthorized"
-          },
           "200" : {
             "description" : "Ok",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -76,6 +394,43 @@
           },
           "400" : {
             "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -86,6 +441,14 @@
           },
           "422" : {
             "description" : "Unable to process the request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -94,115 +457,27 @@
               }
             }
           },
-          "500" : {
-            "description" : "Service unavailable",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "404" : {
-            "description" : "Not Found",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        },
-        "security" : [ {
-          "ApiKey" : [ ]
-        } ]
-      }
-    },
-    "/fees" : {
-      "post" : {
-        "tags" : [ "Calculator" ],
-        "summary" : "Get taxpayer fees of all or specified idPSP with ECs contributions",
-        "operationId" : "getFeesMulti",
-        "parameters" : [ {
-          "name" : "maxOccurrences",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32",
-            "default" : 10
-          }
-        }, {
-          "name" : "allCcp",
-          "in" : "query",
-          "description" : "Flag for the exclusion of Poste bundles: false -> excluded, true or null -> included",
-          "required" : false,
-          "schema" : {
-            "type" : "string",
-            "default" : "true"
-          }
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/PaymentOptionMulti"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
           "429" : {
-            "description" : "Too many requests"
-          },
-          "401" : {
-            "description" : "Unauthorized"
-          },
-          "200" : {
-            "description" : "Ok",
-            "content" : {
-              "application/json" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
                 "schema" : {
-                  "$ref" : "#/components/schemas/BundleOption"
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "Bad Request",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "422" : {
-            "description" : "Unable to process the request",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
+                  "type" : "string"
                 }
               }
             }
           },
           "500" : {
             "description" : "Service unavailable",
-            "content" : {
-              "application/json" : {
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
                 "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
+                  "type" : "string"
                 }
               }
-            }
-          },
-          "404" : {
-            "description" : "Not Found",
+            },
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -215,59 +490,15 @@
         "security" : [ {
           "ApiKey" : [ ]
         } ]
-      }
-    },
-    "/info" : {
-      "get" : {
-        "tags" : [ "Home" ],
-        "summary" : "health check",
-        "description" : "Return OK if application is started",
-        "operationId" : "healthCheck",
-        "responses" : {
-          "429" : {
-            "description" : "Too many requests"
-          },
-          "401" : {
-            "description" : "Unauthorized"
-          },
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/AppInfo"
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "Bad Request",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "500" : {
-            "description" : "Service unavailable",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "403" : {
-            "description" : "Forbidden"
-          }
-        },
-        "security" : [ {
-          "ApiKey" : [ ]
-        } ]
-      }
+      },
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
     }
   },
   "components" : {
@@ -319,6 +550,7 @@
         }
       },
       "TransferListItem" : {
+        "required" : [ "creditorInstitution" ],
         "type" : "object",
         "properties" : {
           "creditorInstitution" : {
@@ -329,6 +561,28 @@
           },
           "digitalStamp" : {
             "type" : "boolean"
+          }
+        }
+      },
+      "ProblemJson" : {
+        "type" : "object",
+        "properties" : {
+          "title" : {
+            "type" : "string",
+            "description" : "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
+          },
+          "status" : {
+            "maximum" : 600,
+            "minimum" : 100,
+            "type" : "integer",
+            "description" : "The HTTP status code generated by the origin server for this occurrence of the problem.",
+            "format" : "int32",
+            "example" : 200
+          },
+          "detail" : {
+            "type" : "string",
+            "description" : "A human readable explanation specific to this occurrence of the problem.",
+            "example" : "There was an error processing the request"
           }
         }
       },
@@ -419,28 +673,6 @@
             "items" : {
               "$ref" : "#/components/schemas/Fee"
             }
-          }
-        }
-      },
-      "ProblemJson" : {
-        "type" : "object",
-        "properties" : {
-          "title" : {
-            "type" : "string",
-            "description" : "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
-          },
-          "status" : {
-            "maximum" : 600,
-            "minimum" : 100,
-            "type" : "integer",
-            "description" : "The HTTP status code generated by the origin server for this occurrence of the problem.",
-            "format" : "int32",
-            "example" : 200
-          },
-          "detail" : {
-            "type" : "string",
-            "description" : "A human readable explanation specific to this occurrence of the problem.",
-            "example" : "There was an error processing the request"
           }
         }
       },

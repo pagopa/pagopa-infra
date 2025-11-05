@@ -8,13 +8,6 @@ location_itn       = "italynorth" # itn
 location_short_itn = "itn"        # itn
 instance           = "prod"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/observability"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -42,6 +35,12 @@ dexp_db = {
   enable             = true
   hot_cache_period   = "P5D"
   soft_delete_period = "P365D" // "P1Y"
+}
+
+dexp_pm_db = {
+  enable             = true
+  hot_cache_period   = "P5D"
+  soft_delete_period = "P10Y"
 }
 
 dexp_re_db_linkes_service = {
@@ -207,6 +206,26 @@ eventhubs = [
         manage = false
       }
     ]
+  },
+  {
+    name              = "payment-wallet-ingestion-dl-staging"
+    partitions        = 1
+    message_retention = 1
+    consumers         = ["payment-wallet-evt-rx-staging"]
+    keys = [
+      {
+        name   = "payment-wallet-evt-tx-staging"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "payment-wallet-evt-rx-staging"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
   }
 ]
 
@@ -259,141 +278,90 @@ ehns_metric_alerts = {
       }
     ],
   },
+  no_wallet_ingestion_alert = {
+    aggregation = "Total"
+    metric_name = "IncomingMessages"
+    description = "Payment wallet onboarding written events less than 1000 detected in the last 24h"
+    operator    = "LessThanOrEqual"
+    threshold   = 1000
+    frequency   = "PT1H"
+    window_size = "P1D"
+    dimension = [
+      {
+        name     = "EntityName"
+        operator = "Include"
+        values = [
+          "payment-wallet-ingestion-dl",
+        ]
+      }
+    ],
+  },
 }
 
-
-
-
 eventhubs_gpd = [
-    {
-    name              = "test-evh" # test
-    partitions        = 1
-    message_retention = 1
-    consumers         = ["test-evh"]
+  {
+    name              = "gpd-ingestion.apd.payment_option"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["gpd-ingestion.apd.payment_option-rx-dl", ]
     keys = [
       {
-        name   = "test-evh"
+        name   = "gpd-ingestion.apd.payment_option-rx-dl"
         listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "gpd-ingestion.apd.payment_option-tx"
+        listen = false
         send   = true
         manage = false
       }
     ]
   },
-  # {
-  #   name              = "connect-cluster-offsets" # debezium internal use
-  #   partitions        = 32
-  #   message_retention = 7
-  #   consumers         = ["connect-cluster-offsets"]
-  #   keys = [
-  #     {
-  #       name   = "connect-cluster-offsets"
-  #       listen = true
-  #       send   = true
-  #       manage = false
-  #     }
-  #   ]
-  # },
-  # {
-  #   name              = "connect-cluster-status" # debezium internal use
-  #   partitions        = 32
-  #   message_retention = 7
-  #   consumers         = ["connect-cluster-offsets"]
-  #   keys = [
-  #     {
-  #       name   = "connect-cluster-status"
-  #       listen = true
-  #       send   = true
-  #       manage = false
-  #     }
-  #   ]
-  # },
-  # {
-  #   name              = "connect-cluster-configs" # debezium internal use
-  #   partitions        = 32
-  #   message_retention = 7
-  #   consumers         = ["connect-cluster-configs"]
-  #   keys = [
-  #     {
-  #       name   = "connect-cluster-configs"
-  #       listen = true
-  #       send   = true
-  #       manage = false
-  #     }
-  #   ]
-  # },
-  # {
-  #   name              = "gpd-ingestion.apd.payment_option"
-  #   partitions        = 32
-  #   message_retention = 7
-  #   consumers = ["gpd-ingestion.apd.payment_option-rx-dl",]
-  #   keys = [
-  #     {
-  #       name   = "gpd-ingestion.apd.payment_option-rx-dl"
-  #       listen = true
-  #       send   = false
-  #       manage = false
-  #     }
-  #   ]
-  # },
-  # {
-  #   name              = "gpd-ingestion.apd.payment_option_metadata"
-  #   partitions        = 32
-  #   message_retention = 7
-  #   consumers = ["gpd-ingestion.apd.payment_option_metadata-rx-dl"]
-  #   keys = [
-  #     {
-  #       name   = "gpd-ingestion.apd.payment_option_metadata-rx-dl"
-  #       listen = true
-  #       send   = false
-  #       manage = false
-  #     }
-  #   ]
-  # },
-  # {
-  #   name              = "gpd-ingestion.apd.payment_position"
-  #   partitions        = 32
-  #   message_retention = 7
-  #   consumers = [ "gpd-ingestion.apd.payment_position-rx-dl"]
-  #   keys = [
-  #     {
-  #       name   = "gpd-ingestion.apd.payment_position-rx-dl"
-  #       listen = true
-  #       send   = true
-  #       manage = false
-  #     }
-  #   ]
-  # },
-  # {
-  #   name              = "gpd-ingestion.apd.transfer"
-  #   partitions        = 32
-  #   message_retention = 7
-  #   consumers = [ "gpd-ingestion.apd.transfer-rx-dl"]
-  #   keys = [
-  #     {
-  #       name   = "gpd-ingestion.apd.transfer-rx-dl"
-  #       listen = true
-  #       send   = false
-  #       manage = false
-  #     }
-  #   ]
-  # },
-  # {
-  #   name              = "gpd-ingestion.apd.transfer_metadata"
-  #   partitions        = 32
-  #   message_retention = 7
-  #   consumers = [ "gpd-ingestion.apd.transfer_metadata-rx-dl"]
-  #   keys = [
-  #     {
-  #       name   = "gpd-ingestion.apd.transfer_metadata-rx-dl"
-  #       listen = true
-  #       send   = false
-  #       manage = false
-  #     }
-  #   ]
-  # },
+  {
+    name              = "gpd-ingestion.apd.payment_position"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["gpd-ingestion.apd.payment_position-rx-dl", ]
+    keys = [
+      {
+        name   = "gpd-ingestion.apd.payment_position-rx-dl"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "gpd-ingestion.apd.payment_position-tx"
+        listen = false
+        send   = true
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "gpd-ingestion.apd.transfer"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["gpd-ingestion.apd.transfer-rx-dl", ]
+    keys = [
+      {
+        name   = "gpd-ingestion.apd.transfer-rx-dl"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "gpd-ingestion.apd.transfer-tx"
+        listen = false
+        send   = true
+        manage = false
+      }
+    ]
+  },
 ]
 
-
+app_forwarder_ip_restriction_default_action = "Deny"
 # alert evh
 # ehns_metric_alerts_gpd = {
 #   no_trx = {

@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "tools_rg" {
   name     = "${local.product}-${var.domain}-tools-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_subnet" "tools_cae_subnet" {
@@ -22,4 +22,20 @@ resource "azurerm_container_app_environment" "tools_cae" {
   resource_group_name        = azurerm_resource_group.tools_rg[0].name
   log_analytics_workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
   infrastructure_subnet_id   = azurerm_subnet.tools_cae_subnet.id
+}
+
+
+module "route_table_peering_nexi" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//route_table?ref=v8.33.0"
+
+  name                          = format("%s-tools-to-nexi-rt", local.product)
+  location                      = var.location
+  resource_group_name           = module.vnet.resource_group_name
+  disable_bgp_route_propagation = false
+
+  subnet_ids = [azurerm_subnet.tools_cae_subnet.id]
+
+  routes = var.route_tools
+
+  tags = module.tag_config.tags
 }

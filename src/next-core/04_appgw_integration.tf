@@ -12,7 +12,7 @@ resource "azurerm_user_assigned_identity" "appgateway" {
   location            = azurerm_resource_group.sec_rg.location
   name                = "${local.product_region}-integration-appgateway-identity"
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
@@ -33,7 +33,7 @@ resource "azurerm_public_ip" "integration_appgateway_public_ip" {
   allocation_method   = "Static"
   zones               = var.integration_appgateway_zones
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 locals {
@@ -163,7 +163,7 @@ locals {
 # 🔱 APP GW Integration
 #
 module "app_gw_integration" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v7.50.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v8.93.1"
 
   resource_group_name = module.vnet_integration.resource_group_name
   location            = var.location
@@ -260,8 +260,27 @@ module "app_gw_integration" {
   # https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftnetworkapplicationgateways
   monitor_metric_alert_criteria = {
 
+    compute_units_usage_critical = {
+      description   = "${module.app_gw_integration.name} Critical compute units usage, probably an high traffic peak"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 1
+      auto_mitigate = true
+
+      criteria = [
+        {
+          aggregation = "Average"
+          metric_name = "ComputeUnits"
+          operator    = "GreaterThan"
+          threshold   = floor(var.integration_app_gateway_max_capacity * 90 / 100)
+          dimension   = []
+        }
+      ]
+      dynamic_criteria = []
+    }
+
     compute_units_usage = {
-      description   = "${module.app_gw_integration.name} Abnormal compute units usage, probably an high traffic peak"
+      description   = "${module.app_gw.name} Abnormal compute units usage, probably an high traffic peak"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 2
@@ -270,11 +289,10 @@ module "app_gw_integration" {
       criteria = []
       dynamic_criteria = [
         {
-          aggregation       = "Average"
-          metric_name       = "ComputeUnits"
-          operator          = "GreaterOrLessThan"
-          alert_sensitivity = "Low"
-          # todo after api app migration change to High
+          aggregation              = "Average"
+          metric_name              = "ComputeUnits"
+          operator                 = "GreaterOrLessThan"
+          alert_sensitivity        = "Low" # todo after api app migration change to High
           evaluation_total_count   = 2
           evaluation_failure_count = 2
           dimension                = []
@@ -326,7 +344,7 @@ module "app_gw_integration" {
       description   = "${module.app_gw_integration.name} Abnormal failed requests"
       frequency     = "PT5M"
       window_size   = "PT5M"
-      severity      = 1
+      severity      = 2
       auto_mitigate = true
 
       criteria = []
@@ -336,8 +354,8 @@ module "app_gw_integration" {
           metric_name              = "FailedRequests"
           operator                 = "GreaterThan"
           alert_sensitivity        = "Medium"
-          evaluation_total_count   = 2
-          evaluation_failure_count = 2
+          evaluation_total_count   = 4
+          evaluation_failure_count = 4
           dimension                = []
         }
       ]
@@ -345,5 +363,5 @@ module "app_gw_integration" {
 
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "eventhub_ita_rg" {
   name     = local.eventhub_resource_group_name
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "eventhub_namespace" {
@@ -45,14 +45,14 @@ module "eventhub_namespace" {
   metric_alerts_create = var.ehns_alerts_enabled
   metric_alerts        = var.ehns_metric_alerts
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #
 # CONFIGURATION
 #
 module "eventhub_printit_configuration" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub_configuration?ref=v8.22.0"
+  source = "./.terraform/modules/__v3__//eventhub_configuration"
   count  = var.is_feature_enabled.eventhub ? 1 : 0
 
   event_hub_namespace_name                = module.eventhub_namespace.name

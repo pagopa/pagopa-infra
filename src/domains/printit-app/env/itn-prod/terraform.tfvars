@@ -7,13 +7,6 @@ location_short  = "itn"
 location_string = "Italy North"
 instance        = "prod"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/printit-app"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -44,10 +37,10 @@ is_feature_enabled = {
 app_service_pdf_engine_sku_name                             = "P2v3"
 app_service_pdf_engine_autoscale_enabled                    = true
 app_service_pdf_engine_always_on                            = true
-app_service_pdf_engine_zone_balancing_enabled               = true
+app_service_pdf_engine_zone_balancing_enabled               = false
 app_service_pdf_engine_sku_name_java                        = "P1v3"
-app_service_pdf_engine_sku_name_java_zone_balancing_enabled = true
-
+app_service_pdf_engine_sku_name_java_zone_balancing_enabled = false
+app_service_ip_restriction_default_action                   = "Deny"
 pod_disruption_budgets = {
   "print-payment-notice-functions" = {
     minAvailable = 2

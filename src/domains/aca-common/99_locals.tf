@@ -10,4 +10,10 @@ locals {
 
   azdo_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
   azdo_iac_managed_identities   = toset(["azdo-${var.env}-pagopa-iac-deploy", "azdo-${var.env}-pagopa-iac-plan"])
+
+  monitor_action_group_slack_name    = "SlackPagoPA"
+  monitor_action_group_email_name    = "PagoPA"
+  monitor_action_group_opsgenie_name = "Opsgenie"
+
+  aks_resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
 }

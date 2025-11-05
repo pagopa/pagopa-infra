@@ -7,13 +7,6 @@ location_short  = "weu"
 location_string = "West Europe"
 instance        = "uat"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/qi-app"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -31,4 +24,9 @@ tls_cert_check_helm = {
   chart_version = "2.0.0"
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
   image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
+}
+
+### ADX
+dexp_re_db_linkes_service = {
+  enable = true
 }

@@ -1,6 +1,7 @@
 locals {
-  project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  product = "${var.prefix}-${var.env_short}"
+  project     = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_itn = "${var.prefix}-${var.env_short}-${var.location_short_itn}-${var.domain}"
+  product     = "${var.prefix}-${var.env_short}"
 
   subscription_name = "${var.env}-${var.prefix}"
 
@@ -31,4 +32,9 @@ locals {
 
   azdo_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
   azdo_iac_managed_identities   = toset(["azdo-${var.env}-pagopa-iac-deploy", "azdo-${var.env}-pagopa-iac-plan"])
+
+  msg_resource_group_name = "${local.product}-msg-rg"
+
+  vnet_italy_name                = "${local.product}-itn-vnet"
+  vnet_italy_resource_group_name = "${local.product}-itn-vnet-rg"
 }

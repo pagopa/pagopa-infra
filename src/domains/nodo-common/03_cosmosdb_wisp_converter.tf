@@ -1,17 +1,17 @@
 module "cosmosdb_account_wispconv" {
   count = var.create_wisp_converter ? 1 : 0
 
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v7.77.0"
+  source              = "./.terraform/modules/__v3__/cosmosdb_account"
   domain              = var.domain
   name                = "${local.project}-wispconv-cosmos-account"
   location            = var.location
   resource_group_name = azurerm_resource_group.wisp_converter_rg[0].name
 
-  offer_type       = var.wisp_converter_cosmos_nosql_db_params.offer_type
-  kind             = var.wisp_converter_cosmos_nosql_db_params.kind
-  capabilities     = var.wisp_converter_cosmos_nosql_db_params.capabilities
-  enable_free_tier = var.wisp_converter_cosmos_nosql_db_params.enable_free_tier
-
+  offer_type                    = var.wisp_converter_cosmos_nosql_db_params.offer_type
+  kind                          = var.wisp_converter_cosmos_nosql_db_params.kind
+  capabilities                  = var.wisp_converter_cosmos_nosql_db_params.capabilities
+  enable_free_tier              = var.wisp_converter_cosmos_nosql_db_params.enable_free_tier
+  burst_capacity_enabled        = var.wisp_converter_cosmos_nosql_db_params.burst_capacity_enabled
   subnet_id                     = module.cosmosdb_wisp_converter_snet[0].id
   public_network_access_enabled = var.wisp_converter_cosmos_nosql_db_params.public_network_access_enabled
   # private endpoint
@@ -33,7 +33,7 @@ module "cosmosdb_account_wispconv" {
 
   backup_continuous_enabled = var.wisp_converter_cosmos_nosql_db_params.backup_continuous_enabled
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     azurerm_resource_group.wisp_converter_rg,
@@ -44,7 +44,7 @@ module "cosmosdb_account_wispconv" {
 # cosmosdb database for wispconv
 module "cosmosdb_account_wispconv_db" {
   count               = var.create_wisp_converter ? 1 : 0
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v7.77.0"
+  source              = "./.terraform/modules/__v3__/cosmosdb_sql_database"
   name                = "wispconverter"
   resource_group_name = azurerm_resource_group.wisp_converter_rg[0].name
   account_name        = module.cosmosdb_account_wispconv[0].name
@@ -130,7 +130,7 @@ locals {
 
 # cosmosdb container for stand-in datastore
 module "cosmosdb_account_wispconv_containers" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.77.0"
+  source   = "./.terraform/modules/__v3__/cosmosdb_sql_container"
   for_each = { for c in local.wispconv_containers : c.name => c if var.create_wisp_converter }
 
   name                = each.value.name
@@ -198,7 +198,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_wisp_normalized_ru_exceeded" {
     action_group_id = data.azurerm_monitor_action_group.opsgenie[0].id
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 

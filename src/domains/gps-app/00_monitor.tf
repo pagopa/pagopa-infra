@@ -14,7 +14,7 @@ data "azurerm_resource_group" "monitor_rg" {
 
 data "azurerm_monitor_action_group" "slack" {
   resource_group_name = var.monitor_resource_group_name
-  name                = local.monitor_action_group_slack_name
+  name                = local.monitor_action_group_slack_pagamenti_alert_name
 }
 
 data "azurerm_monitor_action_group" "email" {
@@ -26,4 +26,15 @@ data "azurerm_monitor_action_group" "opsgenie" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_opsgenie_name
+}
+
+data "azurerm_monitor_action_group" "smo_opsgenie" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = var.monitor_resource_group_name
+  name                = "SmoOpsgenie"
+}
+
+data "azurerm_monitor_action_group" "slack_pagopa_pagamenti_alert" {
+  resource_group_name = var.monitor_resource_group_name
+  name                = local.monitor_action_group_slack_pagamenti_alert_name
 }

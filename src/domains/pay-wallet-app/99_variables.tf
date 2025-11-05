@@ -60,12 +60,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 ### External resources
 
@@ -144,12 +138,6 @@ variable "dns_zone_prefix" {
   description = "The wallet dns subdomain."
 }
 
-variable "payment_wallet_migrations_enabled" {
-  type        = bool
-  default     = false
-  description = "Payment wallet migrations enabled"
-}
-
 variable "enabled_payment_wallet_method_ids_pm" {
   type        = string
   default     = ""
@@ -164,4 +152,16 @@ variable "pod_disruption_budgets" {
   }))
   description = "Pod disruption budget for domain namespace"
   default     = {}
+}
+
+variable "pay_wallet_jwt_issuer_api_key_use_primary" {
+  type        = bool
+  description = "If true the current active API key used for jwt issuer service will be the primary one."
+  default     = true
+}
+
+variable "payment_wallet_service_api_key_use_primary" {
+  type        = bool
+  description = "If true the current active API key used for wallet service requests will be the primary one."
+  default     = true
 }

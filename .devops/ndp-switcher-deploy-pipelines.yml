@@ -1,0 +1,222 @@
+trigger: none
+pr: none
+
+parameters:
+  - name: 'ENV'
+    displayName: 'Environment to switch'
+    type: string
+    default: dev
+    values:
+      - dev
+      - uat
+      - prod
+  - name: 'SWITCH'
+    displayName: 'Switch to perform'
+    type: string
+    default: 'toNexiPublic'
+    values:
+      - toNexiPublic
+      - toNexiPrivateHTTPS
+      - toPagoPA
+
+variables:
+  - name: TIME_OUT
+    value: 10
+  - name: APPROVE_NOTIFY_ADMIN
+    value: '[pagoPA-iac]\Project Administrators'
+
+  - name: azureServiceConnectionApplyName
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)"
+    ${{ if eq(parameters.ENV, 'prod') }}:
+      value: "$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)"
+
+  - name: poolName
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "$(TF_POOL_NAME_DEV)"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "$(TF_POOL_NAME_UAT)"
+    ${{ if eq(parameters.ENV, 'prod') }}:
+      value: "$(TF_POOL_NAME_PROD)"
+
+  - name: apimName
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "pagopa-d-apim"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "pagopa-u-apim"
+    ${{ if eq(parameters.ENV, 'prod') }}:
+      value: "pagopa-p-apim"
+
+  - name: apimRg
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "pagopa-d-api-rg"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "pagopa-u-api-rg"
+    ${{ if eq(parameters.ENV, 'prod') }}:
+      value: "pagopa-p-api-rg"
+
+  - name: nexiNodeId
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "NDP004IT"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "NDP004UAT"
+    ${{ if eq(parameters.ENV, 'prod') }}:
+      value: "NDP004PROD"
+
+  - name: pagopaNodeId
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "NDP001DEV"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "NDP001UAT"
+    ${{ if eq(parameters.ENV, 'prod') }}:
+      value: "NDP001PROD"
+
+  - name: nexiNodePublicAddress
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "https://test.nexi.ndp.pagopa.it/nodo-p-sit.nexigroup.com"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "https://test.nexi.ndp.pagopa.it"
+    ${{ if eq(parameters.ENV, 'prod') }}:
+      value: "https://nexi.ndp.pagopa.it"
+
+  - name: nexiNodePrivateAddressHttps
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "https://10.79.20.63"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "https://10.79.20.63"
+    ${{ if eq(parameters.ENV, 'prod') }}:
+      value: "https://10.79.20.25"
+
+  - name: pagopaNodeAddress
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "https://weudev.nodo.internal.dev.platform.pagopa.it/nodo"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "https://weuuat.nodo.internal.uat.platform.pagopa.it/nodo"
+    ${{ if eq(parameters.ENV, 'prod') }}:
+      value: "https://weuprod.nodo.internal.platform.pagopa.it/nodo"
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+resources:
+  repositories:
+    - repository: terraform
+      type: github
+      name: pagopa/azure-pipeline-templates
+      ref: refs/tags/v6.11.0
+      endpoint: "io-azure-devops-github-ro"
+
+name: "Switch ${{ parameters.ENV }} ${{ parameters.SWITCH }} - $(Date:yyyyMMdd).$(Rev:r)"
+stages:
+  - stage: switch_${{parameters.ENV}}
+    pool:
+      name: "${{variables.poolName}}"
+
+    jobs:
+      - job: get_current_values
+        displayName: "Retrieve current APIM named values"
+        condition: succeeded()
+        steps:
+        - template: templates/apim-get-values/template.yaml@terraform
+          parameters:
+            AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyName}}"
+            APIM_NAME: "${{variables.apimName}}"
+            APIM_RG: "${{variables.apimRg}}"
+            NAMED_VALUES:
+              - schema-ip-nexi
+              - default-nodo-backend
+              - default-nodo-id
+              - enable-routing-decoupler-switch
+              - enable-nm3-decoupler-switch
+      - job: waitForValidation
+        condition: succeeded()
+        timeoutInMinutes: 240 # task times out in 4 hours
+        dependsOn: get_current_values
+        displayName: "Authorization - Switch NdP on env '${{ parameters.ENV }}' ${{ parameters.SWITCH }}"
+        pool: server
+        steps:
+          - task: ManualValidation@0
+            inputs:
+              notifyUsers: |
+                $(APPROVE_NOTIFY_ADMIN)
+              instructions: "Click 'Resume' to continue the switch on '${{ parameters.ENV }}' ${{ parameters.SWITCH }}"
+              onTimeout: 'reject'
+            displayName: "🚨 Confirm?"
+
+      - ${{ if eq(parameters.SWITCH, 'toNexiPublic') }}:
+        - job: "update_values_nexi_public"
+          displayName: "Switching to Nexi NdP via public route"
+          condition: succeeded()
+          dependsOn: waitForValidation
+          steps:
+          - template: templates/apim-set-values/template.yaml@terraform
+            parameters:
+              AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyName}}"
+              APIM_NAME: "${{variables.apimName}}"
+              APIM_RG: "${{variables.apimRg}}"
+              NAMED_VALUES:
+                - name: enable-nm3-decoupler-switch
+                  value: "false"
+                - name: enable-routing-decoupler-switch
+                  value: "false"
+                - name: default-nodo-id
+                  value: "${{variables.nexiNodeId}}"
+                - name: default-nodo-backend
+                  value: "${{variables.nexiNodePublicAddress}}"
+                - name: schema-ip-nexi
+                  value: "${{variables.nexiNodePublicAddress}}"
+                - ${{ if eq(parameters.ENV, 'uat') }}:
+                  - name: default-nodo-backend-prf
+                    value: "${{variables.nexiNodePublicAddress}}"
+
+
+      - ${{ if eq(parameters.SWITCH, 'toNexiPrivateHTTPS') }}:
+        - job: "update_values_nexi_private_https"
+          displayName: "Switching to Nexi NdP via private route with HTTPS"
+          dependsOn: waitForValidation
+          steps:
+          - template: templates/apim-set-values/template.yaml@terraform
+            parameters:
+              AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyName}}"
+              APIM_NAME: "${{variables.apimName}}"
+              APIM_RG: "${{variables.apimRg}}"
+              NAMED_VALUES:
+                - name: enable-nm3-decoupler-switch
+                  value: "false"
+                - name: enable-routing-decoupler-switch
+                  value: "false"
+                - name: default-nodo-id
+                  value: "${{variables.nexiNodeId}}"
+                - name: default-nodo-backend
+                  value: "${{variables.nexiNodePrivateAddressHttps}}"
+                - name: schema-ip-nexi
+                  value: "${{variables.nexiNodePrivateAddressHttps}}"
+                - ${{ if eq(parameters.ENV, 'uat') }}:
+                    - name: default-nodo-backend-prf
+                      value: "${{variables.nexiNodePrivateAddressHttps}}"
+
+      - ${{ if eq(parameters.SWITCH, 'toPagoPA') }}:
+          - job: "update_values_pagopa_private"
+            displayName: "Switching to PagoPA NdP"
+            dependsOn: waitForValidation
+            steps:
+              - template: templates/apim-set-values/template.yaml@terraform
+                parameters:
+                  AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyName}}"
+                  APIM_NAME: "${{variables.apimName}}"
+                  APIM_RG: "${{variables.apimRg}}"
+                  NAMED_VALUES:
+                    - name: enable-nm3-decoupler-switch
+                      value: "false"
+                    - name: enable-routing-decoupler-switch
+                      value: "false"
+                    - name: default-nodo-id
+                      value: "${{variables.pagopaNodeId}}"
+                    - name: default-nodo-backend
+                      value: "${{variables.pagopaNodeAddress}}"
+                    - ${{ if eq(parameters.ENV, 'uat') }}:
+                        - name: default-nodo-backend-prf
+                          value: "${{variables.pagopaNodeAddress}}"
+

@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "rg_velero_backup" {
   count    = var.enable_velero ? 1 : 0
   name     = "${local.product}-aks-velero"
   location = var.location
-  tags     = var.tags
+  tags     = module.tag_config.tags
 }
 
 
@@ -50,7 +50,7 @@ module "velero" {
   workload_identity_name                = module.velero_workload_identity_init[0].user_assigned_identity_name
   workload_identity_resource_group_name = azurerm_resource_group.rg_velero_backup[0].name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -74,7 +74,7 @@ module "aks_namespace_backup" {
   schedule        = var.velero_backup_schedule
   volume_snapshot = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [module.velero]
 }
@@ -100,7 +100,7 @@ module "aks_single_namespace_backup" {
   schedule        = var.velero_backup_single_namespace_schedule
   volume_snapshot = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [module.velero]
 }

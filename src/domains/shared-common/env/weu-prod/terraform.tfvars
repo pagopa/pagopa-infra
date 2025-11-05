@@ -1,18 +1,13 @@
-prefix         = "pagopa"
-env_short      = "p"
-env            = "prod"
-domain         = "shared"
-location       = "westeurope"
-location_short = "weu"
-instance       = "prod"
+prefix               = "pagopa"
+env_short            = "p"
+env                  = "prod"
+domain               = "shared"
+location             = "westeurope"
+location_short       = "weu"
+instance             = "prod"
+location_short_italy = "itn"
+location_italy       = "italynorth"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/shared"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -80,6 +75,7 @@ cosmos_authorizer_db_params = {
   is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = true
+  burst_capacity_enabled    = true
 }
 
 
@@ -109,4 +105,5 @@ taxonomy_network_rules = {
   bypass                     = ["AzureServices"]
 }
 
-redis_ha_enabled = true
+redis_ha_enabled          = true
+github_runner_ita_enabled = true

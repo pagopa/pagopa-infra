@@ -1,5 +1,5 @@
 module "tls_checker" {
-  source = "./.terraform/modules/__v3__/tls_checker"
+  source = "./.terraform/modules/__v4__/tls_checker"
 
   https_endpoint                      = local.ecommerce_hostname
   alert_name                          = local.ecommerce_hostname
@@ -19,27 +19,20 @@ module "tls_checker" {
   kv_secret_name_for_application_insights_connection_string = "applicationinsights-connection-string"
   keyvault_name                                             = data.azurerm_key_vault.kv.name
   keyvault_tenant_id                                        = data.azurerm_client_config.current.tenant_id
+  workload_identity_enabled                                 = true
+  workload_identity_service_account_name                    = module.workload_identity.workload_identity_service_account_name
+  workload_identity_client_id                               = module.workload_identity.workload_identity_client_id
 }
 
-resource "helm_release" "cert_mounter" {
-  name         = "cert-mounter-blueprint"
-  repository   = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
-  chart        = "cert-mounter-blueprint"
-  version      = "1.0.4"
-  namespace    = var.domain
-  timeout      = 120
-  force_update = true
-
-  values = [
-    "${
-      templatefile("${path.root}/helm/cert-mounter.yaml.tpl", {
-        NAMESPACE        = var.domain,
-        DOMAIN           = var.domain
-        CERTIFICATE_NAME = replace(local.ecommerce_hostname, ".", "-"),
-        ENV_SHORT        = var.env_short,
-      })
-    }"
-  ]
+module "cert_mounter" {
+  source                                 = "./.terraform/modules/__v4__/cert_mounter"
+  namespace                              = var.domain
+  certificate_name                       = replace(local.ecommerce_hostname, ".", "-")
+  kv_name                                = data.azurerm_key_vault.kv.name
+  tenant_id                              = data.azurerm_subscription.current.tenant_id
+  workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
+  workload_identity_client_id            = module.workload_identity.workload_identity_client_id
+  depends_on                             = [module.workload_identity]
 }
 
 resource "helm_release" "reloader" {

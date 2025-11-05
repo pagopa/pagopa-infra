@@ -55,12 +55,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 ### External resources
 
@@ -100,6 +94,11 @@ variable "cidr_subnet_flex_dbms" {
   description = "Postgresql network address space."
 }
 
+variable "cidr_subnet_flex_storico_dbms" {
+  type        = list(string)
+  description = "Postgresql network address space."
+}
+
 # Postgres Flexible
 variable "pgres_flex_params" {
   type = object({
@@ -119,6 +118,33 @@ variable "pgres_flex_params" {
     max_connections                                  = number
     enable_private_dns_registration                  = optional(bool, false)
     enable_private_dns_registration_virtual_endpoint = optional(bool, false)
+    public_network_access_enabled                    = optional(bool, false)
+  })
+
+}
+
+# Postgres Flexible
+variable "pgres_flex_storico_params" {
+  type = object({
+    enabled                                = bool
+    sku_name                               = string
+    db_version                             = string
+    storage_mb                             = string
+    zone                                   = number
+    standby_ha_zone                        = number
+    backup_retention_days                  = number
+    geo_redundant_backup_enabled           = bool
+    create_mode                            = string
+    pgres_flex_private_endpoint_enabled    = bool
+    pgres_flex_ha_enabled                  = bool
+    pgres_flex_pgbouncer_enabled           = bool
+    pgres_flex_diagnostic_settings_enabled = bool
+    max_connections                        = number
+    enable_private_dns_registration        = optional(bool, false)
+    max_worker_processes                   = number
+    public_network_access_enabled          = optional(bool, false)
+    auto_grow_enabled                      = optional(bool, true)
+    max_client_conn                        = optional(number, 850)
   })
 
 }
@@ -126,6 +152,12 @@ variable "pgres_flex_params" {
 variable "pgres_flex_nodo_db_name" {
   type        = string
   description = "Nodo DB name"
+  default     = "nodo"
+}
+
+variable "pgres_flex_nodo_storico_db_name" {
+  type        = string
+  description = "Nodo Storico DB name"
   default     = "nodo"
 }
 
@@ -352,6 +384,8 @@ variable "wisp_converter_cosmos_nosql_db_params" {
     offer_type     = string
     server_version = string
     kind           = string
+
+    burst_capacity_enabled = bool
     consistency_policy = object({
       consistency_level       = string
       max_interval_in_seconds = number
@@ -501,8 +535,8 @@ variable "geo_replica_cidr_subnet_postgresql" {
 
 variable "location_replica" {
   type        = string
-  description = "One of westeurope, northeurope"
-  default     = "northeurope"
+  description = "One of westeurope, italynorth"
+  default     = "italynorth"
 }
 
 variable "location_replica_short" {
@@ -513,8 +547,8 @@ variable "location_replica_short" {
     )
     error_message = "Length must be 3 chars."
   }
-  description = "One of wue, neu"
-  default     = "neu"
+  description = "One of wue, itn"
+  default     = "itn"
 }
 
 variable "nodo_cfg_sync_storage_account" {
@@ -542,6 +576,21 @@ variable "wisp_converter_storage_account" {
     public_network_access_enabled = bool
     backup_enabled                = bool
     backup_retention_days         = number
+  })
+}
+
+variable "mbd_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_delete_retention_days    = number
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    backup_enabled                = bool
+    backup_retention_days         = number
+    use_legacy_defender_version   = bool
   })
 }
 

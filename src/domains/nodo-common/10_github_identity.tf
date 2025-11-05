@@ -20,7 +20,8 @@ locals {
     "pagopa-wisp-converter",
     "pagopa-wisp-converter-technical-support",
     "pagopa-node-technical-support-worker",
-    "pagopa-mbd"
+    "pagopa-mbd",
+    "pagopa-decoupler"
   ]
 
   federations_01 = [
@@ -65,7 +66,7 @@ locals {
 
 # create a module for each 20 repos
 module "identity_cd_01" {
-  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v7.77.0"
+  source = "./.terraform/modules/__v3__/github_federated_identity"
   # pagopa-<ENV><DOMAIN>-<COUNTER>-github-<PERMS>-identity
   prefix    = var.prefix
   env_short = var.env_short
@@ -80,7 +81,7 @@ module "identity_cd_01" {
     resource_groups    = local.environment_cd_roles.resource_groups
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     data.azurerm_resource_group.identity_rg
@@ -91,7 +92,7 @@ module "identity_cd_01" {
 # create a module for each 20 repos
 module "identity_ci_01" {
   count  = var.env_short == "p" ? 0 : 1
-  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v7.77.0"
+  source = "./.terraform/modules/__v3__/github_federated_identity"
   # pagopa-<ENV><DOMAIN>-<COUNTER>-github-<PERMS>-identity
   prefix    = var.prefix
   env_short = var.env_short
@@ -106,7 +107,7 @@ module "identity_ci_01" {
     resource_groups    = local.environment_ci_roles.resource_groups
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     data.azurerm_resource_group.identity_rg
@@ -178,4 +179,14 @@ resource "null_resource" "github_runner_app_permissions_to_namespace_ci_01" {
   depends_on = [
     module.identity_ci_01
   ]
+}
+
+# WL-IDENTITY
+# https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/1227751458/Migrazione+pod+Identity+vs+workload+Identity#Init-workload-identity
+module "workload_identity" {
+  source = "./.terraform/modules/__v3__/kubernetes_workload_identity_init"
+
+  workload_identity_name_prefix         = var.domain
+  workload_identity_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name
+  workload_identity_location            = var.location
 }

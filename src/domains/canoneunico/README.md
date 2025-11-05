@@ -1,6 +1,6 @@
 
 <!-- markdownlint-disable -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -19,6 +19,7 @@
 | <a name="module_canoneunico_function"></a> [canoneunico\_function](#module\_canoneunico\_function) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v6.15.2 |
 | <a name="module_canoneunico_function_snet"></a> [canoneunico\_function\_snet](#module\_canoneunico\_function\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.15.0 |
 | <a name="module_canoneunico_sa"></a> [canoneunico\_sa](#module\_canoneunico\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 
 ## Resources
 
@@ -84,6 +85,7 @@
 | <a name="input_corporate_cup_users"></a> [corporate\_cup\_users](#input\_corporate\_cup\_users) | List of corporate CUP user. | <pre>list(object({<br/>    username = string<br/>  }))</pre> | `[]` | no |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_enable_canoneunico_backup"></a> [enable\_canoneunico\_backup](#input\_enable\_canoneunico\_backup) | (Optional) Enables canoneunico storage account backup | `bool` | `false` | no |
+| <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
 | <a name="input_function_storage_account_info"></a> [function\_storage\_account\_info](#input\_function\_storage\_account\_info) | n/a | <pre>object({<br/>    account_kind                      = string<br/>    account_tier                      = string<br/>    account_replication_type          = string<br/>    access_tier                       = string<br/>    advanced_threat_protection_enable = bool<br/>  })</pre> | <pre>{<br/>  "access_tier": "Hot",<br/>  "account_kind": "StorageV2",<br/>  "account_replication_type": "LRS",<br/>  "account_tier": "Standard",<br/>  "advanced_threat_protection_enable": true<br/>}</pre> | no |
@@ -95,14 +97,13 @@
 | <a name="input_private_endpoint_network_policies_enabled"></a> [private\_endpoint\_network\_policies\_enabled](#input\_private\_endpoint\_network\_policies\_enabled) | Enable the private endpoint network policies | `bool` | `false` | no |
 | <a name="input_public_network_access_enabled"></a> [public\_network\_access\_enabled](#input\_public\_network\_access\_enabled) | Enable the public network access | `bool` | `false` | no |
 | <a name="input_storage_account_info"></a> [storage\_account\_info](#input\_storage\_account\_info) | n/a | <pre>object({<br/>    account_kind                      = string<br/>    account_tier                      = string<br/>    account_replication_type          = string<br/>    access_tier                       = string<br/>    advanced_threat_protection_enable = bool<br/>  })</pre> | <pre>{<br/>  "access_tier": "Hot",<br/>  "account_kind": "StorageV2",<br/>  "account_replication_type": "LRS",<br/>  "account_tier": "Standard",<br/>  "advanced_threat_protection_enable": true<br/>}</pre> | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | <a name="output_sshPassword"></a> [sshPassword](#output\_sshPassword) | n/a |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->
 
 ## Requirements
 
@@ -183,4 +184,4 @@
 ## Outputs
 
 No outputs.
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

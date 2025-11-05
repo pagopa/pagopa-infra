@@ -39,6 +39,6 @@ resource "azurerm_kubernetes_cluster_node_pool" "nodo_cron_pool" {
   enable_node_public_ip = false
 
 
-  tags = merge(var.tags, var.nodo_user_node_pool.node_tags)
+  tags = merge(module.tag_config.tags, var.nodo_user_node_pool.node_tags)
 
 }

@@ -65,13 +65,6 @@ variable "lock_enable" {
   description = "Apply locks to block accedentaly deletions."
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
-
 #
 # Network
 #
@@ -565,4 +558,14 @@ variable "log_analytics_italy_workspace_resource_group_name" {
 variable "monitor_appinsights_name" {
   type        = string
   description = "App insight in europe name"
+}
+
+variable "aks_enable_workload_identity" {
+  type    = bool
+  default = false
+}
+
+variable "enable_elastic_agent" {
+  type    = bool
+  default = true
 }

@@ -36,6 +36,12 @@ resources:
       name: pagopa/azure-pipeline-templates
       ref: refs/tags/v6.9.0
       endpoint: "io-azure-devops-github-ro"
+    #Checkout tests repo that contains e2e tests to be executed after domain apply
+    - repository: pagopaCheckoutTests
+      type: github
+      name: pagopa/pagopa-checkout-tests
+      ref: main
+      endpoint: 'io-azure-devops-github-ro'
 
 
 variables:
@@ -63,6 +69,7 @@ stages:
         AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
         AKS_NAME: '$(TF_AKS_DEV_NAME)'
         POOL_NAME: '$(TF_POOL_NAME_DEV)'
+        COMMON_USE_AKS: false
   # E2E test
   - stage: "E2E_Tests_Checkout_DEV_environment"
     displayName: '🧪 Running E2E test on DEV env'
@@ -92,18 +99,19 @@ stages:
         AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_TOKEN)'
         AKS_NAME: '$(TF_AKS_UAT_NAME)'
         POOL_NAME: '$(TF_POOL_NAME_UAT)'
+        COMMON_USE_AKS: false
       # E2E test
-    - stage: "E2E_Tests_Checkout_DEV_environment"
-      displayName: '🧪 Running E2E test on DEV env'
+    - stage: "E2E_Tests_Checkout_UAT_environment"
+      displayName: '🧪 Running E2E test on UAT env'
       pool:
         vmImage: 'ubuntu-latest'
-      dependsOn: dev_apply_ecommerce_app
+      dependsOn: uat_apply_ecommerce_app
       jobs:
         - job: e2e_tests
           steps:
             - template: .devops/azure-templates/e2e-tests.yaml@pagopaCheckoutTests
               parameters:
-                ENVIRONMENT: DEV
+                ENVIRONMENT: UAT
                 CHECKOUT_RESOURCE_REPO_NAME: pagopaCheckoutTests
   #PROD
   - ${{ if eq(parameters['PROD'], true) }}:
@@ -121,6 +129,7 @@ stages:
         AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
         AKS_NAME: '$(TF_AKS_PROD_NAME)'
         POOL_NAME: '$(TF_POOL_NAME_PROD)'
+        COMMON_USE_AKS: false
     - stage:
       displayName: '💻 Dashboards generation GHA'
       jobs:

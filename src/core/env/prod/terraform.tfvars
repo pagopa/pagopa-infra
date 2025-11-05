@@ -6,13 +6,6 @@ location_short     = "weu"
 location_ita       = "italynorth"
 location_short_ita = "itn"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 #
 # Feature flag
@@ -23,13 +16,10 @@ enabled_features = {
 }
 
 
-
-
 # main vnet
 
 # common
 cidr_subnet_postgresql = ["10.1.129.0/24"]
-cidr_subnet_buyerbanks = ["10.1.134.0/24"]
 
 # specific
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"] #placeholder
@@ -89,7 +79,8 @@ apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
 apim_fdr_nodo_pagopa_enable     = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
-
+apim_enable_nm3_decoupler_switch     = true
+apim_enable_routing_decoupler_switch = true
 
 
 
@@ -104,14 +95,6 @@ ecommerce_ingress_hostname = "weuprod.ecommerce.internal.platform.pagopa.it"
 
 
 
-# buyerbanks functions
-buyerbanks_function_kind              = "Linux"
-buyerbanks_function_sku_tier          = "Standard"
-buyerbanks_function_sku_size          = "S1"
-buyerbanks_function_autoscale_minimum = 1
-buyerbanks_function_autoscale_maximum = 3
-buyerbanks_function_autoscale_default = 1
-buyerbanks_delete_retention_days      = 30
 
 
 

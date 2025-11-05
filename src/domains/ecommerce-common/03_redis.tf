@@ -2,11 +2,11 @@ resource "azurerm_resource_group" "redis_ecommerce_rg" {
   name     = "${local.project}-redis-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "pagopa_ecommerce_redis_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.42.3"
 
   name                                      = format("%s-redis-snet", local.project)
   address_prefixes                          = var.cidr_subnet_redis_ecommerce
@@ -16,7 +16,7 @@ module "pagopa_ecommerce_redis_snet" {
 }
 
 module "pagopa_ecommerce_redis" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.72.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v8.42.3"
 
   # name has been differentiated due to a migration instance created to handle the switch to an HA instance
   name                          = var.redis_ecommerce_params.ha_enabled ? "${local.project}-redis-ha" : "${local.project}-redis"
@@ -62,7 +62,7 @@ module "pagopa_ecommerce_redis" {
     },
   ]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -108,7 +108,11 @@ resource "azurerm_monitor_metric_alert" "redis_cache_used_memory_exceeded" {
     action_group_id = azurerm_monitor_action_group.ecommerce_opsgenie[0].id
   }
 
-  tags = var.tags
+  action {
+    action_group_id = azurerm_monitor_action_group.service_management_opsgenie[0].id
+  }
+
+  tags = module.tag_config.tags
 }
 
 

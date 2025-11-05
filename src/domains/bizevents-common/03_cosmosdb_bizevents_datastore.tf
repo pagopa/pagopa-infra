@@ -2,11 +2,11 @@ resource "azurerm_resource_group" "bizevents_rg" {
   name     = "${local.project}-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "bizevents_datastore_cosmosdb_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
+  source               = "./.terraform/modules/__v3__/subnet"
   name                 = "${local.project}-datastore-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_bizevents_datastore_cosmosdb
   resource_group_name  = local.vnet_resource_group_name
@@ -22,7 +22,7 @@ module "bizevents_datastore_cosmosdb_snet" {
 }
 
 module "bizevents_datastore_cosmosdb_account" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.7.0"
+  source              = "./.terraform/modules/__v3__/cosmosdb_account"
   name                = "${local.project}-ds-cosmos-account"
   location            = var.location
   domain              = var.domain
@@ -52,18 +52,19 @@ module "bizevents_datastore_cosmosdb_account" {
   allowed_virtual_network_subnet_ids = []
 
   # private endpoint
-  private_endpoint_name    = "${local.project}-ds-cosmos-sql-endpoint"
-  private_endpoint_enabled = var.bizevents_datastore_cosmos_db_params.private_endpoint_enabled
-  subnet_id                = module.bizevents_datastore_cosmosdb_snet.id
-  private_dns_zone_ids     = [data.azurerm_private_dns_zone.cosmos.id]
+  private_endpoint_sql_name           = "${local.project}-ds-cosmos-sql-endpoint" # forced after update module vers
+  private_service_connection_sql_name = "${local.project}-ds-cosmos-sql-endpoint" # forced after update module vers
+  private_endpoint_enabled            = var.bizevents_datastore_cosmos_db_params.private_endpoint_enabled
+  subnet_id                           = module.bizevents_datastore_cosmosdb_snet.id
+  private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos.id]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "bizevents_datastore_cosmosdb_account_dev" {
-  count = var.env_short == "d" ? 1 : 0 # used for ADF biz test developer 
+  count = var.env_short == "d" ? 1 : 0 # used for ADF biz test developer
 
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.7.0"
+  source              = "./.terraform/modules/__v3__/cosmosdb_account"
   name                = "${local.project}-ds-cosmos-account-dev"
   location            = var.location
   domain              = var.domain
@@ -93,25 +94,26 @@ module "bizevents_datastore_cosmosdb_account_dev" {
   allowed_virtual_network_subnet_ids = []
 
   # private endpoint
-  private_endpoint_name    = "${local.project}-ds-cosmos-sql-endpoint"
-  private_endpoint_enabled = var.bizevents_datastore_cosmos_db_params.private_endpoint_enabled
-  subnet_id                = module.bizevents_datastore_cosmosdb_snet.id
-  private_dns_zone_ids     = [data.azurerm_private_dns_zone.cosmos.id]
+  private_endpoint_sql_name           = "${local.project}-ds-cosmos-sql-endpoint" # forced after update module vers
+  private_service_connection_sql_name = "${local.project}-ds-cosmos-sql-endpoint" # forced after update module vers
+  private_endpoint_enabled            = var.bizevents_datastore_cosmos_db_params.private_endpoint_enabled
+  subnet_id                           = module.bizevents_datastore_cosmosdb_snet.id
+  private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos.id]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # cosmosdb database for biz-events
 module "bizevents_datastore_cosmosdb_database" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v6.7.0"
+  source              = "./.terraform/modules/__v3__/cosmosdb_sql_database"
   name                = "db"
   resource_group_name = azurerm_resource_group.bizevents_rg.name
   account_name        = module.bizevents_datastore_cosmosdb_account.name
 }
 module "bizevents_datastore_cosmosdb_database_dev" {
-  count = var.env_short == "d" ? 1 : 0 # used for ADF biz test developer 
+  count = var.env_short == "d" ? 1 : 0 # used for ADF biz test developer
 
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v6.7.0"
+  source              = "./.terraform/modules/__v3__/cosmosdb_sql_database"
   name                = "db"
   resource_group_name = azurerm_resource_group.bizevents_rg.name
   account_name        = module.bizevents_datastore_cosmosdb_account_dev[0].name
@@ -124,25 +126,26 @@ locals {
       name               = "biz-events",
       partition_key_path = "/id",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = sum(toset([var.bizevents_datastore_cosmos_db_params.max_throughput, var.env_short == "p" ? 2000 : 0])) }
+      # autoscale_settings = { max_throughput = sum(toset([var.bizevents_datastore_cosmos_db_params.max_throughput, var.env_short == "p" ? 2000 : 0])) }
+      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput }
     },
     {
       name               = "biz-events-view-general",
       partition_key_path = "/transactionId",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput }
+      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_view }
     },
     {
       name               = "biz-events-view-cart",
       partition_key_path = "/transactionId",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput }
+      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_view }
     },
     {
       name               = "biz-events-view-user",
       partition_key_path = "/taxCode",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput }
+      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_view_alt }
     }
   ]
 
@@ -169,7 +172,7 @@ locals {
 
 # cosmosdb container for biz events datastore
 module "bizevents_datastore_cosmosdb_containers" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.7.0"
+  source   = "./.terraform/modules/__v3__/cosmosdb_sql_container"
   for_each = { for c in local.bizevents_datastore_cosmosdb_containers : c.name => c }
 
   name                = each.value.name
@@ -185,7 +188,7 @@ module "bizevents_datastore_cosmosdb_containers" {
 
 module "bizevents_datastore_cosmosdb_containers_dev" {
 
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.7.0"
+  source   = "./.terraform/modules/__v3__/cosmosdb_sql_container"
   for_each = { for c in local.bizevents_datastore_cosmosdb_containers_dev : c.name => c }
 
   name                = each.value.name
@@ -247,5 +250,5 @@ resource "azurerm_monitor_metric_alert" "cosmos_biz_db_normalized_ru_exceeded" {
     action_group_id = data.azurerm_monitor_action_group.opsgenie[0].id
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

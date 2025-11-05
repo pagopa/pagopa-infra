@@ -19,13 +19,10 @@
 <policies>
   <inbound>
     <base />
-
-    <set-variable name="transactionId" value="@(context.Request.MatchedParameters["transactionId"])" />
-    <set-variable name="backend-base-url" value="@($"{{pm-host}}/pp-restapi-CD/v2")" />
-    <set-variable name="ecommerce_url" value="${ecommerce_ingress_hostname}" />
-    <set-variable name="body_value" value="@(context.Request.Body.As<string>(preserveContent: true))" />
-    <set-backend-service base-url="@((string)context.Variables["backend-base-url"])" />
-
+    <set-header name="x-api-key" exists-action="override">
+      <value>{{ecommerce-transactions-service-api-key-value}}</value>
+    </set-header>
+    <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}/pagopa-ecommerce-transactions-service/")" />
     <!-- policy for WISP Dismantling -->
     <set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
     <choose>
@@ -52,26 +49,6 @@
 <base />
 <!-- fragment necessary for WISP Dismantling -->
 <include-fragment fragment-id="wisp-receipt-ko" />
-
-<choose>
-  <when condition="@(context.Response.StatusCode == 200)">
-    <set-variable name="outcome" value="@(((string)((JObject)context.Response.Body.As<JObject>(preserveContent: true))["outcome"]))" />
-  </when>
-</choose>
-<choose>
-  <when condition="@(context.Response.StatusCode != 200 || !((string)context.Variables.GetValueOrDefault("outcome","")).Equals("OK"))">
-  <!-- addUserReceipt for ecommerce -->
-  <send-request ignore-error="true" timeout="10" response-variable-name="test-transaction" mode="new">
-    <set-url>@($"https://{(string)context.Variables["ecommerce_url"]}/pagopa-ecommerce-transactions-service/transactions/{(string)context.Variables["transactionId"]}/user-receipts")</set-url>
-    <set-method>POST</set-method>
-    <set-header name="Content-Type" exists-action="override">
-      <value>application/json</value>
-    </set-header>
-    <set-body>@($"{(string)context.Variables["body_value"]}")</set-body>
-  </send-request>
-  <return-response response-variable-name="test-transaction" />
-</when>
-</choose>
 </outbound>
 <on-error>
 <base />

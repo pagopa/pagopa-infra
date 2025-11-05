@@ -5,14 +5,22 @@ resource "azurerm_resource_group" "synthetic_rg" {
 
 
 resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
-  name                = "${local.project}-law"
-  location            = azurerm_resource_group.synthetic_rg.location
-  resource_group_name = azurerm_resource_group.synthetic_rg.name
-  sku                 = var.law_sku
-  retention_in_days   = var.law_retention_in_days
-  daily_quota_gb      = var.law_daily_quota_gb
+  name                               = "${local.project}-law"
+  location                           = azurerm_resource_group.synthetic_rg.location
+  resource_group_name                = azurerm_resource_group.synthetic_rg.name
+  sku                                = var.law_sku
+  retention_in_days                  = var.law_retention_in_days
+  daily_quota_gb                     = var.law_daily_quota_gb
+  reservation_capacity_in_gb_per_day = var.env_short == "p" ? 100 : null
 
-  tags = var.tags
+  tags = module.tag_config.tags
+
+  lifecycle {
+    ignore_changes = [
+      sku,
+      reservation_capacity_in_gb_per_day
+    ]
+  }
 }
 
 # Application insights
@@ -24,5 +32,6 @@ resource "azurerm_application_insights" "application_insights" {
 
   workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
+

@@ -6,13 +6,6 @@ location       = "westeurope"
 location_short = "weu"
 instance       = "prod"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagopa"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/afm"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -36,8 +29,8 @@ afm_marketplace_cosmos_db_params = {
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "Strong" # "BoundedStaleness"
-    max_interval_in_seconds = 5 # 300
-    max_staleness_prefix    = 100 # 100000
+    max_interval_in_seconds = 5        # 300
+    max_staleness_prefix    = 100      # 100000
   }
   server_version                   = "4.0"
   main_geo_location_zone_redundant = true

@@ -64,13 +64,6 @@ variable "env" {
 }
 
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
-
 #
 # Feature Flag
 #
@@ -177,7 +170,7 @@ variable "app_gateway_allowed_paths_pagopa_onprem_only" {
 # https://api.<ENV>.platform.pagopa.it/nodo/nodo-per-psp/v1
 
 # nodoChiediFlussoRendicontazione && nodoChiediElencoFlussiRendicontazione
-# https://api.<ENV>.platform.pagopa.it/fdr-legacy/nodo-per-pa/v1
+# https://api.<ENV>.platform.pagopa.it/fdr-legacy/v1
 # https://api.<ENV>.platform.pagopa.it/nodo/nodo-per-pa/v1
 # https://api.<ENV>.platform.pagopa.it/nodo-auth/nodo-per-pa/v1
 # https://api.<ENV>.platform.pagopa.it/nodo-auth/node-for-pa/v1
@@ -199,77 +192,11 @@ variable "postgres_private_endpoint_enabled" {
   description = "Private endpoint database enable?"
 }
 
-
-
 variable "ecommerce_ingress_hostname" {
   type        = string
   description = "ecommerce ingress hostname"
   default     = null
 }
-
-
-variable "cidr_subnet_buyerbanks" {
-  type        = list(string)
-  description = "Address prefixes subnet buyerbanks"
-  default     = null
-}
-
-variable "buyerbanks_function_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "buyerbanks_function_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "buyerbanks_function_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "buyerbanks_function_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "buyerbanks_function_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 3
-}
-
-variable "buyerbanks_function_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
-
-variable "buyerbanks_enable_versioning" {
-  type        = bool
-  description = "Enable buyerbanks sa versioning"
-  default     = false
-}
-
-variable "buyerbanks_advanced_threat_protection" {
-  type        = bool
-  description = "Enable contract threat advanced protection"
-  default     = false
-}
-
-variable "buyerbanks_delete_retention_days" {
-  type        = number
-  description = "Number of days to retain deleted buyerbanks."
-  default     = 30
-}
-
-
-
 
 variable "io_bpd_hostname" {
   type        = string
@@ -357,18 +284,6 @@ variable "function_app_storage_account_info" {
     advanced_threat_protection_enable = true
   }
 }
-
-variable "buyer_banks_storage_account_replication_type" {
-  type        = string
-  default     = "LRS"
-  description = "(Optional) Buyer banks storage account replication type"
-}
-
-
-
-
-
-
 
 variable "apim_logger_resource_id" {
   type        = string

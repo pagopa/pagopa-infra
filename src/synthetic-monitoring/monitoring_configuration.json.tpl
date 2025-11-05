@@ -3,7 +3,7 @@
     "apiName" : "root",
     "appName" : "pagopa",
     "url" : "https://${api_dot_env_name}.platform.pagopa.it/",
-    "type" : "public",
+    "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -12,14 +12,33 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "root",
+    "appName" : "pagopa",
+    "url" : "https://${appgw_public_ip}/",
+    "type" : "appgw",
+    "checkCertificate" : true,
+    "method" : "GET",
+    "expectedCodes" : ["200"],
+    "headers": {
+      "Host": "${api_dot_env_name}.platform.pagopa.it"
+    },
+    "tags" : {
+      "description" : "pagopa ${env_name} context root"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
     }
   },
   {
     "apiName" : "status",
-    "appName" : "afmcalculator",
+    "appName" : "afmCalculator",
     "url" :  "https://${internal_api_domain_prefix}.afm.${internal_api_domain_suffix}/pagopa-afm-calculator-service/info",
-    "type" : "private",
+    "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -28,14 +47,14 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
   {
     "apiName" : "status",
-    "appName" : "afmcalculator",
+    "appName" : "afmCalculator",
     "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=afmcalculator",
-    "type" : "public",
+    "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -44,15 +63,15 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
 
   {
     "apiName" : "status",
-    "appName" : "afmmarketplace",
+    "appName" : "afmMarketplace",
     "url" :  "https://${internal_api_domain_prefix}.afm.${internal_api_domain_suffix}/pagopa-afm-marketplace-service/info",
-    "type" : "private",
+    "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -61,14 +80,14 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
   {
     "apiName" : "status",
-    "appName" : "afmmarketplace",
+    "appName" : "afmMarketplace",
     "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=afmmarketplace",
-    "type" : "public",
+    "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -77,15 +96,15 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
 
   {
     "apiName" : "status",
-    "appName" : "afmutils",
+    "appName" : "afmUtils",
     "url" :  "https://${internal_api_domain_prefix}.afm.${internal_api_domain_suffix}/pagopa-afm-utils-service/info",
-    "type" : "private",
+    "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -94,14 +113,14 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
   {
     "apiName" : "status",
-    "appName" : "afmutils",
+    "appName" : "afmUtils",
     "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=afmutils",
-    "type" : "public",
+    "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -110,31 +129,31 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
 
   {
     "apiName" : "status",
-    "appName" : "apiconfig",
-    "url" :  "https://${internal_api_domain_prefix}.apiconfig.${internal_api_domain_suffix}/pagopa-api-config-core-service/o/info",
-    "type" : "private",
+    "appName" : "apiConfig",
+    "url" :  "https://${internal_api_domain_prefix}.apiconfig.${internal_api_domain_suffix}/pagopa-api-config-core-service/p/info",
+    "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
     "tags" : {
       "description" : "pagopa ${env_name} apiconfig status endpoint"
     },
-    "durationLimit" : 10000,
+    "durationLimit" : 20000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
   {
     "apiName" : "status",
-    "appName" : "apiconfig",
+    "appName" : "apiConfig",
     "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=apiconfig",
-    "type" : "public",
+    "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -143,15 +162,15 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
 
   {
     "apiName" : "status",
-    "appName" : "authorizer",
+    "appName" : "authorizerConfig",
     "url" :  "https://${internal_api_domain_prefix}.shared.${internal_api_domain_suffix}/authorizer-config/info",
-    "type" : "private",
+    "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -160,14 +179,14 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
   {
     "apiName" : "status",
     "appName" : "authorizer",
     "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=authorizer",
-    "type" : "public",
+    "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -176,15 +195,14 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
-
-  {
+    {
     "apiName" : "status",
     "appName" : "bizevents",
     "url" :  "https://${internal_api_domain_prefix}.bizevents.${internal_api_domain_suffix}/pagopa-biz-events-service/info",
-    "type" : "private",
+    "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -193,14 +211,14 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
   {
     "apiName" : "status",
     "appName" : "bizevents",
     "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=bizevents",
-    "type" : "public",
+    "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -209,15 +227,15 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
 
   {
     "apiName" : "status",
-    "appName" : "bizevents-neg",
+    "appName" : "bizeventsNeg",
     "url" :  "https://${internal_api_domain_prefix}.bizevents.${internal_api_domain_suffix}/pagopa-negative-biz-events-datastore-service/info",
-    "type" : "private",
+    "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -226,14 +244,14 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
   {
     "apiName" : "status",
-    "appName" : "bizevents-neg",
+    "appName" : "bizeventsNeg",
     "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=bizeventsdatastoreneg",
-    "type" : "public",
+    "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -242,15 +260,15 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
 
   {
     "apiName" : "status",
-    "appName" : "bizevents-ds",
+    "appName" : "bizeventsDs",
     "url" :  "https://${internal_api_domain_prefix}.bizevents.${internal_api_domain_suffix}/pagopa-biz-events-datastore-service/info",
-    "type" : "private",
+    "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -259,14 +277,14 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
   {
     "apiName" : "status",
-    "appName" : "bizevents-ds",
+    "appName" : "bizeventsDs",
     "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=bizeventsdatastorepos",
-    "type" : "public",
+    "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -275,7 +293,7 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
 
@@ -283,7 +301,7 @@
     "apiName" : "status",
     "appName" : "selfcare",
     "url" :  "https://${internal_api_domain_prefix}.selfcare.${internal_api_domain_suffix}/selfcare/pagopa/v1/info",
-    "type" : "private",
+    "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -292,15 +310,16 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
 
   {
     "apiName" : "status",
     "appName" : "fdr",
+    "enabled" : ${fdr_enabled},
     "url" :  "https://${internal_api_domain_prefix}.fdr.${internal_api_domain_suffix}/pagopa-fdr-service/info",
-    "type" : "private",
+    "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -309,14 +328,15 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
   {
     "apiName" : "status",
     "appName" : "fdr",
-    "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=fdrndpnew",
-    "type" : "public",
+    "enabled" : ${fdr_enabled},
+    "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=fdrfase3",
+    "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -325,7 +345,7 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
 
@@ -333,7 +353,7 @@
     "apiName" : "status",
     "appName" : "gpd",
     "url" :  "https://${internal_api_domain_prefix}.gps.${internal_api_domain_suffix}/pagopa-gpd-core/info",
-    "type" : "private",
+    "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -342,14 +362,14 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
   {
     "apiName" : "status",
     "appName" : "gpd",
     "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=gpd",
-    "type" : "public",
+    "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -358,15 +378,15 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
 
   {
     "apiName" : "status",
-    "appName" : "gpd-payments",
+    "appName" : "gpdPayments",
     "url" :  "https://${internal_api_domain_prefix}.gps.${internal_api_domain_suffix}/pagopa-gpd-payments/info",
-    "type" : "private",
+    "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -375,14 +395,14 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
   {
     "apiName" : "status",
-    "appName" : "gpd-payments",
+    "appName" : "gpdPayments",
     "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=gpdpayments",
-    "type" : "public",
+    "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -391,14 +411,14 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
   {
     "apiName" : "status",
-    "appName" : "gpd-payments-pull",
+    "appName" : "gpdPaymentsPull",
     "url" :  "https://${internal_api_domain_prefix}.gps.${internal_api_domain_suffix}/pagopa-gpd-payments-pull/info",
-    "type" : "private",
+    "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -407,39 +427,7 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
-    }
-  },
-  {
-    "apiName" : "status",
-    "appName" : "gpd-enrollment",
-    "url" :  "https://${internal_api_domain_prefix}.gps.${internal_api_domain_suffix}/pagopa-gpd-reporting-orgs-enrollment/info",
-    "type" : "private",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} gpd reports status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : false
-    }
-  },
-  {
-    "apiName" : "status",
-    "appName" : "gpd-enrollment",
-    "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=gpdenrollment",
-    "type" : "public",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} gpd reports status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
 
@@ -447,7 +435,7 @@
     "apiName" : "status",
     "appName" : "gps",
     "url" :  "https://${internal_api_domain_prefix}.gps.${internal_api_domain_suffix}/pagopa-spontaneous-payments-service/info",
-    "type" : "private",
+    "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -456,14 +444,14 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
   {
     "apiName" : "status",
     "appName" : "gps",
     "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=gps",
-    "type" : "public",
+    "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -472,15 +460,15 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
 
   {
     "apiName" : "status",
-    "appName" : "receipts-datastore",
+    "appName" : "receiptsDatastore",
     "url" :  "https://${internal_api_domain_prefix}.receipts.${internal_api_domain_suffix}/pagopa-receipt-pdf-datastore/info",
-    "type" : "private",
+    "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -489,14 +477,14 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
   {
     "apiName" : "status",
-    "appName" : "receipts-datastore",
+    "appName" : "receiptsDatastore",
     "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=receiptpdfdatastore",
-    "type" : "public",
+    "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -505,15 +493,15 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
 
   {
     "apiName" : "status",
-    "appName" : "receipts-generator",
+    "appName" : "receiptsGenerator",
     "url" :  "https://${internal_api_domain_prefix}.receipts.${internal_api_domain_suffix}/pagopa-receipt-pdf-generator/info",
-    "type" : "private",
+    "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -522,14 +510,14 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
   {
     "apiName" : "status",
-    "appName" : "receipts-generator",
+    "appName" : "receiptsGenerator",
     "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=receiptpdfgenerator",
-    "type" : "public",
+    "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -538,15 +526,15 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
 
   {
     "apiName" : "status",
-    "appName" : "receipts-notifier",
+    "appName" : "receiptsNotifier",
     "url" :  "https://${internal_api_domain_prefix}.receipts.${internal_api_domain_suffix}/pagopa-receipt-pdf-notifier/info",
-    "type" : "private",
+    "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -555,14 +543,14 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
   {
     "apiName" : "status",
-    "appName" : "receipts-notifier",
+    "appName" : "receiptsNotifier",
     "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=receiptpdfnotifier",
-    "type" : "public",
+    "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -571,7 +559,7 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
 
@@ -579,7 +567,7 @@
     "apiName" : "status",
     "appName" : "receipts",
     "url" :  "https://${internal_api_domain_prefix}.receipts.${internal_api_domain_suffix}/pagopa-receipt-pdf-service/info",
-    "type" : "private",
+    "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -588,14 +576,14 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
   {
     "apiName" : "status",
     "appName" : "receipts",
     "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=receiptpdfservice",
-    "type" : "public",
+    "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -604,97 +592,14 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
-    }
-  },
-
-  {
-    "apiName" : "status",
-    "appName" : "authorizer",
-    "url" :  "https://pagopa-${env_short}-weu-shared-authorizer-fn.azurewebsites.net/info",
-    "type" : "private",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} authorizer status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
   {
     "apiName" : "status",
-    "appName" : "authorizer",
-    "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=authorizer",
-    "type" : "public",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} authorizer status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : false
-    }
-  },
-
-  {
-    "apiName" : "status",
-    "appName" : "canoneunico",
-    "url" :  "https://pagopa-${env_short}-fn-canoneunico.azurewebsites.net/info",
-    "type" : "private",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} canoneunico status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : false
-    }
-  },
-  {
-    "apiName" : "status",
-    "appName" : "canoneunico",
-    "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=canoneunico",
-    "type" : "public",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} canoneunico status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : false
-    }
-  },
-
-  {
-    "apiName" : "status",
-    "appName" : "gpd-analysis",
-    "url" :  "https://pagopa-${env_short}-weu-fn-gpd-analysis.azurewebsites.net/info",
-    "type" : "private",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} gpd-analysis status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : false
-    }
-  },
-  {
-    "apiName" : "status",
-    "appName" : "gpd-analysis",
+    "appName" : "gpdAnalysis",
     "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=gpdreportinganalysis",
-    "type" : "public",
+    "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
@@ -703,149 +608,310 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
-    }
-  },
-
-  {
-    "apiName" : "status",
-    "appName" : "gpd-batch",
-    "url" :  "https://pagopa-${env_short}-weu-fn-gpd-batch.azurewebsites.net/api/info",
-    "type" : "private",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} gpd-batch status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
   },
   {
-    "apiName" : "status",
-    "appName" : "gpd-batch",
-    "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=gpdreportingbatch",
-    "type" : "public",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} gpd-batch status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : false
-    }
-  },
-
-  {
-    "apiName" : "status",
-    "appName" : "gpd-reporting",
-    "url" :  "https://pagopa-${env_short}-weu-fn-gpd-service.azurewebsites.net/api/info",
-    "type" : "private",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} gpd-reporting status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : false
-    }
-  },
-  {
-    "apiName" : "status",
-    "appName" : "gpd-reporting",
-    "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=gpdreportingservice",
-    "type" : "public",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} gpd-reporting status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : false
-    }
-  },
-
-  {
-    "apiName" : "status",
-    "appName" : "gps-donations",
-    "url" :  "https://${internal_api_domain_prefix}.gps.${internal_api_domain_suffix}/pagopa-gps-donation-service/info",
-    "type" : "private",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} gps donations status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : false
-    }
-  },
-
-  {
-    "apiName" : "status",
-    "appName" : "fdr-org",
-    "url" : "https://${api_dot_env_name}.platform.pagopa.it/fdr-org/service/v1/info",
-    "type" : "public",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} fdr status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : false
-    }
-  },
-  {
-    "apiName" : "request-flow",
-    "appName" : "fdr",
-    "url" : "https://${api_dot_env_name}.platform.pagopa.it/fdr-psp/service/v1/psps/60000000001/fdrs/2024-02-0860000000001-17074057078",
-    "type" : "public",
+    "apiName" : "checkPosition",
+    "appName" : "nodo",
+    "url" : "https://${api_dot_env_name}.platform.pagopa.it/nodo/nodo-per-pm/v1/checkPosition",
+    "type" : "apim",
     "checkCertificate" : true,
     "method" : "POST",
-    "expectedCodes" : ["200", "400"],
-    "body": {
-      "fdr": "2024-02-0860000000001-17074057078",
-      "fdrDate": "2024-02-08T15:21:47.834Z",
-      "sender": {
-        "type": "LEGAL_PERSON",
-        "id": "SELBIT2B",
-        "pspId": "60000000001",
-        "pspName": "Bank",
-        "pspBrokerId": "60000000001",
-        "channelId": "15376371009_04"
-      ,"password": "PLACEHOLDER"
-      },
-      "receiver": {
-        "id": "APPBIT2B",
-        "organizationId": "15376371009",
-        "organizationName": "Comune di xyz"
-      },
-      "regulation": "SEPA - Bonifico xzy",
-      "regulationDate": "2024-02-08T15:21:47.834Z",
-      "bicCodePouringBank": "UNCRITMMXXX",
-      "totPayments": 3,
-      "sumPayments": 0.03
-    },
+    "expectedCodes" : ["200"],
+    "body": {"positionslist": [{"fiscalCode": "${check_position_body.fiscal_code}", "noticeNumber": "${check_position_body.notice_number}"}]},
+    "expectedBody": {"outcome":"OK"},
+    "bodyCompareStrategy": "contains",
     "headers": {
-      "Ocp-Apim-Subscription-Key": "e879a6b70e2241898d0b8b5b9d647df0"
+      "Content-Type": "application/json"
     },
     "tags" : {
-      "description" : "pagopa fdr ${env_name} status endpoint"
+      "description" : "pagopa nodo ${env_name} check position"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : false
+      "enabled" : ${alert_enabled}
     }
-  }
+  },
+  {
+    "enabled" : ${nexi_postgres_enabled},
+    "apiName" : "checkPosition",
+    "appName" : "nodo",
+    "url" : "https://${nexi_node_ip_postgres}/checkPosition",
+    "type" : "nexiPostgres",
+    "checkCertificate" : true,
+    "method" : "POST",
+    "expectedCodes" : ["200"],
+    "body": {"positionslist": [{"fiscalCode": "${check_position_body.fiscal_code}", "noticeNumber": "${check_position_body.notice_number}"}]},
+    "expectedBody": {"outcome":"OK"},
+    "bodyCompareStrategy": "contains",
+    "headers": {
+      "Content-Type": "application/json",
+      "ndphost": "nodo-${env_short}.nexigroup.com",
+      "Host": "${nexi_ndp_host_postgres}"
+    },
+    "tags" : {
+      "description" : "pagopa nodo ${env_name} check position"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "checkPosition",
+    "appName" : "nodo",
+    "url" : "https://${internal_api_domain_prefix}.nodo.${internal_api_domain_suffix}/nodo/checkPosition",
+    "type" : "pagoPa",
+    "checkCertificate" : true,
+    "method" : "POST",
+    "expectedCodes" : ["200"],
+    "body": {"positionslist": [{"fiscalCode": "${check_position_body.fiscal_code}", "noticeNumber": "${check_position_body.notice_number}"}]},
+    "expectedBody": {"outcome":"OK"},
+    "bodyCompareStrategy": "contains",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "tags" : {
+      "description" : "pagopa nodo ${env_name} check position"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "verifyPaymentNoticeOnPartner",
+    "appName" : "nodo",
+    "url" : "https://${api_dot_env_name}.platform.pagopa.it/nodo-auth/node-for-psp/v1",
+    "type" : "apim",
+    "checkCertificate" : true,
+    "method" : "POST",
+    "expectedCodes" : ["200"],
+    "expectedBody": {
+      "soapenv:Envelope": {
+        "soapenv:Body": {
+          "nfp:verifyPaymentNoticeRes": {
+            "outcome": "KO"
+          }
+        }
+      }
+    },
+    "bodyCompareStrategy": "xmlContains",
+    "body": "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/'><soapenv:Header /><soapenv:Body><nod:verifyPaymentNoticeReq xmlns:nod='http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd'><idPSP>ABI18164</idPSP><idBrokerPSP>02654890025</idBrokerPSP><idChannel>02654890025_01</idChannel><password>PLACEHOLDER</password><qrCode><fiscalCode>97532760580</fiscalCode><noticeNumber>302704889233205169</noticeNumber></qrCode></nod:verifyPaymentNoticeReq></soapenv:Body></soapenv:Envelope>",
+    "headers": {
+      "SOAPAction": "verifyPaymentNotice",
+      "Ocp-Apim-Subscription-Key": "${nodo_subscription_key}",
+      "Content-Type": "application/xml"
+    },
+    "tags" : {
+      "description" : "pagopa nodo ${env_name} verify payment notice using partner's service"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "verifyPaymentNoticeOnGPD",
+    "appName" : "nodo",
+    "url" : "https://${api_dot_env_name}.platform.pagopa.it/nodo-auth/node-for-psp/v1",
+    "type" : "apim",
+    "checkCertificate" : true,
+    "method" : "POST",
+    "expectedCodes" : ["200"],
+    "expectedBody": {
+      "soapenv:Envelope": {
+        "soapenv:Body": {
+          "nfp:verifyPaymentNoticeRes": {
+            "outcome": "${verify_payment_internal_expected_outcome}"
+          }
+        }
+      }
+    },
+    "bodyCompareStrategy": "xmlContains",
+    "body": "<SOAP-ENV:Envelope xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/'> <SOAP-ENV:Body> <ns3:verifyPaymentNoticeReq xmlns:ns3='http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd'> <idPSP>CIPBITMM</idPSP> <idBrokerPSP>13212880150</idBrokerPSP> <idChannel>13212880150_10</idChannel> <password>PLACEHOLDER</password> <qrCode> <fiscalCode>83000970612</fiscalCode> <noticeNumber>302000000014360604</noticeNumber> </qrCode> </ns3:verifyPaymentNoticeReq> </SOAP-ENV:Body> </SOAP-ENV:Envelope>",
+    "headers": {
+      "SOAPAction": "verifyPaymentNotice",
+      "Ocp-Apim-Subscription-Key": "${nodo_subscription_key}",
+      "Content-Type": "application/xml"
+    },
+    "tags" : {
+      "description" : "pagopa nodo ${env_name} verify payment notice using GPD service"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "verifyPaymentNoticeOnGPD",
+    "appName" : "nodo",
+    "url" : "https://${appgw_public_ip}/nodo-auth/node-for-psp/v1",
+    "type" : "appgw",
+    "checkCertificate" : true,
+    "method" : "POST",
+    "expectedCodes" : ["200"],
+    "expectedBody": {
+      "soapenv:Envelope": {
+        "soapenv:Body": {
+          "nfp:verifyPaymentNoticeRes": {
+            "outcome": "${verify_payment_internal_expected_outcome}"
+          }
+        }
+      }
+    },
+    "bodyCompareStrategy": "xmlContains",
+    "body": "<SOAP-ENV:Envelope xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/'> <SOAP-ENV:Body> <ns3:verifyPaymentNoticeReq xmlns:ns3='http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd'> <idPSP>CIPBITMM</idPSP> <idBrokerPSP>13212880150</idBrokerPSP> <idChannel>13212880150_10</idChannel> <password>PLACEHOLDER</password> <qrCode> <fiscalCode>83000970612</fiscalCode> <noticeNumber>302000000014360604</noticeNumber> </qrCode> </ns3:verifyPaymentNoticeReq> </SOAP-ENV:Body> </SOAP-ENV:Envelope>",
+    "headers": {
+      "SOAPAction": "verifyPaymentNotice",
+      "Ocp-Apim-Subscription-Key": "${nodo_subscription_key}",
+      "Content-Type": "application/xml",
+      "Host": "${api_dot_env_name}.platform.pagopa.it"
+    },
+    "tags" : {
+      "description" : "pagopa nodo ${env_name} verify payment notice using GPD service"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "enabled" : ${nexi_postgres_enabled},
+    "apiName" : "verifyPaymentNoticeOnGPD",
+    "appName" : "nodo",
+    "url" : "https://${nexi_node_ip_postgres}/webservices/input",
+    "type" : "nexiPostgres",
+    "checkCertificate" : true,
+    "method" : "POST",
+    "expectedCodes" : ["200"],
+    "expectedBody": {
+      "soapenv:Envelope": {
+        "soapenv:Body": {
+          "nfp:verifyPaymentNoticeRes": {
+            "outcome": "${verify_payment_internal_expected_outcome}"
+          }
+        }
+      }
+    },
+    "bodyCompareStrategy": "xmlContains",
+    "body": "<SOAP-ENV:Envelope xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/'> <SOAP-ENV:Body> <ns3:verifyPaymentNoticeReq xmlns:ns3='http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd'> <idPSP>CIPBITMM</idPSP> <idBrokerPSP>13212880150</idBrokerPSP> <idChannel>13212880150_10</idChannel> <password>PLACEHOLDER</password> <qrCode> <fiscalCode>83000970612</fiscalCode> <noticeNumber>302000000014360604</noticeNumber> </qrCode> </ns3:verifyPaymentNoticeReq> </SOAP-ENV:Body> </SOAP-ENV:Envelope>",
+    "headers": {
+      "SOAPAction": "verifyPaymentNotice",
+      "Content-Type": "application/xml",
+      "ndphost": "nodo-${env_short}.nexigroup.com",
+      "Host": "${nexi_ndp_host_postgres}"
+    },
+    "tags" : {
+      "description" : "pagopa nodo ${env_name} verify payment notice using GPD service"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "verifyPaymentNoticeOnPartner",
+    "appName" : "nodo",
+    "url" : "https://${appgw_public_ip}/nodo-auth/node-for-psp/v1",
+    "type" : "appgw",
+    "checkCertificate" : true,
+    "method" : "POST",
+    "expectedCodes" : ["200"],
+    "expectedBody": {
+      "soapenv:Envelope": {
+        "soapenv:Body": {
+          "nfp:verifyPaymentNoticeRes": {
+            "outcome": "KO"
+          }
+        }
+      }
+    },
+    "bodyCompareStrategy": "xmlContains",
+    "body": "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/'><soapenv:Header /><soapenv:Body><nod:verifyPaymentNoticeReq xmlns:nod='http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd'><idPSP>ABI18164</idPSP><idBrokerPSP>02654890025</idBrokerPSP><idChannel>02654890025_01</idChannel><password>PLACEHOLDER</password><qrCode><fiscalCode>97532760580</fiscalCode><noticeNumber>302704889233205169</noticeNumber></qrCode></nod:verifyPaymentNoticeReq></soapenv:Body></soapenv:Envelope>",
+    "headers": {
+      "SOAPAction": "verifyPaymentNotice",
+      "Ocp-Apim-Subscription-Key": "${nodo_subscription_key}",
+      "Content-Type": "application/xml",
+      "Host": "${api_dot_env_name}.platform.pagopa.it"
+    },
+    "tags" : {
+      "description" : "pagopa nodo ${env_name} verify payment notice using partner's service"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "enabled" : ${nexi_postgres_enabled},
+    "apiName" : "verifyPaymentNoticeOnPartner",
+    "appName" : "nodo",
+    "url" : "https://${nexi_node_ip_postgres}/webservices/input",
+    "type" : "nexiPostgres",
+    "checkCertificate" : true,
+    "method" : "POST",
+    "expectedCodes" : ["200"],
+    "expectedBody": {
+      "soapenv:Envelope": {
+        "soapenv:Body": {
+          "nfp:verifyPaymentNoticeRes": {
+            "outcome": "KO"
+          }
+        }
+      }
+    },
+    "bodyCompareStrategy": "xmlContains",
+    "body": "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/'><soapenv:Header /><soapenv:Body><nod:verifyPaymentNoticeReq xmlns:nod='http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd'><idPSP>ABI18164</idPSP><idBrokerPSP>02654890025</idBrokerPSP><idChannel>02654890025_01</idChannel><password>PLACEHOLDER</password><qrCode><fiscalCode>97532760580</fiscalCode><noticeNumber>302704889233205169</noticeNumber></qrCode></nod:verifyPaymentNoticeReq></soapenv:Body></soapenv:Envelope>",
+    "headers": {
+      "SOAPAction": "verifyPaymentNotice",
+      "Content-Type": "application/xml",
+      "ndphost": "nodo-${env_short}.nexigroup.com",
+      "Host": "${nexi_ndp_host_postgres}"
+    },
+    "tags" : {
+      "description" : "pagopa nodo ${env_name} verify payment notice using partner's service"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "getConnectorStatus",
+    "appName" : "debeziumConnectorPostgres",
+    "url" : "https://${internal_api_domain_prefix}.gps.${internal_api_domain_suffix}/debezium-gpd/connectors/debezium-connector-postgres/status",
+    "type" : "aks",
+    "checkCertificate" : true,
+    "method" : "GET",
+    "expectedCodes" : ["200"],
+    "expectedBody": {"name":"debezium-connector-postgres","connector":{"state":"RUNNING"},"tasks":[{"state":"RUNNING"}]},
+    "bodyCompareStrategy": "contains",
+    "tags" : {
+      "description" : "pagopa gpd debezium-connector-postgres ${env_name} status monitor"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled},
+      "customActionGroupIds" : ${developers_action_group_ids}
+    }
+  },
+  {
+      "apiName": "iuvgenerator",
+      "appName": "shared",
+      "url": "https://${internal_api_domain_prefix}.shared.${internal_api_domain_suffix}/pagopa-iuv-generator/info",
+      "type": "aks",
+      "checkCertificate": true,
+      "method": "GET",
+      "expectedCodes": ["200"],
+      "tags": {
+        "description": "pagopa ${env_name} shared status endpoint"
+      },
+      "durationLimit": 10000,
+      "alertConfiguration": {
+        "enabled": ${alert_enabled},
+        "customActionGroupIds" : ${developers_action_group_ids}
+      }
+    }
 ]

@@ -7,13 +7,6 @@ location_short  = "weu"
 location_string = "West Europe"
 instance        = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/shared"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -68,12 +61,8 @@ taxonomy_function_autoscale = {
 # pdf-engine
 cidr_subnet_pdf_engine_app_service = ["10.1.187.0/24"]
 
-robots_indexed_paths              = []
-pdf_engine_app_ha_enabled         = false
-pdf_engine_zone_balancing_enabled = false
+robots_indexed_paths = []
 
 // wallet session token
 io_backend_base_path = "http://{{aks-lb-nexi}}/pmmockservice/pmmockserviceapi"
 pdv_api_base_path    = "https://api.uat.tokenizer.pdv.pagopa.it/tokenizer/v1"
-
-ecommerce_for_io_pm_npg = "NPGFF"

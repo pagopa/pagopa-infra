@@ -1,48 +1,52 @@
 # mock-common
 
 <!-- markdownlint-disable -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.3.0 |
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.21.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.44.1 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.5.1 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.11.0 |
-| <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 2.53 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 3.116 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.12.1 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.30.0 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | ~> 3.2 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_apim_mock_ec_api"></a> [apim\_mock\_ec\_api](#module\_apim\_mock\_ec\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
-| <a name="module_apim_mock_ec_forwarder_api"></a> [apim\_mock\_ec\_forwarder\_api](#module\_apim\_mock\_ec\_forwarder\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
-| <a name="module_apim_mock_ec_nexi_api"></a> [apim\_mock\_ec\_nexi\_api](#module\_apim\_mock\_ec\_nexi\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
-| <a name="module_apim_mock_ec_nexi_product"></a> [apim\_mock\_ec\_nexi\_product](#module\_apim\_mock\_ec\_nexi\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
-| <a name="module_apim_mock_ec_product"></a> [apim\_mock\_ec\_product](#module\_apim\_mock\_ec\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
-| <a name="module_apim_mock_payment_gateway_api"></a> [apim\_mock\_payment\_gateway\_api](#module\_apim\_mock\_payment\_gateway\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
-| <a name="module_apim_mock_payment_gateway_mng_api"></a> [apim\_mock\_payment\_gateway\_mng\_api](#module\_apim\_mock\_payment\_gateway\_mng\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
-| <a name="module_apim_mock_payment_gateway_product"></a> [apim\_mock\_payment\_gateway\_product](#module\_apim\_mock\_payment\_gateway\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
-| <a name="module_apim_mock_pm_nexi_api"></a> [apim\_mock\_pm\_nexi\_api](#module\_apim\_mock\_pm\_nexi\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
-| <a name="module_apim_mock_pm_nexi_product"></a> [apim\_mock\_pm\_nexi\_product](#module\_apim\_mock\_pm\_nexi\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
-| <a name="module_apim_mock_psp_nexi_api"></a> [apim\_mock\_psp\_nexi\_api](#module\_apim\_mock\_psp\_nexi\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
-| <a name="module_apim_mock_psp_nexi_product"></a> [apim\_mock\_psp\_nexi\_product](#module\_apim\_mock\_psp\_nexi\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
-| <a name="module_apim_mock_psp_service_api"></a> [apim\_mock\_psp\_service\_api](#module\_apim\_mock\_psp\_service\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
-| <a name="module_apim_mock_psp_service_api_secondary"></a> [apim\_mock\_psp\_service\_api\_secondary](#module\_apim\_mock\_psp\_service\_api\_secondary) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
-| <a name="module_apim_mock_psp_service_product"></a> [apim\_mock\_psp\_service\_product](#module\_apim\_mock\_psp\_service\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
-| <a name="module_apim_mock_psp_service_product_secondary"></a> [apim\_mock\_psp\_service\_product\_secondary](#module\_apim\_mock\_psp\_service\_product\_secondary) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
-| <a name="module_apim_mock_receipt_pdf"></a> [apim\_mock\_receipt\_pdf](#module\_apim\_mock\_receipt\_pdf) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
-| <a name="module_apim_mocker_config_product"></a> [apim\_mocker\_config\_product](#module\_apim\_mocker\_config\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v5.1.0 |
-| <a name="module_apim_mocker_core_api_v1"></a> [apim\_mocker\_core\_api\_v1](#module\_apim\_mocker\_core\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.7.0 |
-| <a name="module_apim_mocker_core_product"></a> [apim\_mocker\_core\_product](#module\_apim\_mocker\_core\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v5.1.0 |
-| <a name="module_apim_receipt_pdf_api"></a> [apim\_receipt\_pdf\_api](#module\_apim\_receipt\_pdf\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
-| <a name="module_apim_secondary_mock_ec_api"></a> [apim\_secondary\_mock\_ec\_api](#module\_apim\_secondary\_mock\_ec\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
-| <a name="module_apim_secondary_mock_ec_product"></a> [apim\_secondary\_mock\_ec\_product](#module\_apim\_secondary\_mock\_ec\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
-| <a name="module_letsencrypt_mock"></a> [letsencrypt\_mock](#module\_letsencrypt\_mock) | git::https://github.com/pagopa/azurerm.git//letsencrypt_credential | v3.8.1 |
-| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v6.4.1 |
-| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v6.7.0 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f6b15b7c89b4b2a2de7424cfd2ed163704cd1bab |
+| <a name="module_apim_mock_ec_api"></a> [apim\_mock\_ec\_api](#module\_apim\_mock\_ec\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_mock_ec_forwarder_api"></a> [apim\_mock\_ec\_forwarder\_api](#module\_apim\_mock\_ec\_forwarder\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_mock_ec_nexi_api"></a> [apim\_mock\_ec\_nexi\_api](#module\_apim\_mock\_ec\_nexi\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_mock_ec_nexi_product"></a> [apim\_mock\_ec\_nexi\_product](#module\_apim\_mock\_ec\_nexi\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_mock_ec_product"></a> [apim\_mock\_ec\_product](#module\_apim\_mock\_ec\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_mock_payment_gateway_api"></a> [apim\_mock\_payment\_gateway\_api](#module\_apim\_mock\_payment\_gateway\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_mock_payment_gateway_mng_api"></a> [apim\_mock\_payment\_gateway\_mng\_api](#module\_apim\_mock\_payment\_gateway\_mng\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_mock_payment_gateway_product"></a> [apim\_mock\_payment\_gateway\_product](#module\_apim\_mock\_payment\_gateway\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_mock_pm_nexi_api"></a> [apim\_mock\_pm\_nexi\_api](#module\_apim\_mock\_pm\_nexi\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_mock_pm_nexi_product"></a> [apim\_mock\_pm\_nexi\_product](#module\_apim\_mock\_pm\_nexi\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_mock_psp_nexi_api"></a> [apim\_mock\_psp\_nexi\_api](#module\_apim\_mock\_psp\_nexi\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_mock_psp_nexi_product"></a> [apim\_mock\_psp\_nexi\_product](#module\_apim\_mock\_psp\_nexi\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_mock_psp_service_api"></a> [apim\_mock\_psp\_service\_api](#module\_apim\_mock\_psp\_service\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_mock_psp_service_api_secondary"></a> [apim\_mock\_psp\_service\_api\_secondary](#module\_apim\_mock\_psp\_service\_api\_secondary) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_mock_psp_service_product"></a> [apim\_mock\_psp\_service\_product](#module\_apim\_mock\_psp\_service\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_mock_psp_service_product_secondary"></a> [apim\_mock\_psp\_service\_product\_secondary](#module\_apim\_mock\_psp\_service\_product\_secondary) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_mock_receipt_pdf"></a> [apim\_mock\_receipt\_pdf](#module\_apim\_mock\_receipt\_pdf) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_mocker_config_product"></a> [apim\_mocker\_config\_product](#module\_apim\_mocker\_config\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_mocker_core_api_v1"></a> [apim\_mocker\_core\_api\_v1](#module\_apim\_mocker\_core\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_mocker_core_product"></a> [apim\_mocker\_core\_product](#module\_apim\_mocker\_core\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_receipt_pdf_api"></a> [apim\_receipt\_pdf\_api](#module\_apim\_receipt\_pdf\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_secondary_mock_ec_api"></a> [apim\_secondary\_mock\_ec\_api](#module\_apim\_secondary\_mock\_ec\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_secondary_mock_ec_product"></a> [apim\_secondary\_mock\_ec\_product](#module\_apim\_secondary\_mock\_ec\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup | n/a |
+| <a name="module_letsencrypt_mock"></a> [letsencrypt\_mock](#module\_letsencrypt\_mock) | ./.terraform/modules/__v3__/letsencrypt_credential | n/a |
+| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | ./.terraform/modules/__v3__/kubernetes_pod_identity | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
+| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
+| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_configuration | n/a |
 
 ## Resources
 
@@ -85,6 +89,7 @@
 | [azurerm_log_analytics_workspace.log_analytics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
+| [azurerm_resource_group.identity_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.rg_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_subnet.apim_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
@@ -128,10 +133,9 @@
 | <a name="input_mock_psp_service_enabled"></a> [mock\_psp\_service\_enabled](#input\_mock\_psp\_service\_enabled) | Mock PSP service Nexi | `bool` | `false` | no |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 | <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br/>    chart_version = string,<br/>    image_name    = string,<br/>    image_tag     = string<br/>  })</pre> | n/a | yes |
 
 ## Outputs
 
 No outputs.
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

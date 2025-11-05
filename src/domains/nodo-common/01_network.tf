@@ -7,10 +7,10 @@ data "azurerm_resource_group" "rg_vnet" {
   name = local.vnet_resource_group_name
 }
 
-data "azurerm_virtual_network" "vnet_replica" {
-  count               = var.geo_replica_enabled ? 1 : 0
-  name                = local.vnet_replica_name
-  resource_group_name = local.vnet_resource_group_name
+
+data "azurerm_virtual_network" "vnet_italy" {
+  name                = local.vnet_italy_name
+  resource_group_name = local.vnet_italy_resource_group_name
 }
 
 data "azurerm_private_dns_zone" "internal" {
@@ -90,6 +90,11 @@ data "azurerm_private_dns_zone" "privatelink_blob_azure_com" {
   resource_group_name = local.vnet_resource_group_name
 }
 
+data "azurerm_private_dns_zone" "privatelink_file_azure_com" {
+  name                = "privatelink.file.core.windows.net"
+  resource_group_name = local.vnet_resource_group_name
+}
+
 data "azurerm_private_dns_zone" "privatelink_table_azure_com" {
   name                = local.table_dns_zone_name
   resource_group_name = local.storage_dns_zone_resource_group_name
@@ -97,7 +102,7 @@ data "azurerm_private_dns_zone" "privatelink_table_azure_com" {
 
 # Azure Storage subnet
 module "storage_account_snet" {
-  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.77.0"
+  source                                        = "./.terraform/modules/__v3__/subnet"
   name                                          = format("%s-storage-account-snet", local.project)
   address_prefixes                              = var.cidr_subnet_storage_account
   resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
@@ -109,7 +114,7 @@ module "storage_account_snet" {
 # CosmosDB subnet Nodo-RE
 module "cosmosdb_nodo_re_snet" {
   count                = var.enable_nodo_re ? 1 : 0
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.77.0"
+  source               = "./.terraform/modules/__v3__/subnet"
   name                 = "${local.project}-cosmosb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_nodo_re
   resource_group_name  = local.vnet_resource_group_name
@@ -125,7 +130,7 @@ module "cosmosdb_nodo_re_snet" {
 
 # CosmosDB subnet Verify KO
 module "cosmosdb_nodo_verifyko_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.77.0"
+  source               = "./.terraform/modules/__v3__/subnet"
   name                 = "${local.project}-verifyko-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_nodo_verifyko
   resource_group_name  = local.vnet_resource_group_name
@@ -144,11 +149,11 @@ resource "azurerm_resource_group" "standin_rg" {
   name     = "${local.project}-standin-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "cosmosdb_standin_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.77.0"
+  source               = "./.terraform/modules/__v3__/subnet"
   name                 = "${local.project}-standin-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_standin
   resource_group_name  = local.vnet_resource_group_name
@@ -168,12 +173,12 @@ resource "azurerm_resource_group" "wisp_converter_rg" {
   name     = "${local.project}-wisp-converter-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "cosmosdb_wisp_converter_snet" {
   count                = var.create_wisp_converter ? 1 : 0
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.77.0"
+  source               = "./.terraform/modules/__v3__/subnet"
   name                 = "${local.project}-wisp-converter-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_wisp_converter
   resource_group_name  = local.vnet_resource_group_name
@@ -183,7 +188,6 @@ module "cosmosdb_wisp_converter_snet" {
 
   service_endpoints = [
     "Microsoft.Web",
-    "Microsoft.AzureCosmosDB",
-    "Microsoft.Storage"
+    "Microsoft.AzureCosmosDB"
   ]
 }

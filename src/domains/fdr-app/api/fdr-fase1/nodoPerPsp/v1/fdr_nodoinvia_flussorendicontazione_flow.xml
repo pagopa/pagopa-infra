@@ -57,24 +57,76 @@
             return fdrFileName;
         }" value="@((string) context.Variables["xmlRendicontazione"])" duration="3600" caching-type="internal" />
 
-
-      <set-variable name="ftp_organization" value="{{ftp-organization}}" />
-      <set-variable name="is-ftp-enabled" value="@{
-                    var org_list = ((string) context.Variables["ftp_organization"]).Split(',');
-                    var org_fiscal_code = (string) context.Variables["identificativoDominio"];
-                    var is_ftp_enabled = Array.Exists(org_list, e => e == org_fiscal_code);
-                    return is_ftp_enabled;
-                    }" />
-
+      <!-- is-fdr-nodo-pagopa-enable is used to switch traffic to pagoPA Fdr1 -->
       <choose>
-          <!--
-            if is-fdr-nodo-pagopa-enable == true && EC non FTP
-              then backend = fdr
-          -->
-            <when condition="@(${is-fdr-nodo-pagopa-enable} && !(bool)context.Variables["is-ftp-enabled"])">
-                <set-backend-service base-url="${base-url}" />
-            </when>
-        </choose>
+          <when condition="@(${is-fdr-nodo-pagopa-enable})">
+              <set-variable name="ftp_organization" value="{{ftp-organization}}" />
+              <!-- is-ftp-enabled identifies if EC uses ftp, this traffic is managed by partner -->
+              <set-variable name="is-ftp-enabled" value="@{
+                      var org_list = ((string) context.Variables["ftp_organization"]).Split(',');
+                      var org_fiscal_code = (string) context.Variables["identificativoDominio"];
+                      var is_ftp_enabled = Array.Exists(org_list, e => e == org_fiscal_code);
+                      return is_ftp_enabled;
+                      }" />
+              <choose>
+                  <when condition="@((bool)context.Variables["is-ftp-enabled"])">
+                      <!--
+                        in the case of CI uses FTP, traffic is redirect to the default nodo,
+                        then it is forwarded to FdR service to manage JSON conversion
+                      -->
+                      <send-one-way-request mode="new">
+                          <set-url>@("${base-url}/nodoInviaFlussoRendicontazioneFTP")</set-url>
+                          <set-method>POST</set-method>
+                          <set-header name="Content-Type" exists-action="override">
+                              <value>application/json</value>
+                          </set-header>
+                          <set-body>@{return new JObject(new JProperty("content", (string) context.Variables["readrequest"])).ToString();}</set-body>
+                      </send-one-way-request>
+                  </when>
+                  <otherwise>
+                      <set-variable name="enable_fdr_psp_soap_request_switch" value="{{enable-fdr-psp-soap-request-switch}}" />
+                      <choose>
+                        <when condition="@(context.Variables.GetValueOrDefault<string>("enable_fdr_psp_soap_request_switch", "").Equals("true") )">
+                          <set-variable name="fdr_soap_request_psp_whitelist" value="{{fdr-soap-request-psp-whitelist}}" />
+                          <set-variable name="fdr_soap_request_ci_whitelist" value="{{fdr-soap-request-ci-whitelist}}" />
+                          <set-variable name="fdr_soap_request_is_whitelist" value="@{
+                            string pspList = (string) context.Variables["fdr_soap_request_psp_whitelist"];
+                            string ciList = (string) context.Variables["fdr_soap_request_ci_whitelist"];
+                            bool pspWhitelisted = pspList.Equals("*");
+                            bool ciWhitelisted = ciList.Equals("*");
+                            bool isWhitelisted = false;
+                            if (pspWhitelisted && ciWhitelisted) {
+                              isWhitelisted = true;
+                              return isWhitelisted;
+                            }
+                            string[] psps = !pspWhitelisted ? pspList.Split(',') : new string[] {};
+                            string[] cis = !ciWhitelisted ? ciList.Split(',') : new string[] {};
+
+                            if (!pspWhitelisted) {
+                              var psp_code = (string) context.Variables["identificativoPSP"];
+                              pspWhitelisted = psps.Contains(psp_code);
+                            }
+                            if (!ciWhitelisted) {
+                              var org_fiscal_code = (string) context.Variables["identificativoDominio"];
+                              ciWhitelisted = cis.Contains(org_fiscal_code);
+                            }
+                            if (pspWhitelisted && ciWhitelisted) {
+                              isWhitelisted = true;
+                              return isWhitelisted;
+                            }
+                            return isWhitelisted;
+                          }" />
+                          <choose>
+                            <when condition="@( context.Variables.GetValueOrDefault<bool>("fdr_soap_request_is_whitelist", false) )">
+                                <set-backend-service base-url="${base-url}" />
+                            </when>
+                          </choose>
+                        </when>
+                      </choose>
+                  </otherwise>
+              </choose>
+          </when>
+      </choose>
 
     </inbound>
     <backend>
@@ -135,9 +187,44 @@
                         <value>@("Bearer " + (string)context.Variables["msi-access-token"])</value>
                     </set-header>
                     <!-- Set the file content from the original request body data -->
-                    <!-- <set-body>@(context.Request.Body.As<string>())</set-body> -->
                     <set-body>@((string)context.Variables["xmlRendicontazione"])</set-body>
                 </send-request>
+
+                <!-- Send info to FDR for validation -->
+                <choose>
+                    <when condition="@( !context.Variables.GetValueOrDefault<bool>("is-ftp-enabled", false) && !context.Variables.GetValueOrDefault<bool>("fdr_soap_request_is_whitelist", false) )">
+                        <set-variable name="register_for_validation_request" value="@{return new JObject(
+                                new JProperty("pspId", (string) context.Variables["identificativoPSP"]),
+                                new JProperty("organizationId", (string) context.Variables["identificativoDominio"]),
+                                new JProperty("flowId", (string) context.Variables["identificativoFlusso"]),
+                                new JProperty("flowTimestamp", (string) context.Variables["dataOraFlusso"])
+                                ).ToString();}" />
+                        <send-request mode="new" response-variable-name="register_for_validation_result" timeout="10" ignore-error="true">
+                            <set-url>@("${base-url}/register-for-validation/fdr")</set-url>
+                            <set-method>POST</set-method>
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
+                            <set-body>
+                                @((string)context.Variables["register_for_validation_request"])
+                            </set-body>
+                        </send-request>
+                        <choose>
+                            <when condition="@( context.Variables["register_for_validation_result"] == null || context.Variables["register_for_validation_result"] != null && ((IResponse) context.Variables["register_for_validation_result"]).StatusCode != 200)">
+                                <trace source="error_on_register_for_validation" severity="error">
+                                    <message>@{ return "[ALERT][FDR1][RegisterForValidation] Error while sending flow for registration on validation, Request: [" + (string)context.Variables["register_for_validation_request"] + "]"; }</message>
+                                </trace>
+                            </when>
+                        </choose>
+                    </when>
+                    <!--
+                    <otherwise>
+                        <trace source="skipping_register_for_validation" severity="information">
+                            <message>@{ return "Skipping registration for validation: sent Flow on FDR1"; }</message>
+                        </trace>
+                    </otherwise>
+                    -->
+                </choose>
             </when>
         </choose>
         <return-response>

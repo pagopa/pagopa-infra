@@ -12,69 +12,64 @@
     <!-- Delete headers required for backend service END -->
 
     <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
-    <!-- fragment to read user id from session token jwt claims. it return userId as sessionTokenUserId variable taken from jwt claims. if the session token
-             is an opaque token a "session-token-not-found" string is returned-->  
-    <include-fragment fragment-id="pay-wallet-user-id-from-session-token" />
     <!-- Session eCommerce START-->
-        <choose>
-          <when condition="@( ("NPG".Equals("{{ecommerce-for-io-pm-npg-ff}}")) || ( ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}")) && ("{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))) ))">
-            <!-- Check JWT START-->
-            <include-fragment fragment-id="jwt-chk-wallet-session" />
-            <!-- Check JWT END-->
-            <!-- Headers settings required for backend service START -->
-            <set-header name="x-user-id" exists-action="override">
-                <value>@((string)context.Variables.GetValueOrDefault("xUserId",""))</value>
-            </set-header>
-            <set-header name="x-client-id" exists-action="override" >
-              <value>IO</value>
-            </set-header>
-            <!-- Headers settings required for backend service END -->
-          </when>
-          <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))))"> 
-
-            <!-- Check sessiontoken START-->
-            <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
-            <send-request ignore-error="true" timeout="10" response-variable-name="checkSessionResponse" mode="new">
-              <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/check-session?sessionToken={(string)context.Variables["sessionToken"]}")</set-url>
-              <set-method>GET</set-method>
-              <set-header name="Authorization" exists-action="override">
-                <value>@("Bearer " + (string)context.Variables["sessionToken"])</value>
-              </set-header>
-            </send-request>
-            <choose>
-              <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) != 200)">
-                <return-response>
-                  <set-status code="401" reason="Unauthorized" />
-                  <set-body>
-                    {
-                        "status": 401,
-                        "title": "Unauthorized",
-                        "detail": "Invalid token"
-                    }
-                  </set-body>
-                </return-response>
-              </when>
-            </choose>
-            <!-- Check sessiontoken END-->
-          </when>
-        </choose>
-
+    <!-- Check JWT START-->
+    <include-fragment fragment-id="jwt-chk-wallet-session" />
+    <!-- Check JWT END-->
+    <!-- Headers settings required for backend service START -->
+    <set-header name="x-user-id" exists-action="override">
+        <value>@((string)context.Variables.GetValueOrDefault("xUserId",""))</value>
+    </set-header>
+    <set-header name="x-client-id" exists-action="override" >
+      <value>IO</value>
+    </set-header>
+    <!-- Headers settings required for backend service END -->
     <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
+    <set-variable name="transactionsOperationId" value="newTransactionForIO,getTransactionInfoForIO,requestTransactionUserCancellationForIO,requestTransactionAuthorizationForIO" />
+    <set-variable name="paymentMethodsOperationId" value="getAllPaymentMethodsForIO" />
+    <set-variable name="paymentMethodsOperationIdV2" value="calculateFeesForIO" />
+    <set-variable name="paymentRequestsOperationId" value="getPaymentRequestInfoForIO" />
+    <set-variable name="lastPaymentMethodUsedOperationId" value="getUserLastPaymentMethodUsed" />
+    <set-variable name="walletsOperationId" value="getWalletsByIdIOUser" />
     <choose>
-      <when condition="@( context.Request.Url.Path.Contains("transactions") )">
+      <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("transactionsOperationId","").Split(','), operations => operations == context.Operation.Id))">
+        <set-header name="x-api-key" exists-action="override">
+          <value>{{ecommerce-transactions-service-api-key-value}}</value>
+        </set-header>
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service")"/>
       </when>
-      <when condition="@( context.Request.Url.Path.Contains("payment-methods") )">
+      <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("paymentMethodsOperationId","").Split(','), operations => operations == context.Operation.Id))">
+        <!-- Set payment-methods API Key header -->
+        <set-header name="x-api-key" exists-action="override">
+          <value>{{ecommerce-payment-methods-api-key-value}}</value>
+        </set-header>
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service")"/>
       </when>
-      <when condition="@( context.Request.Url.Path.Contains("payment-requests") )">
+      <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("paymentMethodsOperationIdV2","").Split(','), operations => operations == context.Operation.Id))">
+        <!-- Set payment-methods API Key header -->
+        <set-header name="x-api-key" exists-action="override">
+          <value>{{ecommerce-payment-methods-api-key-value}}</value>
+        </set-header>
+        <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service/v2")" />
+      </when>
+      <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("paymentRequestsOperationId","").Split(','), operations => operations == context.Operation.Id))">
+        <!-- Set payment-requests API Key header -->
+        <set-header name="x-api-key" exists-action="override">
+          <value>{{ecommerce-payment-requests-api-key-value}}</value>
+        </set-header>
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service")"/>
       </when>
-      <when condition="@( context.Request.Url.Path.Contains("user/lastPaymentMethodUsed") )">
+      <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("lastPaymentMethodUsedOperationId","").Split(','), operations => operations == context.Operation.Id))">
+        <set-header name="x-api-key" exists-action="override">
+          <value>{{ecommerce-user-stats-service-api-key-value}}</value>
+        </set-header>
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-user-stats-service")"/>
       </when>
-      <when condition="@( context.Request.Url.Path.Contains("wallets") )">
+      <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("walletsOperationId","").Split(','), operations => operations == context.Operation.Id))">
         <set-backend-service base-url="@("https://${wallet_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-wallet-service")"/>
+        <set-header name="x-api-key" exists-action="override">
+          <value>{{payment-wallet-service-rest-api-key}}</value>
+        </set-header>
       </when>
     </choose>
   </inbound>

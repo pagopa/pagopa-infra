@@ -58,7 +58,7 @@ resource "azurerm_resource_group" "node_forwarder_dbg_rg" {
   name     = format("%s-node-forwarder-dbg-rg", local.product)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -122,7 +122,7 @@ module "node_forwarder_dbg_app_service" {
 
   zone_balancing_enabled = var.node_forwarder_zone_balancing_enabled
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "node_forwarder_dbg_slot_staging" {
@@ -151,7 +151,7 @@ module "node_forwarder_dbg_slot_staging" {
   allowed_ips     = []
   subnet_id       = module.node_forwarder_dbg_snet[0].id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 moved {

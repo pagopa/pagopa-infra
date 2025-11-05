@@ -5,14 +5,14 @@ resource "azurerm_resource_group" "wallet_fe_rg" {
   name     = "${local.project}-fe-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 /**
  * CDN
  */
 module "wallet_fe_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v8.20.1"
+  source = "./.terraform/modules/__v4__/cdn"
 
   name                  = "fe"
   prefix                = local.project
@@ -97,13 +97,13 @@ module "wallet_fe_cdn" {
     }
   }]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
 module "wallet_fe_web_test" {
   count                                 = var.env_short == "p" ? 1 : 0
-  source                                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_standard_web_test?ref=v8.20.1"
+  source                                = "./.terraform/modules/__v4__/application_insights_standard_web_test"
   https_endpoint                        = "https://${module.wallet_fe_cdn.fqdn}"
   https_endpoint_path                   = "/index.html"
   alert_name                            = "${local.project}-fe-web-test"
@@ -116,7 +116,8 @@ module "wallet_fe_web_test" {
   timeout                               = 10
   frequency                             = 300
   https_probe_threshold                 = 99
-  metric_frequency                      = "PT1M"
-  metric_window_size                    = "PT5M"
+  metric_frequency                      = "PT5M"
+  metric_window_size                    = "PT1H"
+  retry_enabled                         = true
 
 }

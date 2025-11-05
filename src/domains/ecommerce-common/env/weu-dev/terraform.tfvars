@@ -6,13 +6,6 @@ location       = "westeurope"
 location_short = "weu"
 instance       = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/ecommerce-common"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -26,6 +19,7 @@ ingress_load_balancer_ip = "10.1.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
+dns_zone_ecommerce       = "dev.ecommerce"
 
 ### Cosmos
 
@@ -67,6 +61,13 @@ cosmos_mongo_db_ecommerce_params = {
 cosmos_mongo_db_ecommerce_history_params = {
   enable_serverless  = true
   enable_autoscaling = true
+  max_throughput     = 2000
+  throughput         = 1000
+}
+
+cosmos_mongo_db_ecommerce_watchdog_params = {
+  enable_serverless  = true
+  enable_autoscaling = true
   max_throughput     = 1000
   throughput         = 1000
 }
@@ -101,3 +102,5 @@ ecommerce_storage_transient_params = {
 }
 
 enable_iac_pipeline = true
+
+ecommerce_jwt_issuer_api_key_use_primary = true

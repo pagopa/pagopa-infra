@@ -101,7 +101,7 @@ resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
   default_scope = format("%s/%s",
     data.azuread_application.apiconfig-be.identifier_uris[0],
   "access-apiconfig-be")
-  client_secret = azurerm_key_vault_secret.apiconfig_client_secret.value
+  # client_secret = azurerm_key_vault_secret.apiconfig_client_secret.value
 
   bearer_token_sending_methods = ["authorizationHeader"]
   client_authentication_method = ["Body"]

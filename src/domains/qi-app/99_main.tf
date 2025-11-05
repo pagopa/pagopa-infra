@@ -14,7 +14,7 @@ terraform {
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "= 2.11.0"
+      version = "<= 2.30.0"
     }
     helm = {
       source  = "hashicorp/helm"
@@ -48,6 +48,6 @@ provider "helm" {
 }
 
 module "__v3__" {
-  # v8.59.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=3fc1dafaf4354e24ca8673005ec0caf4106343a3"
+  # v8.98.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=4ac32cd6fb7d56e7be3b1c0dbcbf251f5b0cd199"
 }

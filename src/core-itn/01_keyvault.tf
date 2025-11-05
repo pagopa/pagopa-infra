@@ -2,11 +2,11 @@ resource "azurerm_resource_group" "sec_rg" {
   name     = "${local.project}-sec-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.13.0"
+  source = "./.terraform/modules/__v4__/key_vault"
 
   name                       = "${local.project}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -14,7 +14,7 @@ module "key_vault" {
   tenant_id                  = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days = 90
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## ad group policy ##
@@ -106,4 +106,25 @@ data "azurerm_key_vault_secret" "monitor_notification_slack_email" {
   key_vault_id = module.key_vault.id
 
   depends_on = [azurerm_key_vault_secret.monitor_notification_slack_email]
+}
+
+data "azurerm_user_assigned_identity" "iac_federated_azdo" {
+  for_each            = local.azdo_iac_managed_identities
+  name                = each.key
+  resource_group_name = local.azdo_managed_identity_rg_name
+}
+
+resource "azurerm_key_vault_access_policy" "azdevops_iac_managed_identities" {
+  for_each = local.azdo_iac_managed_identities
+
+  key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azurerm_user_assigned_identity.iac_federated_azdo[each.key].principal_id
+
+  key_permissions    = ["Get", "List", "Decrypt", "Verify", "GetRotationPolicy"]
+  secret_permissions = ["Get", "List", "Set", ]
+
+  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get"]
+
+  storage_permissions = []
 }

@@ -88,7 +88,7 @@
                 "userProperties": [],
                 "typeProperties": {
                     "expression": {
-                        "value": "@if(contains(item(), 'idPsp'), true, false)",
+                        "value": "@if(contains(item(), 'name'), true, false)",
                         "type": "Expression"
                     },
                     "ifTrueActivities": [
@@ -120,7 +120,7 @@
                                 },
                                 "authentication": {
                                     "type": "MSI",
-                                    "resource": "{evh_base_url}"
+                                    "resource": "${evh_base_url}"
                                 }
                             }
                         }
