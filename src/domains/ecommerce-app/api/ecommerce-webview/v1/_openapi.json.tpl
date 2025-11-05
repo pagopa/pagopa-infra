@@ -381,7 +381,7 @@
           {
             "name": "webSessionToken",
             "in": "header",
-            "description": "ecommerce session token useful to authorize contextual onbaording outcome api",
+            "description": "ecommerce session token useful to authorize contextual onboarding outcome api",
             "required": true,
             "schema": {
               "type": "string"
