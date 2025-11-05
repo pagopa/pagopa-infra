@@ -34,15 +34,6 @@ module "cloudo" {
     }
   }
 
-  custom_roles_per_aks = {
-    "weu" = [
-      "Contributor"
-    ]
-    "itn" = [
-      "Reader"
-    ]
-  }
-
 
   app_service_logs = {
     retention_period_days = 3
@@ -60,18 +51,18 @@ module "cloudo" {
   schemas = file("${path.module}/env/${var.env}/schemas.json.tpl")
 
   orchestrator_image = {
-    image_name        = "pagopa/cloudo-orchestrator"
-    image_tag         = "0.0.0"
-    registry_url      = "https://ghcr.io"
-    registry_username = "payments-cloud-bot"
+    image_name        = var.cloudo_orchestrator.image_name
+    image_tag         = var.cloudo_orchestrator.image_tag
+    registry_url      = var.cloudo_orchestrator.registry_url
+    registry_username = var.cloudo_orchestrator.registry_username
     registry_password = data.azurerm_key_vault_secret.github_pat.value
   }
 
   worker_image = {
-    image_name        = "pagopa/cloudo-worker"
-    image_tag         = "0.0.0"
-    registry_url      = "https://ghcr.io"
-    registry_username = "payments-cloud-bot"
+    image_name        = var.cloudo_worker.image_name
+    image_tag         = var.cloudo_worker.image_tag
+    registry_url      = var.cloudo_worker.registry_url
+    registry_username = var.cloudo_worker.registry_username
     registry_password = data.azurerm_key_vault_secret.github_pat.value
   }
 

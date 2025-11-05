@@ -70,3 +70,29 @@ variable "application_insisght_resource_group_name" {
   type        = string
   description = "The name of the resource group where the Application Insights resource is located"
 }
+
+###################
+### ClouDO Vars ###
+###################
+variable "cloudo_orchestrator" {
+  type = object({
+    image_name        = optional(string, "pagopa/cloudo-orchestrator")
+    image_tag         = optional(string, "0.0.0")
+    registry_url      = optional(string, "https://ghcr.io")
+    registry_username = optional(string)
+    registry_password = optional(string)
+  })
+  description = "Configuration for the ClouDO orchestrator container, including container image details and registry authentication."
+}
+
+
+variable "cloudo_worker" {
+  type = object({
+    image_name        = optional(string, "pagopa/cloudo-worker")
+    image_tag         = optional(string, "0.0.0")
+    registry_url      = optional(string, "https://ghcr.io")
+    registry_username = optional(string)
+    registry_password = optional(string)
+  })
+  description = "Configuration for the ClouDO worker container, including container image details and registry authentication."
+}
