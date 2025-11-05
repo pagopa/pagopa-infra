@@ -126,3 +126,4 @@ resource "azurerm_api_management_api_operation_policy" "send_payment_result_api_
 resource "terraform_data" "sha256_send_payment_result_api_v2_wisp_policy" {
   input = sha256(file("./api/payment_manager_api/pm-per-nodo/v2/wisp-sendpaymentresult.xml.tpl"))
 }
+
