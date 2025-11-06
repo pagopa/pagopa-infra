@@ -135,6 +135,10 @@ locals {
         {
           keys   = ["transactionId", "creationDate"]
           unique = false
+        },
+        {
+          keys   = ["creationDate"]
+          unique = false
         }
       ]
       shard_key           = "transactionId",
@@ -148,6 +152,10 @@ locals {
         },
         {
           keys   = ["creationDate", "status", "clientId"]
+          unique = false
+        },
+        {
+          keys   = ["creationDate"]
           unique = false
         },
         {
