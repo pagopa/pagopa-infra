@@ -33,7 +33,7 @@ monitor_appinsights_name                    = "pagopa-u-appinsights"
 #
 aks_private_cluster_enabled  = true
 aks_alerts_enabled           = false
-aks_kubernetes_version       = "1.31.8"
+aks_kubernetes_version       = "1.32.4"
 aks_sku_tier                 = "Standard"
 aks_enable_workload_identity = true
 

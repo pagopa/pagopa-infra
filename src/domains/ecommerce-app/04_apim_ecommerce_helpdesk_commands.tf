@@ -3,7 +3,7 @@
 ##############
 
 module "apim_ecommerce_helpdesk_commands_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "ecommerce-helpdesk-commands"
   display_name = "ecommerce pagoPA helpdesk commands service"
@@ -45,7 +45,7 @@ resource "azurerm_api_management_api_version_set" "pagopa_ecommerce_helpdesk_com
 
 #helpdesk api for ecommerce
 module "apim_pagopa_ecommerce_helpdesk_commands_service_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-helpdesk-commands-service-api"
   api_management_name   = local.pagopa_apim_name
