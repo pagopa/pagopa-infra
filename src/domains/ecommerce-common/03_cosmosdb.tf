@@ -142,7 +142,7 @@ locals {
         }
       ]
       shard_key           = "transactionId",
-      default_ttl_seconds = null
+      default_ttl_seconds = "315360000" #10 years
     },
     {
       name = "transactions-view"
@@ -176,7 +176,7 @@ locals {
         }
       ]
       shard_key           = "_id",
-      default_ttl_seconds = null
+      default_ttl_seconds = "315360000" #10 years
     },
     {
       name = "dead-letter-events"
