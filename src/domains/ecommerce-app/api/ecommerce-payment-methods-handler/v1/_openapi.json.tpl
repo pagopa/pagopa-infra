@@ -341,7 +341,8 @@
                             "RBPP",
                             "RBPR",
                             "GOOG",
-                            "KLRN"
+                            "KLRN",
+                            "RFPB"
                         ]
                     },
                     "paymentMethodTypes": {
