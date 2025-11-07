@@ -15,6 +15,7 @@
           <header>Authorization</header>
           <header>X-Client-Id</header>
           <header>lang</header>
+          <header>x-ecommerce-session-token</header>
       </allowed-headers>
     </cors>
     <base />
