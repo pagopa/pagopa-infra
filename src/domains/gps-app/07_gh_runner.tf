@@ -56,9 +56,7 @@ module "gh_runner_job" {
       short_name : "gpd-rtp"
     }
   ]
-  job = {
-    name = var.domain
-  }
+  job = {}
   job_meta = {}
   key_vault = {
     # name        = "${local.product}-kv"     # Name of the KeyVault which stores PAT as secret
