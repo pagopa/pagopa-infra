@@ -379,7 +379,7 @@
         "operationId": "createWalletForTransactionsForIO",
         "parameters": [
           {
-            "name": "webSessionToken",
+            "name": "x-ecommerce-session-token",
             "in": "header",
             "description": "ecommerce session token useful to authorize contextual onboarding outcome api",
             "required": true,
