@@ -220,7 +220,7 @@ traces
 
 # -----------------------------------------------------------------------------
 # GPD – API v3 – OPEX ALERTS
-# Scope: availability, latency, burst 5xx
+# Scope: availability, latency
 # -----------------------------------------------------------------------------
 
 ## GPD-Core for organizations (alias external) Availability - v3 ##
