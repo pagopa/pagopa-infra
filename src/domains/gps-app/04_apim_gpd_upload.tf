@@ -71,6 +71,6 @@ module "apim_gpd_upload_api_v2" {
 
   xml_content = templatefile("./api/gpd-upload-service/v2/_base_policy.xml", {
     service_domain_value = "gpd"
-    service_type_value = "GPD"
+    service_type_value   = "GPD"
   })
 }

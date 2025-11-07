@@ -28,7 +28,7 @@ module "gh_runner_job" {
       short_name : "slfc-fe"
     }
   ]
-  job = {}
+  job      = {}
   job_meta = {}
   key_vault = {
     name        = "${local.product}-kv"     # Name of the KeyVault which stores PAT as secret

@@ -19,7 +19,7 @@ module "gh_runner_job" {
       short_name : "payopt-svc"
     }
   ]
-  job = {}
+  job      = {}
   job_meta = {}
   key_vault = {
     name        = "${local.project}-kv"                      # Name of the KeyVault which stores PAT as secret
