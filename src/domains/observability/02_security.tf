@@ -16,3 +16,13 @@ data "azurerm_key_vault" "network_kv" {
   name                = "${var.prefix}-${var.env_short}-${var.location_short}-network-kv"
   resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-network-sec-rg"
 }
+
+data "azurerm_key_vault" "nodo_kv" {
+  name                = "${var.prefix}-${var.env_short}-nodo-kv"
+  resource_group_name = "${var.prefix}-${var.env_short}-nodo-sec-rg"
+}
+
+data "azurerm_key_vault" "qi-kv" {
+  name                = "${var.prefix}-${var.env_short}-qi-kv"
+  resource_group_name = "${var.prefix}-${var.env_short}-qi-sec-rg"
+}
