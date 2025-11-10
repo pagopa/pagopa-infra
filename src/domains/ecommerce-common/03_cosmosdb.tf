@@ -135,10 +135,14 @@ locals {
         {
           keys   = ["transactionId", "creationDate"]
           unique = false
+        },
+        {
+          keys   = ["creationDate"]
+          unique = false
         }
       ]
       shard_key           = "transactionId",
-      default_ttl_seconds = null
+      default_ttl_seconds = "315360000" #10 years
     },
     {
       name = "transactions-view"
@@ -148,6 +152,10 @@ locals {
         },
         {
           keys   = ["creationDate", "status", "clientId"]
+          unique = false
+        },
+        {
+          keys   = ["creationDate"]
           unique = false
         },
         {
@@ -168,7 +176,7 @@ locals {
         }
       ]
       shard_key           = "_id",
-      default_ttl_seconds = null
+      default_ttl_seconds = "315360000" #10 years
     },
     {
       name = "dead-letter-events"
@@ -256,6 +264,50 @@ locals {
       shard_key           = "_id",
       default_ttl_seconds = null
     },
+    {
+      name = "eventstore"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["transactionId", "creationDate"]
+          unique = false
+        }
+      ]
+      shard_key           = "transactionId",
+      default_ttl_seconds = 315360000 # 10 years: 10y * 365g * 24h * 60m * 60s
+    },
+    {
+      name = "transactions-view"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["creationDate", "status", "clientId"]
+          unique = false
+        },
+        {
+          keys   = ["paymentNotices.rptId"]
+          unique = false
+        },
+        {
+          keys   = ["paymentNotices.paymentToken"]
+          unique = false
+        },
+        {
+          keys   = ["email.data"]
+          unique = false
+        },
+        {
+          keys   = ["userId"]
+          unique = false
+        }
+      ]
+      shard_key           = "_id",
+      default_ttl_seconds = 315360000 # 10 years: 10y * 365g * 24h * 60m * 60s
+    }
   ]
 }
 
