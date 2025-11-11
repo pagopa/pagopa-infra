@@ -75,3 +75,15 @@ variable "vmss_size" {
   type    = string
   default = "Standard_D2ds_v5"
 }
+
+variable "external_database_connection" {
+  type = map(object({
+    connector_name       = string
+    url                  = string
+    params               = optional(map(string), {})
+    user_secret_name     = string
+    password_secret_name = string
+  }))
+  description = "Map of external database connection configurations"
+  default     = {}
+}
