@@ -22,7 +22,7 @@
         },
         "userProperties": [],
         "linkedServiceName": {
-          "referenceName": "gpd-dev-postgres-ls",
+          "referenceName": "${linked_service_gpd}",
           "type": "LinkedServiceReference"
         },
         "typeProperties": {
