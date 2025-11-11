@@ -25,6 +25,10 @@ module "vmss_snet" {
   product_name      = local.prefix
   env               = var.env
 
+  service_endpoints = [
+    "Microsoft.AzureCosmosDB"
+  ]
+
 }
 
 resource "azurerm_subnet_nat_gateway_association" "vmss_snet_nat" {
@@ -46,12 +50,12 @@ module "vmss_pls_snet" {
 
 data "azurerm_key_vault_secret" "vmss_admin_login" {
   name         = "vmss-administrator-login"
-  key_vault_id = data.azurerm_key_vault.kv_core.id
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
 }
 
 data "azurerm_key_vault_secret" "vmss_admin_password" {
   name         = "vmss-administrator-password"
-  key_vault_id = data.azurerm_key_vault.kv_core.id
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
 }
 
 resource "azurerm_linux_virtual_machine_scale_set" "vmss-egress" {
@@ -242,7 +246,7 @@ resource "azurerm_key_vault_secret" "database_map_secret" {
   value        = join(",", local.postgres_fqdn_map[*].db_fqdn)
   content_type = "text/plain"
 
-  key_vault_id = data.azurerm_key_vault.kv_core.id
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
 }
 
 data "azurerm_cosmosdb_account" "cosmos_account" {
@@ -279,6 +283,18 @@ locals {
   mongodb_script = templatefile("${path.module}/mongodb_trino_connection.sh.tpl", {
     mongodb_map = join(",", local.mongodb_fqdn_url_map[*].db_fqdn_connection)
   })
+
+  ## Generate script for external db trino connection
+  external_db_script = templatefile("${path.module}/external_trino_connection.sh.tpl", {
+    external_map = {
+      for db_key, db_value in var.external_database_connection : db_key => {
+        connector_name = db_value.connector_name
+        url            = db_value.url
+        params         = db_value.params
+        user_name      = data.azurerm_key_vault_secret.external_database_username[db_key].value
+        password       = data.azurerm_key_vault_secret.external_database_password[db_key].value
+      }
+  } })
 
   ## Database Postgres Flexible mapping for ADF proxy
   ## Each DB has a different external port to be mapped to the same destination port 5432
@@ -336,7 +352,7 @@ locals {
     trino_xmx = var.trino_xmx
   })
   ## Merge all scripts
-  script_merge = "${local.ipfwd_script}${local.postgres_forward_port_script}${local.trino_installation_script}${local.mongodb_script}${local.trino_configuration_script}"
+  script_merge = "${local.ipfwd_script}${local.postgres_forward_port_script}${local.trino_installation_script}${local.mongodb_script}${local.external_db_script}${local.trino_configuration_script}"
   ## Base64 encode the merged script
   base64_script = base64encode(local.script_merge)
 
