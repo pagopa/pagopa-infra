@@ -35,7 +35,9 @@
 | [azurerm_virtual_machine_scale_set_extension.vmss-extension](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_scale_set_extension) | resource |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_cosmosdb_account.cosmos_account](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/cosmosdb_account) | data source |
-| [azurerm_key_vault.kv_core](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault.kv_domain](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault_secret.external_database_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.external_database_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.vmss_admin_login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.vmss_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_nat_gateway.pagopa_nat](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/nat_gateway) | data source |
@@ -49,6 +51,7 @@
 | <a name="input_enabled_features"></a> [enabled\_features](#input\_enabled\_features) | (Optional) Enable/Disable features | <pre>object({<br/>    nsg_metabase             = optional(bool, false)<br/>    data_factory_proxy       = optional(bool, false)<br/>    vpn_database_access      = optional(bool, true)<br/>    nsg                      = optional(bool, true)<br/>    db_replica_nsg           = optional(bool, false)<br/>    all_vnet_database_access = optional(bool, false)<br/>  })</pre> | <pre>{<br/>  "all_vnet_database_access": false,<br/>  "data_factory_proxy": false,<br/>  "db_replica_nsg": false,<br/>  "nsg": true,<br/>  "nsg_metabase": false,<br/>  "vpn_database_access": true<br/>}</pre> | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | general | `string` | n/a | yes |
+| <a name="input_external_database_connection"></a> [external\_database\_connection](#input\_external\_database\_connection) | Map of external database connection configurations | <pre>map(object({<br/>    connector_name       = string<br/>    url                  = string<br/>    params               = optional(map(string), {})<br/>    user_secret_name     = string<br/>    password_secret_name = string<br/>  }))</pre> | `{}` | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |
 | <a name="input_nsg_network_watcher_enabled"></a> [nsg\_network\_watcher\_enabled](#input\_nsg\_network\_watcher\_enabled) | (Optional) Enable Network Watcher for all NSG (subnet associated to nsg) | `bool` | `false` | no |
