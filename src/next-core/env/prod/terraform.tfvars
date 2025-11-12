@@ -168,14 +168,14 @@ apim_v2_autoscale = {
   enabled                       = true
   default_instances             = 3
   minimum_instances             = 3
-  maximum_instances             = 5
+  maximum_instances             = 6
   scale_out_capacity_percentage = 45
   scale_out_time_window         = "PT10M"
-  scale_out_value               = "2"
+  scale_out_value               = "3"
   scale_out_cooldown            = "PT45M"
   scale_in_capacity_percentage  = 30
   scale_in_time_window          = "PT30M"
-  scale_in_value                = "1"
+  scale_in_value                = "3"
   scale_in_cooldown             = "PT4H"
 }
 
