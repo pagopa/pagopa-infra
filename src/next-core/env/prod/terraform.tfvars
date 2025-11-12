@@ -168,14 +168,14 @@ apim_v2_autoscale = {
   enabled                       = true
   default_instances             = 3
   minimum_instances             = 3
-  maximum_instances             = 5
+  maximum_instances             = 9
   scale_out_capacity_percentage = 45
   scale_out_time_window         = "PT10M"
-  scale_out_value               = "2"
+  scale_out_value               = "3"
   scale_out_cooldown            = "PT45M"
   scale_in_capacity_percentage  = 30
   scale_in_time_window          = "PT30M"
-  scale_in_value                = "1"
+  scale_in_value                = "3"
   scale_in_cooldown             = "PT4H"
 }
 
@@ -781,8 +781,8 @@ app_gateway_management_certificate_name = "management-platform-pagopa-it-stable"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it-stable"
 app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
 app_gateway_wfespgovit_certificate_name = "wfesp-pagopa-gov-it"
-app_gateway_min_capacity                = 8 # 5 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
-app_gateway_max_capacity                = 100
+app_gateway_min_capacity                = 70 # 5 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
+app_gateway_max_capacity                = 120
 app_gateway_sku_name                    = "WAF_v2"
 app_gateway_sku_tier                    = "WAF_v2"
 app_gateway_waf_enabled                 = true
