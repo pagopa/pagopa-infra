@@ -99,7 +99,8 @@
                     ).ToString();
               }</set-body>
             </send-request>
-          <choose>
+          </when>
+        </choose>
     </outbound>
     <backend>
         <base />
