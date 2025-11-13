@@ -77,11 +77,11 @@
             <!-- Token JWT START-->
             <set-variable name="transactionId" value="@(context.Request.MatchedParameters["transactionId"])" />
             <send-request ignore-error="true" timeout="10" response-variable-name="x-jwt-token" mode="new">
-              <set-url>https://${wallet-basepath}/pagopa-jwt-issuer-service/tokens</set-url>
+              <set-url>https://${ecommerce_ingress_hostname}/pagopa-jwt-issuer-service/tokens</set-url>
               <set-method>POST</set-method>
               <!-- Set jwt-issuer-service API Key header -->
               <set-header name="x-api-key" exists-action="override">
-                <value>{{pay-wallet-jwt-issuer-api-key-value}}</value>
+                <value>{{ecommerce-jwt-issuer-api-key-value}}</value>
               </set-header>
               <set-header name="Content-Type" exists-action="override">
                   <value>application/json</value>
@@ -91,7 +91,7 @@
                 var transactionId = ((string)context.Variables.GetValueOrDefault("transactionId",""));
                 return new JObject(
                         new JProperty("audience", "ecommerce-outcomes"),
-                        new JProperty("duration", 900),
+                        new JProperty("duration", 1200),
                         new JProperty("privateClaims", new JObject(
                             new JProperty("transactionId", transactionId),
                             new JProperty("userId", userId)
@@ -108,9 +108,8 @@
             </choose>
             <set-variable name="token" value="@( (string) ( ((IResponse)context.Variables["x-jwt-token"] ).Body.As<JObject>(preserveContent: true)) ["token"])" />
             <!-- Token JWT END-->
-            <set-variable name="body" value="@(context.Response.Body.As<JObject>(preserveContent: true))" />
             <choose>
-              <when condition="@(!String.IsNullOrEmpty((string)context.Variables["redirectUrl"]))">
+              <when condition="@(!String.IsNullOrEmpty((string)context.Variables["token"]))">
                   <set-body>@{
                       JObject inBody = context.Response.Body.As<JObject>(preserveContent: true);
                       inBody["authToken"] = (string)context.Variables.GetValueOrDefault("token","");
