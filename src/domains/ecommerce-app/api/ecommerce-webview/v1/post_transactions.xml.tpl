@@ -99,6 +99,25 @@
                     ).ToString();
               }</set-body>
             </send-request>
+            <choose>
+              <when condition="@(((IResponse)context.Variables["x-jwt-token"]).StatusCode != 200)">
+                  <return-response>
+                      <set-status code="502" reason="Bad Gateway" />
+                  </return-response>
+              </when>
+            </choose>
+            <set-variable name="token" value="@( (string) ( ((IResponse)context.Variables["x-jwt-token"] ).Body.As<JObject>(preserveContent: true)) ["token"])" />
+            <!-- Token JWT END-->
+            <set-variable name="body" value="@(context.Response.Body.As<JObject>(preserveContent: true))" />
+            <choose>
+              <when condition="@(!String.IsNullOrEmpty((string)context.Variables["redirectUrl"]))">
+                  <set-body>@{
+                      JObject inBody = context.Response.Body.As<JObject>(preserveContent: true);
+                      inBody["authToken"] = (string)context.Variables.GetValueOrDefault("token","");
+                      return inBody.ToString();
+                  }</set-body>
+              </when>
+            </choose>
           </when>
         </choose>
     </outbound>
