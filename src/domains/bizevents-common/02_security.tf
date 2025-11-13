@@ -585,15 +585,14 @@ resource "azurerm_api_management_subscription" "ecommerce_helpdesk_subkey" {
   state         = "active"
 }
 
-# MOVE to biz-secrets
 #######
-# resource "azurerm_key_vault_secret" "ecommerce_helpdesk_subscription_key_kv" {
-#   depends_on = [
-#     azurerm_api_management_subscription.ecommerce_helpdesk_subkey
-#   ]
-#   name         = "ecommerce-helpdesk-subscription-key"
-#   value        = azurerm_api_management_subscription.ecommerce_helpdesk_subkey.primary_key
-#   content_type = "text/plain"
+# Copy secret from nodo-kv
+#######
+resource "azurerm_key_vault_secret" "db_nexi_biz_pagopa_sv_password" {
+  count = var.env_short != "d" ? 1 : 0
+  name         = "db-nexi-biz-pagopa-sv-password"
+  value        = data.azurerm_key_vault_secret.db_nexi_biz_pagopa_sv_password.value
+  content_type = "text/plain"
 
-#   key_vault_id = data.azurerm_key_vault.key_vault.id
-# }
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
