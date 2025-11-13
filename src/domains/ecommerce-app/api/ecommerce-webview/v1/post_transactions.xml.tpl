@@ -72,6 +72,34 @@
     </inbound>
     <outbound>
         <base />
+        <choose>
+          <when condition="@(context.Response.StatusCode == 200)">
+            <!-- Token JWT START-->
+            <set-variable name="transactionId" value="@(context.Request.MatchedParameters["transactionId"])" />
+            <send-request ignore-error="true" timeout="10" response-variable-name="x-jwt-token" mode="new">
+              <set-url>https://${wallet-basepath}/pagopa-jwt-issuer-service/tokens</set-url>
+              <set-method>POST</set-method>
+              <!-- Set jwt-issuer-service API Key header -->
+              <set-header name="x-api-key" exists-action="override">
+                <value>{{pay-wallet-jwt-issuer-api-key-value}}</value>
+              </set-header>
+              <set-header name="Content-Type" exists-action="override">
+                  <value>application/json</value>
+              </set-header>
+              <set-body>@{
+                var userId = ((string)context.Variables.GetValueOrDefault("xUserId",""));
+                var transactionId = ((string)context.Variables.GetValueOrDefault("transactionId",""));
+                return new JObject(
+                        new JProperty("audience", "ecommerce-outcomes"),
+                        new JProperty("duration", 900),
+                        new JProperty("privateClaims", new JObject(
+                            new JProperty("transactionId", transactionId),
+                            new JProperty("userId", userId)
+                        ))
+                    ).ToString();
+              }</set-body>
+            </send-request>
+          <choose>
     </outbound>
     <backend>
         <base />
