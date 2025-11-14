@@ -86,7 +86,7 @@ redis_pay_wallet_params = {
 }
 
 redis_std_pay_wallet_params = {
-  capacity   = 0
+  capacity   = 1
   sku_name   = "Standard"
   family     = "C"
   version    = 6
@@ -115,8 +115,8 @@ aks_user_node_pool = {
   vm_size         = "Standard_D8ds_v5",
   os_disk_type    = "Ephemeral",
   os_disk_size_gb = 300,
-  node_count_min  = 3,
-  node_count_max  = 3,
+  node_count_min  = 6,
+  node_count_max  = 10,
   zones           = [1, 2, 3]
   node_labels     = { node_name : "aks-pay-wallet-user", node_type : "user", domain : "paywallet" },
   node_taints     = ["paymentWalletOnly=true:NoSchedule"],
