@@ -75,7 +75,9 @@
         <choose>
           <when condition="@(context.Response.StatusCode == 200)">
             <!-- Token JWT START-->
-            <set-variable name="transactionId" value="@(context.Request.MatchedParameters["transactionId"])" />
+            <set-variable name="responseBody" value="@(context.Response.Body.As<JObject>(true))" />
+            <set-variable name="transactionId" value="@(((JObject)context.Variables["responseBody"])["transactionId"].ToString())" />
+           
             <send-request ignore-error="true" timeout="10" response-variable-name="x-jwt-token" mode="new">
               <set-url>https://${ecommerce_ingress_hostname}/pagopa-jwt-issuer-service/tokens</set-url>
               <set-method>POST</set-method>
@@ -111,7 +113,7 @@
             <choose>
               <when condition="@(!String.IsNullOrEmpty((string)context.Variables["token"]))">
                   <set-body>@{
-                      JObject inBody = context.Response.Body.As<JObject>(preserveContent: true);
+                      JObject inBody = (JObject)context.Variables["responseBody"];
                       inBody["authToken"] = (string)context.Variables.GetValueOrDefault("token","");
                       return inBody.ToString();
                   }</set-body>
