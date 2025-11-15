@@ -589,7 +589,7 @@ resource "azurerm_api_management_subscription" "ecommerce_helpdesk_subkey" {
 # Copy secret from nodo-kv
 #######
 resource "azurerm_key_vault_secret" "db_nexi_biz_pagopa_sv_password" {
-  count = var.env_short != "d" ? 1 : 0
+  count        = var.env_short != "d" ? 1 : 0
   name         = "db-nexi-biz-pagopa-sv-password"
   value        = data.azurerm_key_vault_secret.db_nexi_biz_pagopa_sv_password.value
   content_type = "text/plain"
