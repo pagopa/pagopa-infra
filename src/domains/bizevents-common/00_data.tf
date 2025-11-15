@@ -18,6 +18,7 @@ data "azurerm_key_vault" "nodo_key_vault" {
 }
 
 data "azurerm_key_vault_secret" "db_nexi_biz_pagopa_sv_password" {
+  count        = var.env_short != "d" ? 1 : 0
   name         = "db-nexi-biz-pagopa-sv-password"
   key_vault_id = data.azurerm_key_vault.nodo_key_vault.id
 }

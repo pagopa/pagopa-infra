@@ -591,7 +591,7 @@ resource "azurerm_api_management_subscription" "ecommerce_helpdesk_subkey" {
 resource "azurerm_key_vault_secret" "db_nexi_biz_pagopa_sv_password" {
   count        = var.env_short != "d" ? 1 : 0
   name         = "db-nexi-biz-pagopa-sv-password"
-  value        = data.azurerm_key_vault_secret.db_nexi_biz_pagopa_sv_password.value
+  value        = data.azurerm_key_vault_secret.db_nexi_biz_pagopa_sv_password[0].value
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
