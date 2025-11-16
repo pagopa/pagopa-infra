@@ -19,7 +19,7 @@ resource "azurerm_resource_group" "checkout_fe_rg" {
  * CDN
  */
 module "checkout_cdn" {
-  source = "./.terraform/modules/__v3__/cdn"
+  source = "./.terraform/modules/__v4__/cdn"
 
   count                 = var.checkout_enabled ? 1 : 0
   name                  = "checkout"
