@@ -111,7 +111,6 @@ locals {
   # These rules handle routing for different frontend applications
   # by rewriting URLs to serve the correct index.html files
   app_delivery_rules = concat([
-    # Cittadino Application Rule - Handles citizen portal routing
     {
       name  = "RewriteRulesForReactRouting"
       order = 4
