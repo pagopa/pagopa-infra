@@ -1,0 +1,68 @@
+{
+  "name": "Until_Backfill_Not_Done",
+  "type": "Until",
+  "dependsOn": [],
+  "userProperties": [],
+  "typeProperties": {
+    "expression": {
+      "value": "@equals(variables('rowsUpdated'), 0)",
+      "type": "Expression"
+    },
+    "activities": [
+      {
+        "name": "call_backfill_function",
+        "type": "Script",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "linkedServiceName": {
+          "referenceName": "${linked_service_gpd}",
+          "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "Query",
+              "text": {
+                "value": "SELECT @{pipeline().parameters.functionName}(@{pipeline().parameters.batchSize}) AS rowsUpdated;",
+                "type": "Expression"
+              }
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        }
+      },
+      {
+        "name": "set_rowsUpdated",
+        "type": "SetVariable",
+        "dependsOn": [
+          {
+            "activity": "call_backfill_function",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "rowsUpdated",
+          "value": {
+            "value": "@int(activity('call_backfill_function').output.resultSets[0].rows[0].rowsUpdated)",
+            "type": "Expression"
+          }
+        }
+      }
+    ],
+    "timeout": "0.12:00:00"
+  }
+}
