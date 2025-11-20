@@ -32,9 +32,7 @@ module "gh_runner_job" {
       short_name : "apicfg-tst-supp"
     }
   ]
-  job = {
-    name = var.domain
-  }
+  job      = {}
   job_meta = {}
   key_vault = {
     name        = "${local.product}-${var.domain}-kv"        # Name of the KeyVault which stores PAT as secret

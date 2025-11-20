@@ -333,6 +333,8 @@ module "shared_pdf_engine_java_slot_staging" {
   tags = module.tag_config.tags
 }
 
+
+
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_engine_java_autoscale" {
   count = var.env_short != "d" ? 1 : 0
 
@@ -410,7 +412,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 3 #sec
+        threshold                = var.pdf_engine_java_autoscale_response_time_scale_up #sec
         divide_by_instance_count = false
       }
 
@@ -432,7 +434,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 2 #sec
+        threshold                = var.pdf_engine_java_autoscale_response_time_scale_down #sec
         divide_by_instance_count = false
       }
 
