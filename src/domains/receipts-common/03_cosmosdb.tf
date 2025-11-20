@@ -130,7 +130,7 @@ locals {
     },
     {
       name                       = "cart-receipts-message-errors",
-      partition_key_path         = "/cartId",
+      partition_key_path         = "/id",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
