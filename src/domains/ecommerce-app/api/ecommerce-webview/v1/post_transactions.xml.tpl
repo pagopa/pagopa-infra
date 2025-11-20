@@ -105,6 +105,14 @@
               <when condition="@(((IResponse)context.Variables["x-jwt-token"]).StatusCode != 200)">
                   <return-response>
                       <set-status code="502" reason="Bad Gateway" />
+                      <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                     </set-header>
+                      <set-body>{
+                        "title": "Bad gateway",
+                        "status": 502,
+                        "detail": "Error generating auth token",
+                    }</set-body>
                   </return-response>
               </when>
             </choose>
