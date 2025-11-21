@@ -3,7 +3,7 @@
   <inbound>
     <cors>
       <allowed-origins>
-          <origin>${checkout_origin}</origin>
+          ${origins}
       </allowed-origins>
       <allowed-methods>
           <method>GET</method>
@@ -15,6 +15,7 @@
           <header>Authorization</header>
           <header>X-Client-Id</header>
           <header>lang</header>
+          <header>x-ecommerce-session-token</header>
       </allowed-headers>
     </cors>
     <base />
@@ -49,6 +50,7 @@
                 <openid-config url="https://${ecommerce_ingress_hostname}/pagopa-jwt-issuer-service/.well-known/openid-configuration" />
                 <audiences>
                   <audience>ecommerce</audience>
+                  <audience>ecommerce-outcomes</audience>
                 </audiences>
             </validate-jwt>
         </when>
