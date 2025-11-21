@@ -111,7 +111,7 @@ resource "azurerm_api_management_api_operation_policy" "webview_get_transaction_
   operation_id        = "getTransactionOutcomes"
 
   xml_content = templatefile("./api/ecommerce-webview/v1/_get_transaction_outcomes.xml.tpl", {
-    ecommerce_ingress_hostname = local.ecommerce_hostname
+    origins = var.env_short == "d" ? "<origin>*</origin>" : "<origin>${local.checkout_origin}</origin><origin>${local.ecommerce_origin}</origin>"
   })
 }
 
@@ -122,7 +122,7 @@ resource "azurerm_api_management_api_operation_policy" "webview_get_transactions
   operation_id        = "getTransactionInfo"
 
   xml_content = templatefile("./api/ecommerce-webview/v1/_get_transaction_outcomes.xml.tpl", {
-    ecommerce_ingress_hostname = local.ecommerce_hostname
+    origins = var.env_short == "d" ? "<origin>*</origin>" : "<origin>${local.checkout_origin}</origin><origin>${local.ecommerce_origin}</origin>"
   })
 }
 

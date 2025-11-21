@@ -1,5 +1,17 @@
 <policies>
     <inbound>
+            <cors>
+                <allowed-origins>
+                    ${origins}
+                </allowed-origins>
+                <allowed-methods>
+                    <method>GET</method>
+                    <method>OPTION</method>
+                </allowed-methods>
+                <allowed-headers>
+                    <header>Authorization</header>
+                </allowed-headers>
+            </cors>
             <set-header name="x-user-id" exists-action="delete" />
             <set-variable name="requestTransactionId" value="@(context.Request.MatchedParameters["transactionId"])" />
             <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
