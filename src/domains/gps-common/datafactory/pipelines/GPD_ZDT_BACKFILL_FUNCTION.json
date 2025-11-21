@@ -1,7 +1,14 @@
 {
   "name": "Until_Backfill_Not_Done",
   "type": "Until",
-  "dependsOn": [],
+  "dependsOn": [
+    {
+      "activity": "Set_Initial_LowerBound",
+      "dependencyConditions": [
+        "Succeeded"
+      ]
+    }
+  ],
   "userProperties": [],
   "typeProperties": {
     "expression": {
@@ -30,7 +37,7 @@
             {
               "type": "Query",
               "text": {
-                "value": "SELECT @{pipeline().parameters.functionName}(@{pipeline().parameters.batchSize}) AS rowsUpdated;",
+                "value": "/* [ADF] BatchSize: @{pipeline().parameters.batchSize} | Range: @{variables('currentLowerBound')} -> @{add(variables('currentLowerBound'), int(pipeline().parameters.increment))} */\nSELECT @{pipeline().parameters.functionName}(@{pipeline().parameters.batchSize}, @{variables('currentLowerBound')}, @{add(variables('currentLowerBound'), int(pipeline().parameters.increment))}) AS rowsUpdated;",
                 "type": "Expression"
               }
             }
@@ -49,11 +56,6 @@
             ]
           }
         ],
-        "policy": {
-          "secureOutput": false,
-          "secureInput": false
-        },
-        "userProperties": [],
         "typeProperties": {
           "variableName": "rowsUpdated",
           "value": {
@@ -61,8 +63,63 @@
             "type": "Expression"
           }
         }
+      },
+      {
+        "name": "calc_Next_LowerBound",
+        "type": "SetVariable",
+        "description": "Calculate the next value in a temporary variable",
+        "dependsOn": [
+          {
+            "activity": "set_rowsUpdated",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "typeProperties": {
+          "variableName": "tempLowerBound",
+          "value": {
+            "value": "@add(variables('currentLowerBound'), int(pipeline().parameters.increment))",
+            "type": "Expression"
+          }
+        }
+      },
+      {
+        "name": "update_Current_LowerBound",
+        "type": "SetVariable",
+        "description": "Update the main variable",
+        "dependsOn": [
+          {
+            "activity": "calc_Next_LowerBound",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "typeProperties": {
+          "variableName": "currentLowerBound",
+          "value": {
+            "value": "@variables('tempLowerBound')",
+            "type": "Expression"
+          }
+        }
       }
     ],
     "timeout": "0.12:00:00"
   }
+}
+,
+{
+"name": "Set_Initial_LowerBound",
+"type": "SetVariable",
+"description": "Set the initial lower limit",
+"dependsOn": [],
+"userProperties": [],
+"typeProperties": {
+"variableName": "currentLowerBound",
+"value": {
+"value": "@int(pipeline().parameters.baseLimit)",
+"type": "Expression"
+}
+}
 }
