@@ -1,10 +1,10 @@
 {
-  "openapi" : "3.0.1",
-  "info" : {
-    "title" : "PagoPA API Debt Position ${service}",
-    "description" : "Progetto Gestione Posizioni Debitorie",
-    "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.15.0"
+  "openapi": "3.1.0",
+  "info": {
+    "title": "PagoPA API Debt Position ${service}",
+    "description": "Progetto Gestione Posizioni Debitorie",
+    "termsOfService": "https://www.pagopa.gov.it/",
+    "version": "1.1.7-1"
   },
   "servers" : [ {
     "url" : "https://api.uat.platform.pagopa.it/gpd/api/v1",
@@ -553,7 +553,8 @@
           "description" : "The old iban to replace",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "minLength": 1
           }
         }, {
           "name" : "limit",
@@ -2248,9 +2249,178 @@
             }
           }
         },
-        "security" : [ {
-          "ApiKey" : [ ]
-        } ]
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/payment-options/organizations/{organization-fiscal-code}/notices/{notice-number}": {
+      "post": {
+        "tags": [
+          "Payments API"
+        ],
+        "summary": "Verify payment options for a given notice number.",
+        "operationId": "verifyPaymentOptions",
+        "parameters": [
+          {
+            "name": "organization-fiscal-code",
+            "in": "path",
+            "description": "Organization fiscal code, the fiscal code of the Organization.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "\\d{1,30}"
+            }
+          },
+          {
+            "name": "notice-number",
+            "in": "path",
+            "description": "Notice number (NAV): [auxDigit][segregationCode][IUVBase][IUVCheckDigit].",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{1,30}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment options successfully retrieved.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyPaymentOptionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OdPErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong or missing function key.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No payment option found.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OdPErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OdPErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OdPErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OdPErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
       },
       "parameters" : [ {
         "name" : "X-Request-Id",
@@ -2414,11 +2584,12 @@
             "type" : "string",
             "description" : "The type of the stamp"
           },
-          "provincialResidence" : {
-            "pattern" : "[A-Z]{2}",
-            "type" : "string",
-            "description" : "The provincial of the residence",
-            "example" : "RM"
+          "provincialResidence": {
+            "type": "string",
+            "description": "The provincial of the residence",
+            "example": "RM",
+            "minLength": 1,
+            "pattern": "[A-Z]{2}"
           }
         }
       },
@@ -2508,13 +2679,14 @@
           "nav" : {
             "type" : "string"
           },
-          "iuv" : {
-            "type" : "string"
+          "iuv": {
+            "type": "string",
+            "minLength": 1
           },
-          "amount" : {
-            "minimum" : 1,
-            "type" : "integer",
-            "format" : "int64"
+          "amount": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1
           },
           "description" : {
             "maxLength" : 140,
@@ -2563,7 +2735,8 @@
         "type" : "object",
         "properties" : {
           "iupd" : {
-            "type" : "string"
+            "type" : "string",
+            "minLength": 1
           },
           "type" : {
             "type" : "string",
@@ -2604,9 +2777,10 @@
             "type" : "string",
             "example" : "IT"
           },
-          "email" : {
-            "type" : "string",
-            "example" : "email@domain.com"
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "email@domain.com"
           },
           "phone" : {
             "type" : "string"
@@ -2666,64 +2840,194 @@
         },
         "description" : "it can added a maximum of 10 key-value pairs for metadata"
       },
-      "TransferModel" : {
-        "required" : [ "amount", "category", "idTransfer", "remittanceInformation" ],
-        "type" : "object",
-        "properties" : {
-          "idTransfer" : {
-            "type" : "string",
-            "enum" : [ "1", "2", "3", "4", "5" ]
+      "TransferModel": {
+        "type": "object",
+        "properties": {
+          "idTransfer": {
+            "type": "string",
+            "enum": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5"
+            ],
+            "minLength": 1
           },
-          "amount" : {
-            "minimum" : 1,
-            "type" : "integer",
-            "format" : "int64"
+          "amount": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1
           },
-          "organizationFiscalCode" : {
-            "type" : "string",
-            "description" : "Fiscal code related to the organization targeted by this transfer.",
-            "example" : "00000000000"
+          "organizationFiscalCode": {
+            "type": "string",
+            "description": "Fiscal code related to the organization targeted by this transfer.",
+            "example": "00000000000"
           },
-          "remittanceInformation" : {
-            "maxLength" : 140,
-            "minLength" : 0,
-            "type" : "string"
+          "remittanceInformation": {
+            "type": "string",
+            "maxLength": 140,
+            "minLength": 0
           },
-          "category" : {
-            "type" : "string"
+          "category": {
+            "type": "string",
+            "minLength": 1
           },
-          "iban" : {
-            "maxLength" : 35,
-            "minLength" : 1,
-            "pattern" : "^[A-Za-z0-9]{1,35}$",
-            "type" : "string",
-            "description" : "mutual exclusive with stamp",
-            "example" : "IT0000000000000000000000000"
+          "iban": {
+            "type": "string",
+            "description": "mutual exclusive with stamp",
+            "example": "IT0000000000000000000000000",
+            "maxLength": 35,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9]{1,35}$"
           },
-          "postalIban" : {
-            "maxLength" : 35,
-            "minLength" : 1,
-            "pattern" : "^$|^[A-Za-z0-9]{1,35}$",
-            "type" : "string",
-            "description" : "optional - can be combined with iban but not with stamp",
-            "example" : "IT0000000000000000000000000"
+          "postalIban": {
+            "type": "string",
+            "description": "optional - can be combined with iban but not with stamp",
+            "example": "IT0000000000000000000000000",
+            "maxLength": 35,
+            "minLength": 1,
+            "pattern": "^$|^[A-Za-z0-9]{1,35}$"
           },
-          "stamp" : {
-            "$ref" : "#/components/schemas/Stamp"
+          "stamp": {
+            "$ref": "#/components/schemas/Stamp",
+            "description": "mutual exclusive with iban and postalIban"
           },
           "companyName" : {
             "maxLength" : 140,
             "minLength" : 0,
             "type" : "string"
           },
-          "transferMetadata" : {
-            "maxItems" : 10,
-            "minItems" : 0,
-            "type" : "array",
-            "description" : "it can added a maximum of 10 key-value pairs for metadata",
-            "items" : {
-              "$ref" : "#/components/schemas/TransferMetadataModel"
+          "transferMetadata": {
+            "type": "array",
+            "description": "it can added a maximum of 10 key-value pairs for metadata",
+            "items": {
+              "$ref": "#/components/schemas/TransferMetadataModel"
+            },
+            "maxItems": 10,
+            "minItems": 0
+          }
+        },
+        "required": [
+          "amount",
+          "category",
+          "idTransfer",
+          "remittanceInformation"
+        ]
+      },
+      "InstallmentSummary": {
+        "type": "object",
+        "properties": {
+          "nav": {
+            "type": "string"
+          },
+          "iuv": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "description": {
+            "type": "string"
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string"
+          },
+          "statusReason": {
+            "type": "string"
+          }
+        }
+      },
+      "PaymentOptionGroup": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "numberOfInstallments": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string"
+          },
+          "statusReason": {
+            "type": "string"
+          },
+          "allCCP": {
+            "type": "boolean"
+          },
+          "installments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InstallmentSummary"
             }
+          }
+        }
+      },
+      "VerifyPaymentOptionsResponse": {
+        "type": "object",
+        "properties": {
+          "organizationFiscalCode": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "officeName": {
+            "type": "string"
+          },
+          "paymentOptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentOptionGroup"
+            }
+          }
+        }
+      },
+      "OdPErrorResponse": {
+        "type": "object",
+        "properties": {
+          "httpStatusCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "httpStatusDescription": {
+            "type": "string"
+          },
+          "appErrorCode": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dateTime": {
+            "type": "string"
+          },
+          "errorMessage": {
+            "type": "string"
           }
         }
       },
@@ -2748,11 +3052,13 @@
             "minLength" : 0,
             "type" : "string"
           },
-          "pspCompany" : {
-            "type" : "string"
+          "pspCompany": {
+            "type": "string",
+            "minLength": 1
           },
-          "idReceipt" : {
-            "type" : "string"
+          "idReceipt": {
+            "type": "string",
+            "minLength": 1
           },
           "fee" : {
             "type" : "string"
