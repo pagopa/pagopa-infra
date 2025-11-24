@@ -45,7 +45,7 @@ resource "azurerm_api_management_named_value" "ecommerce-methods-redirect-url-ma
 ##############
 
 module "apim_ecommerce_io_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "ecommerce-io"
   display_name = "eCommerce for IO App"
@@ -116,7 +116,7 @@ resource "azurerm_api_management_api_version_set" "ecommerce_io_outcomes_api" {
 }
 
 module "apim_ecommerce_io_outcomes_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-ecommerce-io-outcomes-api"
   api_management_name   = local.pagopa_apim_name
@@ -148,7 +148,7 @@ module "apim_ecommerce_io_outcomes_api_v1" {
 ###########################
 
 module "apim_ecommerce_io_api_v2" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-ecommerce-io-api"
   resource_group_name   = local.pagopa_apim_rg
@@ -230,7 +230,7 @@ resource "azurerm_api_management_api_operation_policy" "get_methods_redirect_v2"
 ###########################
 
 module "apim_ecommerce_io_api_v3" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-ecommerce-io-api"
   resource_group_name   = local.pagopa_apim_rg

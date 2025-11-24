@@ -49,7 +49,7 @@ receipts_datastore_cosmos_db_params = {
 
   container_default_ttl = 315576000 # 10 year in second
 
-  max_throughput     = 60000
+  max_throughput     = 150000
   max_throughput_alt = 2000
 }
 

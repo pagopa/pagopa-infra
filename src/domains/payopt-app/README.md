@@ -16,7 +16,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f3485105e35ce8c801209dcbb4ef72f3d944f0e5 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | d0a0b3a81963169bdc974f79eba31e41e918e63d |
 | <a name="module_apim_api_pay_opt_mock_api"></a> [apim\_api\_pay\_opt\_mock\_api](#module\_apim\_api\_pay\_opt\_mock\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_payment_options_mock_product"></a> [apim\_payment\_options\_mock\_product](#module\_apim\_payment\_options\_mock\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_payment_options_product"></a> [apim\_payment\_options\_product](#module\_apim\_payment\_options\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
