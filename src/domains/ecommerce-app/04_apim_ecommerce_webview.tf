@@ -78,7 +78,7 @@ module "apim_ecommerce_webview_api_v1" {
   xml_content = templatefile("./api/ecommerce-webview/v1/_base_policy.xml.tpl", {
     ecommerce_ingress_hostname = local.ecommerce_hostname,
     wallet_ingress_hostname    = local.wallet_hostname,
-    origins                    = var.env_short == "d" ? "<origin>*</origin>" : "<origin>${local.checkout_origin}</origin><origin>${local.ecommerce_origin}</origin>"
+    ecommerce_origin           = local.ecommerce_origin
   })
 }
 
@@ -152,6 +152,6 @@ module "apim_ecommerce_webview_api_v2" {
 
   xml_content = templatefile("./api/ecommerce-webview/v2/_base_policy.xml.tpl", {
     ecommerce_ingress_hostname = local.ecommerce_hostname,
-    origins                    = var.env_short == "d" ? "<origin>*</origin>" : "<origin>${local.checkout_origin}</origin><origin>${local.ecommerce_origin}</origin>"
+    ecommerce_origin           = local.ecommerce_origin
   })
 }
