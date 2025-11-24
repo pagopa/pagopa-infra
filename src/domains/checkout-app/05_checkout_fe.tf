@@ -115,7 +115,7 @@ module "checkout_cdn" {
     },
     {
       name  = "RewriteRulesTerms"
-      order = 4
+      order = 3
 
       conditions = [{
         condition_type   = "url_path_condition"
@@ -136,7 +136,7 @@ module "checkout_cdn" {
   delivery_rule = [
     {
       name  = "CorsFontForNPG"
-      order = 5
+      order = 4
 
       // conditions
       url_path_conditions       = []
