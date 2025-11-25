@@ -631,11 +631,11 @@
       }
     }
   },
-  "name": "[eCommerce] - MongoDB dashboard",
+  "name": "[eCommerce] - CosmosDB dashboard",
   "type": "Microsoft.Portal/dashboards",
   "location": "INSERT LOCATION",
   "tags": {
-    "hidden-title": "[eCommerce] - MongoDB dashboard"
+    "hidden-title": "[eCommerce] - CosmosDB dashboard"
   },
   "apiVersion": "2022-12-01-preview"
 }
