@@ -495,3 +495,57 @@ resource "azurerm_monitor_metric_alert" "ecommerce_history_cosmos_db_provisioned
 
   tags = module.tag_config.tags
 }
+
+
+resource "azurerm_monitor_metric_alert" "cosmos_db_min_write_on_transactions_view" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmosdb_account_mongodb.name}] - few transactions view update operation detected"
+  resource_group_name = azurerm_resource_group.cosmosdb_ecommerce_rg.name
+  scopes              = [module.cosmosdb_account_mongodb.id]
+  description         = "eCommerce transactions-view update operation less then xxx detected in the last 30 min. Please check if CDC service is working as expected"
+  severity            = 0
+  window_size         = "PT30M"
+  frequency           = "PT15M"
+  auto_mitigate       = false
+
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
+  criteria {
+    metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
+    metric_name            = "MongoRequests"
+    aggregation            = "Count"
+    operator               = "Equals"
+    threshold              = 0
+    skip_metric_validation = false
+    dimension {
+      name     = "CollectionName"
+      operator = "Include"
+      values   = ["transactions-view"]
+    }
+    dimension {
+      name     = "CommandName"
+      operator = "Include"
+      values   = ["update"]
+    }
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.ecommerce_opsgenie[0].id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.service_management_opsgenie[0].id
+  }
+
+  tags = module.tag_config.tags
+}
