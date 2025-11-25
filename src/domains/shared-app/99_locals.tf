@@ -38,6 +38,8 @@ locals {
   apim_hostname   = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   shared_hostname = var.env == "prod" ? "weuprod.shared.internal.platform.pagopa.it" : "weu${var.env}.shared.internal.${var.env}.platform.pagopa.it"
 
+  ecommerce_hostname = var.env_short == "p" ? "weu${var.env}.ecommerce.internal.platform.pagopa.it" : "weu${var.env}.ecommerce.internal.${var.env}.platform.pagopa.it"
+
   cache_generator_hostname   = "${local.shared_hostname}/authorizer-functions/api"
   cache_generator_hostname_2 = "${local.shared_hostname}/authorizer-functions"
 
