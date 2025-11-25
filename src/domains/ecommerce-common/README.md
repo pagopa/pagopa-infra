@@ -17,6 +17,7 @@
 | <a name="module_cosmosdb_ecommerce_collections"></a> [cosmosdb\_ecommerce\_collections](#module\_cosmosdb\_ecommerce\_collections) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v8.42.3 |
 | <a name="module_cosmosdb_ecommerce_history_collections"></a> [cosmosdb\_ecommerce\_history\_collections](#module\_cosmosdb\_ecommerce\_history\_collections) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v8.42.3 |
 | <a name="module_cosmosdb_ecommerce_snet"></a> [cosmosdb\_ecommerce\_snet](#module\_cosmosdb\_ecommerce\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.42.3 |
+| <a name="module_cosmosdb_ecommerce_watchdog_collections"></a> [cosmosdb\_ecommerce\_watchdog\_collections](#module\_cosmosdb\_ecommerce\_watchdog\_collections) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v8.42.3 |
 | <a name="module_ecommerce_pm_history_storage"></a> [ecommerce\_pm\_history\_storage](#module\_ecommerce\_pm\_history\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.42.3 |
 | <a name="module_ecommerce_reporting_storage"></a> [ecommerce\_reporting\_storage](#module\_ecommerce\_reporting\_storage) | ./.terraform/modules/__v3__/storage_account | n/a |
 | <a name="module_ecommerce_storage_deadletter"></a> [ecommerce\_storage\_deadletter](#module\_ecommerce\_storage\_deadletter) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.42.3 |
@@ -34,6 +35,11 @@
 |------|------|
 | [azurerm_cosmosdb_mongo_database.ecommerce](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_database) | resource |
 | [azurerm_cosmosdb_mongo_database.ecommerce_history](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_database) | resource |
+| [azurerm_cosmosdb_mongo_database.ecommerce_watchdog](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_database) | resource |
+| [azurerm_dns_caa_record.ecommerce_pagopa_it](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_caa_record) | resource |
+| [azurerm_dns_ns_record.dev_ecommerce](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_ns_record) | resource |
+| [azurerm_dns_ns_record.uat_ecommerce](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_ns_record) | resource |
+| [azurerm_dns_zone.ecommerce_public](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_zone) | resource |
 | [azurerm_key_vault_access_policy.ad_group_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.adgroup_developers_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.azdevops_iac_legacy_policies](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
@@ -41,9 +47,12 @@
 | [azurerm_key_vault_access_policy.azdevops_iac_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_certificate.ecommerce-jwt-token-issuer-certificate](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate) | resource |
 | [azurerm_key_vault_certificate.ecommerce-jwt-token-issuer-certificate-ec](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate) | resource |
+| [azurerm_key_vault_certificate.ecommerce-watchdog-deadletter-jwt-certificate](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate) | resource |
 | [azurerm_key_vault_secret.ai_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.aws_ses_accesskey_id](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.aws_ses_accesskey_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.checkout_payment_methods_handler_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.ecommerce-helpdesk_service_api_key_for_watchdog](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.ecommerce-io-jwt-signing-key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.ecommerce_dev_sendpaymentresult_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.ecommerce_event_dispatcher_service_primary_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -83,10 +92,12 @@
 | [azurerm_key_vault_secret.helpdesk-service-testing-email-history](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.helpdesk-service-testing-fiscalCode](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.helpdesk_service_api_key_for_reporting](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.io-payment-methods-handler-api-key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.mongo_ecommerce_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.node_for_ecommerce_api_v1_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.node_for_ecommerce_api_v2_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.node_forwarder_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.nodo-helpdesk_service_api_key_for_watchdog](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.nodo_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.nodo_nodeforpm_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.nodo_nodeforpsp_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -122,6 +133,7 @@
 | [azurerm_monitor_diagnostic_setting.ecommerce_deadletter_queue_diagnostics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
 | [azurerm_monitor_diagnostic_setting.ecommerce_transient_queue_diagnostics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
 | [azurerm_monitor_metric_alert.cosmos_db_provisioned_throughput_ru_exceeded_write_region](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
+| [azurerm_monitor_metric_alert.ecommerce_history_cosmos_db_provisioned_throughput_ru_exceeded_write_region](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.queue_storage_account_average_messge_count](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.redis_cache_used_memory_exceeded](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.ecommerce_authorization_outcome_notification_alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
@@ -208,6 +220,7 @@
 | [azurerm_private_dns_zone.privatelink_documents_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.storage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_resource_group.rg_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_subnet.aks_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_user_assigned_identity.iac_federated_azdo](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
@@ -222,8 +235,11 @@
 | <a name="input_cidr_subnet_storage_ecommerce"></a> [cidr\_subnet\_storage\_ecommerce](#input\_cidr\_subnet\_storage\_ecommerce) | Azure storage DB address space for ecommerce. | `list(string)` | n/a | yes |
 | <a name="input_cosmos_mongo_db_ecommerce_history_params"></a> [cosmos\_mongo\_db\_ecommerce\_history\_params](#input\_cosmos\_mongo\_db\_ecommerce\_history\_params) | n/a | <pre>object({<br/>    enable_serverless  = bool<br/>    enable_autoscaling = bool<br/>    throughput         = number<br/>    max_throughput     = number<br/>  })</pre> | n/a | yes |
 | <a name="input_cosmos_mongo_db_ecommerce_params"></a> [cosmos\_mongo\_db\_ecommerce\_params](#input\_cosmos\_mongo\_db\_ecommerce\_params) | n/a | <pre>object({<br/>    enable_serverless  = bool<br/>    enable_autoscaling = bool<br/>    throughput         = number<br/>    max_throughput     = number<br/>  })</pre> | n/a | yes |
+| <a name="input_cosmos_mongo_db_ecommerce_watchdog_params"></a> [cosmos\_mongo\_db\_ecommerce\_watchdog\_params](#input\_cosmos\_mongo\_db\_ecommerce\_watchdog\_params) | n/a | <pre>object({<br/>    enable_serverless  = bool<br/>    enable_autoscaling = bool<br/>    throughput         = number<br/>    max_throughput     = number<br/>  })</pre> | n/a | yes |
 | <a name="input_cosmos_mongo_db_params"></a> [cosmos\_mongo\_db\_params](#input\_cosmos\_mongo\_db\_params) | n/a | <pre>object({<br/>    enabled        = bool<br/>    capabilities   = list(string)<br/>    offer_type     = string<br/>    server_version = string<br/>    kind           = string<br/>    consistency_policy = object({<br/>      consistency_level       = string<br/>      max_interval_in_seconds = number<br/>      max_staleness_prefix    = number<br/>    })<br/>    enable_free_tier                 = bool<br/>    main_geo_location_zone_redundant = bool<br/>    additional_geo_locations = list(object({<br/>      location          = string<br/>      failover_priority = number<br/>      zone_redundant    = bool<br/>    }))<br/>    private_endpoint_enabled                     = bool<br/>    public_network_access_enabled                = bool<br/>    is_virtual_network_filter_enabled            = bool<br/>    backup_continuous_enabled                    = bool<br/>    enable_provisioned_throughput_exceeded_alert = bool<br/>  })</pre> | n/a | yes |
-| <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
+| <a name="input_dns_default_ttl_sec"></a> [dns\_default\_ttl\_sec](#input\_dns\_default\_ttl\_sec) | value | `number` | `3600` | no |
+| <a name="input_dns_zone_ecommerce"></a> [dns\_zone\_ecommerce](#input\_dns\_zone\_ecommerce) | The dns subdomain. | `string` | `null` | no |
+| <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns internal subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_ecommerce_jwt_issuer_api_key_use_primary"></a> [ecommerce\_jwt\_issuer\_api\_key\_use\_primary](#input\_ecommerce\_jwt\_issuer\_api\_key\_use\_primary) | If true the current active API key used for jwt issuer service will be the primary one. | `bool` | `true` | no |
 | <a name="input_ecommerce_storage_deadletter_params"></a> [ecommerce\_storage\_deadletter\_params](#input\_ecommerce\_storage\_deadletter\_params) | Azure storage DB params for ecommerce deadletter resources. | <pre>object({<br/>    enabled                       = bool,<br/>    kind                          = string,<br/>    tier                          = string,<br/>    account_replication_type      = string,<br/>    advanced_threat_protection    = bool,<br/>    retention_days                = number,<br/>    public_network_access_enabled = bool,<br/>  })</pre> | <pre>{<br/>  "account_replication_type": "LRS",<br/>  "advanced_threat_protection": true,<br/>  "enabled": false,<br/>  "kind": "StorageV2",<br/>  "public_network_access_enabled": false,<br/>  "retention_days": 7,<br/>  "tier": "Standard"<br/>}</pre> | no |

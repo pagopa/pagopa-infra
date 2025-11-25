@@ -4,7 +4,7 @@
 
 # Pod OutOfMemory
 resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_out_of_memory" {
-  for_each            = toset(["oracle", "postgresql"])
+  for_each            = toset(["postgresql"])
   name                = format("%s-%s-%s", local.apiconfig_cache_alert.pagopa_api_config_cache_name, "out-of-memory", each.key)
   resource_group_name = azurerm_resource_group.api_config_rg.name
   location            = var.location
@@ -30,7 +30,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_out_of_m
 
 # WriteOnDB
 resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_write_on_db" {
-  for_each            = toset(["oracle", "postgresql"])
+  for_each            = toset(["postgresql"])
   name                = format("%s-%s-%s", local.apiconfig_cache_alert.pagopa_api_config_cache_name, "write-on-db", each.key)
   resource_group_name = azurerm_resource_group.api_config_rg.name
   location            = var.location
@@ -56,7 +56,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_write_on
 
 # Cache generation
 resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_generation" {
-  for_each            = toset(["oracle", "postgresql"])
+  for_each            = toset(["postgresql"])
   name                = format("%s-%s-%s", local.apiconfig_cache_alert.pagopa_api_config_cache_name, "generation", each.key)
   resource_group_name = azurerm_resource_group.api_config_rg.name
   location            = var.location
@@ -82,7 +82,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_generati
 
 # JDBC connection problem
 resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_jdbc_connection" {
-  for_each            = toset(["oracle", "postgresql"])
+  for_each            = toset(["postgresql"])
   name                = format("%s-%s-%s", local.apiconfig_cache_alert.pagopa_api_config_cache_name, "jdbc-connection", each.key)
   resource_group_name = azurerm_resource_group.api_config_rg.name
   location            = var.location

@@ -14,7 +14,7 @@ resource "azurerm_api_management_group" "ecommerce-methods-full-read" {
 ##############
 
 module "apim_ecommerce_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "ecommerce"
   display_name = "ecommerce pagoPA"
@@ -32,7 +32,7 @@ module "apim_ecommerce_product" {
 }
 
 module "apim_ecommerce_payment_methods_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "ecommerce-payment-methods"
   display_name = "ecommerce pagoPA payment methods"
@@ -50,7 +50,7 @@ module "apim_ecommerce_payment_methods_product" {
 }
 
 module "apim_ecommerce_helpdesk_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "ecommerce-helpdesk"
   display_name = "ecommerce pagoPA helpdesk service"
@@ -90,7 +90,7 @@ resource "azurerm_api_management_api_version_set" "ecommerce_transactions_servic
 }
 
 module "apim_ecommerce_transactions_service_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-transactions-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -117,7 +117,7 @@ module "apim_ecommerce_transactions_service_api_v1" {
 }
 
 module "apim_ecommerce_transactions_service_api_v2" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-transactions-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -166,7 +166,7 @@ resource "azurerm_api_management_api_version_set" "ecommerce_transaction_auth_re
 }
 
 module "apim_ecommerce_transaction_auth_requests_service_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-transaction-auth-requests-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -193,7 +193,7 @@ module "apim_ecommerce_transaction_auth_requests_service_api_v1" {
 }
 
 module "apim_ecommerce_transaction_auth_requests_service_api_v2" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-transaction-auth-requests-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -260,7 +260,7 @@ resource "azurerm_api_management_api_version_set" "ecommerce_transaction_user_re
 }
 
 module "apim_ecommerce_transaction_user_receipts_service_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-transaction-user-receipts-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -309,7 +309,7 @@ resource "azurerm_api_management_api_version_set" "ecommerce_payment_requests_se
 }
 
 module "apim_ecommerce_payment_requests_service_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-payment-requests-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -360,7 +360,7 @@ resource "azurerm_api_management_api_version_set" "ecommerce_payment_methods_ser
 
 
 module "apim_ecommerce_payment_methods_service_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-payment-methods-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -387,7 +387,7 @@ module "apim_ecommerce_payment_methods_service_api_v1" {
 }
 
 module "apim_ecommerce_payment_methods_service_api_v2" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-payment-methods-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -455,7 +455,7 @@ resource "azurerm_api_management_named_value" "ecommerce_notification_service_ap
 }
 
 module "apim_pagopa_notifications_service_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-notifications-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -506,7 +506,7 @@ resource "azurerm_api_management_api_version_set" "pagopa_ecommerce_helpdesk_ser
 
 #helpdesk api for ecommerce
 module "apim_pagopa_ecommerce_helpdesk_service_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-helpdesk-service-api"
   api_management_name   = local.pagopa_apim_name
@@ -543,7 +543,7 @@ resource "azurerm_api_management_api_operation_policy" "helpdesk_pm_search_bulk"
 
 #helpdesk api V2 for ecommerce
 module "apim_pagopa_ecommerce_helpdesk_service_api_v2" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-helpdesk-service-api"
   api_management_name   = local.pagopa_apim_name
@@ -620,7 +620,7 @@ data "azurerm_api_management_product" "technical_support_api_product" {
 
 # technical helpdesk api for ecommerce
 module "apim_pagopa_ecommerce_technical_helpdesk_service_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-technical-helpdesk-service-api"
   api_management_name   = local.pagopa_apim_name
@@ -648,7 +648,7 @@ module "apim_pagopa_ecommerce_technical_helpdesk_service_api_v1" {
 
 
 module "apim_pagopa_ecommerce_technical_helpdesk_service_api_v2" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-technical-helpdesk-service-api"
   api_management_name   = local.pagopa_apim_name
@@ -697,7 +697,7 @@ resource "azurerm_api_management_api_version_set" "ecommerce_user_stats_service_
 }
 
 module "apim_ecommerce_user_stats_service_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-user-stats-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -749,7 +749,7 @@ resource "azurerm_api_management_api_version_set" "ecommerce_payment_methods_han
 
 
 module "apim_ecommerce_payment_methods_handler_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-payment-methods-handler-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -906,5 +906,24 @@ resource "azurerm_api_management_named_value" "ecommerce_helpdesk_command_servic
   resource_group_name = local.pagopa_apim_rg
   display_name        = "ecommerce-helpdesk-command-service-api-key-value"
   value               = var.ecommerce_helpdesk_command_service_api_key_use_primary ? data.azurerm_key_vault_secret.ecommerce_helpdesk_command_service_primary_api_key.value : data.azurerm_key_vault_secret.ecommerce_helpdesk_command_service_secondary_api_key.value
+  secret              = true
+}
+
+data "azurerm_key_vault_secret" "ecommerce_jwt_issuer_service_primary_api_key" {
+  name         = "ecommerce-jwt-issuer-service-primary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "ecommerce_jwt_issuer_service_secondary_api_key" {
+  name         = "ecommerce-jwt-issuer-service-secondary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce_jwt_issuer_api_key_value" {
+  name                = "ecommerce-jwt-issuer-api-key-value"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-jwt-issuer-api-key-value"
+  value               = var.ecommerce_jwt_issuer_api_key_use_primary ? data.azurerm_key_vault_secret.ecommerce_jwt_issuer_service_primary_api_key.value : data.azurerm_key_vault_secret.ecommerce_jwt_issuer_service_secondary_api_key.value
   secret              = true
 }

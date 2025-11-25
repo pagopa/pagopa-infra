@@ -18,7 +18,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f97230b8a5838fe3c616b5aa01bef8caeff8bc6b |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | d0a0b3a81963169bdc974f79eba31e41e918e63d |
 | <a name="module_apim_aca_integration_product"></a> [apim\_aca\_integration\_product](#module\_apim\_aca\_integration\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_api_debt_positions_api_v1"></a> [apim\_api\_debt\_positions\_api\_v1](#module\_apim\_api\_debt\_positions\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_debt_positions_api_v2"></a> [apim\_api\_debt\_positions\_api\_v2](#module\_apim\_api\_debt\_positions\_api\_v2) | ./.terraform/modules/__v3__/api_management_api | n/a |
@@ -41,6 +41,7 @@
 | <a name="module_apim_gpd_product"></a> [apim\_gpd\_product](#module\_apim\_gpd\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gpd_reporting_analysis_product"></a> [apim\_gpd\_reporting\_analysis\_product](#module\_apim\_gpd\_reporting\_analysis\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gpd_upload_api_v1"></a> [apim\_gpd\_upload\_api\_v1](#module\_apim\_gpd\_upload\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_gpd_upload_api_v2"></a> [apim\_gpd\_upload\_api\_v2](#module\_apim\_gpd\_upload\_api\_v2) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_gps_donation_product"></a> [apim\_gps\_donation\_product](#module\_apim\_gps\_donation\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gps_enrollments_product"></a> [apim\_gps\_enrollments\_product](#module\_apim\_gps\_enrollments\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gps_product"></a> [apim\_gps\_product](#module\_apim\_gps\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
@@ -117,7 +118,10 @@
 | [azurerm_monitor_scheduled_query_rules_alert.gpd-rtp-error-redis-cache-not-updated](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.gpd-rtp-error-rtp-message-not-sent](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.gpd-rtp-opt-in-refresh-error](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-gpd-core-external-availability-gpd-v3](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-gpd-core-external-availability-upd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-gpd-core-external-burst-5xx-gpd-v3](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-gpd-core-external-responsetime-gpd-v3](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-gpd-core-external-responsetime-upd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-gpd-core-internal-availability-lock-exception](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-gpd-core-internal-availability-upd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |

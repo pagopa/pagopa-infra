@@ -42,7 +42,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-core-int
 
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -62,7 +62,7 @@ AzureDiagnostics
 | where availability < threshold
   QUERY
   )
-  severity    = 1
+  severity    = 0
   frequency   = 5
   time_window = 5
   trigger {
@@ -79,7 +79,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-core-int
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -101,7 +101,7 @@ requests
 | where count_ > 1
   QUERY
   )
-  severity    = 1
+  severity    = 0
   frequency   = 5
   time_window = 5
   trigger {
@@ -124,12 +124,12 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-core-ext
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Response time for /gpd/debt-positions-service is less than or equal to 1.5s - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-debt-position"
+  description    = "Response time for /gpd/debt-positions-service/v1 is less than or equal to 2.3s - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-debt-position"
   enabled        = true
   query = (<<-QUERY
-let threshold = 1500;
+let threshold = 2300;
 AzureDiagnostics
-| where url_s matches regex "/gpd/debt-positions-service"
+| where url_s matches regex "/gpd/debt-positions-service/v1"
 | summarize
     watermark=threshold,
     duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 5m)
@@ -152,18 +152,18 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-core-ext
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for /gpd/debt-positions-service is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-debt-position"
+  description    = "Availability for /gpd/debt-positions-service/v1 is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-debt-position"
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
 AzureDiagnostics
-| where url_s matches regex "/gpd/debt-positions-service/"
+| where url_s matches regex "/gpd/debt-positions-service/v1"
 | summarize
     Total=count(),
     Success=count(responseCode_d < 500)
@@ -172,7 +172,7 @@ AzureDiagnostics
 | where availability < threshold
   QUERY
   )
-  severity    = 1
+  severity    = 0
   frequency   = 5
   time_window = 5
   trigger {
@@ -214,5 +214,88 @@ traces
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1
+  }
+}
+
+
+# -----------------------------------------------------------------------------
+# GPD – API v3 – OPEX ALERTS
+# Scope: availability, latency
+# -----------------------------------------------------------------------------
+
+## GPD-Core for organizations (alias external) Availability - v3 ##
+resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-core-external-availability-gpd-v3" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-opex_pagopa-gpd-core-external-availability @ _gpd-v3"
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "Availability for /gpd/debt-positions-service/v3 is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-debt-position"
+  enabled        = true
+
+  query = (<<-QUERY
+let threshold = 0.99;
+AzureDiagnostics
+| where url_s matches regex "/gpd/debt-positions-service/v3"
+| summarize
+    Total=count(),
+    Success=count(responseCode_d < 500)
+    by bin(TimeGenerated, 5m)
+| extend availability = toreal(Success) / Total
+| where availability < threshold
+  QUERY
+  )
+
+  severity    = 0
+  frequency   = 5
+  time_window = 5
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+}
+
+## GPD-Core for organizations (alias external) Response Time - v3 ##
+resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-core-external-responsetime-gpd-v3" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-opex_pagopa-gpd-core-external-responsetime @ _gpd-v3"
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "Response time (p95) for /gpd/debt-positions-service/v3 is greater than or equal to 2.3s - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-debt-position"
+  enabled        = true
+
+  query = (<<-QUERY
+let threshold = 2300;
+AzureDiagnostics
+| where url_s matches regex "/gpd/debt-positions-service/v3"
+| summarize
+    watermark = threshold,
+    duration_percentile_95 = percentiles(DurationMs, 95)
+    by bin(TimeGenerated, 5m)
+| where duration_percentile_95 > threshold
+  QUERY
+  )
+
+  severity    = 2
+  frequency   = 5
+  time_window = 10
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
   }
 }
