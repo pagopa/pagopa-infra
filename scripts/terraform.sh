@@ -338,6 +338,7 @@ function opa_check_policy() {
 
         if [ "$score_confirmation" != "yes" ]; then
           clean_audit_files  "$file_name"
+          rm -rf "$root_folder/$opa_policy_clone_folder" 2>/dev/null
           exit 1
         fi
 
