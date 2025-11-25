@@ -95,29 +95,31 @@
                 "content": {
                   "options": {
                     "chart": {
+                      "grouping": {
+                        "dimension": [
+                          "CollectionName",
+                          "CommandName",
+                          "Region"
+                        ],
+                        "sort": 2,
+                        "top": 10
+                      },
                       "metrics": [
                         {
-                          "resourceMetadata": {
-                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
-                          },
-                          "name": "MongoRequests",
                           "aggregationType": 7,
-                          "namespace": "microsoft.documentdb/databaseaccounts",
                           "metricVisualization": {
                             "displayName": "Mongo Requests"
+                          },
+                          "name": "MongoRequests",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
                           }
                         }
                       ],
                       "title": "Mongo Requests for pagopa-p-weu-ecommerce-cosmos-account for update operation - transactions-view vs eventstore (CDC view update)",
                       "titleKind": 2,
                       "visualization": {
-                        "chartType": 2,
-                        "legendVisualization": {
-                          "hideHoverCard": false,
-                          "hideLabelNames": true,
-                          "isVisible": true,
-                          "position": 2
-                        },
                         "axisVisualization": {
                           "x": {
                             "axisType": 2,
@@ -128,16 +130,14 @@
                             "isVisible": true
                           }
                         },
-                        "disablePinning": true
-                      },
-                      "grouping": {
-                        "dimension": [
-                          "CollectionName",
-                          "CommandName",
-                          "Region"
-                        ],
-                        "sort": 2,
-                        "top": 10
+                        "chartType": 2,
+                        "disablePinning": true,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
                       }
                     }
                   }
@@ -595,26 +595,12 @@
     ],
     "metadata": {
       "model": {
-        "timeRange": {
-          "value": {
-            "relative": {
-              "duration": 24,
-              "timeUnit": 1
-            }
-          },
-          "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
-        },
         "filterLocale": {
           "value": "en-us"
         },
         "filters": {
           "value": {
             "MsPortalFx_TimeRange": {
-              "model": {
-                "format": "local",
-                "granularity": "auto",
-                "relative": "4h"
-              },
               "displayCache": {
                 "name": "Local Time",
                 "value": "Past 4 hours"
@@ -624,9 +610,23 @@
                 "StartboardPart-MonitorChartPart-2ba22621-bdcc-4161-b19f-3af3c2cde0b8",
                 "StartboardPart-MonitorChartPart-2ba22621-bdcc-4161-b19f-3af3c2cde0ba",
                 "StartboardPart-MonitorChartPart-2ba22621-bdcc-4161-b19f-3af3c2cde0bc"
-              ]
+              ],
+              "model": {
+                "format": "local",
+                "granularity": "auto",
+                "relative": "4h"
+              }
             }
           }
+        },
+        "timeRange": {
+          "value": {
+            "relative": {
+              "duration": 4,
+              "timeUnit": 1
+            }
+          },
+          "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
         }
       }
     }
