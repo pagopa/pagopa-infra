@@ -106,7 +106,7 @@ module "vnet_integration" {
   location             = azurerm_resource_group.rg_vnet.location
   resource_group_name  = azurerm_resource_group.rg_vnet.name
   address_space        = var.cidr_vnet_integration
-  ddos_protection_plan = var.ddos_protection_plan
+  ddos_protection_plan = var.ddos_protection_plan_integration
 
   tags = module.tag_config.tags
 }

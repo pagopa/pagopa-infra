@@ -442,3 +442,56 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_provisioned_throughput_ru_exc
 
   tags = module.tag_config.tags
 }
+
+resource "azurerm_monitor_metric_alert" "ecommerce_history_cosmos_db_provisioned_throughput_ru_exceeded_write_region" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${resource.azurerm_cosmosdb_mongo_database.ecommerce_history.name}] Provisioned throughput RU Exceeded"
+  resource_group_name = azurerm_resource_group.cosmosdb_ecommerce_rg.name
+  scopes              = [module.cosmosdb_account_mongodb.id]
+  description         = "Provisioned throughput for ${resource.azurerm_cosmosdb_mongo_database.ecommerce_history.name} database is over 95% of its maximum. Please, consider to increase max RU."
+  severity            = 0
+  window_size         = "PT15M"
+  frequency           = "PT5M"
+  auto_mitigate       = false
+
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
+  criteria {
+    metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
+    metric_name            = "ProvisionedThroughput"
+    aggregation            = "Maximum"
+    operator               = "GreaterThan"
+    threshold              = var.cosmos_mongo_db_ecommerce_history_params.max_throughput * 0.95
+    skip_metric_validation = false
+    dimension {
+      name     = "DatabaseName"
+      operator = "Include"
+      values   = [resource.azurerm_cosmosdb_mongo_database.ecommerce_history.name]
+    }
+    dimension {
+      name     = "Region"
+      operator = "Include"
+      values   = [local.location_to_alert_region[azurerm_resource_group.cosmosdb_ecommerce_rg.location]]
+    }
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.ecommerce_opsgenie[0].id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.service_management_opsgenie[0].id
+  }
+
+  tags = module.tag_config.tags
+}

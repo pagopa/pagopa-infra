@@ -32,7 +32,7 @@ locals {
         {
           action = "Overwrite"
           name   = local.content_security_policy_header_name
-          value  = "default-src 'self'; connect-src 'self' https://api.${var.dns_zone_prefix}.${var.external_domain} https://api-eu.mixpanel.com"
+          value  = "default-src 'self'; connect-src 'self' https://api.${var.dns_zone_prefix}.${var.external_domain} https://api-eu.mixpanel.com; "
         },
         {
           action = "Append"
@@ -106,6 +106,30 @@ locals {
       url_rewrite_actions  = []
     }
   ]
+
+  # Application Delivery Rules - URL Rewrite Rules
+  # These rules handle routing for different frontend applications
+  # by rewriting URLs to serve the correct index.html files
+  app_delivery_rules = concat([
+    {
+      name  = "RewriteRulesForReactRouting"
+      order = 4
+
+      url_file_extension_conditions = [{
+        operator         = "LessThanOrEqual"
+        match_values     = ["0"]
+        negate_condition = false
+        transforms       = []
+      }]
+
+      url_rewrite_actions = [{
+        source_pattern          = "/"
+        destination             = "/index.html"
+        preserve_unmatched_path = false
+      }]
+    }
+    ]
+  )
 }
 
 /**
@@ -143,9 +167,10 @@ module "ecommerce_cdn" {
 
   querystring_caching_behaviour = "IgnoreQueryString"
 
-  custom_domains        = local.custom_domains
-  global_delivery_rules = local.global_delivery_rules
-  delivery_custom_rules = local.delivery_custom_rules
+  custom_domains         = local.custom_domains
+  global_delivery_rules  = local.global_delivery_rules
+  delivery_custom_rules  = local.delivery_custom_rules
+  delivery_rule_rewrites = local.app_delivery_rules
 
   tags = module.tag_config.tags
 }
