@@ -1,5 +1,5 @@
 resource "azurerm_portal_dashboard" "ecommerce_mongodb_dashboard" {
-  count               = var.env_short == "d" ? 1 : 0
+  count               = var.env_short == "p" ? 1 : 0
   name                = "ecommerce-mongodb-dashboard"
   resource_group_name = var.monitor_resource_group_name
   location            = var.location
