@@ -1,8 +1,8 @@
 -- Procedure for purge old records from cfg.cache table
 CREATE OR REPLACE PROCEDURE cfg_cache_purge(
-  minimum_records_on_table integer DEFAULT 7,
+  minimum_records_on_table int DEFAULT 7,
   start_date date DEFAULT NULL,
-  ttl_days integer DEFAULT 7
+  ttl_days int DEFAULT 7
 )
 LANGUAGE plpgsql
 AS $$
@@ -103,6 +103,3 @@ AS $$
 
   END;
 $$;
-
--- Scheduling cfg.cache purge at 04:00AM
-SELECT cron.schedule_in_database('job_cfg_cache_purge', '00 04 * * *', $$call cfg.cfg_cache_purge();$$, 'nodo');
