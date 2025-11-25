@@ -532,7 +532,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_min_write_on_transactions_vie
   action {
     action_group_id = data.azurerm_monitor_action_group.email.id
   }
-/*
+
   action {
     action_group_id = data.azurerm_monitor_action_group.slack.id
   }
@@ -543,7 +543,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_min_write_on_transactions_vie
 
   action {
     action_group_id = azurerm_monitor_action_group.service_management_opsgenie[0].id
-  }*/
+  }
 
   tags = module.tag_config.tags
 }
