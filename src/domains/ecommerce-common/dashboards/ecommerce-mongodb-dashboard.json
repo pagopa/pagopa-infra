@@ -595,30 +595,6 @@
     ],
     "metadata": {
       "model": {
-        "filterLocale": {
-          "value": "en-us"
-        },
-        "filters": {
-          "value": {
-            "MsPortalFx_TimeRange": {
-              "displayCache": {
-                "name": "Local Time",
-                "value": "Past 4 hours"
-              },
-              "filteredPartIds": [
-                "StartboardPart-MonitorChartPart-2ba22621-bdcc-4161-b19f-3af3c2cde0b6",
-                "StartboardPart-MonitorChartPart-2ba22621-bdcc-4161-b19f-3af3c2cde0b8",
-                "StartboardPart-MonitorChartPart-2ba22621-bdcc-4161-b19f-3af3c2cde0ba",
-                "StartboardPart-MonitorChartPart-2ba22621-bdcc-4161-b19f-3af3c2cde0bc"
-              ],
-              "model": {
-                "format": "local",
-                "granularity": "auto",
-                "relative": "4h"
-              }
-            }
-          }
-        },
         "timeRange": {
           "value": {
             "relative": {
@@ -627,15 +603,39 @@
             }
           },
           "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+        },
+        "filterLocale": {
+          "value": "en-us"
+        },
+        "filters": {
+          "value": {
+            "MsPortalFx_TimeRange": {
+              "model": {
+                "format": "local",
+                "granularity": "auto",
+                "relative": "4h"
+              },
+              "displayCache": {
+                "name": "Local Time",
+                "value": "Past 4 hours"
+              },
+              "filteredPartIds": [
+                "StartboardPart-MonitorChartPart-b537b7b2-213a-4e30-adb5-782e0fcda29f",
+                "StartboardPart-MonitorChartPart-b537b7b2-213a-4e30-adb5-782e0fcda2a1",
+                "StartboardPart-MonitorChartPart-b537b7b2-213a-4e30-adb5-782e0fcda2a3",
+                "StartboardPart-MonitorChartPart-b537b7b2-213a-4e30-adb5-782e0fcda2a5"
+              ]
+            }
+          }
         }
       }
     }
   },
-  "name": "ecommerce-mongodb-dashboard",
+  "name": "[eCommerce] - MongoDB dashboard",
   "type": "Microsoft.Portal/dashboards",
   "location": "INSERT LOCATION",
   "tags": {
-    "hidden-title": "ecommerce-mongodb-dashboard"
+    "hidden-title": "[eCommerce] - MongoDB dashboard"
   },
   "apiVersion": "2022-12-01-preview"
 }
