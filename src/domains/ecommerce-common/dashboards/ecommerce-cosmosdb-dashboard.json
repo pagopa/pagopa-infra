@@ -589,6 +589,243 @@
                 }
               }
             }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 20,
+              "colSpan": 15,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "filterCollection": {
+                        "filters": [
+                          {
+                            "key": "CollectionName",
+                            "operator": 0,
+                            "values": [
+                              "transactions-view"
+                            ]
+                          },
+                          {
+                            "key": "CommandName",
+                            "operator": 0,
+                            "values": [
+                              "update"
+                            ]
+                          }
+                        ]
+                      },
+                      "grouping": {
+                        "dimension": "CommandName",
+                        "sort": 2,
+                        "top": 10
+                      },
+                      "metrics": [
+                        {
+                          "aggregationType": 7,
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
+                          },
+                          "name": "MongoRequests",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          }
+                        }
+                      ],
+                      "timespan": {
+                        "grain": 1,
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false
+                      },
+                      "title": "Count Mongo Requests for pagopa-p-weu-ecommerce-cosmos-account by CommandName where CollectionName = 'transactions-view' and CommandName = 'update'",
+                      "titleKind": 1,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
+                      }
+                    }
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "grouping": {
+                        "dimension": "Region",
+                        "sort": 2,
+                        "top": 10
+                      },
+                      "metrics": [
+                        {
+                          "aggregationType": 3,
+                          "metricVisualization": {
+                            "displayName": "Normalized RU Consumption"
+                          },
+                          "name": "NormalizedRUConsumption",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          }
+                        }
+                      ],
+                      "title": "Mongo max Normalized consumption for pagopa-p-weu-ecommerce-cosmos-account per region",
+                      "titleKind": 2,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "disablePinning": true,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 25,
+              "colSpan": 15,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "ComponentId",
+                  "value": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeContext",
+                  "value": null,
+                  "isOptional": true
+                },
+                {
+                  "name": "ResourceIds",
+                  "isOptional": true
+                },
+                {
+                  "name": "ConfigurationId",
+                  "value": "Community-Workbooks/CosmosDb/Resource Insights",
+                  "isOptional": true
+                },
+                {
+                  "name": "Type",
+                  "value": "cosmosdb-insights",
+                  "isOptional": true
+                },
+                {
+                  "name": "GalleryResourceType",
+                  "value": "Microsoft.DocumentDb/databaseAccounts",
+                  "isOptional": true
+                },
+                {
+                  "name": "PinName",
+                  "value": "Azure Cosmos DB Resource Insights",
+                  "isOptional": true
+                },
+                {
+                  "name": "StepSettings",
+                  "value": "{\"chartId\":\"workbook57618cd6-c456-42da-9c2d-15735c98a89a\",\"version\":\"MetricsItem/2.0\",\"size\":1,\"chartType\":2,\"resourceType\":\"microsoft.documentdb/databaseaccounts\",\"metricScope\":0,\"resourceParameter\":\"Resources\",\"resourceIds\":[\"{Resources}\"],\"timeContextFromParameter\":\"TimeRange\",\"timeContext\":{\"durationMs\":14400000},\"metrics\":[{\"namespace\":\"microsoft.documentdb/databaseaccounts\",\"metric\":\"microsoft.documentdb/databaseaccounts-Requests-NormalizedRUConsumption\",\"aggregation\":3,\"splitBy\":[\"PartitionKeyRangeId\"]}],\"title\":\"Highest RU Consuming Shard (%) By ShardKeyRangeId{DatabaseText} {ContainerText} \",\"showOpenInMe\":true,\"filters\":[{\"id\":\"1\",\"key\":\"DatabaseName\",\"operator\":0,\"valueParam\":\"Database\"},{\"id\":\"2\",\"key\":\"CollectionName\",\"operator\":0,\"valueParam\":\"Container\"}],\"timeBrushParameterName\":\"TimeRange\",\"timeBrushExportOnlyWhenBrushed\":true,\"gridSettings\":{\"formatters\":[{\"columnMatch\":\"$gen_group\",\"formatter\":13,\"formatOptions\":{\"linkTarget\":null,\"showIcon\":true}},{\"columnMatch\":\"Subscription\",\"formatter\":5},{\"columnMatch\":\"Name\",\"formatter\":13,\"formatOptions\":{\"linkTarget\":\"Resource\",\"showIcon\":true}},{\"columnMatch\":\".*\\\\/Normalized RU Consumption$\",\"formatter\":1},{\"columnMatch\":\"microsoft.documentdb/databaseaccounts-Requests-NormalizedRUConsumption\",\"formatter\":1,\"numberFormat\":{\"unit\":1,\"options\":null}},{\"columnMatch\":\"microsoft.documentdb/databaseaccounts-Requests-NormalizedRUConsumption Timeline\",\"formatter\":5}],\"rowLimit\":10000,\"hierarchySettings\":{\"treeType\":1,\"groupBy\":[\"Subscription\",\"1/Normalized RU Consumption\"],\"finalBy\":\"Subscription\"},\"labelSettings\":[{\"columnId\":\"Subscription\",\"label\":\"Subscription/Database/Collection\"}]}}",
+                  "isOptional": true
+                },
+                {
+                  "name": "ParameterValues",
+                  "value": {
+                    "Resources": {
+                      "type": 5,
+                      "value": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account",
+                      "labelValue": "Any one",
+                      "specialValue": "value::1",
+                      "formattedValue": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                    },
+                    "TimeRange": {
+                      "type": 4,
+                      "value": {
+                        "durationMs": 14400000
+                      },
+                      "paramUxId": "ext-focus-71a21be3-d77e-48fb-8769-8b3ceb4bb85a",
+                      "labelValue": "Last 4 hours",
+                      "formattedValue": "Last 4 hours"
+                    },
+                    "Database": {
+                      "type": 2,
+                      "value": null,
+                      "labelValue": "<unset>",
+                      "formattedValue": ""
+                    },
+                    "Container": {
+                      "type": 2,
+                      "value": null,
+                      "labelValue": "<unset>",
+                      "formattedValue": ""
+                    },
+                    "DatabaseText": {
+                      "type": 1,
+                      "labelValue": "<unset>",
+                      "formattedValue": ""
+                    },
+                    "ContainerText": {
+                      "type": 1,
+                      "labelValue": "<unset>",
+                      "formattedValue": ""
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Location",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/AppInsightsExtension/PartType/PinnedNotebookMetricsPart"
+            }
           }
         ]
       }
@@ -620,10 +857,12 @@
                 "value": "Past 4 hours"
               },
               "filteredPartIds": [
-                "StartboardPart-MonitorChartPart-b537b7b2-213a-4e30-adb5-782e0fcda29f",
-                "StartboardPart-MonitorChartPart-b537b7b2-213a-4e30-adb5-782e0fcda2a1",
-                "StartboardPart-MonitorChartPart-b537b7b2-213a-4e30-adb5-782e0fcda2a3",
-                "StartboardPart-MonitorChartPart-b537b7b2-213a-4e30-adb5-782e0fcda2a5"
+                "StartboardPart-MonitorChartPart-17d15e08-1b38-46a6-be23-556dcb8b71b1",
+                "StartboardPart-MonitorChartPart-17d15e08-1b38-46a6-be23-556dcb8b71b3",
+                "StartboardPart-MonitorChartPart-17d15e08-1b38-46a6-be23-556dcb8b71b5",
+                "StartboardPart-MonitorChartPart-17d15e08-1b38-46a6-be23-556dcb8b71b7",
+                "StartboardPart-MonitorChartPart-17d15e08-1b38-46a6-be23-556dcb8b71b9",
+                "StartboardPart-PinnedNotebookMetricsPart-17d15e08-1b38-46a6-be23-556dcb8b71bb"
               ]
             }
           }
@@ -631,11 +870,11 @@
       }
     }
   },
-  "name": "[eCommerce] - CosmosDB dashboard",
+  "name": "ecommerce-cosmosdb-dashboard",
   "type": "Microsoft.Portal/dashboards",
   "location": "INSERT LOCATION",
   "tags": {
-    "hidden-title": "[eCommerce] - CosmosDB dashboard"
+    "hidden-title": "ecommerce-cosmosdb-dashboard"
   },
   "apiVersion": "2022-12-01-preview"
 }
