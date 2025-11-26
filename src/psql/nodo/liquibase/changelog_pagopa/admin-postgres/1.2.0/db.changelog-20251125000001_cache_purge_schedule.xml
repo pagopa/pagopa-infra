@@ -10,7 +10,7 @@
       path="sql/cache_purge_schedule.sql"
       relativeToChangelogFile="true"
       splitStatements="false"
-      stripComments="true"/>
+      stripComments="false"/>
   </changeSet>
 
 </databaseChangeLog>

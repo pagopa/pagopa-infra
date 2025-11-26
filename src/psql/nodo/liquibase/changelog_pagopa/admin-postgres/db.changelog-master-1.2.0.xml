@@ -6,6 +6,6 @@
   <property name="version" value="1.2.0" global="false"/>
 
   <!-- 1.2.0 -->
-  <include file="./${version}/db.changelog-20251125000000_cache_purge.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20251125000001_cache_purge_schedule.xml" labels="${version}"/>
 
 </databaseChangeLog>
