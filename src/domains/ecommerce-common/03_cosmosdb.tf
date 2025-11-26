@@ -503,7 +503,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_min_write_on_transactions_vie
   name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmosdb_account_mongodb.name}] - few transactions view update operation detected"
   resource_group_name = azurerm_resource_group.cosmosdb_ecommerce_rg.name
   scopes              = [module.cosmosdb_account_mongodb.id]
-  description         = "eCommerce transactions-view update operation alert: less then 20 update operations detected in the last 1 hour. Please check if CDC service is working as correctly"
+  description         = "eCommerce transactions-view update operation alert: less then 20 update operations detected in the last 1 hour. Please check if CDC service is working correctly"
   severity            = 0
   window_size         = "PT1H"
   frequency           = "PT15M"
