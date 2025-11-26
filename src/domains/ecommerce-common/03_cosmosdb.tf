@@ -527,6 +527,11 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_min_write_on_transactions_vie
       operator = "Include"
       values   = ["update"]
     }
+    dimension {
+      name     = "DatabaseName"
+      operator = "Include"
+      values   = [resource.azurerm_cosmosdb_mongo_database.ecommerce.name]
+    }
   }
 
   action {
