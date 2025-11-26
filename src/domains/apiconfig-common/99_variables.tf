@@ -67,13 +67,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
-
 ### External resources
 
 variable "monitor_resource_group_name" {
@@ -131,3 +124,43 @@ variable "enable_iac_pipeline" {
   default     = false
 }
 
+variable "api_config_enable_versioning" {
+  type        = bool
+  description = "Enable sa versioning"
+  default     = false
+}
+
+variable "api_config_reporting_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+
+variable "api_config_reporting_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted."
+  default     = 30
+}
+
+variable "api_config_reporting_backup_retention_days" {
+  type        = number
+  description = "Number of days to retain backups."
+  default     = 0
+}
+
+variable "enable_apiconfig_sa_backup" {
+  type        = bool
+  default     = false
+  description = "(Optional) Enables apiconfig storage account backup"
+}
+
+variable "api_config_replication_type" {
+  type        = string
+  default     = "LRS"
+  description = "(Optional) Api config storage account replication type"
+}
+
+variable "redis_ha_enabled" {
+  type        = bool
+  description = "(Required) If true, enables the usage of HA redis instance"
+}

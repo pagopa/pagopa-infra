@@ -14,6 +14,20 @@ resource "azurerm_api_management_named_value" "afm_secondary_sub_key" {
   }
 }
 
+resource "azurerm_api_management_named_value" "afm_ndp_test_sub_key" {
+  name                = "afm-ndp-test-sub-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "afm-ndp-test-sub-key"
+  value               = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 #############################
 ## Product AFM Calculator ##
 #############################
@@ -37,7 +51,7 @@ locals {
 }
 
 module "apim_afm_calculator_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.5.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "afm-calculator"
   display_name = local.apim_afm_calculator_service_api.display_name
@@ -54,7 +68,7 @@ module "apim_afm_calculator_product" {
 }
 
 module "apim_afm_calculator_node_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.5.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "afm-node-calculator"
   display_name = local.apim_afm_calculator_service_node_api.display_name
@@ -103,7 +117,6 @@ resource "azurerm_api_management_product_group" "api_afm_calculator_node_product
 ###########################
 
 resource "azurerm_api_management_api_version_set" "api_afm_calculator_api" {
-  count = var.env_short != "p" ? 1 : 0
 
   name                = format("%s-afm-calculator-service-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
@@ -114,15 +127,14 @@ resource "azurerm_api_management_api_version_set" "api_afm_calculator_api" {
 
 
 module "apim_api_afm_calculator_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.5.0"
-  count  = var.env_short != "p" ? 1 : 0
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-afm-calculator-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_afm_calculator_product.product_id]
   subscription_required = local.apim_afm_calculator_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.api_afm_calculator_api[0].id
+  version_set_id        = azurerm_api_management_api_version_set.api_afm_calculator_api.id
   api_version           = "v1"
 
   description  = local.apim_afm_calculator_service_api.description
@@ -132,11 +144,40 @@ module "apim_api_afm_calculator_api_v1" {
   service_url  = local.apim_afm_calculator_service_api.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./api/calculator-service/v1/_openapi.json.tpl", {
+  content_value = templatefile(var.env_short != "p" ? "./api/calculator-service/v1/_openapi.json.tpl" : "./api/calculator-service/v1/prod/_openapi.json.tpl", {
     host = local.apim_hostname
   })
 
   xml_content = templatefile("./api/calculator-service/v1/_base_policy.xml", {
+    hostname = local.afm_hostname
+  })
+}
+
+module "apim_api_afm_calculator_api_v2" {
+  source = "./.terraform/modules/__v3__/api_management_api"
+
+
+  name                  = format("%s-afm-calculator-service-api", local.project)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_afm_calculator_product.product_id]
+  subscription_required = local.apim_afm_calculator_service_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.api_afm_calculator_api.id
+  api_version           = "v2"
+
+  description  = local.apim_afm_calculator_service_api.description
+  display_name = local.apim_afm_calculator_service_api.display_name
+  path         = local.apim_afm_calculator_service_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_afm_calculator_service_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/calculator-service/v2/_openapi.json.tpl", {
+    host    = local.apim_hostname
+    service = module.apim_afm_calculator_product.product_id
+  })
+
+  xml_content = templatefile("./api/calculator-service/v2/_base_policy.xml", {
     hostname = local.afm_hostname
   })
 }
@@ -155,7 +196,7 @@ resource "azurerm_api_management_api_version_set" "api_afm_calculator_node_api" 
 }
 
 module "apim_api_afm_calculator_api_node_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.5.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-afm-calculator-service-node-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -176,7 +217,35 @@ module "apim_api_afm_calculator_api_node_v1" {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/calculator-service/node/v1/_base_policy.xml", {
+  xml_content = templatefile(var.env_short == "p" ? "./api/calculator-service/node/v1/_base_policy.xml" : "./api/calculator-service/node/v1/_base_policy_test.xml", {
+    hostname = local.afm_hostname
+  })
+}
+
+module "apim_api_afm_calculator_api_node_v2" {
+  source = "./.terraform/modules/__v3__/api_management_api"
+
+  name                  = format("%s-afm-calculator-service-node-api", local.project)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_afm_calculator_node_product.product_id, local.apim_x_node_product_id]
+  subscription_required = local.apim_afm_calculator_service_node_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.api_afm_calculator_node_api.id
+  api_version           = "v2"
+
+  description  = local.apim_afm_calculator_service_node_api.description
+  display_name = local.apim_afm_calculator_service_node_api.display_name
+  path         = local.apim_afm_calculator_service_node_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_afm_calculator_service_node_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/calculator-service/node/v2/_openapi.json.tpl", {
+    host    = local.apim_hostname
+    service = module.apim_afm_calculator_node_product.product_id
+  })
+
+  xml_content = templatefile("./api/calculator-service/node/v2/_base_policy.xml", {
     hostname = local.afm_hostname
   })
 }

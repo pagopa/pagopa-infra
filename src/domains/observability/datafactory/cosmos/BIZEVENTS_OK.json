@@ -1,0 +1,42 @@
+{
+    "type": "object",
+    "properties": {
+        "debtorPosition": {
+            "type": "object",
+            "properties": {
+                "modelType": {
+                    "type": "string"
+                },
+                "noticeNumber": {
+                    "type": "string"
+                },
+                "iuv": {
+                    "type": "string"
+                }
+            }
+        },
+        "creditor": {
+            "type": "object",
+            "properties": {
+                "idPA": {
+                    "type": "string"
+                },
+                "idBrokerPA": {
+                    "type": "string"
+                },
+                "idStation": {
+                    "type": "string"
+                },
+                "companyName": {
+                    "type": "string"
+                }
+            }
+        },
+        "eventStatus": {
+            "type": "string"
+        },
+        "eventRetryEnrichmentCount": {
+            "type": "integer"
+        }
+    }
+}

@@ -1,0 +1,78 @@
+[
+    {
+        "name": "REQUEST_PSPNOTIFY",
+        "type": "datetime"
+    },
+    {
+        "name": "REQUEST_SPO",
+        "type": "datetime"
+    },
+    {
+        "name": "ID_DOMINIO",
+        "type": "string"
+    },
+    {
+        "name": "IUV",
+        "type": "string"
+    },
+    {
+        "name": "TOKEN",
+        "type": "string"
+    },
+    {
+        "name": "ID_BROKER_PSP",
+        "type": "string"
+    },
+    {
+        "name": "ID_BROKER_PA",
+        "type": "string"
+    },
+    {
+        "name": "PSP",
+        "type": "string"
+    },
+    {
+        "name": "STAZIONE",
+        "type": "string"
+    },
+    {
+        "name": "CANALE",
+        "type": "string"
+    },
+    {
+        "name": "DIFF_TIME_IN_MS",
+        "type": "long"
+    },
+    {
+        "name": "OUTCOME_SPO_REQ",
+        "type": "string"
+    },
+    {
+        "name": "NO_RESPONSE",
+        "type": "bool"
+    },
+    {
+        "name": "pipelineRunID",
+        "type": "string"
+    },
+    {
+        "name": "NODE_METHOD",
+        "type": "string"
+    },
+    {
+        "name": "PSP_METHOD",
+        "type": "string"
+    },
+    {
+        "name": "OUTCOME_PSP_RESP",
+        "type": "string"
+    },
+    {
+        "name": "FAULT_CODE_PSP",
+        "type": "string"
+    },
+    {
+        "name": "FAULT_CODE_SPO",
+        "type": "string"
+    }
+]

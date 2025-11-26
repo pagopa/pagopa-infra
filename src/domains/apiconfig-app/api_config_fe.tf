@@ -6,14 +6,14 @@ resource "azurerm_resource_group" "api_config_fe_rg" {
   name     = format("%s-api-config-fe-rg", local.product)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 /**
  * CDN
  */
 module "api_config_fe_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/cdn"
 
   count               = var.api_config_fe_enabled ? 1 : 0
   name                = "api-config-fe"
@@ -24,7 +24,8 @@ module "api_config_fe_cdn" {
   # should be something like that            config              <dev|uat>.platform   .pagapa.it
   hostname              = format("%s.%s.%s", var.cname_record_name, var.apim_dns_zone_prefix, var.external_domain)
   https_rewrite_enabled = true
-  lock_enabled          = false
+
+  storage_account_replication_type = var.cdn_storage_account_replication_type
 
   index_document     = "index.html"
   error_404_document = "not_found.html"
@@ -80,7 +81,9 @@ module "api_config_fe_cdn" {
     ]
   }
 
-  tags = var.tags
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
+
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "storage_account_key" {

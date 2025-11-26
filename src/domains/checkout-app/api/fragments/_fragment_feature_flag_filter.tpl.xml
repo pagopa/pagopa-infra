@@ -1,0 +1,33 @@
+<fragment>
+    <set-variable name="requestIpAddress" value="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For",""))" />
+    <set-variable name="featureFlagsStatusMap" value="{{checkout-feature-flag-map}}" />
+
+    <!-- Serialize and handle everything inside the checkout-feature-flag -->
+    <set-variable name="checkout-feature-flag" value="@{
+        bool IsIpAllowed(string allowedIps, string requestIpAddress) {
+            if (allowedIps == "*") {
+                return true;
+            }
+            var allowedIpsList = allowedIps.Split(',');
+            string[] callerIps = requestIpAddress.Split(',');
+            foreach (string callerIp in callerIps) {
+                if (allowedIpsList.Contains(callerIp)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        var featureFlagsStatusMap = JsonConvert.DeserializeObject<IDictionary<string, string>>(context.Variables.GetValueOrDefault("featureFlagsStatusMap", "{}"));
+
+        var response = new {
+            isAuthenticationEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enableAuthIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
+            isPspPickerPageEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enablePspPickerPageIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
+            isPaymentMethodsHandlerEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enablePaymentMethodsHandlerWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
+            isMaintenancePageEnabled = false,
+            isScheduledMaintenanceBannerEnabled = false
+        };
+
+        return JsonConvert.SerializeObject(response);
+    }"/>
+</fragment>

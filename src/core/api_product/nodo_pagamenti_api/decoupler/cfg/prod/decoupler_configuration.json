@@ -1,10 +1,25 @@
 [
   {
-    "node_id": "NDP003PROD",
-    "description": "Nexi on premise PROD",
-    "node_uri": "https://10.79.20.34",
+    "node_id": "NDP001PROD",
+    "description": "Nodo Azure PagoPA",
+    "node_uri": "https://weuprod.nodo.internal.platform.pagopa.it/nodo",
+    "routing": 0,
+    "broker_psps": [],
+    "cis": [
+      "12300020158",
+      "00347000721",
+      "00395920788",
+      "96289850586"
+    ],
+    "list_priority": 2
+  },
+  {
+    "node_id": "NDP004PROD",
+    "description": "Nodo PostgreSQL OnPrem Nexi",
+    "node_uri": "https://10.79.20.25",
     "routing": 100,
     "broker_psps": [],
-    "cis": []
+    "cis": [],
+    "list_priority": 1
   }
 ]

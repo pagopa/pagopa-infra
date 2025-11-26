@@ -7,13 +7,6 @@ location_short  = "weu"
 location_string = "West Europe"
 instance        = "uat"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "pagoPa"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/apiconfig"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -32,7 +25,7 @@ cidr_subnet_api_config             = ["10.230.9.128/29"]
 tls_cert_check_helm = {
   chart_version = "2.8.0"
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
-  image_tag     = "v1.3.4"
+  image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
 }
 db_service_name = "NDPSPCA_NODO4_CFG"
 db_port         = 1524

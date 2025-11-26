@@ -1,25 +1,35 @@
+variables:
+  azureServiceConnectionApplyNameProd: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
+
 pool:
-  vmImage: "ubuntu-20.04"
+  vmImage: 'ubuntu-latest'
 
 steps:
   - task: AzureCLI@2
     displayName: Run apim $(APIM_NAME) backup
     inputs:
-      azureSubscription: PROD-PAGOPA-SERVICE-CONN
+      connectedServiceNameARM: "${{variables.azureServiceConnectionApplyNameProd}}"
       scriptType: bash
       scriptLocation: inlineScript
       failOnStandardError: false
       inlineScript: |
         set -e
+
+        echo "🔑 Load key from KV"
+
         key=$(az storage account keys list \
-        -g $(STORAGE_ACCOUNT_RG) \
-        -n $(STORAGE_ACCOUNT_NAME) \
+        --resource-group $(STORAGE_ACCOUNT_RG) \
+        --account-name $(STORAGE_ACCOUNT_NAME) \
         --query [0].value -o tsv)
+
+        echo "🚀 Start backup (can take 10 minutes+)"
 
         az apim backup \
         --name $(APIM_NAME) \
-        -g $(APIM_RG) \
+        --resource-group $(APIM_RG) \
         --backup-name $(BACKUP_NAME) \
         --storage-account-name $(STORAGE_ACCOUNT_NAME) \
         --storage-account-container $(STORAGE_ACCOUNT_CONTAINER) \
-        --storage-account-key $key
+        --storage-account-key $key 
+
+        echo "✅ Backup apim complete"

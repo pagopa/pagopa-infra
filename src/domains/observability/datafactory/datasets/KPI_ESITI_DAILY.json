@@ -1,0 +1,58 @@
+[
+    {
+        "name": "DATA_PAGAMENTO",
+        "type": "datetime"
+    },
+    {
+        "name": "NOTICE_ID",
+        "type": "string"
+    },
+    {
+        "name": "IUV",
+        "type": "string"
+    },
+    {
+        "name": "IUR",
+        "type": "string"
+    },
+    {
+        "name": "PA_EMITTENTE",
+        "type": "string"
+    },
+    {
+        "name": "PT_EMITTENTE",
+        "type": "string"
+    },
+    {
+        "name": "ID_PSP",
+        "type": "string"
+    },
+    {
+        "name": "ID_BROKER_PSP",
+        "type": "string"
+    },
+    {
+        "name": "IMPORTO_TOTALE",
+        "type": "decimal"
+    },
+    {
+        "name": "MOD_TYPE",
+        "type": "string"
+    },
+    {
+        "name": "PA_TRANSFER",
+        "type": "string"
+    },
+    {
+        "name": "AMOUNT_TRANSFER",
+        "type": "decimal"
+    },
+    {
+        "name": "IBAN",
+        "type": "string"
+    },
+    {
+        "name": "ID_TRANSFER",
+        "type": "int"
+    }
+]

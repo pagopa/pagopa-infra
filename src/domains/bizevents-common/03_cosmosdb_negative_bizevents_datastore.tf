@@ -1,5 +1,5 @@
 module "negative_bizevents_datastore_cosmosdb_account" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.7.0"
+  source              = "./.terraform/modules/__v3__/cosmosdb_account"
   name                = "${local.project}-neg-ds-cosmos-account"
   location            = var.location
   domain              = var.domain
@@ -29,17 +29,18 @@ module "negative_bizevents_datastore_cosmosdb_account" {
   allowed_virtual_network_subnet_ids = []
 
   # private endpoint
-  private_endpoint_name    = "${local.project}-negative-ds-cosmos-sql-endpoint"
-  private_endpoint_enabled = var.negative_bizevents_datastore_cosmos_db_params.private_endpoint_enabled
-  subnet_id                = module.bizevents_datastore_cosmosdb_snet.id
-  private_dns_zone_ids     = [data.azurerm_private_dns_zone.cosmos.id]
+  private_endpoint_sql_name           = "${local.project}-negative-ds-cosmos-sql-endpoint" # forced after update module vers
+  private_service_connection_sql_name = "${local.project}-negative-ds-cosmos-sql-endpoint" # forced after update module vers
+  private_endpoint_enabled            = var.negative_bizevents_datastore_cosmos_db_params.private_endpoint_enabled
+  subnet_id                           = module.bizevents_datastore_cosmosdb_snet.id
+  private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos.id]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # cosmosdb database for negative biz-events
 module "negative_bizevents_datastore_cosmosdb_database" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v6.7.0"
+  source              = "./.terraform/modules/__v3__/cosmosdb_sql_database"
   name                = "db"
   resource_group_name = azurerm_resource_group.bizevents_rg.name
   account_name        = module.negative_bizevents_datastore_cosmosdb_account.name
@@ -52,14 +53,14 @@ locals {
       name               = "negative-biz-events",
       partition_key_path = "/id",
       default_ttl        = var.negative_bizevents_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
+      autoscale_settings = { max_throughput = var.negative_bizevents_datastore_cosmos_db_params.max_throughput }
     },
   ]
 }
 
 # cosmosdb container for negative biz events datastore
 module "negative_bizevents_datastore_cosmosdb_containers" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.7.0"
+  source   = "./.terraform/modules/__v3__/cosmosdb_sql_container"
   for_each = { for c in local.negative_bizevents_datastore_cosmosdb_containers : c.name => c }
 
   name                = each.value.name

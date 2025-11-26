@@ -13,6 +13,8 @@
 <policies>
     <inbound>
         <base />
+        <!-- rate limit by subscription key -->
+        <rate-limit calls="300" renewal-period="10" remaining-calls-variable-name="remainingCallsPerSubscription"/>
         <!-- Calling Authorizer's fragment -->
         <set-variable name="application_domain" value="gpd" />
         <choose>

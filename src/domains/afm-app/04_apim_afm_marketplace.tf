@@ -35,7 +35,7 @@ locals {
   }
 }
 module "apim_afm_marketplace_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.5.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "afm-marketplace"
   display_name = local.apim_afm_marketplace_service_api.display_name
@@ -62,7 +62,7 @@ resource "azurerm_api_management_api_version_set" "api_afm_marketplace_api" {
 
 
 module "apim_api_afm_marketplace_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.5.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-afm-marketplace-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -102,7 +102,7 @@ resource "azurerm_api_management_api_version_set" "api_afm_utils_api" {
 }
 
 module "apim_api_afm_utils_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.5.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-afm-utils-api", local.project)
   api_management_name   = local.pagopa_apim_name

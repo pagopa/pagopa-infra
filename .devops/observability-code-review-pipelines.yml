@@ -1,0 +1,90 @@
+pr:
+  autoCancel: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - 'src/domains/observability'
+    exclude:
+      - '**/*.lock.hcl'
+      - '**/*.md'
+
+parameters:
+  - name: 'DEV'
+    displayName: 'Run on DEV environment'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'UAT'
+    displayName: 'Run on UAT environment'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'PROD'
+    displayName: 'Run on PROD environment'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+
+
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+resources:
+  repositories:
+    - repository: terraform
+      type: github
+      name: pagopa/azure-pipeline-templates
+      ref: refs/tags/v6.9.0
+      endpoint: "io-azure-devops-github-ro"
+
+variables:
+  TIME_OUT: 15
+  # working dir
+  WORKING_DIR_MODULE: 'src/domains/observability'
+
+stages:
+  #DEV
+  - ${{ if eq(parameters['DEV'], true) }}:
+      - template: './base-code-review-pipelines.yml'
+        parameters:
+          ENV: "dev"
+          ENV_FOLDER: "dev"
+          WORKING_DIR_MODULE: ${{ variables.WORKING_DIR_MODULE }}
+          SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+          POOL_NAME: '$(TF_POOL_NAME_DEV)'
+          TIME_OUT: ${{ variables.TIME_OUT }}
+          TF_SUMMARIZE: true
+
+  #UAT
+  - ${{ if eq(parameters['UAT'], true) }}:
+      - template: './base-code-review-pipelines.yml'
+        parameters:
+          ENV: "uat"
+          ENV_FOLDER: "uat"
+          WORKING_DIR_MODULE: ${{ variables.WORKING_DIR_MODULE }}
+          SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
+          POOL_NAME: '$(TF_POOL_NAME_UAT)'
+          TIME_OUT: ${{ variables.TIME_OUT }}
+          TF_SUMMARIZE: true
+
+
+  #PROD
+  - ${{ if eq(parameters['PROD'], true) }}:
+      - template: './base-code-review-pipelines.yml'
+        parameters:
+          ENV: "prod"
+          ENV_FOLDER: "prod"
+          WORKING_DIR_MODULE: ${{ variables.WORKING_DIR_MODULE }}
+          SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
+          POOL_NAME: '$(TF_POOL_NAME_PROD)'
+          TIME_OUT: ${{ variables.TIME_OUT }}
+          TF_SUMMARIZE: true

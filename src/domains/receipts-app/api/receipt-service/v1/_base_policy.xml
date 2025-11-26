@@ -1,0 +1,18 @@
+<policies>
+    <inbound>
+        <base />
+        <set-backend-service base-url="https://${hostname}/pagopa-receipt-pdf-service" />
+        <set-query-parameter name="fiscal_code" exists-action="override">
+            <value>@(context.Request.Headers.GetValueOrDefault("fiscal_code",""))</value>
+        </set-query-parameter>
+    </inbound>
+    <outbound>
+        <base />
+    </outbound>
+    <backend>
+        <base />
+    </backend>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

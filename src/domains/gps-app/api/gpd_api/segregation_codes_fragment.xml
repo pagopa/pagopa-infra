@@ -1,0 +1,45 @@
+<!-- ################################################################### -->
+<!-- ##### GPD System: Extracting and validating segregation code ###### -->
+<!-- ################################################################### -->
+<!-- Extracting segregation code -->
+<fragment>
+  <set-variable name="segregation_codes"
+                value="@{
+      string segregationCodes = "";
+      string[] metadataObjects = ((string) context.Variables["metadata"]).Split(new[] { " ;;" }, StringSplitOptions.None);
+      string organizationId = ((string) context.Variables["authorization_entity"]);
+      bool found = false;
+      for (int i = 0; i < metadataObjects.Length && !found; i ++) {
+        string metadataObject = metadataObjects[i];
+        if (metadataObject.Contains("_seg")) {
+          string[] segregationCodeMap = (metadataObject.Split('=')[1]).Split(';');
+          for (int j = 0; j < segregationCodeMap.Length && !found; j++) {
+            string[] splitString = segregationCodeMap[j].Split(':');
+            found = splitString[0].Equals(organizationId);
+            if (found) {
+              segregationCodes = splitString[1];
+            }
+          }
+        }
+      }
+      return segregationCodes;
+  }" />
+  <!-- Block request if it does not have valid segregation codes -->
+  <choose>
+    <when condition="@("".Equals(context.Variables["segregation_codes"]))">
+    <!-- Block request if it does not have valid segregation codes -->
+    <!--                    <return-response>-->
+    <!--                        <set-status code="403" reason="Forbidden" />-->
+    <!--                    </return-response>-->
+    <trace source="GPD Policy for organizations" severity="information">
+      <message>No valid segregation codes associated with EC</message>
+    </trace>
+  </when>
+  <otherwise>
+    <!-- Add query parameter to the request -->
+    <set-query-parameter name="segregationCodes" exists-action="override">
+      <value>@((string) context.Variables["segregation_codes"])</value>
+    </set-query-parameter>
+  </otherwise>
+</choose>
+</fragment>

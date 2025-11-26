@@ -1,0 +1,150 @@
+parameters:
+  - name: 'ENV'
+    displayName: 'Environment to deploy'
+    type: string
+    default: 'prod'
+  - name: 'ENV_FOLDER'
+    displayName: 'Environment folder location'
+    type: string
+  - name: 'WORKING_DIR_APP'
+    displayName: 'app domain working dir'
+    type: string
+    default: ''
+  - name: 'WORKING_DIR_COMMON'
+    displayName: 'common domain working dir'
+    type: string
+    default: ''
+  - name: 'WORKING_DIR_SECRET'
+    displayName: 'secret domain working dir'
+    type: string
+    default: ''
+  - name: 'WORKING_DIR_MODULE'
+    displayName: 'generic working dir'
+    type: string
+    default: ''
+  - name: 'SC_PLAN_NAME'
+    type: string
+  - name: 'AKS_APISERVER_URL'
+    type: string
+    default: ''
+  - name: 'AKS_AZURE_DEVOPS_SA_CACRT'
+    type: string
+    default: ''
+  - name: 'AKS_AZURE_DEVOPS_SA_TOKEN'
+    type: string
+    default: ''
+  - name: 'AKS_NAME'
+    type: string
+    default: ''
+  - name: 'POOL_NAME'
+    type: string
+  - name: 'TIME_OUT'
+    type: number
+    default: 15
+  - name: 'TF_SUMMARIZE'
+    type: string
+    default: ''
+  - name: 'SECRET_USE_AKS'
+    type: boolean
+    default: true
+  - name: 'MODULE_USE_AKS'
+    type: boolean
+    default: false
+
+
+
+stages:
+  - stage: ${{replace(parameters.ENV, '-', '_')}}
+    displayName: 'Code review for ${{parameters.ENV}}'
+    dependsOn: []
+    condition: succeeded()
+    pool:
+      name: "${{parameters.POOL_NAME}}"
+    jobs:
+      - ${{ if ne(parameters.WORKING_DIR_SECRET, '') }}:
+        - job: tfplan_secret
+          strategy:
+           parallel: 1
+          timeoutInMinutes: ${{parameters.TIME_OUT}}
+          steps:
+           - checkout: self
+           # 1. Install terraform
+           - template: templates/terraform-setup/template.yaml@terraform
+           - template: templates/terraform-summarize/template.yaml@terraform
+           # 2. Run terraform plan core
+           - template: templates/terraform-plan/template.yaml@terraform
+             parameters:
+               TF_ENVIRONMENT_FOLDER: ${{ lower(parameters.ENV_FOLDER) }}
+               WORKINGDIR: ${{ parameters.WORKING_DIR_SECRET }}
+               AZURE_SERVICE_CONNECTION_NAME: ${{parameters.SC_PLAN_NAME}}
+               ${{ if eq(parameters.SECRET_USE_AKS, 'true') }}:
+                 AKS_NAME: ${{ parameters.AKS_NAME }}
+                 AKS_API_SERVER_URL: ${{ parameters.AKS_APISERVER_URL }}
+                 AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ parameters.AKS_AZURE_DEVOPS_SA_CACRT }}
+                 AKS_AZURE_DEVOPS_SA_TOKEN: ${{ parameters.AKS_AZURE_DEVOPS_SA_TOKEN }}
+               ${{ if ne(parameters.TF_SUMMARIZE, '') }}:
+                TF_SUMMARIZE: ${{parameters.TF_SUMMARIZE}}
+      - ${{ if ne(parameters.WORKING_DIR_COMMON, '') }}:
+        - job: tfplan_common
+          strategy:
+            parallel: 1
+          timeoutInMinutes: ${{parameters.TIME_OUT}}
+          steps:
+            - checkout: self
+            # 1. Install terraform
+            - template: templates/terraform-setup/template.yaml@terraform
+            - template: templates/terraform-summarize/template.yaml@terraform
+            # 2. Run terraform plan core
+            - template: templates/terraform-plan/template.yaml@terraform
+              parameters:
+                TF_ENVIRONMENT_FOLDER: ${{ lower(parameters.ENV_FOLDER) }}
+                WORKINGDIR: ${{ parameters.WORKING_DIR_COMMON }}
+                AZURE_SERVICE_CONNECTION_NAME: ${{parameters.SC_PLAN_NAME}}
+                ${{ if ne(parameters.TF_SUMMARIZE, '') }}:
+                  TF_SUMMARIZE: ${{parameters.TF_SUMMARIZE}}
+      - ${{ if ne(parameters.WORKING_DIR_APP, '') }}:
+        - job: tfplan_app
+          strategy:
+            parallel: 1
+          timeoutInMinutes: ${{parameters.TIME_OUT}}
+          steps:
+            - checkout: self
+            # 1. Install terraform
+            - template: templates/terraform-setup/template.yaml@terraform
+            - template: templates/terraform-summarize/template.yaml@terraform
+            # 2. Run terraform plan core
+            - template: templates/terraform-plan/template.yaml@terraform
+              parameters:
+                TF_ENVIRONMENT_FOLDER: ${{ lower(parameters.ENV_FOLDER) }}
+                WORKINGDIR: ${{ parameters.WORKING_DIR_APP }}
+                AZURE_SERVICE_CONNECTION_NAME: ${{parameters.SC_PLAN_NAME}}
+                ${{ if ne(parameters.TF_SUMMARIZE, '') }}:
+                  TF_SUMMARIZE: ${{parameters.TF_SUMMARIZE}}
+                AKS_NAME: ${{ parameters.AKS_NAME }}
+                AKS_API_SERVER_URL: ${{ parameters.AKS_APISERVER_URL }}
+                AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ parameters.AKS_AZURE_DEVOPS_SA_CACRT }}
+                AKS_AZURE_DEVOPS_SA_TOKEN: ${{ parameters.AKS_AZURE_DEVOPS_SA_TOKEN }}
+      - ${{ if ne(parameters.WORKING_DIR_MODULE, '') }}:
+        - job: tfplan_module
+          strategy:
+            parallel: 1
+          timeoutInMinutes: ${{parameters.TIME_OUT}}
+          steps:
+            - checkout: self
+            # 1. Install terraform
+            - template: templates/terraform-setup/template.yaml@terraform
+            - template: templates/terraform-summarize/template.yaml@terraform
+            # 2. Run terraform plan core
+            - template: templates/terraform-plan/template.yaml@terraform
+              parameters:
+                TF_ENVIRONMENT_FOLDER: ${{ lower(parameters.ENV_FOLDER) }}
+                WORKINGDIR: ${{ parameters.WORKING_DIR_MODULE }}
+                AZURE_SERVICE_CONNECTION_NAME: ${{parameters.SC_PLAN_NAME}}
+                ${{ if ne(parameters.TF_SUMMARIZE, '') }}:
+                  TF_SUMMARIZE: ${{parameters.TF_SUMMARIZE}}
+                ${{ if eq(parameters.MODULE_USE_AKS, 'true') }}:
+                  AKS_NAME: ${{ parameters.AKS_NAME }}
+                  AKS_API_SERVER_URL: ${{ parameters.AKS_APISERVER_URL }}
+                  AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ parameters.AKS_AZURE_DEVOPS_SA_CACRT }}
+                  AKS_AZURE_DEVOPS_SA_TOKEN: ${{ parameters.AKS_AZURE_DEVOPS_SA_TOKEN }}
+

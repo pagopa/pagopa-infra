@@ -1,0 +1,216 @@
+<fragment>
+  <set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
+  <set-variable name="status-code" value="@(context.Response.StatusCode.ToString())" />
+  <choose>
+    <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
+      <!-- check if outcome in request is KO -->
+      <set-variable name="is_outcome_ko" value="@{
+                    try {
+                        JObject requestBody = (JObject) context.Variables["request-body"];
+                        return ((string) requestBody["outcome"]).ToUpper();
+                    } catch (Exception e) {
+                        return "NONE";
+                    }
+                }" />
+      <choose>
+        <when condition="@(context.Variables.GetValueOrDefault<string>("is_outcome_ko", "NONE").Equals("KO"))">
+          <!-- check if payments are cached for WISP dismantling, searching by the key in format wisp_<paymentToken>_<noticeNumber> -->
+          <!-- If the key extracted from key object refers to a WISP dismantling payment, send a KO RT -->
+
+          <!-- check if payments are cached for WISP dismantling, searching by the key in format wisp_<paymentToken> -->
+          <!-- If the key extracted from key object refers to a WISP dismantling payment, send a KO RT -->
+          <!-- ############################## -->
+          <!-- Number of token evaluated: 1/5 -->
+          <!-- ############################## -->
+          <set-variable name="current_payment_token" value="@{
+              try {
+                  return ((string) context.Variables["wisp-payment-tokens"]).Split(',')[0];
+              } catch (Exception e) {
+                  return "NONE";
+              }
+            }" />
+          <choose>
+            <!-- Continue only if passed object is not equals to 'NONE' -->
+            <when condition="@(!((string) context.Variables["current_payment_token"]).Equals("NONE"))">
+              <!-- generate key in format key_<paymentToken> and use it to search in cache -->
+              <cache-lookup-value key="@("wisp_" + (string) context.Variables["current_payment_token"])" default-value="NONE" variable-name="payment_mapping" caching-type="external" /> <!-- TODO set internal -->
+              <!-- if the payments was executed by WISP dismantling, execute a call to 'receipt/ko' API with paymentToken, identificativoDominio and identificativoUnivocoVersamento -->
+              <choose>
+                <when condition="@(!((string) context.Variables["payment_mapping"]).Equals("NONE"))">
+                  <send-one-way-request mode="new">
+                    <set-url>{{wisp-dismantling-converter-base-url}}/receipt/ko</set-url>
+                    <set-method>POST</set-method>
+                    <set-header name="Content-Type" exists-action="override">
+                      <value>application/json</value>
+                    </set-header>
+                    <set-header name="X-Primitive" exists-action="override">
+                      <value>@(context.Variables.GetValueOrDefault<string>("primitive-ko", "NONE"))</value>
+                    </set-header>
+                    <set-header name="X-HTTP-Status-Code" exists-action="override">
+                      <value>@(context.Variables.GetValueOrDefault<string>("status-code", "0"))</value>
+                    </set-header>
+                    <set-body>
+                      @{ return (string) context.Variables["payment_mapping"]; }
+                    </set-body>
+                  </send-one-way-request>
+                </when>
+              </choose>
+            </when>
+          </choose>
+          <!-- ############################## -->
+          <!-- Number of token evaluated: 2/5 -->
+          <!-- ############################## -->
+          <set-variable name="current_payment_token" value="@{
+            try {
+                return ((string) context.Variables["wisp-payment-tokens"]).Split(',')[1];
+            } catch (Exception e) {
+                return "NONE";
+            }
+          }" />
+          <choose>
+            <!-- Continue only if passed object is not equals to 'NONE' -->
+            <when condition="@(!((string) context.Variables["current_payment_token"]).Equals("NONE"))">
+              <!-- generate key in format key_<paymentToken> and use it to search in cache -->
+              <cache-lookup-value key="@("wisp_" + (string) context.Variables["current_payment_token"])" default-value="NONE" variable-name="payment_mapping" caching-type="external" /> <!-- TODO set internal -->
+              <!-- if the payments was executed by WISP dismantling, execute a call to 'receipt/ko' API with paymentToken, identificativoDominio and identificativoUnivocoVersamento -->
+              <choose>
+                <when condition="@(!((string) context.Variables["payment_mapping"]).Equals("NONE"))">
+                  <send-one-way-request mode="new">
+                    <set-url>{{wisp-dismantling-converter-base-url}}/receipt/ko</set-url>
+                    <set-method>POST</set-method>
+                    <set-header name="Content-Type" exists-action="override">
+                      <value>application/json</value>
+                    </set-header>
+                    <set-header name="X-Primitive" exists-action="override">
+                      <value>@(context.Variables.GetValueOrDefault<string>("primitive-ko", "NONE"))</value>
+                    </set-header>
+                    <set-header name="X-HTTP-Status-Code" exists-action="override">
+                      <value>@(context.Variables.GetValueOrDefault<string>("status-code", "0"))</value>
+                    </set-header>
+                    <set-body>
+                      @{ return (string) context.Variables["payment_mapping"]; }
+                    </set-body>
+                  </send-one-way-request>
+                </when>
+              </choose>
+            </when>
+          </choose>
+          <!-- ############################## -->
+          <!-- Number of token evaluated: 3/5 -->
+          <!-- ############################## -->
+          <set-variable name="current_payment_token" value="@{
+              try {
+                  return ((string) context.Variables["wisp-payment-tokens"]).Split(',')[2];
+              } catch (Exception e) {
+                  return "NONE";
+              }
+          }" />
+          <choose>
+            <!-- Continue only if passed object is not equals to 'NONE' -->
+            <when condition="@(!((string) context.Variables["current_payment_token"]).Equals("NONE"))">
+              <!-- generate key in format key_<paymentToken> and use it to search in cache -->
+              <cache-lookup-value key="@("wisp_" + (string) context.Variables["current_payment_token"])" default-value="NONE" variable-name="payment_mapping" caching-type="external" /> <!-- TODO set internal -->
+              <!-- if the payments was executed by WISP dismantling, execute a call to 'receipt/ko' API with paymentToken, identificativoDominio and identificativoUnivocoVersamento -->
+              <choose>
+                <when condition="@(!((string) context.Variables["payment_mapping"]).Equals("NONE"))">
+                  <send-one-way-request mode="new">
+                    <set-url>{{wisp-dismantling-converter-base-url}}/receipt/ko</set-url>
+                    <set-method>POST</set-method>
+                    <set-header name="Content-Type" exists-action="override">
+                      <value>application/json</value>
+                    </set-header>
+                    <set-header name="X-Primitive" exists-action="override">
+                      <value>@(context.Variables.GetValueOrDefault<string>("primitive-ko", "NONE"))</value>
+                    </set-header>
+                    <set-header name="X-HTTP-Status-Code" exists-action="override">
+                      <value>@(context.Variables.GetValueOrDefault<string>("status-code", "0"))</value>
+                    </set-header>
+                    <set-body>
+                      @{ return (string) context.Variables["payment_mapping"]; }
+                    </set-body>
+                  </send-one-way-request>
+                </when>
+              </choose>
+            </when>
+          </choose>
+          <!-- ############################## -->
+          <!-- Number of token evaluated: 4/5 -->
+          <!-- ############################## -->
+          <set-variable name="current_payment_token" value="@{
+              try {
+                  return ((string) context.Variables["wisp-payment-tokens"]).Split(',')[3];
+              } catch (Exception e) {
+                  return "NONE";
+              }
+          }" />
+          <choose>
+            <!-- Continue only if passed object is not equals to 'NONE' -->
+            <when condition="@(!((string) context.Variables["current_payment_token"]).Equals("NONE"))">
+              <!-- generate key in format key_<paymentToken> and use it to search in cache -->
+              <cache-lookup-value key="@("wisp_" + (string) context.Variables["current_payment_token"])" default-value="NONE" variable-name="payment_mapping" caching-type="external" /> <!-- TODO set internal -->
+              <!-- if the payments was executed by WISP dismantling, execute a call to 'receipt/ko' API with paymentToken, identificativoDominio and identificativoUnivocoVersamento -->
+              <choose>
+                <when condition="@(!((string) context.Variables["payment_mapping"]).Equals("NONE"))">
+                  <send-one-way-request mode="new">
+                    <set-url>{{wisp-dismantling-converter-base-url}}/receipt/ko</set-url>
+                    <set-method>POST</set-method>
+                    <set-header name="Content-Type" exists-action="override">
+                      <value>application/json</value>
+                    </set-header>
+                    <set-header name="X-Primitive" exists-action="override">
+                      <value>@(context.Variables.GetValueOrDefault<string>("primitive-ko", "NONE"))</value>
+                    </set-header>
+                    <set-header name="X-HTTP-Status-Code" exists-action="override">
+                      <value>@(context.Variables.GetValueOrDefault<string>("status-code", "0"))</value>
+                    </set-header>
+                    <set-body>
+                      @{ return (string) context.Variables["payment_mapping"]; }
+                    </set-body>
+                  </send-one-way-request>
+                </when>
+              </choose>
+            </when>
+          </choose>
+          <!-- ############################## -->
+          <!-- Number of token evaluated: 5/5 -->
+          <!-- ############################## -->
+          <set-variable name="current_payment_token" value="@{
+              try {
+                  return ((string) context.Variables["wisp-payment-tokens"]).Split(',')[4];
+              } catch (Exception e) {
+                  return "NONE";
+              }
+          }" />
+          <choose>
+            <!-- Continue only if passed object is not equals to 'NONE' -->
+            <when condition="@(!((string) context.Variables["current_payment_token"]).Equals("NONE"))">
+              <!-- generate key in format key_<paymentToken> and use it to search in cache -->
+              <cache-lookup-value key="@("wisp_" + (string) context.Variables["current_payment_token"])" default-value="NONE" variable-name="payment_mapping" caching-type="external" /> <!-- TODO set internal -->
+              <!-- if the payments was executed by WISP dismantling, execute a call to 'receipt/ko' API with paymentToken, identificativoDominio and identificativoUnivocoVersamento -->
+              <choose>
+                <when condition="@(!((string) context.Variables["payment_mapping"]).Equals("NONE"))">
+                  <send-one-way-request mode="new">
+                    <set-url>{{wisp-dismantling-converter-base-url}}/receipt/ko</set-url>
+                    <set-method>POST</set-method>
+                    <set-header name="Content-Type" exists-action="override">
+                      <value>application/json</value>
+                    </set-header>
+                    <set-header name="X-Primitive" exists-action="override">
+                      <value>@(context.Variables.GetValueOrDefault<string>("primitive-ko", "NONE"))</value>
+                    </set-header>
+                    <set-header name="X-HTTP-Status-Code" exists-action="override">
+                      <value>@(context.Variables.GetValueOrDefault<string>("status-code", "0"))</value>
+                    </set-header>
+                    <set-body>
+                      @{ return (string) context.Variables["payment_mapping"]; }
+                    </set-body>
+                  </send-one-way-request>
+                </when>
+              </choose>
+            </when>
+          </choose>
+        </when>
+      </choose>
+    </when>
+  </choose>
+</fragment>

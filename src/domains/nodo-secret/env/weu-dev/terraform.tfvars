@@ -7,13 +7,6 @@ location_short  = "weu"
 location_string = "West Europe"
 instance        = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/nodo-secret"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -31,5 +24,3 @@ upload_firmatore = {
 }
 
 cacerts_path = "./env/weu-dev/resources/cacerts"
-
-pipe_service_principel_application_id = "b7375314-3eff-4760-9952-84f96ee669cf"

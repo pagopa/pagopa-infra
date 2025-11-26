@@ -11,7 +11,7 @@ resource "kubernetes_cluster_role" "system_cluster_deployer" {
 
   rule {
     api_groups = ["rbac.authorization.k8s.io"]
-    resources  = ["rolebindings"]
+    resources  = ["rolebindings", "clusterroles", "clusterrolebindings"]
     verbs      = ["get", "list", "watch", ]
   }
 
@@ -23,6 +23,12 @@ resource "kubernetes_cluster_role" "system_cluster_deployer" {
 resource "kubernetes_cluster_role" "cluster_deployer" {
   metadata {
     name = "cluster-deployer"
+  }
+
+  rule {
+    api_groups = [""]
+    resources  = ["namespaces", "services", "configmaps", "secrets", "serviceaccounts", ]
+    verbs      = ["get", "list", "watch", ]
   }
 
   rule {
@@ -51,7 +57,7 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
 
   rule {
     api_groups = ["apps"]
-    resources  = ["replicasets"]
+    resources  = ["replicasets", "daemonsets"]
     verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
   }
 
@@ -69,7 +75,7 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
 
   rule {
     api_groups = ["rbac.authorization.k8s.io"]
-    resources  = ["rolebindings"]
+    resources  = ["rolebindings", "roles"]
     verbs      = ["get", "list", "watch", ]
   }
 
@@ -82,6 +88,20 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
   rule {
     api_groups = ["monitoring.coreos.com"]
     resources  = ["servicemonitors", "podmonitors"]
+    verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
+  }
+
+  rule {
+    api_groups        = ["policy"]
+    non_resource_urls = []
+    resource_names    = []
+    resources         = ["poddisruptionbudgets"]
+    verbs             = ["get", "list", "watch", "create", "update", "patch", "delete"]
+  }
+
+  rule {
+    api_groups = ["opentelemetry.io"]
+    resources  = ["opentelemetrycollectors"]
     verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
   }
 
@@ -264,6 +284,28 @@ resource "kubernetes_cluster_role_binding" "view_binding" {
     kind      = "Group"
     name      = data.azuread_group.adgroup_technical_project_managers.object_id
     namespace = "kube-system"
+  }
+
+  depends_on = [
+    module.aks
+  ]
+}
+
+resource "kubernetes_cluster_role" "kube_system_reader" {
+  metadata {
+    name = "kube-system-reader"
+  }
+
+  rule {
+    api_groups = [""]
+    resources  = ["services"]
+    verbs      = ["get", "list", "watch", ]
+  }
+
+  rule {
+    api_groups = ["rbac.authorization.k8s.io"]
+    resources  = ["rolebindings"]
+    verbs      = ["get", "list", "watch", ]
   }
 
   depends_on = [

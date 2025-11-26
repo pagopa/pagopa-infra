@@ -1,6 +1,6 @@
 # pagoPA-infrastructure
 
-[![Static Analysis](https://github.com/pagopa/pagopa-infra/actions/workflows/static_analysis.yml/badge.svg)](https://github.com/pagopa/pagopa-infra/actions/workflows/static_analysis.yml)
+[![Static Analysis](https://github.com/pagopa/pagopa-infra/actions/workflows/static_analysis.yml/badge.svg?branch=main&event=push)](https://github.com/pagopa/pagopa-infra/actions/workflows/static_analysis.yml)
 
 pagoPA project infrastructure
 
@@ -68,6 +68,7 @@ terraform providers lock \
   -platform=linux_arm64 \
   -platform=linux_amd64 \
   -platform=darwin_amd64 \
+  -platform=darwin_arm64 \
   -platform=windows_amd64
 ```
 
@@ -93,12 +94,23 @@ terraform-docs markdown . --sort-by required > README.md
 
 ## Utils
 
-Extract cidr subnet from AZ vnet:
+1. Extract cidr subnet from AZ vnet:
 
-`az network vnet subnet list -g pagopa-d-vnet-rg --vnet-name pagopa-d-vnet | grep "\"addressPrefix\""`
+`az network vnet subnet list -g pagopa-d-vnet-rg --vnet-name pagopa-d-vnet | grep "\"addressPrefix\"" | xargs -n2 | sort`
 
 <!-- markdownlint-disable -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+2. Sops MAC mismatch. File has 
+
+To resolve it typing : 
+
+```
+sops --ignore-mac ./secret/weu-<ENV>/noedit_secret_enc.json
+```
+
+change some stuff into file and save it.
+
 ## Requirements
 
 No requirements.

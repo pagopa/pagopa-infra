@@ -6,13 +6,6 @@ location       = "westeurope"
 location_short = "weu"
 instance       = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagopa"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/afm"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -49,6 +42,7 @@ afm_marketplace_cosmos_db_params = {
 
   backup_continuous_enabled = false
 
+  analytical_storage_enabled = true
 }
 
 cidr_subnet_afm_marketplace_cosmosdb = ["10.1.151.0/24"]

@@ -6,13 +6,6 @@ location       = "westeurope"
 location_short = "weu"
 instance       = "uat"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "PagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/fdr"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -34,12 +27,11 @@ enable_iac_pipeline = true
 
 pgres_flex_params = {
 
-  enabled    = true
-  sku_name   = "GP_Standard_D4s_v3"
-  db_version = "13"
+  sku_name   = "GP_Standard_D4ds_v4"
+  db_version = "15"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
-  storage_mb                             = 32768
+  storage_mb                             = 1048576 # 1Tib
   zone                                   = 1
   backup_retention_days                  = 7
   geo_redundant_backup_enabled           = false
@@ -47,8 +39,15 @@ pgres_flex_params = {
   pgres_flex_private_endpoint_enabled    = true
   pgres_flex_ha_enabled                  = false
   pgres_flex_pgbouncer_enabled           = true
+  standby_availability_zone              = 2
   pgres_flex_diagnostic_settings_enabled = false
-  max_connections                        = 1000
+  alerts_enabled                         = false
+  max_connections                        = 5000
+  pgbouncer_min_pool_size                = 10
+  max_worker_process                     = 32
+  wal_level                              = "logical"
+  shared_preoload_libraries              = "pg_failover_slots"
+  public_network_access_enabled          = false
 }
 
 custom_metric_alerts = {
@@ -106,11 +105,12 @@ custom_metric_alerts = {
 }
 
 ### Cosmos
+cidr_subnet_cosmosdb_fdr = ["10.1.136.0/24"]
 
-cosmos_mongo_db_params = {
+cosmos_mongo_db_fdr_re_params = {
   enabled      = true
   kind         = "MongoDB"
-  capabilities = ["EnableMongo", "EnableServerless"]
+  capabilities = ["EnableMongo"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
@@ -129,13 +129,57 @@ cosmos_mongo_db_params = {
   backup_continuous_enabled = false
 
   container_default_ttl = 2629800 # 1 month in second
-}
 
-cidr_subnet_cosmosdb_fdr = ["10.1.136.0/24"]
-
-cosmos_mongo_db_fdr_params = {
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 5000
+  max_throughput     = 10000
   throughput         = 1000
 }
+
+# Storage Account
+
+cidr_subnet_storage_account = ["10.1.179.0/24"]
+
+fdr_storage_account = {
+  account_kind                       = "StorageV2"
+  account_tier                       = "Standard"
+  account_replication_type           = "LRS"
+  blob_versioning_enabled            = false
+  advanced_threat_protection         = true
+  advanced_threat_protection_enabled = false
+  public_network_access_enabled      = true
+  blob_delete_retention_days         = 90
+  enable_low_availability_alert      = false
+}
+
+reporting_fdr_storage_account = {
+  advanced_threat_protection         = true
+  advanced_threat_protection_enabled = false
+  blob_versioning_enabled            = false
+  blob_delete_retention_days         = 30
+  account_replication_type           = "LRS"
+  public_network_access_enabled      = true
+}
+
+fdr_re_storage_account = {
+  account_kind                                                 = "StorageV2"
+  account_tier                                                 = "Standard"
+  account_replication_type                                     = "LRS"
+  blob_versioning_enabled                                      = false
+  public_network_access_enabled                                = true
+  blob_delete_retention_days                                   = 1
+  enable_low_availability_alert                                = false
+  storage_defender_enabled                                     = true
+  storage_defender_override_subscription_settings_enabled      = false
+  storage_defender_sensitive_data_discovery_enabled            = false
+  storage_defender_malware_scanning_on_upload_enabled          = false
+  storage_defender_malware_scanning_on_upload_cap_gb_per_month = -1
+  blob_file_retention_days                                     = 14
+}
+
+
+#
+# replica settings
+#
+geo_replica_enabled               = false
+postgres_dns_registration_enabled = true

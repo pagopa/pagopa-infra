@@ -1,0 +1,624 @@
+<policies>
+    <inbound>
+        <base />
+        <set-variable name="psps" value="{{brokerlist}}" />
+        <set-variable name="ecs" value="{{ecblacklist}}" />
+        <set-variable name="requestPayload" value="@(context.Request.Body.As<string>(preserveContent: true))" />
+        <set-variable name="readrequest" value="@(context.Request.Body.As<string>(preserveContent: true))" />
+        <set-variable name="idPSP" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"idPSP"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var idPSP = result.Length > 2 ? result[1].Substring(1,result[1].Length-3) : "";
+            return idPSP;
+        }" />
+        <set-variable name="idBrokerPSP" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"idBrokerPSP"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var idBrokerPSP = result.Length > 2 ? result[1].Substring(1,result[1].Length-3) : "";
+            return idBrokerPSP;
+        }" />
+        <set-variable name="idChannel" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"idChannel"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var idChannel = result.Length > 2 ? result[1].Substring(1,result[1].Length-3) : "";
+            return idChannel;
+        }" />
+        <set-variable name="password" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"password"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var password = result.Length > 2 ? result[1].Substring(1,result[1].Length-3) : "";
+            return password;
+        }" />
+        <set-variable name="idempotencyKey" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"idempotencyKey"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            if (result.Length > 2) {
+                var idempotencyKey = result[1].Substring(1,result[1].Length-3);
+                return idempotencyKey;
+            } else {
+                return null;
+            }
+        }" />
+        <set-variable name="expirationTime" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"expirationTime"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            if (result.Length > 2) {
+                var expirationTime = result[1].Substring(1,result[1].Length-3);
+                return expirationTime;
+            } else {
+                return null;
+            }
+        }" />
+        <set-variable name="fiscalCode" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"fiscalCode"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var fiscalCode = result.Length > 2 ? result[1].Substring(1,result[1].Length-3) : "fiscalCode";
+            return fiscalCode;
+        }" />
+        <set-variable name="noticeNumber" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"noticeNumber"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var noticeNumber = result.Length > 2 ? result[1].Substring(1,result[1].Length-3) : "noticeNumber";
+            return noticeNumber;
+        }" />
+        <set-variable name="amount" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"amount"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var amount = result.Length > 2 ? result[1].Substring(1,result[1].Length-3) : "";
+            return amount;
+        }" />
+        <set-variable name="dueDate" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"dueDate"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            if (result.Length > 2) {
+                var dueDate = result[1].Substring(1,result[1].Length-3);
+                return "<dueDate>"+dueDate+"</dueDate>";
+            } else {
+                return "";
+            }
+        }" />
+        <set-variable name="paymentNote" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"paymentNote"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            if (result.Length > 2) {
+                var paymentNote = result[1].Substring(1,result[1].Length-3);
+                return "<paymentNote>"+paymentNote+"</paymentNote>";
+            } else {
+                return "";
+            }
+        }" />
+        <!--
+        if attvazionePrenotata then sent PPT_ATTIVAZIONE_IN_CORSO
+        else store PPT_ATTIVAZIONE_IN_CORSO in attvazionePrenotata for fiscalCode and noticeNumber
+        -->
+        <cache-lookup-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" variable-name="attvazionePrenotata" caching-type="internal" />
+        <choose>
+            <when condition="@(context.Variables.ContainsKey("attvazionePrenotata"))">
+                <return-response>
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>text/xml</value>
+                    </set-header>
+                    <set-body template="liquid">
+						<soapenv:Envelope xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:nfpsp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+							<soapenv:Body>
+								<nfpsp:activatePaymentNoticeRes>
+									<outcome>KO</outcome>
+									<fault>
+										<faultCode>PPT_ATTIVAZIONE_IN_CORSO</faultCode>
+										<faultString>E' in corso un'altra attivazione per lo stesso avviso</faultString>
+										<id>NodoDeiPagamentiSPC</id>
+										<description>E' in corso un'altra attivazione per lo stesso avviso</description>
+									</fault>
+								</nfpsp:activatePaymentNoticeRes>
+							</soapenv:Body>
+						</soapenv:Envelope>
+					</set-body>
+                </return-response>
+            </when>
+            <otherwise>
+                <cache-store-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" value="PPT_ATTIVAZIONE_IN_CORSO" duration="30" caching-type="internal" />            
+                <!-- ottimizzazione-ec-buoni start -->
+                <!-- https://pagopa.atlassian.net/wiki/spaces/PAG/pages/533398561/Ottimizzazione+filtro+su+Enti+Creditori+buoni -->
+                <cache-lookup-value key="@((string) context.Variables["fiscalCode"])" variable-name="dynamicGoodEc" caching-type="internal" />
+                <trace source="ottimizzazione-ec-buoni-init" severity="information">ottimizzazione-ec-buoni-init</trace>
+                <choose>
+                    <when condition="@{
+                    var eclist = ((string) context.Variables["ecs"]).Split(',');
+                    var idEC = (string) context.Variables["fiscalCode"];
+                    var isFiscalCodeNotInBlackList = !Array.Exists(eclist, e => e == idEC);
+                    //      se non è in blacklist e NON è nella dynamic => call apiconfig
+                    return  ( isFiscalCodeNotInBlackList && !context.Variables.ContainsKey("dynamicGoodEc") )  ;
+                    }">
+                        <trace source="ottimizzazione-ec-buoni" severity="information">ottimizzazione-ec-buoni-start</trace>
+                        <send-request ignore-error="true" timeout="10" response-variable-name="ec-stations-body" mode="new">
+                            <!-- Get station details and relation info with creditor institution -->
+                            <!-- <set-url>@(String.Format("https://api.${urlenvpath}platform.pagopa.it/apiconfig/auth/api/v1/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url> -->
+<!--                            <set-url>@(String.Format("https://pagopa-${urlenvpath}-app-api-config.azurewebsites.net/apiconfig/api/v1/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url>-->
+                            <set-url>@(String.Format("https://${url_aks}/{{apicfg-core-service-path}}/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url>
+                            <set-method>GET</set-method>
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
+                            <set-header name="ocp-apim-subscription-key" exists-action="override">
+                                <value>{{verificatore-api-key-apiconfig}}</value>
+                            </set-header>
+                        </send-request>
+                        <choose>
+                            <when condition="@(((IResponse)context.Variables["ec-stations-body"]).StatusCode == 200)">
+                                <set-variable name="ec-station-response" value="@(((IResponse)context.Variables["ec-stations-body"]).Body.As<JObject>())" />
+                                <set-variable name="isAllStationsV2" value="@{
+                                    var isAllv2 = true;
+                                    JObject res = (JObject) context.Variables["ec-station-response"];
+                                    foreach (var item1 in res["stations"])
+                                    {
+                                        var stationVers = (string)((JObject) item1)["version"];
+                                        if (stationVers != "2" ) {
+                                            isAllv2 = false;
+                                            break;
+                                        }
+                                    }
+                                    return isAllv2;
+                                }" />
+                            </when>
+                            <otherwise>
+                                <set-variable name="isAllStationsV2" value="False" />
+                            </otherwise>
+                        </choose>
+                        <!-- Specify maximum cache-store duration -->
+                        <!-- 68years ( no expired ) vs 12h-->
+                        <!-- https://github.com/MicrosoftDocs/azure-docs/issues/62394 -->
+                        <cache-store-value key="@((string) context.Variables["fiscalCode"])" value="@(Convert.ToBoolean(context.Variables["isAllStationsV2"]))" duration="@{ return (Convert.ToBoolean(context.Variables["isAllStationsV2"])) ? 2147483647 : 43200; }" caching-type="internal" />
+                    </when>
+                    <otherwise>
+                        <!-- nothing -->
+                    </otherwise>
+                </choose>
+                <!-- ottimizzazione-ec-buoni stop -->
+                <!-- verificatore -->
+                <choose>
+                    <when condition="@(context.Variables["idempotencyKey"] != null)">
+                        <cache-lookup-value key="@((string) context.Variables["idempotencyKey"])" variable-name="idempotencyKeyRx" caching-type="internal" />
+                    </when>
+                </choose>
+                <xml-to-json kind="direct" apply="content-type-xml" consider-accept-header="false" />
+                <choose>
+                    <!-- check if idBrokerPSP is in to PSP'whitelist -->
+                    <!-- check if fiscalCode isn't in to EC'blacklist -->
+                    <when condition="@{
+                var brokerList = ((string) context.Variables["psps"]).Split(',');
+                var idBroker = (string) context.Variables["idBrokerPSP"];
+
+                var eclist = ((string) context.Variables["ecs"]).Split(',');
+                // ottimizzazione-ec-buoni - add to eclist dynamicGoodEc cache
+                if (context.Variables.ContainsKey("dynamicGoodEc") && (Convert.ToBoolean(context.Variables["dynamicGoodEc"]))) {
+                    eclist = eclist.Append((string) context.Variables["fiscalCode"]).ToArray();;
+                }
+
+
+                var idEC = (string) context.Variables["fiscalCode"];
+
+                // return Array.Exists(brokerList, e => e == idBroker) && !Array.Exists(eclist, e => e == idEC);
+                var isBrkPSPintoPSPwhiteList = Array.Exists(brokerList, e => e == idBroker);
+                var isFiscalCodeNotInBlackList = !Array.Exists(eclist, e => e == idEC);
+                var isIdempotencyKeyNotAlreadytRx = !context.Variables.ContainsKey("idempotencyKeyRx");
+                return isBrkPSPintoPSPwhiteList && isFiscalCodeNotInBlackList && isIdempotencyKeyNotAlreadytRx;
+            }">
+                        <trace source="ottimizzazione-sent-verify" severity="information">ottimizzazione-sent-verify</trace>
+                        <send-request ignore-error="true" timeout="20" response-variable-name="verifica" mode="new">
+                            <set-url>@{return ((string) context.Variables["baseUrl"]+"/webservices/input"); }</set-url>
+                            <set-method>POST</set-method>
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>text/xml</value>
+                            </set-header>
+                            <set-header name="SOAPAction" exists-action="override">
+                                <value>verifyPaymentNotice</value>
+                            </set-header>
+                            <set-header name="proto" exists-action="override">
+                                <value>http</value>
+                            </set-header>
+                            <set-body template="liquid">
+								<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
+									<soapenv:Header />
+									<soapenv:Body>
+										<nod:verifyPaymentNoticeReq>
+											<idPSP>{{context.Variables["idPSP"]}}</idPSP>
+											<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
+											<idChannel>{{context.Variables["idChannel"]}}</idChannel>
+											<password>{{context.Variables["password"]}}</password>
+											<qrCode>
+												<fiscalCode>{{context.Variables["fiscalCode"]}}</fiscalCode>
+												<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
+											</qrCode>
+										</nod:verifyPaymentNoticeReq>
+									</soapenv:Body>
+								</soapenv:Envelope>
+							</set-body>
+                        </send-request>
+                        <set-variable name="leggirisposta" value="@((string)((IResponse)context.Variables["verifica"]).Body.As<string>(preserveContent: true))" />
+                        <set-variable name="outcome" value="@{
+                    var dom2parse = ((string) context.Variables["leggirisposta"]);
+                    String[] spearator = {"outcome"};
+                    String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                    var outcome = result[1].Substring(1,result[1].Length-3);
+                    return outcome;
+                }" />
+                        <choose>
+                            <!-- check if outcome is OK -->
+                            <when condition="@("OK".Equals((string)context.Variables["outcome"]))">
+                                <set-variable name="amount" value="@{
+                            var dom2parse = ((string) context.Variables["leggirisposta"]);
+                            String[] spearator = {"amount"};
+                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                            var amount = result[1].Substring(1,result[1].Length-3);
+                            return amount;
+                        }" />
+                                <!-- <xml-to-json kind="direct" apply="always" consider-accept-header="false" /> -->
+                                <!-- <set-variable name="amountrx" value="@(((IResponse)context.Variables["verifica" ]).Body.As<JObject>().Property("soapenv:Envelope"))" /> -->
+                                <!-- <set-variable name="amountrx" value="@(((IResponse)context.Variables["verifica"]).Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["nfpsp$verifyPaymentNoticeRes"]["paymentList"]["paymentOptionDescription"]["amount"])" /> -->
+                                <!-- <json-to-xml apply="always" consider-accept-header="true" parse-date="false" /> -->
+                                <choose>
+                                    <when condition="@(context.Variables["idempotencyKey"] != null)">
+                                        <cache-store-value key="@((string) context.Variables["idempotencyKey"])" value="@((string) context.Variables["amount"])" duration="3600" caching-type="internal" />
+                                    </when>
+                                </choose>
+                                <set-header name="Content-Type" exists-action="override">
+                                    <value>text/xml</value>
+                                </set-header>
+                                <set-header name="SOAPAction" exists-action="override">
+                                    <value>activatePaymentNotice</value>
+                                </set-header>
+                                <set-header name="proto" exists-action="override">
+                                    <value>http</value>
+                                </set-header>
+                                <choose>
+                                    <when condition="@(context.Variables["idempotencyKey"] == null && context.Variables["expirationTime"] == null )">
+                                        <set-body template="liquid">
+											<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
+												<soapenv:Header />
+												<soapenv:Body>
+													<nod:activatePaymentNoticeReq>
+														<idPSP>{{context.Variables["idPSP"]}}</idPSP>
+														<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
+														<idChannel>{{context.Variables["idChannel"]}}</idChannel>
+														<password>{{context.Variables["password"]}}</password>
+														<!-- <idempotencyKey>{{context.Variables["idempotencyKey"]}}</idempotencyKey> -->
+														<qrCode>
+															<fiscalCode>{{context.Variables["fiscalCode"]}}</fiscalCode>
+															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
+														</qrCode>
+														<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeReq>
+												</soapenv:Body>
+											</soapenv:Envelope>
+										</set-body>
+                                    </when>
+                                </choose>
+                                <choose>
+                                    <when condition="@(context.Variables["idempotencyKey"] != null && context.Variables["expirationTime"] == null)">
+                                        <set-body template="liquid">
+											<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
+												<soapenv:Header />
+												<soapenv:Body>
+													<nod:activatePaymentNoticeReq>
+														<idPSP>{{context.Variables["idPSP"]}}</idPSP>
+														<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
+														<idChannel>{{context.Variables["idChannel"]}}</idChannel>
+														<password>{{context.Variables["password"]}}</password>
+														<idempotencyKey>{{context.Variables["idempotencyKey"]}}</idempotencyKey>
+														<qrCode>
+															<fiscalCode>{{context.Variables["fiscalCode"]}}</fiscalCode>
+															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
+														</qrCode>
+														<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeReq>
+												</soapenv:Body>
+											</soapenv:Envelope>
+										</set-body>
+                                    </when>
+                                </choose>
+                                <choose>
+                                    <when condition="@(context.Variables["idempotencyKey"] == null && context.Variables["expirationTime"] != null)">
+                                        <set-body template="liquid">
+											<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
+												<soapenv:Header />
+												<soapenv:Body>
+													<nod:activatePaymentNoticeReq>
+														<idPSP>{{context.Variables["idPSP"]}}</idPSP>
+														<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
+														<idChannel>{{context.Variables["idChannel"]}}</idChannel>
+														<password>{{context.Variables["password"]}}</password>
+														<!-- <idempotencyKey>{{context.Variables["idempotencyKey"]}}</idempotencyKey> -->
+														<qrCode>
+															<fiscalCode>{{context.Variables["fiscalCode"]}}</fiscalCode>
+															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
+														</qrCode>
+														<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeReq>
+												</soapenv:Body>
+											</soapenv:Envelope>
+										</set-body>
+                                    </when>
+                                </choose>
+                                <choose>
+                                    <when condition="@(context.Variables["idempotencyKey"] != null && context.Variables["expirationTime"] != null )">
+                                        <set-body template="liquid">
+											<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
+												<soapenv:Header />
+												<soapenv:Body>
+													<nod:activatePaymentNoticeReq>
+														<idPSP>{{context.Variables["idPSP"]}}</idPSP>
+														<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
+														<idChannel>{{context.Variables["idChannel"]}}</idChannel>
+														<password>{{context.Variables["password"]}}</password>
+														<idempotencyKey>{{context.Variables["idempotencyKey"]}}</idempotencyKey>
+														<qrCode>
+															<fiscalCode>{{context.Variables["fiscalCode"]}}</fiscalCode>
+															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
+														</qrCode>
+														<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeReq>
+												</soapenv:Body>
+											</soapenv:Envelope>
+										</set-body>
+                                    </when>
+                                </choose>
+                            </when>
+                            <otherwise>
+                                <set-variable name="faultCode" value="@{
+                            var dom2parse = ((string) context.Variables["leggirisposta"]);
+                            String[] spearator = {"faultCode"};
+                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                            var faultCode = result[1].Substring(1,result[1].Length-3);
+                            return faultCode;
+                        }" />
+                                <set-variable name="faultString" value="@{
+                            var dom2parse = ((string) context.Variables["leggirisposta"]);
+                            String[] spearator = {"faultString"};
+                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                            var faultString = result[1].Substring(1,result[1].Length-3);
+                            return faultString;
+                        }" />
+                                <set-variable name="id" value="@{
+                            var dom2parse = ((string) context.Variables["leggirisposta"]);
+                            String[] spearator = {"id"};
+                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                            var id = result[1].Substring(1,result[1].Length-3);
+                            return id;
+                        }" />
+                                <set-variable name="description" value="@{
+                            var dom2parse = ((string) context.Variables["leggirisposta"]);
+                            String[] spearator = {"description"};
+                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                            var description = result[1].Substring(1,result[1].Length-3);
+                            return description;
+                        }" />
+                                <set-variable name="originalFaultCode" value="@{
+                            var dom2parse = ((string) context.Variables["leggirisposta"]);
+                            String[] spearator = {"originalFaultCode"};
+                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                            if (result.Length > 2) {
+                                var originalFaultCode = result[1].Substring(1,result[1].Length-3);
+                                return originalFaultCode;
+                            } else {
+                                return "";
+                            }
+
+                        }" />
+                                <set-variable name="originalFaultString" value="@{
+                            var dom2parse = ((string) context.Variables["leggirisposta"]);
+                            String[] spearator = {"originalFaultString"};
+                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                            if (result.Length > 2) {
+                                var originalFaultString = result[1].Substring(1,result[1].Length-3);
+                                return originalFaultString;
+                            } else {
+                                return "";
+                            }
+                        }" />
+                                <set-variable name="originalDescription" value="@{
+                            var dom2parse = ((string) context.Variables["leggirisposta"]);
+                            String[] spearator = {"originalDescription"};
+                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                            if (result.Length > 2) {
+                                var originalDescription = result[1].Substring(1,result[1].Length-3);
+                                return originalDescription;
+                            } else {
+                                return "";
+                            }
+
+                        }" />
+                                <!-- on KO response custoim delete cache attvazionePrenotata #1 -->
+                                <cache-remove-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" caching-type="internal" />
+                                <choose>
+                                    <when condition="@("".Equals((string)context.Variables["originalFaultCode"]))">
+                                        <return-response>
+                                            <set-header name="Content-Type" exists-action="override">
+                                                <value>text/xml</value>
+                                            </set-header>
+                                            <set-body template="liquid">
+												<soapenv:Envelope xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:nfpsp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+													<soapenv:Body>
+														<nfpsp:activatePaymentNoticeRes>
+															<outcome>KO</outcome>
+															<fault>
+																<faultCode>{{context.Variables["faultCode"]}}</faultCode>
+																<faultString>{{context.Variables["faultString"]}}</faultString>
+																<id>{{context.Variables["id"]}}</id>
+																<description>{{context.Variables["description"]}}</description>
+															</fault>
+														</nfpsp:activatePaymentNoticeRes>
+													</soapenv:Body>
+												</soapenv:Envelope>
+											</set-body>
+                                        </return-response>
+                                    </when>
+                                    <otherwise>
+                                        <return-response>
+                                            <set-header name="Content-Type" exists-action="override">
+                                                <value>text/xml</value>
+                                            </set-header>
+                                            <set-body template="liquid">
+												<soapenv:Envelope xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:nfpsp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+													<soapenv:Body>
+														<nfpsp:activatePaymentNoticeRes>
+															<outcome>KO</outcome>
+															<fault>
+																<faultCode>{{context.Variables["faultCode"]}}</faultCode>
+																<faultString>{{context.Variables["faultString"]}}</faultString>
+																<id>{{context.Variables["id"]}}</id>
+																<description>{{context.Variables["description"]}}</description>
+																<originalFaultCode>{{context.Variables["originalFaultCode"]}}</originalFaultCode>
+																<originalFaultString>{{context.Variables["originalFaultString"]}}</originalFaultString>
+																<originalDescription>{{context.Variables["originalDescription"]}}</originalDescription>
+															</fault>
+														</nfpsp:activatePaymentNoticeRes>
+													</soapenv:Body>
+												</soapenv:Envelope>
+											</set-body>
+                                        </return-response>
+                                    </otherwise>
+                                </choose>
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <otherwise>
+                        <trace source="ottimizzazione-sent-activate" severity="information">ottimizzazione-sent-activate</trace>
+                        <set-variable name="amount" value="@{
+                    var isIdempotencyKeyNotAlreadytRx = !context.Variables.ContainsKey("idempotencyKeyRx");
+                    if (isIdempotencyKeyNotAlreadytRx) {
+                        return (string) context.Variables["amount"];
+                    } else {
+                        return (string) context.Variables["idempotencyKeyRx"];
+                    }
+                }" />
+                        <set-method>POST</set-method>
+                        <set-header name="Content-Type" exists-action="override">
+                            <value>text/xml</value>
+                        </set-header>
+                        <set-header name="SOAPAction" exists-action="override">
+                            <value>activatePaymentNotice</value>
+                        </set-header>
+                        <set-header name="proto" exists-action="override">
+                            <value>http</value>
+                        </set-header>
+                        <choose>
+                            <when condition="@(context.Variables["idempotencyKey"] == null && context.Variables["expirationTime"] == null )">
+                                <set-body template="liquid">
+									<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
+										<soapenv:Header />
+										<soapenv:Body>
+											<nod:activatePaymentNoticeReq>
+												<idPSP>{{context.Variables["idPSP"]}}</idPSP>
+												<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
+												<idChannel>{{context.Variables["idChannel"]}}</idChannel>
+												<password>{{context.Variables["password"]}}</password>
+												<!-- <idempotencyKey>{{context.Variables["idempotencyKey"]}}</idempotencyKey> -->
+												<qrCode>
+													<fiscalCode>{{context.Variables["fiscalCode"]}}</fiscalCode>
+													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
+												</qrCode>
+												<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeReq>
+										</soapenv:Body>
+									</soapenv:Envelope>
+								</set-body>
+                            </when>
+                        </choose>
+                        <choose>
+                            <when condition="@(context.Variables["idempotencyKey"] != null && context.Variables["expirationTime"] == null)">
+                                <set-body template="liquid">
+									<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
+										<soapenv:Header />
+										<soapenv:Body>
+											<nod:activatePaymentNoticeReq>
+												<idPSP>{{context.Variables["idPSP"]}}</idPSP>
+												<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
+												<idChannel>{{context.Variables["idChannel"]}}</idChannel>
+												<password>{{context.Variables["password"]}}</password>
+												<idempotencyKey>{{context.Variables["idempotencyKey"]}}</idempotencyKey>
+												<qrCode>
+													<fiscalCode>{{context.Variables["fiscalCode"]}}</fiscalCode>
+													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
+												</qrCode>
+												<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeReq>
+										</soapenv:Body>
+									</soapenv:Envelope>
+								</set-body>
+                            </when>
+                        </choose>
+                        <choose>
+                            <when condition="@(context.Variables["idempotencyKey"] == null && context.Variables["expirationTime"] != null)">
+                                <set-body template="liquid">
+									<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
+										<soapenv:Header />
+										<soapenv:Body>
+											<nod:activatePaymentNoticeReq>
+												<idPSP>{{context.Variables["idPSP"]}}</idPSP>
+												<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
+												<idChannel>{{context.Variables["idChannel"]}}</idChannel>
+												<password>{{context.Variables["password"]}}</password>
+												<!-- <idempotencyKey>{{context.Variables["idempotencyKey"]}}</idempotencyKey> -->
+												<qrCode>
+													<fiscalCode>{{context.Variables["fiscalCode"]}}</fiscalCode>
+													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
+												</qrCode>
+												<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeReq>
+										</soapenv:Body>
+									</soapenv:Envelope>
+								</set-body>
+                            </when>
+                        </choose>
+                        <choose>
+                            <when condition="@(context.Variables["idempotencyKey"] != null && context.Variables["expirationTime"] != null )">
+                                <set-body template="liquid">
+									<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
+										<soapenv:Header />
+										<soapenv:Body>
+											<nod:activatePaymentNoticeReq>
+												<idPSP>{{context.Variables["idPSP"]}}</idPSP>
+												<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
+												<idChannel>{{context.Variables["idChannel"]}}</idChannel>
+												<password>{{context.Variables["password"]}}</password>
+												<idempotencyKey>{{context.Variables["idempotencyKey"]}}</idempotencyKey>
+												<qrCode>
+													<fiscalCode>{{context.Variables["fiscalCode"]}}</fiscalCode>
+													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
+												</qrCode>
+												<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeReq>
+										</soapenv:Body>
+									</soapenv:Envelope>
+								</set-body>
+                            </when>
+                        </choose>
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <!-- on activatePaymentNotice response delete cache attvazionePrenotata #2 -->
+        <cache-remove-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" caching-type="internal" />
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

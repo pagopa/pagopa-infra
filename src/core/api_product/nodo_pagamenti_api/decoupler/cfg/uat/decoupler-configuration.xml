@@ -1,3 +1,3 @@
 <fragment>
-    <set-variable name="configuration" value="@{return "[{\"node_id\":\"NDP002UAT\",\"description\":\"Nodo OnCloud Nexi\",\"node_uri\":\"http:\\/\\/10.70.74.200/nodo-uat\",\"routing\":100,\"broker_psps\":[],\"cis\":[]}]";}" />
+    <set-variable name="configuration" value="@{return "[{\"node_id\":\"NDP002UAT\",\"description\":\"Nodo OnCloud Nexi\",\"node_uri\":\"http:\\/\\/10.70.74.200/nodo-uat\",\"routing\":0,\"broker_psps\":[],\"cis\":[],\"list_priority\":3},{\"node_id\":\"NDP001UAT\",\"description\":\"Nodo Azure PagoPA\",\"node_uri\":\"https:\\/\\/weuuat.nodo.internal.uat.platform.pagopa.it/nodo\",\"routing\":0,\"broker_psps\":[],\"cis\":[\"15376371009\",\"12300020158\",\"00347000721\",\"00395920788\",\"96289850586\"],\"list_priority\":2},{\"node_id\":\"NDP004UAT\",\"description\":\"Nodo PostgreSQL OnPrem Nexi\",\"node_uri\":\"https:\\/\\/10.79.20.63\",\"routing\":100,\"broker_psps\":[],\"cis\":[],\"list_priority\":1}]";}" />
 </fragment>

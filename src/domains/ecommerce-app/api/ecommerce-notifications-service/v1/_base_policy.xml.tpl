@@ -1,6 +1,10 @@
 <policies>
     <inbound>
       <base />
+      <!-- Set notifications-service API Key header -->
+      <set-header name="x-api-key" exists-action="override">
+        <value>{{ecommerce-notification-service-api-key-value}}</value>
+      </set-header>
       <!-- Handle X-Client-Id - multi channel - START -->
       <set-header name="X-Client-Id" exists-action="delete" />
       <choose>
@@ -26,9 +30,7 @@
           </otherwise>
       </choose>
       <!-- Handle X-Client-Id - multi channel - END -->
-
-      <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
-      <set-backend-service base-url="@("https://${hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-notifications-service")"/>
+      <set-backend-service base-url="@("https://${hostname}/pagopa-notifications-service")"/>
 
     </inbound>
     <outbound>

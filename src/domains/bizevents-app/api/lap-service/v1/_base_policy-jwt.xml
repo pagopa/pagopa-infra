@@ -1,0 +1,112 @@
+<policies>
+    <inbound>
+        <base />
+            <!-- ForIO start =============== "x-continuation-token:undefined" -H "x-request-id:undefined" -->
+            <choose>
+                <when condition="@( ((string)context.Request.Headers.GetValueOrDefault("x-continuation-token","")).Equals("") || ((string)context.Request.Headers.GetValueOrDefault("x-continuation-token","")).Equals("undefined") )">
+                    <set-header name="x-continuation-token" exists-action="delete" />
+                </when>
+            </choose>
+            <choose>
+                <when condition="@( ((string)context.Request.Headers.GetValueOrDefault("x-request-id","")).Equals("") || ((string)context.Request.Headers.GetValueOrDefault("x-request-id","")).Equals("undefined"))">
+                    <set-header name="x-request-id" exists-action="delete" />
+                </when>
+            </choose>
+            <!-- ForIO stop =============== "x-continuation-token:undefined" -H "x-request-id:undefined" -->
+            <include-fragment fragment-id="jwt-chk-wallet-session" />
+            <choose>
+                <when condition="@((string)context.Variables.GetValueOrDefault("xUserId","") != "")">
+
+                    <!-- <trace source="transaction-service-IO-JWT-start" severity="information">transaction-service-IO-JWT-start</trace> -->
+
+                    <!-- Post Token PDV : START Find PII -->
+                    <send-request ignore-error="true" timeout="10" response-variable-name="pdvfindpii" mode="new">
+                        <set-url>@(String.Format("${pdv_api_base_path}/tokens/{0}/pii", (string) context.Variables["xUserId"]))</set-url>
+                        <set-method>GET</set-method>
+                        <set-header name="x-api-key" exists-action="override">
+                            <value>{{wallet-session-personal-data-vault-api-key}}</value>
+                        </set-header>
+                    </send-request>
+                    <choose>
+                        <when condition="@(((IResponse)context.Variables["pdvfindpii"]).StatusCode != 200)">
+                        <return-response>
+                            <set-status code="502" reason="Bad Gateway" />
+                        </return-response>
+                        </when>
+                    </choose>
+
+                    <set-variable name="pdvFindPII" value="@(((IResponse)context.Variables["pdvfindpii"]).Body.As<JObject>())" />
+                    <set-variable name="fiscalCode" value="@((string)((JObject)context.Variables["pdvFindPII"])["pii"])" />
+                    <choose>
+                        <when condition="@(String.IsNullOrEmpty((string)context.Variables["fiscalCode"]))">
+                            <return-response>
+                                <set-status code="502" />
+                                <set-header name="Content-Type" exists-action="override">
+                                    <value>application/json</value>
+                                </set-header>
+                                <set-body>@{
+                            return new JObject(
+                            new JProperty("title", "Bad gateway - Invalid PDV response"),
+                            new JProperty("status", 502),
+                            new JProperty("detail", "Cannot find PII")
+                            ).ToString();
+                        }</set-body>
+                            </return-response>
+                        </when>
+                    </choose>
+                    <!-- Post Token PDV : END Find PII -->
+
+                    <!-- <trace source="transaction-service-IO-JWT-end" severity="information">transaction-service-IO-JWT-end</trace> -->
+                </when>
+                <otherwise>
+                    <return-response>
+                        <set-status code="502" />
+                        <set-header name="Content-Type" exists-action="override">
+                            <value>application/json</value>
+                        </set-header>
+                        <set-body>@{
+                            return new JObject(
+                            new JProperty("title", "Bad gateway - Not call PDV"),
+                            new JProperty("status", 502),
+                            new JProperty("detail", "Cannot find xUserId")
+                            ).ToString();
+                        }</set-body>
+                    </return-response> 
+                </otherwise>
+            </choose>
+        <set-header name="Ocp-Apim-Subscription-Keykey" exists-action="override">
+            <value>{{list-lap-for-io-api-key}}</value>
+        </set-header>
+        <set-header name="x-fiscal-code" exists-action="override">
+            <value>@((string)context.Variables.GetValueOrDefault("fiscalCode",""))</value>
+        </set-header>
+        <set-backend-service base-url="https://${hostname}/pagopa-biz-events-service" />
+    </inbound>
+    <outbound>
+        <base />
+        <choose>
+            <when condition="@(!context.Request.Url.Path.Contains("pdf") && context.Operation.Method.Equals("GET") )">
+                <set-body>@{
+                    var originalResponseBody = context.Response.Body.As<string>(preserveContent: true);
+                    try { 
+                        var body = JObject.Parse(originalResponseBody);
+                        if (body["infoNotice"]?["origin"]?.ToString() == "NDP004PROD") {
+                            body["infoNotice"]["origin"] = "NDP003PROD";
+                        }
+                        return body.ToString();
+                    }
+                    catch(Exception e) {
+                        //cannot parse response body as JSON, returning original body
+                        return originalResponseBody;
+                    }
+                }</set-body>
+            </when>
+        </choose>      
+    </outbound>
+    <backend>
+        <base />
+    </backend>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

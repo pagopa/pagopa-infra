@@ -1,5 +1,5 @@
 module "apim_apiconfig_selfcare_integration_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v5.1.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = local.apiconfig_selfcare_integration_locals.product_id
   display_name = local.apiconfig_selfcare_integration_locals.display_name
@@ -22,3 +22,5 @@ resource "azurerm_api_management_product_group" "access_control_developers_for_s
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 }
+
+// API policy and endpoints are configured in the repository

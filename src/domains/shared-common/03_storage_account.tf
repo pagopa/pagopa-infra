@@ -3,7 +3,7 @@
 module "poc_reporting_enrollment_sa" {
   count = var.env_short == "d" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.4.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.53.0"
 
   name                          = replace(format("%s-penrol-sa", local.project), "-", "")
   account_kind                  = "StorageV2"
@@ -15,7 +15,7 @@ module "poc_reporting_enrollment_sa" {
   advanced_threat_protection    = var.poc_advanced_threat_protection
   public_network_access_enabled = true
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 

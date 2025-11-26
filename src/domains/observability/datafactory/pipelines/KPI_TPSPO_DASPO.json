@@ -1,0 +1,260 @@
+{
+   "name": "run_id",
+   "type": "SetVariable",
+   "dependsOn": [],
+   "policy": {
+       "secureOutput": false,
+       "secureInput": false
+   },
+   "userProperties": [],
+   "typeProperties": {
+       "variableName": "run_id",
+       "value": {
+           "value": "@pipeline().RunId",
+           "type": "Expression"
+       }
+   }
+},
+{
+   "name": "start_date",
+   "type": "SetVariable",
+   "dependsOn": [
+       {
+           "activity": "run_id",
+           "dependencyConditions": [
+               "Completed"
+           ]
+       }
+   ],
+   "policy": {
+       "secureOutput": false,
+       "secureInput": false
+   },
+   "userProperties": [],
+   "typeProperties": {
+       "variableName": "start_date",
+       "value": {
+           "value": "@pipeline().TriggerTime",
+           "type": "Expression"
+       }
+   }
+},
+{
+   "name": "Count degli elementi",
+   "type": "Lookup",
+   "dependsOn": [
+       {
+           "activity": "start_date",
+           "dependencyConditions": [
+               "Completed"
+           ]
+       }
+   ],
+   "policy": {
+       "timeout": "0.12:00:00",
+       "retry": 0,
+       "retryIntervalInSeconds": 30,
+       "secureOutput": false,
+       "secureInput": false
+   },
+   "userProperties": [],
+   "typeProperties": {
+       "source": {
+           "type": "AzureDataExplorerSource",
+           "query": {
+               "value": "let trigger_time=bin(datetime_utc_to_local(datetime('@{variables('start_date')}'), \"Europe/Rome\"), 10m);\nlet start=datetime_add(\"hour\", -1, trigger_time);\nlet end=datetime_add(\"minute\", 30, start);\nlet end_resp=datetime_add(\"minute\", 30, end);\nlet activateReq = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"activatePaymentNotice\", \"activatePaymentNoticeV2\")\n| where sottoTipoEvento == \"REQ\"\n| extend expirationTime = extract(\"<expirationTime>(.*)</expirationTime>\", 1 , base64_decode_tostring(payload))\n| extend expirationTime = (case(isempty(expirationTime), 1800000, toint(expirationTime)) / 1000)\n| project ACTIVATE_REQ=insertedTimestamp, PSP_METHOD=tipoEvento, IUV=iuv, DOMINIO=idDominio, TOKEN=paymentToken, CANALE=canale, STAZIONE=stazione, PSP=psp, sessionId, MINUTE_SESSION=expirationTime;\nlet activateResp = ReEvent\n| where insertedTimestamp between (start .. end_resp)\n| where tipoEvento in (\"activatePaymentNotice\", \"activatePaymentNoticeV2\")\n| where sottoTipoEvento == \"RESP\"\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1 , base64_decode_tostring(payload))\n| where outcome == \"OK\"\n| project ACTIVATE_RESP=insertedTimestamp, PSP_METHOD=tipoEvento, IUV=iuv, DOMINIO=idDominio, TOKEN=paymentToken, OUTCOME_ACTIVATE=outcome, sessionId;\nlet SPO = ReEvent\n| where insertedTimestamp between (start .. end_resp)\n| where tipoEvento in (\"sendPaymentOutcome\", \"sendPaymentOutcomeV2\")\n| where sottoTipoEvento in (\"REQ\", \"RESP\")\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1 , base64_decode_tostring(payload));\nlet SPO_req = SPO\n| where sottoTipoEvento == \"REQ\"\n| project-away payload;\nlet SPO_resp = SPO\n| where sottoTipoEvento == \"RESP\"\n| extend faultCode = extract(\"<faultCode>(.*)</faultCode>\", 1 , base64_decode_tostring(payload))\n| project-away payload;\nlet SPO_join = SPO_req\n| join kind=inner SPO_resp on sessionId, iuv, idDominio, paymentToken\n| project SPO_REQ=insertedTimestamp, PSP_METHOD=tipoEvento, IUV=iuv, DOMINIO=idDominio, TOKEN=paymentToken, OUTCOME_SPO=outcome, FAULTCODE_SPO=faultCode;\nlet sync_call = ReEvent\n| where insertedTimestamp between (start .. end_resp)\n| where tipoEvento in (\"paGetPayment\", \"paaAttivaRPT\", \"paGetPaymentV2\")\n| where sottoTipoEvento == \"RESP\"\n| extend faultCode = extract(\"<faultCode>(.*)</faultCode>\", 1 , base64_decode_tostring(payload))\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1 , base64_decode_tostring(payload))\n| where isempty(faultCode) == true\n| project SYNC_METHOD_RESPONSE=insertedTimestamp, SYNC_METHOD=tipoEvento, IUV=iuv, DOMINIO=idDominio, TOKEN=paymentToken, sessionId, FAULT_CODE_PA=faultCode;\nlet dataJoined = activateReq\n| join kind=inner activateResp on sessionId\n| join kind=inner sync_call on sessionId\n| project ACTIVATE_REQ, PSP_METHOD, IUV, DOMINIO, TOKEN, CANALE, STAZIONE, PSP, MINUTE_SESSION, OUTCOME_ACTIVATE\n| join kind=leftouter SPO_join on IUV, TOKEN, DOMINIO\n| extend EXISTS_SPO=case(isempty(SPO_REQ), false, true)\n| project ACTIVATE_REQ, PSP_METHOD, IUV, DOMINIO, TOKEN, CANALE, STAZIONE, PSP, MINUTE_SESSION, OUTCOME_ACTIVATE, SPO_REQ, PSP_METHOD1, OUTCOME_SPO, FAULTCODE_SPO, EXISTS_SPO;\nlet totalCount=dataJoined\n| summarize NUM_EVENTI=count() by bin(ACTIVATE_REQ, 10m), PSP, CANALE\n| extend ESITO=\"TOTALE_CHIAMATE\";\nlet fromFaultCode=FAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"sendPaymentOutcome\", \"sendPaymentOutcomeV2\")\n| where faultCode in (\"PPT_TOKEN_SCADUTO\", \"PPT_TOKEN_SCADUTO_KO\")\n| summarize NUM_EVENTI=count() by bin(insertedTimestamp, 10m), psp, canale, faultCode\n| extend ESITO=\"FROM_FAULTCODE\"\n| project ACTIVATE_REQ=insertedTimestamp, PSP=psp, CANALE=canale, ESITO, NUM_EVENTI;\nlet pspNP = ReEvent\n| where insertedTimestamp between (start .. end)\n| where categoriaEvento == \"INTERFACCIA\"\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where sottoTipoEvento == \"RESP\"\n| project insertedTimestamp, idDominio, iuv, ccp, psp, paymentToken, PSP_METHOD=tipoEvento;\nlet SPONP = ReEvent\n| where insertedTimestamp between (start .. end_resp)\n| where categoriaEvento == \"INTERFACCIA\"\n| where tipoEvento in (\"sendPaymentOutcome\", \"sendPaymentOutcomeV2\")\n| where sottoTipoEvento == \"RESP\"\n| extend xml_payload = base64_decode_tostring(payload)\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1, xml_payload)\n| extend faultCode = extract(\"<faultCode>(.*)</faultCode>\", 1 , base64_decode_tostring(payload))\n| where faultCode in (\"PPT_TOKEN_SCADUTO\", \"PPT_TOKEN_SCADUTO_KO\")\n| project insertedTimestamp, idDominio, iuv, ccp, psp, outcome, stazione, canale, paymentToken, NODE_METHOD=tipoEvento;\nlet pagoPA_touchPoing_Token_Scaduti = pspNP\n| join kind=inner SPONP on idDominio, iuv, paymentToken\n| summarize NUM_EVENTI=count() by bin(insertedTimestamp, 10m), psp, canale\n| extend ESITO=\"TOKEN_SCADUTI_PAGOPA_TOUCHPOINT\"\n| project ACTIVATE_REQ=insertedTimestamp, PSP=psp, CANALE=canale, ESITO, NUM_EVENTI;\ndataJoined\n| summarize NUM_EVENTI=count() by bin(ACTIVATE_REQ, 10m), PSP, CANALE, EXISTS_SPO, FAULTCODE_SPO\n| extend ESITO=case(\nFAULTCODE_SPO in (\"PPT_TOKEN_SCADUTO\", \"PPT_TOKEN_SCADUTO_KO\"), \"TOKEN_SCADUTO\",\nEXISTS_SPO == true, \"SPO_OK\",\n\"SPO_ASSENTE\")\n| union totalCount\n| union fromFaultCode\n| union pagoPA_touchPoing_Token_Scaduti\n| extend JSON_FIELD=bag_pack(ESITO, NUM_EVENTI)\n| summarize DETAILED_INFO=make_bag(JSON_FIELD) by bin(ACTIVATE_REQ, 10m), PSP, CANALE \n| extend INTERMEDIARIO_PSP=substring(CANALE,0, strlen(CANALE)-3)\n| project ACTIVATE_REQ, INTERMEDIARIO_PSP, PSP, DETAILED_INFO\n| where PSP != \"AGID_01\"",
+               "type": "Expression"
+           },
+           "queryTimeout": "00:10:00",
+           "noTruncation": false
+       },
+       "dataset": {
+           "referenceName": "${inputdataset}",
+           "type": "DatasetReference"
+       },
+       "firstRowOnly": false
+   }
+},
+{
+   "name": "Count_Record",
+   "type": "SetVariable",
+   "dependsOn": [
+       {
+           "activity": "Count degli elementi",
+           "dependencyConditions": [
+               "Completed"
+           ]
+       }
+   ],
+   "policy": {
+       "secureOutput": false,
+       "secureInput": false
+   },
+   "userProperties": [],
+   "typeProperties": {
+       "variableName": "count_record",
+       "value": {
+           "value": "@string(activity('Count degli elementi').output.count)",
+           "type": "Expression"
+       }
+   }
+},
+{
+   "name": "Copia dei dati",
+   "type": "Copy",
+   "dependsOn": [
+       {
+           "activity": "Count_Record",
+           "dependencyConditions": [
+               "Completed"
+           ]
+       }
+   ],
+   "policy": {
+       "timeout": "0.12:00:00",
+       "retry": 0,
+       "retryIntervalInSeconds": 30,
+       "secureOutput": false,
+       "secureInput": false
+   },
+   "userProperties": [],
+   "typeProperties": {
+       "source": {
+           "type": "AzureDataExplorerSource",
+           "additionalColumns": [
+               {
+                   "name": "pipelineRunID",
+                   "value": {
+                       "value": "@variables('run_id')",
+                       "type": "Expression"
+                   }
+               }
+           ],
+           "query": {
+               "value": "let trigger_time=bin(datetime_utc_to_local(datetime('@{variables('start_date')}'), \"Europe/Rome\"), 10m);\nlet start=datetime_add(\"hour\", -1, trigger_time);\nlet end=datetime_add(\"minute\", 30, start);\nlet end_resp=datetime_add(\"minute\", 30, end);\nlet activateReq = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"activatePaymentNotice\", \"activatePaymentNoticeV2\")\n| where sottoTipoEvento == \"REQ\"\n| extend expirationTime = extract(\"<expirationTime>(.*)</expirationTime>\", 1 , base64_decode_tostring(payload))\n| extend expirationTime = (case(isempty(expirationTime), 1800000, toint(expirationTime)) / 1000)\n| project ACTIVATE_REQ=insertedTimestamp, PSP_METHOD=tipoEvento, IUV=iuv, DOMINIO=idDominio, TOKEN=paymentToken, CANALE=canale, STAZIONE=stazione, PSP=psp, sessionId, MINUTE_SESSION=expirationTime;\nlet activateResp = ReEvent\n| where insertedTimestamp between (start .. end_resp)\n| where tipoEvento in (\"activatePaymentNotice\", \"activatePaymentNoticeV2\")\n| where sottoTipoEvento == \"RESP\"\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1 , base64_decode_tostring(payload))\n| where outcome == \"OK\"\n| project ACTIVATE_RESP=insertedTimestamp, PSP_METHOD=tipoEvento, IUV=iuv, DOMINIO=idDominio, TOKEN=paymentToken, OUTCOME_ACTIVATE=outcome, sessionId;\nlet SPO = ReEvent\n| where insertedTimestamp between (start .. end_resp)\n| where tipoEvento in (\"sendPaymentOutcome\", \"sendPaymentOutcomeV2\")\n| where sottoTipoEvento in (\"REQ\", \"RESP\")\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1 , base64_decode_tostring(payload));\nlet SPO_req = SPO\n| where sottoTipoEvento == \"REQ\"\n| project-away payload;\nlet SPO_resp = SPO\n| where sottoTipoEvento == \"RESP\"\n| extend faultCode = extract(\"<faultCode>(.*)</faultCode>\", 1 , base64_decode_tostring(payload))\n| project-away payload;\nlet SPO_join = SPO_req\n| join kind=inner SPO_resp on sessionId, iuv, idDominio, paymentToken\n| project SPO_REQ=insertedTimestamp, PSP_METHOD=tipoEvento, IUV=iuv, DOMINIO=idDominio, TOKEN=paymentToken, OUTCOME_SPO=outcome, FAULTCODE_SPO=faultCode;\nlet sync_call = ReEvent\n| where insertedTimestamp between (start .. end_resp)\n| where tipoEvento in (\"paGetPayment\", \"paaAttivaRPT\", \"paGetPaymentV2\")\n| where sottoTipoEvento == \"RESP\"\n| extend faultCode = extract(\"<faultCode>(.*)</faultCode>\", 1 , base64_decode_tostring(payload))\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1 , base64_decode_tostring(payload))\n| where isempty(faultCode) == true\n| project SYNC_METHOD_RESPONSE=insertedTimestamp, SYNC_METHOD=tipoEvento, IUV=iuv, DOMINIO=idDominio, TOKEN=paymentToken, sessionId, FAULT_CODE_PA=faultCode;\nlet dataJoined = activateReq\n| join kind=inner activateResp on sessionId\n| join kind=inner sync_call on sessionId\n| project ACTIVATE_REQ, PSP_METHOD, IUV, DOMINIO, TOKEN, CANALE, STAZIONE, PSP, MINUTE_SESSION, OUTCOME_ACTIVATE\n| join kind=leftouter SPO_join on IUV, TOKEN, DOMINIO\n| extend EXISTS_SPO=case(isempty(SPO_REQ), false, true)\n| project ACTIVATE_REQ, PSP_METHOD, IUV, DOMINIO, TOKEN, CANALE, STAZIONE, PSP, MINUTE_SESSION, OUTCOME_ACTIVATE, SPO_REQ, PSP_METHOD1, OUTCOME_SPO, FAULTCODE_SPO, EXISTS_SPO;\nlet totalCount=dataJoined\n| summarize NUM_EVENTI=count() by bin(ACTIVATE_REQ, 10m), PSP, CANALE\n| extend ESITO=\"TOTALE_CHIAMATE\";\nlet fromFaultCode=FAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"sendPaymentOutcome\", \"sendPaymentOutcomeV2\")\n| where faultCode in (\"PPT_TOKEN_SCADUTO\", \"PPT_TOKEN_SCADUTO_KO\")\n| summarize NUM_EVENTI=count() by bin(insertedTimestamp, 10m), psp, canale, faultCode\n| extend ESITO=\"FROM_FAULTCODE\"\n| project ACTIVATE_REQ=insertedTimestamp, PSP=psp, CANALE=canale, ESITO, NUM_EVENTI;\nlet pspNP = ReEvent\n| where insertedTimestamp between (start .. end)\n| where categoriaEvento == \"INTERFACCIA\"\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where sottoTipoEvento == \"RESP\"\n| project insertedTimestamp, idDominio, iuv, ccp, psp, paymentToken, PSP_METHOD=tipoEvento;\nlet SPONP = ReEvent\n| where insertedTimestamp between (start .. end_resp)\n| where categoriaEvento == \"INTERFACCIA\"\n| where tipoEvento in (\"sendPaymentOutcome\", \"sendPaymentOutcomeV2\")\n| where sottoTipoEvento == \"RESP\"\n| extend xml_payload = base64_decode_tostring(payload)\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1, xml_payload)\n| extend faultCode = extract(\"<faultCode>(.*)</faultCode>\", 1 , base64_decode_tostring(payload))\n| where faultCode in (\"PPT_TOKEN_SCADUTO\", \"PPT_TOKEN_SCADUTO_KO\")\n| project insertedTimestamp, idDominio, iuv, ccp, psp, outcome, stazione, canale, paymentToken, NODE_METHOD=tipoEvento;\nlet pagoPA_touchPoing_Token_Scaduti = pspNP\n| join kind=inner SPONP on idDominio, iuv, paymentToken\n| summarize NUM_EVENTI=count() by bin(insertedTimestamp, 10m), psp, canale\n| extend ESITO=\"TOKEN_SCADUTI_PAGOPA_TOUCHPOINT\"\n| project ACTIVATE_REQ=insertedTimestamp, PSP=psp, CANALE=canale, ESITO, NUM_EVENTI;\ndataJoined\n| summarize NUM_EVENTI=count() by bin(ACTIVATE_REQ, 10m), PSP, CANALE, EXISTS_SPO, FAULTCODE_SPO\n| extend ESITO=case(\nFAULTCODE_SPO in (\"PPT_TOKEN_SCADUTO\", \"PPT_TOKEN_SCADUTO_KO\"), \"TOKEN_SCADUTO\",\nEXISTS_SPO == true, \"SPO_OK\",\n\"SPO_ASSENTE\")\n| union totalCount\n| union fromFaultCode\n| union pagoPA_touchPoing_Token_Scaduti\n| extend JSON_FIELD=bag_pack(ESITO, NUM_EVENTI)\n| summarize DETAILED_INFO=make_bag(JSON_FIELD) by bin(ACTIVATE_REQ, 10m), PSP, CANALE \n| extend INTERMEDIARIO_PSP=substring(CANALE,0, strlen(CANALE)-3)\n| project ACTIVATE_REQ, INTERMEDIARIO_PSP, PSP, DETAILED_INFO\n| where PSP != \"AGID_01\"",
+               "type": "Expression"
+           },
+           "queryTimeout": "00:10:00",
+           "noTruncation": false
+       },
+       "sink": {
+           "type": "AzureDataExplorerSink"
+       },
+       "enableStaging": false,
+       "translator": {
+           "type": "TabularTranslator",
+           "mappings": [
+               {
+                   "source": {
+                       "name": "ACTIVATE_REQ",
+                       "type": "DateTime",
+                       "physicalType": "datetime"
+                   },
+                   "sink": {
+                       "name": "ACTIVATE_REQ",
+                       "type": "DateTime",
+                       "physicalType": "datetime"
+                   }
+               },
+               {
+                   "source": {
+                       "name": "INTERMEDIARIO_PSP",
+                       "type": "String",
+                       "physicalType": "string"
+                   },
+                   "sink": {
+                       "name": "INTERMEDIARIO_PSP",
+                       "type": "String",
+                       "physicalType": "string"
+                   }
+               },
+               {
+                   "source": {
+                       "name": "PSP",
+                       "type": "String",
+                       "physicalType": "string"
+                   },
+                   "sink": {
+                       "name": "PSP",
+                       "type": "String",
+                       "physicalType": "string"
+                   }
+               },
+               {
+                   "source": {
+                       "name": "DETAILED_INFO",
+                       "type": "String",
+                       "physicalType": "dynamic"
+                   },
+                   "sink": {
+                       "name": "DETAILED_INFO",
+                       "type": "String",
+                       "physicalType": "dynamic"
+                   }
+               },
+               {
+                   "source": {
+                       "name": "pipelineRunID",
+                       "type": "String"
+                   },
+                   "sink": {
+                       "name": "pipelineRunID",
+                       "type": "String",
+                       "physicalType": "string"
+                   }
+               }
+           ],
+           "typeConversion": true,
+           "typeConversionSettings": {
+               "allowDataTruncation": true,
+               "treatBooleanAsNumber": false
+           }
+       }
+   },
+   "inputs": [
+       {
+           "referenceName": "${inputdataset}",
+           "type": "DatasetReference"
+       }
+   ],
+   "outputs": [
+       {
+           "referenceName": "${outputdataset}",
+           "type": "DatasetReference"
+       }
+   ]
+},
+{
+   "name": "Condizione per gestione errore copia",
+   "type": "IfCondition",
+   "dependsOn": [
+       {
+           "activity": "Copia dei dati",
+           "dependencyConditions": [
+               "Completed"
+           ]
+       }
+   ],
+   "userProperties": [],
+   "typeProperties": {
+       "expression": {
+           "value": "@equals(variables('count_record'),string(activity('Copia dei dati').output.rowsCopied))",
+           "type": "Expression"
+       },
+       "ifFalseActivities": [
+           {
+               "name": "Errore",
+               "type": "Fail",
+               "dependsOn": [],
+               "userProperties": [],
+               "typeProperties": {
+                   "message": {
+                       "value": "@concat('Lette :' ,variables('count_record'), ' Scritte : ', activity('Copia dei dati').output.rowsCopied)",
+                       "type": "Expression"
+                   },
+                   "errorCode": "412"
+               }
+           }
+       ]
+   }
+}

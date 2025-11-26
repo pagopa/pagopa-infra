@@ -38,6 +38,19 @@ resource "azurerm_monitor_action_group" "slack" {
 
 }
 
+data "azurerm_monitor_action_group" "opsgenie" {
+  count = var.env_short == "p" ? 1 : 0
+
+  resource_group_name = var.monitor_resource_group_name
+  name                = local.monitor_action_group_opsgenie_name
+}
+
+data "azurerm_application_insights" "application_insights" {
+  name                = local.application_insights_name
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+}
+
+
 /* data "azurerm_key_vault_secret" "techemail" {
   name         = "nodo-tech-support"
   key_vault_id = data.azurerm_key_vault.key_vault.id
@@ -63,6 +76,6 @@ locals {
     }
   }
 
-} 
+}
  */
 

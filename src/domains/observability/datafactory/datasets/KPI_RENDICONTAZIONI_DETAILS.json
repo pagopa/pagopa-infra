@@ -1,0 +1,86 @@
+[
+    {
+        "name": "DATA_PAGAMENTO",
+        "type": "datetime"
+    },
+    {
+        "name": "NOTICE_ID",
+        "type": "string"
+    },
+    {
+        "name": "IUV",
+        "type": "string"
+    },
+    {
+        "name": "IUR",
+        "type": "string"
+    },
+    {
+        "name": "PA_EMITTENTE",
+        "type": "string"
+    },
+    {
+        "name": "PA_TRANSFER",
+        "type": "string"
+    },
+    {
+        "name": "AMOUNT_TRANSFER",
+        "type": "decimal"
+    },
+    {
+        "name": "IBAN",
+        "type": "string"
+    },
+    {
+        "name": "ID_TRANSFER",
+        "type": "int"
+    },
+    {
+        "name": "IDSP",
+        "type": "int"
+    },
+    {
+        "name": "COD_ESITO",
+        "type": "int"
+    },
+    {
+        "name": "ID_PSP",
+        "type": "string"
+    },
+    {
+        "name": "ID_BROKER_PSP",
+        "type": "string"
+    },
+    {
+        "name": "MOD_TYPE",
+        "type": "int"
+    },
+    {
+        "name": "ID_FLUSSO",
+        "type": "string"
+    },
+    {
+        "name": "FIRST_VERSION",
+        "type": "datetime"
+    },
+    {
+        "name": "LAST_VERSION",
+        "type": "datetime"
+    },
+    {
+        "name": "IS_REND",
+        "type": "bool"
+    },
+    {
+        "name": "DIFF_DAYS_FIRST_VERSION",
+        "type": "int"
+    },
+    {
+        "name": "DIFF_DAYS_LAST_VERSION",
+        "type": "int"
+    },
+    {
+        "name": "LIMIT_DATE_KPI",
+        "type": "datetime"
+    }
+]

@@ -5,14 +5,8 @@ domain         = "selfcare"
 location       = "westeurope"
 location_short = "weu"
 instance       = "prod"
+env_capital    = "Prod"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "IO"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/selfcare"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -34,15 +28,15 @@ enable_iac_pipeline = true
 bopagopa_datastore_cosmos_db_params = {
   kind = "MongoDB"
   # capabilities = ["EnableMongo", "EnableServerless"]
-  capabilities = ["EnableMongo"]
+  capabilities = ["EnableMongo", "EnableMongo16MBDocumentSupport"]
   offer_type   = "Standard"
   consistency_policy = {
-    consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 300
-    max_staleness_prefix    = 100000
+    consistency_level       = "Strong" // "BoundedStaleness"
+    max_interval_in_seconds = 5        // 300
+    max_staleness_prefix    = 100      // 100000
   }
   server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
   enable_free_tier                 = false
 
   additional_geo_locations = [{
@@ -59,6 +53,8 @@ bopagopa_datastore_cosmos_db_params = {
 
   container_default_ttl = 315576000 # 10 year in second
 }
+
+cosmosdb_mongodb_max_throughput = 8000 # increse see https://pagopa.atlassian.net/wiki/spaces/VAS/pages/884375607/Generazione+CSV+IBAN#Cron-Job
 
 # CosmosDb MongoDb
 cidr_subnet_cosmosdb_mongodb = ["10.1.166.0/24"]

@@ -46,7 +46,12 @@ resource "azurerm_kubernetes_cluster_node_pool" "nodo_pool" {
   vnet_subnet_id        = data.azurerm_subnet.aks_snet.id
   enable_node_public_ip = false
 
+  upgrade_settings {
+    max_surge                     = "50%"
+    drain_timeout_in_minutes      = 30
+    node_soak_duration_in_minutes = 0
+  }
 
-  tags = merge(var.tags, var.nodo_user_node_pool.node_tags)
+  tags = merge(module.tag_config.tags, var.nodo_user_node_pool.node_tags)
 
 }

@@ -3,7 +3,7 @@
 ######################
 
 module "apim_mock_ec_product_replica" {
-  source       = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source       = "./.terraform/modules/__v3__/api_management_product"
   count        = var.env_short == "p" ? 0 : 1
   product_id   = "mock_ec_replica"
   display_name = "Mock EC for REPLICA NDP"
@@ -44,12 +44,12 @@ resource "azurerm_api_management_api_version_set" "api_mock_ec_api_replica" {
 
 
 module "apim_api_mock_ec_api_replica_v1" {
-  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source                = "./.terraform/modules/__v3__/api_management_api"
   count                 = var.env_short == "p" ? 0 : 1
   name                  = format("%s-mock-ec-service-api-replica", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_mock_ec_product_replica[0].product_id]
+  product_ids           = [module.apim_mock_ec_product_replica[0].product_id, module.apim_apim_for_node_product.product_id]
   subscription_required = local.apim_mock_ec_service_api_replica.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_mock_ec_api_replica[0].id
   api_version           = "v1"

@@ -18,7 +18,7 @@ locals {
 
 module "apim_poc_product" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "poc"
   display_name = local.apim_poc_service_api.display_name
@@ -31,7 +31,7 @@ module "apim_poc_product" {
   subscription_required = local.apim_poc_service_api.subscription_required
   approval_required     = false
 
-  policy_xml = file("./api_product/_base_policy_poc.xml")
+  policy_xml = file("./api_product/_base_policy.xml")
 }
 
 #########
@@ -50,7 +50,7 @@ resource "azurerm_api_management_api_version_set" "api_poc_api" {
 
 module "apim_api_poc_api_v1" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-poc-service-api", local.project)
   api_management_name   = local.pagopa_apim_name

@@ -55,12 +55,6 @@ variable "location_string" {
   description = "One of West Europe, North Europe"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 variable "checkout_enabled" {
   type    = bool
@@ -122,91 +116,17 @@ variable "checkout_pagopaproxy_host" {
   default     = null
 }
 
-variable "cidr_subnet_pagopa_proxy" {
-  type        = list(string)
-  description = "Address prefixes subnet proxy"
-  default     = null
-}
-
-variable "pagopa_proxy_tier" {
-  type        = string
-  description = "pagopa-proxy Plan tier"
-  default     = null
-}
-
-variable "pagopa_proxy_size" {
-  type        = string
-  description = "pagopa-proxy Plan size"
-  default     = null
-}
-
-variable "pagopa_proxy_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "pagopa_proxy_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 10
-}
-
-variable "pagopa_proxy_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 5
-}
-
-# Checkout functions
-
-variable "checkout_function_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "checkout_function_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "checkout_function_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "checkout_function_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "checkout_function_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 3
-}
-
-variable "checkout_function_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
-
-variable "checkout_function_always_on" {
-  type        = bool
-  description = "Always on property"
-  default     = false
-}
-
 # Checkout APIM
 
 variable "ecommerce_ingress_hostname" {
   type        = string
   description = "ecommerce ingress hostname"
+  default     = null
+}
+
+variable "checkout_ingress_hostname" {
+  type        = string
+  description = "checkout ingress hostname"
   default     = null
 }
 
@@ -220,4 +140,68 @@ variable "ecommerce_vpos_psps_list" {
   type        = string
   description = "psps list using vpos as comma separated value"
   default     = ""
+}
+
+variable "function_app_storage_account_info" {
+  type = object({
+    account_kind                      = optional(string, "StorageV2")
+    account_tier                      = optional(string, "Standard")
+    account_replication_type          = optional(string, "LRS")
+    access_tier                       = optional(string, "Hot")
+    advanced_threat_protection_enable = optional(bool, true)
+    use_legacy_defender_version       = optional(bool, true)
+    public_network_access_enabled     = optional(bool, false)
+  })
+
+  default = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+    use_legacy_defender_version       = true
+    public_network_access_enabled     = false
+  }
+}
+
+variable "checkout_cdn_storage_replication_type" {
+  type        = string
+  default     = "GRS"
+  description = "(Optional) Checkout cnd storage replication type"
+}
+
+variable "checkout_function_zone_balancing_enabled" {
+  type        = bool
+  description = "(Optional) Enables zone balancing for checkout function"
+  default     = true
+}
+
+variable "checkout_function_worker_count" {
+  type        = number
+  description = "(Optional) checkout function worker count number"
+  default     = 1
+}
+
+variable "checkout_ip_restriction_default_action" {
+  type        = string
+  description = "(Required) The Default action for traffic that does not match any ip_restriction rule. possible values include Allow and Deny. "
+}
+
+variable "tls_cert_check_helm" {
+  type = object({
+    chart_version = string,
+    image_name    = string,
+    image_tag     = string
+  })
+  description = "tls cert helm chart configuration"
+}
+
+variable "instance" {
+  type        = string
+  description = "One of beta, prod01, prod02"
+}
+
+variable "k8s_kube_config_path_prefix" {
+  type    = string
+  default = "~/.kube"
 }

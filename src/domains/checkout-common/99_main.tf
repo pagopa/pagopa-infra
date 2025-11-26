@@ -1,24 +1,24 @@
 terraform {
   required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "= 2.99.0"
+    azapi = {
+      source  = "azure/azapi"
+      version = "<= 1.13.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "= 2.6.0"
+      version = "<= 3.0.2"
+    }
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 4"
     }
     local = {
       source  = "hashicorp/local"
-      version = ">= 2.2.3"
+      version = "<= 2.5.1"
     }
     time = {
       source  = "hashicorp/time"
-      version = ">= 0.9.0"
-    }
-    azapi = {
-      source  = "Azure/azapi"
-      version = "= 1.3.0"
+      version = "<= 0.11.1"
     }
   }
 
@@ -36,3 +36,8 @@ provider "azurerm" {
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
+
+module "__v4__" {
+  # v7.25.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=1ed70549ce796e30c27d89bc6aabcb5f6eaaf925"
+}

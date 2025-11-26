@@ -67,12 +67,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 ### External resources
 
@@ -203,4 +197,38 @@ variable "private_dns_zone_db_nodo_pagamenti" {
 variable "sku_name" {
   type    = string
   default = "S1"
+}
+
+variable "ica_cron_job_enable" {
+  type        = bool
+  description = "ICA cron job enable"
+  default     = false
+}
+
+variable "ica_cron_schedule" {
+  type        = string
+  description = "ICA cron scheduling (NCRON example '*/35 * * * * *')"
+  default     = "0 0 0 * * *"
+}
+
+variable "cdn_storage_account_replication_type" {
+  type        = string
+  default     = "GRS"
+  description = "(Optional) Cdn storage account replication type"
+}
+
+variable "pod_disruption_budgets" {
+  type = map(object({
+    name         = optional(string, null)
+    minAvailable = optional(number, null)
+    matchLabels  = optional(map(any), {})
+  }))
+  description = "Pod disruption budget for domain namespace"
+  default     = {}
+}
+
+variable "gh_runner_job_location" {
+  type        = string
+  description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
+  default     = "westeurope"
 }

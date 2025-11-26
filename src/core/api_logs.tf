@@ -6,17 +6,14 @@ locals {
     azurerm_api_management_api.apim_node_for_psp_api_v1.name,
     azurerm_api_management_api.apim_nodo_per_psp_api_v1.name,
     azurerm_api_management_api.apim_node_for_io_api_v1.name,
-    azurerm_api_management_api.apim_psp_for_node_api_v1.name,
+    #    azurerm_api_management_api.apim_psp_for_node_api_v1.name,
     azurerm_api_management_api.apim_nodo_per_pa_api_v1.name,
     azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1.name,
+    azurerm_api_management_api.apim_node_for_psp_api_v1_auth.name,
     module.apim_nodo_per_pm_api_v1.name,
   ]
 
-  api_info_log = [
-    module.apim_pm_restapicd_internal_api_v1.name,
-    module.apim_pm_restapicd_internal_api_v2.name,
-    module.apim_pm_ptg_api_v1.name,
-  ]
+  api_info_log = []
 
 }
 
@@ -25,10 +22,10 @@ resource "azurerm_api_management_api_diagnostic" "apim_logs" {
   for_each = toset(local.api_verbose_log)
 
   identifier               = "applicationinsights"
-  resource_group_name      = azurerm_resource_group.rg_api.name
-  api_management_name      = module.apim.name
+  resource_group_name      = data.azurerm_resource_group.rg_api.name
+  api_management_name      = data.azurerm_api_management.apim_migrated[0].name
   api_name                 = each.key
-  api_management_logger_id = module.apim.logger_id
+  api_management_logger_id = var.apim_logger_resource_id
 
   sampling_percentage       = 100
   always_log_errors         = true
@@ -58,10 +55,10 @@ resource "azurerm_api_management_api_diagnostic" "apim_info_logs" {
   for_each = toset(local.api_info_log)
 
   identifier               = "applicationinsights"
-  resource_group_name      = azurerm_resource_group.rg_api.name
-  api_management_name      = module.apim.name
+  resource_group_name      = data.azurerm_resource_group.rg_api.name
+  api_management_name      = data.azurerm_api_management.apim_migrated[0].name
   api_name                 = each.key
-  api_management_logger_id = module.apim.logger_id
+  api_management_logger_id = var.apim_logger_resource_id
 
   sampling_percentage       = 100
   always_log_errors         = true

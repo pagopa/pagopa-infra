@@ -1,0 +1,82 @@
+<!--
+    IMPORTANT:
+    - Policy elements can appear only within the <inbound>, <outbound>, <backend> section elements.
+    - To apply a policy to the incoming request (before it is forwarded to the backend service), place a corresponding policy element within the <inbound> section element.
+    - To apply a policy to the outgoing response (before it is sent back to the caller), place a corresponding policy element within the <outbound> section element.
+    - To add a policy, place the cursor at the desired insertion point and select a policy from the sidebar.
+    - To remove a policy, delete the corresponding policy statement from the policy document.
+    - Position the <base> element within a section element to inherit all policies from the corresponding section element in the enclosing scope.
+    - Remove the <base> element to prevent inheriting policies from the corresponding section element in the enclosing scope.
+    - Policies are applied in the order of their appearance, from the top down.
+    - Comments within policy elements are not supported and may disappear. Place your comments between policy elements or at a higher level scope.
+-->
+<policies>
+    <inbound>
+        <base />
+        <choose>
+            <!-- Mock response IO  -->
+            <when condition="@(context.Request.Url.Path.Contains("profiles"))">
+                <choose>
+                    <when condition="@(context.Request.Body.As<JObject>(true)["fiscal_code"].Value<string>().Equals("NOT_FOUND", StringComparison.OrdinalIgnoreCase) == true )">
+                        <return-response>
+                            <set-status code="404" reason="NOT_FOUND" />
+                        </return-response>
+                    </when>
+                    <when condition="@(context.Request.Body.As<JObject>(true)["fiscal_code"].Value<string>().Equals("NOT_ACTIVE", StringComparison.OrdinalIgnoreCase) == true )">
+                        <return-response>
+                            <set-status code="200" reason="OK" />
+                            <set-body template="liquid">
+{
+"sender_allowed": false
+}
+                            </set-body>
+                        </return-response>
+                    </when>
+                    <when condition="@(context.Request.Body.As<JObject>(true)["fiscal_code"].Value<string>().Equals("ERROR", StringComparison.OrdinalIgnoreCase) == true )">
+                        <return-response>
+                            <set-status code="500" reason="ERROR" />
+                        </return-response>
+                    </when>
+                    <otherwise>
+                        <return-response>
+                            <set-status code="200" reason="OK" />
+                            <set-body template="liquid">
+{
+"sender_allowed": true
+}
+                            </set-body>
+                        </return-response>
+                    </otherwise>
+                </choose>
+            </when>
+            <when condition="@(context.Request.Url.Path.Contains("messages"))">
+                <choose>
+                    <when condition="@(context.Request.Body.As<JObject>(true)["fiscal_code"].Value<string>().Equals("ERROR", StringComparison.OrdinalIgnoreCase) == true )">
+                        <return-response>
+                            <set-status code="500" reason="ERROR" />
+                        </return-response>
+                    </when>
+                    <otherwise>
+                        <return-response>
+                            <set-status code="201" reason="OK" />
+                            <set-body template="liquid">
+{
+"id": "01EM6X4JB9VSZTQ8H16KMQFCEJ"
+}
+                            </set-body>
+                        </return-response>
+                    </otherwise>
+                </choose>
+            </when>
+        </choose>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

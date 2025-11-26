@@ -3,7 +3,7 @@
 ##############
 
 module "apim_nodo_dei_pagamenti_product_ndp" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "nodo-ndp"
   display_name = "Nodo dei Pagamenti NDP"
@@ -118,6 +118,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
   xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
     base-url   = "https://${local.nodo_hostname}/nodo/webservices/input"
     urlenvpath = var.env_short
+    url_aks    = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
   })
 }
 
@@ -133,6 +134,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_p
     base-url                  = "https://${local.nodo_hostname}/nodo/webservices/input"
     urlenvpath                = var.env_short
     is-nodo-decoupler-enabled = false
+    url_aks                   = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
   })
 }
 
@@ -195,17 +197,6 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy_ndp" {
   })
 }
 
-# resource "azurerm_api_management_api_operation_policy" "fdr_policy_ndp" {
-
-#   api_name            = resource.azurerm_api_management_api.apim_nodo_per_psp_api_v1_ndp.name
-#   api_management_name = module.apim.name
-#   resource_group_name = azurerm_resource_group.rg_api.name
-#   operation_id        = var.env_short == "d" ? "61e9630cb78e981290d7c74c" : var.env_short == "u" ? "61e96321e0f4ba04a49d1280" : "61e9633eea7c4a07cc7d4811"
-
-#   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
-#     base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
-#   })
-# }
 
 ######################################
 ## WS nodo per psp richiesta avvisi ##
@@ -470,7 +461,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_pm_api_ndp" {
-
+  // TODO remove nodo from name because it is included in local.project
   name                = format("%s-nodo-per-pm-api-ndp", local.project)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -480,7 +471,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pm_api_ndp" {
 
 module "apim_nodo_per_pm_api_v1_ndp" {
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-nodo-per-pm-api-ndp", local.project)
   resource_group_name   = local.pagopa_apim_rg
@@ -497,7 +488,8 @@ module "apim_nodo_per_pm_api_v1_ndp" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_swagger.json.tpl", {
-    host = local.apim_hostname
+    host    = local.apim_hostname
+    service = module.apim_nodo_dei_pagamenti_product_ndp.product_id
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_base_policy.xml.tpl", {
@@ -510,14 +502,35 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1_ndp
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "closePayment"
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_closepayment_policy.xml.tpl", {
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
     base-url = "https://${local.nodo_hostname}/nodo"
   })
 }
 
+resource "azurerm_api_management_api_operation_policy" "parked_list_api_v1_ndp" {
+  api_name            = format("%s-nodo-per-pm-api-ndp-v1", local.project)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "parkedList"
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
+    base-url = "https://${local.nodo_hostname}/nodo"
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "close_payment_api_v2_ndp_wisp_policy" {
+  count = var.create_wisp_converter ? 1 : 0
+  // TODO remove redundant nodo
+  api_name            = format("%s-nodo-per-pm-api-ndp-v2", local.project)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "closePaymentV2"
+  xml_content         = file("./api/nodopagamenti_api/nodoPerPM/v2/wisp-closepayment.xml")
+}
+
+
 module "apim_nodo_per_pm_api_v2_ndp" {
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-nodo-per-pm-api-ndp", local.project)
   resource_group_name   = local.pagopa_apim_rg
@@ -568,7 +581,7 @@ resource "azurerm_api_management_api_version_set" "nodo_monitoring_api_ndp" {
 }
 
 module "apim_nodo_monitoring_api_ndp" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-nodo-monitoring-api-ndp", var.env_short)
   resource_group_name   = local.pagopa_apim_rg
@@ -594,4 +607,26 @@ module "apim_nodo_monitoring_api_ndp" {
   xml_content = templatefile("./api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {
     base-url = "https://${local.nodo_hostname}/nodo"
   })
+}
+
+# nodoInviaRPT
+resource "azurerm_api_management_api_operation_policy" "nodoInviaRPT_api_v1_policy_ndp" {
+  count = var.create_wisp_converter ? 1 : 0
+
+  api_name            = azurerm_api_management_api.apim_nodo_per_pa_api_v1_ndp.name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = var.env_short == "d" ? "63bff3b0c257811280ef760a" : var.env_short == "u" ? "63d1612239519a10d0113a06" : "63d93febf6c0271814e8909e"
+  xml_content         = file("./api/nodopagamenti_api/nodoPerPa/v1/nodoInviaRPT_policy.xml")
+}
+
+# nodoInviaCarrelloRPT
+resource "azurerm_api_management_api_operation_policy" "nodoInviaCarrelloRPT_api_v1_policy_ndp" {
+  count = var.create_wisp_converter ? 1 : 0
+
+  api_name            = azurerm_api_management_api.apim_nodo_per_pa_api_v1_ndp.name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = var.env_short == "d" ? "63bff3b0c257811280ef760b" : var.env_short == "u" ? "63d1612239519a10d0113a07" : "63d93febf6c0271814e8909f"
+  xml_content         = file("./api/nodopagamenti_api/nodoPerPa/v1/nodoInviaCarrelloRPT_policy.xml")
 }

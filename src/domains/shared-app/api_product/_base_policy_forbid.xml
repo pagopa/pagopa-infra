@@ -1,0 +1,18 @@
+<policies>
+    <inbound>
+        <base />
+        <ip-filter action="forbid">
+            <!-- appgateway-snet  -->
+            <address-range from="10.1.128.0" to="10.1.128.255" />
+        </ip-filter>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>
