@@ -458,7 +458,7 @@ stages:
               NODO_DB_PORT: $(NODO_DB_PORT)
               DB_PARTITION_PASSWORD: $(db-partition-password)
               DB_ADMIN_PASSWORD: $(db-administrator-login-password)
-          # admin cfg status
+          # admin pagopa status
           - template: ./templates/liquibase-status.yml
             parameters:
               DATABASE_NAME: admin-postgres
