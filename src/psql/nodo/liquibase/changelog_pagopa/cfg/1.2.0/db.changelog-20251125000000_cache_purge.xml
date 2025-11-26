@@ -9,7 +9,7 @@
       encoding="UTF-8"
       path="sql/cache_purge_stored_procedure.sql"
       relativeToChangelogFile="true"
-      splitStatements="true"
+      splitStatements="false"
       stripComments="true"/>
   </changeSet>
 
