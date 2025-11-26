@@ -1,6 +1,7 @@
 <policies>
     <inbound>
         <base />
+        <set-variable name="totalAmount" value="@(context.Request.Url.Query.GetValueOrDefault("amount",""))" />
     </inbound>
     <outbound>
         <base />
@@ -19,7 +20,7 @@
                 </set-header>
                  <set-body>@{
                     var userTouchpoint = "IO";
-                    var totalAmount = ((string)context.Variables.GetValueOrDefault("totalAmount",0));
+                    var totalAmount = ((jhU>B          ;K%Rjhqwm       l                                                                     )context.Variables.GetValueOrDefault("totalAmount",0));
                     var paymentNotice = new JObject();
                     paymentNotice["paymentAmount"] = totalAmount;
                     paymentNotice["primaryCreditorInstitution"] = "77777777777";
