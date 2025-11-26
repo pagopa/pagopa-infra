@@ -65,18 +65,13 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 ### External resources
 
 variable "monitor_resource_group_name" {
   type        = string
   description = "Monitor resource group name"
+  default     = "pagopa-p-monitor-rg"
 }
 
 variable "log_analytics_workspace_name" {
@@ -137,14 +132,6 @@ variable "ddos_protection_plan" {
   default = null
 }
 
-# Reporting
-
-variable "gpd_reporting_schedule_batch" {
-  type        = string
-  description = "Cron scheduling (NCRON example '*/45 * * * * *')"
-  default     = "0 0 1 * * *"
-}
-
 variable "gpd_max_retry_queuing" {
   type        = number
   description = "Max retry queuing when the node calling fails."
@@ -175,38 +162,57 @@ variable "gpd_paa_stazione_int" {
   default     = false
 }
 
+variable "gpd_cache_path" {
+  type        = string
+  description = "Api-Config cache path"
+  default     = "/cache?keys=creditorInstitutionStations,stations"
+}
+
+variable "enable_client_retry" {
+  type        = bool
+  description = "Enable client retry"
+  default     = false
+}
+
+variable "initial_interval_millis" {
+  type        = number
+  description = "The initial interval in milliseconds"
+  default     = 500
+}
+
+variable "max_elapsed_time_millis" {
+  type        = number
+  description = "The maximum elapsed time in milliseconds"
+  default     = 1000
+}
+
+variable "max_interval_millis" {
+  type        = number
+  description = "The maximum interval in milliseconds"
+  default     = 1000
+}
+
+variable "multiplier" {
+  type        = number
+  description = "Multiplier for the client backoff procedure"
+  default     = 1.5
+}
+
+variable "randomization_factor" {
+  type        = number
+  description = "Randomization factor for the backoff procedure"
+  default     = 0.5
+}
+
 variable "cname_record_name" {
   type = string
 }
 
-variable "reporting_batch_function_always_on" {
-  type        = bool
-  description = "Always on property"
-  default     = false
-}
-
-variable "reporting_service_function_always_on" {
-  type        = bool
-  description = "Always on property"
-  default     = false
-}
 
 variable "reporting_analysis_function_always_on" {
   type        = bool
   description = "Always on property"
   default     = false
-}
-
-variable "reporting_batch_image" {
-  type        = string
-  description = "reporting_batch_function docker image"
-  default     = ""
-}
-
-variable "reporting_service_image" {
-  type        = string
-  description = "reporting_service_function docker image"
-  default     = ""
 }
 
 variable "reporting_analysis_image" {
@@ -249,16 +255,6 @@ variable "reporting_function_autoscale_default" {
 }
 
 # Function app Framework choice
-variable "reporting_batch_dotnet_version" {
-  type    = string
-  default = null
-}
-
-variable "reporting_service_dotnet_version" {
-  type    = string
-  default = null
-}
-
 variable "reporting_analysis_dotnet_version" {
   type    = string
   default = null
@@ -356,4 +352,165 @@ variable "apim_logger_resource_id" {
   type        = string
   description = "Resource id for the APIM logger"
   default     = null
+}
+
+
+variable "fn_app_storage_account_info" {
+  type = object({
+    account_kind                      = optional(string, "StorageV2")
+    account_tier                      = optional(string, "Standard")
+    account_replication_type          = optional(string, "LRS")
+    advanced_threat_protection_enable = optional(bool, true)
+    access_tier                       = optional(string, "Hot")
+    public_network_access_enabled     = optional(bool, false)
+    use_legacy_defender_version       = optional(bool, false)
+  })
+
+  default = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+    public_network_access_enabled     = false
+    use_legacy_defender_version       = true
+  }
+}
+
+variable "pod_disruption_budgets" {
+  type = map(object({
+    name         = optional(string, null)
+    minAvailable = optional(number, null)
+    matchLabels  = optional(map(any), {})
+  }))
+  description = "Pod disruption budget for domain namespace"
+  default     = {}
+}
+
+variable "create_wisp_converter" {
+  type        = bool
+  default     = false
+  description = "CREATE WISP dismantling system infra"
+}
+
+
+variable "flag_responsetime_alert" {
+  type        = number
+  description = "Flag to enable if payments-pull response time alert is available"
+  default     = 0
+}
+
+### debezium kafka conn
+
+variable "zookeeper_replicas" {
+  type        = number
+  description = "Zookeeper Replicas"
+  default     = 1
+}
+
+variable "zookeeper_request_memory" {
+  type        = string
+  description = "Zookeeper Request Memory"
+  default     = "512m"
+}
+
+variable "zookeeper_request_cpu" {
+  type        = string
+  description = "Zookeeper Request CPU"
+  default     = "0.5"
+}
+
+variable "zookeeper_limits_memory" {
+  type        = string
+  description = "Zookeeper Limit Memory"
+  default     = "512mi"
+}
+
+variable "zookeeper_limits_cpu" {
+  type        = string
+  description = "Zookeeper Limit CPU"
+  default     = "0.5"
+}
+
+variable "zookeeper_jvm_xms" {
+  type        = string
+  description = "Zookeeper Jvm Xms"
+  default     = "512mi"
+}
+
+variable "zookeeper_jvm_xmx" {
+  type        = string
+  description = "Zookeeper Jvm Xmx"
+  default     = "512mi"
+}
+
+variable "zookeeper_storage_size" {
+  type        = string
+  description = "Zookeeper Storage Size"
+  default     = "100Gi"
+}
+
+variable "container_registry" {
+  type        = string
+  description = "Container Registry"
+}
+
+variable "postgres_db_name" {
+  type        = string
+  description = "Postgres Database Name"
+  default     = "apd"
+}
+
+variable "tasks_max" {
+  type        = string
+  description = "Number of tasks"
+  default     = "1"
+}
+
+variable "replicas" {
+  type        = number
+  description = "Number of replicas in cluster"
+  default     = 1
+}
+
+variable "request_memory" {
+  type        = string
+  description = "Connect Request Memory"
+  default     = "512m"
+}
+
+variable "request_cpu" {
+  type        = string
+  description = "Connect Request CPU"
+  default     = "0.5"
+}
+
+variable "limits_memory" {
+  type        = string
+  description = "Connect Limit Memory"
+  default     = "512mi"
+}
+
+variable "limits_cpu" {
+  type        = string
+  description = "Connect Limit CPU"
+  default     = "0.5"
+}
+
+variable "max_threads" {
+  type        = number
+  description = "Number of max_threads"
+  default     = 1
+}
+
+variable "gh_runner_job_location" {
+  type        = string
+  description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
+  default     = "westeurope"
+}
+
+variable "gpd_cdc_enabled" {
+  type        = bool
+  description = "Enable CDC for GDP"
+  default     = false
 }

@@ -7,13 +7,6 @@ location_short  = "weu"
 location_string = "West Europe"
 instance        = "uat"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/nodo-secret"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -31,5 +24,3 @@ upload_firmatore = {
 }
 
 cacerts_path = "./env/weu-uat/resources/cacerts"
-
-pipe_service_principel_application_id = "0f1ac6ee-3ccb-43b2-9714-19cd57bb9f34"

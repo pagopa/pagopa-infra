@@ -4,107 +4,6 @@ resource "kubernetes_namespace" "monitoring" {
   }
 }
 
-# resource "helm_release" "prometheus" {
-#   name       = "prometheus"
-#   repository = "https://prometheus-community.github.io/helm-charts"
-#   chart      = "prometheus"
-#   version    = var.prometheus_helm.chart_version
-#   namespace  = kubernetes_namespace.monitoring.metadata[0].name
-
-#   set {
-#     name  = "server.global.scrape_interval"
-#     value = "30s"
-#   }
-#   set {
-#     name  = "alertmanager.image.repository"
-#     value = var.prometheus_helm.alertmanager.image_name
-#   }
-#   set {
-#     name  = "alertmanager.image.tag"
-#     value = var.prometheus_helm.alertmanager.image_tag
-#   }
-#   set {
-#     name  = "alertmanager.configmapReload.prometheus.image.repository"
-#     value = var.prometheus_helm.configmap_reload_prometheus.image_name
-#   }
-#   set {
-#     name  = "alertmanager.configmapReload.prometheus.image.tag"
-#     value = var.prometheus_helm.configmap_reload_prometheus.image_tag
-#   }
-#   set {
-#     name  = "alertmanager.configmapReload.alertmanager.image.repository"
-#     value = var.prometheus_helm.configmap_reload_alertmanager.image_name
-#   }
-#   set {
-#     name  = "alertmanager.configmapReload.alertmanager.image.tag"
-#     value = var.prometheus_helm.configmap_reload_alertmanager.image_tag
-#   }
-#   set {
-#     name  = "alertmanager.nodeExporter.image.repository"
-#     value = var.prometheus_helm.node_exporter.image_name
-#   }
-#   set {
-#     name  = "alertmanager.nodeExporter.image.tag"
-#     value = var.prometheus_helm.node_exporter.image_tag
-#   }
-#   set {
-#     name  = "alertmanager.nodeExporter.image.repository"
-#     value = var.prometheus_helm.node_exporter.image_name
-#   }
-#   set {
-#     name  = "alertmanager.nodeExporter.image.tag"
-#     value = var.prometheus_helm.node_exporter.image_tag
-#   }
-#   set {
-#     name  = "alertmanager.server.image.repository"
-#     value = var.prometheus_helm.server.image_name
-#   }
-#   set {
-#     name  = "alertmanager.server.image.tag"
-#     value = var.prometheus_helm.server.image_tag
-#   }
-#   set {
-#     name  = "alertmanager.pushgateway.image.repository"
-#     value = var.prometheus_helm.pushgateway.image_name
-#   }
-#   set {
-#     name  = "alertmanager.pushgateway.image.tag"
-#     value = var.prometheus_helm.pushgateway.image_tag
-#   }
-# }
-
-# resource "helm_release" "grafana" {
-#   name       = "grafana"
-#   repository = "https://grafana.github.io/helm-charts"
-#   chart      = "grafana"
-#   version    = var.grafana_helm_version
-#   namespace  = kubernetes_namespace.monitoring.metadata[0].name
-
-#   set {
-#     name  = "adminUser"
-#     value = data.azurerm_key_vault_secret.grafana_admin_username.value
-#   }
-
-#   set {
-#     name  = "adminPassword"
-#     value = data.azurerm_key_vault_secret.grafana_admin_password.value
-#   }
-# }
-
-# resource "kubernetes_config_map" "akka_actors" {
-#   metadata {
-#     name      = "grafana-dashboard-akka-actors"
-#     namespace = "monitoring"
-#     labels = {
-#        grafana_dashboard = 1
-#     }
-#   }
-
-#   data = {
-#     "akka-actors.json" = "${file("${var.kube_prometheus_stack_helm.dashboard_akka_actors}")}"
-#   }
-# }
-
 resource "kubernetes_secret_v1" "prometheus_basic_auth" {
   metadata {
     name      = "prometheus-basic-auth"
@@ -114,7 +13,21 @@ resource "kubernetes_secret_v1" "prometheus_basic_auth" {
   data = {
     "auth" = "${file("${var.prometheus_basic_auth_file}")}"
   }
+}
 
+module "monitoring_pod_identity" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity?ref=v8.53.0"
+
+  cluster_name        = module.aks.name
+  resource_group_name = azurerm_resource_group.aks_rg.name
+  location            = var.location
+  tenant_id           = data.azurerm_subscription.current.tenant_id
+
+  identity_name = "monitoring-pod-identity"
+  namespace     = kubernetes_namespace.monitoring.metadata[0].name
+  key_vault_id  = data.azurerm_key_vault.kv.id
+
+  secret_permissions = ["Get"]
 }
 
 resource "helm_release" "kube_prometheus_stack" {
@@ -127,6 +40,12 @@ resource "helm_release" "kube_prometheus_stack" {
   values = [
     "${file("${var.kube_prometheus_stack_helm.values_file}")}"
   ]
+
+  lifecycle {
+    ignore_changes = [
+      metadata
+    ]
+  }
 
 }
 
@@ -149,4 +68,85 @@ resource "helm_release" "monitoring_reloader" {
     name  = "reloader.deployment.image.tag"
     value = var.reloader_helm.image_tag
   }
+}
+
+module "opencosts" {
+  enable_opencost      = var.env_short == "d" ? true : false
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_opencosts?ref=v8.71.0"
+  aks_name             = module.aks.name
+  aks_rg_name          = module.aks.aks_resource_group_name
+  env                  = var.env
+  kubernetes_namespace = "elastic-system"
+  prometheus_config = {
+    namespace    = "elastic-system"
+    service_name = "prometheus-kube-prometheus-prometheus"
+    service_port = "9090"
+    external_url = "https://api.${var.env}.platform.pagopa.it/prometheus"
+  }
+}
+
+resource "kubernetes_manifest" "service_monitor" {
+  count = var.env_short == "d" ? 1 : 0
+  manifest = {
+    "apiVersion" : "azmonitoring.coreos.com/v1"
+    "kind" : "ServiceMonitor"
+    "metadata" : {
+      "name" : "prometheus-opencosts"
+      "namespace" : "elastic-system"
+      "labels" : {
+        "app.kubernetes.io/instance" : "prometheus"
+        "app.kubernetes.io/part-of" : "kube-prometheus-stack"
+        "app" : "kube-prometheus-stack-operator"
+      }
+    }
+    "spec" : {
+      "selector" : {
+        "matchLabels" : {
+          "app.kubernetes.io/instance" : "prometheus-opencost-exporter"
+          "app.kubernetes.io/name" : "opencost"
+        }
+      }
+      "endpoints" : [
+        {
+          "port" : "http"
+          "interval" : "30s"
+          "path" : "/metrics"
+        }
+      ]
+      jobLabel : "opencost"
+    }
+  }
+}
+
+# Refer: Resource created on next-core 02_monitor.tf
+data "azurerm_monitor_workspace" "workspace" {
+  name                = "pagopa-${var.env_short}-monitor-workspace"
+  resource_group_name = "pagopa-${var.env_short}-monitor-rg"
+}
+
+module "prometheus_managed_addon" {
+  source                 = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_managed?ref=v8.97.0"
+  cluster_name           = module.aks.name
+  resource_group_name    = module.aks.aks_resource_group_name
+  location               = var.location
+  location_short         = var.location_short
+  monitor_workspace_name = data.azurerm_monitor_workspace.workspace.name
+  monitor_workspace_rg   = data.azurerm_monitor_workspace.workspace.resource_group_name
+  grafana_name           = "pagopa-${var.env_short}-${var.location_short}-grafana"
+  grafana_resource_group = "pagopa-${var.env_short}-${var.location_short}-grafana-rg"
+
+  # takes a list and replaces any elements that are lists with a
+  # flattened sequence of the list contents.
+  # In this case, we enable OpsGenie only on prod env
+  action_groups_id = flatten([
+    [
+      data.azurerm_monitor_action_group.slack.id,
+      data.azurerm_monitor_action_group.email.id
+    ],
+    (var.env == "prod" ? [
+      data.azurerm_monitor_action_group.opsgenie.0.id
+    ] : [])
+  ])
+
+  tags = module.tag_config.tags
 }

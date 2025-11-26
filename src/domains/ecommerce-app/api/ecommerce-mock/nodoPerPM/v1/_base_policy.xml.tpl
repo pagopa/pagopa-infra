@@ -1,28 +1,17 @@
 <policies>
   <inbound>
     <base />
-    <choose>
-      <when condition="@(((string)(context.Request.Url.Path)).Contains("checkPosition"))">
-        <return-response>
-          <set-status code="200" reason="OK" />
-          <set-header name="Content-Type" exists-action="override">
-            <value>application/json</value>
-          </set-header>
-          <set-body template="liquid">
-            {
-                "outcome": "OK",
-                "positionslist": [
-                    {
-                        "fiscalCode": "77777777777",
-                        "noticeNumber": "302047770004456788",
-                        "state": "OK"
-                    }
-                ]
-            }
-          </set-body>
-        </return-response>
-      </when>
-    </choose>
+    <return-response>
+      <set-status code="404" reason="Not found" />
+      <set-header name="Content-Type" exists-action="override">
+        <value>application/json</value>
+      </set-header>
+      <set-body template="liquid">
+        {
+            "description": "Mock not implemented"
+        }
+      </set-body>
+    </return-response>
   </inbound>
   <outbound>
     <base />

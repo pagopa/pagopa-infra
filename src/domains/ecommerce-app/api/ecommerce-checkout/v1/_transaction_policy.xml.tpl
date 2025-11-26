@@ -1,7 +1,7 @@
 <policies>
     <inbound>
     <!-- Check google reCAPTCHA token validity START -->
-    <set-variable name="recaptchaSecret" value="{{google-recaptcha-secret}}" />
+    <set-variable name="recaptchaSecret" value="{{ecommerce-for-checkout-google-recaptcha-secret}}" />
     <set-variable name="recaptchaToken" value="@(context.Request.OriginalUrl.Query.GetValueOrDefault("recaptchaResponse"))" />
     <choose>
         <when condition="@(context.Variables["recaptchaToken"] == null || context.Variables["recaptchaToken"] == "")">
@@ -28,7 +28,7 @@
     </choose>
     <!-- Check google reCAPTCHA token validity END -->
     <!-- pass rptId value into header START -->
-    <set-header name="x-rpt-id" exists-action="delete" />
+    <set-header name="x-rpt-ids" exists-action="delete" />
     <set-variable name="paymentNotices" value="@(((JArray)((JObject)context.Request.Body.As<JObject>(preserveContent: true))["paymentNotices"]))" />
     <set-variable name="rptIds" value="@{
         string result = "";
@@ -42,7 +42,7 @@
     }" />
     <choose>
         <when condition="@((string)context.Variables["rptIds"] != "")">
-            <set-header name="x-rpt-id" exists-action="override">
+            <set-header name="x-rpt-ids" exists-action="override">
                 <value>@((string)context.Variables.GetValueOrDefault("rptIds",""))</value>
             </set-header>
         </when>

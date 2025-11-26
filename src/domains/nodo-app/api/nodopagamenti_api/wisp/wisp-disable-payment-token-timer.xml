@@ -1,0 +1,57 @@
+<fragment>
+  <set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
+  <choose>
+    <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
+    <!--
+        This fragment accept a list of paymentToken as string delimited by comma from 👇
+
+        >>> closePaymentV2
+          {
+            "paymentTokens": [
+                "4dd9236bc7514d5c86bae14cf65729d5"
+          ],
+
+        >>> sendPaymentResultV2
+            "payments": [
+          {
+              "paymentToken": "2aa9f731bca34ef18e27215767aecd80",
+              "description": "Text",
+              "fiscalCode": "90035280271",
+              "debtor": "CF Debtor",
+              "creditorReferenceId": "012403000015204",
+              "companyName": "..."
+          }
+    -->
+    <!-- !!!
+      We assume that first payment of cart have same properties
+      Ex. if the first one is WISP dismantling the all are belonging to WISP dismantling
+    -->
+    <set-variable name="wisp-first-payment-token" value="@{
+                              String[] result = context.Variables.GetValueOrDefault<string>("wisp-payment-tokens", "NONE").Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
+                                if (result != null && result.Length > 0) {
+                                    return "wisp_" + result[0];
+                                }
+                                else {
+                                    return "wisp_";
+                                }
+                  }" />
+    <cache-lookup-value key="@((string) context.Variables["wisp-first-payment-token"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
+    <choose>
+      <when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
+      <set-variable name="wisp-base-url" value="{{wisp-dismantling-converter-base-url}}" />
+      <send-one-way-request mode="new">
+        <set-url>@{
+          var baseUrl = context.Variables["wisp-base-url"];
+          var paymentTokens = context.Variables["wisp-payment-tokens"];
+          return $"{baseUrl}/receipt/timer?paymentTokens={paymentTokens}";
+          }</set-url>
+        <set-method>DELETE</set-method>
+        <set-header name="Content-Type" exists-action="override">
+          <value>application/json</value>
+        </set-header>
+      </send-one-way-request>
+    </when>
+  </choose>
+</when>
+  </choose>
+  </fragment>

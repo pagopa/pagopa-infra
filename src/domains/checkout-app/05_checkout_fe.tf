@@ -1,3 +1,9 @@
+
+locals {
+  npg_sdk_hostname                    = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
+  content_security_policy_header_name = "Content-Security-Policy"
+}
+
 /**
  * Checkout resource group
  **/
@@ -6,14 +12,14 @@ resource "azurerm_resource_group" "checkout_fe_rg" {
   name     = format("%s-checkout-fe-rg", local.parent_project)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 /**
  * CDN
  */
 module "checkout_cdn" {
-  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.28"
+  source = "./.terraform/modules/__v3__/cdn"
 
   count                 = var.checkout_enabled ? 1 : 0
   name                  = "checkout"
@@ -22,7 +28,8 @@ module "checkout_cdn" {
   location              = var.location
   hostname              = format("%s.%s", var.dns_zone_checkout, var.external_domain)
   https_rewrite_enabled = true
-  lock_enabled          = false
+
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
 
   index_document     = "index.html"
   error_404_document = "index.html"
@@ -35,6 +42,8 @@ module "checkout_cdn" {
   keyvault_vault_name          = data.azurerm_key_vault.key_vault.name
 
   querystring_caching_behaviour = "BypassCaching"
+
+  storage_account_replication_type = var.checkout_cdn_storage_replication_type
 
   global_delivery_rule = {
     cache_expiration_action       = []
@@ -50,34 +59,39 @@ module "checkout_cdn" {
       # Content-Security-Policy
       {
         action = "Overwrite"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", var.dns_zone_prefix, var.external_domain)
+        name   = local.content_security_policy_header_name
+        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it https://privacyportalde-cdn.onetrust.com https://privacyportal-de.onetrust.com", var.dns_zone_prefix, var.external_domain)
       },
       {
         action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = " https://acardste.vaservices.eu:* https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://geolocation.onetrust.com;"
+        name   = local.content_security_policy_header_name
+        value  = " https://acardste.vaservices.eu:* https://recaptcha.net/;"
       },
       {
         action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+        name   = local.content_security_policy_header_name
         value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.sia.eu *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;"
       },
       {
         action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "img-src 'self' https://cdn.cookielaw.org https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data:;"
+        name   = local.content_security_policy_header_name
+        value  = "img-src 'self' https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it https://privacyportalde-cdn.onetrust.com;"
       },
       {
         action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/;"
+        name   = local.content_security_policy_header_name
+        value  = "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://privacyportalde-cdn.onetrust.com https://${local.npg_sdk_hostname};"
       },
       {
         action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "style-src 'self'  'unsafe-inline'; worker-src www.recaptcha.net blob:;"
-      }
+        name   = local.content_security_policy_header_name
+        value  = "style-src 'self'  'unsafe-inline' https://privacyportalde-cdn.onetrust.com; font-src 'self' https://privacyportalde-cdn.onetrust.com; worker-src www.recaptcha.net blob:;"
+      },
+      {
+        action = "Overwrite"
+        name   = "X-Frame-Options"
+        value  = "SAMEORIGIN"
+      },
     ]
   }
 
@@ -100,25 +114,67 @@ module "checkout_cdn" {
     }
     },
     {
-      name  = "RewriteRulesPaymentTransactionsGateway"
+      name  = "RewriteRulesTerms"
       order = 3
 
       conditions = [{
         condition_type   = "url_path_condition"
-        operator         = "BeginsWith"
-        match_values     = ["/payment-transactions-gateway/vpos", "/payment-transactions-gateway/postepay", "/payment-transactions-gateway/xpay"]
+        operator         = "Equal"
+        match_values     = ["/termini-di-servizio"]
         transforms       = []
         negate_condition = false
       }]
 
       url_rewrite_action = {
         source_pattern          = "/"
-        destination             = "/payment-transactions-gateway/index.html"
+        destination             = "/terms/it.html"
         preserve_unmatched_path = false
       }
-  }]
+    }
+  ]
 
-  tags = var.tags
+  delivery_rule = [
+    {
+      name  = "CorsFontForNPG"
+      order = 4
+
+      // conditions
+      url_path_conditions       = []
+      cookies_conditions        = []
+      device_conditions         = []
+      http_version_conditions   = []
+      post_arg_conditions       = []
+      query_string_conditions   = []
+      remote_address_conditions = []
+      request_body_conditions   = []
+      request_header_conditions = [{
+        selector         = "Origin"
+        operator         = "Equal"
+        match_values     = ["https://${local.npg_sdk_hostname}"]
+        transforms       = []
+        negate_condition = false
+      }]
+      request_method_conditions     = []
+      request_scheme_conditions     = []
+      request_uri_conditions        = []
+      url_file_extension_conditions = []
+      url_file_name_conditions      = []
+
+      // actions
+      modify_response_header_actions = [{
+        action = "Overwrite"
+        name   = "Access-Control-Allow-Origin"
+        value  = "https://${local.npg_sdk_hostname}"
+      }]
+      cache_expiration_actions       = []
+      cache_key_query_string_actions = []
+      modify_request_header_actions  = []
+      url_redirect_actions           = []
+      url_rewrite_actions            = []
+    }
+  ]
+
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_application_insights_web_test" "checkout_fe_web_test" {

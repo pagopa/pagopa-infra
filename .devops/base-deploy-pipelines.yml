@@ -1,0 +1,131 @@
+parameters:
+  - name: 'ENV'
+    displayName: 'Environment to deploy'
+    type: string
+    values:
+      - dev
+      - uat
+      - prod
+  - name: 'DEFINITION_NAME'
+    displayName: 'Definition name to be deployed'
+    type: string
+  - name: 'WORKING_DIR_APP'
+    displayName: 'app domain working dir'
+    type: string
+    default: ''
+  - name: 'WORKING_DIR_COMMON'
+    displayName: 'common domain working dir'
+    type: string
+    default: ''
+  - name: 'WORKING_DIR_SECRET'
+    displayName: 'secret domain working dir'
+    type: string
+    default: ''
+  - name: 'WORKING_DIR_MODULE'
+    displayName: 'module working dir'
+    type: string
+    default: ''
+  - name: 'ENV_FOLDER'
+    displayName: 'Environment folder location'
+    type: string
+  - name: 'SC_PLAN_NAME'
+    type: string
+  - name: 'SC_APPLY_NAME'
+    type: string
+  - name: 'AKS_APISERVER_URL'
+    type: string
+    default: ''
+  - name: 'AKS_AZURE_DEVOPS_SA_CACRT'
+    type: string
+    default: ''
+  - name: 'AKS_AZURE_DEVOPS_SA_TOKEN'
+    type: string
+    default: ''
+  - name: 'AKS_NAME'
+    type: string
+    default: ''
+  - name: 'POOL_NAME'
+    type: string
+  - name: 'TIME_OUT'
+    type: number
+    default: 15
+  - name: 'SECRET_USE_AKS'
+    type: boolean
+    default: true
+  - name: 'MODULE_USE_AKS'
+    type: boolean
+    default: false
+  - name: 'COMMON_USE_AKS'
+    type: boolean
+    default: true
+  - name: 'APP_USE_AKS'
+    type: boolean
+    default: true
+
+
+stages:
+  - ${{ if ne(parameters.WORKING_DIR_SECRET, '') }}:
+    # SECRET
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        FULL_DOMAIN_NAME: "${{parameters.DEFINITION_NAME}}_secret"
+        TF_ENVIRONMENT_FOLDER: "${{parameters.ENV_FOLDER}}"
+        ENVIRONMENT: "${{parameters.ENV}}"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "${{parameters.POOL_NAME}}"
+        WORKINGDIR: ${{ parameters.WORKING_DIR_SECRET }}
+        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{parameters.SC_PLAN_NAME}}"
+        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{parameters.SC_APPLY_NAME}}"
+        ${{ if eq(parameters.SECRET_USE_AKS, 'true') }}:
+          AKS_NAME: ${{ parameters.AKS_NAME }}
+          AKS_API_SERVER_URL: ${{ parameters.AKS_APISERVER_URL }}
+          AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ parameters.AKS_AZURE_DEVOPS_SA_CACRT }}
+          AKS_AZURE_DEVOPS_SA_TOKEN: ${{ parameters.AKS_AZURE_DEVOPS_SA_TOKEN }}
+  - ${{ if ne(parameters.WORKING_DIR_COMMON, '') }}:
+    # COMMON
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        FULL_DOMAIN_NAME: "${{parameters.DEFINITION_NAME}}_common"
+        TF_ENVIRONMENT_FOLDER: "${{parameters.ENV_FOLDER}}"
+        ENVIRONMENT: "${{parameters.ENV}}"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "${{parameters.POOL_NAME}}"
+        WORKINGDIR: ${{ parameters.WORKING_DIR_COMMON }}
+        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{parameters.SC_PLAN_NAME}}"
+        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{parameters.SC_APPLY_NAME}}"
+        ${{ if eq(parameters.COMMON_USE_AKS, 'true') }}:
+          AKS_NAME: ${{ parameters.AKS_NAME }}
+          AKS_API_SERVER_URL: ${{ parameters.AKS_APISERVER_URL }}
+          AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ parameters.AKS_AZURE_DEVOPS_SA_CACRT }}
+          AKS_AZURE_DEVOPS_SA_TOKEN: ${{ parameters.AKS_AZURE_DEVOPS_SA_TOKEN }}
+  - ${{ if ne(parameters.WORKING_DIR_APP, '') }}:
+    #APP
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        FULL_DOMAIN_NAME: "${{parameters.DEFINITION_NAME}}_app"
+        TF_ENVIRONMENT_FOLDER: "${{parameters.ENV_FOLDER}}"
+        ENVIRONMENT: "${{parameters.ENV}}"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "${{parameters.POOL_NAME}}"
+        WORKINGDIR: ${{ parameters.WORKING_DIR_APP }}
+        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{parameters.SC_PLAN_NAME}}"
+        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{parameters.SC_APPLY_NAME}}"
+        ${{ if eq(parameters.APP_USE_AKS, 'true') }}:
+          AKS_NAME: ${{ parameters.AKS_NAME }}
+          AKS_API_SERVER_URL: ${{ parameters.AKS_APISERVER_URL }}
+          AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ parameters.AKS_AZURE_DEVOPS_SA_CACRT }}
+          AKS_AZURE_DEVOPS_SA_TOKEN: ${{ parameters.AKS_AZURE_DEVOPS_SA_TOKEN }}
+  - ${{ if ne(parameters.WORKING_DIR_MODULE, '') }}:
+    #MODULE
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        FULL_DOMAIN_NAME: "${{parameters.DEFINITION_NAME}}_module"
+        TF_ENVIRONMENT_FOLDER: "${{parameters.ENV_FOLDER}}"
+        ENVIRONMENT: "${{parameters.ENV}}"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "${{parameters.POOL_NAME}}"
+        WORKINGDIR: ${{ parameters.WORKING_DIR_MODULE }}
+        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{parameters.SC_PLAN_NAME}}"
+        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{parameters.SC_APPLY_NAME}}"
+        ${{ if eq(parameters.MODULE_USE_AKS, 'true') }}:
+          AKS_NAME: ${{ parameters.AKS_NAME }}
+          AKS_API_SERVER_URL: ${{ parameters.AKS_APISERVER_URL }}
+          AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ parameters.AKS_AZURE_DEVOPS_SA_CACRT }}
+          AKS_AZURE_DEVOPS_SA_TOKEN: ${{ parameters.AKS_AZURE_DEVOPS_SA_TOKEN }}
+

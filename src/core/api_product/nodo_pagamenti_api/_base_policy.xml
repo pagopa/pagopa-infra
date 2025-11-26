@@ -12,7 +12,10 @@
 -->
 <policies>
     <inbound>
-        <base />    
+        <base />
+        <!-- set ndphost header -->
+        <include-fragment fragment-id="ndphost-header" />
+        <set-variable name="baseUrl" value="{{default-nodo-backend}}" />
         <!-- blacklist for appgateway-snet  -->
         <ip-filter action="forbid">
             <address-range from="${address-range-from}" to="${address-range-to}" />

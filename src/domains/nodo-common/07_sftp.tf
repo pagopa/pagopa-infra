@@ -7,20 +7,31 @@ resource "azurerm_resource_group" "sftp" {
 }
 
 module "sftp" {
-  # source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.2.1"
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=add-SFTP-to-sa"
+  source = "./.terraform/modules/__v3__/storage_account"
+  #source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=add-SFTP-to-sa"
 
   name                = replace("${local.project}-sftp", "-", "")
   resource_group_name = azurerm_resource_group.sftp.name
   location            = azurerm_resource_group.sftp.location
 
   public_network_access_enabled = true
-  sftp_enabled                  = true
+  is_sftp_enabled               = true
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = var.sftp_account_replication_type
   access_tier                   = "Hot"
   is_hns_enabled                = true
+
+  blob_versioning_enabled = false
+
+  #  blob_delete_retention_days = var.sftp_sa_delete_retention_days
+  #  blob_change_feed_enabled = var.enable_sftp_backup
+  #  blob_change_feed_retention_in_days = var.enable_sftp_backup ? var.sftp_sa_backup_retention_days : null
+  #  blob_container_delete_retention_days =  var.sftp_sa_backup_retention_days
+  #  blob_storage_policy ={
+  #    enable_immutability_policy = false
+  #    blob_restore_policy_days = var.sftp_sa_backup_retention_days
+  #  }
 
   network_rules = {
     default_action             = var.sftp_disable_network_rules ? "Allow" : "Deny"
@@ -29,20 +40,7 @@ module "sftp" {
     virtual_network_subnet_ids = []
   }
 
-  tags = var.tags
-}
-
-# Azure Blob Storage subnet
-module "storage_account_snet" {
-  count = var.sftp_enable_private_endpoint ? 1 : 0
-
-  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.2.1"
-  name                                          = format("%s-storage-account-snet", local.project)
-  address_prefixes                              = var.cidr_subnet_storage_account
-  resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name                          = data.azurerm_virtual_network.vnet.name
-  service_endpoints                             = ["Microsoft.Storage"]
-  private_link_service_network_policies_enabled = true
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "sftp_blob" {
@@ -51,7 +49,7 @@ resource "azurerm_private_endpoint" "sftp_blob" {
   name                = "${module.sftp.name}-blob-endpoint"
   resource_group_name = azurerm_resource_group.sftp.name
   location            = azurerm_resource_group.sftp.location
-  subnet_id           = module.storage_account_snet[0].id
+  subnet_id           = module.storage_account_snet.id
 
   private_service_connection {
     name                           = "${module.sftp.name}-blob-endpoint"
@@ -65,7 +63,7 @@ resource "azurerm_private_endpoint" "sftp_blob" {
     private_dns_zone_ids = [data.azurerm_private_dns_zone.storage[0].id]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_storage_container" "sogei" {
@@ -76,7 +74,7 @@ resource "azurerm_storage_container" "sogei" {
 
 resource "azurerm_storage_blob" "sogei_dirs" {
   for_each               = toset(["Inbox", "output"])
-  name                   = format("%s/.test", each.key)
+  name                   = "${each.key}/.test"
   storage_account_name   = module.sftp.name
   storage_container_name = azurerm_storage_container.sogei.name
   type                   = "Block"

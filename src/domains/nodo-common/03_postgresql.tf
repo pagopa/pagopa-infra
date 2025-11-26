@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "db_rg" {
   name     = format("%s-db-rg", local.project)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 data "azurerm_key_vault_secret" "pgres_flex_admin_login" {
@@ -17,7 +17,7 @@ data "azurerm_key_vault_secret" "pgres_flex_admin_pwd" {
 
 # Postgres Flexible Server subnet
 module "postgres_flexible_snet" {
-  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.2.1"
+  source                                        = "./.terraform/modules/__v3__/subnet"
   name                                          = format("%s-pgres-flexible-snet", local.project)
   address_prefixes                              = var.cidr_subnet_flex_dbms
   resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
@@ -37,7 +37,7 @@ module "postgres_flexible_snet" {
 }
 
 module "postgres_flexible_server" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v6.2.1"
+  source              = "./.terraform/modules/__v3__/postgres_flexible_server"
   name                = format("%s-flexible-postgresql", local.project)
   location            = azurerm_resource_group.db_rg.location
   resource_group_name = azurerm_resource_group.db_rg.name
@@ -46,7 +46,7 @@ module "postgres_flexible_server" {
   private_dns_zone_id         = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
   delegated_subnet_id         = var.env_short != "d" ? module.postgres_flexible_snet.id : null
   high_availability_enabled   = var.pgres_flex_params.pgres_flex_ha_enabled
-  standby_availability_zone   = var.env_short != "d" ? var.pgres_flex_params.zone : null
+  standby_availability_zone   = var.env_short != "d" ? var.pgres_flex_params.standby_ha_zone : null
   pgbouncer_enabled           = var.pgres_flex_params.pgres_flex_pgbouncer_enabled
   diagnostic_settings_enabled = var.pgres_flex_params.pgres_flex_diagnostic_settings_enabled
   administrator_login         = data.azurerm_key_vault_secret.pgres_flex_admin_login.value
@@ -59,6 +59,8 @@ module "postgres_flexible_server" {
   backup_retention_days        = var.pgres_flex_params.backup_retention_days
   geo_redundant_backup_enabled = var.pgres_flex_params.geo_redundant_backup_enabled
   create_mode                  = var.pgres_flex_params.create_mode
+
+  public_network_access_enabled = var.pgres_flex_params.public_network_access_enabled
 
   log_analytics_workspace_id = var.env_short != "d" ? data.azurerm_log_analytics_workspace.log_analytics.id : null
   custom_metric_alerts       = var.custom_metric_alerts
@@ -76,7 +78,14 @@ module "postgres_flexible_server" {
     #   webhook_properties = null
     # }
   ]
-  tags = var.tags
+
+  private_dns_registration = var.pgres_flex_params.enable_private_dns_registration
+  private_dns_zone_name    = "${var.env_short}.internal.postgresql.pagopa.it"
+  private_dns_zone_rg_name = data.azurerm_resource_group.rg_vnet.name
+  private_dns_record_cname = "nodo-db"
+
+
+  tags = local.tags_grafana
 }
 
 # Nodo database

@@ -1,0 +1,31 @@
+<policies>
+  <inbound>
+    <cors>
+      <allowed-origins>
+        <origin>https://shared.dev.platform.pagopa.it</origin>
+        <origin>http://localhost:3000</origin>
+      </allowed-origins>
+      <allowed-methods>
+        <method>GET</method>
+        <method>POST</method>
+        <method>PUT</method>
+        <method>DELETE</method>
+        <method>OPTIONS</method>
+      </allowed-methods>
+      <allowed-headers>
+        <header>*</header>
+      </allowed-headers>
+    </cors>
+    <base />
+    <set-backend-service base-url="https://${hostname}/pagopa-mocker/mocker" />
+  </inbound>
+  <outbound>
+    <base />
+  </outbound>
+  <backend>
+    <base />
+  </backend>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

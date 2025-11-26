@@ -42,31 +42,3 @@ data "azurerm_subnet" "azdoa_snet" {
   resource_group_name  = data.azurerm_resource_group.rg_vnet.name
   virtual_network_name = data.azurerm_virtual_network.vnet.name
 }
-
-# pagopa-proxy Redis subnet
-
-data "azurerm_subnet" "pagopa_proxy_redis_snet" {
-  name                 = format("%s-pagopa-proxy-redis-snet", local.parent_project)
-  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name = data.azurerm_virtual_network.vnet.name
-}
-
-# pagopa-proxy subnet
-
-module "pagopa_proxy_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28"
-  name                 = format("%s-pagopa-proxy-snet", local.parent_project)
-  address_prefixes     = var.cidr_subnet_pagopa_proxy
-  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name = data.azurerm_virtual_network.vnet.name
-
-  enforce_private_link_endpoint_network_policies = true
-
-  delegation = {
-    name = "default"
-    service_delegation = {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
-}

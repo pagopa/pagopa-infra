@@ -1,0 +1,51 @@
+<!--
+    IMPORTANT:
+    - Policy fragment are included as-is whenever they are referenced.
+    - If using variables. Ensure they are setup before use.
+    - Copy and paste your code here or simply start coding
+-->
+<fragment>
+  <!-- creditor institution list -->
+  <cache-lookup-value key="wisp_ci_list_loaded" variable-name="wisp_ci_list_loaded" default-value="NONE" caching-type="external" />
+  <cache-lookup-value key="wisp_ci_list" variable-name="wisp_whitelisted_cis" default-value="NONE" caching-type="external" />
+  <choose>
+    <when condition="@(((string)context.Variables["wisp_ci_list_loaded"]).Equals("NONE") || ((string)context.Variables["wisp_whitelisted_cis"]).Equals("NONE"))">
+    <send-request ignore-error="true" timeout="10" response-variable-name="ci_list_response" mode="new">
+      <set-url>{{wisp-dismantling-converter-base-url}}/whitelist/cis</set-url>
+      <set-method>GET</set-method>
+      <set-header name="Content-Type" exists-action="override">
+        <value>application/json</value>
+      </set-header>
+    </send-request>
+    <choose>
+      <when condition="@(((IResponse)context.Variables["ci_list_response"]).StatusCode == 200)">
+      <set-variable name="wisp_whitelisted_cis" value="@(((IResponse)context.Variables["ci_list_response"]).Body.As<JObject>()["key"].ToString())" />
+      <cache-store-value key="wisp_ci_list" value="@((string) context.Variables["wisp_whitelisted_cis"])" duration="31557600" caching-type="external" />
+      <!-- 1 year -->
+      <cache-store-value key="wisp_ci_list_loaded" value="@(DateTime.UtcNow.ToString())" duration="31557600" caching-type="external" />
+    </when>
+  </choose>
+</when>
+  </choose>
+  <!-- station list -->
+<cache-lookup-value key="wisp_station_list_loaded" variable-name="wisp_station_list_loaded" default-value="NONE" caching-type="external" />
+<cache-lookup-value key="wisp_station_list" variable-name="wisp_whitelisted_stations" default-value="NONE" caching-type="external" />
+<choose>
+<when condition="@(context.Variables.GetValueOrDefault<string>("wisp_station_list_loaded", "NONE").Equals("NONE") || context.Variables.GetValueOrDefault<string>("wisp_whitelisted_stations", "NONE").Equals("NONE"))">
+<send-request ignore-error="true" timeout="10" response-variable-name="station_list_response" mode="new">
+  <set-url>{{wisp-dismantling-converter-base-url}}/whitelist/stations</set-url>
+  <set-method>GET</set-method>
+  <set-header name="Content-Type" exists-action="override">
+    <value>application/json</value>
+  </set-header>
+</send-request>
+<choose>
+  <when condition="@(((IResponse)context.Variables["station_list_response"]).StatusCode == 200)">
+  <set-variable name="wisp_whitelisted_stations" value="@(((IResponse)context.Variables["station_list_response"]).Body.As<JObject>()["key"].ToString())" />
+  <cache-store-value key="wisp_station_list" value="@((string) context.Variables["wisp_whitelisted_stations"])" duration="31557600" caching-type="external" />
+  <cache-store-value key="wisp_station_list_loaded" value="@(DateTime.UtcNow.ToString())" duration="31557600" caching-type="external" />
+</when>
+</choose>
+  </when>
+  </choose>
+  </fragment>

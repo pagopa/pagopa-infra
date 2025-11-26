@@ -11,3 +11,8 @@ data "azurerm_key_vault_secret" "google_recaptcha_secret" {
   name         = "google-recaptcha-secret"
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
+
+data "azurerm_key_vault" "key_vault_checkout" {
+  name                = "${local.product}-${var.domain}-kv"
+  resource_group_name = "${local.product}-${var.domain}-sec-rg"
+}

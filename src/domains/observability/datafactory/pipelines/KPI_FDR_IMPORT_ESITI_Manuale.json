@@ -1,0 +1,553 @@
+{
+    "name": "Imposta la data di Inizio",
+    "type": "SetVariable",
+    "dependsOn": [],
+    "policy": {
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "variableName": "date_start",
+        "value": {
+            "value": "@addHours(startOfHour(pipeline().parameters.date_trigger), -1)",
+            "type": "Expression"
+        }
+    }
+},
+{
+    "name": "Imposto la data di fine",
+    "type": "SetVariable",
+    "dependsOn": [
+        {
+            "activity": "Imposta la data di Inizio",
+            "dependencyConditions": [
+                "Completed"
+            ]
+        }
+    ],
+    "policy": {
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "variableName": "date_end",
+        "value": {
+            "value": "@startOfHour(pipeline().parameters.date_trigger)",
+            "type": "Expression"
+        }
+    }
+},
+{
+    "name": "Imposto solo la data",
+    "type": "SetVariable",
+    "dependsOn": [
+        {
+            "activity": "Imposto la data di fine",
+            "dependencyConditions": [
+                "Completed"
+            ]
+        }
+    ],
+    "policy": {
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "variableName": "date_only",
+        "value": {
+            "value": "@formatDateTime(variables('date_start'), 'yyyy-MM-dd')",
+            "type": "Expression"
+        }
+    }
+},
+{
+    "name": "Importo gli esiti su DataExp",
+    "type": "Copy",
+    "dependsOn": [
+        {
+            "activity": "Imposto solo la data",
+            "dependencyConditions": [
+                "Completed"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "CosmosDbSqlApiSource",
+            "query": {
+                "value": "@concat('SELECT c.debtorPosition.noticeNumber as NOTICE_ID,       c.debtorPosition.iuv as IUV,       \nIS_DEFINED(t.IUR) ? t.IUR : c.debtorPosition.iur as IUR, c.creditor.idPA as PA_EMITTENTE, c.creditor.idBrokerPA as PT_EMITTENTE, \nc.psp.idPsp as ID_PSP,c.psp.idBrokerPsp as ID_BROKER_PSP, c.paymentInfo.amount as AMOUNT, c.timestamp as TIMESTAMP,   \n    c.eventStatus as EVENT_STATUS, t.fiscalCodePA as PA_TRANSFER,  t.amount as AMOUNT_TRANSFER, t.IBAN, t.idTransfer as ID_TRANSFER, c.debtorPosition.modelType as MOD_TYPE,       \nc.paymentInfo.paymentDateTime as DATA_PAGAMENTO FROM c JOIN t in c.transferList WHERE ( c.paymentInfo.paymentDateTime between \"', variables('date_start'), '\" and \"', variables('date_end'), '\")')",
+                "type": "Expression"
+            },
+            "preferredRegions": [],
+            "detectDatetime": false
+        },
+        "sink": {
+            "type": "AzureDataExplorerSink"
+        },
+        "enableStaging": false,
+        "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+                {
+                    "source": {
+                        "path": "$['NOTICE_ID']"
+                    },
+                    "sink": {
+                        "name": "NOTICE_ID",
+                        "type": "String"
+                    }
+                },
+                {
+                    "source": {
+                        "path": "$['IUV']"
+                    },
+                    "sink": {
+                        "name": "IUV",
+                        "type": "String"
+                    }
+                },
+                {
+                    "source": {
+                        "path": "$['IUR']"
+                    },
+                    "sink": {
+                        "name": "IUR",
+                        "type": "String"
+                    }
+                },
+                {
+                    "source": {
+                        "path": "$['PA_EMITTENTE']"
+                    },
+                    "sink": {
+                        "name": "PA_EMITTENTE",
+                        "type": "String"
+                    }
+                },
+                {
+                    "source": {
+                        "path": "$['PT_EMITTENTE']"
+                    },
+                    "sink": {
+                        "name": "PT_EMITTENTE",
+                        "type": "String"
+                    }
+                },
+                {
+                    "source": {
+                        "path": "$['ID_PSP']"
+                    },
+                    "sink": {
+                        "name": "ID_PSP",
+                        "type": "String"
+                    }
+                },
+                {
+                    "source": {
+                        "path": "$['ID_BROKER_PSP']"
+                    },
+                    "sink": {
+                        "name": "ID_BROKER_PSP",
+                        "type": "String"
+                    }
+                },
+                {
+                    "source": {
+                        "path": "$['AMOUNT']"
+                    },
+                    "sink": {
+                        "name": "IMPORTO_TOTALE",
+                        "type": "Decimal"
+                    }
+                },
+                {
+                    "source": {
+                        "path": "$['PA_TRANSFER']"
+                    },
+                    "sink": {
+                        "name": "PA_TRANSFER",
+                        "type": "String"
+                    }
+                },
+                {
+                    "source": {
+                        "path": "$['AMOUNT_TRANSFER']"
+                    },
+                    "sink": {
+                        "name": "AMOUNT_TRANSFER",
+                        "type": "Decimal"
+                    }
+                },
+                {
+                    "source": {
+                        "path": "$['IBAN']"
+                    },
+                    "sink": {
+                        "name": "IBAN",
+                        "type": "String"
+                    }
+                },
+                {
+                    "source": {
+                        "path": "$['ID_TRANSFER']"
+                    },
+                    "sink": {
+                        "name": "ID_TRANSFER",
+                        "type": "Int32"
+                    }
+                },
+                {
+                    "source": {
+                        "path": "$['MOD_TYPE']"
+                    },
+                    "sink": {
+                        "name": "MOD_TYPE",
+                        "type": "String"
+                    }
+                },
+                {
+                    "source": {
+                        "path": "$['DATA_PAGAMENTO']"
+                    },
+                    "sink": {
+                        "name": "DATA_PAGAMENTO",
+                        "type": "DateTime"
+                    }
+                }
+            ],
+            "mapComplexValuesToString": false
+        }
+    },
+    "inputs": [
+        {
+            "referenceName": "SMO_COSMOS_BIZEVENTS_OK_DataSet",
+            "type": "DatasetReference"
+        }
+    ],
+    "outputs": [
+        {
+            "referenceName": "SMO_KPI_ESITI_DAILY_DataSet",
+            "type": "DatasetReference"
+        }
+    ]
+},
+{
+    "name": "Copia Check su Data Explorer",
+    "type": "Copy",
+    "dependsOn": [
+        {
+            "activity": "Importo gli esiti su DataExp",
+            "dependencyConditions": [
+                "Completed"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "AzureDataExplorerSource",
+            "query": {
+                "value": "let start=datetime('@{variables('date_start')}');\nlet end=datetime('@{variables('date_end')}');\nlet _date=datetime('@{variables('date_only')}');\nlet _end_date=endofday(_date);\nlet holiday_day = datatable(DATA_FESTIVO:datetime) [ \n    \"2025-01-01\",\n    \"2025-01-06\",\n    \"2025-04-20\",\n    \"2025-04-21\",\n    \"2025-04-25\",\n    \"2025-05-01\",\n    \"2025-06-02\",\n    \"2025-06-29\",\n    \"2025-08-15\",\n    \"2025-11-01\",\n    \"2025-12-08\",\n    \"2025-12-25\",\n    \"2025-12-26\"\n];\nlet dta = \n range DATA_P from _date to datetime_add(\"day\", 20, _date) step 1d\n| where DATA_P != _date\n| extend NUM_DAY=dayofweek(DATA_P)\n| extend IS_HOLIDAY=case(NUM_DAY == time(6) or NUM_DAY == time(0), true, false)\n| extend days_to_add=row_number(1)\n| join kind=leftouter holiday_day on $left.DATA_P == $right.DATA_FESTIVO\n| extend IS_HOLIDAY=case(DATA_P == DATA_FESTIVO, true, IS_HOLIDAY)\n| where IS_HOLIDAY == false\n| sort by DATA_P asc\n| extend days_to_add_new=row_number(1)\n| where days_to_add_new == 2\n| project DATA_P;\nlet PAYMENTS_TO_CHECK = KPI_ESITI_DAILY\n| where DATA_PAGAMENTO between (start .. end); // qui contengo tutti i pagamenti che sto analizzando\nlet RENDICONTAZIONE_DAILY = IUV_RENDICONTATI\n| where DATA_ESITO_SINGOLO_PAGAMENTO between (_date .. _end_date); // qui contengo tutta la giornata\nlet PAYMENTS_CHECK = PAYMENTS_TO_CHECK\n| join kind=leftouter RENDICONTAZIONE_DAILY on $left.IUV == $right.IUV, $left.PA_TRANSFER == $right.ID_DOMINIO, $left.IUR == $right.IUR, $left.AMOUNT_TRANSFER == $right.IMPORTO; // qui contengo tutte le rendicontazioni matchate e non, ma ho bisogno delle informazioni di INSERTED_TIMESTAMP dei flussi\n// per sapere le informazioni dei flussi, mi prendo prima tutti i flussi matchati\nlet distinct_data_ora = PAYMENTS_CHECK // qui ho tutte le data ora flusso matchate\n| distinct DATA_ORA_FLUSSO;\nlet all_flux_founded = PAYMENTS_CHECK // qui contengo tutti i flussi distinti che matchano con i pagamenti\n| where isempty(ID_FLUSSO) == false\n| distinct ID_FLUSSO, DATA_ORA_FLUSSO, UNIQUE_ID;\nlet _date_flux = all_flux_founded| project DATA_ORA_FLUSSO | summarize MIN_DATA=min(DATA_ORA_FLUSSO), MAX_DATA=max(DATA_ORA_FLUSSO);\nlet _min_date_flux = _date_flux | project MIN_DATA; // la data minima di un flusso tra quelli che matchano\nlet _max_date_flux = _date_flux | project MAX_DATA; // la data massima di un flusso tra quelli che matchano\n// con min e max date posso selezionare solo le \"partizioni\" utili per cercare info sui flussi\nlet all_info_flux = FLUSSI_RENDICONTAZIONE\n| where DATA_ORA_FLUSSO in (distinct_data_ora)\n| project ID_FLUSSO, DATA_ORA_FLUSSO, UNIQUE_ID, INSERTED_TIMESTAMP // qui ho tutti i flussi che matchano con la data ora flusso dei pagamenti matchati\n| summarize FIRST_VERSION=min(INSERTED_TIMESTAMP), LAST_VERSION=max(INSERTED_TIMESTAMP) by ID_FLUSSO;\n// ora devo vedere, tra i pagamenti matchati, di joinare con la lista dei flussi per \"inner\"\nPAYMENTS_CHECK\n| extend LIMIT_DATE_KPI=endofday(toscalar(dta))\n| join kind=leftouter all_info_flux on ID_FLUSSO\n| extend DIFF_DAYS_FIRST_VERSION = datetime_diff(\"day\", startofday(FIRST_VERSION), LIMIT_DATE_KPI)\n| extend DIFF_DAYS_LAST_VERSION = datetime_diff(\"day\", startofday(LAST_VERSION), LIMIT_DATE_KPI)\n| extend IS_REND = case(isempty(ID_FLUSSO), false, true)\n| extend IDSP = toint(IDSP)\n| project DATA_PAGAMENTO, NOTICE_ID, IUV, IUR, PA_EMITTENTE, PA_TRANSFER, AMOUNT_TRANSFER, IBAN, ID_TRANSFER, IDSP, COD_ESITO, ID_PSP, ID_BROKER_PSP, MOD_TYPE, ID_FLUSSO, FIRST_VERSION, LAST_VERSION, IS_REND, DIFF_DAYS_FIRST_VERSION, DIFF_DAYS_LAST_VERSION, LIMIT_DATE_KPI",
+                "type": "Expression"
+            },
+            "queryTimeout": "00:10:00",
+            "noTruncation": false
+        },
+        "sink": {
+            "type": "AzureDataExplorerSink"
+        },
+        "enableStaging": false,
+        "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+                {
+                    "source": {
+                        "name": "DATA_PAGAMENTO",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    },
+                    "sink": {
+                        "name": "DATA_PAGAMENTO",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "NOTICE_ID",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "NOTICE_ID",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "IUV",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "IUV",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "IUR",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "IUR",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "PA_EMITTENTE",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "PA_EMITTENTE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "PA_TRANSFER",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "PA_TRANSFER",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "AMOUNT_TRANSFER",
+                        "type": "Decimal",
+                        "physicalType": "decimal"
+                    },
+                    "sink": {
+                        "name": "AMOUNT_TRANSFER",
+                        "type": "Decimal",
+                        "physicalType": "decimal"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "IBAN",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "IBAN",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ID_TRANSFER",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    },
+                    "sink": {
+                        "name": "ID_TRANSFER",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "IDSP",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    },
+                    "sink": {
+                        "name": "IDSP",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "COD_ESITO",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    },
+                    "sink": {
+                        "name": "COD_ESITO",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ID_PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "ID_PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ID_BROKER_PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "ID_BROKER_PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "MOD_TYPE",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "MOD_TYPE",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ID_FLUSSO",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "ID_FLUSSO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "FIRST_VERSION",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    },
+                    "sink": {
+                        "name": "FIRST_VERSION",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "LAST_VERSION",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    },
+                    "sink": {
+                        "name": "LAST_VERSION",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "IS_REND",
+                        "type": "Boolean",
+                        "physicalType": "bool"
+                    },
+                    "sink": {
+                        "name": "IS_REND",
+                        "type": "Boolean",
+                        "physicalType": "bool"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "DIFF_DAYS_FIRST_VERSION",
+                        "type": "Int64",
+                        "physicalType": "long"
+                    },
+                    "sink": {
+                        "name": "DIFF_DAYS_FIRST_VERSION",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "DIFF_DAYS_LAST_VERSION",
+                        "type": "Int64",
+                        "physicalType": "long"
+                    },
+                    "sink": {
+                        "name": "DIFF_DAYS_LAST_VERSION",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "LIMIT_DATE_KPI",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    },
+                    "sink": {
+                        "name": "LIMIT_DATE_KPI",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    }
+                }
+            ],
+            "typeConversion": true,
+            "typeConversionSettings": {
+                "allowDataTruncation": true,
+                "treatBooleanAsNumber": false
+            }
+        }
+    },
+    "inputs": [
+        {
+            "referenceName": "${esiti_dataset}",
+            "type": "DatasetReference"
+        }
+    ],
+    "outputs": [
+        {
+            "referenceName": "${details_dataset}",
+            "type": "DatasetReference"
+        }
+    ]
+}

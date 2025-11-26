@@ -55,13 +55,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
-
 ### External resources
 
 variable "monitor_resource_group_name" {
@@ -113,7 +106,6 @@ variable "afm_marketplace_cosmos_db_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -123,11 +115,13 @@ variable "afm_marketplace_cosmos_db_params" {
     public_network_access_enabled     = bool
     is_virtual_network_filter_enabled = bool
     backup_continuous_enabled         = bool
+    analytical_storage_enabled        = bool
   })
 }
 
 variable "afm_storage_params" {
   type = object({
+    enable_backup                 = optional(bool, false)
     enabled                       = bool,
     kind                          = string,
     tier                          = string,
@@ -135,9 +129,11 @@ variable "afm_storage_params" {
     advanced_threat_protection    = bool,
     retention_days                = number,
     public_network_access_enabled = bool,
+    backup_retention_days         = optional(number, 0)
   })
 
   default = {
+    enable_backup                 = false
     enabled                       = false,
     kind                          = "StorageV2"
     tier                          = "Standard",
@@ -145,6 +141,7 @@ variable "afm_storage_params" {
     advanced_threat_protection    = false,
     retention_days                = 30,
     public_network_access_enabled = false
+    backup_retention_days         = 0
   }
 }
 

@@ -1,24 +1,36 @@
 terraform {
   required_providers {
+    azapi = {
+      source  = "azure/azapi"
+      version = "<= 1.3.0"
+    }
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = "<= 2.6.0"
+    }
     azurerm = {
       source  = "hashicorp/azurerm"
       version = "= 2.99.0"
     }
-    azuread = {
-      source  = "hashicorp/azuread"
-      version = "= 2.6.0"
-    }
     local = {
       source  = "hashicorp/local"
-      version = ">= 2.2.3"
+      version = "<= 2.3.0"
+    }
+    null = {
+      source  = "hashicorp/null"
+      version = "<= 3.2.1"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "<= 3.4.3"
     }
     time = {
       source  = "hashicorp/time"
-      version = ">= 0.9.0"
+      version = "<= 0.11.1"
     }
-    azapi = {
-      source  = "Azure/azapi"
-      version = "= 1.3.0"
+    tls = {
+      source  = "hashicorp/tls"
+      version = "<= 4.0.5"
     }
   }
 
@@ -40,7 +52,3 @@ provider "azapi" {
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
-
-locals {
-  project = format("%s-%s", var.prefix, var.env_short)
-}

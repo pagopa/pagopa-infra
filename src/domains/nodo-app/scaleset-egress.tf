@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "vmss_rg" {
   name     = format("%s-vmss-rg", local.project)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 data "azurerm_virtual_network" "vnet_integration" {
@@ -11,7 +11,8 @@ data "azurerm_virtual_network" "vnet_integration" {
 }
 
 module "vmss_snet" {
-  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/subnet"
+
   name                                          = format("%s-vmss-snet", local.project)
   address_prefixes                              = var.cidr_subnet_vmss
   resource_group_name                           = local.vnet_resource_group_name
@@ -97,7 +98,8 @@ resource "azurerm_virtual_machine_scale_set_extension" "vmss-extension" {
 # create load balancer (NVA) with tcp/0 ports
 #
 module "load_balancer_nodo_egress" {
-  source                                 = "git::https://github.com/pagopa/terraform-azurerm-v3.git//load_balancer?ref=v6.5.0"
+  source = "./.terraform/modules/__v3__/load_balancer"
+
   resource_group_name                    = local.vnet_resource_group_name
   location                               = var.location
   name                                   = format("%s-egress-lb", local.project)
@@ -126,7 +128,7 @@ module "load_balancer_nodo_egress" {
     }
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = []
 }
@@ -135,7 +137,7 @@ module "load_balancer_nodo_egress" {
 # create routing table from aks to external endpoint via load balancer NVA
 #
 module "route_table_peering_nexi" {
-  source = "git::https://github.com/pagopa/azurerm.git//route_table?ref=v1.0.90"
+  source = "./.terraform/modules/__v3__/route_table"
 
   name                          = format("%s-aks-to-nexi-rt", local.project)
   location                      = var.location
@@ -146,7 +148,7 @@ module "route_table_peering_nexi" {
 
   routes = var.route_aks
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #

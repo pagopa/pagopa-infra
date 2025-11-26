@@ -64,7 +64,7 @@ resource "kubernetes_role_binding" "deployer_binding" {
 resource "kubernetes_role_binding" "deployer_binding_2" {
   metadata {
     name      = "deployer-binding-2"
-    namespace = "nodo-cron" # kubernetes_namespace.namespace.metadata[0].name 
+    namespace = "nodo-cron" # kubernetes_namespace.namespace.metadata[0].name
   }
   role_ref {
     api_group = "rbac.authorization.k8s.io"
@@ -110,3 +110,22 @@ resource "kubernetes_role_binding" "system_deployer_binding_2" {
     namespace = kubernetes_namespace.namespace_system.metadata[0].name
   }
 }
+
+resource "kubernetes_role_binding" "kube_system_reader_binding" {
+  metadata {
+    name      = "kube-system-reader-${var.domain}"
+    namespace = "kube-system"
+  }
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "ClusterRole"
+    name      = "kube-system-reader"
+  }
+  subject {
+    kind      = "ServiceAccount"
+    name      = "azure-devops"
+    namespace = kubernetes_namespace.namespace_system.metadata[0].name
+  }
+}
+
+

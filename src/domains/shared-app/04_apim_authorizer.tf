@@ -1,7 +1,7 @@
 locals {
   apim_authorizer_api = {
-    display_name          = "Authorizer Domain Caching - API"
-    description           = "API for Authorizer Domain Caching"
+    display_name          = "Authorizer Domain Caching - Internal API"
+    description           = "Internal API for cache handling of domains for Authorizer"
     path                  = "shared/authorizer"
     subscription_required = false
     service_url           = null
@@ -12,10 +12,10 @@ locals {
 ## Products ##
 ##############
 module "apim_authorizer_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "authorizer"
-  display_name = "Authorizer Domain Caching"
+  display_name = "Authorizer Domain Caching - Internal API"
   description  = "Internal API for cache handling of domains for Authorizer"
 
   api_management_name = local.pagopa_apim_name
@@ -29,6 +29,7 @@ module "apim_authorizer_product" {
   policy_xml = file("./api_product/_authorizer_policy.xml")
 }
 
+
 resource "azurerm_api_management_api_version_set" "api_authorizer_api" {
 
   name                = format("%s-authorizer-api", var.env_short)
@@ -39,7 +40,7 @@ resource "azurerm_api_management_api_version_set" "api_authorizer_api" {
 }
 
 module "apim_api_authorizer_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-authorizer-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -66,7 +67,9 @@ module "apim_api_authorizer_api_v1" {
 }
 
 # fragment
-
+resource "terraform_data" "sha256_authorizer_fragment" {
+  input = sha256(file("./api/authorizer/authorizer-check.xml"))
+}
 resource "azapi_resource" "authorizer_fragment" {
   # provider  = azapi.apim
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"

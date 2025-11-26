@@ -17,40 +17,70 @@ parameters:
       - prf
       - uat
       - prd
+      - dev-storico
+      - uat-storico
+      - prd-storico
 
 variables:
   ${{ if eq(parameters.k8sEnv, 'dev') }}:
     DB_HOST: pagopa-d-weu-nodo-flexible-postgresql
-    AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
     KEY_VAULT_NAME: 'pagopa-d-nodo-kv'
     DATABASE_NAME: nodo
     poolImage: 'pagopa-dev-linux-infra'
+    STORICO: false
+  ${{ if eq(parameters.k8sEnv, 'dev-storico') }}:
+    DB_HOST: pagopa-d-weu-nodo-storico-flexible-postgresql
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+    KEY_VAULT_NAME: 'pagopa-d-nodo-kv'
+    DATABASE_NAME: nodo
+    poolImage: 'pagopa-dev-linux-infra'
+    STORICO: true
   ${{ if eq(parameters.k8sEnv, 'it') }}:
     DB_HOST: pagopa-d-weu-nodo-flexible-postgresql
-    AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
     KEY_VAULT_NAME: 'pagopa-d-nodo-kv'
     DATABASE_NAME: 'nodo-replica'
     poolImage: 'pagopa-dev-linux-infra'
+    STORICO: false
   ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
     DB_HOST: pagopa-u-weu-nodo-flexible-postgresql
-    AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
     KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
     DATABASE_NAME: nodo
     poolImage: 'pagopa-uat-linux-infra'
+    STORICO: false
+  ${{ elseif eq(parameters.k8sEnv, 'uat-storico') }}:
+    DB_HOST: pagopa-u-weu-nodo-storico-flexible-postgresql
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
+    KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
+    DATABASE_NAME: nodo
+    poolImage: 'pagopa-uat-linux-infra'
+    STORICO: true
   ${{ elseif eq(parameters.k8sEnv, 'prf') }}:
     DB_HOST: pagopa-u-weu-nodo-flexible-postgresql
-    AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
     KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
     DATABASE_NAME: 'nodo-replica'
     poolImage: 'pagopa-uat-linux-infra'
+    STORICO: false
   ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
     DB_HOST: pagopa-p-weu-nodo-flexible-postgresql
-    AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
     KEY_VAULT_NAME: 'pagopa-p-nodo-kv'
     DATABASE_NAME: nodo
     poolImage: 'pagopa-prod-linux-infra'
+    STORICO: false
+  ${{ elseif eq(parameters.k8sEnv, 'prd-storico') }}:
+    DB_HOST: pagopa-p-weu-nodo-storico-flexible-postgresql
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
+    KEY_VAULT_NAME: 'pagopa-p-nodo-kv'
+    DATABASE_NAME: nodo
+    poolImage: 'pagopa-prod-linux-infra'
+    STORICO: true
   ADMIN_USERNAME: azureuser
   CFG_USERNAME: cfg
+  CFG_READ_USERNAME: cfgr
   CFG_SCHEMA: cfg
   OFFLINE_USERNAME: offline
   OFFLINE_SCHEMA: offline
@@ -60,6 +90,8 @@ variables:
   RE_SCHEMA: re
   WFESP_USERNAME: wfesp
   WFESP_SCHEMA: wfesp
+  PARTITION_SCHEMA: partition
+  PARTITION_USERNAME: partition
 
 stages:
   - stage: initialization_jobs
@@ -74,7 +106,8 @@ stages:
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
-              secretsFilter: 'db-administrator-login-password,db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password'
+              secretsFilter: 'db-administrator-login-password,db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password,db-partition-password, db-cfg-password-read'
+
           - task: AzureCLI@2
             displayName: "create all schemas"
             inputs:
@@ -130,5 +163,308 @@ stages:
                     IMMUTABLE
                     RETURNS NULL ON NULL INPUT;
                 END
+                \$\$;
+                "
+
+          - task: AzureCLI@2
+            displayName: "create partition"
+            inputs:
+              azureSubscription: $(AZURE_SERVICE_CONNECTION)
+              scriptLocation: inlineScript
+              scriptType: bash
+              inlineScript: |
+
+                az config set extension.use_dynamic_install=yes_without_prompt
+                az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
+                --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
+                --querytext "
+                do \$\$
+
+                BEGIN
+                  IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$PARTITION_USERNAME') THEN
+                    CREATE ROLE $PARTITION_USERNAME WITH
+                    NOSUPERUSER
+                    CREATEDB
+                    CREATEROLE
+                    INHERIT
+                    LOGIN
+                    NOREPLICATION
+                    NOBYPASSRLS
+                    CONNECTION LIMIT -1;
+                  END IF;
+
+                  ALTER ROLE $PARTITION_USERNAME PASSWORD '$(db-partition-password)';
+
+                  CREATE SCHEMA IF NOT EXISTS $PARTITION_SCHEMA;
+
+                  GRANT azure_pg_admin TO $PARTITION_USERNAME;
+                  GRANT $CFG_SCHEMA TO $PARTITION_USERNAME;
+                  GRANT $OFFLINE_SCHEMA TO $PARTITION_USERNAME;
+                  GRANT $ONLINE_SCHEMA TO $PARTITION_USERNAME;
+                  GRANT $RE_SCHEMA TO $PARTITION_USERNAME;
+                  GRANT $WFESP_SCHEMA TO $PARTITION_USERNAME;
+                  GRANT pg_read_all_settings TO $PARTITION_USERNAME;
+                  GRANT pg_read_all_stats TO $PARTITION_USERNAME;
+                  GRANT pg_stat_scan_tables TO $PARTITION_USERNAME;
+
+                  GRANT CONNECT ON DATABASE \"$(DATABASE_NAME)\" TO $PARTITION_USERNAME;
+                  GRANT ALL ON SCHEMA $PARTITION_SCHEMA TO $PARTITION_USERNAME;
+                  ALTER DEFAULT PRIVILEGES FOR ROLE \"$(ADMIN_USERNAME)\" IN SCHEMA $PARTITION_SCHEMA
+                  GRANT ALL ON TABLES TO $PARTITION_USERNAME;
+                  ALTER DEFAULT PRIVILEGES FOR ROLE \"$(ADMIN_USERNAME)\" IN SCHEMA $PARTITION_SCHEMA
+                  GRANT ALL ON SEQUENCES TO $PARTITION_USERNAME;
+                  ALTER DEFAULT PRIVILEGES FOR ROLE \"$(ADMIN_USERNAME)\" IN SCHEMA $PARTITION_SCHEMA
+                  GRANT EXECUTE ON FUNCTIONS TO $PARTITION_USERNAME;
+                  ALTER DEFAULT PRIVILEGES FOR ROLE \"$(ADMIN_USERNAME)\" IN SCHEMA $PARTITION_SCHEMA
+                  GRANT USAGE ON TYPES TO $PARTITION_USERNAME;
+                END;
+
+                \$\$;
+                "
+          - task: AzureCLI@2
+            displayName: "configure partition"
+            inputs:
+              azureSubscription: $(AZURE_SERVICE_CONNECTION)
+              scriptLocation: inlineScript
+              scriptType: bash
+              inlineScript: |
+
+                az config set extension.use_dynamic_install=yes_without_prompt
+                az postgres flexible-server execute --name $(DB_HOST) --admin-user $(PARTITION_USERNAME) \
+                --admin-password '$(db-partition-password)' --database-name "$(DATABASE_NAME)" \
+                --querytext "
+                do \$\$
+                BEGIN
+
+                  CREATE SEQUENCE IF NOT EXISTS $(PARTITION_SCHEMA).seq_log
+                    INCREMENT 1
+                    START 1
+                    MINVALUE 1
+                    MAXVALUE 9223372036854775807
+                    CACHE 1
+                  ;
+
+                  CREATE TABLE IF NOT EXISTS $(PARTITION_SCHEMA).PG_LOG
+                    (
+                      ID_TRACE NUMERIC DEFAULT nextval('seq_log'::regclass) NOT NULL ,
+                      UTENTE character varying,
+                      PROCESSO character varying,
+                      DATA_INIZIO timestamp without time zone,
+                      DATA_FINE timestamp without time zone,
+                      DELTA_TIME INTERVAL,
+                      ESITO character varying,
+                      MESSAGGIO character varying,
+                      NOTE character varying
+                    );
+
+                  CREATE TABLE IF NOT EXISTS $(PARTITION_SCHEMA).tab_part
+                    (
+                      tabella character varying(100) COLLATE pg_catalog."default",
+                      schema character varying(100) COLLATE pg_catalog."default",
+                      prefisso_nome_indice character varying(100) COLLATE pg_catalog."default",
+                      campi_indice character varying(100) COLLATE pg_catalog."default"
+                    );
+
+                    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO "$PARTITION_USERNAME";
+                    ALTER DEFAULT PRIVILEGES IN SCHEMA $ONLINE_SCHEMA GRANT ALL ON TABLES TO "$PARTITION_USERNAME";
+                    ALTER DEFAULT PRIVILEGES IN SCHEMA $RE_SCHEMA GRANT ALL ON TABLES TO "$PARTITION_USERNAME";
+                    ALTER DEFAULT PRIVILEGES IN SCHEMA $WFESP_SCHEMA GRANT ALL ON TABLES TO "$PARTITION_USERNAME";
+                    ALTER DEFAULT PRIVILEGES IN SCHEMA $OFFLINE_SCHEMA GRANT ALL ON TABLES TO "$PARTITION_USERNAME";
+                    ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA $PARTITION_SCHEMA
+                    GRANT ALL ON SEQUENCES TO $PARTITION_USERNAME;
+                    ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA $PARTITION_SCHEMA
+                    GRANT EXECUTE ON FUNCTIONS TO $PARTITION_USERNAME;
+                    ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA $PARTITION_SCHEMA
+                    GRANT USAGE ON TYPES TO $PARTITION_USERNAME;
+                    GRANT ALL ON SCHEMA public TO $PARTITION_USERNAME;
+                    ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA public GRANT ALL ON SEQUENCES TO $PARTITION_USERNAME;
+                    ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA public GRANT EXECUTE ON FUNCTIONS TO $PARTITION_USERNAME;
+                    ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA public GRANT USAGE ON TYPES TO $PARTITION_USERNAME;
+                    ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA $PARTITION_SCHEMA GRANT ALL ON TABLES TO $ADMIN_USERNAME;
+                    ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA $PARTITION_SCHEMA GRANT ALL ON SEQUENCES TO $ADMIN_USERNAME;
+                    ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA $PARTITION_SCHEMA GRANT EXECUTE ON FUNCTIONS TO $ADMIN_USERNAME;
+                    ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA $PARTITION_SCHEMA GRANT USAGE ON TYPES TO $ADMIN_USERNAME;
+                    GRANT ALL ON TABLE $PARTITION_SCHEMA.tab_part TO $ADMIN_USERNAME;
+
+                    CREATE OR REPLACE PROCEDURE $PARTITION_SCHEMA.modify_partition(a integer) LANGUAGE 'plpgsql' AS \$BODY\$
+
+                    DECLARE
+                      l_partname TEXT;
+                      l_part_list date;
+                      l_part_listb date;
+                      l_partab TEXT;
+                      L_INDEX_NAME TEXT;
+                      l_campi_indice TEXT;
+                      l_prefisso_indice TEXT;
+                      l_sql text;
+                      l_exist text;
+                      l_var_exist integer;
+                      loop_counter INTEGER;
+                      start_partition date;
+                      ptDataInizio timestamp :=  clock_timestamp();
+                      ptDataInizioStep timestamp;
+                      iIdTrace NUMERIC;
+                      sUtente         TEXT := USER;
+                      tLabelStep TEXT;
+                      tProcedureName TEXT:= 'modify_partition';
+
+                          tab_cursor CURSOR FOR
+                      SELECT lower(tabella) as tabella, lower(schema) as schema, lower(prefisso_nome_indice) as prefisso_indice, lower(campi_indice) as campi_indice
+                      FROM partition.TAB_PART;
+                      tab_record TEXT;
+                      tab_schema TEXT;
+
+                      BEGIN
+
+                      tLabelStep := 'Init';
+                      iIdTrace := nextval('seq_log'::regclass);
+                      INSERT INTO PG_LOG values (iIdTrace,sUtente, tProcedureName, ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','INIZIO',tLabelStep);
+
+                      IF A is null
+                        THEN A=1;
+                      END IF;
+
+                      for loop_counter in 0..a loop
+
+                        OPEN tab_cursor;
+                          LOOP
+                            FETCH NEXT FROM tab_cursor INTO tab_record, tab_schema,l_prefisso_indice, l_campi_indice;
+                            EXIT WHEN NOT FOUND;
+
+                        ------------------------------------------------------------------------------------------------------
+
+                        IF loop_counter=0 THEN
+                          L_PART_LIST  = DATE_TRUNC('DAY', CURRENT_DATE+loop_counter-1500)::DATE;
+                          L_PART_LISTB = DATE_TRUNC('DAY', CURRENT_DATE+loop_counter+1)::DATE;
+                          L_PARTNAME  := TAB_RECORD||'_PMINVALUE';
+                        ELSE
+                          L_PART_LIST = date_trunc('day', CURRENT_DATE+loop_counter)::date;
+                          L_PART_LISTB = date_trunc('day', CURRENT_DATE+loop_counter+1)::date;
+                          L_PARTNAME := tab_record||'_P'||to_char(CURRENT_DATE+loop_counter, 'yyyymmdd');
+                        END IF;
+
+                        L_INDEX_NAME := l_prefisso_indice||'_'||L_PARTNAME;
+
+                        IF NOT EXISTS
+                          ( SELECT 1
+                          FROM   information_schema.tables
+                          WHERE  table_name=l_partname and table_schema=tab_schema
+                          union all
+                          SELECT
+                            1
+                          FROM pg_inherits
+                            JOIN pg_class parent            ON pg_inherits.inhparent = parent.oid
+                            JOIN pg_class child             ON pg_inherits.inhrelid   = child.oid
+                            JOIN pg_namespace nmsp_parent   ON nmsp_parent.oid  = parent.relnamespace
+                            JOIN pg_namespace nmsp_child    ON nmsp_child.oid   = child.relnamespace
+                          WHERE child.relname=l_partname and nmsp_child.nspname =tab_schema
+                          )
+                          THEN
+
+                          l_sql := format('CREATE TABLE  %I.%I PARTITION OF %I.%I FOR VALUES FROM (%L) TO (%L)',  tab_schema, l_partname,  tab_schema, tab_record, l_part_list, l_part_listb);
+                          execute l_sql;
+                        END IF;
+
+                        IF NOT EXISTS
+                          (SELECT *
+                          FROM pg_stat_all_indexes
+                          WHERE  indexrelname=L_INDEX_NAME and schemaname=tab_schema)
+                          THEN
+                          if l_campi_indice is not null then
+                          l_sql := format('CREATE UNIQUE INDEX %I ON %I.%I USING BTREE(%s)',  L_INDEX_NAME,  tab_schema, l_partname, l_campi_indice);
+                          execute l_sql;
+                        end if;
+                      END IF;
+                      ------------------------------------------------------------------------------------------------------
+
+                      END LOOP;
+
+                      CLOSE tab_cursor;
+
+                      END LOOP;
+
+                      l_sql := format('GRANT SELECT ON ALL TABLES IN SCHEMA online TO offline;');
+                      execute l_sql;
+
+                      iIdTrace := nextval('seq_log'::regclass);
+                      INSERT INTO PG_LOG values (iIdTrace,sUtente, tProcedureName, ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','FINE','Procedura eseguita con successo');
+
+                      EXCEPTION
+                      WHEN OTHERS THEN
+
+                      iIdTrace := nextval('seq_log'::regclass);
+                      INSERT INTO PG_LOG values (iIdTrace,sUtente, tProcedureName, ptDataInizio, clock_timestamp(), ( clock_timestamp()- ptDataInizio) ,'KO','FINE',
+                    CONCAT('Step:',tLabelStep,' , sqlerrm : ',sqlerrm));
+
+                    END;
+
+                    \$BODY\$;
+
+                    ALTER PROCEDURE $PARTITION_SCHEMA.modify_partition(integer) OWNER TO $PARTITION_USERNAME;
+
+                END;
+                \$\$;
+                "
+          - ${{ if eq(variables.STORICO, false) }}:
+            - task: AzureCLI@2
+              displayName: "partition scheduling"
+              inputs:
+                azureSubscription: $(AZURE_SERVICE_CONNECTION)
+                scriptLocation: inlineScript
+                scriptType: bash
+                inlineScript: |
+
+                  az config set extension.use_dynamic_install=yes_without_prompt
+                  az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
+                  --admin-password '$(db-administrator-login-password)' --database-name "postgres" \
+                  --querytext "
+                  do \$\$
+                  BEGIN
+                    DECLARE
+                    job_id INT;
+                    BEGIN
+                      SELECT j.jobid INTO job_id FROM cron.job j WHERE j.jobname = '$DATABASE_NAME';
+
+                      -- use job id to cancel the schedule
+                      PERFORM cron.unschedule(job_id);
+                    END;
+
+                    PERFORM cron.schedule_in_database('$DATABASE_NAME', '00 23 * * *', 'call partition.modify_partition(7);','$DATABASE_NAME');
+                  END;
+
+                  \$\$;
+                  "
+
+          - task: AzureCLI@2
+            displayName: "create CFG user READ"
+            inputs:
+              azureSubscription: $(AZURE_SERVICE_CONNECTION)
+              scriptLocation: inlineScript
+              scriptType: bash
+              inlineScript: |
+
+                az config set extension.use_dynamic_install=yes_without_prompt
+                az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
+                --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
+                --querytext "
+                do \$\$
+
+                BEGIN
+                  IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$CFG_READ_USERNAME') THEN
+                    CREATE ROLE $CFG_READ_USERNAME WITH
+                    NOSUPERUSER
+                    LOGIN
+                    NOREPLICATION
+                    NOBYPASSRLS
+                    CONNECTION LIMIT -1;
+                  END IF;
+
+                  ALTER ROLE $CFG_READ_USERNAME PASSWORD '$(db-cfg-password-read)';
+
+                  GRANT SELECT ON ALL TABLES IN SCHEMA $CFG_SCHEMA TO $CFG_READ_USERNAME;
+                  GRANT USAGE ON SCHEMA $CFG_SCHEMA TO $CFG_READ_USERNAME;
+
+                END;
+
                 \$\$;
                 "

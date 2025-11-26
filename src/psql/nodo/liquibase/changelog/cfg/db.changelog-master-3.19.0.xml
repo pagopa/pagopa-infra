@@ -5,8 +5,9 @@
 
   <property name="version" value="3.19.0" global="false"/>
 
-  <include file="./db.changelog-master-3.15.0.xml"/>
+  <include file="./db.changelog-master-3.18.0.xml"/>
 
+  <include file="./${version}/db.changelog-20230517113500_remove_LMI_columns.xml"  labels="${version}"/>
   <include file="./${version}/db.changelog-20230517153200_parked_rtps_config.xml"  labels="${version}"/>
 
 </databaseChangeLog>

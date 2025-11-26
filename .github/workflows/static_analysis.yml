@@ -1,69 +1,119 @@
-name: Static Analysis
+name: Static Analysis Main
 
 on:
   push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   static_analysis:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    env:
+      TF_PLUGIN_CACHE_DIR: /tmp/.terraform.d/plugin-cache
 
     steps:
-      # from https://github.com/actions/checkout/commits/main
-      - uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
-        with:
-          persist-credentials: false
-          fetch-depth: 0
+    - name: ⚡ Checkout code
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
-      - name: init_terraform_folders
-        env:
-          FOLDERS: >
-            src/aks-platform
-            src/core
-            src/domains/afm-app
-            src/domains/afm-common
-            src/domains/bizevents-app
-            src/domains/bizevents-common
-            src/domains/ecommerce-app
-            src/domains/ecommerce-common
-            src/domains/gps-app
-            src/domains/gps-common
-            src/domains/load-test
-            src/domains/nodo-app
-            src/domains/nodo-common
-            src/domains/nodo-secret
-            src/domains/selfcare-app
-            src/domains/selfcare-common
-            src/domains/shared-app
-            src/domains/shared-common
-        run: |
-          pids=()
+    - name: 📖 Read current terraform version
+      run: |
+        VER=$(cat .terraform-version)
+        echo "TERRAFORM_VERSION=$VER" >> $GITHUB_ENV
 
-          TAG=$(cat .terraform-version)
-          for f in $FOLDERS; do
-            pushd "$(pwd)/${f}"
-              sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-              docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init &
-              pids+=($!)
-            popd
+    - name: 🔨 Setup Terraform
+      # from https://github.com/hashicorp/setup-terraform/commits/main
+      uses: hashicorp/setup-terraform@97f030cf6dc0b4f5e0da352c7bca9cca34579800 #v3.1.0
+      with:
+        terraform_version: "${{ env.TERRAFORM_VERSION }}"
 
-          done
+    - name: 🧹 Clean provider directories
+      run: |
+        find . -type d -name ".terraform" -exec rm -rf {} +
+        find . -type f -name ".terraform.lock.hcl" -exec rm -f {} +
+        rm -rf /tmp/.terraform.d/plugin-cache/*
 
-          # Wait for each specific process to terminate.
-          # Instead of this loop, a single call to 'wait' would wait for all the jobs
-          # to terminate, but it would not give us their exit status.
+    - name: 💾 Cache Terraform plugins
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.terraform.d/plugin-cache
+        key: ${{ runner.os }}-terraform-${{ env.TERRAFORM_VERSION }}-${{ hashFiles('**/.terraform.lock.hcl') }}
+        restore-keys: |
+          ${{ runner.os }}-terraform-${{ env.TERRAFORM_VERSION }}-
+          ${{ runner.os }}-terraform-
+
+    - name: 🔧 Setup Terraform plugin cache directory
+      run: |
+        mkdir -p /tmp/.terraform.d/plugin-cache
+        echo 'plugin_cache_dir = "/tmp/.terraform.d/plugin-cache"' > ~/.terraformrc
+
+    - name: 🏁 Init terraform folders
+      id: init_terraform_folders
+      shell: bash
+      run: |
+        echo "📢 Show space"
+        df -h
+
+        echo -e "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-"
+        echo    "+ 🏁 INIT TERRAFORM FOLDERS 🏁   +"
+        echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-\n"
+
+        FOLDERS=$(grep -rl --include='*.tf' --exclude-dir='.terraform' '^' . | xargs -I{} dirname {} | sort -u)
+        echo "FOLDERS=${FOLDERS}"
+
+        pids=()
+
+        # TAG=$(cat .terraform-version)
+        # docker pull hashicorp/terraform:$TAG
+
+        for f in $FOLDERS; do
+          pushd "$(pwd)/${f}"
+            sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
+            terraform init -upgrade -lockfile=true &&
+            terraform providers lock \
+              -platform=darwin_arm64 \
+              -platform=darwin_amd64 \
+              -platform=linux_amd64 \
+              -platform=linux_arm64
+          popd
+        done
+
+        # Wait for each specific process to terminate.
+        # Instead of this loop, a single call to 'wait' would wait for all the jobs
+        # to terminate, but it would not give us their exit status.
+        #
+        for pid in "${pids[@]}"; do
           #
-          for pid in "${pids[@]}"; do
-            #
-            # Waiting on a specific PID makes the wait command return with the exit
-            # status of that process. Because of the 'set -e' setting, any exit status
-            # other than zero causes the current shell to terminate with that exit
-            # status as well.
-            #
-            wait "$pid"
-          done
+          # Waiting on a specific PID makes the wait command return with the exit
+          # status of that process. Because of the 'set -e' setting, any exit status
+          # other than zero causes the current shell to terminate with that exit
+          # status as well.
+          #
+          wait "$pid"
+        done
 
-      - name: run_pre_commit_terraform
-        run: |
-          # from https://github.com/antonbabenko/pre-commit-terraform/pkgs/container/pre-commit-terraform
-          TAG=v1.76.0@sha256:50ed39dc67b6a5b198e45fa7b06aa73b50ccc20613bc795f1a7841fd41b2c838
-          docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a
+    - name: Show precommit version
+      shell: bash
+      run: |
+        echo -e "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
+        echo    "+ 1️⃣  SHOW PRECOMMIT VERSION 1️⃣  +"
+        echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
+
+        TAG=v1.96.2@sha256:01f870b7689b5a09c1a370914fcddcac42c4b6478c9d369e1d2590dd0a66ffd0
+        docker run --rm --entrypoint cat ghcr.io/antonbabenko/pre-commit-terraform:$TAG /usr/bin/tools_versions_info
+
+    - name: 🚨 Run precommit
+      id: run_precommit
+      shell: bash
+      run: |
+        echo -e "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
+        echo    "+- 🚨 PRECOMMIT TERRAFORM 🚨 -+"
+        echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
+
+        TAG=v1.96.2@sha256:01f870b7689b5a09c1a370914fcddcac42c4b6478c9d369e1d2590dd0a66ffd0
+        docker run \
+          -v $(pwd):/lint \
+          -v /tmp/.terraform.d/plugin-cache:/tmp/.terraform.d/plugin-cache \
+          -w /lint \
+          ghcr.io/antonbabenko/pre-commit-terraform:$TAG \
+          run -a

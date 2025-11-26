@@ -1,6 +1,9 @@
 locals {
-  project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  product = "${var.prefix}-${var.env_short}"
+  project         = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_replica = "${var.prefix}-${var.env_short}-${var.location_replica_short}-${var.domain}"
+  product         = "${var.prefix}-${var.env_short}"
+
+  function_app_name = "${local.product}-fn-reportingfdr-fdr"
 
   subscription_name = "${var.env}-${var.prefix}"
 
@@ -19,6 +22,9 @@ locals {
   vnet_name                = "${local.product}-vnet"
   vnet_resource_group_name = "${local.product}-vnet-rg"
 
+  vnet_italy_name    = "${local.product}-${var.location_replica_short}-vnet"
+  vnet_italy_rg_name = "${local.product}-${var.location_replica_short}-vnet-rg"
+
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
 
@@ -30,4 +36,9 @@ locals {
 
   cosmos_dns_zone_name                = "privatelink.mongo.cosmos.azure.com"
   cosmos_dns_zone_resource_group_name = "${local.product}-vnet-rg"
+
+  monitor_appinsights_name = "${local.product}-appinsights"
+
+  evt_hub_location                   = "weu-core"
+  monitor_action_group_opsgenie_name = "Opsgenie"
 }

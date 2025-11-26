@@ -3,8 +3,8 @@
 ##############
 
 module "apim_mock_pm_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
-  count  = var.env_short == "d" ? 1 : 0
+  source = "./.terraform/modules/__v3__/api_management_product"
+  count  = var.env_short == "p" ? 0 : 1
 
   product_id   = "mock_pm"
   display_name = "Mock PM for NDP"
@@ -35,7 +35,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "api_mock_pm_api" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "p" ? 0 : 1
 
   name                = format("%s-mock-pm-service-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
@@ -46,8 +46,8 @@ resource "azurerm_api_management_api_version_set" "api_mock_pm_api" {
 
 
 module "apim_api_mock_pm_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
-  count  = var.env_short == "d" ? 1 : 0
+  source = "./.terraform/modules/__v3__/api_management_api"
+  count  = var.env_short == "p" ? 0 : 1
 
   name                  = format("%s-mock-pm-service-api", local.project)
   api_management_name   = local.pagopa_apim_name

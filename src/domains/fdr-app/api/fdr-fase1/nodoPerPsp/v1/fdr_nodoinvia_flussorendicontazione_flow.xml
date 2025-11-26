@@ -1,0 +1,241 @@
+<!-- https://github.com/Azure/api-management-policy-snippets/blob/master/examples/PUT%20a%20file%20to%20blobStorage%20account.xml -->
+<policies>
+    <inbound>
+        <base />
+        <set-variable name="readrequest" value="@(context.Request.Body.As<string>(preserveContent: true))" />
+        <set-variable name="identificativoPSP" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"identificativoPSP"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var identificativoPSP = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "identificativoPSP";
+            return identificativoPSP;
+        }" />
+        <set-variable name="identificativoIntermediarioPSP" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"identificativoIntermediarioPSP"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var identificativoIntermediarioPSP = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "";
+            return identificativoIntermediarioPSP;
+        }" />
+        <set-variable name="identificativoCanale" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"identificativoCanale"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var identificativoCanale = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "";
+            return identificativoCanale;
+        }" />
+        <set-variable name="identificativoDominio" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"identificativoDominio"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var identificativoDominio = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "";
+            return identificativoDominio;
+        }" />
+        <set-variable name="identificativoFlusso" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"identificativoFlusso"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var identificativoFlusso = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "";
+            return identificativoFlusso;
+        }" />
+        <set-variable name="dataOraFlusso" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"dataOraFlusso"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var dataOraFlusso = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "";
+            return dataOraFlusso;
+        }" />
+        <set-variable name="xmlRendicontazione" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"xmlRendicontazione"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var xmlRendicontazione = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "xmlRendicontazione";
+            return xmlRendicontazione;
+        }" />
+        <cache-store-value key="@{
+            var fdrFileName=(string) context.Variables["identificativoPSP"]+"--"+context.Variables["identificativoIntermediarioPSP"]+"--"+context.Variables["identificativoCanale"]+"--"+context.Variables["identificativoDominio"]+"--"+context.Variables["identificativoFlusso"]+"--"+context.Variables["dataOraFlusso"];
+            return fdrFileName;
+        }" value="@((string) context.Variables["xmlRendicontazione"])" duration="3600" caching-type="internal" />
+
+      <!-- is-fdr-nodo-pagopa-enable is used to switch traffic to pagoPA Fdr1 -->
+      <choose>
+          <when condition="@(${is-fdr-nodo-pagopa-enable})">
+              <set-variable name="ftp_organization" value="{{ftp-organization}}" />
+              <!-- is-ftp-enabled identifies if EC uses ftp, this traffic is managed by partner -->
+              <set-variable name="is-ftp-enabled" value="@{
+                      var org_list = ((string) context.Variables["ftp_organization"]).Split(',');
+                      var org_fiscal_code = (string) context.Variables["identificativoDominio"];
+                      var is_ftp_enabled = Array.Exists(org_list, e => e == org_fiscal_code);
+                      return is_ftp_enabled;
+                      }" />
+              <choose>
+                  <when condition="@((bool)context.Variables["is-ftp-enabled"])">
+                      <!--
+                        in the case of CI uses FTP, traffic is redirect to the default nodo,
+                        then it is forwarded to FdR service to manage JSON conversion
+                      -->
+                      <send-one-way-request mode="new">
+                          <set-url>@("${base-url}/nodoInviaFlussoRendicontazioneFTP")</set-url>
+                          <set-method>POST</set-method>
+                          <set-header name="Content-Type" exists-action="override">
+                              <value>application/json</value>
+                          </set-header>
+                          <set-body>@{return new JObject(new JProperty("content", (string) context.Variables["readrequest"])).ToString();}</set-body>
+                      </send-one-way-request>
+                  </when>
+                  <otherwise>
+                      <set-variable name="enable_fdr_psp_soap_request_switch" value="{{enable-fdr-psp-soap-request-switch}}" />
+                      <choose>
+                        <when condition="@(context.Variables.GetValueOrDefault<string>("enable_fdr_psp_soap_request_switch", "").Equals("true") )">
+                          <set-variable name="fdr_soap_request_psp_whitelist" value="{{fdr-soap-request-psp-whitelist}}" />
+                          <set-variable name="fdr_soap_request_ci_whitelist" value="{{fdr-soap-request-ci-whitelist}}" />
+                          <set-variable name="fdr_soap_request_is_whitelist" value="@{
+                            string pspList = (string) context.Variables["fdr_soap_request_psp_whitelist"];
+                            string ciList = (string) context.Variables["fdr_soap_request_ci_whitelist"];
+                            bool pspWhitelisted = pspList.Equals("*");
+                            bool ciWhitelisted = ciList.Equals("*");
+                            bool isWhitelisted = false;
+                            if (pspWhitelisted && ciWhitelisted) {
+                              isWhitelisted = true;
+                              return isWhitelisted;
+                            }
+                            string[] psps = !pspWhitelisted ? pspList.Split(',') : new string[] {};
+                            string[] cis = !ciWhitelisted ? ciList.Split(',') : new string[] {};
+
+                            if (!pspWhitelisted) {
+                              var psp_code = (string) context.Variables["identificativoPSP"];
+                              pspWhitelisted = psps.Contains(psp_code);
+                            }
+                            if (!ciWhitelisted) {
+                              var org_fiscal_code = (string) context.Variables["identificativoDominio"];
+                              ciWhitelisted = cis.Contains(org_fiscal_code);
+                            }
+                            if (pspWhitelisted && ciWhitelisted) {
+                              isWhitelisted = true;
+                              return isWhitelisted;
+                            }
+                            return isWhitelisted;
+                          }" />
+                          <choose>
+                            <when condition="@( context.Variables.GetValueOrDefault<bool>("fdr_soap_request_is_whitelist", false) )">
+                                <set-backend-service base-url="${base-url}" />
+                            </when>
+                          </choose>
+                        </when>
+                      </choose>
+                  </otherwise>
+              </choose>
+          </when>
+      </choose>
+
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <set-variable name="originalrsp" value="@(context.Response.Body.As<string>())" />
+        <cache-lookup-value key="@{
+                var fdrFileName=(string) context.Variables["identificativoPSP"]+"--"+context.Variables["identificativoIntermediarioPSP"]+"--"+context.Variables["identificativoCanale"]+"--"+context.Variables["identificativoDominio"]+"--"+context.Variables["identificativoFlusso"]+"--"+context.Variables["dataOraFlusso"];
+                return fdrFileName;
+            }" variable-name="xmlRendicontazione" caching-type="internal" />
+        <set-variable name="esito" value="@{
+                var response = (string) context.Variables["originalrsp"];
+                String[] spearator = {"esito"};
+                String[] result = response.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                var esito = result[1].Substring(1,result[1].Length-3);
+                return esito;
+            }" />
+        <choose>
+            <when condition="@("OK".Equals((string)context.Variables["esito"]) && context.Response.StatusCode == 200)">
+                <!-- <when condition="@(context.Response.StatusCode == 200)"> -->
+                <!-- First get the auth token with managed-identity from the storage account and save it on a output token -->
+                <authentication-managed-identity resource="https://storage.azure.com/" output-token-variable-name="msi-access-token" ignore-error="false" />
+                <!-- Send the PUT request with metadata -->
+                <send-request mode="new" response-variable-name="result" timeout="300" ignore-error="false">
+                    <!-- Get variables to configure your: storageaccount, destination container and file name with extension -->
+                    <set-url>@{
+                        var fdrFileName=(string) context.Variables["identificativoPSP"]+"--"+context.Variables["identificativoIntermediarioPSP"]+"--"+context.Variables["identificativoCanale"]+"--"+context.Variables["identificativoDominio"]+"--"+context.Variables["identificativoFlusso"]+"--"+context.Variables["dataOraFlusso"]+".xml";
+                        return "https://{{fdrsaname}}.blob.core.windows.net/" + "{{fdrcontainername}}" + "/" + fdrFileName;
+                        }</set-url>
+                    <set-method>PUT</set-method>
+                    <set-header name="Host" exists-action="override">
+                        <value>{{fdrsaname}}.blob.core.windows.net</value>
+                    </set-header>
+                    <set-header name="X-Ms-Blob-Type" exists-action="override">
+                        <value>BlockBlob</value>
+                    </set-header>
+                    <set-header name="X-Ms-Blob-Cache-Control" exists-action="override">
+                        <value />
+                    </set-header>
+                    <set-header name="X-Ms-Blob-Content-Disposition" exists-action="override">
+                        <value />
+                    </set-header>
+                    <set-header name="X-Ms-Blob-Content-Encoding" exists-action="override">
+                        <value />
+                    </set-header>
+                    <set-header name="X-Ms-Blob-Content-Language" exists-action="override">
+                        <value />
+                    </set-header>
+                    <set-header name="X-Ms-Version" exists-action="override">
+                        <value>2019-12-12</value>
+                    </set-header>
+                    <set-header name="Accept" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <!-- Set the header with authorization bearer token that was previously requested -->
+                    <set-header name="Authorization" exists-action="override">
+                        <value>@("Bearer " + (string)context.Variables["msi-access-token"])</value>
+                    </set-header>
+                    <!-- Set the file content from the original request body data -->
+                    <set-body>@((string)context.Variables["xmlRendicontazione"])</set-body>
+                </send-request>
+
+                <!-- Send info to FDR for validation -->
+                <choose>
+                    <when condition="@( !context.Variables.GetValueOrDefault<bool>("is-ftp-enabled", false) && !context.Variables.GetValueOrDefault<bool>("fdr_soap_request_is_whitelist", false) )">
+                        <set-variable name="register_for_validation_request" value="@{return new JObject(
+                                new JProperty("pspId", (string) context.Variables["identificativoPSP"]),
+                                new JProperty("organizationId", (string) context.Variables["identificativoDominio"]),
+                                new JProperty("flowId", (string) context.Variables["identificativoFlusso"]),
+                                new JProperty("flowTimestamp", (string) context.Variables["dataOraFlusso"])
+                                ).ToString();}" />
+                        <send-request mode="new" response-variable-name="register_for_validation_result" timeout="10" ignore-error="true">
+                            <set-url>@("${base-url}/register-for-validation/fdr")</set-url>
+                            <set-method>POST</set-method>
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
+                            <set-body>
+                                @((string)context.Variables["register_for_validation_request"])
+                            </set-body>
+                        </send-request>
+                        <choose>
+                            <when condition="@( context.Variables["register_for_validation_result"] == null || context.Variables["register_for_validation_result"] != null && ((IResponse) context.Variables["register_for_validation_result"]).StatusCode != 200)">
+                                <trace source="error_on_register_for_validation" severity="error">
+                                    <message>@{ return "[ALERT][FDR1][RegisterForValidation] Error while sending flow for registration on validation, Request: [" + (string)context.Variables["register_for_validation_request"] + "]"; }</message>
+                                </trace>
+                            </when>
+                        </choose>
+                    </when>
+                    <!--
+                    <otherwise>
+                        <trace source="skipping_register_for_validation" severity="information">
+                            <message>@{ return "Skipping registration for validation: sent Flow on FDR1"; }</message>
+                        </trace>
+                    </otherwise>
+                    -->
+                </choose>
+            </when>
+        </choose>
+        <return-response>
+            <set-header name="Content-Type" exists-action="override">
+                <value>text/xml</value>
+            </set-header>
+            <set-body>@((string)context.Variables["originalrsp"])</set-body>
+        </return-response>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

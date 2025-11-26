@@ -1,33 +1,56 @@
 locals {
-  project        = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  project_legacy = "${var.prefix}-${var.env_short}"
-  product        = "${var.prefix}-${var.env_short}"
+  project         = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_itn     = "${var.prefix}-${var.env_short}-${var.location_short_itn}-${var.domain}"
+  project_legacy  = "${var.prefix}-${var.env_short}"
+  product         = "${var.prefix}-${var.env_short}"
+  product_network = "${var.prefix}-${var.env_short}-${var.location_short}-network"
 
+  apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
 
-  # app_insights_ips_west_europe = [
-  #   "51.144.56.96/28",
-  #   "51.144.56.112/28",
-  #   "51.144.56.128/28",
-  #   "51.144.56.144/28",
-  #   "51.144.56.160/28",
-  #   "51.144.56.176/28",
-  # ]
+  monitor_action_group_slack_name = "SlackPagoPA"
+  monitor_action_group_email_name = "PagoPA"
 
-  # monitor_action_group_slack_name = "SlackPagoPA"
-  # monitor_action_group_email_name = "PagoPA"
+  pagopa_apim_name = "${local.product}-apim"
+  pagopa_apim_rg   = "${local.product}-api-rg"
+  pagopa_apim_snet = "${local.product}-apim-snet"
 
-  # vnet_name                = "${local.product}-vnet"
-  # vnet_resource_group_name = "${local.product}-vnet-rg"
+  vnet_name                = "${local.product}-vnet"
+  vnet_resource_group_name = "${local.product}-vnet-rg"
 
-  # acr_name                = replace("${local.product}commonacr", "-", "")
-  # acr_resource_group_name = "${local.product}-container-registry-rg"
+  storage_blob_dns_zone_name       = "privatelink.blob.core.windows.net"
+  storage_blob_resource_group_name = "${local.product}-vnet-rg"
 
-  # ingress_hostname                      = "${var.location_short}${var.instance}.${var.domain}"
-  # internal_dns_zone_name                = "${var.dns_zone_internal_prefix}.${var.external_domain}"
-  # internal_dns_zone_resource_group_name = "${local.product}-vnet-rg"
+  msg_resource_group_name      = "${local.product}-msg-rg"
+  eventhub_resource_group_name = "${local.project_itn}-evh-rg"
 
-  # cosmos_dns_zone_name                = "privatelink.documents.azure.com"
-  # cosmos_dns_zone_resource_group_name = "${local.product}-vnet-rg"
+  vnet_italy_name                = "${local.product}-itn-vnet"
+  vnet_italy_resource_group_name = "${local.product}-itn-vnet-rg"
 
-  # aks_subnet_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
+  linked_service_cruscotto_kv_name = "crusc8-${var.env_short}-key-vault"
+  linked_service_nodo_kv_name      = "nodo-${var.env_short}-key-vault"
+
+  kv_name_password_database        = "ls-cruscotto-password"
+  kv_name_password_config_database = "db-cfg-password"
+
+  df_integration_runtime_name = "AutoResolveIntegrationRuntime"
+  crusc8_tables_list_datasets = [
+    {
+      dataset_name        = "CRUSC8_RECORDED_TIMEOUT"
+      dataset_schema_file = "datafactory/datasets/crusc8/CRUSC8_RECORDED_TIMEOUT.json"
+      table_name          = "pagopa_recorded_timeout"
+      schema_name         = "cruscotto"
+    },
+    {
+      dataset_name        = "CRUSC8_PAYMENT_RECEIPT"
+      dataset_schema_file = "datafactory/datasets/crusc8/CRUSC8_PAYMENT_RECEIPT.json"
+      table_name          = "pagopa_payment_receipt"
+      schema_name         = "cruscotto"
+    },
+    {
+      dataset_name        = "CRUSC8_TAXONOMY_AGGREGATE_POSITION"
+      dataset_schema_file = "datafactory/datasets/crusc8/CRUSC8_TAXONOMY_AGGREGATE_POSITION.json"
+      table_name          = "pagopa_taxonomy_aggregate_position"
+      schema_name         = "cruscotto"
+    }
+  ]
 }

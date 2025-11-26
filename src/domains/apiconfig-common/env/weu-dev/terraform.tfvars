@@ -6,13 +6,6 @@ location       = "westeurope"
 location_short = "weu"
 instance       = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPa"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/apiconfig"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -66,3 +59,4 @@ apiconfig_storage_params = {
 storage_private_endpoint_enabled = false
 
 enable_iac_pipeline = true
+redis_ha_enabled    = false

@@ -5,7 +5,7 @@ resource "kubernetes_namespace" "namespace" {
 }
 
 module "pod_identity" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity?ref=v4.1.17"
+  source = "./.terraform/modules/__v3__/kubernetes_pod_identity"
 
   resource_group_name = local.aks_resource_group_name
   location            = var.location
@@ -19,48 +19,35 @@ module "pod_identity" {
   secret_permissions = ["Get"]
 }
 
-resource "helm_release" "reloader" {
-  name       = "reloader"
-  repository = "https://stakater.github.io/stakater-charts"
-  chart      = "reloader"
-  version    = "v0.0.110"
-  namespace  = kubernetes_namespace.namespace.metadata[0].name
+# WL-IDENTITY
+# https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/1227751458/Migrazione+pod+Identity+vs+workload+Identity#Init-workload-identity
+module "workload_identity" {
+  source = "./.terraform/modules/__v3__/kubernetes_workload_identity_configuration"
 
-  set {
-    name  = "reloader.watchGlobally"
-    value = "false"
-  }
+  workload_identity_name_prefix         = var.domain
+  workload_identity_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name
+  aks_name                              = data.azurerm_kubernetes_cluster.aks.name
+  aks_resource_group_name               = data.azurerm_kubernetes_cluster.aks.resource_group_name
+  namespace                             = var.domain
+
+  key_vault_id                      = data.azurerm_key_vault.kv.id
+  key_vault_certificate_permissions = ["Get"]
+  key_vault_key_permissions         = ["Get"]
+  key_vault_secret_permissions      = ["Get"]
 }
 
-resource "helm_release" "cert-mounter" {
-  name       = "cert-mounter-blueprint"
-  chart      = "cert-mounter-blueprint"
-  repository = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
-  version    = "1.0.4"
-  namespace  = kubernetes_namespace.namespace.metadata[0].name
+resource "kubernetes_pod_disruption_budget_v1" "fdr" {
 
-  set {
-    name  = "namespace"
-    value = kubernetes_namespace.namespace.metadata[0].name
+  for_each = var.pod_disruption_budgets
+
+  metadata {
+    namespace = kubernetes_namespace.namespace.metadata[0].name
+    name      = each.key
   }
-
-  set {
-    name  = "deployment.create"
-    value = "true"
-  }
-
-  set {
-    name  = "kvCertificatesName[0]"
-    value = replace("${local.ingress_hostname}.${local.internal_dns_zone_name}", ".", "-")
-  }
-
-  set {
-    name  = "keyvault.name"
-    value = data.azurerm_key_vault.kv.name
-  }
-
-  set {
-    name  = "keyvault.tenantId"
-    value = data.azurerm_client_config.current.tenant_id
+  spec {
+    min_available = each.value.minAvailable
+    selector {
+      match_labels = each.value.matchLabels
+    }
   }
 }

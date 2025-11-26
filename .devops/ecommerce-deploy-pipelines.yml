@@ -25,125 +25,136 @@ parameters:
       - False
       - True
 
-variables:
-  TIME_OUT: 30
-  DEV_AKS_APISERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
-  DEV_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
-  DEV_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
-  AKS_DEV_NAME: '$(TF_AKS_DEV_NAME)'
-  DEV_AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
-
-  UAT_AKS_APISERVER_URL: '$(TF_UAT_AKS_APISERVER_URL)'
-  UAT_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_CACRT)'
-  UAT_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_TOKEN)'
-  AKS_UAT_NAME: '$(TF_AKS_UAT_NAME)'
-  UAT_AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
-
-  PROD_AKS_APISERVER_URL: '$(TF_PROD_AKS_APISERVER_URL)'
-  PROD_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_CACRT)'
-  PROD_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
-  AKS_PROD_NAME: '$(TF_AKS_PROD_NAME)'
-  PROD_AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
 
 pool:
-  vmImage: 'ubuntu-20.04'
+  vmImage: 'ubuntu-latest'
 
 resources:
   repositories:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v3.0.0
+      ref: refs/tags/v6.9.0
+      endpoint: "io-azure-devops-github-ro"
+    #Checkout tests repo that contains e2e tests to be executed after domain apply
+    - repository: pagopaCheckoutTests
+      type: github
+      name: pagopa/pagopa-checkout-tests
+      ref: main
       endpoint: 'io-azure-devops-github-ro'
 
-lockBehavior: sequential
+
+variables:
+  TIME_OUT: 15
+  # working dir
+  WORKING_DIR_APP: 'src/domains/ecommerce-app'
+  WORKING_DIR_COMMON: 'src/domains/ecommerce-common'
+  REGION_SHORT: "weu"
+  DOMAIN_NAME: "ecommerce"
+
 stages:
+  #DEV
   - ${{ if eq(parameters['DEV'], true) }}:
-    # DEV ecommerce COMMON
-    - template: templates/terraform-plan-apply/template.yaml@terraform
+    - template: './base-deploy-pipelines.yml'
       parameters:
-        DOMAIN_NAME: 'ecommerce_common'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux-infra"
-        ENVIRONMENT: "dev"
-        TF_ENVIRONMENT_FOLDER: "weu-dev"
-        WORKINGDIR: 'src/domains/ecommerce-common'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
-
-    # DEV ecommerce APP
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        DOMAIN_NAME: 'ecommerce_app'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux-infra"
-        ENVIRONMENT: "dev"
-        TF_ENVIRONMENT_FOLDER: "weu-dev"
-        WORKINGDIR: 'src/domains/ecommerce-app'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
-        AKS_NAME: ${{ variables.AKS_DEV_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.DEV_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
-
-
-
-  #
-  # UAT
-  #
+        ENV: 'dev'
+        ENV_FOLDER: '${{ variables.REGION_SHORT }}-dev'
+        WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
+        WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+        DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
+        SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+        SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
+        AKS_APISERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
+        AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
+        AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
+        AKS_NAME: '$(TF_AKS_DEV_NAME)'
+        POOL_NAME: '$(TF_POOL_NAME_DEV)'
+        COMMON_USE_AKS: false
+  # E2E test
+  - stage: "E2E_Tests_Checkout_DEV_environment"
+    displayName: '🧪 Running E2E test on DEV env'
+    pool:
+      vmImage: 'ubuntu-latest'
+    dependsOn: dev_apply_ecommerce_app
+    jobs:
+      - job: e2e_tests
+        steps:
+          - template: .devops/azure-templates/e2e-tests.yaml@pagopaCheckoutTests
+            parameters:
+              ENVIRONMENT: DEV
+              CHECKOUT_RESOURCE_REPO_NAME: pagopaCheckoutTests
+  #UAT
   - ${{ if eq(parameters['UAT'], true) }}:
-    # UAT ecommerce COMMON
-    - template: templates/terraform-plan-apply/template.yaml@terraform
+    - template: './base-deploy-pipelines.yml'
       parameters:
-        DOMAIN_NAME: 'ecommerce_common'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux-infra"
-        ENVIRONMENT: "uat"
-        TF_ENVIRONMENT_FOLDER: "weu-uat"
-        WORKINGDIR: 'src/domains/ecommerce-common'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.UAT_AZURE_SERVICE_CONNECTION }}
-
-    # UAT ecommerce APP
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        DOMAIN_NAME: 'ecommerce_app'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux-infra"
-        ENVIRONMENT: "uat"
-        TF_ENVIRONMENT_FOLDER: "weu-uat"
-        WORKINGDIR: 'src/domains/ecommerce-app'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.UAT_AZURE_SERVICE_CONNECTION }}
-        AKS_NAME: ${{ variables.AKS_UAT_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
-
-
-  #
-  # PROD
-  #
+        ENV: 'uat'
+        ENV_FOLDER: '${{ variables.REGION_SHORT }}-uat'
+        WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
+        WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+        DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
+        SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
+        SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
+        AKS_APISERVER_URL: '$(TF_UAT_AKS_APISERVER_URL)'
+        AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_CACRT)'
+        AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_TOKEN)'
+        AKS_NAME: '$(TF_AKS_UAT_NAME)'
+        POOL_NAME: '$(TF_POOL_NAME_UAT)'
+        COMMON_USE_AKS: false
+      # E2E test
+    - stage: "E2E_Tests_Checkout_UAT_environment"
+      displayName: '🧪 Running E2E test on UAT env'
+      pool:
+        vmImage: 'ubuntu-latest'
+      dependsOn: uat_apply_ecommerce_app
+      jobs:
+        - job: e2e_tests
+          steps:
+            - template: .devops/azure-templates/e2e-tests.yaml@pagopaCheckoutTests
+              parameters:
+                ENVIRONMENT: UAT
+                CHECKOUT_RESOURCE_REPO_NAME: pagopaCheckoutTests
+  #PROD
   - ${{ if eq(parameters['PROD'], true) }}:
-    # PROD ecommerce COMMON
-    - template: templates/terraform-plan-apply/template.yaml@terraform
+    - template: './base-deploy-pipelines.yml'
       parameters:
-        DOMAIN_NAME: 'ecommerce_common'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux-infra"
-        ENVIRONMENT: "prod"
-        TF_ENVIRONMENT_FOLDER: "weu-prod"
-        WORKINGDIR: 'src/domains/ecommerce-common'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
-        AKS_NAME: ${{ variables.AKS_PROD_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
-
-    # PROD ecommerce APP
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        DOMAIN_NAME: 'ecommerce_app'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux-infra"
-        ENVIRONMENT: "prod"
-        TF_ENVIRONMENT_FOLDER: "weu-prod"
-        WORKINGDIR: 'src/domains/ecommerce-app'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
-        AKS_NAME: ${{ variables.AKS_PROD_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
-
-
+        ENV: 'prod'
+        ENV_FOLDER: '${{ variables.REGION_SHORT }}-prod'
+        WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
+        WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+        DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
+        SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
+        SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
+        AKS_APISERVER_URL: '$(TF_PROD_AKS_APISERVER_URL)'
+        AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_CACRT)'
+        AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
+        AKS_NAME: '$(TF_AKS_PROD_NAME)'
+        POOL_NAME: '$(TF_POOL_NAME_PROD)'
+        COMMON_USE_AKS: false
+    - stage:
+      displayName: '💻 Dashboards generation GHA'
+      jobs:
+        - job: generate_dashboard
+          steps:
+            - task: Bash@3
+              displayName: 'Dashboard generation'
+              inputs:
+                targetType: "inline"
+                script: |
+                  echo "Launching ecommerce dashboard generation apply"
+                  body=$(cat <<EOF
+                  {
+                      "ref": "main",
+                      "inputs": {
+                          "api-name": "ecommerce-checkout",
+                          "environment": "prod",
+                          "config-options": "{\"branch_ref\": \"$(Build.SourceBranchName)\"}"
+                      }
+                  }
+                  EOF
+                  )
+                  echo "GHA trigger body $body"
+                  curl -X POST https://api.github.com/repos/pagopa/pagopa-ecommerce-dashboard/actions/workflows/63761953/dispatches \
+                  -H 'Content-Type: application/json' \
+                  -H 'X-GitHub-Api-Version: 2022-11-28' \
+                  -H "Authorization: token ${{ variables.PROD_AZURE_WEBHOOK_DASHBOARD_CREATION_TOKEN }}" \
+                  --data "$body"

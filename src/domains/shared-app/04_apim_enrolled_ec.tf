@@ -12,7 +12,7 @@ locals {
 ## Products ##
 ##############
 module "apim_enrolled_orgs_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "enrolled-orgs"
   display_name = "Enrolled EC on services - API"
@@ -45,7 +45,7 @@ resource "azurerm_api_management_api_version_set" "api_enrolled_orgs_api" {
 }
 
 module "apim_api_enrolled_orgs_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-enrolled-orgs-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -67,6 +67,6 @@ module "apim_api_enrolled_orgs_api_v1" {
   })
 
   xml_content = templatefile("./api/enrolled-orgs/v1/_base_policy.xml", {
-    hostname = local.cache_generator_hostname_2
+    hostname = local.authorizer_config_hostname
   })
 }

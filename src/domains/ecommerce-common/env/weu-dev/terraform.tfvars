@@ -6,13 +6,6 @@ location       = "westeurope"
 location_short = "weu"
 instance       = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/ecommerce-common"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -26,6 +19,7 @@ ingress_load_balancer_ip = "10.1.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
+dns_zone_ecommerce       = "dev.ecommerce"
 
 ### Cosmos
 
@@ -39,7 +33,7 @@ cosmos_mongo_db_params = {
     max_interval_in_seconds = 5
     max_staleness_prefix    = 100000
   }
-  server_version                   = "4.0"
+  server_version                   = "6.0"
   main_geo_location_zone_redundant = false
   enable_free_tier                 = true
 
@@ -48,7 +42,8 @@ cosmos_mongo_db_params = {
   public_network_access_enabled     = true
   is_virtual_network_filter_enabled = false
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled                    = false
+  enable_provisioned_throughput_exceeded_alert = false
 
 }
 
@@ -63,13 +58,40 @@ cosmos_mongo_db_ecommerce_params = {
   throughput         = 1000
 }
 
-redis_ecommerce_params = {
-  capacity = 0
-  sku_name = "Basic"
-  family   = "C"
+cosmos_mongo_db_ecommerce_history_params = {
+  enable_serverless  = true
+  enable_autoscaling = true
+  max_throughput     = 2000
+  throughput         = 1000
 }
 
-ecommerce_storage_params = {
+cosmos_mongo_db_ecommerce_watchdog_params = {
+  enable_serverless  = true
+  enable_autoscaling = true
+  max_throughput     = 1000
+  throughput         = 1000
+}
+
+redis_ecommerce_params = {
+  capacity   = 0
+  sku_name   = "Basic"
+  family     = "C"
+  version    = 6
+  ha_enabled = false
+  zones      = []
+}
+
+ecommerce_storage_deadletter_params = {
+  enabled                       = true
+  tier                          = "Standard"
+  kind                          = "StorageV2"
+  account_replication_type      = "LRS",
+  advanced_threat_protection    = true,
+  retention_days                = 7,
+  public_network_access_enabled = true,
+}
+
+ecommerce_storage_transient_params = {
   enabled                       = true
   tier                          = "Standard"
   kind                          = "StorageV2"
@@ -80,3 +102,5 @@ ecommerce_storage_params = {
 }
 
 enable_iac_pipeline = true
+
+ecommerce_jwt_issuer_api_key_use_primary = true

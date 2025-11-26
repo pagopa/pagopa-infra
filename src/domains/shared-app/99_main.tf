@@ -1,32 +1,32 @@
 terraform {
   required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "= 3.38.0"
+    azapi = {
+      source  = "azure/azapi"
+      version = "<= 1.3.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "2.30.0"
+      version = "<= 2.30.0"
     }
-    github = {
-      source  = "integrations/github"
-      version = "5.12.0"
-    }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "= 2.14.0"
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "<= 3.116.0"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "= 2.5.1"
+      version = "<= 2.12.1"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "<= 2.30.0"
     }
     null = {
       source  = "hashicorp/null"
-      version = "= 3.1.1"
+      version = "<= 3.2.0"
     }
-    azapi = {
-      source  = "Azure/azapi"
-      version = "= 1.3.0"
+    github = {
+      source  = "integrations/github"
+      version = "<= 5.12.0"
     }
   }
 
@@ -57,4 +57,10 @@ provider "helm" {
   kubernetes {
     config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
   }
+}
+
+
+module "__v3__" {
+  # v8.103.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=d0a0b3a81963169bdc974f79eba31e41e918e63d"
 }

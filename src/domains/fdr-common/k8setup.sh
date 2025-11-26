@@ -1,0 +1,1 @@
+../../../scripts/k8setup.sh

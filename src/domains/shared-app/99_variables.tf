@@ -60,12 +60,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 ### External resources
 
@@ -188,3 +182,151 @@ variable "authorizer_functions_autoscale" {
   description = "Authorizer functions autoscaling parameters"
 }
 
+# taxonomy
+variable "taxonomy_function_subnet" {
+  type        = list(string)
+  description = "Address prefixes subnet"
+  default     = null
+}
+
+variable "taxonomy_function_network_policies_enabled" {
+  type        = bool
+  description = "Network policies enabled"
+  default     = false
+}
+
+variable "taxonomy_function" {
+  type = object({
+    always_on                    = bool
+    kind                         = string
+    sku_size                     = string
+    maximum_elastic_worker_count = number
+  })
+  description = "Taxonomy function"
+}
+
+variable "taxonomy_function_app_image_tag" {
+  type        = string
+  default     = "latest"
+  description = "Taxonomy function app docker image tag. Defaults to 'latest'"
+}
+
+variable "taxonomy_function_autoscale" {
+  type = object({
+    default = number
+    minimum = number
+    maximum = number
+  })
+  description = "Taxonomy function autoscaling parameters"
+}
+
+# pdf-engine
+variable "cidr_subnet_pdf_engine_app_service" {
+  type        = list(string)
+  description = "CIDR subnet for App Service"
+  default     = null
+}
+
+
+variable "app_service_pdf_engine_autoscale_enabled" {
+  type    = bool
+  default = true
+}
+
+variable "app_service_pdf_engine_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = true
+}
+
+variable "app_service_pdf_engine_sku_name" {
+  type        = string
+  description = "app service plan size"
+  default     = "S1"
+}
+variable "app_service_pdf_engine_sku_name_java" {
+  type        = string
+  description = "app service plan size"
+  default     = "S1"
+}
+
+variable "function_app_storage_account_replication_type" {
+  type        = string
+  default     = "ZRS"
+  description = "(Optional) Storage account replication type used for function apps"
+}
+
+variable "pod_disruption_budgets" {
+  type = map(object({
+    name         = optional(string, null)
+    minAvailable = optional(number, null)
+    matchLabels  = optional(map(any), {})
+  }))
+  description = "Pod disruption budget for domain namespace"
+  default     = {}
+}
+
+variable "pagopa_shared_toolbox_enabled" {
+  type        = bool
+  description = "pagoPA Shared Toolbox enabled"
+  default     = true
+}
+
+variable "cname_record_name" {
+  type    = string
+  default = "shared"
+}
+
+variable "cdn_storage_account_replication_type" {
+  type        = string
+  default     = "GRS"
+  description = "(Optional) Cdn storage account replication type"
+}
+
+variable "pagopa_shared_toolbox_singlepageapp" {
+  type        = list(string)
+  description = "Single Page Applications root directories"
+  default     = ["ui"]
+}
+
+variable "robots_indexed_paths" {
+  type        = list(string)
+  description = "List of cdn paths to allow robots index"
+}
+
+// wallet session token
+variable "io_backend_base_path" {
+  type        = string
+  default     = null
+  description = "io backend api base path"
+}
+
+variable "pdv_api_base_path" {
+  type        = string
+  default     = null
+  description = "Personal data vault api base path"
+}
+
+variable "function_app_ip_restriction_default_action" {
+  type        = string
+  description = "(Optional) The Default action for traffic that does not match any ip_restriction rule. possible values include Allow and Deny. Defaults to Allow."
+  default     = "Allow"
+}
+
+variable "gh_runner_job_location" {
+  type        = string
+  description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
+  default     = "westeurope"
+}
+
+variable "pdf_engine_java_autoscale_response_time_scale_up" {
+  type        = number
+  description = "Response time in milliseconds to scale up the Java pdf-engine instance"
+  default     = 3
+}
+
+variable "pdf_engine_java_autoscale_response_time_scale_down" {
+  type        = number
+  description = "Response time in milliseconds to scale down the Java pdf-engine instance"
+  default     = 2
+}

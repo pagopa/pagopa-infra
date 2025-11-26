@@ -4,7 +4,7 @@
     "description": "Utility microservice for pagoPA AFM",
     "termsOfService": "https://www.pagopa.gov.it/",
     "title": "afm-utils",
-    "version": "0.5.2"
+    "version": "0.6.1"
   },
   "servers": [
     {
@@ -587,6 +587,9 @@
             "type": "string"
           },
           "idPsp": {
+            "type": "string"
+          },
+          "pspBusinessName": {
             "type": "string"
           },
           "validityDateFrom": {

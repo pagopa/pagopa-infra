@@ -2,11 +2,12 @@ resource "azurerm_resource_group" "aks_rg" {
   name     = "${local.project}-aks-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
+
 module "aks" {
-  source = "git::https://github.com/pagopa/azurerm.git//kubernetes_cluster?ref=v2.17.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.90.0"
 
   name                       = local.aks_name
   location                   = var.location
@@ -15,6 +16,22 @@ module "aks" {
   kubernetes_version         = var.aks_kubernetes_version
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
   sku_tier                   = var.aks_sku_tier
+
+  workload_identity_enabled = var.aks_enable_workload_identity
+  oidc_issuer_enabled       = var.aks_enable_workload_identity
+
+  ## Prometheus managed
+  # ffppa: ⚠️ Installed on all ENV please do not change
+  enable_prometheus_monitor_metrics = true
+
+  # ffppa: Enabled cost analysis on UAT/PROD
+  cost_analysis_enabled = var.env_short != "d" ? true : false
+
+  automatic_channel_upgrade = null
+  node_os_channel_upgrade   = "None"
+  maintenance_windows_node_os = {
+    enabled = true
+  }
 
   #
   # 🤖 System node pool
@@ -66,27 +83,40 @@ module "aks" {
   }
   # end network
 
-  rbac_enabled        = true
   aad_admin_group_ids = var.env_short == "p" ? [data.azuread_group.adgroup_admin.object_id] : [data.azuread_group.adgroup_admin.object_id, data.azuread_group.adgroup_developers.object_id, data.azuread_group.adgroup_externals.object_id]
 
   addon_azure_policy_enabled                     = true
   addon_azure_key_vault_secrets_provider_enabled = true
   addon_azure_pod_identity_enabled               = true
 
-  custom_metric_alerts = null
-  alerts_enabled       = var.aks_alerts_enabled
-  action = [
-    {
-      action_group_id    = data.azurerm_monitor_action_group.slack.id
-      webhook_properties = null
-    },
-    {
-      action_group_id    = data.azurerm_monitor_action_group.email.id
-      webhook_properties = null
-    }
-  ]
+  alerts_enabled     = var.aks_alerts_enabled
+  custom_logs_alerts = local.aks_logs_alerts
 
-  tags = var.tags
+  # takes a list and replaces any elements that are lists with a
+  # flattened sequence of the list contents.
+  # In this case, we enable OpsGenie only on prod env
+  action = flatten([
+    [
+      {
+        action_group_id    = data.azurerm_monitor_action_group.slack.id
+        webhook_properties = null
+      },
+      {
+        action_group_id    = data.azurerm_monitor_action_group.email.id
+        webhook_properties = null
+      }
+    ],
+    (var.env == "prod" ? [
+      {
+        action_group_id    = data.azurerm_monitor_action_group.opsgenie.0.id
+        webhook_properties = null
+      }
+    ] : [])
+  ])
+
+  microsoft_defender_log_analytics_workspace_id = var.env == "prod" ? data.azurerm_log_analytics_workspace.log_analytics.id : null
+
+  tags = module.tag_config.tags
 }
 
 data "azurerm_container_registry" "acr" {

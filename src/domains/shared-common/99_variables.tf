@@ -50,17 +50,27 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+variable "location_italy" {
+  type        = string
+  description = "italy north"
+}
+
+variable "location_short_italy" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_short_italy) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "italy itn"
+}
+
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 ### POC reporting enrollment variables
 
@@ -134,7 +144,6 @@ variable "cosmos_iuvgenerator_db_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -185,7 +194,6 @@ variable "cosmos_authorizer_db_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -195,6 +203,7 @@ variable "cosmos_authorizer_db_params" {
     public_network_access_enabled     = bool
     is_virtual_network_filter_enabled = bool
     backup_continuous_enabled         = bool
+    burst_capacity_enabled            = bool
   })
 }
 
@@ -206,5 +215,90 @@ variable "github_runner" {
   description = "GitHub runner variables"
   default = {
     subnet_address_prefixes = ["10.1.164.0/23"]
+  }
+}
+
+variable "github_runner_italy" {
+  type = object({
+    subnet_address_prefixes = list(string)
+  })
+  description = "GitHub runner variables"
+  default = {
+    subnet_address_prefixes = ["10.3.16.0/23"]
+  }
+}
+
+variable "github_runner_ita_enabled" {
+  type        = bool
+  description = "Enable github runner ita"
+  default     = false
+}
+
+variable "taxonomy_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    blob_delete_retention_days    = number
+    enable_low_availability_alert = bool
+    backup_enabled                = optional(bool, false)
+    backup_retention              = optional(number, 0)
+  })
+}
+variable "cidr_subnet_taxonomy_storage_account" {
+  type        = list(string)
+  description = "Storage account network address space."
+}
+variable "taxonomy_network_rules" {
+  type = object({
+    default_action             = string
+    ip_rules                   = list(string)
+    virtual_network_subnet_ids = list(string)
+    bypass                     = set(string)
+  })
+  description = "Network configuration of Taxonomy storage account"
+  default     = null
+}
+
+variable "test_data_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    blob_delete_retention_days    = number
+    enable_low_availability_alert = bool
+  })
+  default = null
+}
+
+variable "cidr_subnet_test_data_storage_account" {
+  type        = list(string)
+  description = "Storage account network address space."
+  default     = null
+}
+
+variable "redis_ha_enabled" {
+  type        = bool
+  description = "(Required) If true, enables the usage of HA redis instance"
+}
+
+
+variable "github_repository_environment" {
+  type = object({
+    protected_branches     = bool
+    custom_branch_policies = bool
+    reviewers_teams        = list(string)
+  })
+  description = "GitHub Continuous Integration roles"
+  default = {
+    protected_branches     = false
+    custom_branch_policies = true
+    reviewers_teams        = ["pagopa-team-core"]
   }
 }

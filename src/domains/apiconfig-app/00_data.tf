@@ -23,6 +23,10 @@ data "azurerm_api_management" "apim" {
   resource_group_name = "${local.product}-api-rg"
 }
 
+data "azurerm_resource_group" "identity_rg" {
+  name = "${local.product}-identity-rg"
+}
+
 locals {
   global_project = format("%s-%s", var.prefix, var.env_short)
 }
@@ -58,5 +62,10 @@ data "azurerm_key_vault_secret" "apiconfig_afm_marketplace_subscription_key_data
 
 data "azurerm_key_vault_secret" "apiconfig_afm_utils_subscription_key_data" {
   name         = "afm-utils-subscription-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "apiconfig_ica_sa_connection_string" {
+  name         = format("api-config-ica-%s-sa-connection-string", var.env_short)
   key_vault_id = data.azurerm_key_vault.kv.id
 }

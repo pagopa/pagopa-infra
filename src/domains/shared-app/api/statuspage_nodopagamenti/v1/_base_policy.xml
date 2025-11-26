@@ -1,0 +1,24 @@
+<policies>
+    <inbound>
+        <base />
+        <!-- rate limit by subscription key -->
+        <!-- <rate-limit calls="1" renewal-period="5" remaining-calls-variable-name="remainingCallsPerSubscription"/> -->
+        <include-fragment fragment-id="ndphost-header" />
+        <set-backend-service base-url="{{default-nodo-backend}}" />
+        <rewrite-uri template="/checkPosition" copy-unmatched-params="true" />
+        <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+        </set-header>
+        <!-- <set-body template="liquid"> -->
+        <set-body template="liquid">{"positionslist":[{"fiscalCode":"00311740609","noticeNumber":"301000000000000000"}]}</set-body>
+    </inbound>
+    <outbound>
+        <base />
+    </outbound>
+    <backend>
+        <base />
+    </backend>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

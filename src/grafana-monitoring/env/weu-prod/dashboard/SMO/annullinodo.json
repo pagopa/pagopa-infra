@@ -1,0 +1,495 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 199,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "b2efbf1a-5596-4ec4-b64e-b8e076a1e5ff"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 0,
+          "y": 0
+        },
+        "id": 1,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "count"
+            ],
+            "fields": "/.*/",
+            "values": true
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "OpenAI": false,
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "b2efbf1a-5596-4ec4-b64e-b8e076a1e5ff"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "hide": false,
+            "pluginVersion": "4.9.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nlet _cancelPayment = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"mod3CancelV2\"\n| summarize min(insertedTimestamp) by paymentToken\n| project paymentToken, min_insertedTimestamp;\nlet _activate = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"activatePaymentNotice\",\"activatePaymentNoticeV2\")\n| where sottoTipoEvento == \"REQ\"\n| extend expiration = extract(\"<expirationTime>([0-9]+)\", 1, base64_decode_tostring(payload))\n| extend expiration = case(isempty(expiration), \"1800000\", expiration)\n| extend expirationDate = datetime_add(\"millisecond\", toint(expiration), insertedTimestamp)\n| where isempty(paymentToken) == false\n| project insertedTimestamp, expiration, paymentToken, expirationDate, psp;\nlet _spo = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"sendPaymentOutcome\", \"sendPaymentOutcomeV2\")\n| where sottoTipoEvento == \"REQ\"\n| project DATA_SPO=insertedTimestamp, paymentToken;\n// in questa query , ogni riga contiene le informazioni di attivazione, sendPaymentOutcome, data di cancellazione prevista, data di cancellazione passata\n// quelli che hanno la DATA_SPO vanno ignorati\n_activate\n| join kind=leftouter _cancelPayment on paymentToken\n| join kind=leftouter _spo on paymentToken\n| project DATA_ATTIVAZIONE=insertedTimestamp, DURATA_TOKEN_MS=expiration, TOKEN=paymentToken, DATA_SCADENZA_PREVISTA=expirationDate, DATA_CANCELLAZIONE=min_insertedTimestamp, PSP=psp, DATA_SPO\n| extend DIFFERENZA_SCADENZA=tostring(toint((DATA_CANCELLAZIONE - DATA_SCADENZA_PREVISTA) / time(1ms)))\n| extend DIFFERENZA_ACT_SPO=tostring(toint((DATA_SPO - DATA_ATTIVAZIONE) / time(1ms)))\n| summarize TOTALE=count() ",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Attivazioni Totali (activatePaymentNotice, activatePaymentNoticeV2)",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "b2efbf1a-5596-4ec4-b64e-b8e076a1e5ff"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 6,
+          "y": 0
+        },
+        "id": 2,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "count"
+            ],
+            "fields": "/.*/",
+            "values": true
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "OpenAI": false,
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "b2efbf1a-5596-4ec4-b64e-b8e076a1e5ff"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "hide": false,
+            "pluginVersion": "4.9.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nlet _cancelPayment = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"mod3CancelV2\"\n| summarize min(insertedTimestamp) by paymentToken\n| project paymentToken, min_insertedTimestamp;\nlet _activate = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"activatePaymentNotice\",\"activatePaymentNoticeV2\")\n| where sottoTipoEvento == \"REQ\"\n| extend expiration = extract(\"<expirationTime>([0-9]+)\", 1, base64_decode_tostring(payload))\n| extend expiration = case(isempty(expiration), \"1800000\", expiration)\n| extend expirationDate = datetime_add(\"millisecond\", toint(expiration), insertedTimestamp)\n| where isempty(paymentToken) == false\n| project insertedTimestamp, expiration, paymentToken, expirationDate, psp;\nlet _spo = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"sendPaymentOutcome\", \"sendPaymentOutcomeV2\")\n| where sottoTipoEvento == \"REQ\"\n| project DATA_SPO=insertedTimestamp, paymentToken;\n// in questa query , ogni riga contiene le informazioni di attivazione, sendPaymentOutcome, data di cancellazione prevista, data di cancellazione passata\n// quelli che hanno la DATA_SPO vanno ignorati\n_activate\n| join kind=leftouter _cancelPayment on paymentToken\n| join kind=leftouter _spo on paymentToken\n| where isempty(DATA_SPO) == false\n| project DATA_ATTIVAZIONE=insertedTimestamp, DURATA_TOKEN_MS=expiration, TOKEN=paymentToken, DATA_SCADENZA_PREVISTA=expirationDate, DATA_CANCELLAZIONE=min_insertedTimestamp, PSP=psp, DATA_SPO\n| extend DIFFERENZA_SCADENZA=tostring(toint((DATA_CANCELLAZIONE - DATA_SCADENZA_PREVISTA) / time(1ms)))\n| extend DIFFERENZA_ACT_SPO=tostring(toint((DATA_SPO - DATA_ATTIVAZIONE) / time(1ms)))\n| summarize TOTALE=count() ",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Attivazioni concluse con una SPO",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "b2efbf1a-5596-4ec4-b64e-b8e076a1e5ff"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 12,
+          "y": 0
+        },
+        "id": 3,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "count"
+            ],
+            "fields": "/.*/",
+            "values": true
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "OpenAI": false,
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "b2efbf1a-5596-4ec4-b64e-b8e076a1e5ff"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "hide": false,
+            "pluginVersion": "4.9.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nlet _cancelPayment = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"mod3CancelV2\"\n| summarize min(insertedTimestamp) by paymentToken\n| project paymentToken, min_insertedTimestamp;\nlet _activate = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"activatePaymentNotice\",\"activatePaymentNoticeV2\")\n| where sottoTipoEvento == \"REQ\"\n| extend expiration = extract(\"<expirationTime>([0-9]+)\", 1, base64_decode_tostring(payload))\n| extend expiration = case(isempty(expiration), \"1800000\", expiration)\n| extend expirationDate = datetime_add(\"millisecond\", toint(expiration), insertedTimestamp)\n| where isempty(paymentToken) == false\n| project insertedTimestamp, expiration, paymentToken, expirationDate, psp;\nlet _spo = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"sendPaymentOutcome\", \"sendPaymentOutcomeV2\")\n| where sottoTipoEvento == \"REQ\"\n| project DATA_SPO=insertedTimestamp, paymentToken;\n// in questa query , ogni riga contiene le informazioni di attivazione, sendPaymentOutcome, data di cancellazione prevista, data di cancellazione passata\n// quelli che hanno la DATA_SPO vanno ignorati\n_activate\n| join kind=leftouter _cancelPayment on paymentToken\n| join kind=leftouter _spo on paymentToken\n| project DATA_ATTIVAZIONE=insertedTimestamp, DURATA_TOKEN_MS=expiration, TOKEN=paymentToken, DATA_SCADENZA_PREVISTA=expirationDate, DATA_CANCELLAZIONE=min_insertedTimestamp, PSP=psp, DATA_SPO\n| extend DIFFERENZA_SCADENZA=tostring(toint((DATA_CANCELLAZIONE - DATA_SCADENZA_PREVISTA) / time(1ms)))\n| extend DIFFERENZA_ACT_SPO=tostring(toint((DATA_SPO - DATA_ATTIVAZIONE) / time(1ms)))\n| where isempty(DATA_CANCELLAZIONE) == false\n| summarize TOTALE=count() ",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Attivazioni concluse con mod3Cancel",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "b2efbf1a-5596-4ec4-b64e-b8e076a1e5ff"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 18,
+          "y": 0
+        },
+        "id": 4,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "count"
+            ],
+            "fields": "/.*/",
+            "values": true
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "OpenAI": false,
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "b2efbf1a-5596-4ec4-b64e-b8e076a1e5ff"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "hide": false,
+            "pluginVersion": "4.9.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nlet _cancelPayment = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"mod3CancelV2\"\n| summarize min(insertedTimestamp) by paymentToken\n| project paymentToken, min_insertedTimestamp;\nlet _activate = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"activatePaymentNotice\",\"activatePaymentNoticeV2\")\n| where sottoTipoEvento == \"REQ\"\n| extend expiration = extract(\"<expirationTime>([0-9]+)\", 1, base64_decode_tostring(payload))\n| extend expiration = case(isempty(expiration), \"1800000\", expiration)\n| extend expirationDate = datetime_add(\"millisecond\", toint(expiration), insertedTimestamp)\n| where isempty(paymentToken) == false\n| project insertedTimestamp, expiration, paymentToken, expirationDate, psp;\nlet _spo = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"sendPaymentOutcome\", \"sendPaymentOutcomeV2\")\n| where sottoTipoEvento == \"REQ\"\n| project DATA_SPO=insertedTimestamp, paymentToken;\n// in questa query , ogni riga contiene le informazioni di attivazione, sendPaymentOutcome, data di cancellazione prevista, data di cancellazione passata\n// quelli che hanno la DATA_SPO vanno ignorati\n_activate\n| join kind=leftouter _cancelPayment on paymentToken\n| join kind=leftouter _spo on paymentToken\n| project DATA_ATTIVAZIONE=insertedTimestamp, DURATA_TOKEN_MS=expiration, TOKEN=paymentToken, DATA_SCADENZA_PREVISTA=expirationDate, DATA_CANCELLAZIONE=min_insertedTimestamp, PSP=psp, DATA_SPO\n| extend DIFFERENZA_SCADENZA=tostring(toint((DATA_CANCELLAZIONE - DATA_SCADENZA_PREVISTA) / time(1ms)))\n| extend DIFFERENZA_ACT_SPO=tostring(toint((DATA_SPO - DATA_ATTIVAZIONE) / time(1ms)))\n| where isempty(DATA_CANCELLAZIONE) == false\n| where isempty(DATA_SPO) == false\n| summarize TOTALE=count() ",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Attivazioni in attesa di ESITO",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "b2efbf1a-5596-4ec4-b64e-b8e076a1e5ff"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 0,
+          "y": 8
+        },
+        "id": 5,
+        "options": {
+          "displayLabels": [],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "percent",
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "/^TOTALE$/",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "OpenAI": false,
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "b2efbf1a-5596-4ec4-b64e-b8e076a1e5ff"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.9.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nlet _cancelPayment = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"mod3CancelV2\"\n| summarize min(insertedTimestamp) by paymentToken\n| project paymentToken, min_insertedTimestamp;\nlet _activate = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"activatePaymentNotice\",\"activatePaymentNoticeV2\")\n| where sottoTipoEvento == \"REQ\"\n| extend expiration = extract(\"<expirationTime>([0-9]+)\", 1, base64_decode_tostring(payload))\n| extend expiration = case(isempty(expiration), \"1800000\", expiration)\n| extend expirationDate = datetime_add(\"millisecond\", toint(expiration), insertedTimestamp)\n| where isempty(paymentToken) == false\n| project insertedTimestamp, expiration, paymentToken, expirationDate, psp;\nlet _spo = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"sendPaymentOutcome\", \"sendPaymentOutcomeV2\")\n| where sottoTipoEvento == \"REQ\"\n| project DATA_SPO=insertedTimestamp, paymentToken;\n// in questa query , ogni riga contiene le informazioni di attivazione, sendPaymentOutcome, data di cancellazione prevista, data di cancellazione passata\n// quelli che hanno la DATA_SPO vanno ignorati\n_activate\n| join kind=leftouter _cancelPayment on paymentToken\n| join kind=leftouter _spo on paymentToken\n| project DATA_ATTIVAZIONE=insertedTimestamp, DURATA_TOKEN_MS=expiration, TOKEN=paymentToken, DATA_SCADENZA_PREVISTA=expirationDate, DATA_CANCELLAZIONE=min_insertedTimestamp, PSP=psp, DATA_SPO\n| extend DIFFERENZA_SCADENZA=tostring(toint((DATA_CANCELLAZIONE - DATA_SCADENZA_PREVISTA) / time(1ms)))\n| extend DIFFERENZA_ACT_SPO=tostring(toint((DATA_SPO - DATA_ATTIVAZIONE) / time(1ms)))\n| where isempty(DATA_SPO)\n| where isempty(DATA_CANCELLAZIONE) == false\n| extend DIFFERENZA_SCADENZA = (toint(DIFFERENZA_SCADENZA) / 1000)\n| project DIFFERENZA_SCADENZA\n| summarize count() by bin(DIFFERENZA_SCADENZA, 60)\n| extend DIFFERENZA_SCADENZA = DIFFERENZA_SCADENZA / 60\n| project-rename TOTALE=count_\n| extend DIFFERENZA_SCADENZA=strcat(tostring(DIFFERENZA_SCADENZA),' minuti')",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Quanto impiega il nodo a cancellare in base alla durata della sessione",
+        "type": "piechart"
+      }
+    ],
+    "refresh": "",
+    "schemaVersion": 39,
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Annulli Nodo",
+    "uid": "e74e4331-fdd4-463b-903e-63d226e86a63",
+    "version": 1,
+    "weekStart": ""
+  }

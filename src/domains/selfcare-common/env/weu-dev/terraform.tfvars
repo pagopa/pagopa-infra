@@ -5,14 +5,8 @@ domain         = "selfcare"
 location       = "westeurope"
 location_short = "weu"
 instance       = "dev"
+env_capital    = "Dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "IO"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/selfcare"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -34,7 +28,7 @@ enable_iac_pipeline = true
 # CosmosDB BO pagopa Datastore
 bopagopa_datastore_cosmos_db_params = {
   kind         = "MongoDB"
-  capabilities = ["EnableMongo", "EnableServerless"]
+  capabilities = ["EnableMongo", "EnableServerless", "EnableMongo16MBDocumentSupport"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "Strong"

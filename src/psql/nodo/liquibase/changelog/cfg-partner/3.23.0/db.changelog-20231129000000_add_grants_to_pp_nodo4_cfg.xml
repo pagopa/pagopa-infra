@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+  http://www.liquibase.org/xml/ns/pro
+  http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
+
+    <changeSet author="liquibase" id="202311290000000" dbms="oracle">
+        <sql>
+            GRANT SELECT ON ${schema}.IBAN to PP_NODO4_CFG;
+            GRANT SELECT ON ${schema}.IBAN_MASTER to PP_NODO4_CFG;
+            GRANT SELECT ON ${schema}.IBAN_ATTRIBUTES to PP_NODO4_CFG;
+            GRANT SELECT ON ${schema}.IBAN_ATTRIBUTES_MASTER to PP_NODO4_CFG;
+            GRANT SELECT ON ${schema}.ICA_BINARY_FILE to PP_NODO4_CFG;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

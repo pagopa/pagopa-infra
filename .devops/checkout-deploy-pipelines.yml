@@ -25,90 +25,75 @@ parameters:
       - False
       - True
 
-variables:
-  TIME_OUT: 30
-  DEV_AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
-  UAT_AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
-  PROD_AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
-
 pool:
-  vmImage: 'ubuntu-20.04'
+  vmImage: 'ubuntu-latest'
 
 resources:
   repositories:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v3.0.0
-      endpoint: 'io-azure-devops-github-ro'
+      ref: refs/tags/v6.9.0
+      endpoint: "io-azure-devops-github-ro"
 
-lockBehavior: sequential
+
+variables:
+  TIME_OUT: 30
+  # working dir
+  WORKING_DIR_APP: 'src/domains/checkout-app'
+  WORKING_DIR_COMMON: 'src/domains/checkout-common'
+  REGION_SHORT: "weu"
+  DOMAIN_NAME: "checkout"
+
 stages:
+  #DEV
   - ${{ if eq(parameters['DEV'], true) }}:
-    # DEV checkout COMMON
-    - template: templates/terraform-plan-apply/template.yaml@terraform
+    - template: './base-deploy-pipelines.yml'
       parameters:
-        DOMAIN_NAME: 'checkout_common'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux-infra"
-        ENVIRONMENT: "dev"
-        TF_ENVIRONMENT_FOLDER: "weu-dev"
-        WORKINGDIR: 'src/domains/checkout-common'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
-
-    # DEV checkout APP
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        DOMAIN_NAME: 'checkout_app'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux-infra"
-        ENVIRONMENT: "dev"
-        TF_ENVIRONMENT_FOLDER: "weu-dev"
-        WORKINGDIR: 'src/domains/checkout-app'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
-
-  #
-  # UAT
-  #
+        ENV: 'dev'
+        ENV_FOLDER: '${{ variables.REGION_SHORT }}-dev'
+        WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
+        WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+        DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
+        SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+        SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
+        POOL_NAME: '$(TF_POOL_NAME_DEV)'
+        AKS_APISERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
+        AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
+        AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
+        AKS_NAME: '$(TF_AKS_DEV_NAME)'
+        COMMON_USE_AKS: false
+  #UAT
   - ${{ if eq(parameters['UAT'], true) }}:
-    # UAT checkout COMMON
-    - template: templates/terraform-plan-apply/template.yaml@terraform
+    - template: './base-deploy-pipelines.yml'
       parameters:
-        DOMAIN_NAME: 'checkout_common'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux-infra"
-        ENVIRONMENT: "uat"
-        TF_ENVIRONMENT_FOLDER: "weu-uat"
-        WORKINGDIR: 'src/domains/checkout-common'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.UAT_AZURE_SERVICE_CONNECTION }}
-
-    # UAT checkout APP
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        DOMAIN_NAME: 'checkout_app'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux-infra"
-        ENVIRONMENT: "uat"
-        TF_ENVIRONMENT_FOLDER: "weu-uat"
-        WORKINGDIR: 'src/domains/checkout-app'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.UAT_AZURE_SERVICE_CONNECTION }}
-
-  #
-  # PROD
-  #
+        ENV: 'uat'
+        ENV_FOLDER: '${{ variables.REGION_SHORT }}-uat'
+        WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
+        WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+        DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
+        SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
+        SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
+        POOL_NAME: '$(TF_POOL_NAME_UAT)'
+        AKS_APISERVER_URL: '$(TF_UAT_AKS_APISERVER_URL)'
+        AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_CACRT)'
+        AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_TOKEN)'
+        AKS_NAME: '$(TF_AKS_UAT_NAME)'
+        COMMON_USE_AKS: false
+  #PROD
   - ${{ if eq(parameters['PROD'], true) }}:
-    # PROD checkout COMMON
-    - template: templates/terraform-plan-apply/template.yaml@terraform
+    - template: './base-deploy-pipelines.yml'
       parameters:
-        DOMAIN_NAME: 'checkout_common'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux-infra"
-        ENVIRONMENT: "prod"
-        TF_ENVIRONMENT_FOLDER: "weu-prod"
-        WORKINGDIR: 'src/domains/checkout-common'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
-
-    # PROD checkout APP
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        DOMAIN_NAME: 'checkout_app'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux-infra"
-        ENVIRONMENT: "prod"
-        TF_ENVIRONMENT_FOLDER: "weu-prod"
-        WORKINGDIR: 'src/domains/checkout-app'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
+        ENV: 'prod'
+        ENV_FOLDER: '${{ variables.REGION_SHORT }}-prod'
+        WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
+        WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+        DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
+        SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
+        SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
+        POOL_NAME: '$(TF_POOL_NAME_PROD)'
+        AKS_APISERVER_URL: '$(TF_PROD_AKS_APISERVER_URL)'
+        AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_CACRT)'
+        AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
+        AKS_NAME: '$(TF_AKS_PROD_NAME)'
+        COMMON_USE_AKS: false

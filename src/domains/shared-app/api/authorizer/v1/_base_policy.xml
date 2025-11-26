@@ -7,7 +7,8 @@
     <set-variable name="must_add_in_progress" value="@(context.Request.Url.Query.GetValueOrDefault("add_in_progress", "true"))" />
     <set-variable name="request" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
     <set-variable name="domain_key" value="@(((JObject) context.Variables["request"])["key"].ToString())" />
-    <set-variable name="autorized_entities" value="@(((JObject) context.Variables["request"])["value"].ToString())" />
+    <set-variable name="autorized_entities" value="@("#" + ((JObject) context.Variables["request"])["value"] + "#;;" + ((JObject) context.Variables["request"])["metadata"] )" />
+    <cache-lookup-value variable-name="is_authorizer_store_existent" key="@("authorizer_" + context.Variables["domain"])" caching-type="external" default-value="false" />
 
     <!-- Look up for authorized-DOMAIN_in_progress variable -->
     <choose>
@@ -24,7 +25,13 @@
 
         <!-- Saving domain authorization variable -->
         <cache-store-value key="@("authorizer_" + context.Variables["domain_key"])" value="@((string) context.Variables["autorized_entities"])" duration="86400" caching-type="external" />
-        <cache-store-value key="@("authorizer_" + context.Variables["domain"])" value="store" duration="86400" caching-type="external" />
+
+        <!-- Saving domain authorization state variable, but only if expired -->
+        <choose>
+          <when condition="@("false".Equals(context.Variables["is_authorizer_store_existent"]))">
+            <cache-store-value key="@("authorizer_" + context.Variables["domain"])" value="store" duration="86400" caching-type="external" />
+          </when>
+        </choose>
 
         <!-- Return OK response -->
         <return-response>
@@ -36,11 +43,17 @@
       <when condition="@("true".Equals(context.Variables["must_add_in_progress"]) && !context.Variables.ContainsKey("authorizer_domain_in_progress"))">
 
         <!-- Save state variable for locking purpose -->
-        <cache-store-value key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" value="True" duration="86400" caching-type="internal" />
+        <cache-store-value key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" value="True" duration="60" caching-type="internal" />
 
         <!-- Saving domain authorization variables -->
         <cache-store-value key="@("authorizer_" + context.Variables["domain_key"])" value="@((string) context.Variables["autorized_entities"])" duration="86400" caching-type="external" />
-        <cache-store-value key="@("authorizer_" + context.Variables["domain"])" value="store" duration="86400" caching-type="external" />
+
+        <!-- Saving domain authorization state variable, but only if expired -->
+        <choose>
+          <when condition="@("false".Equals(context.Variables["is_authorizer_store_existent"]))">
+            <cache-store-value key="@("authorizer_" + context.Variables["domain"])" value="store" duration="86400" caching-type="external" />
+          </when>
+        </choose>
 
         <!-- Removing locking state variable -->
         <cache-remove-value key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" caching-type="internal" />
@@ -68,5 +81,7 @@
   </outbound>
   <on-error>
     <base />
+    <!-- Removing locking state variable -->
+    <cache-remove-value key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" caching-type="internal" />
   </on-error>
 </policies>

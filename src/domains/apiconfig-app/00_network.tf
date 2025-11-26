@@ -17,5 +17,5 @@ resource "azurerm_private_dns_cname_record" "config_platform_dns_private_cname" 
   resource_group_name = data.azurerm_virtual_network.vnet.resource_group_name
   ttl                 = var.dns_default_ttl_sec
   record              = module.api_config_fe_cdn[0].hostname
-  tags                = var.tags
+  tags                = module.tag_config.tags
 }

@@ -1,0 +1,15 @@
+<policies>
+  <inbound>
+    <base />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+    <include-fragment fragment-id="wisp-nodoinviarpt-nodoinviacarrellorpt-outbound" />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

@@ -27,7 +27,7 @@ override.tf.json
 
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
-
+.policy
 *.DS_Store
 *.log
 *.h2.db
@@ -45,3 +45,10 @@ __*.sh
 **/nodo-secret/**/*.zip
 **/*copy.xml
 **/libs
+__import_apim
+/pagopa-infra.iml
+/src/psql/nodo/liquibase/online.properties
+/src/psql/nodo/liquibase/re.properties
+/src/psql/nodo/liquibase/offline.properties
+**/secret.json
+*-BCK

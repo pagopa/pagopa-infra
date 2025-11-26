@@ -25,178 +25,79 @@ parameters:
       - False
       - True
 
-variables:
-  TIME_OUT: 30
-  DEV_AKS_APISERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
-  DEV_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
-  DEV_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
-  AKS_DEV_NAME: '$(TF_AKS_DEV_NAME)'
-  DEV_AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
 
-  UAT_AKS_APISERVER_URL: '$(TF_UAT_AKS_APISERVER_URL)'
-  UAT_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_CACRT)'
-  UAT_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_TOKEN)'
-  AKS_UAT_NAME: '$(TF_AKS_UAT_NAME)'
-  UAT_AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
-
-  PROD_AKS_APISERVER_URL: '$(TF_PROD_AKS_APISERVER_URL)'
-  PROD_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_CACRT)'
-  PROD_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
-  AKS_PROD_NAME: '$(TF_AKS_PROD_NAME)'
-  PROD_AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
 
 pool:
-  vmImage: 'ubuntu-20.04'
+  vmImage: 'ubuntu-latest'
 
 resources:
   repositories:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v3.0.0
-      endpoint: 'io-azure-devops-github-ro'
+      ref: refs/tags/v6.9.0
+      endpoint: "io-azure-devops-github-ro"
 
-lockBehavior: sequential
+
+variables:
+  TIME_OUT: 15
+  # working dir
+  WORKING_DIR_APP: 'src/domains/nodo-app'
+  WORKING_DIR_COMMON: 'src/domains/nodo-common'
+  WORKING_DIR_SECRET: 'src/domains/nodo-secret'
+  DOMAIN_NAME: nodo
+  REGION_SHORT: "weu"
+
 stages:
+  #DEV
   - ${{ if eq(parameters['DEV'], true) }}:
-    # DEV nodo SECRET
-    - template: templates/terraform-plan-apply/template.yaml@terraform
+    - template: './base-deploy-pipelines.yml'
       parameters:
-        DOMAIN_NAME: 'nodo_secret'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux-infra"
-        ENVIRONMENT: "dev"
-        TF_ENVIRONMENT_FOLDER: "weu-dev"
-        WORKINGDIR: 'src/domains/nodo-secret'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
-        AKS_NAME: ${{ variables.AKS_DEV_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.DEV_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
-
-    # DEV nodo COMMON
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        DOMAIN_NAME: 'nodo_common'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux-infra"
-        ENVIRONMENT: "dev"
-        TF_ENVIRONMENT_FOLDER: "weu-dev"
-        WORKINGDIR: 'src/domains/nodo-common'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
-        AKS_NAME: ${{ variables.AKS_DEV_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.DEV_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
-
-    # DEV nodo APP
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        DOMAIN_NAME: 'nodo_app'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux-infra"
-        ENVIRONMENT: "dev"
-        TF_ENVIRONMENT_FOLDER: "weu-dev"
-        WORKINGDIR: 'src/domains/nodo-app'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
-        AKS_NAME: ${{ variables.AKS_DEV_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.DEV_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
-
-
-
-
-  #
-  # UAT
-  #
+        ENV: 'dev'
+        ENV_FOLDER: '${{ variables.REGION_SHORT }}-dev'
+        WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
+        WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+        WORKING_DIR_SECRET: ${{ variables.WORKING_DIR_SECRET }}
+        DOMAIN_NAME: ${{ variables.DOMAIN_NAME }}
+        SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+        SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
+        AKS_APISERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
+        AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
+        AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
+        AKS_NAME: '$(TF_AKS_DEV_NAME)'
+        POOL_NAME: '$(TF_POOL_NAME_DEV)'
+  #UAT
   - ${{ if eq(parameters['UAT'], true) }}:
-    # UAT nodo SECRET
-    - template: templates/terraform-plan-apply/template.yaml@terraform
+    - template: './base-deploy-pipelines.yml'
       parameters:
-        DOMAIN_NAME: 'nodo_secret'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux-infra"
-        ENVIRONMENT: "uat"
-        TF_ENVIRONMENT_FOLDER: "weu-uat"
-        WORKINGDIR: 'src/domains/nodo-secret'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.UAT_AZURE_SERVICE_CONNECTION }}
-        AKS_NAME: ${{ variables.AKS_UAT_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
-
-    # UAT nodo COMMON
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        DOMAIN_NAME: 'nodo_common'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux-infra"
-        ENVIRONMENT: "uat"
-        TF_ENVIRONMENT_FOLDER: "weu-uat"
-        WORKINGDIR: 'src/domains/nodo-common'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.UAT_AZURE_SERVICE_CONNECTION }}
-        AKS_NAME: ${{ variables.AKS_UAT_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
-
-    # UAT nodo APP
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        DOMAIN_NAME: 'nodo_app'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux-infra"
-        ENVIRONMENT: "uat"
-        TF_ENVIRONMENT_FOLDER: "weu-uat"
-        WORKINGDIR: 'src/domains/nodo-app'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.UAT_AZURE_SERVICE_CONNECTION }}
-        AKS_NAME: ${{ variables.AKS_UAT_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
-
-
-
-
-  #
-  # PROD
-  #
+        ENV: 'uat'
+        ENV_FOLDER: '${{ variables.REGION_SHORT }}-uat'
+        WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
+        WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+        WORKING_DIR_SECRET: ${{ variables.WORKING_DIR_SECRET }}
+        DOMAIN_NAME: ${{ variables.DOMAIN_NAME }}
+        SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
+        SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
+        AKS_APISERVER_URL: '$(TF_UAT_AKS_APISERVER_URL)'
+        AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_CACRT)'
+        AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_TOKEN)'
+        AKS_NAME: '$(TF_AKS_UAT_NAME)'
+        POOL_NAME: '$(TF_POOL_NAME_UAT)'
+  #PROD
   - ${{ if eq(parameters['PROD'], true) }}:
-    # PROD nodo SECRET
-    - template: templates/terraform-plan-apply/template.yaml@terraform
+    - template: './base-deploy-pipelines.yml'
       parameters:
-        DOMAIN_NAME: 'nodo_secret'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux-infra"
-        ENVIRONMENT: "prod"
-        TF_ENVIRONMENT_FOLDER: "weu-prod"
-        WORKINGDIR: 'src/domains/nodo-secret'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
-        AKS_NAME: ${{ variables.AKS_PROD_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
-
-    # PROD nodo COMMON
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        DOMAIN_NAME: 'nodo_common'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux-infra"
-        ENVIRONMENT: "prod"
-        TF_ENVIRONMENT_FOLDER: "weu-prod"
-        WORKINGDIR: 'src/domains/nodo-common'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
-        AKS_NAME: ${{ variables.AKS_PROD_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
-
-    # PROD nodo APP
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        DOMAIN_NAME: 'nodo_app'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux-infra"
-        ENVIRONMENT: "prod"
-        TF_ENVIRONMENT_FOLDER: "weu-prod"
-        WORKINGDIR: 'src/domains/nodo-app'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
-        AKS_NAME: ${{ variables.AKS_PROD_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
-
+        ENV: 'prod'
+        ENV_FOLDER: '${{ variables.REGION_SHORT }}-prod'
+        WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
+        WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+        WORKING_DIR_SECRET: ${{ variables.WORKING_DIR_SECRET }}
+        DOMAIN_NAME: ${{ variables.DOMAIN_NAME }}
+        SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
+        SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
+        AKS_APISERVER_URL: '$(TF_PROD_AKS_APISERVER_URL)'
+        AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_CACRT)'
+        AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
+        AKS_NAME: '$(TF_AKS_PROD_NAME)'
+        POOL_NAME: '$(TF_POOL_NAME_PROD)'
 

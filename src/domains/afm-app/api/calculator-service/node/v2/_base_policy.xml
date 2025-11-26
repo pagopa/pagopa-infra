@@ -1,0 +1,21 @@
+<policies>
+    <inbound>
+        <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
+        <choose>
+          <when condition="@(((string)context.Request.Method).Equals("POST"))">
+            <rewrite-uri template="@((string)context.Variables["requestPath"]+"/multi")" copy-unmatched-params="true" />
+          </when>
+        </choose>
+      <base />
+      <set-backend-service base-url="https://${hostname}/pagopa-afm-calculator-service" />
+    </inbound>
+    <outbound>
+      <base />
+    </outbound>
+    <backend>
+      <base />
+    </backend>
+    <on-error>
+      <base />
+    </on-error>
+  </policies>

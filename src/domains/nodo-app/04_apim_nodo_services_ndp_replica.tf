@@ -3,7 +3,7 @@
 ######################
 
 module "apim_nodo_dei_pagamenti_product_replica_ndp" {
-  source       = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source       = "./.terraform/modules/__v3__/api_management_product"
   count        = var.env_short == "p" ? 0 : 1
   product_id   = "nodo-replica-ndp"
   display_name = "Nodo dei Pagamenti REPLICA NDP"
@@ -447,7 +447,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pm_api_replica_ndp" 
 }
 
 module "apim_nodo_per_pm_api_v1_replica_ndp" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
   count  = var.env_short == "p" ? 0 : 1
 
   name                  = format("%s-nodo-per-pm-api-replica-ndp", local.project)
@@ -465,7 +465,8 @@ module "apim_nodo_per_pm_api_v1_replica_ndp" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/nodopagamenti_api_replica/nodoPerPM/v1/_swagger.json.tpl", {
-    host = local.apim_hostname
+    host    = local.apim_hostname
+    service = module.apim_nodo_dei_pagamenti_product_replica_ndp[0].product_id
   })
 
   xml_content = templatefile("./api/nodopagamenti_api_replica/nodoPerPM/v1/_base_policy.xml.tpl", {
@@ -479,13 +480,24 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1_rep
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "closePayment"
-  xml_content = templatefile("./api/nodopagamenti_api_replica/nodoPerPM/v1/_closepayment_policy.xml.tpl", {
+  xml_content = templatefile("./api/nodopagamenti_api_replica/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
+    base-url = "https://${local.nodo_hostname}/nodo-replica"
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "parked_list_api_v1_replica_ndp" {
+  count               = var.env_short == "p" ? 0 : 1
+  api_name            = format("%s-nodo-per-pm-api-replica-ndp-v1", local.project)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "parkedList"
+  xml_content = templatefile("./api/nodopagamenti_api_replica/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
     base-url = "https://${local.nodo_hostname}/nodo-replica"
   })
 }
 
 module "apim_nodo_per_pm_api_v2_replica_ndp" {
-  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source                = "./.terraform/modules/__v3__/api_management_api"
   count                 = var.env_short == "p" ? 0 : 1
   name                  = format("%s-nodo-per-pm-api-replica-ndp", local.project)
   resource_group_name   = local.pagopa_apim_rg
@@ -537,7 +549,7 @@ resource "azurerm_api_management_api_version_set" "nodo_monitoring_api_replica_n
 }
 
 module "apim_nodo_monitoring_api_replica_ndp" {
-  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source                = "./.terraform/modules/__v3__/api_management_api"
   count                 = var.env_short == "p" ? 0 : 1
   name                  = format("%s-nodo-monitoring-api-replica-ndp", var.env_short)
   resource_group_name   = local.pagopa_apim_rg
@@ -563,4 +575,26 @@ module "apim_nodo_monitoring_api_replica_ndp" {
   xml_content = templatefile("./api/nodopagamenti_api_replica/monitoring/v1/_base_policy.xml.tpl", {
     base-url = "https://${local.nodo_hostname}/nodo-replica"
   })
+}
+
+# nodoInviaRPT
+resource "azurerm_api_management_api_operation_policy" "nodoInviaRPT_api_v1_policy_replica_ndp" {
+  count = var.create_wisp_converter && var.env_short != "p" ? 1 : 0
+
+  api_name            = azurerm_api_management_api.apim_nodo_per_pa_api_v1_replica_ndp[0].name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = var.env_short == "d" ? "63d7c034c257810ad4354e11" : "63d7c1f0451c1c1948ef4165"
+  xml_content         = file("./api/nodopagamenti_api/nodoPerPa/v1/nodoInviaRPT_policy.xml")
+}
+
+# nodoInviaCarrelloRPT
+resource "azurerm_api_management_api_operation_policy" "nodoInviaCarrelloRPT_api_v1_policy_replica_ndp" {
+  count = var.create_wisp_converter && var.env_short != "p" ? 1 : 0
+
+  api_name            = azurerm_api_management_api.apim_nodo_per_pa_api_v1_replica_ndp[0].name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = var.env_short == "d" ? "63d7c034c257810ad4354e12" : "63d7c1f0451c1c1948ef4166"
+  xml_content         = file("./api/nodopagamenti_api/nodoPerPa/v1/nodoInviaCarrelloRPT_policy.xml")
 }

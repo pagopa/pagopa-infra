@@ -50,12 +50,6 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 variable "checkout_enabled" {
   type    = bool
@@ -125,10 +119,14 @@ variable "pagopa_proxy_redis_capacity" {
   default = 1
 }
 
+
 variable "pagopa_proxy_redis_sku_name" {
   type    = string
   default = null
 }
+
+
+
 
 variable "pagopa_proxy_redis_family" {
   type    = string
@@ -139,4 +137,55 @@ variable "redis_private_endpoint_enabled" {
   type        = bool
   description = "Enable private endpoints for redis instances?"
   default     = true
+}
+
+
+variable "redis_zones" {
+  type        = list(number)
+  description = "(Required) redis deployment zones"
+}
+
+variable "redis_version" {
+  type        = string
+  default     = "6"
+  description = "(Optional) redis version"
+}
+
+variable "enable_iac_pipeline" {
+  type        = bool
+  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
+  default     = false
+}
+
+variable "ingress_load_balancer_ip" {
+  type = string
+}
+
+
+variable "redis_checkout_params" {
+  type = object({
+    capacity   = number
+    sku_name   = string
+    family     = string
+    version    = string
+    ha_enabled = bool
+    zones      = list(number)
+  })
+}
+
+variable "redis_checkout_params_std" {
+  type = object({
+    capacity   = number
+    sku_name   = string
+    family     = string
+    version    = string
+    ha_enabled = bool
+    zones      = list(number)
+  })
+}
+
+# Redis
+variable "cidr_subnet_redis_checkout" {
+  type        = list(string)
+  description = "Redis DB address space for checkout."
 }

@@ -98,6 +98,28 @@
                 return "";
             }
         }" />
+        <set-variable name="paymentMethod" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"paymentMethod"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            if (result.Length > 2) {
+                var paymentMethod = result[1].Substring(1,result[1].Length-3);
+                return "<paymentMethod>"+paymentMethod+"</paymentMethod>";
+            } else {
+                return "";
+            }
+        }" />
+        <set-variable name="touchPoint" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"touchPoint"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            if (result.Length > 2) {
+                var touchPoint = result[1].Substring(1,result[1].Length-3);
+                return "<touchPoint>"+touchPoint+"</touchPoint>";
+            } else {
+                return "";
+            }
+        }" />
         <!--
         if attvazionePrenotata then sent PPT_ATTIVAZIONE_IN_CORSO
         else store PPT_ATTIVAZIONE_IN_CORSO in attvazionePrenotata for fiscalCode and noticeNumber
@@ -127,23 +149,25 @@
                 </return-response>
             </when>
             <otherwise>
+                <cache-store-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" value="PPT_ATTIVAZIONE_IN_CORSO" duration="30" caching-type="internal" />
                 <!-- ottimizzazione-ec-buoni start -->
                 <!-- https://pagopa.atlassian.net/wiki/spaces/PAG/pages/533398561/Ottimizzazione+filtro+su+Enti+Creditori+buoni -->
                 <cache-lookup-value key="@((string) context.Variables["fiscalCode"])" variable-name="dynamicGoodEc" caching-type="internal" />
-                <trace source="ottimizzazione-ec-buoni-init" severity="information">ottimizzazione-ec-buoni-init</trace>
+<!--                <trace source="ottimizzazione-ec-buoni-init" severity="information">ottimizzazione-ec-buoni-init</trace>-->
                 <choose>
                     <when condition="@{
                     var eclist = ((string) context.Variables["ecs"]).Split(',');
                     var idEC = (string) context.Variables["fiscalCode"];
-                    var isFiscalCodeNotInBlackList = !Array.Exists(eclist, e => e == idEC); 
+                    var isFiscalCodeNotInBlackList = !Array.Exists(eclist, e => e == idEC);
                     //      se non è in blacklist e NON è nella dynamic => call apiconfig
                     return  ( isFiscalCodeNotInBlackList && !context.Variables.ContainsKey("dynamicGoodEc") )  ;
                     }">
-                        <trace source="ottimizzazione-ec-buoni" severity="information">ottimizzazione-ec-buoni-start</trace>
+<!--                        <trace source="ottimizzazione-ec-buoni" severity="information">ottimizzazione-ec-buoni-start</trace>-->
                         <send-request ignore-error="true" timeout="10" response-variable-name="ec-stations-body" mode="new">
                             <!-- Get station details and relation info with creditor institution -->
                             <!-- <set-url>@(String.Format("https://api.${urlenvpath}platform.pagopa.it/apiconfig/auth/api/v1/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url> -->
-                            <set-url>@(String.Format("https://pagopa-${urlenvpath}-app-api-config.azurewebsites.net/apiconfig/api/v1/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url>
+<!--                            <set-url>@(String.Format("https://pagopa-${urlenvpath}-app-api-config.azurewebsites.net/apiconfig/api/v1/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url>-->
+                            <set-url>@(String.Format("https://${url_aks}/{{apicfg-core-service-path}}/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url>
                             <set-method>GET</set-method>
                             <set-header name="Content-Type" exists-action="override">
                                 <value>application/json</value>
@@ -164,7 +188,7 @@
                                         if (stationVers != "2" ) {
                                             isAllv2 = false;
                                             break;
-                                        } 
+                                        }
                                     }
                                     return isAllv2;
                                 }" />
@@ -183,7 +207,6 @@
                     </otherwise>
                 </choose>
                 <!-- ottimizzazione-ec-buoni stop -->
-                <cache-store-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" value="PPT_ATTIVAZIONE_IN_CORSO" duration="30" caching-type="internal" />
                 <!-- verificatore -->
                 <choose>
                     <when condition="@(context.Variables["idempotencyKey"] != null)">
@@ -203,7 +226,7 @@
                 if (context.Variables.ContainsKey("dynamicGoodEc") && (Convert.ToBoolean(context.Variables["dynamicGoodEc"]))) {
                     eclist = eclist.Append((string) context.Variables["fiscalCode"]).ToArray();;
                 }
-                
+
 
                 var idEC = (string) context.Variables["fiscalCode"];
 
@@ -213,9 +236,9 @@
                 var isIdempotencyKeyNotAlreadytRx = !context.Variables.ContainsKey("idempotencyKeyRx");
                 return isBrkPSPintoPSPwhiteList && isFiscalCodeNotInBlackList && isIdempotencyKeyNotAlreadytRx;
             }">
-                        <trace source="ottimizzazione-sent-verify" severity="information">ottimizzazione-sent-verify</trace>
+<!--                    <trace source="fc-check-error" severity="information">remove-me-239</trace>-->
+<!--                        <trace source="ottimizzazione-sent-verify" severity="information">ottimizzazione-sent-verify</trace>-->
                         <send-request ignore-error="true" timeout="20" response-variable-name="verifica" mode="new">
-                            <!-- <set-url>${base-url}</set-url> -->
                             <set-url>@{return ((string) context.Variables["baseUrl"]+"/webservices/input"); }</set-url>
                             <set-method>POST</set-method>
                             <set-header name="Content-Type" exists-action="override">
@@ -245,14 +268,28 @@
 								</soapenv:Envelope>
 							</set-body>
                         </send-request>
-                        <set-variable name="leggirisposta" value="@((string)((IResponse)context.Variables["verifica"]).Body.As<string>(preserveContent: true))" />
+<!--                    <trace source="fc-check-error" severity="information">remove-me-271</trace>-->
+<!--                        <set-variable name="leggirisposta" value="@((string)((IResponse)context.Variables["verifica"]).Body.As<string>(preserveContent: true))" />-->
+                        <set-variable name="leggirisposta" value="@{
+                                try {
+                                return (string)((IResponse)context.Variables["verifica"]).Body.As<string>(preserveContent: true);
+                                } catch (Exception e) {
+                                return "";
+                                }
+                         }" />
                         <set-variable name="outcome" value="@{
-                    var dom2parse = ((string) context.Variables["leggirisposta"]);
-                    String[] spearator = {"outcome"};
-                    String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-                    var outcome = result[1].Substring(1,result[1].Length-3);
-                    return outcome;
-                }" />
+                                try {
+                                    var dom2parse = ((string) context.Variables["leggirisposta"]);
+                                    String[] spearator = {"outcome"};
+                                    String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                                    var outcome = result[1].Substring(1,result[1].Length-3);
+                                    return outcome;
+                                } catch (Exception e) {
+                                return "KO";
+                                }
+                        }" />
+<!--                    <trace source="fc-check-error" severity="information">remove-me-284</trace>-->
+
                         <choose>
                             <!-- check if outcome is OK -->
                             <when condition="@("OK".Equals((string)context.Variables["outcome"]))">
@@ -298,12 +335,7 @@
 															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 														</qrCode>
 														<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
-														<amount>{{context.Variables["amount"]}}</amount>
-                                                        <!--
-														{{context.Variables["dueDate"]}}
-														{{context.Variables["paymentNote"]}}
-                                                        -->
-													</nod:activatePaymentNoticeV2Request>
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -326,12 +358,7 @@
 															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 														</qrCode>
 														<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
-														<amount>{{context.Variables["amount"]}}</amount>
-                                                        <!--
-														{{context.Variables["dueDate"]}}
-														{{context.Variables["paymentNote"]}}
-                                                        -->
-													</nod:activatePaymentNoticeV2Request>
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -354,12 +381,7 @@
 															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 														</qrCode>
 														<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
-														<amount>{{context.Variables["amount"]}}</amount>
-                                                        <!--
-														{{context.Variables["dueDate"]}}
-														{{context.Variables["paymentNote"]}}
-                                                        -->
-													</nod:activatePaymentNoticeV2Request>
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -382,12 +404,7 @@
 															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 														</qrCode>
 														<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
-														<amount>{{context.Variables["amount"]}}</amount>
-                                                        <!--
-														{{context.Variables["dueDate"]}}
-														{{context.Variables["paymentNote"]}}
-                                                        -->
-													</nod:activatePaymentNoticeV2Request>
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -395,68 +412,111 @@
                                 </choose>
                             </when>
                             <otherwise>
+                            <!-- #1 faultCode mandatory value for KO activatePaymentNoticeRes -->
                                 <set-variable name="faultCode" value="@{
-                            var dom2parse = ((string) context.Variables["leggirisposta"]);
-                            String[] spearator = {"faultCode"};
-                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-                            var faultCode = result[1].Substring(1,result[1].Length-3);
-                            return faultCode;
+                                try {
+                                    var dom2parse = ((string) context.Variables["leggirisposta"]);
+                                    String[] spearator = {"faultCode"};
+                                    String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                                    var faultCode = result[1].Substring(1,result[1].Length-3);
+                                    return faultCode;
+                                }
+                                catch (Exception e) {
+                                    return "PPT_SYSTEM_ERROR";
+                                }
                         }" />
+                            <!-- #2 faultString mandatory value for KO activatePaymentNoticeRes -->
                                 <set-variable name="faultString" value="@{
-                            var dom2parse = ((string) context.Variables["leggirisposta"]);
-                            String[] spearator = {"faultString"};
-                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-                            var faultString = result[1].Substring(1,result[1].Length-3);
-                            return faultString;
+                                try { 
+                                    var dom2parse = ((string) context.Variables["leggirisposta"]);
+                                    String[] spearator = {"faultString"};
+                                    String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                                    var faultString = result[1].Substring(1,result[1].Length-3);
+                                    return faultString;
+                                }
+                                catch (Exception e) {
+                                    return "ErrorONVerificatore";
+                                }                                
                         }" />
+                            <!-- #3 id mandatory value for KO activatePaymentNoticeRes NodoDeiPagamentiSPC NodoDeiPagamentiSPC_Verificatore ??? -->
                                 <set-variable name="id" value="@{
-                            var dom2parse = ((string) context.Variables["leggirisposta"]);
-                            String[] spearator = {"id"};
-                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-                            var id = result[1].Substring(1,result[1].Length-3);
-                            return id;
+                                try { 
+                                    var dom2parse = ((string) context.Variables["leggirisposta"]);
+                                    String[] spearator = {"id"};
+                                    String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                                    var id = result[1].Substring(1,result[1].Length-3);
+                                    return id;
+                                }
+                                catch (Exception e) {
+                                    return "NodoDeiPagamentiSPC";
+                                }                                
+
                         }" />
+                            <!-- #4 description mandatory value for KO activatePaymentNoticeRes -->
                                 <set-variable name="description" value="@{
-                            var dom2parse = ((string) context.Variables["leggirisposta"]);
-                            String[] spearator = {"description"};
-                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-                            var description = result[1].Substring(1,result[1].Length-3);
-                            return description;
+                                try { 
+                                    var dom2parse = ((string) context.Variables["leggirisposta"]);
+                                    String[] spearator = {"description"};
+                                    String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                                    var description = result[1].Substring(1,result[1].Length-3);
+                                    return description;
+                                }
+                                catch (Exception e) {
+                                    return "ErrorONVerificatoreDesc";
+                                }                                
+
                         }" />
+
+                            <!--for all following fields try/catch and return empty string --> 
                                 <set-variable name="originalFaultCode" value="@{
-                            var dom2parse = ((string) context.Variables["leggirisposta"]);
-                            String[] spearator = {"originalFaultCode"};
-                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-                            if (result.Length > 2) {
-                                var originalFaultCode = result[1].Substring(1,result[1].Length-3);
-                                return originalFaultCode;
-                            } else {
-                                return "";
-                            }
+                                try {                                 
+                                    var dom2parse = ((string) context.Variables["leggirisposta"]);
+                                    String[] spearator = {"originalFaultCode"};
+                                    String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                                    if (result.Length > 2) {
+                                        var originalFaultCode = result[1].Substring(1,result[1].Length-3);
+                                        return originalFaultCode;
+                                    } else {
+                                        return "";
+                                    }
+                                }
+                                catch (Exception e) {
+                                    return "";
+                                }                                          
 
                         }" />
                                 <set-variable name="originalFaultString" value="@{
-                            var dom2parse = ((string) context.Variables["leggirisposta"]);
-                            String[] spearator = {"originalFaultString"};
-                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-                            if (result.Length > 2) {
-                                var originalFaultString = result[1].Substring(1,result[1].Length-3);
-                                return originalFaultString;
-                            } else {
-                                return "";
-                            }
+                                try {                                 
+                                    var dom2parse = ((string) context.Variables["leggirisposta"]);
+                                    String[] spearator = {"originalFaultString"};
+                                    String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                                    if (result.Length > 2) {
+                                        var originalFaultString = result[1].Substring(1,result[1].Length-3);
+                                        return originalFaultString;
+                                    } else {
+                                        return "";
+                                    }
+                                }
+                                catch (Exception e) {
+                                    return "";
+                                }                                          
+
                         }" />
                                 <set-variable name="originalDescription" value="@{
-                            var dom2parse = ((string) context.Variables["leggirisposta"]);
-                            String[] spearator = {"originalDescription"};
-                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-                            if (result.Length > 2) {
-                                var originalDescription = result[1].Substring(1,result[1].Length-3);
-                                return originalDescription;
-                            } else {
-                                return "";
-                            }
-
+                                try {                                 
+                                    var dom2parse = ((string) context.Variables["leggirisposta"]);
+                                    String[] spearator = {"originalDescription"};
+                                    String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                                    if (result.Length > 2) {
+                                        var originalDescription = result[1].Substring(1,result[1].Length-3);
+                                        return originalDescription;
+                                    } else {
+                                        return "";
+                                    }
+                                }
+                                catch (Exception e) {
+                                    return "";
+                                }                                          
                         }" />
                                 <!-- on KO response custoim delete cache attvazionePrenotata #1 -->
                                 <cache-remove-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" caching-type="internal" />
@@ -513,7 +573,7 @@
                         </choose>
                     </when>
                     <otherwise>
-                        <trace source="ottimizzazione-sent-activate" severity="information">ottimizzazione-sent-activate</trace>
+<!--                        <trace source="ottimizzazione-sent-activate" severity="information">ottimizzazione-sent-activate</trace>-->
                         <set-variable name="amount" value="@{
                     var isIdempotencyKeyNotAlreadytRx = !context.Variables.ContainsKey("idempotencyKeyRx");
                     if (isIdempotencyKeyNotAlreadytRx) {
@@ -549,12 +609,7 @@
 													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 												</qrCode>
 												<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
-												<amount>{{context.Variables["amount"]}}</amount>
-                                                <!--
-												{{context.Variables["dueDate"]}}
-												{{context.Variables["paymentNote"]}}
-                                                -->
-											</nod:activatePaymentNoticeV2Request>
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
@@ -577,12 +632,7 @@
 													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 												</qrCode>
 												<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
-												<amount>{{context.Variables["amount"]}}</amount>
-                                                <!--
-												{{context.Variables["dueDate"]}}
-												{{context.Variables["paymentNote"]}}
-                                                -->
-											</nod:activatePaymentNoticeV2Request>
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
@@ -605,12 +655,7 @@
 													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 												</qrCode>
 												<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
-												<amount>{{context.Variables["amount"]}}</amount>
-                                                <!--
-												{{context.Variables["dueDate"]}}
-												{{context.Variables["paymentNote"]}}
-                                                -->
-											</nod:activatePaymentNoticeV2Request>
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
@@ -633,12 +678,7 @@
 													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 												</qrCode>
 												<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
-												<amount>{{context.Variables["amount"]}}</amount>
-                                                <!--
-												{{context.Variables["dueDate"]}}
-												{{context.Variables["paymentNote"]}}
-                                                -->
-											</nod:activatePaymentNoticeV2Request>
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
@@ -648,20 +688,7 @@
                 </choose>
             </otherwise>
         </choose>
-        <!-- <choose>
-            <when condition="@(${is-nodo-decoupler-enabled})">
-            </when>
-            <otherwise>
-                <set-backend-service base-url="${base-url}" />
-            </otherwise>
-        </choose>   
-        
-        <choose>
-            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
-                <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf/webservices/input" />
-            </when>
-        </choose> -->
-        
+
     </inbound>
     <backend>
         <base />

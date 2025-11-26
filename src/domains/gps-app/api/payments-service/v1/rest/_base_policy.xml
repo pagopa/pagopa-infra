@@ -1,0 +1,70 @@
+<policies>
+    <inbound>
+        <base />
+        <!-- rate limit by subscription key -->
+        <rate-limit calls="300" renewal-period="10" remaining-calls-variable-name="remainingCallsPerSubscription"/>
+        <set-backend-service base-url="https://${hostname}/pagopa-gpd-payments" />
+        <!-- Calling Authorizer's fragment -->
+        <set-variable name="application_domain" value="gpd" />
+        <set-variable name="metadata" value="no-metadata" />
+        <choose>
+          <!-- Making sure that will excludes all APIs that does not includes CI fiscal code -->
+          <when condition="@(context.Request.MatchedParameters.ContainsKey("organizationfiscalcode"))">
+            <set-variable name="authorization_entity" value="@(context.Request.MatchedParameters["organizationfiscalcode"])" />
+            <include-fragment fragment-id="authorizer" />
+            <!-- ################################################################### -->
+            <!-- ##### GPD System: Extracting and validating segregation code ###### -->
+            <!-- ################################################################### -->
+            <!-- Extracting segregation code -->
+            <set-variable name="segregation_codes" value="@{
+                string segregationCodes = "";
+                string[] metadataObjects = ((string) context.Variables["metadata"]).Split(new[] { ";;" }, StringSplitOptions.None);
+                string organizationId = ((string) context.Variables["authorization_entity"]);
+                bool found = false;
+                for (int i = 0; i < metadataObjects.Length && !found; i ++) {
+                    string metadataObject = metadataObjects[i];
+                    if (metadataObject.Contains("_seg")) {
+                        string[] segregationCodeMap = (metadataObject.Split('=')[1]).Split(';');
+                        for (int j = 0; j < segregationCodeMap.Length && !found; j++) {
+                            string[] splitString = segregationCodeMap[j].Split(':');
+                            found = splitString[0].Equals(organizationId);
+                            if (found) {
+                                segregationCodes = splitString[1];
+                            }
+                        }
+                    }
+                }
+                return segregationCodes;
+            }" />
+            <choose>
+                <when condition="@("".Equals(context.Variables["segregation_codes"]))">
+                <!-- Block request if it does not have valid segregation codes -->
+<!--                    <return-response>-->
+<!--                        <set-status code="403" reason="Forbidden" />-->
+<!--                    </return-response>-->
+                    <trace source="GPD-Payments External Policy for organizations" severity="information">
+                      <message>No valid segregation codes associated with EC</message>
+                    </trace>
+                </when>
+                <otherwise>
+                    <!-- Add query parameter to the request -->
+                    <set-query-parameter name="segregationCodes" exists-action="override">
+                        <value>@((string) context.Variables["segregation_codes"])</value>
+                    </set-query-parameter>
+                </otherwise>
+            </choose>
+            <!-- ################################################################### -->
+            <!-- ################################################################### -->
+          </when>
+        </choose>
+    </inbound>
+    <outbound>
+        <base />
+    </outbound>
+    <backend>
+        <base />
+    </backend>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

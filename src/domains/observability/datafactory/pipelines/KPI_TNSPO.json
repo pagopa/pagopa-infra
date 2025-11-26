@@ -1,0 +1,434 @@
+{
+    "name": "Copy of data for KPI",
+    "type": "Copy",
+    "dependsOn": [
+        {
+            "activity": "Configure count_record variable",
+            "dependencyConditions": [
+                "Completed"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "AzureDataExplorerSource",
+            "additionalColumns": [
+                {
+                    "name": "pipelineRunID",
+                    "value": {
+                        "value": "@variables('run_id')",
+                        "type": "Expression"
+                    }
+                }
+            ],
+            "query": {
+                "value": "let trigger_start=bin(datetime_utc_to_local(datetime('@{variables('start_date')}'), \"Europe/Rome\"), 10m);\nlet start=datetime_add('minute', -15, trigger_start);\nlet end=datetime_add('minute', 10, start);\nlet end_sp=datetime_add('minute', 15, start);\nlet pspNP_req = ReEvent\n| where insertedTimestamp between (start .. end)\n| where categoriaEvento == \"INTERFACCIA\"\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where sottoTipoEvento == \"REQ\"\n| extend xml_payload = base64_decode_tostring(payload)\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1, xml_payload)\n| extend _t = extract_all('<paymentToken>([A-Za-z0-9]+)</paymentToken>', xml_payload)\n| mv-expand _t\n| extend ccp=tostring(_t)\n| extend paymentToken=tostring(_t)\n| project insertedTimestamp_req=insertedTimestamp, idDominio_req=idDominio, iuv_req=iuv, ccp_req=ccp, psp_req=psp, paymentToken_req=paymentToken, PSP_METHOD=tipoEvento, OUTCOME_PSP_REQ=outcome, sessionId;\nlet pspNP_resp = ReEvent\n| where insertedTimestamp between (start .. end)\n| where categoriaEvento == \"INTERFACCIA\"\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where sottoTipoEvento == \"RESP\"\n| extend xml_payload = base64_decode_tostring(payload)\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1, xml_payload)\n| extend fault_code_psp = extract(\"<faultCode>(.*)</faultCode>\", 1, xml_payload)\n| project insertedTimestamp, idDominio, iuv, ccp, psp, paymentToken, PSP_METHOD=tipoEvento, OUTCOME_PSP_RESP=outcome, FAULT_CODE_PSP=fault_code_psp, sessionId;\nlet pspNP = pspNP_req\n| join kind=leftouter pspNP_resp on PSP_METHOD, sessionId\n| project insertedTimestamp, idDominio, iuv, ccp=ccp_req, psp, paymentToken=paymentToken_req, PSP_METHOD, OUTCOME_PSP_RESP, FAULT_CODE_PSP;\nlet SPO = ReEvent\n| where insertedTimestamp between (start .. end_sp)\n| where categoriaEvento == \"INTERFACCIA\"\n| where tipoEvento in (\"sendPaymentOutcome\", \"sendPaymentOutcomeV2\")\n| where sottoTipoEvento == \"REQ\"\n| extend xml_payload = base64_decode_tostring(payload)\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1, xml_payload)\n| extend fault_code_spo = extract(\"<faultCode>(.*)</faultCode>\", 1, xml_payload)\n| extend _t = extract_all('<paymentToken>([A-Za-z0-9]+)</paymentToken>', xml_payload)\n| mv-expand _t\n| extend ccp=tostring(_t)\n| extend paymentToken=tostring(_t)\n| project insertedTimestamp, idDominio, iuv, ccp, psp, outcome, stazione, canale, paymentToken, NODE_METHOD=tipoEvento, FAULT_CODE_SPO=fault_code_spo;\npspNP\n| join kind=leftouter SPO on paymentToken\n| extend diff_time_in_ms = datetime_diff(\"millisecond\", insertedTimestamp1, insertedTimestamp)\n| project-rename REQUEST_PSPNOTIFY=insertedTimestamp, REQUEST_SPO=insertedTimestamp1\n| extend NO_RESPONSE=case(isempty(REQUEST_SPO), true, false)\n| extend ID_BROKER_PSP=split(canale, \"_\", 0)[0]\n| extend ID_BROKER_PA=split(stazione, \"_\", 0)[0]\n| project REQUEST_PSPNOTIFY, REQUEST_SPO, ID_DOMINIO=idDominio, IUV=iuv, TOKEN=paymentToken, DIFF_TIME_IN_MS=diff_time_in_ms, PSP=psp, OUTCOME_SPO_REQ=outcome, STAZIONE=stazione, CANALE=canale, ID_BROKER_PSP, ID_BROKER_PA, NO_RESPONSE, NODE_METHOD, PSP_METHOD, OUTCOME_PSP_RESP, FAULT_CODE_PSP, FAULT_CODE_SPO",
+                "type": "Expression"
+            },
+            "queryTimeout": "00:10:00",
+            "noTruncation": false
+        },
+        "sink": {
+            "type": "AzureDataExplorerSink",
+            "ingestionMappingName": ""
+        },
+        "enableStaging": false,
+        "validateDataConsistency": true,
+        "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+                {
+                    "source": {
+                        "name": "REQUEST_PSPNOTIFY",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    },
+                    "sink": {
+                        "name": "REQUEST_PSPNOTIFY",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "REQUEST_SPO",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    },
+                    "sink": {
+                        "name": "REQUEST_SPO",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ID_DOMINIO",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "ID_DOMINIO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "IUV",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "IUV",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "TOKEN",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "TOKEN",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ID_BROKER_PSP",
+                        "type": "String",
+                        "physicalType": "dynamic"
+                    },
+                    "sink": {
+                        "name": "ID_BROKER_PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ID_BROKER_PA",
+                        "type": "String",
+                        "physicalType": "dynamic"
+                    },
+                    "sink": {
+                        "name": "ID_BROKER_PA",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "STAZIONE",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "STAZIONE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "CANALE",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "CANALE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "DIFF_TIME_IN_MS",
+                        "type": "Int64",
+                        "physicalType": "long"
+                    },
+                    "sink": {
+                        "name": "DIFF_TIME_IN_MS",
+                        "type": "Int64",
+                        "physicalType": "long"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "OUTCOME_SPO_REQ",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "OUTCOME_SPO_REQ",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "NO_RESPONSE",
+                        "type": "Boolean",
+                        "physicalType": "bool"
+                    },
+                    "sink": {
+                        "name": "NO_RESPONSE",
+                        "type": "Boolean",
+                        "physicalType": "bool"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "pipelineRunID",
+                        "type": "String"
+                    },
+                    "sink": {
+                        "name": "pipelineRunID",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "NODE_METHOD",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "NODE_METHOD",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "PSP_METHOD",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "PSP_METHOD",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "OUTCOME_PSP_RESP",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "OUTCOME_PSP_RESP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "FAULT_CODE_PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "FAULT_CODE_PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "FAULT_CODE_SPO",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "FAULT_CODE_SPO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                }
+            ],
+            "typeConversion": true,
+            "typeConversionSettings": {
+                "allowDataTruncation": true,
+                "treatBooleanAsNumber": false
+            }
+        }
+    },
+    "inputs": [
+        {
+            "referenceName": "${inputdataset}",
+            "type": "DatasetReference"
+        }
+    ],
+    "outputs": [
+        {
+            "referenceName": "${outputdataset}",
+            "type": "DatasetReference"
+        }
+    ]
+},
+{
+    "name": "Configure run_id variable",
+    "description": "La variabile contiene l'id univoco di esecuzione della pipeLine",
+    "type": "SetVariable",
+    "dependsOn": [],
+    "policy": {
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "variableName": "run_id",
+        "value": {
+            "value": "@pipeline().RunId",
+            "type": "Expression"
+        }
+    }
+},
+{
+    "name": "Configure start_date variable",
+    "description": "La variabile contiene il valore relativo alla data di start della pipeline, prelevato a sua volta dalla data di start del trigger",
+    "type": "SetVariable",
+    "dependsOn": [
+        {
+            "activity": "Configure run_id variable",
+            "dependencyConditions": [
+                "Completed"
+            ]
+        }
+    ],
+    "policy": {
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "variableName": "start_date",
+        "value": {
+            "value": "@pipeline().TriggerTime",
+            "type": "Expression"
+        }
+    }
+},
+{
+    "name": "Count dei record",
+    "description": "Prelevo la count dei record per un check finale",
+    "type": "Lookup",
+    "dependsOn": [
+        {
+            "activity": "Configure start_date variable",
+            "dependencyConditions": [
+                "Completed"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "AzureDataExplorerSource",
+            "query": {
+                "value": "let trigger_start=bin(datetime_utc_to_local(datetime('@{variables('start_date')}'), \"Europe/Rome\"), 10m);\nlet start=datetime_add('minute', -15, trigger_start);\nlet end=datetime_add('minute', 10, start);\nlet end_sp=datetime_add('minute', 15, start);\nlet pspNP_req = ReEvent\n| where insertedTimestamp between (start .. end)\n| where categoriaEvento == \"INTERFACCIA\"\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where sottoTipoEvento == \"REQ\"\n| extend xml_payload = base64_decode_tostring(payload)\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1, xml_payload)\n| extend _t = extract_all('<paymentToken>([A-Za-z0-9]+)</paymentToken>', xml_payload)\n| mv-expand _t\n| extend ccp=tostring(_t)\n| extend paymentToken=tostring(_t)\n| project insertedTimestamp_req=insertedTimestamp, idDominio_req=idDominio, iuv_req=iuv, ccp_req=ccp, psp_req=psp, paymentToken_req=paymentToken, PSP_METHOD=tipoEvento, OUTCOME_PSP_REQ=outcome, sessionId;\nlet pspNP_resp = ReEvent\n| where insertedTimestamp between (start .. end)\n| where categoriaEvento == \"INTERFACCIA\"\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where sottoTipoEvento == \"RESP\"\n| extend xml_payload = base64_decode_tostring(payload)\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1, xml_payload)\n| extend fault_code_psp = extract(\"<faultCode>(.*)</faultCode>\", 1, xml_payload)\n| project insertedTimestamp, idDominio, iuv, ccp, psp, paymentToken, PSP_METHOD=tipoEvento, OUTCOME_PSP_RESP=outcome, FAULT_CODE_PSP=fault_code_psp, sessionId;\nlet pspNP = pspNP_req\n| join kind=leftouter pspNP_resp on PSP_METHOD, sessionId\n| project insertedTimestamp, idDominio, iuv, ccp=ccp_req, psp, paymentToken=paymentToken_req, PSP_METHOD, OUTCOME_PSP_RESP, FAULT_CODE_PSP;\nlet SPO = ReEvent\n| where insertedTimestamp between (start .. end_sp)\n| where categoriaEvento == \"INTERFACCIA\"\n| where tipoEvento in (\"sendPaymentOutcome\", \"sendPaymentOutcomeV2\")\n| where sottoTipoEvento == \"REQ\"\n| extend xml_payload = base64_decode_tostring(payload)\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1, xml_payload)\n| extend fault_code_spo = extract(\"<faultCode>(.*)</faultCode>\", 1, xml_payload)\n| extend _t = extract_all('<paymentToken>([A-Za-z0-9]+)</paymentToken>', xml_payload)\n| mv-expand _t\n| extend ccp=tostring(_t)\n| extend paymentToken=tostring(_t)\n| project insertedTimestamp, idDominio, iuv, ccp, psp, outcome, stazione, canale, paymentToken, NODE_METHOD=tipoEvento, FAULT_CODE_SPO=fault_code_spo;\npspNP\n| join kind=leftouter SPO on paymentToken\n| extend diff_time_in_ms = datetime_diff(\"millisecond\", insertedTimestamp1, insertedTimestamp)\n| project-rename REQUEST_PSPNOTIFY=insertedTimestamp, REQUEST_SPO=insertedTimestamp1\n| extend NO_RESPONSE=case(isempty(REQUEST_SPO), true, false)\n| extend ID_BROKER_PSP=split(canale, \"_\", 0)[0]\n| extend ID_BROKER_PA=split(stazione, \"_\", 0)[0]\n| project REQUEST_PSPNOTIFY, REQUEST_SPO, ID_DOMINIO=idDominio, IUV=iuv, TOKEN=paymentToken, DIFF_TIME_IN_MS=diff_time_in_ms, PSP=psp, OUTCOME_SPO_REQ=outcome, STAZIONE=stazione, CANALE=canale, ID_BROKER_PSP, ID_BROKER_PA, NO_RESPONSE, NODE_METHOD, PSP_METHOD, OUTCOME_PSP_RESP, FAULT_CODE_PSP, FAULT_CODE_SPO",
+                "type": "Expression"
+            },
+            "queryTimeout": "00:10:00",
+            "noTruncation": false
+        },
+        "dataset": {
+            "referenceName": "SMO_ReEvent_DataSet",
+            "type": "DatasetReference"
+        },
+        "firstRowOnly": false
+    }
+},
+{
+    "name": "Configure count_record variable",
+    "description": "Contiene il numero totale dei record che saranno oggetto di ingestion. Viene utilizzato per il check del caricamento ",
+    "type": "SetVariable",
+    "dependsOn": [
+        {
+            "activity": "Count dei record",
+            "dependencyConditions": [
+                "Completed"
+            ]
+        }
+    ],
+    "policy": {
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "variableName": "count_record",
+        "value": {
+            "value": "@string(activity('Count dei record').output.count)",
+            "type": "Expression"
+        }
+    }
+},
+{
+    "name": "If Condition1",
+    "type": "IfCondition",
+    "dependsOn": [
+        {
+            "activity": "Copy of data for KPI",
+            "dependencyConditions": [
+                "Completed"
+            ]
+        }
+    ],
+    "userProperties": [],
+    "typeProperties": {
+        "expression": {
+            "value": "@equals(variables('count_record'),string(activity('Copy of data for KPI').output.rowsCopied))",
+            "type": "Expression"
+        },
+        "ifFalseActivities": [
+            {
+                "name": "Errore",
+                "type": "Fail",
+                "dependsOn": [],
+                "userProperties": [],
+                "typeProperties": {
+                    "message": {
+                        "value": "@concat('Lette :' ,variables('count_record'), ' Scritte : ', activity('Copy of data for KPI').output.rowsCopied)",
+                        "type": "Expression"
+                    },
+                    "errorCode": "412"
+                }
+            }
+        ]
+    }
+}

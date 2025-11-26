@@ -6,7 +6,7 @@ locals {
   apim_gpd_reporting_analysis_api = {
     published             = true
     subscription_required = true
-    approval_required     = true
+    approval_required     = false
     subscriptions_limit   = 1000
   }
 }
@@ -16,7 +16,7 @@ locals {
 ##############
 
 module "apim_gpd_reporting_analysis_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "product-gpd-reporting"
   display_name = "GPD Reporting Analysis pagoPA"
@@ -48,12 +48,12 @@ resource "azurerm_api_management_api_version_set" "api_gpd_reporting_analysis_ap
 
 
 module "apim_api_gpd_reporting_analysis_api" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-api-gpd-reporting-analysis-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_gpd_reporting_analysis_product.product_id]
+  product_ids           = [module.apim_gpd_reporting_analysis_product.product_id, module.apim_gpd_integration_product.product_id]
   subscription_required = local.apim_gpd_reporting_analysis_api.subscription_required
   api_version           = "v1"
   version_set_id        = azurerm_api_management_api_version_set.api_gpd_reporting_analysis_api.id

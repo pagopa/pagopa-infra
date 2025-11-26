@@ -1,18 +1,13 @@
-prefix         = "pagopa"
-env_short      = "d"
-env            = "dev"
-domain         = "shared"
-location       = "westeurope"
-location_short = "weu"
-instance       = "dev"
+prefix               = "pagopa"
+env_short            = "d"
+env                  = "dev"
+domain               = "shared"
+location             = "westeurope"
+location_short       = "weu"
+instance             = "dev"
+location_short_italy = "itn"
+location_italy       = "italynorth"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/shared"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -70,9 +65,37 @@ cosmos_authorizer_db_params = {
   is_virtual_network_filter_enabled = false
 
   backup_continuous_enabled = false
+  burst_capacity_enabled    = false
 }
 
 
 cidr_subnet_iuvgenerator_cosmosdb = ["10.1.150.0/24"]
 cidr_subnet_authorizer_cosmosdb   = ["10.1.168.0/24"]
-cidr_subnet_loadtest_agent        = ["10.1.159.0/24"]
+
+cidr_subnet_taxonomy_storage_account = ["10.1.186.0/24"]
+taxonomy_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = false
+  public_network_access_enabled = true
+  blob_delete_retention_days    = 0
+  enable_low_availability_alert = false
+}
+
+cidr_subnet_test_data_storage_account = ["10.1.188.0/24"]
+test_data_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = false
+  public_network_access_enabled = true
+  blob_delete_retention_days    = 7
+  enable_low_availability_alert = false
+}
+
+redis_ha_enabled = false
+
+github_runner_ita_enabled = true

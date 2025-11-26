@@ -27,6 +27,11 @@
       "url": "https://${hostname}"
     }
   ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
   "paths": {
     "/transactions": {
       "post": {
@@ -245,6 +250,92 @@
         }
       }
     },
+    "/transactions/{transactionId}/outcomes": {
+      "get": {
+        "tags": [
+          "transactions"
+        ],
+        "operationId": "getTransactionOutcomes",
+        "summary": "Get transaction outcome",
+        "description": "Return outcome information for the input specific transaction resource",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Transaction ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction authorization request successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionOutcomeInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid transaction id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Bad gateway",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Gateway timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/transactions/{transactionId}/auth-requests": {
       "post": {
         "tags": [
@@ -268,7 +359,7 @@
             "name": "x-pgs-id",
             "schema": {
               "type": "string",
-              "pattern": "XPAY|VPOS"
+              "pattern": "XPAY|VPOS|NPG|REDIRECT"
             },
             "required": false,
             "description": "Pgs identifier (populated by APIM policy)"
@@ -313,6 +404,16 @@
           },
           "409": {
             "description": "Transaction already processed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -388,6 +489,10 @@
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
           },
+          "isAllCCP": {
+            "description": "Flag for the inclusion of Poste bundles. false -> excluded, true -> included",
+            "type": "boolean"
+          },
           "transferList": {
             "type": "array",
             "items": {
@@ -400,13 +505,15 @@
         "required": [
           "rptId",
           "amount",
-          "transferList"
+          "transferList",
+          "isAllCCP"
         ],
         "example": {
           "rptId": "77777777777302012387654312384",
           "paymentToken": "paymentToken1",
           "reason": "reason1",
           "amount": 100,
+          "isAllCCP": false,
           "transferList": [
             {
               "paFiscalCode": "77777777777",
@@ -448,7 +555,7 @@
           "email": {
             "description": "Email string format",
             "type": "string",
-            "pattern": "(?:[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])",
+            "pattern": "(?:[a-zA-Z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+\\/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])",
             "example": "mario.rossi@gmail.it"
           },
           "idCart": {
@@ -541,11 +648,12 @@
             "example": "idCartFromCreditorInstitution"
           },
           "sendPaymentResultOutcome": {
-            "description": "The outcome of sendPaymentResult api",
+            "description": "The outcome of sendPaymentResult api (OK, KO, NOT_RECEIVED)",
             "type": "string",
             "enum": [
               "OK",
-              "KO"
+              "KO",
+              "NOT_RECEIVED"
             ]
           },
           "authorizationCode": {
@@ -558,8 +666,12 @@
           },
           "gateway": {
             "type": "string",
-            "pattern": "XPAY|VPOS",
+            "pattern": "XPAY|VPOS|NPG",
             "description": "Pgs identifier"
+          },
+          "gatewayAuthorizationStatus": {
+            "type": "string",
+            "description": "payment gateway authorization status"
           }
         },
         "required": [
@@ -599,21 +711,37 @@
             ],
             "description": "Requested language"
           },
+          "isAllCCP": {
+            "type": "boolean",
+            "description": "Check flag for psp validation"
+          },
           "details": {
             "description": "Additional payment authorization details. Must match the correct format for the chosen payment method.",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/PostePayAuthRequestDetails"
+                "$ref": "#/components/schemas/CardAuthRequestDetails"
               },
               {
-                "$ref": "#/components/schemas/CardAuthRequestDetails"
+                "$ref": "#/components/schemas/CardsAuthRequestDetails"
+              },
+              {
+                "$ref": "#/components/schemas/WalletAuthRequestDetails"
+              },
+              {
+                "$ref": "#/components/schemas/RedirectionAuthRequestDetails"
+              },
+              {
+                "$ref": "#/components/schemas/ApmAuthRequestDetails"
               }
             ],
             "discriminator": {
               "propertyName": "detailType",
               "mapping": {
-                "postepay": "#/components/schemas/PostePayAuthRequestDetails",
-                "card": "#/components/schemas/CardAuthRequestDetails"
+                "card": "#/components/schemas/CardAuthRequestDetails",
+                "cards": "#/components/schemas/CardsAuthRequestDetails",
+                "wallet": "#/components/schemas/WalletAuthRequestDetails",
+                "redirect": "#/components/schemas/RedirectionAuthRequestDetails",
+                "apm": "#/components/schemas/ApmAuthRequestDetails"
               }
             }
           }
@@ -624,38 +752,16 @@
           "paymentInstrumentId",
           "pspId",
           "language",
+          "isAllCCP",
           "details"
         ]
-      },
-      "PostePayAuthRequestDetails": {
-        "type": "object",
-        "description": "Additional payment authorization details for the PostePay payment method",
-        "properties": {
-          "detailType": {
-            "description": "property discriminator, used to discriminate the authorization request detail instance",
-            "type": "string"
-          },
-          "accountEmail": {
-            "type": "string",
-            "format": "email",
-            "description": "PostePay account email"
-          }
-        },
-        "required": [
-          "detailType",
-          "accountEmail"
-        ],
-        "example": {
-          "detailType": "postepay",
-          "accountEmail": "user@example.com"
-        }
       },
       "CardAuthRequestDetails": {
         "type": "object",
         "description": "Additional payment authorization details for credit cards",
         "properties": {
           "detailType": {
-            "description": "property discriminator, used to discriminate the authorization request detail",
+            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'card'",
             "type": "string"
           },
           "cvv": {
@@ -713,6 +819,82 @@
           "threeDsData": "threeDsData"
         }
       },
+      "CardsAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for cards NPG authorization",
+        "properties": {
+          "detailType": {
+            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'cards'",
+            "type": "string"
+          },
+          "orderId": {
+            "type": "string",
+            "description": "NPG transaction order id"
+          }
+        },
+        "required": [
+          "detailType",
+          "orderId"
+        ],
+        "example": {
+          "detailType": "cards",
+          "orderId": "orderId"
+        }
+      },
+      "WalletAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for wallet NPG authorization",
+        "properties": {
+          "detailType": {
+            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'wallet'",
+            "type": "string"
+          },
+          "walletId": {
+            "type": "string",
+            "description": "The user wallet id"
+          }
+        },
+        "required": [
+          "detailType",
+          "walletId"
+        ],
+        "example": {
+          "detailType": "wallet",
+          "walletId": "walletId"
+        }
+      },
+      "RedirectionAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for Redirection authorization request",
+        "properties": {
+          "detailType": {
+            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'redirect'",
+            "type": "string"
+          }
+        },
+        "required": [
+          "detailType"
+        ],
+        "example": {
+          "detailType": "redirect"
+        }
+      },
+      "ApmAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for payment apm authorization",
+        "properties": {
+          "detailType": {
+            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'apm'",
+            "type": "string"
+          }
+        },
+        "required": [
+          "detailType"
+        ],
+        "example": {
+          "detailType": "apm"
+        }
+      },
       "RequestAuthorizationResponse": {
         "type": "object",
         "description": "Response body for requesting an authorization for a transaction",
@@ -755,6 +937,33 @@
           }
         ]
       },
+      "TransactionOutcomeInfo" : {
+        "type": "object",
+        "description": "Transaction outcome info returned when querying for an existing transaction outcome status. The field totalAmount, if present, is intended as the total amount paid for the transaction in eurocents fees excluded. Fees too, if present, is in eurocents",
+        "properties": {
+          "outcome": {
+            "type": "number",
+            "enum": [
+              0, 1, 2, 3, 4, 7, 8, 10, 17, 18, 25, 99, 116, 117, 121
+            ],
+            "description": "`0` - Success `1` - Generic error `2` - Authorization error `3` - Invalid data `4` - Timeout `7` - Invalid card: expired card etc `8` - Canceled by the user `10` - Excessive amount `17` - Taken in charge `18` - Refunded `25` - PSP Error `99` - Backend Error `116` - Balance not available `117` - CVV Error `121` - Limit exceeded"
+          },
+          "isFinalStatus": {
+            "type": "boolean",
+            "description": "A flag that describe the outcome as final or not. If true, the outcome will not change in the future and the client can interrupt polling."
+          },
+          "totalAmount": {
+            "$ref": "#/components/schemas/AmountEuroCents"    
+          },
+          "fees": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          }
+        },
+        "required": [
+          "outcome",
+          "isFinalStatus"
+        ]
+      },
       "AmountEuroCents": {
         "description": "Amount for payments, in euro cents",
         "type": "integer",
@@ -768,6 +977,7 @@
           "ACTIVATED",
           "AUTHORIZATION_REQUESTED",
           "AUTHORIZATION_COMPLETED",
+          "CLOSURE_REQUESTED",
           "CLOSED",
           "CLOSURE_ERROR",
           "NOTIFIED_OK",
@@ -1028,6 +1238,13 @@
             }
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
       }
     }
   }

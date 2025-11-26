@@ -1,7 +1,9 @@
 -- DROP OWNED BY ${db_user};
 -- DROP ROLE ${db_user};
 CREATE ROLE ${db_user};
-ALTER ROLE ${db_user} WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION NOBYPASSRLS;
+-- https://learn.microsoft.com/en-us/answers/questions/170590/azure-postgressql-want-to-create-nosuperuser-role
+-- ALTER ROLE ${db_user} WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION NOBYPASSRLS;
+ALTER ROLE ${db_user} WITH INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION;
 
 ALTER USER ${db_user} WITH PASSWORD '${db_user_password}';
 

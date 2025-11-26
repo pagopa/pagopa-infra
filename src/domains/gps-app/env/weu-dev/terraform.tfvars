@@ -7,13 +7,6 @@ location_short  = "weu"
 location_string = "West Europe"
 instance        = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/gps"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ## APIM
 apim_logger_resource_id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/loggers/pagopa-d-apim-logger"
@@ -29,27 +22,22 @@ apim_dns_zone_prefix                        = "dev.platform"
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
 tls_cert_check_helm = {
-  chart_version = "1.21.0"
+  chart_version = "2.0.0"
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
-  image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
+  image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
 }
 
 # function_app docker
-reporting_batch_image    = "pagopagpdreportingbatch"
-reporting_service_image  = "pagopagpdreportingservice"
 reporting_analysis_image = "pagopagpdreportinganalysis"
 
 # gpd-reporting-functions
 gpd_paa_id_intermediario = "15376371009"
 gpd_paa_stazione_int     = "15376371009_01"
 
-reporting_batch_function_always_on    = true
-reporting_service_function_always_on  = true
 reporting_analysis_function_always_on = true
 
 cidr_subnet_reporting_functions = ["10.1.177.0/24"]
 cidr_subnet_gpd                 = ["10.1.138.0/24"]
-
 
 reporting_function = false
 reporting_functions_app_sku = {
@@ -60,17 +48,30 @@ reporting_functions_app_sku = {
 
 cname_record_name = "config"
 
-# gpd
-gpd_plan_kind                = "Linux"
-gpd_plan_sku_tier            = "Standard"
-gpd_plan_sku_size            = "S1"
-gpd_always_on                = false
-gpd_cron_job_enable          = true
-gpd_cron_schedule_valid_to   = "0 */10 * * * *"
-gpd_cron_schedule_expired_to = "0 */20 * * * *"
-gpd_autoscale_minimum        = 1
-gpd_autoscale_maximum        = 3
-gpd_autoscale_default        = 1
 # gpd database config for gpd-app-service
 pgbouncer_enabled = false
 
+# WISP-dismantling-cfg
+create_wisp_converter = true
+
+### debezium zookeeper_yaml
+zookeeper_replicas       = "1"
+zookeeper_request_memory = "512Mi"
+zookeeper_request_cpu    = "0.5"
+zookeeper_limits_memory  = "512Mi"
+zookeeper_limits_cpu     = "0.5"
+zookeeper_jvm_xms        = "512m"
+zookeeper_jvm_xmx        = "512m"
+zookeeper_storage_size   = "100Gi"
+
+### debezium kafka_connect_yaml
+replicas           = 1
+request_cpu        = 0.5
+limits_cpu         = 2
+request_memory     = "512Mi"
+limits_memory      = "1024Mi"
+postgres_db_name   = "apd"
+tasks_max          = "1"
+container_registry = "pagopadcommonacr.azurecr.io"
+max_threads        = 1
+gpd_cdc_enabled    = true
