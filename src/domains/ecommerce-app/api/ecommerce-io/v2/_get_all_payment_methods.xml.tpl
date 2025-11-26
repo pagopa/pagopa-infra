@@ -6,7 +6,7 @@
     <outbound>
         <base />
             <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
-                <set-url>@("https://${ecommerce_hostname}/pagopa-ecommerce-payment-methods-handler/payment-methods/" + context.Variables["paymentMethodId"])</set-url>
+                <set-url>@("https://${ecommerce_ingress_hostname}/pagopa-ecommerce-payment-methods-handler/payment-methods")</set-url>
                 <set-method>POST</set-method>
                 <set-header name="Content-Type" exists-action="override">
                     <value>application/json</value>
@@ -20,7 +20,7 @@
                 </set-header>
                  <set-body>@{
                     var userTouchpoint = "IO";
-                    var totalAmount = ((jhU>B          ;K%Rjhqwm       l                                                                     )context.Variables.GetValueOrDefault("totalAmount",0));
+                    var totalAmount = (context.Variables.GetValueOrDefault("totalAmount",0));
                     var paymentNotice = new JObject();
                     paymentNotice["paymentAmount"] = totalAmount;
                     paymentNotice["primaryCreditorInstitution"] = "77777777777";
