@@ -7,12 +7,9 @@ CREATE OR REPLACE PROCEDURE cfg_cache_purge(
 AS $function$
 DECLARE
 
--- Number of records before purge process
-current_records int;
--- Number of record deleted by purge process
-deleted_records int;
--- Number of record analyzed during purge process
-analyzed_records int;
+current_records integer;
+deleted_records integer;
+analyzed_records integer;
 
 BEGIN
 
