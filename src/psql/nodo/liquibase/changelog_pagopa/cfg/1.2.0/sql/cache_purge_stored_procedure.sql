@@ -99,5 +99,5 @@ RAISE INFO '[%] Deleted [%] records from [cfg.cache] table.', clock_timestamp(),
 END;
 $BODY$;
 
-ALTER PROCEDURE cfg.cfg_cache_purge() OWNER TO cfg;
-GRANT EXECUTE ON PROCEDURE cfg.cfg_cache_purge() TO cfg;
+ALTER PROCEDURE cfg.cfg_cache_purge(integer, date, integer) OWNER TO cfg;
+GRANT EXECUTE ON PROCEDURE cfg.cfg_cache_purge(integer, date, integer) TO cfg;
