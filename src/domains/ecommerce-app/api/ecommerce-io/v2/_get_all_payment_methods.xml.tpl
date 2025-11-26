@@ -91,16 +91,14 @@
                                     }
 
                                     JArray rangesArray = new JArray();
-                                    JObject feeRange = (JObject)sourceMethod["feeRange"];
-                                    if (feeRange != null)
+
+                                    JObject rangeItem = new JObject
                                     {
-                                        JObject rangeItem = new JObject
-                                        {
-                                            { "min", feeRange["min"] },
-                                            { "max", feeRange["max"] }
-                                        };
-                                        rangesArray.Add(rangeItem);
-                                    }
+                                        { "min", totalAmount-1 },
+                                        { "max", totalAmount+1 }
+                                    };
+                                    rangesArray.Add(rangeItem);
+
                                     targetMethod["ranges"] = rangesArray;
                                     if (sourceMethod.ContainsKey("paymentMethodsBrandAssets") && sourceMethod["paymentMethodsBrandAssets"].HasValues)
                                     {
@@ -128,7 +126,6 @@
                 </otherwise>
         </outbound>
         <backend>
-            <base />
         </backend>
         <on-error>
             <base />
