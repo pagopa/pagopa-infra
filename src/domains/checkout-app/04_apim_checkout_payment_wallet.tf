@@ -47,7 +47,6 @@ module "apim_checkout_payment_wallet_api_v1" {
   xml_content = templatefile("./api/checkout/checkout_payment_wallet/v1/_base_policy.xml.tpl", {
     hostname                  = local.payment_wallet_hostname
     checkout_ingress_hostname = local.checkout_ingress_hostname
-    pdv_api_base_path         = var.pdv_api_base_path
     checkout_origin           = var.env_short == "d" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}"
   })
 }

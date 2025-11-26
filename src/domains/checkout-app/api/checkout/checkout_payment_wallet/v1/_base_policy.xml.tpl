@@ -88,37 +88,8 @@
       <!-- custom token validate and store userId variable END -->
 
       <!-- pass x-user-id into header START-->
-      <!-- Post Token PDV for CF START-->
-      <send-request ignore-error="true" timeout="10" response-variable-name="cf-token" mode="new">
-          <set-url>${pdv_api_base_path}/tokens</set-url>
-          <set-method>PUT</set-method>
-          <set-header name="x-api-key" exists-action="override">
-              <value>{{wallet-session-personal-data-vault-api-key}}</value>
-          </set-header>
-          <set-body>@(new JObject(new JProperty("pii",  (((JObject)context.Variables["userResponseJson"])["userId"]))).ToString())</set-body>
-      </send-request>
-      <choose>
-          <when condition="@(((IResponse)context.Variables["cf-token"]).StatusCode != 200)">
-              <return-response>
-                  <set-status code="502" />
-                  <set-header name="Content-Type" exists-action="override">
-                      <value>application/json</value>
-                  </set-header>
-                  <set-body>
-                  {
-                      "title" : "Bad gateway - Invalid PDV response",
-                      "status":  502,
-                      "detail":  "Cannot tokenize fiscal code"
-                  }
-                  </set-body>
-              </return-response>
-          </when>
-      </choose>
-      <!-- Post Token PDV for CF END-->
-      <set-variable name="cfToken" value="@(((IResponse)context.Variables["cf-token"]).Body.As<JObject>())" />
-      <set-variable name="xUserId" value="@((string)((JObject)context.Variables["cfToken"])["token"])" />
       <set-header name="x-user-id" exists-action="override">
-          <value>@((String)context.Variables["xUserId"])</value>
+          <value>@((string)((JObject)context.Variables["userResponseJson"])["userId"])</value>
       </set-header>
       <!-- pass x-user-id into header END-->
 
