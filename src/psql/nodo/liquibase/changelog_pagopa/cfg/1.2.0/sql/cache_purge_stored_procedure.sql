@@ -2,9 +2,10 @@
 CREATE OR REPLACE PROCEDURE cfg_cache_purge(
   minimum_records_on_table integer DEFAULT 7,
   start_date date DEFAULT NULL,
-  ttl_days integer DEFAULT 7
-)
-AS $function$
+  ttl_days integer DEFAULT 7)
+LANGUAGE 'plpgsql'
+AS $BODY$
+
 DECLARE
 
 current_records integer;
@@ -96,9 +97,7 @@ GET DIAGNOSTICS deleted_records = ROW_COUNT;
 RAISE INFO '[%] Deleted [%] records from [cfg.cache] table.', clock_timestamp(), deleted_records;
 
 END;
-$function$
-LANGUAGE 'plpgsql'
-;
+$BODY$;
 
 ALTER PROCEDURE cfg.cfg_cache_purge() OWNER TO cfg;
 GRANT EXECUTE ON PROCEDURE cfg.cfg_cache_purge() TO cfg;
