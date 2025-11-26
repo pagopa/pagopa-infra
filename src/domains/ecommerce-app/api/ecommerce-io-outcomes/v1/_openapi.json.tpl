@@ -107,10 +107,10 @@
             "name": "orderId",
             "schema": {
               "type": "string"
-              
+
             },
             "description": "Order ID related to NPG",
-            "required": true
+            "required": false
           },
           {
             "in": "query",
@@ -119,7 +119,7 @@
               "type": "string"
             },
             "description": "correlation id for a transaction executed with NPG",
-            "required": true
+            "required": false
           }
         ],
         "responses": {

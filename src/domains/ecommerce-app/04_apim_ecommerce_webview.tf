@@ -17,7 +17,7 @@ resource "azurerm_api_management_named_value" "ecommerce-webview-jwt-signing-key
 ##############
 
 module "apim_ecommerce_webview_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "ecommerce-webview"
   display_name = "eCommerce for webview"
@@ -54,7 +54,7 @@ resource "azurerm_api_management_api_version_set" "apim_ecommerce_webview_api" {
 }
 
 module "apim_ecommerce_webview_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-ecommerce-webview-api"
   resource_group_name   = local.pagopa_apim_rg
@@ -78,7 +78,7 @@ module "apim_ecommerce_webview_api_v1" {
   xml_content = templatefile("./api/ecommerce-webview/v1/_base_policy.xml.tpl", {
     ecommerce_ingress_hostname = local.ecommerce_hostname,
     wallet_ingress_hostname    = local.wallet_hostname,
-    checkout_origin            = var.env_short == "d" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}"
+    ecommerce_origin           = local.ecommerce_origin
   })
 }
 
@@ -104,8 +104,32 @@ resource "azurerm_api_management_api_operation_policy" "webview_post_wallet_tran
   })
 }
 
+resource "azurerm_api_management_api_operation_policy" "webview_get_transaction_outcomes_v1" {
+  api_name            = "${local.project}-ecommerce-webview-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getTransactionOutcomes"
+
+  xml_content = templatefile("./api/ecommerce-webview/v1/_get_transaction_outcomes.xml.tpl", {
+    ecommerce_ingress_hostname = local.ecommerce_hostname
+    ecommerce_origin           = var.env_short == "d" ? "*" : local.ecommerce_origin
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "webview_get_transactions_v1" {
+  api_name            = "${local.project}-ecommerce-webview-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getTransactionInfo"
+
+  xml_content = templatefile("./api/ecommerce-webview/v1/_get_transaction_outcomes.xml.tpl", {
+    ecommerce_ingress_hostname = local.ecommerce_hostname
+    ecommerce_origin           = var.env_short == "d" ? "*" : local.ecommerce_origin
+  })
+}
+
 module "apim_ecommerce_webview_api_v2" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-ecommerce-webview-api"
   resource_group_name   = local.pagopa_apim_rg
@@ -127,6 +151,7 @@ module "apim_ecommerce_webview_api_v2" {
   })
 
   xml_content = templatefile("./api/ecommerce-webview/v2/_base_policy.xml.tpl", {
-    ecommerce_ingress_hostname = local.ecommerce_hostname
+    ecommerce_ingress_hostname = local.ecommerce_hostname,
+    ecommerce_origin           = local.ecommerce_origin
   })
 }

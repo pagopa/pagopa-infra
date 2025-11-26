@@ -36,8 +36,8 @@ module "metabase_postgres_db" {
   private_dns_zone_id = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
   delegated_subnet_id = module.postgres_flexible_snet.id
 
-  administrator_login    = module.secret_core.values["metabase-db-admin-login"].value
-  administrator_password = module.secret_core.values["metabase-db-admin-password"].value
+  administrator_login    = module.secret_core_itn.values["metabase-db-admin-login"].value
+  administrator_password = module.secret_core_itn.values["metabase-db-admin-password"].value
 
 
   diagnostic_settings_enabled = var.metabase_pgflex_params.pgres_flex_diagnostic_settings_enabled

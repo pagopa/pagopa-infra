@@ -56,7 +56,7 @@ bizevents_datastore_cosmos_db_params = {
 
   max_throughput          = 42000
   max_throughput_view     = 44000
-  max_throughput_view_alt = 80000
+  max_throughput_view_alt = 45000
 }
 
 # CosmosDB Negative Biz Events Datastore
