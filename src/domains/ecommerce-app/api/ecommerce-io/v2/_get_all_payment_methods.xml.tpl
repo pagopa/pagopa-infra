@@ -73,7 +73,7 @@
                                 new JProperty("ranges", rangesArray)
                             );
 
-                            if (sourceMethod["paymentMethodsBrandAssets"] != null) {
+                            if (sourceMethod["paymentMethodsBrandAssets"] != null && sourceMethod["paymentMethodsBrandAssets"].HasValues) {
                                 paymentMethod["brandAssets"] = sourceMethod["paymentMethodsBrandAssets"];
                             }
 
