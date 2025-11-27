@@ -63,7 +63,7 @@ cosmos_mongo_db_ecommerce_params = {
 cosmos_mongo_db_ecommerce_history_params = {
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 15000
+  max_throughput     = 30000
   throughput         = 1000
 }
 
