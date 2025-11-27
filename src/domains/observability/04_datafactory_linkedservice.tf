@@ -228,7 +228,7 @@ resource "azurerm_key_vault_access_policy" "df_see_kv_nodo" {
 
 # linked service to key vault nodo x df
 resource "azurerm_data_factory_linked_service_key_vault" "ls_df_to_kv_nodo" {
-  depends_on = [ azurerm_key_vault_access_policy.df_see_kv_nodo ]
+  depends_on      = [azurerm_key_vault_access_policy.df_see_kv_nodo]
   name            = local.linked_service_nodo_kv_name
   data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
   key_vault_id    = data.azurerm_key_vault.nodo_kv.id
@@ -256,10 +256,10 @@ data "azurerm_key_vault_secret" "nodo_db_username" {
 }
 
 resource "azapi_resource" "ls_postgres_nodo_tf" {
-  depends_on = [ azurerm_data_factory_linked_service_key_vault.ls_df_to_kv_nodo ]
-  type      = "Microsoft.DataFactory/factories/linkedservices@2018-06-01"
-  name      = "LinkedService-Nodo-Flexible"
-  parent_id = data.azurerm_data_factory.obeserv_data_factory.id
+  depends_on = [azurerm_data_factory_linked_service_key_vault.ls_df_to_kv_nodo]
+  type       = "Microsoft.DataFactory/factories/linkedservices@2018-06-01"
+  name       = "LinkedService-Nodo-Flexible"
+  parent_id  = data.azurerm_data_factory.obeserv_data_factory.id
 
   body = {
     properties = {
