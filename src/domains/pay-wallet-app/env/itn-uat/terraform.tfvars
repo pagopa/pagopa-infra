@@ -19,9 +19,6 @@ dns_zone_internal_prefix = "internal.uat.platform"
 dns_zone_prefix          = "uat.payment-wallet"
 apim_dns_zone_prefix     = "uat.platform"
 
-# checkout
-dns_zone_checkout = "uat.checkout"
-
 ### Aks
 
 ingress_load_balancer_ip = "10.3.2.250"
