@@ -97,7 +97,7 @@ def main():
     cwd = os.getcwd()
     os.chdir(str(core_terraform_script.parent))
 
-    p = subprocess.run(["./terraform.sh", "init", env], capture_output=True, encoding="utf-8")
+    p = subprocess.run(["./terraform.sh", "init", f"weu-{env}"], capture_output=True, encoding="utf-8")
     print(p.stdout)
 
     if p.returncode != 0:
