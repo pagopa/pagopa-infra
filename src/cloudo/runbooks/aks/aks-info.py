@@ -51,7 +51,7 @@ def get_namespace_info(namespace):
 
 
 if __name__ == "__main__":
-    namespace = os.getenv('AKS_NAMESPACE')
+    namespace = "fdr"
     if not namespace:
         print("Error: AKS_NAMESPACE environment variable not set")
         exit(1)
