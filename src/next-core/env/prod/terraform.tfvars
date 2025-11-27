@@ -42,12 +42,7 @@ cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
 cidr_subnet_vpn                   = ["10.1.142.0/24"]
 
 # networking
-#ddos_protection_plan = {
-#  id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
-#  enable = true
-#}
-
-ddos_protection_plan_integration = {
+ddos_protection_plan = {
   id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
   enable = true
 }
