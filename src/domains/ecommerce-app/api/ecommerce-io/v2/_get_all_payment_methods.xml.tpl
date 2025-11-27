@@ -78,9 +78,7 @@
                             }
 
                             if(sourceMethod["description"] != null) {
-                                 var descIt = sourceMethod["description"]["IT"];
-                                 var descEn = sourceMethod["description"]["EN"];
-                                 paymentMethod["description"] = descIt;
+                                 paymentMethod["description"] = sourceMethod["description"]["IT"];
                             }
 
                             if(sourceMethod["name"] != null) {
