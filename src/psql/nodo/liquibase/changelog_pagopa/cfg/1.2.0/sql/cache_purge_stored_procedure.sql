@@ -15,7 +15,7 @@ analyzed_records integer;
 BEGIN
 
 -- Get total count of records before purge process
-SELECT COUNT(*) AS record_count
+SELECT COUNT(id) AS record_count
 INTO current_records
 FROM cfg.cache;
 
@@ -33,7 +33,7 @@ IF start_date IS NOT NULL THEN
 
   -- Counting how many records are lower than passed date, in order to
 	-- leave at least a minimum number of records as backup
-	SELECT COUNT(*) AS record_count
+	SELECT COUNT(id) AS record_count
 	INTO analyzed_records
 	FROM cfg.cache
 	WHERE "time" < start_date;
@@ -64,7 +64,7 @@ ELSE
 
   -- Counting how many records are lower than passed interval, in order to
   -- leave at least a minimum number of records as backup
-  SELECT COUNT(*) AS record_count
+  SELECT COUNT(id) AS record_count
   INTO analyzed_records
   FROM cfg.cache
   WHERE "time" < now() - (interval '1 day' * ttl_days);
