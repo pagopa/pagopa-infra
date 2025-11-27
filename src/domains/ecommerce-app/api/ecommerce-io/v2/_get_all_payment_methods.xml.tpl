@@ -19,7 +19,7 @@
                     var userTouchpoint = "IO";
                     var totalAmountValue = Convert.ToInt64(context.Variables.GetValueOrDefault("totalAmount", "0"));                    var paymentNotice = new JObject();
                     paymentNotice["paymentAmount"] = totalAmountValue;
-                    paymentNotice["primaryCreditorInstitution"] = "77777777777";
+                    paymentNotice["primaryCreditorInstitution"] = "00000000000";
                     var paymentNoticeList = new JArray();
                     paymentNoticeList.Add(paymentNotice);
                     return new JObject(
@@ -82,15 +82,15 @@
                             }
 
                             if(sourceMethod["name"] != null) {
-                                string name = "";
+                                string name = "no_name";
                                 if(((string)sourceMethod["paymentTypeCode"]) == "CP" && sourceMethod["name"]["EN"] != null) {
                                     name = (string)sourceMethod["name"]["EN"];
                                 }
-                                if(((string)sourceMethod["paymentTypeCode"]) != "CP" && sourceMethod["name"]["IT"] != null) {
+                                if(((string)sourceMethod["paymentTypeCode"]) == "CP" && sourceMethod["name"]["EN"] == null && sourceMethod["name"]["IT"] != null) {
                                     name = (string)sourceMethod["name"]["IT"];
                                 }
-                                if(name == "") {
-                                    name = "no_name";
+                                if(((string)sourceMethod["paymentTypeCode"]) != "CP" && sourceMethod["name"]["IT"] != null) {
+                                    name = (string)sourceMethod["name"]["IT"];
                                 }
                                 paymentMethod["name"] = name.ToUpper();
                             }
