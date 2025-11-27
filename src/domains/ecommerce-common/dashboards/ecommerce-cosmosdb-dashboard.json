@@ -1,0 +1,1592 @@
+{
+  "properties": {
+    "lenses": [
+      {
+        "order": 0,
+        "parts": [
+          {
+            "position": {
+              "x": 0,
+              "y": 0,
+              "colSpan": 15,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "filterCollection": {
+                        "filters": [
+                          {
+                            "key": "CollectionName",
+                            "operator": 0,
+                            "values": [
+                              "transactions-view"
+                            ]
+                          },
+                          {
+                            "key": "CommandName",
+                            "operator": 0,
+                            "values": [
+                              "update"
+                            ]
+                          }
+                        ]
+                      },
+                      "grouping": {
+                        "dimension": "CommandName",
+                        "sort": 2,
+                        "top": 10
+                      },
+                      "metrics": [
+                        {
+                          "aggregationType": 7,
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
+                          },
+                          "name": "MongoRequests",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          }
+                        }
+                      ],
+                      "timespan": {
+                        "grain": 1,
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false
+                      },
+                      "title": "Count Mongo Requests for pagopa-p-weu-ecommerce-cosmos-account by CommandName where CollectionName = 'transactions-view' and CommandName = 'update'",
+                      "titleKind": 1,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
+                      }
+                    }
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          },
+                          "name": "MongoRequests",
+                          "aggregationType": 7,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
+                          }
+                        }
+                      ],
+                      "title": "[eCommerce] - Mongo Requests for pagopa-p-weu-ecommerce-cosmos-account for update operation - transactions-view vs eventstore (CDC view update)",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": [
+                          "CollectionName",
+                          "CommandName",
+                          "Region"
+                        ],
+                        "sort": 2,
+                        "top": 10
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "CollectionName": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "transactions-view",
+                      "EventStore"
+                    ]
+                  }
+                },
+                "CommandName": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "update"
+                    ]
+                  }
+                },
+                "DatabaseName": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "eCommerce"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 5,
+              "colSpan": 15,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "filterCollection": {
+                        "filters": [
+                          {
+                            "key": "CollectionName",
+                            "operator": 0,
+                            "values": [
+                              "transactions-view"
+                            ]
+                          },
+                          {
+                            "key": "CommandName",
+                            "operator": 0,
+                            "values": [
+                              "update"
+                            ]
+                          }
+                        ]
+                      },
+                      "grouping": {
+                        "dimension": "CommandName",
+                        "sort": 2,
+                        "top": 10
+                      },
+                      "metrics": [
+                        {
+                          "aggregationType": 7,
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
+                          },
+                          "name": "MongoRequests",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          }
+                        }
+                      ],
+                      "timespan": {
+                        "grain": 1,
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false
+                      },
+                      "title": "Count Mongo Requests for pagopa-p-weu-ecommerce-cosmos-account by CommandName where CollectionName = 'transactions-view' and CommandName = 'update'",
+                      "titleKind": 1,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
+                      }
+                    }
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          },
+                          "name": "MongoRequests",
+                          "aggregationType": 7,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
+                          }
+                        }
+                      ],
+                      "title": "[eCommerce-history] - Mongo Requests for pagopa-p-weu-ecommerce-cosmos-account for update operation - transactions-view vs eventstore (CDC view update)",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": [
+                          "CollectionName",
+                          "CommandName",
+                          "Region"
+                        ],
+                        "sort": 2,
+                        "top": 10
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "CollectionName": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "transactions-view",
+                      "EventStore"
+                    ]
+                  }
+                },
+                "CommandName": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "update"
+                    ]
+                  }
+                },
+                "DatabaseName": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "ecommerce-history"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 10,
+              "colSpan": 15,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "filterCollection": {
+                        "filters": [
+                          {
+                            "key": "CollectionName",
+                            "operator": 0,
+                            "values": [
+                              "transactions-view"
+                            ]
+                          },
+                          {
+                            "key": "CommandName",
+                            "operator": 0,
+                            "values": [
+                              "update"
+                            ]
+                          }
+                        ]
+                      },
+                      "grouping": {
+                        "dimension": "CommandName",
+                        "sort": 2,
+                        "top": 10
+                      },
+                      "metrics": [
+                        {
+                          "aggregationType": 7,
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
+                          },
+                          "name": "MongoRequests",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          }
+                        }
+                      ],
+                      "timespan": {
+                        "grain": 1,
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false
+                      },
+                      "title": "Count Mongo Requests for pagopa-p-weu-ecommerce-cosmos-account by CommandName where CollectionName = 'transactions-view' and CommandName = 'update'",
+                      "titleKind": 1,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
+                      }
+                    }
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          },
+                          "name": "MongoRequests",
+                          "aggregationType": 7,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
+                          }
+                        }
+                      ],
+                      "title": "[eCommerce] - Mongo Requests for pagopa-p-weu-ecommerce-cosmos-account for update operation - all commands per region performed on all collections",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": [
+                          "CollectionName",
+                          "CommandName",
+                          "Region"
+                        ],
+                        "sort": 2,
+                        "top": 10
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "DatabaseName": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "eCommerce"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 15,
+              "colSpan": 15,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "filterCollection": {
+                        "filters": [
+                          {
+                            "key": "CollectionName",
+                            "operator": 0,
+                            "values": [
+                              "transactions-view"
+                            ]
+                          },
+                          {
+                            "key": "CommandName",
+                            "operator": 0,
+                            "values": [
+                              "update"
+                            ]
+                          }
+                        ]
+                      },
+                      "grouping": {
+                        "dimension": "CommandName",
+                        "sort": 2,
+                        "top": 10
+                      },
+                      "metrics": [
+                        {
+                          "aggregationType": 7,
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
+                          },
+                          "name": "MongoRequests",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          }
+                        }
+                      ],
+                      "timespan": {
+                        "grain": 1,
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false
+                      },
+                      "title": "Count Mongo Requests for pagopa-p-weu-ecommerce-cosmos-account by CommandName where CollectionName = 'transactions-view' and CommandName = 'update'",
+                      "titleKind": 1,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
+                      }
+                    }
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          },
+                          "name": "MongoRequests",
+                          "aggregationType": 7,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
+                          }
+                        }
+                      ],
+                      "title": "[ecommerce-history] - Mongo Requests for pagopa-p-weu-ecommerce-cosmos-account for update operation - all commands per region performed on all collections",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": [
+                          "CollectionName",
+                          "CommandName",
+                          "Region"
+                        ],
+                        "sort": 2,
+                        "top": 10
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "DatabaseName": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "ecommerce-history"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 20,
+              "colSpan": 15,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "filterCollection": {
+                        "filters": [
+                          {
+                            "key": "CollectionName",
+                            "operator": 0,
+                            "values": [
+                              "transactions-view"
+                            ]
+                          },
+                          {
+                            "key": "CommandName",
+                            "operator": 0,
+                            "values": [
+                              "update"
+                            ]
+                          }
+                        ]
+                      },
+                      "grouping": {
+                        "dimension": "CommandName",
+                        "sort": 2,
+                        "top": 10
+                      },
+                      "metrics": [
+                        {
+                          "aggregationType": 7,
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
+                          },
+                          "name": "MongoRequests",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          }
+                        }
+                      ],
+                      "timespan": {
+                        "grain": 1,
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false
+                      },
+                      "title": "Count Mongo Requests for pagopa-p-weu-ecommerce-cosmos-account by CommandName where CollectionName = 'transactions-view' and CommandName = 'update'",
+                      "titleKind": 1,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
+                      }
+                    }
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          },
+                          "name": "ProvisionedThroughput",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Provisioned Throughput"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          },
+                          "name": "AutoscaleMaxThroughput",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Autoscale Max Throughput"
+                          }
+                        }
+                      ],
+                      "title": "[eCommerce] - Mongo Provisioned throughput for pagopa-p-weu-ecommerce-cosmos-account per region",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": "Region",
+                        "sort": 2,
+                        "top": 10
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "DatabaseName": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "eCommerce"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 25,
+              "colSpan": 15,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "filterCollection": {
+                        "filters": [
+                          {
+                            "key": "CollectionName",
+                            "operator": 0,
+                            "values": [
+                              "transactions-view"
+                            ]
+                          },
+                          {
+                            "key": "CommandName",
+                            "operator": 0,
+                            "values": [
+                              "update"
+                            ]
+                          }
+                        ]
+                      },
+                      "grouping": {
+                        "dimension": "CommandName",
+                        "sort": 2,
+                        "top": 10
+                      },
+                      "metrics": [
+                        {
+                          "aggregationType": 7,
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
+                          },
+                          "name": "MongoRequests",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          }
+                        }
+                      ],
+                      "timespan": {
+                        "grain": 1,
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false
+                      },
+                      "title": "Count Mongo Requests for pagopa-p-weu-ecommerce-cosmos-account by CommandName where CollectionName = 'transactions-view' and CommandName = 'update'",
+                      "titleKind": 1,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
+                      }
+                    }
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          },
+                          "name": "ProvisionedThroughput",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Provisioned Throughput"
+                          }
+                        }
+                      ],
+                      "title": "[eCommerce-history] - Mongo Provisioned throughput for pagopa-p-weu-ecommerce-cosmos-account per region",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": "Region",
+                        "sort": 2,
+                        "top": 10
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "DatabaseName": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "ecommerce-history"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 30,
+              "colSpan": 15,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "filterCollection": {
+                        "filters": [
+                          {
+                            "key": "CollectionName",
+                            "operator": 0,
+                            "values": [
+                              "transactions-view"
+                            ]
+                          },
+                          {
+                            "key": "CommandName",
+                            "operator": 0,
+                            "values": [
+                              "update"
+                            ]
+                          }
+                        ]
+                      },
+                      "grouping": {
+                        "dimension": "CommandName",
+                        "sort": 2,
+                        "top": 10
+                      },
+                      "metrics": [
+                        {
+                          "aggregationType": 7,
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
+                          },
+                          "name": "MongoRequests",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          }
+                        }
+                      ],
+                      "timespan": {
+                        "grain": 1,
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false
+                      },
+                      "title": "Count Mongo Requests for pagopa-p-weu-ecommerce-cosmos-account by CommandName where CollectionName = 'transactions-view' and CommandName = 'update'",
+                      "titleKind": 1,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
+                      }
+                    }
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          },
+                          "name": "NormalizedRUConsumption",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Normalized RU Consumption"
+                          }
+                        }
+                      ],
+                      "title": "[eCommerce] - Mongo max Normalized consumption for pagopa-p-weu-ecommerce-cosmos-account per region",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": "Region",
+                        "sort": 2,
+                        "top": 10
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "DatabaseName": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "eCommerce"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 35,
+              "colSpan": 15,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "filterCollection": {
+                        "filters": [
+                          {
+                            "key": "CollectionName",
+                            "operator": 0,
+                            "values": [
+                              "transactions-view"
+                            ]
+                          },
+                          {
+                            "key": "CommandName",
+                            "operator": 0,
+                            "values": [
+                              "update"
+                            ]
+                          }
+                        ]
+                      },
+                      "grouping": {
+                        "dimension": "CommandName",
+                        "sort": 2,
+                        "top": 10
+                      },
+                      "metrics": [
+                        {
+                          "aggregationType": 7,
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
+                          },
+                          "name": "MongoRequests",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          }
+                        }
+                      ],
+                      "timespan": {
+                        "grain": 1,
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false
+                      },
+                      "title": "Count Mongo Requests for pagopa-p-weu-ecommerce-cosmos-account by CommandName where CollectionName = 'transactions-view' and CommandName = 'update'",
+                      "titleKind": 1,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
+                      }
+                    }
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          },
+                          "name": "NormalizedRUConsumption",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Normalized RU Consumption"
+                          }
+                        }
+                      ],
+                      "title": "[eCommerce-history] - Mongo max Normalized consumption for pagopa-p-weu-ecommerce-cosmos-account per region",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": "Region",
+                        "sort": 2,
+                        "top": 10
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "DatabaseName": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "ecommerce-history"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 40,
+              "colSpan": 15,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "filterCollection": {
+                        "filters": [
+                          {
+                            "key": "CollectionName",
+                            "operator": 0,
+                            "values": [
+                              "transactions-view"
+                            ]
+                          },
+                          {
+                            "key": "CommandName",
+                            "operator": 0,
+                            "values": [
+                              "update"
+                            ]
+                          }
+                        ]
+                      },
+                      "grouping": {
+                        "dimension": "CommandName",
+                        "sort": 2,
+                        "top": 10
+                      },
+                      "metrics": [
+                        {
+                          "aggregationType": 7,
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
+                          },
+                          "name": "MongoRequests",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          }
+                        }
+                      ],
+                      "timespan": {
+                        "grain": 1,
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false
+                      },
+                      "title": "Count Mongo Requests for pagopa-p-weu-ecommerce-cosmos-account by CommandName where CollectionName = 'transactions-view' and CommandName = 'update'",
+                      "titleKind": 1,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
+                      }
+                    }
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          },
+                          "name": "NormalizedRUConsumption",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Normalized RU Consumption"
+                          }
+                        }
+                      ],
+                      "title": "[eCommerce] - Mongo max Normalized consumption for pagopa-p-weu-ecommerce-cosmos-account per physical partition",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": "PhysicalPartitionId",
+                        "sort": 2,
+                        "top": 10
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "DatabaseName": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "eCommerce"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 45,
+              "colSpan": 15,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "filterCollection": {
+                        "filters": [
+                          {
+                            "key": "CollectionName",
+                            "operator": 0,
+                            "values": [
+                              "transactions-view"
+                            ]
+                          },
+                          {
+                            "key": "CommandName",
+                            "operator": 0,
+                            "values": [
+                              "update"
+                            ]
+                          }
+                        ]
+                      },
+                      "grouping": {
+                        "dimension": "CommandName",
+                        "sort": 2,
+                        "top": 10
+                      },
+                      "metrics": [
+                        {
+                          "aggregationType": 7,
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
+                          },
+                          "name": "MongoRequests",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          }
+                        }
+                      ],
+                      "timespan": {
+                        "grain": 1,
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false
+                      },
+                      "title": "Count Mongo Requests for pagopa-p-weu-ecommerce-cosmos-account by CommandName where CollectionName = 'transactions-view' and CommandName = 'update'",
+                      "titleKind": 1,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
+                      }
+                    }
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          },
+                          "name": "NormalizedRUConsumption",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Normalized RU Consumption"
+                          }
+                        }
+                      ],
+                      "title": "[eCommerce-history] - Mongo max Normalized consumption for pagopa-p-weu-ecommerce-cosmos-account per physical partition",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": "PhysicalPartitionId",
+                        "sort": 2,
+                        "top": 10
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "DatabaseName": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "ecommerce-history"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "model": {
+        "timeRange": {
+          "value": {
+            "relative": {
+              "duration": 4,
+              "timeUnit": 1
+            }
+          },
+          "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+        },
+        "filterLocale": {
+          "value": "en-us"
+        },
+        "filters": {
+          "value": {
+            "MsPortalFx_TimeRange": {
+              "model": {
+                "format": "local",
+                "granularity": "auto",
+                "relative": "4h"
+              },
+              "displayCache": {
+                "name": "Local Time",
+                "value": "Past 4 hours"
+              },
+              "filteredPartIds": [
+                "StartboardPart-MonitorChartPart-23a9681a-5d41-4032-947d-70dcf27784c5",
+                "StartboardPart-MonitorChartPart-23a9681a-5d41-4032-947d-70dcf2778b55",
+                "StartboardPart-MonitorChartPart-23a9681a-5d41-4032-947d-70dcf27785b1",
+                "StartboardPart-MonitorChartPart-23a9681a-5d41-4032-947d-70dcf27784c7",
+                "StartboardPart-MonitorChartPart-23a9681a-5d41-4032-947d-70dcf277868f",
+                "StartboardPart-MonitorChartPart-23a9681a-5d41-4032-947d-70dcf27784c9",
+                "StartboardPart-MonitorChartPart-23a9681a-5d41-4032-947d-70dcf27784cb",
+                "StartboardPart-MonitorChartPart-23a9681a-5d41-4032-947d-70dcf27784cd",
+                "StartboardPart-MonitorChartPart-23a9681a-5d41-4032-947d-70dcf2778cbd",
+                "StartboardPart-MonitorChartPart-23a9681a-5d41-4032-947d-70dcf2778c5b"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "name": "Clone of ecommerce-cosmosdb-dashboard",
+  "type": "Microsoft.Portal/dashboards",
+  "location": "INSERT LOCATION",
+  "tags": {
+    "hidden-title": "Clone of ecommerce-cosmosdb-dashboard"
+  },
+  "apiVersion": "2022-12-01-preview"
+}
