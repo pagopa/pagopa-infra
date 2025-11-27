@@ -2,9 +2,6 @@
     <inbound>
         <base />
         <set-variable name="totalAmount" value="@(context.Request.Url.Query.GetValueOrDefault("amount",""))" />
-    </inbound>
-    <outbound>
-        <base />
         <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
             <set-url>https://${ecommerce_ingress_hostname}/pagopa-ecommerce-payment-methods-handler/payment-methods</set-url>
             <set-method>POST</set-method>
@@ -32,7 +29,6 @@
                         ).ToString();
                   }</set-body>
         </send-request>
-        <set-variable name="paymentMethodsResponseBody" value="@(((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>())" />
         <choose>
             <when condition="@(((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode != 200)">
                 <return-response>
@@ -54,43 +50,56 @@
                         <value>application/json</value>
                     </set-header>
                     <set-body>@{
-                        JObject paymentMethodsResponseBody = context.Response.Body.As<JObject>(preserveContent: true);
-                        JArray paymentMethodsResponse = (JArray)paymentMethodsResponseBody["paymentMethods"];
+                        var totalAmountValue = Convert.ToInt64(context.Variables.GetValueOrDefault("totalAmount", "0"));
+
+                        JObject paymentMethodsResponseBody = ((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>();
                         JArray paymentHandlerResponse = new JArray();
 
-                        var totalAmountValue = Convert.ToInt64(context.Variables.GetValueOrDefault("totalAmount", "0"));
-                        foreach (JObject sourceMethod in paymentMethodsResponse)
+                        JArray rangesArray = new JArray();
+                        JObject rangeItem = new JObject
                         {
-                            JObject targetMethod = new JObject();
+                            { "min", totalAmountValue - 1 },
+                            { "max", totalAmountValue + 1 }
+                        };
+                        rangesArray.Add(rangeItem);
 
-                            // Mapping
-                            targetMethod["id"] = sourceMethod["id"];
-                            targetMethod["status"] = sourceMethod["status"];
-                            targetMethod["paymentTypeCode"] = sourceMethod["paymentTypeCode"];
-                            targetMethod["methodManagement"] = sourceMethod["methodManagement"];
-                            targetMethod["asset"] = sourceMethod["paymentMethodAsset"];
-
-                            // Mapping multilanguage fields
-
-                                targetMethod["name"] = "No_Name";
-                                targetMethod["description"] = "No_Description";
-
-
-                            JArray rangesArray = new JArray();
-
-                            JObject rangeItem = new JObject(
-                                new JProperty("min",0),
-                                new JProperty("max",99999999)
+                        foreach (var sourceMethod in paymentMethodsResponseBody["paymentMethods"]) {
+                            JObject paymentMethod = new JObject(
+                                new JProperty("id", sourceMethod["id"]),
+                                new JProperty("status", sourceMethod["status"]),
+                                new JProperty("paymentTypeCode",sourceMethod["paymentTypeCode"]),
+                                new JProperty("methodManagement", sourceMethod["methodManagement"]),
+                                new JProperty("asset", sourceMethod["paymentMethodAsset"]),
+                                new JProperty("ranges", rangesArray)
                             );
-                            rangesArray.Add(rangeItem);
 
-                            targetMethod["ranges"] = rangesArray;
-                            if (sourceMethod.ContainsKey("paymentMethodsBrandAssets") && sourceMethod["paymentMethodsBrandAssets"].HasValues)
-                            {
-                                targetMethod["brandAssets"] = sourceMethod["paymentMethodsBrandAssets"];
+                            if (sourceMethod["paymentMethodsBrandAssets"] != null) {
+                                paymentMethod["brandAssets"] = sourceMethod["paymentMethodsBrandAssets"];
                             }
-                            paymentHandlerResponse.Add(targetMethod);
+
+                            if(sourceMethod["description"] != null) {
+                                 var descIt = sourceMethod["description"]["IT"];
+                                 var descEn = sourceMethod["description"]["EN"];
+                                 paymentMethod["description"] = descIt;
+                            }
+
+                            if(sourceMethod["name"] != null) {
+                                string name = "";
+                                if(((string)sourceMethod["paymentTypeCode"]) == "CP" && sourceMethod["name"]["EN"] != null) {
+                                    name = (string)sourceMethod["name"]["EN"];
+                                }
+                                if(((string)sourceMethod["paymentTypeCode"]) != "CP" && sourceMethod["name"]["IT"] != null) {
+                                    name = (string)sourceMethod["name"]["IT"];
+                                }
+                                if(name == "") {
+                                    name = "no_name";
+                                }
+                                paymentMethod["name"] = name.ToUpper();
+                            }
+
+                            paymentHandlerResponse.Add(paymentMethod);
                         }
+
 
                         JObject targetJson = new JObject(
                             new JProperty("paymentMethods", paymentHandlerResponse)
@@ -101,6 +110,9 @@
                 </return-response>
             </otherwise>
         </choose>
+    </inbound>
+    <outbound>
+        <base />
     </outbound>
     <on-error>
         <base />
