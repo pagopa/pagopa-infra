@@ -32,7 +32,7 @@ locals {
   kv_name_password_database        = "ls-cruscotto-password"
   kv_name_password_config_database = "db-cfg-password"
 
-  df_integration_runtime_name      = "AutoResolveIntegrationRuntime"
+  df_integration_runtime_name = "AutoResolveIntegrationRuntime"
   crusc8_tables_list_datasets = [
     {
       dataset_name        = "CRUSC8_RECORDED_TIMEOUT"
