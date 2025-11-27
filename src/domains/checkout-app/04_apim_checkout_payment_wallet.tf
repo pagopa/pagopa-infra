@@ -35,7 +35,7 @@ module "apim_checkout_payment_wallet_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/checkout/checkout_payment_wallet/v1/_openapi.json.tpl", {
-    host = local.apim_hostname
+    hostname = local.apim_hostname
   })
 
   xml_content = templatefile("./api/checkout/checkout_payment_wallet/v1/_base_policy.xml.tpl", {
