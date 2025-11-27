@@ -58,7 +58,7 @@
                         JArray rangesArray = new JArray();
                         JObject rangeItem = new JObject
                         {
-                            { "min", totalAmountValue - 1 },
+                            { "min", totalAmountValue },
                             { "max", totalAmountValue + 1 }
                         };
                         rangesArray.Add(rangeItem);
@@ -83,13 +83,9 @@
 
                             if(sourceMethod["name"] != null) {
                                 string name = "no_name";
-                                if(((string)sourceMethod["paymentTypeCode"]) == "CP" && sourceMethod["name"]["EN"] != null) {
-                                    name = (string)sourceMethod["name"]["EN"];
-                                }
-                                if(((string)sourceMethod["paymentTypeCode"]) == "CP" && sourceMethod["name"]["EN"] == null && sourceMethod["name"]["IT"] != null) {
-                                    name = (string)sourceMethod["name"]["IT"];
-                                }
-                                if(((string)sourceMethod["paymentTypeCode"]) != "CP" && sourceMethod["name"]["IT"] != null) {
+                                if(((string)sourceMethod["paymentTypeCode"]) == "CP") {
+                                    name = "CARDS";
+                                } else {
                                     name = (string)sourceMethod["name"]["IT"];
                                 }
                                 paymentMethod["name"] = name.ToUpper();
