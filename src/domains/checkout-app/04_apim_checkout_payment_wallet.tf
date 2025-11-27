@@ -1,6 +1,6 @@
 locals {
   apim_checkout_payment_wallet_api = {
-    display_name          = "Checkout - Payment Wallet API"
+    display_name          = "Checkout pagoPA Payment Wallet"
     description           = "API dedicated to checkout to retrieve wallet data useful to show to the authenticated user."
     path                  = "checkout/payment-wallet"
     subscription_required = true
