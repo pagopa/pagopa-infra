@@ -22,13 +22,13 @@
         }
     ],
     "paths": {
-        "/wallets": {
+        "/users/wallets": {
             "get": {
                 "tags": [
                     "wallets"
                 ],
-                "summary": "Get wallet by user identifier",
-                "description": "Returns an array of wallets related to user",
+                "summary": "Get wallets by user fiscal code",
+                "description": "Returns an array of wallets related to user identified by fiscal code",
                 "operationId": "getCheckoutPaymentWalletsByIdUser",
                 "security": [
                     {
