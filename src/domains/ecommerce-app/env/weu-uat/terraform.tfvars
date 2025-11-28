@@ -62,3 +62,6 @@ ecommerce_helpdesk_service_api_key_use_primary         = true
 ecommerce_notification_service_api_key_use_primary     = true
 ecommerce_user_stats_service_api_key_use_primary       = true
 ecommerce_helpdesk_command_service_api_key_use_primary = true
+
+# APIM logger vars
+apim_logger_resource_id = "/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/loggers/pagopa-u-apim-logger"
