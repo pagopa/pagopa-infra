@@ -249,3 +249,11 @@ variable "dns_zone_prefix" {
   default     = null
   description = "The dns subdomain."
 }
+
+variable "apim_logger_resource_id" {
+  type        = string
+  description = "Resource id for the APIM logger"
+  default     = null
+}
+
+
