@@ -7,8 +7,8 @@ locals {
   ]
 }
 
-# api for which log response body only„
-resource "azurerm_api_management_api_diagnostic" "apim_logs_response_body_only" {
+# api for which enabling diagnostic settings, used to send traces to app insight
+resource "azurerm_api_management_api_diagnostic" "apim_enable_diagnostic_settings_for_tracing" {
   for_each                  = toset(local.api_log_response_body)
   identifier                = "applicationinsights"
   resource_group_name       = local.pagopa_apim_rg
@@ -27,7 +27,7 @@ resource "azurerm_api_management_api_diagnostic" "apim_logs_response_body_only" 
   }
 
   frontend_response {
-    body_bytes     = 1024
+    body_bytes     = 0
     headers_to_log = []
   }
 
