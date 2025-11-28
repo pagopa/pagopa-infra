@@ -80,7 +80,7 @@
                       return responseValue != null ? responseValue : "-";
                   }" />
                   <metadata name="transactionId" value="@(context.Request.MatchedParameters.GetValueOrDefault("transactionId",""))" />
-                  <metadata name="responseStatusCode" value="@(context.Response.StatusCode)" />
+                  <metadata name="responseStatusCode" value="@(context.Response.StatusCode.ToString())" />
               </trace>
           </when>
       </choose>
