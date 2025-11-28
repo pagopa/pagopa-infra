@@ -115,18 +115,21 @@ locals {
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
     {
-      name               = "cart-for-receipts",
-      partition_key_path = "/id",
-      default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
-      conflict_resolution_policy = {
-        mode      = "Custom",
-        path      = null,
-        procedure = "dbs/db/colls/cart-for-receipts/sprocs/cart-for-receipts-merge-procedure"
-      }
+      name                       = "cart-for-receipts",
+      partition_key_path         = "/eventId",
+      default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
+      autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
+      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
     {
       name                       = "receipts-message-errors",
+      partition_key_path         = "/id",
+      default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
+      autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
+      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
+    },
+    {
+      name                       = "cart-receipts-message-errors",
       partition_key_path         = "/id",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
@@ -166,34 +169,6 @@ module "receipts_datastore_cosmosdb_containers" {
 
   # conflict_resolution_policy = each.value.conflict_resolution_policy == null ? null : each.value.conflict_resolution_policy
   autoscale_settings = contains(var.receipts_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
-}
-
-# module "azurerm_cosmosdb_sql_stored_procedure" {
-#   # source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_stored_procedure?ref=7eea8d90faa331e7f3efc90edf396917120197b7"
-#   # source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_stored_procedure?ref=PRDP-276-feat-add-conflict-resolution-policy-and-stored-procedure"
-#   source              = "./.terraform/modules/__v3__/cosmosdb_sql_stored_procedure"
-
-#   depends_on          = [module.receipts_datastore_cosmosdb_containers]
-#   name                = "cart-for-receipts-merge-procedure"
-#   resource_group_name = azurerm_resource_group.receipts_rg.name
-#   account_name        = module.receipts_datastore_cosmosdb_account.name
-#   database_name       = module.receipts_datastore_cosmosdb_database.name
-#   container_name      = "cart-for-receipts"
-
-#   body = file("./scripts/store_procedure.js")
-
-# }
-
-
-resource "azurerm_cosmosdb_sql_stored_procedure" "azurerm_cosmosdb_sql_stored_procedure" {
-  depends_on          = [module.receipts_datastore_cosmosdb_containers]
-  name                = "cart-for-receipts-merge-procedure"
-  resource_group_name = azurerm_resource_group.receipts_rg.name
-  account_name        = module.receipts_datastore_cosmosdb_account.name
-  database_name       = module.receipts_datastore_cosmosdb_database.name
-  container_name      = "cart-for-receipts"
-
-  body = file("./scripts/store_procedure.js")
 }
 
 resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {

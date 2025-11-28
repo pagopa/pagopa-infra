@@ -31,11 +31,16 @@
 | [azurerm_private_link_service.vmss_pls](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_link_service) | resource |
 | [azurerm_resource_group.nsg_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.vmss_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_subnet_nat_gateway_association.vmss_snet_nat](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_nat_gateway_association) | resource |
 | [azurerm_virtual_machine_scale_set_extension.vmss-extension](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_scale_set_extension) | resource |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
-| [azurerm_key_vault.kv_core](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
+| [azurerm_cosmosdb_account.cosmos_account](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/cosmosdb_account) | data source |
+| [azurerm_key_vault.kv_domain](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault_secret.external_database_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.external_database_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.vmss_admin_login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.vmss_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_nat_gateway.pagopa_nat](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/nat_gateway) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet_integration](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 
@@ -46,10 +51,13 @@
 | <a name="input_enabled_features"></a> [enabled\_features](#input\_enabled\_features) | (Optional) Enable/Disable features | <pre>object({<br/>    nsg_metabase             = optional(bool, false)<br/>    data_factory_proxy       = optional(bool, false)<br/>    vpn_database_access      = optional(bool, true)<br/>    nsg                      = optional(bool, true)<br/>    db_replica_nsg           = optional(bool, false)<br/>    all_vnet_database_access = optional(bool, false)<br/>  })</pre> | <pre>{<br/>  "all_vnet_database_access": false,<br/>  "data_factory_proxy": false,<br/>  "db_replica_nsg": false,<br/>  "nsg": true,<br/>  "nsg_metabase": false,<br/>  "vpn_database_access": true<br/>}</pre> | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | general | `string` | n/a | yes |
+| <a name="input_external_database_connection"></a> [external\_database\_connection](#input\_external\_database\_connection) | Map of external database connection configurations | <pre>map(object({<br/>    connector_name       = string<br/>    url                  = string<br/>    params               = optional(map(string), {})<br/>    user_secret_name     = string<br/>    password_secret_name = string<br/>  }))</pre> | `{}` | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |
 | <a name="input_nsg_network_watcher_enabled"></a> [nsg\_network\_watcher\_enabled](#input\_nsg\_network\_watcher\_enabled) | (Optional) Enable Network Watcher for all NSG (subnet associated to nsg) | `bool` | `false` | no |
 | <a name="input_nsg_regions"></a> [nsg\_regions](#input\_nsg\_regions) | (Optional) Regions where NSG must be created | `list(string)` | <pre>[<br/>  "westeurope"<br/>]</pre> | no |
+| <a name="input_trino_xmx"></a> [trino\_xmx](#input\_trino\_xmx) | n/a | `string` | `"4G"` | no |
+| <a name="input_vmss_size"></a> [vmss\_size](#input\_vmss\_size) | n/a | `string` | `"Standard_D2ds_v5"` | no |
 | <a name="input_vpn_gateway_address_space"></a> [vpn\_gateway\_address\_space](#input\_vpn\_gateway\_address\_space) | n/a | `string` | `"172.16.1.0/24"` | no |
 
 ## Outputs

@@ -3,7 +3,7 @@
 ##############
 
 module "apim_ecommerce_checkout_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "ecommerce-checkout"
   display_name = "Ecommerce for checkout pagoPA"
@@ -72,7 +72,7 @@ resource "azurerm_api_management_api_version_set" "ecommerce_checkout_api_v1" {
 }
 
 module "apim_ecommerce_checkout_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-ecommerce-checkout-api"
   resource_group_name   = local.pagopa_apim_rg
@@ -94,8 +94,8 @@ module "apim_ecommerce_checkout_api_v1" {
   })
 
   xml_content = templatefile("./api/ecommerce-checkout/v1/_base_policy.xml.tpl", {
-    ecommerce_ingress_hostname = local.ecommerce_hostname
-    checkout_origin            = var.env_short == "d" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}"
+    ecommerce_ingress_hostname = local.ecommerce_hostname,
+    origins                    = var.env_short == "d" ? "<origin>*</origin>" : "<origin>${local.checkout_origin}</origin><origin>${local.ecommerce_origin}</origin>"
   })
 }
 
@@ -228,7 +228,7 @@ resource "azurerm_api_management_api_operation_policy" "get_method_testing" {
 # pagopa-ecommerce APIs for checkout V2
 
 module "apim_ecommerce_checkout_api_v2" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-ecommerce-checkout-api"
   resource_group_name   = local.pagopa_apim_rg
@@ -281,7 +281,7 @@ resource "azurerm_api_management_api_operation_policy" "get_fees_v2" {
 # pagopa-ecommerce APIs for checkout V3 (authenticated)
 
 module "apim_ecommerce_checkout_api_v3" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-checkout-api"
   resource_group_name   = local.pagopa_apim_rg
@@ -334,7 +334,7 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_request_info
 # pagopa-ecommerce APIs for checkout V4 (authenticated)
 
 module "apim_ecommerce_checkout_api_v4" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-checkout-api"
   resource_group_name   = local.pagopa_apim_rg
