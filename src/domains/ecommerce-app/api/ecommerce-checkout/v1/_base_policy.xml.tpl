@@ -55,11 +55,35 @@
         </when>
       </choose>
   </inbound>
-
   <outbound>
       <base />
+      <choose>
+          <!-- per operation id tracing -->
+          <when condition="@(context.Operation.Id == "getTransactionOutcomes")">
+              <set-variable name="responseBody" value="@(context.Response.Body.As<JObject>(preserveContent: true))" />
+              <trace source="Transaction outcome api result" severity="information">
+                  <message>Transaction outcome</message>
+                  <metadata name="outcome" value="@{
+                      JObject responseBody = (JObject)context.Variables["responseBody"];
+                      string responseValue = null;
+                      if(responseBody != null){
+                      responseValue = (string)responseBody["outcome"];
+                      }
+                      return responseValue != null ? responseValue : "-";
+                  }" />
+                  <metadata name="isFinalStatus" value="@{
+                      JObject responseBody = (JObject)context.Variables["responseBody"];
+                      string responseValue = null;
+                      if(responseBody != null){
+                      responseValue = (string)responseBody["isFinalStatus"];
+                      }
+                      return responseValue != null ? responseValue : "-";
+                  }" />
+                  <metadata name="transactionId" value="@(context.Request.MatchedParameters.GetValueOrDefault("transactionId",""))" />
+              </trace>
+          </when>
+      </choose>
   </outbound>
-
   <backend>
       <base />
   </backend>
