@@ -19,9 +19,6 @@ def run_kubectl(cmd, env=None):
 def get_namespace_info(namespace):
     try:
         env = os.environ.copy()
-        print(env)
-        print(run_kubectl(['kubectl', 'config', 'view'], env=env).strip())
-        print(run_kubectl(['cat', f"{env['KUBECONFIG']}"], env=env).strip())
         pods = run_kubectl(['kubectl', 'get', 'pods', '-n', namespace, '-o', 'json'], env=env)
         deployments = run_kubectl(['kubectl', 'get', 'deployments', '-n', namespace, '-o', 'json'], env=env)
 
