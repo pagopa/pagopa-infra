@@ -15,8 +15,8 @@ module "apim_checkout_payment_wallet_product" {
   display_name = local.apim_checkout_payment_wallet_api.display_name
   description  = local.apim_checkout_payment_wallet_api.description
 
-  api_management_name   = data.azurerm_api_management.apim.name
-  resource_group_name   = data.azurerm_resource_group.rg_api.name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
 
   published             = true
   subscription_required = true
