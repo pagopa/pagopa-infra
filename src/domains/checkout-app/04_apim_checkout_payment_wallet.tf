@@ -9,7 +9,7 @@ locals {
 }
 
 module "apim_checkout_payment_wallet_product" {
-  source = "./.terraform/modules/__v4__/api_management_product"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "checkout-payment-wallet"
   display_name = local.apim_checkout_payment_wallet_api.display_name
@@ -20,6 +20,7 @@ module "apim_checkout_payment_wallet_product" {
 
   published             = true
   subscription_required = true
+  approval_required     = false
   subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/_base_policy.xml")
@@ -34,7 +35,7 @@ resource "azurerm_api_management_api_version_set" "checkout_payment_wallet_api_v
 }
 
 module "apim_checkout_payment_wallet_api_v1" {
-  source = "./.terraform/modules/__v4__/api_management_api"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.parent_project}-payment-wallet-api"
   api_management_name   = data.azurerm_api_management.apim.name
