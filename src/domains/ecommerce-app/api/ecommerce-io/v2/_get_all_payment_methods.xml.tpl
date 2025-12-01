@@ -1,7 +1,7 @@
 <policies>
     <inbound>
         <base />
-        <set-variable name="totalAmount" value="@(context.Request.Url.Query.GetValueOrDefault("amount",""))" />
+        <set-variable name="totalAmount" value="@(context.Request.Url.Query.GetValueOrDefault("amount","0"))" />
         <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
             <set-url>https://${ecommerce_ingress_hostname}/pagopa-ecommerce-payment-methods-handler/payment-methods</set-url>
             <set-method>POST</set-method>
@@ -19,7 +19,6 @@
                     var userTouchpoint = "IO";
                     var totalAmountValue = Convert.ToInt64(context.Variables.GetValueOrDefault("totalAmount", "0"));                    var paymentNotice = new JObject();
                     paymentNotice["paymentAmount"] = totalAmountValue;
-                    paymentNotice["primaryCreditorInstitution"] = "00000000000";
                     var paymentNoticeList = new JArray();
                     paymentNoticeList.Add(paymentNotice);
                     return new JObject(
