@@ -16,6 +16,7 @@ if [ -z $AKS_DEPLOYMENS ]; then
 fi
 
 if [ "$MONITOR_CONDITION" == "Resolved" ]; then
+  echo "Alert mitigated!"
   exit 0
 fi
 
