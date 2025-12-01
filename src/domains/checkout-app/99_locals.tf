@@ -19,5 +19,5 @@ locals {
   aks_name                = "${local.product}-${var.location_short}-${var.instance}-aks"
   aks_resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
 
-  payment_wallet_hostname = var.env_short != "p" ? "${var.location_short}${var.env}.pay-wallet.internal.${var.env}.platform.pagopa.it" : "${var.location_short}${var.env}.pay-wallet.internal.platform.pagopa.it"
+  payment_wallet_hostname = "itn${var.env}.pay-wallet.internal.${var.apim_dns_zone_prefix}.${var.external_domain}"
 }

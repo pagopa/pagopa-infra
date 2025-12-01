@@ -1,11 +1,28 @@
 locals {
   apim_checkout_payment_wallet_api = {
     display_name          = "Checkout pagoPA Payment Wallet"
-    description           = "API dedicated to checkout to retrieve wallet data useful to show to the authenticated user."
+    description           = "Checkout APIs dedicated to wallet domain integration."
     path                  = "checkout/payment-wallet"
     subscription_required = true
     service_url           = null
   }
+}
+
+module "apim_checkout_payment_wallet_product" {
+  source = "./.terraform/modules/__v4__/api_management_product"
+
+  product_id   = "checkout-payment-wallet"
+  display_name = local.apim_checkout_payment_wallet_api.display_name
+  description  = local.apim_checkout_payment_wallet_api.description
+
+  api_management_name   = data.azurerm_api_management.apim.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
+
+  published             = true
+  subscription_required = true
+  subscriptions_limit   = 1000
+
+  policy_xml = file("./api_product/_base_policy.xml")
 }
 
 resource "azurerm_api_management_api_version_set" "checkout_payment_wallet_api_v1" {
@@ -17,12 +34,12 @@ resource "azurerm_api_management_api_version_set" "checkout_payment_wallet_api_v
 }
 
 module "apim_checkout_payment_wallet_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.parent_project}-payment-wallet-api"
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [data.azurerm_api_management_product.apim_payment_wallet_product.product_id]
+  product_ids           = [module.apim_checkout_payment_wallet_product.product_id]
   subscription_required = local.apim_checkout_payment_wallet_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.checkout_payment_wallet_api_v1.id
   api_version           = "v1"
