@@ -147,7 +147,7 @@ locals {
       name               = "validbundles",
       partition_key_path = "/idPsp",
       autoscale_settings = {
-        max_throughput = var.env_short != "p" ? 1000 : 2000
+        max_throughput = var.env_short != "p" ? 1000 : 5000
       },
       analytical_storage_ttl = -1,
       partition_key_version  = null # 1,2
