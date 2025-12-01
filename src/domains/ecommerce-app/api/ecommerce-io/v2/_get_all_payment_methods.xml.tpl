@@ -17,7 +17,8 @@
             </set-header>
             <set-body>@{
                     var userTouchpoint = "IO";
-                    var totalAmountValue = Convert.ToInt64(context.Variables.GetValueOrDefault("totalAmount", "0"));                    var paymentNotice = new JObject();
+                    var totalAmountValue = Convert.ToInt64(context.Variables.GetValueOrDefault("totalAmount", "0"));
+                    var paymentNotice = new JObject();
                     paymentNotice["paymentAmount"] = totalAmountValue;
                     var paymentNoticeList = new JArray();
                     paymentNoticeList.Add(paymentNotice);
