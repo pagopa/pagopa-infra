@@ -35,7 +35,7 @@
           <set-header name="x-api-key" exists-action="override">
             <value>{{payment-wallet-service-rest-api-key}}</value>
           </set-header>
-          <set-backend-service base-url="@("https://${hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-wallet-service")" />
+          <set-backend-service base-url="@("https://${payment_wallet_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-wallet-service")" />
         </when>
       </choose>
 
@@ -54,18 +54,6 @@
           <when condition="@(((int)((IResponse)context.Variables["userResponse"]).StatusCode) == 401 || ((int)((IResponse)context.Variables["userResponse"]).StatusCode) == 404)">
           <return-response>
               <set-status code="401" reason="Unauthorized" />
-          </return-response>
-          </when>
-          <when condition="@(((int)((IResponse)context.Variables["userResponse"]).StatusCode) == 500)">
-          <return-response>
-              <set-status code="502" reason="Internal server error" />
-              <set-body>
-              {
-                  "status": 502,
-                  "title": "Internal server error",
-                  "detail": "Error in token validation"
-              }
-              </set-body>
           </return-response>
           </when>
           <when condition="@(((int)((IResponse)context.Variables["userResponse"]).StatusCode) != 200)">
