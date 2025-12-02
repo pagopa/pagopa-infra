@@ -23,7 +23,7 @@ module "apim_checkout_payment_wallet_product" {
   approval_required     = false
   subscriptions_limit   = 1000
 
-  policy_xml = file("./api_product/_base_policy.xml")
+  policy_xml = file("./api_product/checkout/_base_policy.xml")
 }
 
 resource "azurerm_api_management_api_version_set" "checkout_payment_wallet_api_v1" {
