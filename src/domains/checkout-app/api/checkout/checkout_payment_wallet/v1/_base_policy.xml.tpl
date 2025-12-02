@@ -74,12 +74,8 @@
       </choose>
       <!-- custom token validate and store userId variable END -->
 
-      <!-- pass x-user-id into header START-->
       <!-- userId (fiscal code) will be tokenized by the underlying service -->
-      <set-header name="x-user-id" exists-action="override">
-          <value>@((string)((JObject)context.Variables["userResponseJson"])["userId"])</value>
-      </set-header>
-      <!-- pass x-user-id into header END-->
+      <set-variable name="userId" value="@((string)((JObject)context.Variables["userResponseJson"])["userId"])"/>
   </inbound>
 
   <outbound>

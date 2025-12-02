@@ -62,3 +62,12 @@ module "apim_checkout_payment_wallet_api_v1" {
     checkout_origin           = var.env_short == "d" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}"
   })
 }
+
+resource "azurerm_api_management_api_operation_policy" "get_wallets_v1" {
+  api_name            = "${local.parent_project}-payment-wallet-api-v1"
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  operation_id        = "getCheckoutPaymentWalletsByIdUser"
+
+  xml_content = file("./api/checkout/checkout_payment_wallet/v1/_get_wallets.xml.tpl")
+}
