@@ -3,7 +3,7 @@
   <inbound>
     <cors>
       <allowed-origins>
-          ${origins}
+          <origin>${ecommerce_origin}</origin>
       </allowed-origins>
       <allowed-methods>
           <method>GET</method>
