@@ -1973,6 +1973,28 @@
             "example": {
               "detailType": "apm"
             }
+          },
+          {
+            "type": "object",
+            "description": "Additional payment authorization details for wallet NPG authorization",
+            "properties": {
+              "detailType": {
+                "description": "fixed value 'wallet'",
+                "type": "string"
+              },
+              "walletId": {
+                "type": "string",
+                "description": "The user wallet id"
+              }
+            },
+            "required": [
+              "detailType",
+              "walletId"
+            ],
+            "example": {
+              "detailType": "wallet",
+              "walletId": "walletId"
+            }
           }
         ]
       },
