@@ -86,7 +86,7 @@ def main():
         logging.error("Must specify valid environment. Choices: dev, uat, prod")
         exit(1)
 
-    core_terraform_script = Path("..") / ".." / "core" / "terraform.sh"
+    core_terraform_script = Path(".") / "terraform.sh"
 
     if not core_terraform_script.exists():
         logging.error(f"Cannot find core terraform script at {core_terraform_script}! Exiting...")
