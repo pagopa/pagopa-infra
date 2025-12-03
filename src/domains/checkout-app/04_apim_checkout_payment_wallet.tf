@@ -3,7 +3,7 @@ locals {
     display_name          = "Checkout pagoPA Payment Wallet"
     description           = "Checkout APIs dedicated to wallet domain integration."
     path                  = "checkout/payment-wallet"
-    subscription_required = true
+    subscription_required = false
     service_url           = null
   }
 }
