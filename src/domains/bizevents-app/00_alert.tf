@@ -1,3 +1,7 @@
+#########################################
+##       pagopabizeventdatastore       ##
+#########################################
+
 resource "azurerm_monitor_scheduled_query_rules_alert" "bizeventsdatastore-availability" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
@@ -114,5 +118,48 @@ union traces, exceptions
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 2
+  }
+}
+
+#########################################
+##       pagopabizeventservice       ##
+#########################################
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-biz-events-service-availability-upd" {
+  for_each = var.env_short == "p" ? toset(["service", "notices-service", "notices-service-jwt", "tx-service", "tx-service-jwt"]) : []
+
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-opex_pagopa-biz-events-service-availability @ _gpd"
+  location            = var.location
+
+
+  action {
+    action_group           = local.action_groups
+    email_subject          "Availability for /bizevents/${each.value}/v1 is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-bizevents"
+    custom_webhook_payload = "{}"
+  }
+
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "Availability for /bizevents/${each.value}/v1 is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-bizevents"
+  enabled        = true
+  query = (<<-QUERY
+let threshold = 0.99;
+AzureDiagnostics
+| where url_s matches regex "/bizevents/${each.value}/v1"
+| summarize
+    Total=count(),
+    Success=count(responseCode_d < 500)
+    by bin(TimeGenerated, 5m)
+| extend availability=toreal(Success) / Total
+| where availability < threshold
+  QUERY
+  )
+  severity    = 0
+  frequency   = 5
+  time_window = 5
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
   }
 }
