@@ -165,6 +165,39 @@ AzureDiagnostics
   }
 }
 
+# eCommerce Payment method handler monitoring: KO or slow payment methods api call (GMP getAllPaymentMethods)
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_payment_methods_alert" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "ecommerce-payment-methods-alert"
+  resource_group_name = azurerm_resource_group.rg_ecommerce_alerts[0].name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id, azurerm_monitor_action_group.service_management_opsgenie[0].id]
+    email_subject          = "[eCommerce] POST get all payment-methods KO/slow api detected"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "eCommerce Payment methods service POST get all payment methods KO/slow api detected, more than 10 KO or above 2 seconds as response time in 30 minutes time window"
+  enabled        = true
+  query = (<<-QUERY
+AzureDiagnostics
+| where url_s matches regex "https://api.platform.pagopa.it/ecommerce/checkout/v2/payment-methods"
+| where method_s == "POST"
+| where responseCode_d != 200 or DurationMs > 250
+| project TimeGenerated, responseCode_d, DurationMs
+  QUERY
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 10
+  }
+}
+
 
 # eCommerce NPG monitoring: KO or slow payment methods start session api call (order/build retrieve card form fields)
 resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_payment_methods_start_session_alert" {
