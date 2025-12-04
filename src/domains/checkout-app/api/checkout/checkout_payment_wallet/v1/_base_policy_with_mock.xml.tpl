@@ -39,7 +39,7 @@
         </when>
       </choose>
       <choose>
-        <when condition="@((string)context.Variables["authToken"]) == "mocked-authentication")">
+        <when condition="@(((string)context.Variables["authToken"]) == "mocked-authentication")">
           <set-variable name="userId" value="RSSMRA00L05F511A"/>
         </when>
         <otherwise>
