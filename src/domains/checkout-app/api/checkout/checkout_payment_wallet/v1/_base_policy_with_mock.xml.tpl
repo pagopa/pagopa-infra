@@ -40,7 +40,7 @@
       </choose>
       <choose>
         <when condition="@((string)context.Variables["authToken"]) == "mocked-authentication")">
-          <set-variable name="userId" value="JHNDOE00A01F205N"/>
+          <set-variable name="userId" value="RSSMRA00L05F511A"/>
         </when>
         <otherwise>
           <!-- custom token validate and store userId variable START -->
