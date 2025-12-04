@@ -56,7 +56,7 @@ module "apim_checkout_payment_wallet_api_v1" {
     hostname = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/checkout/checkout_payment_wallet/v1/_base_policy.xml.tpl", {
+  xml_content = templatefile(var.env_short != "p" ? "./api/checkout/checkout_payment_wallet/v1/_base_policy_with_mock.xml.tpl" : "./api/checkout/checkout_payment_wallet/v1/_base_policy.xml.tpl", {
     payment_wallet_hostname   = local.payment_wallet_hostname
     checkout_ingress_hostname = var.checkout_ingress_hostname
     checkout_origin           = var.env_short == "d" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}"
