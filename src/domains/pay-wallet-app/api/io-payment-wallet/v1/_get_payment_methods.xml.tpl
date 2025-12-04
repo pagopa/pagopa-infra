@@ -13,11 +13,11 @@
             </set-header>
             <!-- Set payment-methods API Key header -->
             <set-header name="x-api-key" exists-action="override">
-                <value>{{payment-wallet-service-rest-api-key}}</value>
+                <value>{{ecommerce-payment-methods-api-key-value}}</value>
             </set-header>
             <set-body>@{
                     var userTouchpoint = "IO";
-                    var totalAmountValue = Convert.ToInt64(context.Variables.GetValueOrDefault("totalAmount", "0"));
+                    var totalAmountValue = Convert.ToInt64("1");
                     var paymentNotice = new JObject();
                     paymentNotice["paymentAmount"] = totalAmountValue;
                     var paymentNoticeList = new JArray();
@@ -50,16 +50,14 @@
                         <value>application/json</value>
                     </set-header>
                     <set-body>@{
-                        var totalAmountValue = Convert.ToInt64(context.Variables.GetValueOrDefault("totalAmount", "0"));
-
                         JObject paymentMethodsResponseBody = ((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>();
                         JArray paymentHandlerResponse = new JArray();
 
                         JArray rangesArray = new JArray();
                         JObject rangeItem = new JObject
                         {
-                            { "min", totalAmountValue },
-                            { "max", totalAmountValue + 1 }
+                            { "min", 0 },
+                            { "max", 10000 }
                         };
                         rangesArray.Add(rangeItem);
 
