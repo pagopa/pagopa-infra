@@ -19,34 +19,13 @@
                 </return-response>
             </when>
         </choose>
-        <!-- Extract 'iss' claim -->
-        <set-variable name="jwtIssuer" value="@{
-            Jwt jwt;
-            context.Request.Headers.GetValueOrDefault("Authorization", "").Split(' ').Last().TryParseJwt(out jwt);
-            return jwt?.Claims.GetValueOrDefault("iss", "");
-        }" />
-        <!-- Store useOpenId as string 'true' or 'false' -->
-        <set-variable name="useOpenId" value="@(
-            (context.Variables.GetValueOrDefault<string>("jwtIssuer")?.Contains("jwt-issuer-service") == true).ToString()
-        )" />
-        <!-- Conditional validation -->
-        <choose>
-            <when condition="@(bool.Parse(context.Variables.GetValueOrDefault<string>("useOpenId")))">
-                <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
-                    <openid-config url="https://${ecommerce_ingress_hostname}/pagopa-jwt-issuer-service/.well-known/openid-configuration" />
-                    <audiences>
-                      <audience>ecommerce</audience>
-                    </audiences>
-                </validate-jwt>
-            </when>
-            <otherwise>
-                <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
-                    <issuer-signing-keys>
-                        <key>{{ecommerce-checkout-transaction-jwt-signing-key}}</key>
-                    </issuer-signing-keys>
-                </validate-jwt>
-            </otherwise>
-        </choose>
+        <!-- JWT validation -->
+        <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
+            <openid-config url="https://${ecommerce_ingress_hostname}/pagopa-jwt-issuer-service/.well-known/openid-configuration" />
+            <audiences>
+              <audience>ecommerce</audience>
+            </audiences>
+        </validate-jwt>
         <set-variable name="tokenTransactionId" value="@{
         var jwt = (Jwt)context.Variables["jwtToken"];
         if(jwt.Claims.ContainsKey("transactionId")){
