@@ -275,7 +275,7 @@ resource "azurerm_api_management_api_operation_policy" "get_fees_v2" {
 
   xml_content = templatefile("./api/ecommerce-checkout/v2/_calculate_fees_policy.xml.tpl", {
     ecommerce_ingress_hostname = local.ecommerce_hostname
-    wallet_ingress_hostname = local.wallet_hostname
+    wallet_ingress_hostname    = local.wallet_hostname
   })
 }
 
