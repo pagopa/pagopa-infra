@@ -100,5 +100,14 @@ databases = {
     password_required = false
     catalog           = "pagopa-p-weu-ecommerce-cosmos-account"
   }
+  RE = {
+    type              = "nexi"
+    host              = "10.1.131.14"
+    port              = "8080"
+    username          = "admin"
+    password_required = false
+    schema            = "re"
+    catalog           = "nexi_re"
+  }
 
 }
