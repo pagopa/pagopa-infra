@@ -93,6 +93,12 @@ pod_disruption_budgets = {
       "app.kubernetes.io/instance" = "pagopaecommercetransactionsschedulerservice"
     }
   },
+  "pagopaecommercecdcservice" = {
+    minAvailable = 3
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopaecommercecdcservice"
+    }
+  },
 }
 
 io_backend_base_path         = "https://disabled"
