@@ -130,7 +130,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 2000
+        threshold                = 1000
         divide_by_instance_count = false
       }
 
@@ -152,7 +152,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 1000
+        threshold                = 500
         divide_by_instance_count = false
       }
 

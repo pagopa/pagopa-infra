@@ -19,9 +19,7 @@ locals {
 ##      pagopareceiptpdfdatastore      ##
 #########################################
 
-## Alert
-# This alert cover the following error case:
-# 1. BizEventToReceiptProcessor throws an exception for the function execution (CosmosDB related errors)
+# BizEventToReceiptProcessor throws an exception for the function execution (CosmosDB related errors)
 #
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-sending-receipt-error-alert" {
   for_each = { for c in local.fn_name_for_alerts_exceptions : c.name => c }
@@ -57,11 +55,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-sending-receipt
 
 }
 
-## Alert
-# This alert cover the following error case:
-# 1. BizEventToReceiptProcessor execution logs that a Receipt instance has been set to NOT_QUEUE_SENT
+# BizEventToReceiptProcessor execution logs that a Receipt instance has been set to NOT_QUEUE_SENT
 # https://github.com/pagopa/pagopa-receipt-pdf-datastore/blob/1a0b36f9693c17ceeffe5d35bf7ace7371a72a13/src/main/java/it/gov/pagopa/receipt/pdf/datastore/service/BizEventToReceiptService.java#L58C17-L58C28
-#
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-datastore-not-sent-to-queue-alert" {
   count               = var.env_short != "d" ? 1 : 0
   resource_group_name = "dashboards"
@@ -94,9 +89,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-datastore-not-s
   }
 }
 
-## Alert
-# This alert cover the following case:
-# 1. BizEventToReceiptProcessor receive a biz event related to a cart (totalNotice > 1)
+# BizEventToReceiptProcessor receive a biz event related to a cart (totalNotice > 1)
 # https://github.com/pagopa/pagopa-receipt-pdf-datastore/blob/1a0b36f9693c17ceeffe5d35bf7ace7371a72a13/src/main/java/it/gov/pagopa/receipt/pdf/datastore/BizEventToReceipt.java#L160
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-cart-event-discarded-alert" {
   count               = var.env_short != "d" ? 1 : 0
@@ -134,9 +127,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-cart-event-disc
 ##      pagopareceiptpdfgenerator      ##
 #########################################
 
-## Alert
-# This alert cover the following error case:
-# 1. ManageReceiptPoisonQueueProcessor execution logs that a new entry has been set in error
+# ManageReceiptPoisonQueueProcessor execution logs that a new entry has been set in error
 # https://github.com/pagopa/pagopa-receipt-pdf-generator/blob/6b6c600db4b13ad7cd4b64596ba29fd0f6c38e70/src/main/java/it/gov/pagopa/receipt/pdf/generator/ManageReceiptPoisonQueue.java#L105
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-in-error-alert" {
   count               = var.env_short != "d" ? 1 : 0
@@ -170,9 +161,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-in-error-alert"
   }
 }
 
-## Alert
-# This alert cover the following error case:
-# 1. GenerateReceiptProcess execution logs that the receipt pdf cant be generated because there are missing property in biz-event
+# GenerateReceiptProcess execution logs that the receipt pdf cant be generated because there are missing property in biz-event
 # https://github.com/pagopa/pagopa-receipt-pdf-generator/blob/653edca00eee4fc3ecf65b60c91c9b20395e7df2/src/main/java/it/gov/pagopa/receipt/pdf/generator/service/impl/GenerateReceiptPdfServiceImpl.java#L165
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-missing-bizevent-property-alert" {
   count               = var.env_short != "d" ? 1 : 0
@@ -206,9 +195,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-missing-bizeven
   }
 }
 
-## Alert
-# This alert cover the following error case:
-# 1. GenerateReceiptProcess execution logs that the pdf engine responded with KO
+# GenerateReceiptProcess execution logs that the pdf engine responded with KO
 # https://github.com/pagopa/pagopa-receipt-pdf-generator/blob/653edca00eee4fc3ecf65b60c91c9b20395e7df2/src/main/java/it/gov/pagopa/receipt/pdf/generator/service/impl/GenerateReceiptPdfServiceImpl.java#L165
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-pdf-engine-response-ko" {
   count               = var.env_short != "d" ? 1 : 0
@@ -242,9 +229,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-pdf-engine-resp
   }
 }
 
-## Alert
-# This alert cover the following error case:
-# 1. GenerateReceiptProcess execution logs that cannot save the PDF Receipt in blob storage
+# GenerateReceiptProcess execution logs that cannot save the PDF Receipt in blob storage
 # https://github.com/pagopa/pagopa-receipt-pdf-generator/blob/653edca00eee4fc3ecf65b60c91c9b20395e7df2/src/main/java/it/gov/pagopa/receipt/pdf/generator/service/impl/GenerateReceiptPdfServiceImpl.java#L165
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-pdf-save-to-blob-error" {
   count               = var.env_short != "d" ? 1 : 0
@@ -278,14 +263,46 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-pdf-save-to-blo
   }
 }
 
+# PDVTokenizerServiceImpl execution logs that an error has been encountered on the PDV Tokenizer service
+# https://github.com/pagopa/pagopa-receipt-pdf-datatstore/blob/main/src/main/java/it/gov/pagopa/receipt/pdf/datastore/service/impl/PDVTokenizerServiceImpl.java#L80
+resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-tokenizer-error-on-datastore-alert" {
+  count               = var.env_short != "d" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-tokenizer-error-on-datastore"
+  location            = var.location
+
+  action {
+    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = local.action_groups
+    email_subject          = "Failed to recover fiscal_code token due to error on the PDV Tokenizer service"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "Unable to retrieve plain fiscal code due to PDV Tokenizer service error"
+  enabled        = true
+  query = format(<<-QUERY
+  traces
+    | where cloud_RoleName == "%s"
+    | order by timestamp desc
+    | where message contains "PDV Tokenizer generateTokenForFiscalCode invocation failed"
+  QUERY
+    , "pagopareceiptpdfdatastore" # from HELM's parameter WEBSITE_SITE_NAME https://github.com/pagopa/pagopa-receipt-pdf-generator/blob/6b6c600db4b13ad7cd4b64596ba29fd0f6c38e70/helm/values-prod.yaml#L81C25-L81C50
+  )
+  severity    = 2 // Sev 2	Warning
+  frequency   = 15
+  time_window = 15
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 20
+  }
+}
+
 
 #########################################
 ##      pagopareceiptpdfnotifier       ##
 #########################################
 
-## Alert
-# This alert cover the following error case:
-# 1. NotifierRetry execution logs that a new entry has been set in error
+# NotifierRetry execution logs that a new entry has been set in error
 # https://github.com/pagopa/pagopa-receipt-pdf-notifier/blob/26067525b154796962168e661ee932d4e628f1be/src/main/java/it/gov/pagopa/receipt/pdf/notifier/NotifierRetry.java#L52
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-to-notify-in-retry-alert" {
   count               = var.env_short != "d" ? 1 : 0
@@ -320,11 +337,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-to-notify-in-re
   }
 }
 
-## Alert
-# This alert cover the following error case:
-# 1. ReceiptToIoService execution logs that a receipt could not be notified (due to maximum retries, or failing to send to message queue)
+# ReceiptToIoService execution logs that a receipt could not be notified (due to maximum retries, or failing to send to message queue)
 # https://github.com/pagopa/pagopa-receipt-pdf-notifier/blob/26067525b154796962168e661ee932d4e628f1be/src/main/java/it/gov/pagopa/receipt/pdf/notifier/service/impl/ReceiptToIOServiceImpl.java#L333
-
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-unable-to-notify-alert" {
   count               = var.env_short != "d" ? 1 : 0
   resource_group_name = "dashboards"
@@ -357,11 +371,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-unable-to-notify
   }
 }
 
-## Alert
-# This alert cover the following error case:
-# 1. PDVTokenizerServiceImpl execution logs that an error using the PDV Tokenizer error has been encountered
+# PDVTokenizerServiceImpl execution logs that an error using the PDV Tokenizer error has been encountered
 # https://github.com/pagopa/pagopa-receipt-pdf-notifier/blob/26067525b154796962168e661ee932d4e628f1be/src/main/java/it/gov/pagopa/receipt/pdf/notifier/service/impl/PDVTokenizerServiceImpl.java#L89
-
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-tokenizer-error-on-notify-alert" {
   count               = var.env_short != "d" ? 1 : 0
   resource_group_name = "dashboards"
@@ -395,45 +406,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-tokenizer-error-
   }
 }
 
-## Alert
-# This alert cover the following error case:
-# 1. PDVTokenizerServiceImpl execution logs that an error has been encountered on the PDV Tokenizer service
-# https://github.com/pagopa/pagopa-receipt-pdf-datatstore/blob/main/src/main/java/it/gov/pagopa/receipt/pdf/datastore/service/impl/PDVTokenizerServiceImpl.java#L80
-resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-tokenizer-error-on-datastore-alert" {
-  count               = var.env_short != "d" ? 1 : 0
-  resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-tokenizer-error-on-datastore"
-  location            = var.location
+#########################################
+##       pagopareceiptpdfservice       ##
+#########################################
 
-  action {
-    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    action_group           = local.action_groups
-    email_subject          = "Failed to recover fiscal_code token due to error on the PDV Tokenizer service"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Unable to retrieve plain fiscal code due to PDV Tokenizer service error"
-  enabled        = true
-  query = format(<<-QUERY
-  traces
-    | where cloud_RoleName == "%s"
-    | order by timestamp desc
-    | where message contains "PDV Tokenizer generateTokenForFiscalCode invocation failed"
-  QUERY
-    , "pagopareceiptpdfdatastore" # from HELM's parameter WEBSITE_SITE_NAME https://github.com/pagopa/pagopa-receipt-pdf-generator/blob/6b6c600db4b13ad7cd4b64596ba29fd0f6c38e70/helm/values-prod.yaml#L81C25-L81C50
-  )
-  severity    = 2 // Sev 2	Warning
-  frequency   = 15
-  time_window = 15
-  trigger {
-    operator  = "GreaterThanOrEqual"
-    threshold = 20
-  }
-}
-
-## Alert
-# This alert cover the following error case:
-# 1. AttachmentService execution logs that an error has been encountered on the PDV Tokenizer service
+# AttachmentService execution logs that an error has been encountered on the PDV Tokenizer service
 # https://github.com/pagopa/pagopa-receipt-pdf-service/blob/main/src/main/java/it/gov/pagopa/receipt/pdf/service/service/impl/AttachmentServiceImpl.java#L96
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-tokenizer-error-on-service-alert" {
   count               = var.env_short != "d" ? 1 : 0
@@ -466,6 +443,5 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-tokenizer-error-
     threshold = 20
   }
 }
-
 
 
