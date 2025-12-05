@@ -69,8 +69,8 @@ cosmos_mongo_db_params = {
 cosmos_mongo_db_pay_wallet_params = {
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 150000
-  throughput         = 15000
+  max_throughput     = 20000
+  throughput         = 2000
 }
 
 
@@ -115,8 +115,8 @@ aks_user_node_pool = {
   vm_size         = "Standard_D8ds_v5",
   os_disk_type    = "Ephemeral",
   os_disk_size_gb = 300,
-  node_count_min  = 6,
-  node_count_max  = 10,
+  node_count_min  = 3,
+  node_count_max  = 3,
   zones           = [1, 2, 3]
   node_labels     = { node_name : "aks-pay-wallet-user", node_type : "user", domain : "paywallet" },
   node_taints     = ["paymentWalletOnly=true:NoSchedule"],

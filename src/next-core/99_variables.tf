@@ -1071,15 +1071,6 @@ variable "ddos_protection_plan" {
   default = null
 }
 
-# Network
-variable "ddos_protection_plan_integration" {
-  type = object({
-    id     = string
-    enable = bool
-  })
-  default = null
-}
-
 variable "cidr_common_private_endpoint_snet" {
   type        = list(string)
   description = "Common Private Endpoint network address space."
