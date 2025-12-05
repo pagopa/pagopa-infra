@@ -116,9 +116,9 @@
                                 <value>application/json</value>
                             </set-header>
                             <set-body>{
-                                "title": "Unable to get auth data",
+                                "title": "Not Found",
                                 "status": 404,
-                                "detail": "Unable to get auth data",
+                                "detail": "Unable to get wallet auth data",
                             }</set-body>
                         </return-response>
                     </when>
