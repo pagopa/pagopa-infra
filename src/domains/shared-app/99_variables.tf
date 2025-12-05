@@ -330,3 +330,13 @@ variable "pdf_engine_java_autoscale_response_time_scale_down" {
   description = "Response time in milliseconds to scale down the Java pdf-engine instance"
   default     = 2
 }
+
+
+variable "extra_gh_runner_repos" {
+  type = list(object({
+    name : string,
+    short_name : string
+  }))
+  description = "(Optional) list of specific gh runner repos to deploy only in this environment"
+  default     = []
+}
