@@ -14,7 +14,7 @@ module "gh_runner_job" {
   gh_identity_suffix = "job-01"
   gh_env             = var.env
   runner_labels      = ["self-hosted-job", "${var.env}"]
-  gh_repositories = [
+  gh_repositories = concat([
     {
       name : "pagopa-shared-toolbox",
       short_name : "shd-tbox"
@@ -39,7 +39,8 @@ module "gh_runner_job" {
       name : "pagopa-taxonomy",
       short_name : "taxonomy"
     }
-  ]
+  ], var.extra_gh_runner_repos)
+
   job      = {}
   job_meta = {}
   key_vault = {
