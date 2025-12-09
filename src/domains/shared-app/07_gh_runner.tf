@@ -76,17 +76,17 @@ module "gh_runner_job_tools" {
   gh_env             = var.env
   runner_labels      = ["self-hosted-job", "${var.env}", "tools"]
   gh_repositories = [
-     {
-    name : "payment-cloud-domain-builder",
-    short_name : "domain-builder"
+    {
+      name : "payment-cloud-domain-builder",
+      short_name : "domain-builder"
     }
   ]
 
   job      = {}
   job_meta = {}
   key_vault = {
-    name        = "${local.product}-kv"        # Name of the KeyVault which stores PAT as secret
-    rg          = "${local.product}-sec-rg"    # Resource group of the KeyVault which stores PAT as secret
+    name        = "${local.product}-kv"           # Name of the KeyVault which stores PAT as secret
+    rg          = "${local.product}-sec-rg"       # Resource group of the KeyVault which stores PAT as secret
     secret_name = "payments-cloud-github-bot-pat" # Data of the KeyVault which stores PAT as secret
   }
   kubernetes_deploy = {
@@ -99,7 +99,7 @@ module "gh_runner_job_tools" {
   location                = var.location
   prefix                  = var.prefix
   resource_group_name     = data.azurerm_resource_group.identity_rg.name
-  domain_security_rg_name = "${local.product}-${var.domain}-sec-rg"
+  domain_security_rg_name = "${local.product}-sec-rg"
   tags                    = module.tag_config.tags
 
 }
