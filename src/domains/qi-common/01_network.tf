@@ -25,6 +25,17 @@ data "azurerm_resource_group" "rg_vnet_italy" {
   name = local.vnet_italy_resource_group_name
 }
 
+data "azurerm_subnet" "aks_subnet" {
+  name                 = local.aks_subnet_name
+  virtual_network_name = local.vnet_name
+  resource_group_name  = local.vnet_resource_group_name
+}
+
+data "azurerm_private_dns_zone" "cosmos" {
+  name                = local.cosmos_dns_zone_name
+  resource_group_name = local.cosmos_dns_zone_resource_group_name
+}
+
 #
 # Eventhub
 #
@@ -43,4 +54,19 @@ resource "azurerm_subnet" "eventhub_qi_snet" {
   resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
   virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
   address_prefixes     = var.cidr_subnet_qi_evh
+}
+
+module "cosmosdb_qi_snet" {
+  source = "./.terraform/modules/__v3__/subnet"
+
+  name                 = "${local.project}-cosmosb-snet"
+  resource_group_name  = local.vnet_resource_group_name
+  virtual_network_name = local.vnet_name
+
+  private_endpoint_network_policies_enabled = true
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+  ]
 }
