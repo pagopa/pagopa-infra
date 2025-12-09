@@ -7,7 +7,7 @@
       "name": "pippo",
       "description": "Hello Pippo V1!",
       "runbook": "check_sys.sh",
-      "worker": "Runbook",
+      "worker": "generic",
       "oncall": "false",
       "require_approval": "true"
     },
@@ -16,9 +16,10 @@
       "name": "pippo",
       "description": "Hello Pippo V2!",
       "runbook": "check_sys.sh",
-      "worker": "Runbook",
+      "worker": "generic",
       "oncall": "false",
-      "run_args": ""
+      "run_args": "",
+      "require_approval": "false"
     }]
   },
   {
@@ -30,7 +31,7 @@
       "description": "Hello Pippo INFRA!",
       "runbook": "test.py",
       "run_args": "-n 1000 --repeats 1000",
-      "worker": "Runbook",
+      "worker": "generic",
       "oncall": "false"
     },
     {
@@ -39,7 +40,7 @@
       "description": "Get Total request from pagopa appgw!",
       "runbook": "azure/application_gateway_info.sh",
       "run_args": "pagopa-d-app-gw pagopa-d-vnet-rg",
-      "worker": "Runbook",
+      "worker": "generic",
       "oncall": "false"
     },
      {
@@ -48,8 +49,8 @@
       "description": "",
       "runbook": "aks/aks-scale-node-pool.sh",
       "run_args": "user01",
-      "worker": "Runbook",
-      "oncall": "false"
+      "worker": "generic",
+      "oncall": "true"
     },
     {
       "id": "aks-info-dev",
@@ -57,7 +58,25 @@
       "description": "Get aks namespace information.",
       "runbook": "aks/aks-info.py",
       "run_args": "",
-      "worker": "Runbook",
+      "worker": "generic",
+      "oncall": "false"
+    },
+          {
+      "id": "aks-info-dev-fixed-ns",
+      "name": "[DEMO] Aks info on DEV fixed ns",
+      "description": "[DEMO] Get aks namespace information with fixed NS.",
+      "runbook": "demo/aks-info-fixed-ns.py",
+      "run_args": "",
+      "worker": "generic",
+      "oncall": "false"
+    },
+    {
+      "id": "restart-pod",
+      "name": "[DEV] restart api config dev pod",
+      "description": "This runbook restart api config postgres pod",
+      "runbook": "aks/aks-deployments-rollout.sh",
+      "run_args": "cache-postgresql",
+      "worker": "generic",
       "oncall": "false"
     }]
   },
@@ -69,16 +88,8 @@
       "name": "smart-alert",
       "description": "SMART!",
       "runbook": "check_sys.sh",
-      "worker": "Runbook",
-      "oncall": "false"
-    },
-    {
-      "id": "restart-pod",
-      "name": "[DEV] restart api config dev pod",
-      "description": "This runbook restart api config postgres pod",
-      "runbook": "aks/aks-deployments-rollout.sh",
-      "run_args": "cache-postgresql",
-      "worker": "Runbook",
+      "run_args": "",
+      "worker": "generic",
       "oncall": "false"
     }]
   },
@@ -90,7 +101,7 @@
       "name": "marco",
       "description": "marco fa i test!",
       "runbook": "check_sys.sh",
-      "worker": "Runbook",
+      "worker": "generic",
       "oncall": "false"
     }]
   }

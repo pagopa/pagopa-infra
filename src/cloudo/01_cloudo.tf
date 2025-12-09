@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "cloudo" {
-  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=99b48d8e5e80f1af1a63ea7a21bf0fa04d13dd3d"
+  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=d9d92e13f2d01f3b3a1483b5e6ad4dc479c7c0fe"
 
   prefix                    = local.product
   env                       = var.env
@@ -34,7 +34,6 @@ module "cloudo" {
     }
   }
 
-
   app_service_logs = {
     retention_period_days = 3
     disk_quota_mb         = 35
@@ -47,7 +46,6 @@ module "cloudo" {
 
   opsgenie_api_key = var.env_short == "p" ? data.azurerm_key_vault_secret.opsgenie_token.0.value : ""
 
-
   schemas = file("${path.module}/env/${var.env}/schemas.json.tpl")
 
   orchestrator_image = {
@@ -58,7 +56,10 @@ module "cloudo" {
     registry_password = data.azurerm_key_vault_secret.github_pat.value
   }
 
-  worker_image = {
+  workers_config = {
+    workers = {
+      "generic-worker" = "generic"
+    }
     image_name        = var.cloudo_worker.image_name
     image_tag         = var.cloudo_worker.image_tag
     registry_url      = var.cloudo_worker.registry_url
