@@ -19,6 +19,7 @@ ingress_load_balancer_ip = "10.1.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"
+dns_zone_ecommerce       = "ecommerce"
 
 ### Cosmos
 
@@ -55,14 +56,21 @@ cidr_subnet_storage_ecommerce  = ["10.1.154.0/24"]
 cosmos_mongo_db_ecommerce_params = {
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 40000
+  max_throughput     = 100000
   throughput         = 1000
 }
 
 cosmos_mongo_db_ecommerce_history_params = {
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 15000
+  max_throughput     = 30000
+  throughput         = 1000
+}
+
+cosmos_mongo_db_ecommerce_watchdog_params = {
+  enable_serverless  = false
+  enable_autoscaling = true
+  max_throughput     = 1000
   throughput         = 1000
 }
 

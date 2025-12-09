@@ -382,12 +382,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_payment_reques
   data_source_id = data.azurerm_api_management.apim.id
   description    = "Payment requests service availability less than or equal 99% in the last 30 minutes"
   enabled        = true
+  #TO DO: tuning alert thresholds based 503 status code
   query = (<<-QUERY
 AzureDiagnostics
 | where url_s startswith "https://api.platform.pagopa.it/ecommerce/payment-requests-service/v1/payment-requests" and method_s == "GET"
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 or responseCode_d == 502 or responseCode_d == 504)
+    Success=countif(responseCode_d < 500 or responseCode_d == 502 or responseCode_d == 504 or responseCode_d == 503)
     by Time = bin(TimeGenerated, 15m)
 | extend availability=(toreal(Success) / Total) * 100
 | where availability < 99

@@ -19,12 +19,16 @@ parameters:
   - name: dbVersion
     displayName: Database Version
     type: string
-    default: '3.36.2'
+    default: '3.37.0'
   # version of liquibase db.changelog-master-*.xml to run
   - name: dbVersionSt
     displayName: Database Version Storico patch
     type: string
     default: '1.1.2'
+  - name: dbVersionPagoPA
+    displayName: Database Version PagoPA patch
+    type: string
+    default: '1.1.0'
   # liquibase context to run specific changelogs,default to '_' to run only uncontexted changelogs
   - name: lbContexts
     displayName: Liquibase Contexts
@@ -90,6 +94,7 @@ variables:
   ADMIN_USERNAME: azureuser
   ADMIN_SCHEMA: public
   liquibase_folder: 'changelog'
+  liquibase_folder_pagopa: 'changelog_pagopa'
   liquibase_folder_st_nodo: 'changelog_st_nodo'
   liquibase_folder_st_nodo_storico: 'changelog_st_nodo_storico'
 
@@ -143,8 +148,32 @@ stages:
           - template: ./templates/liquibase-status.yml
             parameters:
               DATABASE_NAME: cfg
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(CFG_USERNAME)
+              PASSWORD: $(db-cfg-password)
+              SCHEMA: $(CFG_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: cfg
               LIQUIBASE_FOLDER: $(liquibase_folder)
               LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(CFG_USERNAME)
+              PASSWORD: $(db-cfg-password)
+              SCHEMA: $(CFG_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: cfg
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
               JDBC_URL: $(JDBC_URL_STORICO)
               USERNAME: $(CFG_USERNAME)
               PASSWORD: $(db-cfg-password)
@@ -170,8 +199,36 @@ stages:
           - template: ./templates/liquibase-status.yml
             parameters:
               DATABASE_NAME: online
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(ONLINE_USERNAME)
+              PASSWORD: $(db-online-password)
+              SCHEMA: $(ONLINE_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              OFFLINE_SCHEMA: $(OFFLINE_SCHEMA)
+              OFFLINE_USERNAME: $(OFFLINE_USERNAME)
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: online
               LIQUIBASE_FOLDER: $(liquibase_folder)
               LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(ONLINE_USERNAME)
+              PASSWORD: $(db-online-password)
+              SCHEMA: $(ONLINE_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              OFFLINE_SCHEMA: $(OFFLINE_SCHEMA)
+              OFFLINE_USERNAME: $(OFFLINE_USERNAME)
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: online
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
               JDBC_URL: $(JDBC_URL_STORICO)
               USERNAME: $(ONLINE_USERNAME)
               PASSWORD: $(db-online-password)
@@ -198,8 +255,34 @@ stages:
           - template: ./templates/liquibase-status.yml
             parameters:
               DATABASE_NAME: offline
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(OFFLINE_USERNAME)
+              PASSWORD: $(db-offline-password)
+              SCHEMA: $(OFFLINE_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              ONLINE_SCHEMA: $(ONLINE_SCHEMA)
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: offline
               LIQUIBASE_FOLDER: $(liquibase_folder)
               LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(OFFLINE_USERNAME)
+              PASSWORD: $(db-offline-password)
+              SCHEMA: $(OFFLINE_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              ONLINE_SCHEMA: $(ONLINE_SCHEMA)
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: offline
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
               JDBC_URL: $(JDBC_URL_STORICO)
               USERNAME: $(OFFLINE_USERNAME)
               PASSWORD: $(db-offline-password)
@@ -224,11 +307,59 @@ stages:
           - template: ./templates/liquibase-status.yml
             parameters:
               DATABASE_NAME: re
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(RE_USERNAME)
+              PASSWORD: $(db-re-password)
+              SCHEMA: $(RE_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: re
               LIQUIBASE_FOLDER: $(liquibase_folder)
               LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
               JDBC_URL: $(JDBC_URL_STORICO)
               USERNAME: $(RE_USERNAME)
               PASSWORD: $(db-re-password)
+              SCHEMA: $(RE_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: re
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(RE_USERNAME)
+              PASSWORD: $(db-re-password)
+              SCHEMA: $(RE_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: re_admin
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(ADMIN_USERNAME)
+              PASSWORD: $(db-administrator-login-password)
+              SCHEMA: $(RE_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: re_admin
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(ADMIN_USERNAME)
+              PASSWORD: $(db-administrator-login-password)
               SCHEMA: $(RE_SCHEMA)
               TARGET_DB_TYPE: storico
               lbContexts: ${{ parameters.lbContexts }}
@@ -249,8 +380,32 @@ stages:
           - template: ./templates/liquibase-status.yml
             parameters:
               DATABASE_NAME: partition
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(PARTITION_USERNAME)
+              PASSWORD: $(db-partition-password)
+              SCHEMA: $(PARTITION_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: partition
               LIQUIBASE_FOLDER: $(liquibase_folder)
               LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(PARTITION_USERNAME)
+              PASSWORD: $(db-partition-password)
+              SCHEMA: $(PARTITION_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: partition
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
               JDBC_URL: $(JDBC_URL_STORICO)
               USERNAME: $(PARTITION_USERNAME)
               PASSWORD: $(db-partition-password)
@@ -303,6 +458,22 @@ stages:
               NODO_DB_PORT: $(NODO_DB_PORT)
               DB_PARTITION_PASSWORD: $(db-partition-password)
               DB_ADMIN_PASSWORD: $(db-administrator-login-password)
+          # admin pagopa status
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: admin-postgres
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(POSTGRES_JDBC_URL)
+              USERNAME: $(ADMIN_USERNAME)
+              PASSWORD: $(db-administrator-login-password)
+              SCHEMA: $(ADMIN_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_SCHEMA_NAME: public
+              CHANGELOG_LOCK_TABLE: DATABASECHANGELOGLOCK_CRON
+              CHANGELOG_TABLE: DATABASECHANGELOG_CRON
           # admin st_nodo_storico status
           - template: ./templates/liquibase-status.yml
             parameters:
@@ -403,8 +574,32 @@ stages:
           - template: ./templates/liquibase-apply.yml
             parameters:
               DATABASE_NAME: cfg
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(CFG_USERNAME)
+              PASSWORD: $(db-cfg-password)
+              SCHEMA: $(CFG_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: cfg
               LIQUIBASE_FOLDER: $(liquibase_folder)
               LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(CFG_USERNAME)
+              PASSWORD: $(db-cfg-password)
+              SCHEMA: $(CFG_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: cfg
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
               JDBC_URL: $(JDBC_URL_STORICO)
               USERNAME: $(CFG_USERNAME)
               PASSWORD: $(db-cfg-password)
@@ -430,8 +625,36 @@ stages:
           - template: ./templates/liquibase-apply.yml
             parameters:
               DATABASE_NAME: online
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(ONLINE_USERNAME)
+              PASSWORD: $(db-online-password)
+              SCHEMA: $(ONLINE_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              OFFLINE_SCHEMA: $(OFFLINE_SCHEMA)
+              OFFLINE_USERNAME: $(OFFLINE_USERNAME)
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: online
               LIQUIBASE_FOLDER: $(liquibase_folder)
               LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(ONLINE_USERNAME)
+              PASSWORD: $(db-online-password)
+              SCHEMA: $(ONLINE_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              OFFLINE_SCHEMA: $(OFFLINE_SCHEMA)
+              OFFLINE_USERNAME: $(OFFLINE_USERNAME)
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: online
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
               JDBC_URL: $(JDBC_URL_STORICO)
               USERNAME: $(ONLINE_USERNAME)
               PASSWORD: $(db-online-password)
@@ -458,8 +681,34 @@ stages:
           - template: ./templates/liquibase-apply.yml
             parameters:
               DATABASE_NAME: offline
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(OFFLINE_USERNAME)
+              PASSWORD: $(db-offline-password)
+              SCHEMA: $(OFFLINE_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              ONLINE_SCHEMA: $(ONLINE_SCHEMA)
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: offline
               LIQUIBASE_FOLDER: $(liquibase_folder)
               LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(OFFLINE_USERNAME)
+              PASSWORD: $(db-offline-password)
+              SCHEMA: $(OFFLINE_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              ONLINE_SCHEMA: $(ONLINE_SCHEMA)
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: offline
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
               JDBC_URL: $(JDBC_URL_STORICO)
               USERNAME: $(OFFLINE_USERNAME)
               PASSWORD: $(db-offline-password)
@@ -484,11 +733,59 @@ stages:
           - template: ./templates/liquibase-apply.yml
             parameters:
               DATABASE_NAME: re
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(RE_USERNAME)
+              PASSWORD: $(db-re-password)
+              SCHEMA: $(RE_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: re
               LIQUIBASE_FOLDER: $(liquibase_folder)
               LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
               JDBC_URL: $(JDBC_URL_STORICO)
               USERNAME: $(RE_USERNAME)
               PASSWORD: $(db-re-password)
+              SCHEMA: $(RE_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: re
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(RE_USERNAME)
+              PASSWORD: $(db-re-password)
+              SCHEMA: $(RE_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: re_admin
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(ADMIN_USERNAME)
+              PASSWORD: $(db-administrator-login-password)
+              SCHEMA: $(RE_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: re_admin
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(ADMIN_USERNAME)
+              PASSWORD: $(db-administrator-login-password)
               SCHEMA: $(RE_SCHEMA)
               TARGET_DB_TYPE: storico
               lbContexts: ${{ parameters.lbContexts }}
@@ -509,8 +806,32 @@ stages:
           - template: ./templates/liquibase-apply.yml
             parameters:
               DATABASE_NAME: partition
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(PARTITION_USERNAME)
+              PASSWORD: $(db-partition-password)
+              SCHEMA: $(PARTITION_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: partition
               LIQUIBASE_FOLDER: $(liquibase_folder)
               LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL_STORICO)
+              USERNAME: $(PARTITION_USERNAME)
+              PASSWORD: $(db-partition-password)
+              SCHEMA: $(PARTITION_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: partition
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
               JDBC_URL: $(JDBC_URL_STORICO)
               USERNAME: $(PARTITION_USERNAME)
               PASSWORD: $(db-partition-password)
@@ -563,6 +884,22 @@ stages:
               NODO_DB_PORT: $(NODO_DB_PORT)
               DB_PARTITION_PASSWORD: $(db-partition-password)
               DB_ADMIN_PASSWORD: $(db-administrator-login-password)
+          # admin pagopa apply
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: admin-postgres
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(POSTGRES_JDBC_URL)
+              USERNAME: $(ADMIN_USERNAME)
+              PASSWORD: $(db-administrator-login-password)
+              SCHEMA: $(ADMIN_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_SCHEMA_NAME: public
+              CHANGELOG_LOCK_TABLE: DATABASECHANGELOGLOCK_CRON
+              CHANGELOG_TABLE: DATABASECHANGELOG_CRON
           # admin st_nodo_storico apply
           - template: ./templates/liquibase-apply.yml
             parameters:

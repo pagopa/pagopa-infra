@@ -318,3 +318,25 @@ variable "gh_runner_job_location" {
   description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
   default     = "westeurope"
 }
+
+variable "pdf_engine_java_autoscale_response_time_scale_up" {
+  type        = number
+  description = "Response time in milliseconds to scale up the Java pdf-engine instance"
+  default     = 3
+}
+
+variable "pdf_engine_java_autoscale_response_time_scale_down" {
+  type        = number
+  description = "Response time in milliseconds to scale down the Java pdf-engine instance"
+  default     = 2
+}
+
+
+variable "extra_gh_runner_repos" {
+  type = list(object({
+    name : string,
+    short_name : string
+  }))
+  description = "(Optional) list of specific gh runner repos to deploy only in this environment"
+  default     = []
+}

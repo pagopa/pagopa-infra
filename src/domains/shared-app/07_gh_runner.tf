@@ -14,7 +14,7 @@ module "gh_runner_job" {
   gh_identity_suffix = "job-01"
   gh_env             = var.env
   runner_labels      = ["self-hosted-job", "${var.env}"]
-  gh_repositories = [
+  gh_repositories = concat([
     {
       name : "pagopa-shared-toolbox",
       short_name : "shd-tbox"
@@ -34,16 +34,19 @@ module "gh_runner_job" {
     {
       name : "pagopa-anonymizer",
       short_name : "anonym"
+    },
+    {
+      name : "pagopa-taxonomy",
+      short_name : "taxonomy"
     }
-  ]
-  job = {
-    name = var.domain
-  }
+  ], var.extra_gh_runner_repos)
+
+  job      = {}
   job_meta = {}
   key_vault = {
-    name        = "${local.product}-kv"     # Name of the KeyVault which stores PAT as secret
-    rg          = "${local.product}-sec-rg" # Resource group of the KeyVault which stores PAT as secret
-    secret_name = "gh-runner-job-pat"       # Data of the KeyVault which stores PAT as secret
+    name        = "${local.product}-${var.domain}-kv"        # Name of the KeyVault which stores PAT as secret
+    rg          = "${local.product}-${var.domain}-sec-rg"    # Resource group of the KeyVault which stores PAT as secret
+    secret_name = "pagopa-platform-domain-github-bot-cd-pat" # Data of the KeyVault which stores PAT as secret
   }
   kubernetes_deploy = {
     enabled      = true

@@ -16,7 +16,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f6b15b7c89b4b2a2de7424cfd2ed163704cd1bab |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | d0a0b3a81963169bdc974f79eba31e41e918e63d |
 | <a name="module_apim_anonymizer_product"></a> [apim\_anonymizer\_product](#module\_apim\_anonymizer\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_api_authorizer_api_v1"></a> [apim\_api\_authorizer\_api\_v1](#module\_apim\_api\_authorizer\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_authorizer_config_api_v1"></a> [apim\_api\_authorizer\_config\_api\_v1](#module\_apim\_api\_authorizer\_config\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
@@ -129,8 +129,6 @@
 | [azurerm_dns_zone.public](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/dns_zone) | data source |
 | [azurerm_function_app.canone_unico](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/function_app) | data source |
 | [azurerm_function_app.reporting_analysis](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/function_app) | data source |
-| [azurerm_function_app.reporting_batch](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/function_app) | data source |
-| [azurerm_function_app.reporting_service](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/function_app) | data source |
 | [azurerm_key_vault.kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault_secret.apiconfig_selfcare_integration_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.apiconfig_selfcare_integration_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
@@ -182,6 +180,7 @@
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
+| <a name="input_extra_gh_runner_repos"></a> [extra\_gh\_runner\_repos](#input\_extra\_gh\_runner\_repos) | (Optional) list of specific gh runner repos to deploy only in this environment | <pre>list(object({<br/>    name : string,<br/>    short_name : string<br/>  }))</pre> | `[]` | no |
 | <a name="input_function_app_ip_restriction_default_action"></a> [function\_app\_ip\_restriction\_default\_action](#input\_function\_app\_ip\_restriction\_default\_action) | (Optional) The Default action for traffic that does not match any ip\_restriction rule. possible values include Allow and Deny. Defaults to Allow. | `string` | `"Allow"` | no |
 | <a name="input_function_app_storage_account_replication_type"></a> [function\_app\_storage\_account\_replication\_type](#input\_function\_app\_storage\_account\_replication\_type) | (Optional) Storage account replication type used for function apps | `string` | `"ZRS"` | no |
 | <a name="input_gh_runner_job_location"></a> [gh\_runner\_job\_location](#input\_gh\_runner\_job\_location) | (Optional) The GH runner container app job location. Consistent with the container app environment location | `string` | `"westeurope"` | no |
@@ -198,6 +197,8 @@
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
 | <a name="input_pagopa_shared_toolbox_enabled"></a> [pagopa\_shared\_toolbox\_enabled](#input\_pagopa\_shared\_toolbox\_enabled) | pagoPA Shared Toolbox enabled | `bool` | `true` | no |
 | <a name="input_pagopa_shared_toolbox_singlepageapp"></a> [pagopa\_shared\_toolbox\_singlepageapp](#input\_pagopa\_shared\_toolbox\_singlepageapp) | Single Page Applications root directories | `list(string)` | <pre>[<br/>  "ui"<br/>]</pre> | no |
+| <a name="input_pdf_engine_java_autoscale_response_time_scale_down"></a> [pdf\_engine\_java\_autoscale\_response\_time\_scale\_down](#input\_pdf\_engine\_java\_autoscale\_response\_time\_scale\_down) | Response time in milliseconds to scale down the Java pdf-engine instance | `number` | `2` | no |
+| <a name="input_pdf_engine_java_autoscale_response_time_scale_up"></a> [pdf\_engine\_java\_autoscale\_response\_time\_scale\_up](#input\_pdf\_engine\_java\_autoscale\_response\_time\_scale\_up) | Response time in milliseconds to scale up the Java pdf-engine instance | `number` | `3` | no |
 | <a name="input_pdv_api_base_path"></a> [pdv\_api\_base\_path](#input\_pdv\_api\_base\_path) | Personal data vault api base path | `string` | `null` | no |
 | <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br/>    name         = optional(string, null)<br/>    minAvailable = optional(number, null)<br/>    matchLabels  = optional(map(any), {})<br/>  }))</pre> | `{}` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
