@@ -179,7 +179,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_payment_method
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "eCommerce Payment methods handler service POST get all payment methods KO/slow api detected, more than 10 KO or above 2 seconds as response time in 30 minutes time window"
+  description    = "eCommerce Payment methods handler service POST get all payment methods KO/slow api detected, more than 10 KO or above 250 ms as response time in 30 minutes time window"
   enabled        = true
   query = (<<-QUERY
 AzureDiagnostics
