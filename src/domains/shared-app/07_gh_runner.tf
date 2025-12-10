@@ -14,7 +14,7 @@ module "gh_runner_job" {
   gh_identity_suffix = "job-01"
   gh_env             = var.env
   runner_labels      = ["self-hosted-job", "${var.env}"]
-  gh_repositories = concat([
+  gh_repositories = [
     {
       name : "pagopa-shared-toolbox",
       short_name : "shd-tbox"
@@ -39,7 +39,7 @@ module "gh_runner_job" {
       name : "pagopa-taxonomy",
       short_name : "taxonomy"
     }
-  ], var.extra_gh_runner_repos)
+  ]
 
   job      = {}
   job_meta = {}
@@ -59,6 +59,47 @@ module "gh_runner_job" {
   prefix                  = var.prefix
   resource_group_name     = data.azurerm_resource_group.identity_rg.name
   domain_security_rg_name = "${local.product}-${var.domain}-sec-rg"
+  tags                    = module.tag_config.tags
+
+}
+
+
+
+module "gh_runner_job_tools" {
+  source = "./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup"
+
+  domain_name        = var.domain
+  env_short          = var.env_short
+  environment_name   = local.tools_cae_name
+  environment_rg     = local.tools_cae_rg
+  gh_identity_suffix = "job-tools"
+  gh_env             = var.env
+  runner_labels      = ["self-hosted-job", "${var.env}", "tools"]
+  gh_repositories = [
+    {
+      name : "payment-cloud-domain-builder",
+      short_name : "domain-builder"
+    }
+  ]
+
+  job      = {}
+  job_meta = {}
+  key_vault = {
+    name        = "${local.product}-kv"           # Name of the KeyVault which stores PAT as secret
+    rg          = "${local.product}-sec-rg"       # Resource group of the KeyVault which stores PAT as secret
+    secret_name = "payments-cloud-github-bot-pat" # Data of the KeyVault which stores PAT as secret
+  }
+  kubernetes_deploy = {
+    enabled      = true
+    namespaces   = [kubernetes_namespace.namespace.metadata[0].name]
+    cluster_name = "${local.product}-${var.location_short}-${var.instance}-aks"
+    rg           = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
+  }
+
+  location                = var.location
+  prefix                  = var.prefix
+  resource_group_name     = data.azurerm_resource_group.identity_rg.name
+  domain_security_rg_name = "${local.product}-sec-rg"
   tags                    = module.tag_config.tags
 
 }

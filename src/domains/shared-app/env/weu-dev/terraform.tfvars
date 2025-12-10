@@ -66,11 +66,3 @@ robots_indexed_paths = []
 // wallet session token
 io_backend_base_path = "http://{{aks-lb-nexi}}/pmmockservice/pmmockserviceapi"
 pdv_api_base_path    = "https://api.uat.tokenizer.pdv.pagopa.it/tokenizer/v1"
-
-
-extra_gh_runner_repos = [
-  {
-    name : "payment-cloud-domain-builder",
-    short_name : "domain-builder"
-  }
-]
