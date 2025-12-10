@@ -273,8 +273,9 @@ resource "azurerm_api_management_api_operation_policy" "get_fees_v2" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "calculateFees"
 
-  xml_content = templatefile("./api/ecommerce-checkout/v2/_validate_transactions_jwt_token.tpl", {
+  xml_content = templatefile("./api/ecommerce-checkout/v2/_calculate_fees_policy.xml.tpl", {
     ecommerce_ingress_hostname = local.ecommerce_hostname
+    wallet_ingress_hostname    = local.wallet_hostname
   })
 }
 
