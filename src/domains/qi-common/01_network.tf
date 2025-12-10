@@ -63,6 +63,8 @@ module "cosmosdb_qi_snet" {
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
 
+  address_prefixes = var.cidr_subnet_cosmosdb_qi
+
   private_endpoint_network_policies_enabled = true
 
   service_endpoints = [

@@ -64,13 +64,9 @@ locals {
         {
           keys   = ["_id"]
           unique = true
-        },
-        {
-          keys   = ["filename"]
-          unique = true
         }
       ]
-      shard_key           = "filename",
+      shard_key           = "_id",
       default_ttl_seconds = null
     },
     {
@@ -79,13 +75,9 @@ locals {
         {
           keys   = ["_id"]
           unique = true
-        },
-        {
-          keys   = ["filename"]
-          unique = false
         }
       ]
-      shard_key           = "filename",
+      shard_key           = "_id",
       default_ttl_seconds = null
     }
   ]

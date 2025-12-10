@@ -268,3 +268,8 @@ variable "cosmos_mongo_db_accounting_reconciliation_params" {
     max_throughput     = number
   })
 }
+
+variable "cidr_subnet_cosmosdb_qi" {
+  type        = list(string)
+  description = "Cosmos DB address space for qi."
+}
