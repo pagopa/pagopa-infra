@@ -185,10 +185,10 @@ module "mongdb_collection_maintenance" {
   lock_enable = true
 }
 
-module "mongdb_collection_scheduled_tasks" {
+module "mongdb_collection_iban_deletion_requests" {
   source = "./.terraform/modules/__v3__/cosmosdb_mongodb_collection"
 
-  name                = "scheduledTasks"
+  name                = "ibanDeletionRequests"
   resource_group_name = azurerm_resource_group.bopagopa_rg.name
 
   cosmosdb_mongo_account_name  = module.bopagopa_cosmosdb_mongo_account.name
@@ -202,10 +202,18 @@ module "mongdb_collection_scheduled_tasks" {
       unique = true
     },
     {
+      keys   = ["creditorInstitutionCode", "status"]
+      unique = false
+    },
+    {
       keys   = ["status", "scheduledExecutionDate"]
       unique = false
-    }
+    },
+    {
+      keys   = ["creditorInstitutionCode", "status", "ibanValue"]
+      unique = false
+    },
   ]
 
-  lock_enable = true
+  lock_enable =  var.env_short != "d"
 }
