@@ -172,6 +172,11 @@
           },
           "targetKey": {
             "type": "string"
+          },
+          "deviceVersion": {
+            "type": "string",
+            "description": "The user device version"
+
           }
         }
       },
