@@ -53,10 +53,14 @@ resource "azurerm_data_factory_pipeline" "pipeline_odp_backfill" {
   parameters = {
     functionName = ""
     batchSize    = 10000
+    baseLimit    = 0
+    increment    = 10000
   }
 
   variables = {
-    rowsUpdated = 1
+    rowsUpdated       = 1
+    currentLowerBound = 0
+    tempLowerBound    = 0
   }
 
   folder = "GPD_MIGRATION_PIPELINE"
