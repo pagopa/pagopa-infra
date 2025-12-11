@@ -247,7 +247,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_biz_db_normalized_ru_exceeded" {
   tags = module.tag_config.tags
 }
 
-resource "azurerm_monitor_metric_alert" "cosmos_db_provisioned_throughput_exceeded" { # https://github.com/pagopa/terraform-azurerm-v3/blob/58f14dc120e10bd3515bcc34e0685e74d1d11047/cosmosdb_account/main.tf#L205
+resource "azurerm_monitor_metric_alert" "cosmos_biz_db_provisioned_throughput_exceeded" { # https://github.com/pagopa/terraform-azurerm-v3/blob/58f14dc120e10bd3515bcc34e0685e74d1d11047/cosmosdb_account/main.tf#L205
   count = var.env_short == "p" ? 1 : 0
 
   name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.bizevents_datastore_cosmosdb_account.name}] Provisioned Throughput Exceeded"
