@@ -229,13 +229,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_biz_db_normalized_ru_exceeded" {
     dimension {
       name     = "Region"
       operator = "Include"
-      values   = [azurerm_resource_group.bizevents_rg.location]
-    }
-
-    dimension {
-      name     = "CollectionName"
-      operator = "Include"
-      values   = ["*"]
+      values   = ["West Europe"]
     }
 
   }
