@@ -253,23 +253,11 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_provisioned_throughput_exceed
     threshold              = 0 // var.receipts_datastore_cosmos_db_params.max_throughput
     skip_metric_validation = false
 
-
-    dimension {
-      name     = "Region"
-      operator = "Include"
-      values   = [var.location]
-    }
     dimension {
       name     = "StatusCode"
       operator = "Include"
       values   = ["429"]
     }
-    dimension {
-      name     = "CollectionName"
-      operator = "Include"
-      values   = ["*"]
-    }
-
   }
 
   action {
