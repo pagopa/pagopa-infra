@@ -1403,6 +1403,18 @@
         "description": "Calculate fee request",
         "type": "object",
         "properties": {
+          "walletId": {
+            "type": "string",
+            "description": "ID of the wallet"
+          },
+          "walletType": {
+            "type": "string",
+            "description": "Payment wallet type",
+            "enum": [
+              "CARDS",
+              "PAYPAL"
+            ]
+          },
           "touchpoint": {
             "type": "string",
             "description": "The touchpoint name"
