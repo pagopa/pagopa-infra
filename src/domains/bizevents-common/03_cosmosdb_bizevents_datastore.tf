@@ -252,3 +252,47 @@ resource "azurerm_monitor_metric_alert" "cosmos_biz_db_normalized_ru_exceeded" {
 
   tags = module.tag_config.tags
 }
+
+resource "azurerm_monitor_metric_alert" "cosmos_db_provisioned_throughput_exceeded" { # https://github.com/pagopa/terraform-azurerm-v3/blob/58f14dc120e10bd3515bcc34e0685e74d1d11047/cosmosdb_account/main.tf#L205
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.bizevents_datastore_cosmosdb_account.name}] Provisioned Throughput Exceeded"
+  resource_group_name = azurerm_resource_group.bizevents_rg.name
+  scopes              = [module.bizevents_datastore_cosmosdb_account.id]
+  description         = "A collection throughput (RU/s) exceed provisioned throughput, and it's raising 429 errors. Please, consider to increase RU. Runbook: not needed."
+  severity            = 0
+  window_size         = "PT5M"
+  frequency           = "PT1M"
+  auto_mitigate       = false
+
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
+  criteria {
+    metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
+    metric_name            = "TotalRequestUnits"
+    aggregation            = "Total"
+    operator               = "GreaterThan"
+    threshold              = 1
+    skip_metric_validation = false
+
+    dimension {
+      name     = "StatusCode"
+      operator = "Include"
+      values   = ["429"]
+    }
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+  action {
+    action_group_id = data.azurerm_monitor_action_group.opsgenie[0].id
+  }
+
+
+  tags = module.tag_config.tags
+}
