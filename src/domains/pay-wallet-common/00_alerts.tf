@@ -198,7 +198,7 @@ AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/payment-wallet-notifications/v1'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 and DurationMs < 350)
+    Success=countif(responseCode_d < 500 and DurationMs < 500)
     by Time = bin(TimeGenerated, 10m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
