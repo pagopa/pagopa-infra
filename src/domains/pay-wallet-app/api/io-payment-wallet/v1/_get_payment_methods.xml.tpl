@@ -2,6 +2,8 @@
     <inbound>
         <base />
         <set-variable name="totalAmount" value="@(context.Request.Url.Query.GetValueOrDefault("amount","0"))" />
+        <set-variable name="deviceVersion" value="@(context.Request.Url.Query.GetValueOrDefault("deviceVersion", ""))" />
+        <set-variable name="userDevice" value="@(context.Request.Url.Query.GetValueOrDefault("devicePlatform", ""))" />
         <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
             <set-url>https://${ecommerce_hostname}/pagopa-ecommerce-payment-methods-handler/payment-methods</set-url>
             <set-method>POST</set-method>
@@ -18,6 +20,8 @@
             <set-body>@{
                     var userTouchpoint = "IO";
                     var totalAmountValue = Convert.ToInt64("1");
+                    var deviceVersion = context.Variables.GetValueOrDefault("deviceVersion", "");
+                    var userDevice = context.Variables.GetValueOrDefault("userDevice", "");
                     var paymentNotice = new JObject();
                     paymentNotice["paymentAmount"] = totalAmountValue;
                     var paymentNoticeList = new JArray();
@@ -25,7 +29,9 @@
                     return new JObject(
                             new JProperty("userTouchpoint", userTouchpoint),
                             new JProperty("totalAmount", totalAmountValue),
-                            new JProperty("paymentNotice", paymentNoticeList)
+                            new JProperty("paymentNotice", paymentNoticeList),
+                            new JProperty("userDevice", String.IsNullOrEmpty(userDevice) ? null : userDevice),
+                            new JProperty("deviceVersion", String.IsNullOrEmpty(deviceVersion) ? null : deviceVersion)
                         ).ToString();
                   }</set-body>
         </send-request>
