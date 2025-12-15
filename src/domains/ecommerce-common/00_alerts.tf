@@ -452,10 +452,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_webview_v1_ava
   description    = "eCommerce webview api's Availability less than or equal 99%"
   enabled        = true
   query = (<<-QUERY
-let thresholdTrafficMin = 100;
+let thresholdTrafficMin = 200;
 let thresholdTrafficLinear = 500;
-let lowTrafficAvailability = 97;
-let highTrafficAvailability = 99;
+let lowTrafficAvailability = 94;
+let highTrafficAvailability = 98;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
@@ -497,17 +497,14 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_io_payment_wit
   enabled        = true
   query = (<<-QUERY
 AzureDiagnostics
-| where ResourceType == "APPLICATIONGATEWAYS"
-    and OperationName == "ApplicationGatewayAccess"
-    and (requestUri_s startswith "/ecommerce/io-outcomes/v1/payments/cards/outcomes")
-    and (requestQuery_s contains "outcome")
-| extend outcome = tostring(parse_urlquery(requestQuery_s)["Query Parameters"]["outcome"])
+| where url_s startswith "https://api.platform.pagopa.it/ecommerce/io-outcomes/v1/payments/cards/outcomes" and method_s == "GET"
+| extend outcome = tostring(parse_url(url_s)["Query Parameters"]["outcome"])
 | summarize
     Total=count(),
     Success=countif(outcome == "0")
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
-| where Availability < 90
+| where Availability < 95
   QUERY
   )
   severity    = 1
@@ -536,17 +533,14 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_io_payment_wit
   enabled        = true
   query = (<<-QUERY
 AzureDiagnostics
-| where ResourceType == "APPLICATIONGATEWAYS"
-    and OperationName == "ApplicationGatewayAccess"
-    and (requestUri_s startswith "/payment-wallet-outcomes/v1/wallets/contextual-onboard/outcomes")
-    and (requestQuery_s contains "outcome")
-| extend outcome = tostring(parse_urlquery(requestQuery_s)["Query Parameters"]["outcome"])
+| where url_s startswith "https://api.platform.pagopa.it/payment-wallet-outcomes/v1/wallets/contextual-onboard/outcomes" and method_s == "GET"
+| extend outcome = tostring(parse_url(url_s)["Query Parameters"]["outcome"])
 | summarize
     Total=count(),
     Success=countif(outcome == "0")
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
-| where Availability < 90
+| where Availability < 95
   QUERY
   )
   severity    = 1
