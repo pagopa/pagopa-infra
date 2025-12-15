@@ -161,6 +161,17 @@
             "type": "integer",
             "format": "int64"
           },
+          "language": {
+             "type": "string",
+             "description": "The user language",
+             "enum": [
+                 "IT",
+                 "EN",
+                 "FR",
+                 "DE",
+                 "SL"
+             ]
+          },
           "paymentNotice": {
             "type": "array",
             "items": {
