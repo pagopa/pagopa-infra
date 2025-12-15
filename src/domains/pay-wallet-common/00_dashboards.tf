@@ -10,10 +10,10 @@ resource "azurerm_portal_dashboard" "pay_wallet_onboarding_monitoring_dashboard"
   #see https://github.com/hashicorp/terraform-provider-azurerm/issues/27117 issue for more info
   dashboard_properties = jsonencode(
     merge(
-      jsondecode(file("./dashboards/pay-wallet-api-monitoring-dashboard.json")).properties,
+      jsondecode(file("./dashboards/pay-wallet-onboarding-monitoring-dashboard.json")).properties,
       {
         "lenses" = {
-          for lens_index, lens in jsondecode(file("./dashboards/pay-wallet-api-monitoring-dashboard.json")).properties.lenses :
+          for lens_index, lens in jsondecode(file("./dashboards/pay-wallet-onboarding-monitoring-dashboard.json")).properties.lenses :
           tostring(lens_index) => merge(lens, {
             "parts" = {
               for part_index, part in lens.parts :
