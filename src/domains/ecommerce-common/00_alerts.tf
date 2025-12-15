@@ -435,3 +435,125 @@ AzureDiagnostics
     threshold = 2
   }
 }
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_webview_v1_availability_alert" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "ecommerce-webview-v1-availability-alert"
+  resource_group_name = azurerm_resource_group.rg_ecommerce_alerts[0].name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "[eCommerce] webview api v1 availability alert"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "eCommerce webview api's Availability less than or equal 99%"
+  enabled        = true
+  query = (<<-QUERY
+let thresholdTrafficMin = 100;
+let thresholdTrafficLinear = 500;
+let lowTrafficAvailability = 97;
+let highTrafficAvailability = 99;
+let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
+let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
+AzureDiagnostics
+| where url_s startswith 'https://api.platform.pagopa.it/ecommerce/webview/v1'
+| summarize
+    Total=count(),
+    Success=countif(responseCode_d < 500)
+    by Time = bin(TimeGenerated, 15m)
+| extend trafficUp = Total-thresholdTrafficMin
+| extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
+| extend Availability=((Success * 1.0) / Total) * 100
+| where Availability < expectedAvailability
+  QUERY
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_io_payment_with_not_onboarded_card_outcome_availability" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "ecommerce-io-payment-with-not-onboarded-card-outcome-availability"
+  resource_group_name = azurerm_resource_group.rg_ecommerce_alerts[0].name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "[eCommerce] IO payment flow - payment with not onboarded card outcome availability alert"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "eCommerce for IO - payment with not onboarded card  - card data insertion webview result outcome success rate less than 90%"
+  enabled        = true
+  query = (<<-QUERY
+AzureDiagnostics
+| where ResourceType == "APPLICATIONGATEWAYS"
+    and OperationName == "ApplicationGatewayAccess"
+    and (requestUri_s startswith "/ecommerce/io-outcomes/v1/payments/cards/outcomes")
+    and (requestQuery_s contains "outcome")
+| extend outcome = tostring(parse_urlquery(requestQuery_s)["Query Parameters"]["outcome"])
+| summarize
+    Total=count(),
+    Success=countif(outcome == "0")
+    by Time = bin(TimeGenerated, 15m)
+| extend Availability=((Success * 1.0) / Total) * 100
+| where Availability < 90
+  QUERY
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_io_payment_with_contextual_onboarding_outcome_availability" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "ecommerce-io-payment-with-contextual-onboarding-outcome-availability"
+  resource_group_name = azurerm_resource_group.rg_ecommerce_alerts[0].name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "[eCommerce] IO payment flow - payment with contextual onboarding outcome availability alert"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "eCommerce for IO - payment with contextual onboarding - wallet creation webview result outcome success rate less than 90%"
+  enabled        = true
+  query = (<<-QUERY
+AzureDiagnostics
+| where ResourceType == "APPLICATIONGATEWAYS"
+    and OperationName == "ApplicationGatewayAccess"
+    and (requestUri_s startswith "/payment-wallet-outcomes/v1/wallets/contextual-onboard/outcomes")
+    and (requestQuery_s contains "outcome")
+| extend outcome = tostring(parse_urlquery(requestQuery_s)["Query Parameters"]["outcome"])
+| summarize
+    Total=count(),
+    Success=countif(outcome == "0")
+    by Time = bin(TimeGenerated, 15m)
+| extend Availability=((Success * 1.0) / Total) * 100
+| where Availability < 90
+  QUERY
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
