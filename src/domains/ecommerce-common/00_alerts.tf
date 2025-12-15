@@ -444,7 +444,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_webview_v1_ava
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
     email_subject          = "[eCommerce] webview api v1 availability alert"
     custom_webhook_payload = "{}"
   }
@@ -488,7 +488,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_io_payment_wit
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
     email_subject          = "[eCommerce] IO payment flow - payment with not onboarded card outcome availability alert"
     custom_webhook_payload = "{}"
   }
@@ -524,7 +524,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_io_payment_wit
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
     email_subject          = "[eCommerce] IO payment flow - payment with contextual onboarding outcome availability alert"
     custom_webhook_payload = "{}"
   }
