@@ -1,6 +1,6 @@
-resource "azurerm_portal_dashboard" "pay_wallet_api_monitoring_dashboard" {
+resource "azurerm_portal_dashboard" "pay_wallet_onboarding_monitoring_dashboard" {
   count               = var.env_short == "p" ? 1 : 0
-  name                = "pay-wallet-api-monitoring-dashboard"
+  name                = "pay-wallet-onboarding-monitoring-dashboard"
   resource_group_name = var.monitor_italy_resource_group_name
   location            = var.location
   tags = {
