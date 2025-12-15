@@ -114,3 +114,30 @@ module "apim_api_receipts_helpdesk_api_v1" {
     hostname = local.receipts_hostname
   })
 }
+
+module "apim_api_receipts_generator_helpdesk_api_v1" {
+  source = "./.terraform/modules/__v3__/api_management_api"
+
+  name                  = format("%s-receipts-generator-helpdesk-api", local.project)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = ["technical_support_api"]
+  subscription_required = local.apim_receipts_helpdesk_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.api_receipts_helpdesk_api.id
+  api_version           = "v1"
+
+  description  = local.apim_receipts_helpdesk_api.description
+  display_name = local.apim_receipts_helpdesk_api.display_name
+  path         = local.apim_receipts_helpdesk_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_receipts_helpdesk_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/receipt-generator-helpdesk/v1/_openapi.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/receipt-generator-helpdesk/v1/_base_policy.xml", {
+    hostname = local.receipts_hostname
+  })
+}
