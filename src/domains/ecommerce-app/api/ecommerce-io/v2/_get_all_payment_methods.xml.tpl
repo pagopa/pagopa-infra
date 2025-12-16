@@ -1,7 +1,7 @@
 <policies>
     <inbound>
         <base />
-        <set-variable name="totalAmount" value="@(context.Request.Url.Query.GetValueOrDefault("amount","0"))" />
+        <set-variable name="totalAmount" value="@(context.Request.Url.Query.GetValueOrDefault("amount","1"))" />
         <set-variable name="deviceVersion" value="@(context.Request.Url.Query.GetValueOrDefault("deviceVersion", ""))" />
         <set-variable name="userDevice" value="@(context.Request.Url.Query.GetValueOrDefault("devicePlatform", ""))" />
         <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
@@ -19,19 +19,28 @@
             </set-header>
             <set-body>@{
                     var userTouchpoint = "IO";
-                    var totalAmountValue = Convert.ToInt64(context.Variables.GetValueOrDefault("totalAmount", "0"));
+                    var totalAmountValue = Convert.ToInt64(context.Variables.GetValueOrDefault("totalAmount", "1"));
                     var deviceVersion = context.Variables.GetValueOrDefault("deviceVersion", "");
                     var userDevice = context.Variables.GetValueOrDefault("userDevice", "");
                     var paymentNotice = new JObject();
                     paymentNotice["paymentAmount"] = totalAmountValue;
                     var paymentNoticeList = new JArray();
+                    var language = "IT";
+                    var sortBy = "DESCRIPTION";
+                    var sortOrder = "ASC";
+                    var priorityGroups = new JArray();
+                    priorityGroups.Add("CP");
                     paymentNoticeList.Add(paymentNotice);
                     return new JObject(
                             new JProperty("userTouchpoint", userTouchpoint),
                             new JProperty("totalAmount", totalAmountValue),
                             new JProperty("paymentNotice", paymentNoticeList),
                             new JProperty("userDevice", String.IsNullOrEmpty(userDevice) ? null : userDevice),
-                            new JProperty("deviceVersion", String.IsNullOrEmpty(deviceVersion) ? null : deviceVersion)
+                            new JProperty("deviceVersion", String.IsNullOrEmpty(deviceVersion) ? null : deviceVersion),
+                            new JProperty("language", language),
+                            new JProperty("sortBy", sortBy),
+                            new JProperty("sortOrder", sortOrder),
+                            new JProperty("priorityGroups", priorityGroups)
                         ).ToString();
                   }</set-body>
         </send-request>
