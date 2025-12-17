@@ -181,6 +181,8 @@ module "receipts_datastore_cosmosdb_containers" {
 resource "azurerm_monitor_metric_alert" "cosmos_receipt_db_normalized_ru_exceeded" {
   count = var.env_short == "p" ? 1 : 0
 
+  enabled = false # :warning: disabling alert for the moment as it is firing too often even if RU are below threshold - to be investigated see https://pagopa.atlassian.net/browse/PAGOPA-3418?focusedCommentId=278105
+
   name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.receipts_datastore_cosmosdb_account.name}] Normalized RU Exceeded"
   resource_group_name = azurerm_resource_group.receipts_rg.name
   scopes              = [module.receipts_datastore_cosmosdb_account.id]
@@ -227,7 +229,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_receipt_db_normalized_ru_exceede
 resource "azurerm_monitor_metric_alert" "cosmos_receipt_db_provisioned_throughput_exceeded" { # https://github.com/pagopa/terraform-azurerm-v3/blob/58f14dc120e10bd3515bcc34e0685e74d1d11047/cosmosdb_account/main.tf#L205
   count = var.env_short == "p" ? 1 : 0
 
-  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.receipts_datastore_cosmosdb_account.name}] Provisioned Throughput Exceeded"
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.receipts_datastore_cosmosdb_account.name}] 429 Errors"
   resource_group_name = azurerm_resource_group.receipts_rg.name
   scopes              = [module.receipts_datastore_cosmosdb_account.id]
   description         = "A collection throughput (RU/s) exceed provisioned throughput, and it's raising 429 errors. Please, consider to increase RU. Runbook: not needed."
@@ -246,12 +248,17 @@ resource "azurerm_monitor_metric_alert" "cosmos_receipt_db_provisioned_throughpu
     operator               = "GreaterThan"
     threshold              = 0 // var.receipts_datastore_cosmos_db_params.max_throughput
     skip_metric_validation = false
-
+    dimension {
+      name     = "CollectionName"
+      operator = "Include"
+      values   = ["Receipts"]
+    }
     dimension {
       name     = "StatusCode"
       operator = "Include"
       values   = ["429"]
     }
+
   }
 
   action {

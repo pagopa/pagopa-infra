@@ -130,7 +130,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 1000
+        threshold                = 1500
         divide_by_instance_count = false
       }
 
@@ -178,7 +178,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 1 #sec
+        threshold                = 3 #sec
         divide_by_instance_count = false
       }
 
@@ -200,7 +200,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 1 #sec
+        threshold                = 2 #sec
         divide_by_instance_count = false
       }
 
@@ -364,7 +364,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 1000
+        threshold                = 1500
         divide_by_instance_count = false
       }
 
@@ -412,7 +412,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 1 #sec
+        threshold                = 3 #sec
         divide_by_instance_count = false
       }
 
@@ -434,7 +434,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 1 #sec
+        threshold                = 2 #sec
         divide_by_instance_count = false
       }
 
