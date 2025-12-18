@@ -4,20 +4,27 @@
     "title": "Receipts Generator Helpdesk",
     "description": "Microservice for exposing REST APIs about receipts helpdesk.",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "1.16.3"
+    "version": "1.16.3-2-PAGOPA-3449-move-helpdesk-regenerate-pdf-in-generator"
   },
   "servers": [
     {
-      "url": "https://api.dev.platform.pagopa.it/receipts/helpdesk/v1/",
-      "description": "DEV url"
+      "url": "http://localhost:8080"
     },
     {
-      "url": "https://api.uat.platform.pagopa.it/receipts/helpdesk/v1/",
-      "description": "UAT url"
-    },
-    {
-      "url": "https://api.platform.pagopa.it/receipts/helpdesk/v1/",
-      "description": "PROD url"
+      "url": "{host}{basePath}",
+      "variables": {
+        "host": {
+          "default": "https://api.platform.pagopa.it",
+          "enum": [
+            "https://api.dev.platform.pagopa.it",
+            "https://api.uat.platform.pagopa.it",
+            "https://api.platform.pagopa.it"
+          ]
+        },
+        "basePath": {
+          "default": "/receipts/helpdesk/generator/v1/"
+        }
+      }
     }
   ],
   "tags": [],
@@ -190,6 +197,97 @@
           }
         }
       ]
+    },
+    "/cart-receipts/{cart-id}/regenerate-receipt-pdf": {
+      "post": {
+        "tags": [
+          "API-regenerateCartReceiptPdf"
+        ],
+        "summary": "Regenerate and update pdf attachment of the cart receipt with the given cart id",
+        "operationId": "RegenerateCartReceiptPdf",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cart-id",
+            "description": "Cart identifier.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Calls.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "OK"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Receipt could not be updated with the new attachments",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
     }
   },
   "components": {
@@ -199,7 +297,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "example": "pagopa-receipt-pdf-helpdesk"
+            "example": "pagopa-receipt-pdf-generator-helpdesk"
           },
           "version": {
             "type": "string",
