@@ -118,7 +118,7 @@
         ],
         "operationId": "getAllPaymentMethods",
         "summary": "Retrieve all Payment Methods for IO (by filter)",
-        "description": "POST with body payload - no resources created: API for retrieve payment method using the request query parameter filters",
+        "description": "POST with body payload - no resources created: API for retrieves payment methods using filter criteria provided in the request body.",
         "security": [
           {
             "pagoPAPlatformSessionToken": []
