@@ -116,7 +116,7 @@
         "tags": [
           "paymentMethods"
         ],
-        "operationId": "getAllPaymentMethods",
+        "operationId": "getAllPaymentMethodsForIOPost",
         "summary": "Retrieve all Payment Methods for IO (by filter)",
         "description": "POST with body payload - no resources created: API for retrieves payment methods using filter criteria provided in the request body.",
         "security": [
