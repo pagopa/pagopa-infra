@@ -6780,11 +6780,11 @@
       }
     }
   },
-  "name": "[eCommerce] - checkout payment flow (ecommerce cdn) 11/25 (2)",
+  "name": "checkout-payment-flow-dashboard",
   "type": "Microsoft.Portal/dashboards",
   "location": "INSERT LOCATION",
   "tags": {
-    "hidden-title": "[eCommerce] - checkout payment flow (ecommerce cdn) 11/25 (2)"
+    "hidden-title": "checkout-payment-flow-dashboard"
   },
   "apiVersion": "2022-12-01-preview"
 }
