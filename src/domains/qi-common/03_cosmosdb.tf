@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "cosmosdb_qi_rg" {
   tags = module.tag_config.tags
 }
 
-module "cosmosdb_account_mongodb" {
+module "cosmosdb_account_qi_mongodb" {
 
   source = "./.terraform/modules/__v3__/cosmosdb_account"
 
