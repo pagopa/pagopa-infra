@@ -152,7 +152,7 @@ cosmos_mongo_db_params = {
     max_interval_in_seconds = 300
     max_staleness_prefix    = 100000
   }
-  server_version                   = "6.0"
+  server_version                   = "7.0"
   main_geo_location_zone_redundant = true
   enable_free_tier                 = false
 
@@ -171,8 +171,10 @@ cosmos_mongo_db_params = {
 }
 
 cosmos_mongo_db_accounting_reconciliation_params = {
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 1000
+  max_throughput     = 5000
   throughput         = 1000
 }
+
+cidr_subnet_cosmosdb_qi = ["10.1.132.0/24"]

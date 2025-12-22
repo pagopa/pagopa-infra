@@ -127,6 +127,7 @@ ehns_metric_alerts_qi = {
 ### Cosmos
 
 cosmos_mongo_db_params = {
+  enabled      = true
   kind         = "MongoDB"
   capabilities = ["EnableMongo", "DisableRateLimitingResponses"]
   offer_type   = "Standard"
@@ -156,3 +157,4 @@ cosmos_mongo_db_accounting_reconciliation_params = {
   throughput         = 1000
 }
 
+cidr_subnet_cosmosdb_qi = ["10.1.132.0/24"]
