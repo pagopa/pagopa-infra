@@ -215,5 +215,5 @@ module "mongdb_collection_iban_deletion_requests" {
     },
   ]
 
-  lock_enable =  var.env_short != "d"
+  lock_enable = var.env_short != "d"
 }
