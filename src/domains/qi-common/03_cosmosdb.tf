@@ -42,7 +42,7 @@ resource "azurerm_cosmosdb_mongo_database" "accounting_reconciliation" {
 
   name                = "accounting-reconciliation"
   resource_group_name = azurerm_resource_group.cosmosdb_qi_rg.name
-  account_name        = module.cosmosdb_account_mongodb.name
+  account_name        = module.cosmosdb_account_qi_mongodb.name
 
   throughput = var.cosmos_mongo_db_accounting_reconciliation_params.enable_autoscaling || var.cosmos_mongo_db_accounting_reconciliation_params.enable_serverless ? null : var.cosmos_mongo_db_accounting_reconciliation_params.throughput
 
@@ -91,7 +91,7 @@ module "cosmosdb_accounting_reconciliation_collections" {
   name                = each.value.name
   resource_group_name = azurerm_resource_group.cosmosdb_qi_rg.name
 
-  cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb.name
+  cosmosdb_mongo_account_name  = module.cosmosdb_account_qi_mongodb.name
   cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.accounting_reconciliation.name
 
   indexes             = each.value.indexes

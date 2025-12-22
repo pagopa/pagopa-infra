@@ -13,7 +13,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f3485105e35ce8c801209dcbb4ef72f3d944f0e5 |
-| <a name="module_cosmosdb_account_mongodb"></a> [cosmosdb\_account\_mongodb](#module\_cosmosdb\_account\_mongodb) | ./.terraform/modules/__v3__/cosmosdb_account | n/a |
+| <a name="module_cosmosdb_account_qi_mongodb"></a> [cosmosdb\_account\_qi\_mongodb](#module\_cosmosdb\_account\_qi\_mongodb) | ./.terraform/modules/__v3__/cosmosdb_account | n/a |
 | <a name="module_cosmosdb_accounting_reconciliation_collections"></a> [cosmosdb\_accounting\_reconciliation\_collections](#module\_cosmosdb\_accounting\_reconciliation\_collections) | ./.terraform/modules/__v3__/cosmosdb_mongodb_collection | n/a |
 | <a name="module_cosmosdb_qi_snet"></a> [cosmosdb\_qi\_snet](#module\_cosmosdb\_qi\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
 | <a name="module_eventhub_namespace_qi"></a> [eventhub\_namespace\_qi](#module\_eventhub\_namespace\_qi) | ./.terraform/modules/__v3__/eventhub | n/a |
