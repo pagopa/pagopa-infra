@@ -1655,7 +1655,7 @@
                   },
                   "PartSubTitle": "POST ecommerce/checkout/v4/auth/payment-methods",
                   "PartTitle": "Availability (15m)",
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s endswith \"/ecommerce/checkout/v3/auth/payment-methods\" and httpMethod_s == \"POST\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n"
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s endswith \"/ecommerce/checkout/v4/auth/payment-methods\" and httpMethod_s == \"POST\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n"
                 }
               }
             }
@@ -1790,7 +1790,7 @@
                       }
                     ]
                   },
-                  "PartSubTitle": "POST ecommerce/checkout/v34auth/payment-methods",
+                  "PartSubTitle": "POST ecommerce/checkout/v4/auth/payment-methods",
                   "PartTitle": "Response Codes (15m)",
                   "Query": "let api_url = \"/ecommerce/checkout/v4/auth/payment-methods\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s endswith api_url and httpMethod_s == \"POST\"\n| extend HTTPStatus = case(\n                          httpStatus_d between (100 .. 199),\n                          \"1XX\",\n                          httpStatus_d between (200 .. 299),\n                          \"2XX\",\n                          httpStatus_d between (300 .. 399),\n                          \"3XX\",\n                          httpStatus_d between (400 .. 499),\n                          \"4XX\",\n                          \"5XX\"\n                      )\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
                   "SpecificChart": "StackedArea"
@@ -1929,7 +1929,7 @@
                   },
                   "PartSubTitle": "POST ecommerce/checkout/v4/auth/payment-methods",
                   "PartTitle": "Percentile Response Time (15m)",
-                  "Query": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.250;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s endswith \"/ecommerce/checkout/v3/auth/payment-methods\" and httpMethod_s == \"POST\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n",
+                  "Query": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.250;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s endswith \"/ecommerce/checkout/v4/auth/payment-methods\" and httpMethod_s == \"POST\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n",
                   "SpecificChart": "Line"
                 }
               }
@@ -2353,7 +2353,7 @@
           {
             "position": {
               "x": 0,
-              "y": 31,
+              "y": 24,
               "colSpan": 9,
               "rowSpan": 6
             },
@@ -2483,7 +2483,7 @@
           {
             "position": {
               "x": 9,
-              "y": 33,
+              "y": 24,
               "colSpan": 9,
               "rowSpan": 6
             },
