@@ -225,13 +225,64 @@
                     },
                     "targetKey": {
                         "type": "string"
+                    },
+                    "deviceVersion": {
+                        "type": "string",
+                        "description": "The user device version"
+                    },
+                    "language": {
+                        "type": "string",
+                        "description": "The user language",
+                        "enum": [
+                            "IT",
+                            "EN",
+                            "FR",
+                            "DE",
+                            "SL"
+                        ]
+                    },
+                    "sortBy": {
+                        "type": "string",
+                        "enum": [
+                            "NAME",
+                            "DESCRIPTION",
+                            "FEE"
+                        ]
+                    },
+                    "sortOrder": {
+                        "type": "string",
+                        "enum": [
+                            "ASC",
+                            "DESC"
+                        ]
+                    },
+                    "priorityGroups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "CP",
+                                "MYBK",
+                                "BPAY",
+                                "PPAL",
+                                "RPIC",
+                                "RBPS",
+                                "SATY",
+                                "APPL",
+                                "RICO",
+                                "RBPB",
+                                "RBPP",
+                                "RBPR",
+                                "GOOG",
+                                "KLRN"
+                            ]
+                        }
                     }
                 }
             },
             "PaymentNoticeItem": {
                 "required": [
-                    "paymentAmount",
-                    "primaryCreditorInstitution"
+                    "paymentAmount"
                 ],
                 "type": "object",
                 "properties": {

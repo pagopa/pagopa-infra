@@ -1,3 +1,7 @@
+#########################################
+##       pagopabizeventdatastore       ##
+#########################################
+
 resource "azurerm_monitor_scheduled_query_rules_alert" "bizeventsdatastore-availability" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
