@@ -67,7 +67,7 @@ locals {
         }
       ]
       shard_key           = "_id",
-      default_ttl_seconds = null
+      default_ttl_seconds = "15552000" # 180 days = 180d * 24h * 60m * 60s
     },
     {
       name = "accounting-xml"
@@ -78,7 +78,7 @@ locals {
         }
       ]
       shard_key           = "_id",
-      default_ttl_seconds = null
+      default_ttl_seconds = "15552000" # 180 days = 180d * 24h * 60m * 60s
     }
   ]
 }
