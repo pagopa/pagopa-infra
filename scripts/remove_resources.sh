@@ -27,7 +27,7 @@ resources=(
   #  'module.apim_checkout_ec_api_v1'
 )
 
-cd ../../core
+# cd ../../core unused when linked in domain folder
 
 for resource in "${resources[@]}"
 do

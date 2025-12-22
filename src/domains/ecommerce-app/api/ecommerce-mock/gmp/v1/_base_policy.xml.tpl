@@ -1,8 +1,6 @@
 <policies>
   <inbound>
     <base />
-    <set-variable name="service_type_value" value="${service_type_value}" />
-    <include-fragment fragment-id="service-type-set"/>
   </inbound>
   <outbound>
     <base />
