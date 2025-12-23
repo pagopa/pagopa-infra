@@ -19,7 +19,7 @@ jobs:
         with:
           ignore_patterns: ".github,.devops,.vscode,.terraform-version"
           start_folder: "src"
-          include_folders: "tag_config"
+          include_folders: "src/tag_config"
           include_patterns: "src,domains"
           stopper_folders: "env,tests,api,api_product,helm"
 
