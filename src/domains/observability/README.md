@@ -35,6 +35,7 @@
 |------|------|
 | [azapi_resource.ls_postgres_cruscotto](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource.ls_postgres_cruscotto_tf](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
+| [azapi_resource.ls_postgres_nodo_tf](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource.pdnd_cdc_gec_bundles_dataflow](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource.pdnd_cdc_gec_cibundles_dataflow](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource.pdnd_cdc_gec_paymenttypes_dataflow](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
@@ -53,6 +54,7 @@
 | [azurerm_data_factory_linked_service_cosmosdb.afm_gec_cosmosdb_linked_service](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_linked_service_cosmosdb) | resource |
 | [azurerm_data_factory_linked_service_cosmosdb.cosmos_biz](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_linked_service_cosmosdb) | resource |
 | [azurerm_data_factory_linked_service_key_vault.ls_df_to_kv](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_linked_service_key_vault) | resource |
+| [azurerm_data_factory_linked_service_key_vault.ls_df_to_kv_nodo](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_linked_service_key_vault) | resource |
 | [azurerm_data_factory_linked_service_kusto.dataexp_ls](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_linked_service_kusto) | resource |
 | [azurerm_data_factory_managed_private_endpoint.private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_managed_private_endpoint) | resource |
 | [azurerm_data_factory_pipeline.pipeline_KPI_FDR_IMPORT_ESITI](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_pipeline) | resource |
@@ -75,6 +77,9 @@
 | [azurerm_data_factory_pipeline.pipeline_PDND_KPI_TPNP](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_pipeline) | resource |
 | [azurerm_data_factory_pipeline.pipeline_PDND_KPI_WAFDR](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_pipeline) | resource |
 | [azurerm_data_factory_pipeline.pipeline_PDND_KPI_WPNFDR](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_pipeline) | resource |
+| [azurerm_data_factory_pipeline.pipeline_SMO_QPT_RECEIPT](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_pipeline) | resource |
+| [azurerm_data_factory_pipeline.pipeline_SMO_QPT_TAXONOMY_AGGREGATE](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_pipeline) | resource |
+| [azurerm_data_factory_pipeline.pipeline_SMO_QPT_TIMEOUT](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_pipeline) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_KPI_FDR_IMPORT_ESITI](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_KPI_FDR_RENDICONTAZIONI](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_KPI_TNSPO](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
@@ -92,10 +97,14 @@
 | [azurerm_data_factory_trigger_schedule.Trigger_PDND_KPI_TPNP](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_PDND_KPI_WAFDR](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_PDND_KPI_WPNFDR](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
+| [azurerm_data_factory_trigger_schedule.Trigger_SMO_QPT_RECEIPT](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
+| [azurerm_data_factory_trigger_schedule.Trigger_SMO_QPT_TAXONOMY_AGGREGATE](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
+| [azurerm_data_factory_trigger_schedule.Trigger_SMO_QPT_TIMEOUT](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_eventhub_consumer_group.rtp_consumer_gpd](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/eventhub_consumer_group) | resource |
 | [azurerm_eventhub_namespace_authorization_rule.cdc_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/eventhub_namespace_authorization_rule) | resource |
 | [azurerm_eventhub_namespace_authorization_rule.cdc_test_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/eventhub_namespace_authorization_rule) | resource |
 | [azurerm_key_vault_access_policy.df_see_kv_cruscotto](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/key_vault_access_policy) | resource |
+| [azurerm_key_vault_access_policy.df_see_kv_nodo](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_secret.apim_app_forwarder_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_web_jobs_storage_kv](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.certificate_crt_app_forwarder_s](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/key_vault_secret) | resource |
@@ -138,6 +147,8 @@
 | [azurerm_key_vault.kv](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault.kv_shared](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault.network_kv](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault.nodo_kv](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault.qi-kv](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault_secret.certificate_crt_app_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.certificate_key_app_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.cruscotto_db_database](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault_secret) | data source |
@@ -146,6 +157,10 @@
 | [azurerm_key_vault_secret.cruscotto_db_port](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.cruscotto_db_username](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.database_proxy_fqdn](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.nodo_db_database](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.nodo_db_host](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.nodo_db_port](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.nodo_db_username](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_private_dns_zone.eventhub](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/private_dns_zone) | data source |

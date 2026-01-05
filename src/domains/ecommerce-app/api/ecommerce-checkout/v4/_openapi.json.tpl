@@ -134,6 +134,54 @@
             "type": "integer",
             "format": "int64"
           },
+          "language": {
+              "type": "string",
+              "description": "The user language",
+              "enum": [
+                  "IT",
+                  "EN",
+                  "FR",
+                  "DE",
+                  "SL"
+              ]
+          },
+          "sortBy": {
+             "type": "string",
+             "enum": [
+                 "NAME",
+                 "DESCRIPTION",
+                 "FEE"
+             ]
+          },
+          "sortOrder": {
+             "type": "string",
+             "enum": [
+                 "ASC",
+                 "DESC"
+             ]
+          },
+          "priorityGroups": {
+             "type": "array",
+             "items": {
+                 "type": "string",
+                 "enum": [
+                     "CP",
+                     "MYBK",
+                     "BPAY",
+                     "PPAL",
+                     "RPIC",
+                     "RBPS",
+                     "SATY",
+                     "APPL",
+                     "RICO",
+                     "RBPB",
+                     "RBPP",
+                     "RBPR",
+                     "GOOG",
+                     "KLRN"
+                 ]
+             }
+          },
           "paymentNotice": {
             "type": "array",
             "items": {
@@ -261,7 +309,8 @@
               "RBPP",
               "RBPR",
               "GOOG",
-              "KLRN"
+              "KLRN",
+              "RFPB"
             ]
           },
           "paymentMethodTypes": {

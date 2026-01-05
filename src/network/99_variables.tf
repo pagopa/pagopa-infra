@@ -67,3 +67,23 @@ variable "vpn_gateway_address_space" {
   default = "172.16.1.0/24"
 }
 
+variable "trino_xmx" {
+  type    = string
+  default = "4G"
+}
+variable "vmss_size" {
+  type    = string
+  default = "Standard_D2ds_v5"
+}
+
+variable "external_database_connection" {
+  type = map(object({
+    connector_name       = string
+    url                  = string
+    params               = optional(map(string), {})
+    user_secret_name     = string
+    password_secret_name = string
+  }))
+  description = "Map of external database connection configurations"
+  default     = {}
+}
