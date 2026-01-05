@@ -42,12 +42,7 @@ cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
 cidr_subnet_vpn                   = ["10.1.142.0/24"]
 
 # networking
-#ddos_protection_plan = {
-#  id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
-#  enable = true
-#}
-
-ddos_protection_plan_integration = {
+ddos_protection_plan = {
   id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
   enable = true
 }
@@ -786,8 +781,8 @@ app_gateway_management_certificate_name = "management-platform-pagopa-it-stable"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it-stable"
 app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
 app_gateway_wfespgovit_certificate_name = "wfesp-pagopa-gov-it"
-app_gateway_min_capacity                = 70 # 5 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
-app_gateway_max_capacity                = 120
+app_gateway_min_capacity                = 15 # 5 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
+app_gateway_max_capacity                = 100
 app_gateway_sku_name                    = "WAF_v2"
 app_gateway_sku_tier                    = "WAF_v2"
 app_gateway_waf_enabled                 = true

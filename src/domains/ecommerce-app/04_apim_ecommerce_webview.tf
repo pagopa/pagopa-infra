@@ -78,7 +78,7 @@ module "apim_ecommerce_webview_api_v1" {
   xml_content = templatefile("./api/ecommerce-webview/v1/_base_policy.xml.tpl", {
     ecommerce_ingress_hostname = local.ecommerce_hostname,
     wallet_ingress_hostname    = local.wallet_hostname,
-    origins                    = var.env_short == "d" ? "<origin>*</origin>" : "<origin>${local.checkout_origin}</origin><origin>${local.ecommerce_origin}</origin>"
+    ecommerce_origin           = local.ecommerce_origin
   })
 }
 
@@ -101,6 +101,30 @@ resource "azurerm_api_management_api_operation_policy" "webview_post_wallet_tran
 
   xml_content = templatefile("./api/ecommerce-webview/v1/post_transactions.xml.tpl", {
     ecommerce_ingress_hostname = local.ecommerce_hostname
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "webview_get_transaction_outcomes_v1" {
+  api_name            = "${local.project}-ecommerce-webview-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getTransactionOutcomes"
+
+  xml_content = templatefile("./api/ecommerce-webview/v1/_get_transaction_outcomes.xml.tpl", {
+    ecommerce_ingress_hostname = local.ecommerce_hostname
+    ecommerce_origin           = var.env_short == "d" ? "*" : local.ecommerce_origin
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "webview_get_transactions_v1" {
+  api_name            = "${local.project}-ecommerce-webview-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getTransactionInfo"
+
+  xml_content = templatefile("./api/ecommerce-webview/v1/_get_transaction_outcomes.xml.tpl", {
+    ecommerce_ingress_hostname = local.ecommerce_hostname
+    ecommerce_origin           = var.env_short == "d" ? "*" : local.ecommerce_origin
   })
 }
 
@@ -128,6 +152,6 @@ module "apim_ecommerce_webview_api_v2" {
 
   xml_content = templatefile("./api/ecommerce-webview/v2/_base_policy.xml.tpl", {
     ecommerce_ingress_hostname = local.ecommerce_hostname,
-    origins                    = var.env_short == "d" ? "<origin>*</origin>" : "<origin>${local.checkout_origin}</origin><origin>${local.ecommerce_origin}</origin>"
+    ecommerce_origin           = local.ecommerce_origin
   })
 }
