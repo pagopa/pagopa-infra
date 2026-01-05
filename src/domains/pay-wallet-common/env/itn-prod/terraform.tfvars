@@ -69,8 +69,8 @@ cosmos_mongo_db_params = {
 cosmos_mongo_db_pay_wallet_params = {
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 10000
-  throughput         = 1000
+  max_throughput     = 20000
+  throughput         = 2000
 }
 
 
@@ -86,7 +86,7 @@ redis_pay_wallet_params = {
 }
 
 redis_std_pay_wallet_params = {
-  capacity   = 0
+  capacity   = 1
   sku_name   = "Standard"
   family     = "C"
   version    = 6

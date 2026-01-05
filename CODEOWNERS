@@ -5,3 +5,6 @@
 /src/domains/selfcare-common @pagopa/infrastructure-admins @pagopa/pagopa-team-core @pagopa/pagopa-team-touchpoint @andrea-putzu
 /src/domains/selfcare-app @pagopa/infrastructure-admins @pagopa/pagopa-team-core @pagopa/pagopa-team-touchpoint @andrea-putzu
 /src/next-core @pagopa/payments-cloud-admin
+/src/db-security @pagopa/payments-cloud-admin
+/src/db-security-configuration @pagopa/payments-cloud-admin
+/src/network @pagopa/payments-cloud-admin

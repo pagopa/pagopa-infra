@@ -19,19 +19,19 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f97230b8a5838fe3c616b5aa01bef8caeff8bc6b |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | d0a0b3a81963169bdc974f79eba31e41e918e63d |
 | <a name="module_api_config_fe_cdn"></a> [api\_config\_fe\_cdn](#module\_api\_config\_fe\_cdn) | ./.terraform/modules/__v3__/cdn | n/a |
 | <a name="module_api_config_snet"></a> [api\_config\_snet](#module\_api\_config\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
-| <a name="module_apim_api_apiconfig_cache_node_api_v1_o"></a> [apim\_api\_apiconfig\_cache\_node\_api\_v1\_o](#module\_apim\_api\_apiconfig\_cache\_node\_api\_v1\_o) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_apiconfig_cache_external_v1"></a> [apim\_api\_apiconfig\_cache\_external\_v1](#module\_apim\_api\_apiconfig\_cache\_external\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_apiconfig_cache_node_api_v1_p"></a> [apim\_api\_apiconfig\_cache\_node\_api\_v1\_p](#module\_apim\_api\_apiconfig\_cache\_node\_api\_v1\_p) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_apiconfig_cache_node_nexi_api_dev_v1"></a> [apim\_api\_apiconfig\_cache\_node\_nexi\_api\_dev\_v1](#module\_apim\_api\_apiconfig\_cache\_node\_nexi\_api\_dev\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_api_apiconfig_cache_replica_node_api_v1_o"></a> [apim\_api\_apiconfig\_cache\_replica\_node\_api\_v1\_o](#module\_apim\_api\_apiconfig\_cache\_replica\_node\_api\_v1\_o) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_apiconfig_cache_replica_node_api_v1_p"></a> [apim\_api\_apiconfig\_cache\_replica\_node\_api\_v1\_p](#module\_apim\_api\_apiconfig\_cache\_replica\_node\_api\_v1\_p) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_config_api"></a> [apim\_api\_config\_api](#module\_apim\_api\_config\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_config_auth_api"></a> [apim\_api\_config\_auth\_api](#module\_apim\_api\_config\_auth\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_config_auth_product"></a> [apim\_api\_config\_auth\_product](#module\_apim\_api\_config\_auth\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_api_config_product"></a> [apim\_api\_config\_product](#module\_apim\_api\_config\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_apiconfig_cache_export_product"></a> [apim\_apiconfig\_cache\_export\_product](#module\_apim\_apiconfig\_cache\_export\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_apiconfig_cache_external_product"></a> [apim\_apiconfig\_cache\_external\_product](#module\_apim\_apiconfig\_cache\_external\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_apiconfig_cache_product"></a> [apim\_apiconfig\_cache\_product](#module\_apim\_apiconfig\_cache\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_apiconfig_selfcare_integration_product"></a> [apim\_apiconfig\_selfcare\_integration\_product](#module\_apim\_apiconfig\_selfcare\_integration\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v3__/cert_mounter | n/a |
@@ -45,17 +45,17 @@
 
 | Name | Type |
 |------|------|
-| [azurerm_api_management_api_version_set.api_apiconfig_cache_node_api_o](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_apiconfig_cache_node_api_p](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_apiconfig_cache_node_nexi_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
-| [azurerm_api_management_api_version_set.api_apiconfig_cache_replica_node_api_o](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_apiconfig_cache_replica_node_api_p](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_config_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_config_auth_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.apiconfig_cache_external_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_authorization_server.apiconfig-oauth2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_authorization_server) | resource |
 | [azurerm_api_management_product_group.access_control_developers_for_cache](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_product_group) | resource |
 | [azurerm_api_management_product_group.access_control_developers_for_cache_export](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_product_group) | resource |
 | [azurerm_api_management_product_group.access_control_developers_for_selfcare_integration](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_product_group) | resource |
+| [azurerm_api_management_subscription.apiconfig_cache_for_rtp_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |

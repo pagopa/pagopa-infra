@@ -1,10 +1,10 @@
 <policies>
     <inbound>
       <base />
-      <set-variable name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />     
+      <set-variable name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
       <!-- Get User IO : START-->
       <send-request ignore-error="true" timeout="10" response-variable-name="user-auth-body" mode="new">
-        <set-url>@("${io_backend_base_path}/api/sso/pagopa/v1/user")</set-url> 
+        <set-url>@("${io_backend_base_path}/api/sso/pagopa/v1/user")</set-url>
         <set-method>GET</set-method>
         <set-header name="Accept" exists-action="override">
           <value>application/json</value>
@@ -139,12 +139,12 @@
               var jti = Guid.NewGuid().ToString(); //sets the iat claim. Random uuid added to prevent the reuse of this token
               var date = DateTime.Now;
               var iat = new DateTimeOffset(date).ToUnixTimeSeconds(); // sets the issued time of the token now
-              var exp = new DateTimeOffset(date.AddMinutes(20)).ToUnixTimeSeconds();  // sets the expiration of the token to be 20 minutes from now
+              var exp = new DateTimeOffset(date.AddMinutes(60)).ToUnixTimeSeconds();  // sets the expiration of the token to be 60 minutes from now
               String userId = ((string)context.Variables.GetValueOrDefault("userId",""));
 
               // Read email and pass it to the JWT. By now the email in shared as is. It MUST be encoded (by pdv) but POST transaction need to updated to not match email address as email field
               string email = (string) context.Variables["email"];
-              
+
               var payload = new { iat, exp, jti, email, userId};
               var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
 
@@ -153,7 +153,7 @@
               var jwtSignatureBase64UrlEncoded = Convert.ToBase64String(signature).Replace("/", "_").Replace("+", "-"). Replace("=", "");
 
               // Return the HMAC SHA512-signed JWT as the value for the Authorization header
-              return $"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}.{jwtSignatureBase64UrlEncoded}"; 
+              return $"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}.{jwtSignatureBase64UrlEncoded}";
           }" />
       <!-- Token JWT END-->
       <!-- pagoPA platform wallet JWT session token : END -->

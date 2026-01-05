@@ -212,7 +212,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pdf-engine-fun-error-ale
   count = var.env_short == "p" ? 1 : 0
 
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-pdf-engine-fun-error-alert"
+  name                = "${local.project}-pdf-engine-fun-error-alert"
   location            = var.location
 
   action {
@@ -244,7 +244,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pdf-engine-fun-error-ale
 resource "azurerm_monitor_scheduled_query_rules_alert" "generate-pdf-engine-generate-responsetime" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-responsetime @ _generate-pdf"
+  name                = "${local.project}-responsetime @ _generate-pdf"
   location            = var.location
 
   action {
@@ -278,7 +278,7 @@ AzureDiagnostics
 resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-pdf-engine-pdf-availability" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-availability @ _generate-pdf"
+  name                = "${local.project}-availability @ _generate-pdf"
   location            = var.location
 
   action {

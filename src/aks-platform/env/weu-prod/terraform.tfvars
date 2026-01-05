@@ -27,8 +27,8 @@ aks_system_node_pool = {
   vm_size                      = "Standard_D2ds_v5"
   os_disk_type                 = "Ephemeral"
   os_disk_size_gb              = "75"
-  node_count_min               = "6" # TODO Tornare a 3 - 3 in fase 2
-  node_count_max               = "6"
+  node_count_min               = "3"
+  node_count_max               = "3"
   only_critical_addons_enabled = true
   node_labels                  = { node_name : "aks-system-01", node_type : "system" },
   node_tags                    = { node_tag_1 : "1" },
@@ -51,7 +51,7 @@ aks_user_node_pool = {
 
 aks_cidr_subnet = ["10.1.0.0/17"]
 
-aks_kubernetes_version = "1.31.8"
+aks_kubernetes_version = "1.32.4"
 
 ingress_min_replica_count = "2"
 ingress_max_replica_count = "30"

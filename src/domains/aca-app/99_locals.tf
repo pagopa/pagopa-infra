@@ -38,16 +38,9 @@ locals {
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   aca_hostname  = "${var.location_short}${var.env}.aca.internal.${var.apim_dns_zone_prefix}.${var.external_domain}"
 
-  apim_debt_positions_for_aca_service_api = {
-    display_name          = "GPD for ACA pagoPA - Debt Positions service API for ACA"
-    description           = "API to support Debt Positions service for ACA"
-    path                  = "aca/debt-positions-service"
-    subscription_required = true
-    service_url           = var.env == "prod" ? "https://weu${var.env}.gps.internal.platform.pagopa.it/pagopa-gpd-core" : "https://weu${var.env}.gps.internal.${var.env}.platform.pagopa.it/pagopa-gpd-core"
-  }
   apim_aca_upload_api = {
     display_name          = "ACA Upload pagoPA - Massive Upload"
-    description           = "API to support ACA's Debt Positions massive upload for organizations"
+    description           = "APIs to support ACA's Debt Positions massive upload for organizations"
     path                  = "upload/aca/debt-positions-service"
     subscription_required = true
     service_url           = var.env == "prod" ? "https://weu${var.env}.gps.internal.platform.pagopa.it/pagopa-gpd-upload" : "https://weu${var.env}.gps.internal.${var.env}.platform.pagopa.it/pagopa-gpd-upload"
