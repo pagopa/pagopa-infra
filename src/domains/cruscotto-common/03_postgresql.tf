@@ -70,7 +70,7 @@ module "postgres_flexible_server_crus8" {
   private_dns_registration = var.postgres_dns_registration_enabled
   private_dns_zone_name    = "${var.env_short}.internal.postgresql.pagopa.it"
   private_dns_zone_rg_name = data.azurerm_resource_group.rg_vnet.name
-  private_dns_record_cname = "crus8-db"
+  private_dns_record_cname = "crusc8-db"
 
   tags = module.tag_config.tags
 

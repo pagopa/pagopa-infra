@@ -16,7 +16,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 4ac32cd6fb7d56e7be3b1c0dbcbf251f5b0cd199 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | d0a0b3a81963169bdc974f79eba31e41e918e63d |
 | <a name="module_apim_afm_calculator_node_product"></a> [apim\_afm\_calculator\_node\_product](#module\_apim\_afm\_calculator\_node\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_afm_calculator_product"></a> [apim\_afm\_calculator\_product](#module\_apim\_afm\_calculator\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_afm_marketplace_product"></a> [apim\_afm\_marketplace\_product](#module\_apim\_afm\_marketplace\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |

@@ -17,7 +17,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 4ac32cd6fb7d56e7be3b1c0dbcbf251f5b0cd199 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | d0a0b3a81963169bdc974f79eba31e41e918e63d |
 | <a name="module_apim_api_mock_ec_api_replica_v1"></a> [apim\_api\_mock\_ec\_api\_replica\_v1](#module\_apim\_api\_mock\_ec\_api\_replica\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_mock_ec_api_v1"></a> [apim\_api\_mock\_ec\_api\_v1](#module\_apim\_api\_mock\_ec\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_mock_ec_secondary_api_replica_v1"></a> [apim\_api\_mock\_ec\_secondary\_api\_replica\_v1](#module\_apim\_api\_mock\_ec\_secondary\_api\_replica\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
@@ -27,7 +27,6 @@
 | <a name="module_apim_api_mock_psp_api_v1"></a> [apim\_api\_mock\_psp\_api\_v1](#module\_apim\_api\_mock\_psp\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_mock_psp_secondary_api_replica_v1"></a> [apim\_api\_mock\_psp\_secondary\_api\_replica\_v1](#module\_apim\_api\_mock\_psp\_secondary\_api\_replica\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_mock_psp_secondary_api_v1"></a> [apim\_api\_mock\_psp\_secondary\_api\_v1](#module\_apim\_api\_mock\_psp\_secondary\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_api_nododatamigration_api_v1"></a> [apim\_api\_nododatamigration\_api\_v1](#module\_apim\_api\_nododatamigration\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_prometheus_api_v1"></a> [apim\_api\_prometheus\_api\_v1](#module\_apim\_api\_prometheus\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_receipt_for_ndp_api_v1"></a> [apim\_api\_receipt\_for\_ndp\_api\_v1](#module\_apim\_api\_receipt\_for\_ndp\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_web_bo_api_v1"></a> [apim\_api\_web\_bo\_api\_v1](#module\_apim\_api\_web\_bo\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
@@ -57,7 +56,6 @@
 | <a name="module_apim_nodo_per_pm_api_v1_replica_ndp"></a> [apim\_nodo\_per\_pm\_api\_v1\_replica\_ndp](#module\_apim\_nodo\_per\_pm\_api\_v1\_replica\_ndp) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_nodo_per_pm_api_v2_ndp"></a> [apim\_nodo\_per\_pm\_api\_v2\_ndp](#module\_apim\_nodo\_per\_pm\_api\_v2\_ndp) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_nodo_per_pm_api_v2_replica_ndp"></a> [apim\_nodo\_per\_pm\_api\_v2\_replica\_ndp](#module\_apim\_nodo\_per\_pm\_api\_v2\_replica\_ndp) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_nododatamigration_product"></a> [apim\_nododatamigration\_product](#module\_apim\_nododatamigration\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_prometheus_product"></a> [apim\_prometheus\_product](#module\_apim\_prometheus\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_receipt_for_ndp_product"></a> [apim\_receipt\_for\_ndp\_product](#module\_apim\_receipt\_for\_ndp\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_web_bo_product"></a> [apim\_web\_bo\_product](#module\_apim\_web\_bo\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
@@ -137,7 +135,6 @@
 | [azurerm_api_management_api_policy.apim_nodo_per_psp_richiesta_avvisi_policy_replica_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_policy.apim_psp_for_node_policy_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_policy.apim_psp_for_node_policy_replica_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_policy) | resource |
-| [azurerm_api_management_api_version_set.api_datamigration_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_mock_ec_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_mock_ec_api_replica](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_mock_ec_secondary_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
@@ -285,6 +282,7 @@
 | [azurerm_monitor_action_group.infra_opsgenie](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.opsgenie](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
+| [azurerm_monitor_action_group.slack_pagopa_pagamenti_alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.slacknodo](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.smo_opsgenie](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_resource_group.identity_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |

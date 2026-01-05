@@ -181,3 +181,107 @@ resource "azapi_resource" "ls_postgres_cruscotto" {
     }
   }
 }
+
+
+
+resource "azapi_resource" "ls_postgres_cruscotto_tf" {
+  type      = "Microsoft.DataFactory/factories/linkedservices@2018-06-01"
+  name      = "LinkedService-Cruscotto"
+  parent_id = data.azurerm_data_factory.obeserv_data_factory.id
+
+  body = {
+    properties = {
+      annotations = []
+      connectVia = {
+        parameters    = {}
+        referenceName = "AutoResolveIntegrationRuntime"
+        type          = "IntegrationRuntimeReference"
+      }
+      type = "AzurePostgreSql"
+      typeProperties = {
+        #connectionString = "Host=${data.azurerm_key_vault_secret.cruscotto_db_host.value};Port=${data.azurerm_key_vault_secret.cruscotto_db_port.value};Database=${data.azurerm_key_vault_secret.cruscotto_db_database.value};UID=${data.azurerm_key_vault_secret.cruscotto_db_username.value};EncryptionMethod=6;Password=${data.azurerm_key_vault_secret.cruscotto_db_password.value}"
+        connectionString = "Host=${data.azurerm_key_vault_secret.cruscotto_db_host.value};Port=${data.azurerm_key_vault_secret.cruscotto_db_port.value};Database=${data.azurerm_key_vault_secret.cruscotto_db_database.value};UID=${data.azurerm_key_vault_secret.cruscotto_db_username.value};EncryptionMethod=1;ValidateServerCertificate=1"
+        password = {
+          type = "AzureKeyVaultSecret"
+          store = {
+            referenceName = local.linked_service_cruscotto_kv_name
+            type          = "LinkedServiceReference"
+          }
+          secretName = local.kv_name_password_database
+        }
+      }
+    }
+  }
+}
+
+
+
+# grant for kv on data factory
+resource "azurerm_key_vault_access_policy" "df_see_kv_nodo" {
+  key_vault_id = data.azurerm_key_vault.nodo_kv.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azurerm_data_factory.qi_data_factory.identity[0].principal_id
+
+  secret_permissions = ["Get", "List"]
+}
+
+# linked service to key vault nodo x df
+resource "azurerm_data_factory_linked_service_key_vault" "ls_df_to_kv_nodo" {
+  depends_on      = [azurerm_key_vault_access_policy.df_see_kv_nodo]
+  name            = local.linked_service_nodo_kv_name
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
+  key_vault_id    = data.azurerm_key_vault.nodo_kv.id
+}
+
+# fetch config value from kv
+data "azurerm_key_vault_secret" "nodo_db_host" {
+  name         = "ls-nodo-server"
+  key_vault_id = data.azurerm_key_vault.qi-kv.id
+}
+
+data "azurerm_key_vault_secret" "nodo_db_port" {
+  name         = "ls-nodo-port"
+  key_vault_id = data.azurerm_key_vault.qi-kv.id
+}
+
+data "azurerm_key_vault_secret" "nodo_db_database" {
+  name         = "ls-nodo-database"
+  key_vault_id = data.azurerm_key_vault.qi-kv.id
+}
+
+data "azurerm_key_vault_secret" "nodo_db_username" {
+  name         = "ls-nodo-username"
+  key_vault_id = data.azurerm_key_vault.qi-kv.id
+}
+
+resource "azapi_resource" "ls_postgres_nodo_tf" {
+  depends_on = [azurerm_data_factory_linked_service_key_vault.ls_df_to_kv_nodo]
+  type       = "Microsoft.DataFactory/factories/linkedservices@2018-06-01"
+  name       = "LinkedService-Nodo-Flexible"
+  parent_id  = data.azurerm_data_factory.obeserv_data_factory.id
+
+  body = {
+    properties = {
+      annotations = []
+      connectVia = {
+        parameters    = {}
+        referenceName = "AutoResolveIntegrationRuntime"
+        type          = "IntegrationRuntimeReference"
+      }
+      type = "AzurePostgreSql"
+      typeProperties = {
+        #connectionString = "Host=${data.azurerm_key_vault_secret.cruscotto_db_host.value};Port=${data.azurerm_key_vault_secret.cruscotto_db_port.value};Database=${data.azurerm_key_vault_secret.cruscotto_db_database.value};UID=${data.azurerm_key_vault_secret.cruscotto_db_username.value};EncryptionMethod=6;Password=${data.azurerm_key_vault_secret.cruscotto_db_password.value}"
+        connectionString = "Host=${data.azurerm_key_vault_secret.nodo_db_host.value};Port=${data.azurerm_key_vault_secret.nodo_db_port.value};Database=${data.azurerm_key_vault_secret.nodo_db_database.value};UID=${data.azurerm_key_vault_secret.nodo_db_username.value};EncryptionMethod=1;ValidateServerCertificate=1"
+        password = {
+          type = "AzureKeyVaultSecret"
+          store = {
+            referenceName = local.linked_service_nodo_kv_name
+            type          = "LinkedServiceReference"
+          }
+          secretName = local.kv_name_password_config_database
+        }
+      }
+    }
+  }
+}
