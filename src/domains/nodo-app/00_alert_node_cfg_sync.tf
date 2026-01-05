@@ -190,9 +190,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "cache-dumping-error" {
   description    = "Problem to dump cache on DBs"
   enabled        = true
   query          = format(local.pagopa_node_cfg_sync.syncDumpingError.query, "Cache not ready to be saved")
-  severity    = local.pagopa_node_cfg_sync.syncDumpingError.severity
-  frequency   = local.pagopa_node_cfg_sync.syncDumpingError.frequency
-  time_window = local.pagopa_node_cfg_sync.syncDumpingError.time_window
+  severity       = local.pagopa_node_cfg_sync.syncDumpingError.severity
+  frequency      = local.pagopa_node_cfg_sync.syncDumpingError.frequency
+  time_window    = local.pagopa_node_cfg_sync.syncDumpingError.time_window
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1
@@ -215,9 +215,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "stand-in-station-dumping
   description    = "Problem to dump stand-in-stations on DBs"
   enabled        = true
   query          = format(local.pagopa_node_cfg_sync.syncDumpingError.query, "Stand-in-Station not updated")
-  severity    = local.pagopa_node_cfg_sync.syncDumpingError.severity
-  frequency   = local.pagopa_node_cfg_sync.syncDumpingError.frequency
-  time_window = local.pagopa_node_cfg_sync.syncDumpingError.time_window
+  severity       = local.pagopa_node_cfg_sync.syncDumpingError.severity
+  frequency      = local.pagopa_node_cfg_sync.syncDumpingError.frequency
+  time_window    = local.pagopa_node_cfg_sync.syncDumpingError.time_window
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1
