@@ -291,7 +291,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
    | project timeslot, availability, threshold = expectedAvailability
    | where availability < threshold
    QUERY
-   )
+  )
   severity    = 1
   frequency   = 5
   time_window = 10
