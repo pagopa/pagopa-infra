@@ -1,11 +1,11 @@
 locals {
   apim_mdb_pagopa_api = {
-    display_name = "MBD Product pagoPA"
-    description  = "API for MBD"
+    display_name = "MBD - Servizio @e.bollo"
+    description  = "API for @e.bollo service"
   }
 }
 
-module "apim_mdb_product" {
+module "apim_mbd_product" {
   source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "pagopa_ebollo"
@@ -15,7 +15,7 @@ module "apim_mdb_product" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  published             = false
+  published             = true
   subscription_required = true
   approval_required     = false
   subscriptions_limit   = 1000

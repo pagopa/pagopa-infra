@@ -4,6 +4,9 @@ location       = "westeurope"
 location_short = "weu"
 
 
+location_hub_spoke       = "italynorth"
+location_short_hub_spoke = "itn"
+
 nsg_regions = ["westeurope", "italynorth"]
 
 
@@ -39,4 +42,11 @@ external_database_connection = {
       unsupported-type-handling      = "CONVERT_TO_VARCHAR"
     }
   }
+}
+
+
+# networking
+vnet_ita_ddos_protection_plan = {
+  id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
+  enable = true
 }
