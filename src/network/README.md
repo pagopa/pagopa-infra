@@ -15,12 +15,12 @@
 |------|--------|---------|
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 4a50ddb69cafbc09cf43cd317848a75d61f33050 |
 | <a name="module_load_balancer_observ_egress"></a> [load\_balancer\_observ\_egress](#module\_load\_balancer\_observ\_egress) | ./.terraform/modules/__v4__/load_balancer | n/a |
-| <a name="module_network_security_group"></a> [network\_security\_group](#module\_network\_security\_group) | ./.terraform/modules/__V4__/network_security_group | n/a |
-| <a name="module_network_watcher_storage_account"></a> [network\_watcher\_storage\_account](#module\_network\_watcher\_storage\_account) | ./.terraform/modules/__V4__/IDH/storage_account | n/a |
+| <a name="module_network_security_group"></a> [network\_security\_group](#module\_network\_security\_group) | ./.terraform/modules/__v4__/network_security_group | n/a |
+| <a name="module_network_watcher_storage_account"></a> [network\_watcher\_storage\_account](#module\_network\_watcher\_storage\_account) | ./.terraform/modules/__v4__/IDH/storage_account | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../tag_config | n/a |
 | <a name="module_vmss_pls_snet"></a> [vmss\_pls\_snet](#module\_vmss\_pls\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_vmss_snet"></a> [vmss\_snet](#module\_vmss\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
-| <a name="module_vnet_hub_spoke"></a> [vnet\_hub\_spoke](#module\_vnet\_hub\_spoke) | ./.terraform/modules/__V4__/virtual_network | n/a |
+| <a name="module_vnet_hub_spoke"></a> [vnet\_hub\_spoke](#module\_vnet\_hub\_spoke) | ./.terraform/modules/__v4__/virtual_network | n/a |
 | <a name="module_vnet_hub_spoke_peering"></a> [vnet\_hub\_spoke\_peering](#module\_vnet\_hub\_spoke\_peering) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
 | <a name="module_vnet_itn_compute_peering"></a> [vnet\_itn\_compute\_peering](#module\_vnet\_itn\_compute\_peering) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
 | <a name="module_vnet_weu_fe_peering"></a> [vnet\_weu\_fe\_peering](#module\_vnet\_weu\_fe\_peering) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
