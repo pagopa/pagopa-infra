@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "hub_spoke_rg" {
 
 # hub and spoke vnets
 module "vnet_hub_spoke" {
-  source   = "./.terraform/modules/__V4__/virtual_network"
+  source   = "./.terraform/modules/__v4__/virtual_network"
   for_each = local.hub_spoke_vnet
 
 
