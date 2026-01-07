@@ -5,7 +5,7 @@ locals {
   }
 }
 
-module "apim_mdb_product" {
+module "apim_mbd_product" {
   source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "pagopa_ebollo"
