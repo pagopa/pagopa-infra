@@ -1,0 +1,57 @@
+<policies>
+  <inbound>
+    <base />
+
+    <return-response>
+      <set-status code="200" reason="OK" />
+      <set-header name="Content-Type" exists-action="override">
+        <value>application/json</value>
+      </set-header>
+      <set-body template="liquid">
+      {
+        "id": "2",
+        "group": "CP",
+        "name": {
+            "IT": "Carte",
+            "EN": "Cards"
+        },
+        "description": {
+            "IT": "Carta di credito o debito",
+            "EN": "Credit or debit card"
+        },
+        "status": "ENABLED",
+        "target": null,
+        "metadata": {},
+        "payment_method_id": "f25399bf-c56f-4bd2-adc9-7aef87410609",
+        "user_touchpoint": ["IO"],
+        "user_device": ["IOS", "ANDROID", "WEB", "SAFARI"],
+        "payment_method_types": ["CARTE"],
+        "validity_date_from": "2000-01-01",
+        "range_amount": {
+            "min": 0,
+            "max": 100000
+        },
+        "payment_method_asset": "https://assets.cdn.platform.pagopa.it/creditcard/generic.png",
+        "method_management": "ONBOARDABLE_ONLY",
+        "payment_methods_brand_assets": {
+            "VISA": "https://assets.cdn.platform.pagopa.it/creditcard/visa.png",
+            "MC": "https://assets.cdn.platform.pagopa.it/creditcard/mastercard.png",
+            "DINERS": "https://assets.cdn.platform.pagopa.it/creditcard/diners.png",
+            "AMEX": "https://assets.cdn.platform.pagopa.it/creditcard/amex.png",
+            "MAESTRO": "https://assets.cdn.platform.pagopa.it/creditcard/maestro.png",
+            "MASTERCARD": "https://assets.cdn.platform.pagopa.it/creditcard/mastercard.png"
+        }
+    }
+      </set-body>
+    </return-response>
+  </inbound>
+  <outbound>
+    <base />
+  </outbound>
+  <backend>
+    <base />
+  </backend>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

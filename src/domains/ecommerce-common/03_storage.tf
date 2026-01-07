@@ -394,7 +394,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
         | project PutCount, DeleteCount, Diff
     };
     MessageRateForQueue("%s", startPut, endPut, startDelete, endDelete)
-    | where Diff > max_of(PutCount*(${each.value.dynamic_threshold}/100.0), ${each.value.threshold})
+    | extend threshold = max_of(PutCount*(${each.value.dynamic_threshold}/100.0), ${each.value.threshold})
+    | where Diff > threshold
     QUERY
     , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
   )
@@ -416,6 +417,7 @@ locals {
       "fetch_time_window" = 75
       "frequency"         = 15
       "threshold"         = 40
+      "dynamic_threshold" = 3.0
     },
     {
       "queue_key"         = "notifications-service-retry-queue"
@@ -424,6 +426,7 @@ locals {
       "fetch_time_window" = 75
       "frequency"         = 15
       "threshold"         = 10
+      "dynamic_threshold" = 1.0
     },
     {
       "queue_key"         = "transaction-notifications-retry-queue"
@@ -432,6 +435,7 @@ locals {
       "fetch_time_window" = 75
       "frequency"         = 15
       "threshold"         = 20
+      "dynamic_threshold" = 1.0
     },
     {
       "queue_key"         = "transactions-refund-retry-queue"
@@ -440,6 +444,7 @@ locals {
       "fetch_time_window" = 75
       "frequency"         = 15
       "threshold"         = 10
+      "dynamic_threshold" = 1.0
     },
     {
       "queue_key"         = "transactions-close-payment-retry-queue"
@@ -448,6 +453,7 @@ locals {
       "fetch_time_window" = 75
       "frequency"         = 15
       "threshold"         = 10
+      "dynamic_threshold" = 1.0
     }
   ] : []
 }
@@ -497,7 +503,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_enqueue_rate_a
         | project PutCount, DeleteCount, Diff
     };
     MessageRateForQueue("%s", startPut, endPut, startDelete, endDelete)
-    | where Diff > ${each.value.threshold}
+    | extend  threshold = max_of(PutCount*(${each.value.dynamic_threshold}/100.0), ${each.value.threshold})
+    | where Diff > threshold
     QUERY
     , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
   )
@@ -672,7 +679,7 @@ module "ecommerce_pm_history_storage" {
   blob_versioning_enabled         = true
   resource_group_name             = azurerm_resource_group.storage_ecommerce_rg.name
   location                        = var.location
-  advanced_threat_protection      = true
+  advanced_threat_protection      = false
   allow_nested_items_to_be_public = false
   public_network_access_enabled   = true
   blob_delete_retention_days      = 30
@@ -701,7 +708,7 @@ module "ecommerce_reporting_storage" {
   blob_versioning_enabled         = true
   resource_group_name             = azurerm_resource_group.storage_ecommerce_rg.name
   location                        = var.location
-  advanced_threat_protection      = true
+  advanced_threat_protection      = false
   allow_nested_items_to_be_public = false
   public_network_access_enabled   = true
   blob_delete_retention_days      = 30

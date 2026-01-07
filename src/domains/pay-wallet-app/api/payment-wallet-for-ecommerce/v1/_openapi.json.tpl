@@ -79,6 +79,100 @@
           }
         }
       }
+    },
+    "/wallets/{walletId}/sessions/{orderId}/notifications/internal": {
+      "post": {
+        "tags": [
+          "wallets"
+        ],
+        "summary": "Update Wallet on NPG onboarding authorization response",
+        "description": "Update Wallet on NPG onboarding authorization response - internal api, means to be called in B2B interactions with internal systems",
+        "operationId": "notifyWalletInternal",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "walletId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "Unique identifier of the wallet"
+          },
+          {
+            "in": "path",
+            "name": "orderId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "Notify wallet",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WalletNotificationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Notification handled successfully"
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                },
+                "example": {
+                  "type": "https://example.com/problem/",
+                  "title": "string",
+                  "status": 400,
+                  "detail": "Invalid input"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                },
+                "example": {
+                  "type": "https://example.com/problem/",
+                  "title": "string",
+                  "status": 401,
+                  "detail": "Unauthorized"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                },
+                "example": {
+                  "type": "https://example.com/problem/",
+                  "title": "string",
+                  "status": 500,
+                  "detail": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -102,6 +196,9 @@
           "brand": {
             "description": "The card brand name",
             "type": "string"
+          },
+          "contextualOnboardDetails": {
+            "$ref": "#/components/schemas/ContextualOnboardDetails"
           },
           "paymentMethodData": {
             "type": "object",
@@ -127,6 +224,24 @@
           "brand",
           "paymentMethodData"
         ]
+      },
+      "ContextualOnboardDetails": {
+        "type": "object",
+        "properties": {
+          "transactionId": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "orderId": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          }
+        }
       },
       "WalletAuthCardData": {
         "type": "object",
@@ -193,6 +308,83 @@
         "maximum": 600,
         "exclusiveMaximum": true,
         "example": 502
+      },
+      "WalletNotificationRequest": {
+        "type": "object",
+        "description": "Request body for execute wallet notification request",
+        "properties": {
+          "timestampOperation": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Onboarding timestamp"
+          },
+          "operationId": {
+            "description": "Operation ID",
+            "type": "string"
+          },
+          "operationResult": {
+            "type": "string",
+            "description": "outcome received by NPG - https://developer.nexi.it/it/api/notifica",
+            "enum": [
+              "AUTHORIZED",
+              "EXECUTED",
+              "DECLINED",
+              "DENIED_BY_RISK",
+              "THREEDS_VALIDATED",
+              "THREEDS_FAILED",
+              "PENDING",
+              "CANCELED",
+              "VOIDED",
+              "REFUNDED",
+              "FAILED"
+            ]
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "Error code for the onboarding operation received by NPG"
+          },
+          "details": {
+            "description": "Wallet notified payment method details",
+            "type": "object",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/WalletNotificationRequestCardDetails"
+              }
+            ],
+            "discriminator": {
+              "propertyName": "type",
+              "mapping": {
+                "CARD": "#/components/schemas/WalletNotificationRequestCardDetails"
+              }
+            }
+          }
+        },
+        "required": [
+          "timestampOperation",
+          "operationResult"
+        ]
+      },
+      "WalletNotificationRequestCardDetails": {
+        "type": "object",
+        "description": "Card wallet notification details for onboarding",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "discriminator field, fixed value `CARD`"
+          },
+          "paymentInstrumentGatewayId": {
+            "type": "string",
+            "description": "gateway unique id associated to the card"
+          }
+        },
+        "required": [
+          "type",
+          "paymentInstrumentGatewayId"
+        ],
+        "example": {
+          "type": "CARD",
+          "paymentInstrumentGatewayId": "c2402dcc-ef9d-4c68-8067-e4b6268a2e62"
+        }
       }
     },
     "securitySchemes": {

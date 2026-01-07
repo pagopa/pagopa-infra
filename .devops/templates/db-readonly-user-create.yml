@@ -1,0 +1,63 @@
+parameters:
+  - name: DATABASE_NAME
+    displayName: 'Database name'
+    type: string
+  - name: DB_HOST
+    displayName: 'DB hostname'
+    type: string
+  - name: USERNAME
+    displayName: 'Username to be created'
+    type: string
+  - name: PASSWORD
+    displayName: 'Password associated to the new user'
+    type: string
+  - name: KEY_VAULT_NAME
+    displayName: 'Key vault name'
+    type: string
+  - name: ADMIN_LOGIN_KEY
+    displayName: 'Admin login key vault secret name'
+    type: string
+  - name: ADMIN_PWD_KEY
+    displayName: 'Admin password key vault secret name'
+    type: string
+  - name: SERVICE_CONNECTION
+    displayName: 'Azure service connection name'
+    type: string
+
+steps:
+  - task: AzureKeyVault@2
+    displayName: "Get secrets"
+    inputs:
+      azureSubscription: ${{ parameters.SERVICE_CONNECTION }}
+      keyVaultName: ${{ parameters.KEY_VAULT_NAME }}
+      secretsFilter: '${{parameters.ADMIN_LOGIN_KEY}},${{parameters.ADMIN_PWD_KEY}}'
+  - task: AzureCLI@2
+    displayName: "Create db read user"
+    inputs:
+      azureSubscription: ${{ parameters.SERVICE_CONNECTION }}
+      scriptLocation: inlineScript
+      scriptType: bash
+      inlineScript: |
+        create_user () {
+          USER=$1
+          PASS=$2
+          az config set extension.use_dynamic_install=yes_without_prompt
+          az postgres flexible-server execute --name ${{ parameters.DB_HOST }} --admin-user $(${{parameters.ADMIN_LOGIN_KEY}}) \
+          --admin-password '$(${{parameters.ADMIN_PWD_KEY}})' --database-name "${{ parameters.DATABASE_NAME }}" \
+          --querytext "
+          do \$\$
+          BEGIN
+          IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$USER') THEN
+          CREATE ROLE $USER WITH LOGIN PASSWORD '$PASS';
+          END IF;
+
+          GRANT CONNECT ON DATABASE "${{ parameters.DATABASE_NAME }}" TO $USER;
+
+          GRANT pg_read_all_data TO $USER;
+
+          END
+          \$\$;
+          "
+        }
+
+        create_user "${{ parameters.USERNAME }}" "${{ parameters.PASSWORD }}"

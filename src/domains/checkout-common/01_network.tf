@@ -43,3 +43,13 @@ data "azurerm_subnet" "azdoa_snet" {
   virtual_network_name = data.azurerm_virtual_network.vnet.name
 }
 
+# Redis cache subnet
+module "pagopa_checkout_redis_snet" {
+  source = "./.terraform/modules/__v4__/subnet"
+
+  name                              = "${local.project}-redis-snet"
+  address_prefixes                  = var.cidr_subnet_redis_checkout
+  resource_group_name               = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name              = data.azurerm_virtual_network.vnet.name
+  private_endpoint_network_policies = "Enabled"
+}

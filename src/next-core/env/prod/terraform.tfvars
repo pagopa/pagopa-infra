@@ -73,17 +73,6 @@ log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 dns_forwarder_vm_image_name = "pagopa-p-dns-forwarder-ubuntu2204-image-v1"
 
 
-#
-# replica settings
-#
-geo_replica_enabled        = true
-geo_replica_location       = "northeurope"
-geo_replica_location_short = "neu"
-geo_replica_cidr_vnet      = ["10.2.0.0/16"]
-geo_replica_ddos_protection_plan = {
-  id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
-  enable = true
-}
 
 postgres_private_dns_enabled = true
 
@@ -179,14 +168,14 @@ apim_v2_autoscale = {
   enabled                       = true
   default_instances             = 3
   minimum_instances             = 3
-  maximum_instances             = 5
+  maximum_instances             = 9
   scale_out_capacity_percentage = 45
   scale_out_time_window         = "PT10M"
-  scale_out_value               = "2"
+  scale_out_value               = "3"
   scale_out_cooldown            = "PT45M"
   scale_in_capacity_percentage  = 30
   scale_in_time_window          = "PT30M"
-  scale_in_value                = "1"
+  scale_in_value                = "3"
   scale_in_cooldown             = "PT4H"
 }
 
@@ -677,7 +666,7 @@ eventhubs_04 = [
     name              = "nodo-dei-pagamenti-cache"
     partitions        = 32
     message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-cache-sync-rx", "nodo-dei-pagamenti-cache-aca-rx"]
+    consumers         = ["nodo-dei-pagamenti-cache-sync-rx", "nodo-dei-pagamenti-cache-aca-rx", "nodo-dei-pagamenti-cache-stand-in-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-cache-tx"
@@ -693,6 +682,12 @@ eventhubs_04 = [
       },
       {
         name   = "nodo-dei-pagamenti-cache-aca-rx" # node-cfg for ACA-Payments
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-cache-stand-in-rx" # node-cfg for Stand-In Manager
         listen = true
         send   = false
         manage = false
@@ -723,7 +718,7 @@ eventhubs_04 = [
     name              = "fdr-qi-reported-iuv"
     partitions        = 32
     message_retention = 7
-    consumers         = ["fdr-qi-reported-iuv-rx"]
+    consumers         = ["fdr-qi-reported-iuv-rx", "gpd-reporting-sync"]
     keys = [
       {
         name   = "fdr-qi-reported-iuv-tx"
@@ -733,6 +728,12 @@ eventhubs_04 = [
       },
       {
         name   = "fdr-qi-reported-iuv-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "gpd-reporting-sync"
         listen = true
         send   = false
         manage = false
@@ -780,8 +781,8 @@ app_gateway_management_certificate_name = "management-platform-pagopa-it-stable"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it-stable"
 app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
 app_gateway_wfespgovit_certificate_name = "wfesp-pagopa-gov-it"
-app_gateway_min_capacity                = 8 # 5 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
-app_gateway_max_capacity                = 50
+app_gateway_min_capacity                = 15 # 5 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
+app_gateway_max_capacity                = 100
 app_gateway_sku_name                    = "WAF_v2"
 app_gateway_sku_tier                    = "WAF_v2"
 app_gateway_waf_enabled                 = true

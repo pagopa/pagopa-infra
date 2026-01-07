@@ -9,8 +9,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
   enabled             = true
   severity            = 1
   frequency           = 5
-  time_window         = 5
-
+  # the time window was updated from 5 to 7 because the delay between the call and log
+  # sometimes can be 2 minutes, this can affect the alert query
+  time_window = 7
   action {
     action_group           = local.action_groups
     email_subject          = "Nodo PagoPA ${upper(each.key)} API Availability Alert"
@@ -23,20 +24,21 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
         ${each.value.formatted_operations}
     ];
     let operationIds = toscalar(operationMap | summarize make_list(operationId_s, 20));
-    let thresholdTrafficMin = 150;
-    let thresholdTrafficLinear = 400;
-    let lowTrafficAvailability = 90;
-    let highTrafficAvailability = 99;
+    let thresholdTrafficMin = 20;
+    let thresholdTrafficLinear = 90;
+    let lowTrafficAvailability = 80;
+    let highTrafficAvailability = 98;
     let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
     AzureDiagnostics
-    | where TimeGenerated > ago(5m)
+    | where TimeGenerated > ago(7m)
     | where url_s matches regex "${each.value.sub_service}"
     | where operationId_s in (operationIds)
     | summarize
         Total = count(),
         Success = countif(todouble(responseCode_d) < 500)
-        by bin(TimeGenerated, 5m), operationId_s
+        by bin(TimeGenerated, 7m), operationId_s
+    | where Total > 5
     | extend trafficUp = Total-thresholdTrafficMin
     | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
     | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
@@ -69,9 +71,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_psp_api_fault_c
   description    = "Alert when any PagoPA Nodo PSP operation API falls, based on fault code, below 99% availability."
   enabled        = true
 
-  severity    = 1
-  frequency   = 5
-  time_window = 5
+  severity  = 1
+  frequency = 5
+  # the time window was updated from 5 to 7 because the delay between the call and log
+  # sometimes can be 2 minutes, this can affect the alert query
+  time_window = 7
   query       = <<-EOT
     let operationMap = datatable(operationId_s: string, apiName: string)
     [
@@ -85,8 +89,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_psp_api_fault_c
     let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
     dependencies
-    | where timestamp > ago(5m)
-    | where name == "POST ${local.nodo_soap_path}/"
+    | where timestamp > ago(7m)
+    | where name == "POST ${local.nodo_soap_path_short}/"
     | extend operationId_s = tostring(split(operation_Name, " - ")[1])
     | where operationId_s in (operationIds)
     | extend response = tostring(customDimensions["Response-Body"])
@@ -95,7 +99,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_psp_api_fault_c
     | summarize
         Total=count(),
         Success=countif(outcome == "OK" or faultCode !in ${local.error_fault_code})
-        by bin(timestamp, 5m), operationId_s
+        by bin(timestamp, 7m), operationId_s
     | extend trafficUp = Total-thresholdTrafficMin
     | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
     | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
