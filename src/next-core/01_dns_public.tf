@@ -195,3 +195,29 @@ resource "azurerm_dns_a_record" "dns_a_management_prf" {
   records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
   tags                = module.tag_config.tags
 }
+
+# accounting reconciliation DCV TXT record
+resource "azurerm_dns_txt_record" "dns-txt-acc-recon-platform-pagopa-it-digicert" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "accounting-reconciliation"
+  zone_name           = azurerm_dns_zone.public[0].name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  record {
+    value = "_l31s4aq6548d0fj0q1kakhat5dilgxe"
+  }
+  tags = module.tag_config.tags
+}
+
+# accounting reconciliation www DCV TXT record
+resource "azurerm_dns_txt_record" "dns-txt-www-acc-recon-platform-pagopa-it-digicert" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "www.accounting-reconciliation"
+  zone_name           = azurerm_dns_zone.public[0].name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  record {
+    value = "_l31s4aq6548d0fj0q1kakhat5dilgxe"
+  }
+  tags = module.tag_config.tags
+}

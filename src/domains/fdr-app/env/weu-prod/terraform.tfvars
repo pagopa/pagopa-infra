@@ -15,6 +15,7 @@ reporting_fdr_function_always_on = true
 
 app_service_plan_info = {
   kind                         = "Linux"
+  sku_tier                     = "PremiumV3"
   sku_size                     = "P1v3"
   maximum_elastic_worker_count = 1
   worker_count                 = 1
@@ -77,7 +78,7 @@ fdr_soap_request_psp_whitelist = "*" # Switching all traffic on FdR-Fase1
 fdr_soap_request_ci_whitelist  = "*"
 apim_fdr_nodo_pagopa_enable    = true # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 
-ftp_organization = "80078750587,00488410010,97532760580,12300020158"
+ftp_organization = "80078750587,00488410010,97532760580"
 
 # fdr xml to json
 fdr_xml_to_json_function_subnet                   = ["10.1.182.0/24"]

@@ -114,26 +114,8 @@ module "checkout_cdn" {
     }
     },
     {
-      name  = "RewriteRulesEcommerceFe"
-      order = 3
-
-      conditions = [{
-        condition_type   = "url_path_condition"
-        operator         = "BeginsWith"
-        match_values     = ["/ecommerce-fe/gdi-check", "/ecommerce-fe/esito"]
-        transforms       = []
-        negate_condition = false
-      }]
-
-      url_rewrite_action = {
-        source_pattern          = "/"
-        destination             = "/ecommerce-fe/index.html"
-        preserve_unmatched_path = false
-      }
-    },
-    {
       name  = "RewriteRulesTerms"
-      order = 4
+      order = 3
 
       conditions = [{
         condition_type   = "url_path_condition"
@@ -154,7 +136,7 @@ module "checkout_cdn" {
   delivery_rule = [
     {
       name  = "CorsFontForNPG"
-      order = 5
+      order = 4
 
       // conditions
       url_path_conditions       = []

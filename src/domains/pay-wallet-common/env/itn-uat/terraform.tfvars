@@ -59,14 +59,14 @@ cosmos_mongo_db_params = {
   is_virtual_network_filter_enabled            = true
   enable_provisioned_throughput_exceeded_alert = false
   backup_continuous_enabled                    = true
-  ip_range_filter                              = "104.42.195.92,40.76.54.131,52.176.6.30,52.169.50.45,52.187.184.26,13.88.56.148,40.91.218.243,13.91.105.215,4.210.172.107,40.80.152.199,13.95.130.121,20.245.81.54,40.118.23.126"
+  ip_range_filter                              = ["104.42.195.92", "40.76.54.131", "52.176.6.30", "52.169.50.45", "52.187.184.26", "13.88.56.148", "40.91.218.243", "13.91.105.215", "4.210.172.107", "40.80.152.199", "13.95.130.121", "20.245.81.54", "40.118.23.126"]
 
 }
 
 cosmos_mongo_db_pay_wallet_params = {
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 2000
+  max_throughput     = 6000
   throughput         = 2000
 }
 
@@ -74,6 +74,14 @@ cosmos_mongo_db_pay_wallet_params = {
 ### Redis
 
 redis_pay_wallet_params = {
+  capacity = 0
+  sku_name = "Basic"
+  family   = "C"
+  version  = 6
+  zones    = []
+}
+
+redis_std_pay_wallet_params = {
   capacity = 0
   sku_name = "Basic"
   family   = "C"

@@ -13,7 +13,7 @@ module "gh_runner_job" {
   environment_rg     = local.tools_cae_rg
   gh_identity_suffix = "job-01"
   gh_env             = var.env
-  runner_labels      = ["self-hosted-job", "${var.env}"]
+  runner_labels      = ["self-hosted-job", var.env]
   gh_repositories = [
     {
       name : "pagopa-stand-in-manager",
@@ -62,20 +62,14 @@ module "gh_runner_job" {
     {
       name : "pagopa-decoupler",
       short_name : "decoupler"
-    },
-    {
-      name : "pagopa-nodo-cfg-data-migration",
-      short_name : "node-cfg-dm"
     }
   ]
-  job = {
-    name = var.domain
-  }
+  job      = {}
   job_meta = {}
   key_vault = {
-    name        = "${local.product}-kv"     # Name of the KeyVault which stores PAT as secret
-    rg          = "${local.product}-sec-rg" # Resource group of the KeyVault which stores PAT as secret
-    secret_name = "gh-runner-job-pat"       # Data of the KeyVault which stores PAT as secret
+    name        = "${local.product}-${var.domain}-kv"        # Name of the KeyVault which stores PAT as secret
+    rg          = "${local.product}-${var.domain}-sec-rg"    # Resource group of the KeyVault which stores PAT as secret
+    secret_name = "pagopa-platform-domain-github-bot-cd-pat" # Data of the KeyVault which stores PAT as secret
   }
   kubernetes_deploy = {
     enabled      = true

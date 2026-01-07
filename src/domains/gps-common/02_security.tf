@@ -84,6 +84,17 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
   storage_permissions = []
 }
 
+# azure data factory access policy
+resource "azurerm_key_vault_access_policy" "azure_data_factory_policy" {
+  key_vault_id            = module.key_vault.id
+  tenant_id               = data.azurerm_data_factory.data_factory.identity.0.tenant_id
+  object_id               = data.azurerm_data_factory.data_factory.identity.0.principal_id
+  key_permissions         = []
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+  storage_permissions     = []
+}
+
 resource "azurerm_key_vault_secret" "cosmos_gps_pkey" {
   name         = format("cosmos-gps-%s-%s-pkey", var.location_short, var.env_short) # cosmos-gps-<REGION>-<ENV>-pkey
   value        = module.gps_cosmosdb_account.primary_key
@@ -100,24 +111,6 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "flows_sa_connection_string" {
-  name         = format("flows-sa-%s-connection-string", var.env_short)
-  value        = module.flows.primary_connection_string
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-}
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "storage_reporting_connection_string" {
-  # refers to pagopa<env>flowsa primary key
-  name         = format("gpd-reporting-flow-%s-sa-connection-string", var.env_short)
-  value        = module.flows.primary_connection_string
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-}
-
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "payments_cosmos_connection_string" {
   name         = format("gpd-payments-%s-cosmos-connection-string", var.env_short)
@@ -128,14 +121,6 @@ resource "azurerm_key_vault_secret" "payments_cosmos_connection_string" {
 
 }
 
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "gpd_reporting_batch_connection_string" {
-  name         = format("gpd-%s-reporting-batch-connection-string", var.env_short)
-  value        = module.flows.primary_connection_string
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-}
 
 ## ########################### ##
 ## TODO put it into gps-secret

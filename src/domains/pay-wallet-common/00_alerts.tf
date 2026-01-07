@@ -104,8 +104,8 @@ AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/webview-payment-wallet/v1'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 and DurationMs < 2000)
-    by Time = bin(TimeGenerated, 15m)
+    Success=countif(responseCode_d < 500 and DurationMs < 3000)
+    by Time = bin(TimeGenerated, 10m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
@@ -188,8 +188,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_npg_notif
   description    = "Payment Wallet NPG Notifications - Availability less than 99% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
-let thresholdTrafficMin = 5;
-let thresholdTrafficLinear = 20;
+let thresholdTrafficMin = 10;
+let thresholdTrafficLinear = 100;
 let lowTrafficAvailability = 80;
 let highTrafficAvailability = 99;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
@@ -198,8 +198,8 @@ AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/payment-wallet-notifications/v1'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 and DurationMs < 350)
-    by Time = bin(TimeGenerated, 15m)
+    Success=countif(responseCode_d < 500 and DurationMs < 500)
+    by Time = bin(TimeGenerated, 10m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
@@ -212,7 +212,7 @@ AzureDiagnostics
   time_window = 30
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 2
+    threshold = 3
   }
 }
 

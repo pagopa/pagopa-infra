@@ -36,24 +36,12 @@ module "gh_runner_job" {
       short_name : "gpd-payments"
     },
     {
-      name : "pagopa-gpd-reporting-batch",
-      short_name : "gpd-rpt-batch"
-    },
-    {
       name : "pagopa-gpd-reporting-analysis",
       short_name : "gpd-rpt-an"
     },
     {
-      name : "pagopa-gpd-reporting-service",
-      short_name : "gpd-rpt-svc"
-    },
-    {
       name : "pagopa-gpd-ingestion-manager"
       short_name : "gpd-ingst-mgr"
-    },
-    {
-      name : "pagopa-reporting-orgs-enrollment"
-      short_name : "gpd-rep-org"
     },
     {
       name : "pagopa-spontaneous-payments"
@@ -68,9 +56,7 @@ module "gh_runner_job" {
       short_name : "gpd-rtp"
     }
   ]
-  job = {
-    name = var.domain
-  }
+  job      = {}
   job_meta = {}
   key_vault = {
     # name        = "${local.product}-kv"     # Name of the KeyVault which stores PAT as secret

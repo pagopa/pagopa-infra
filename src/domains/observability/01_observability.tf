@@ -167,6 +167,19 @@ resource "azurerm_role_assignment" "fdr_qi_fdr_iuvs_data_evh_data_receiver_role"
   principal_id         = azurerm_kusto_cluster.data_explorer_cluster[count.index].identity[count.index].principal_id # data-exp
 }
 
+// https://registry.terraform.io/providers/hashicorp/azurerm/4.37.0/docs/resources/kusto_script
+resource "azurerm_kusto_script" "create_merge_table" {
+  count = var.dexp_db.enable ? 1 : 0
+
+  name        = "MergeTableRENodo"
+  database_id = azurerm_kusto_database.re_db[count.index].id
+
+  script_content = file("scripts/create_table_re_event.dexp")
+
+  continue_on_errors_enabled         = false
+  force_an_update_when_value_changed = filesha256("scripts/create_table_re_event.dexp")
+}
+
 # resource "azurerm_kusto_script" "create_tables" {
 
 #   count = var.dexp_re_db_linkes_service.enable ? 1 : 0
@@ -220,3 +233,10 @@ locals {
 #   principal_id         = each.key
 # }
 
+resource "azurerm_role_assignment" "adgroup_dataexp_reader" {
+  for_each             = toset(local.dataexp_contributor_groups)
+  principal_id         = each.key
+  principal_type       = "Group"
+  role_definition_name = "Reader" # https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#general 👀 roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7
+  scope                = azurerm_kusto_cluster.data_explorer_cluster[0].id
+}

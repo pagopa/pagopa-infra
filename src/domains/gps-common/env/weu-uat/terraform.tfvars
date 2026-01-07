@@ -46,6 +46,7 @@ cosmos_gps_db_params = {
 }
 
 gpd_upload_status_throughput = 10000
+gpd_upload_status_ttl        = 5184000 // 60 days
 
 # Postgres Flexible
 pgres_flex_params = {
@@ -150,7 +151,7 @@ eventhubs_rtp = [
       {
         name   = "rtp-events-rx"
         listen = true
-        send   = false
+        send   = true
         manage = false
       },
       {

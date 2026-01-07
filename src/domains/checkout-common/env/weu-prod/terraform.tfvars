@@ -34,7 +34,7 @@ redis_private_endpoint_enabled = true
 redis_zones                    = [1, 2, 3]
 
 
-# Checkout Redis parameters
+# Checkout Redis parameters: Premium
 redis_checkout_params = {
   capacity   = 1
   sku_name   = "Premium"
@@ -42,5 +42,15 @@ redis_checkout_params = {
   version    = 6
   ha_enabled = true
   zones      = [1, 2, 3],
+}
+
+# Checkout Redis parameters: Standard
+redis_checkout_params_std = {
+  capacity   = 1
+  sku_name   = "Standard"
+  family     = "C"
+  version    = 6
+  ha_enabled = true
+  zones      = [],
 }
 cidr_subnet_redis_checkout = ["10.1.167.0/24"]

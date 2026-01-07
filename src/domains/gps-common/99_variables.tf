@@ -251,6 +251,12 @@ variable "gpd_db_name" {
   default     = "apd"
 }
 
+variable "gpd_upload_status_ttl" {
+  type        = number
+  description = "The default time in seconds to live of SQL container. If present and the value is set to -1, it is equal to infinity, and items don’t expire by default. "
+  default     = -1
+}
+
 variable "cosmos_gps_db_params" {
   type = object({
     kind           = string
@@ -453,8 +459,8 @@ variable "geo_replica_cidr_subnet_postgresql" {
 
 variable "location_replica" {
   type        = string
-  description = "One of westeurope, northeurope"
-  default     = "northeurope"
+  description = "One of westeurope, italynorth"
+  default     = "italynorth"
 }
 
 variable "location_replica_short" {
@@ -465,8 +471,8 @@ variable "location_replica_short" {
     )
     error_message = "Length must be 3 chars."
   }
-  description = "One of wue, neu"
-  default     = "neu"
+  description = "One of wue, itn"
+  default     = "itn"
 }
 
 

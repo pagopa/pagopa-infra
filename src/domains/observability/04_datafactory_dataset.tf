@@ -98,3 +98,37 @@ resource "azurerm_data_factory_dataset_json" "afm_gec_paymenttypes_cdc_json" {
   annotations = []
 }
 
+
+#resource "azurerm_data_factory_dataset_postgresql" "crusc8_payment_receipt" {
+#  name                = "CRUSC8_PAGOPA_PAYMENT_RECEIPT"
+#  data_factory_id     = data.azurerm_data_factory.obeserv_data_factory.id
+#  linked_service_name = "LinkedService-Cruscotto"
+#  table_name          = "cruscotto.pagopa_payment_receipt"
+#}
+
+#resource "azurerm_data_factory_dataset_postgresql" "crusc8_recorded_timeout" {
+#  name                = "CRUSC8_PAGOPA_PAYMENT_RECEIPT"
+#  data_factory_id     = data.azurerm_data_factory.obeserv_data_factory.id
+#  linked_service_name = "LinkedService-Cruscotto"
+#  table_name          = "cruscotto.pagopa_recorded_timeout"
+#}
+
+resource "azurerm_data_factory_custom_dataset" "crusc8_tables_datasets" {
+  for_each             = { for ds in local.crusc8_tables_list_datasets : ds.dataset_name => ds }
+  name                 = each.key
+  data_factory_id      = data.azurerm_data_factory.obeserv_data_factory.id
+  type                 = "AzurePostgreSqlTable"
+  type_properties_json = <<JSON
+      { 
+      "schema" : "${each.value.schema_name}",
+      "table"  : "${each.value.table_name}"
+    }
+    JSON
+
+  schema_json = file(each.value.dataset_schema_file)
+
+  linked_service {
+    name = "LinkedService-Cruscotto"
+  }
+
+}

@@ -4,7 +4,7 @@
     "title" : "PagoPA API Calculator Logic - API AFM-Calculator v2",
     "description" : "Calculator Logic microservice for pagoPA AFM",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "2.11.8"
+    "version" : "2.11.28"
   },
   "servers" : [ {
     "url" : "http://localhost:8080"
@@ -550,7 +550,7 @@
         }
       },
       "TransferListItem" : {
-        "required" : [ "creditorInstitution", "transferCategory" ],
+        "required" : [ "creditorInstitution" ],
         "type" : "object",
         "properties" : {
           "creditorInstitution" : {

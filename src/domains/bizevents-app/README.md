@@ -14,7 +14,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f3485105e35ce8c801209dcbb4ef72f3d944f0e5 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | d0a0b3a81963169bdc974f79eba31e41e918e63d |
 | <a name="module_apim_api_bizevents_api_v1"></a> [apim\_api\_bizevents\_api\_v1](#module\_apim\_api\_bizevents\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_bizevents_helpdesk_api_v1"></a> [apim\_api\_bizevents\_helpdesk\_api\_v1](#module\_apim\_api\_bizevents\_helpdesk\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_bizevents_lap_api_jwt_v1"></a> [apim\_api\_bizevents\_lap\_api\_jwt\_v1](#module\_apim\_api\_bizevents\_lap\_api\_jwt\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
@@ -26,7 +26,6 @@
 | <a name="module_apim_bizevents_product"></a> [apim\_bizevents\_product](#module\_apim\_bizevents\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_bizevents_product_all_in_one"></a> [apim\_bizevents\_product\_all\_in\_one](#module\_apim\_bizevents\_product\_all\_in\_one) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_lap_product"></a> [apim\_lap\_product](#module\_apim\_lap\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_pm_ingestion_product"></a> [apim\_pm\_ingestion\_product](#module\_apim\_pm\_ingestion\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_transactions_product"></a> [apim\_transactions\_product](#module\_apim\_transactions\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v3__/cert_mounter | n/a |
 | <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup | n/a |
