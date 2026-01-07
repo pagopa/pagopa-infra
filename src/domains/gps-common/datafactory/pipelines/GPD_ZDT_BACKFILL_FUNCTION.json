@@ -12,7 +12,7 @@
   "userProperties": [],
   "typeProperties": {
     "expression": {
-      "value": "@equals(variables('rowsUpdated'), 0)",
+      "value": "@and(equals(variables('rowsUpdated'), 0), greater(variables('currentLowerBound'), int(pipeline().parameters.maxIdLimit)))",
       "type": "Expression"
     },
     "activities": [
@@ -37,7 +37,7 @@
             {
               "type": "Query",
               "text": {
-                "value": "/* [ADF] BatchSize: @{pipeline().parameters.batchSize} | Range: @{variables('currentLowerBound')} -> @{add(variables('currentLowerBound'), int(pipeline().parameters.increment))} */\nSELECT @{pipeline().parameters.functionName}(@{pipeline().parameters.batchSize}, @{variables('currentLowerBound')}, @{add(variables('currentLowerBound'), int(pipeline().parameters.increment))}) AS rowsUpdated;",
+                "value": "SELECT @{pipeline().parameters.functionName}(@{pipeline().parameters.batchSize}, @{variables('currentLowerBound')}, @{add(variables('currentLowerBound'), int(pipeline().parameters.increment))}) AS rowsUpdated;",
                 "type": "Expression"
               }
             }

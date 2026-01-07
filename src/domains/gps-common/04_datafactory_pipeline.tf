@@ -35,7 +35,7 @@ resource "azapi_resource" "gpd_postgres_linked_service" {
         }
         port     = "5433"                                                  // "8432" // adhoc private endpoint port
         server   = "gpd-db.${var.env_short}.internal.postgresql.pagopa.it" // "172.205.217.81" // adhoc private endpoint host
-        sslMode  = "2"
+        sslMode  = 3
         username = "${data.azurerm_key_vault_secret.gpd_db_usr.value}"
       }
     }
@@ -55,6 +55,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_odp_backfill" {
     batchSize    = 10000
     baseLimit    = 0
     increment    = 10000
+    maxIdLimit   = 229000000
   }
 
   variables = {
