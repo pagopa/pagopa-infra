@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "nsg_rg" {
 }
 
 module "network_watcher_storage_account" {
-  source            = "./.terraform/modules/__V4__/IDH/storage_account"
+  source            = "./.terraform/modules/__v4__/IDH/storage_account"
   for_each          = local.nsg_regions_to_create
   env               = var.env
   idh_resource_tier = "basic"
@@ -25,7 +25,7 @@ module "network_watcher_storage_account" {
 
 
 module "network_security_group" {
-  source              = "./.terraform/modules/__V4__/network_security_group"
+  source              = "./.terraform/modules/__v4__/network_security_group"
   for_each            = local.nsg_regions_to_create
   prefix              = local.project
   resource_group_name = azurerm_resource_group.nsg_rg[each.key].name
