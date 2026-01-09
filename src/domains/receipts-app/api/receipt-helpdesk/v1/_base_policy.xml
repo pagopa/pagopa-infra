@@ -1,7 +1,14 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="https://${hostname}/pagopa-receipt-pdf-helpdesk" />
+        <choose>
+          <when condition="@(context.Request.Url.Path.Contains("regenerate-receipt-pdf"))">
+            <set-backend-service base-url="https://${hostname}/pagopa-receipt-pdf-generator-helpdesk" />
+          </when>
+          <otherwise>
+            <set-backend-service base-url="https://${hostname}/pagopa-receipt-pdf-helpdesk" />
+          </otherwise>
+        </choose>
     </inbound>
     <outbound>
         <base />
