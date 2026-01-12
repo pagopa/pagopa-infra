@@ -64,9 +64,10 @@ variable "instance" {
 
 variable "is_feature_enabled" {
   type = object({
-    cosmos  = optional(bool, false),
-    redis   = optional(bool, false),
-    storage = optional(bool, false),
+    cosmos             = optional(bool, false),
+    redis              = optional(bool, false),
+    storage            = optional(bool, false),
+    redis_hub_spoke_pe = optional(bool, false),
 
   })
   description = "Features enabled in this domain"

@@ -34,7 +34,7 @@ monitor_appinsights_name                    = "pagopa-p-appinsights"
 #
 aks_private_cluster_enabled  = true
 aks_alerts_enabled           = false
-aks_kubernetes_version       = "1.31.8"
+aks_kubernetes_version       = "1.32.4"
 aks_sku_tier                 = "Standard"
 aks_enable_workload_identity = true
 
@@ -55,7 +55,7 @@ aks_user_node_pool = {
   vm_size         = "Standard_D8ds_v5",
   os_disk_type    = "Ephemeral",
   os_disk_size_gb = 300,
-  node_count_min  = 2,
+  node_count_min  = 3,
   node_count_max  = 3,
   zones           = [1, 2, 3]
   node_labels     = { node_name : "aks-prod01-user", node_type : "user" },

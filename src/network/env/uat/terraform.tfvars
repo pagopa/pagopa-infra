@@ -4,6 +4,9 @@ location       = "westeurope"
 location_short = "weu"
 
 
+location_hub_spoke       = "italynorth"
+location_short_hub_spoke = "itn"
+
 nsg_regions = ["westeurope", "italynorth"]
 
 nsg_network_watcher_enabled = false
