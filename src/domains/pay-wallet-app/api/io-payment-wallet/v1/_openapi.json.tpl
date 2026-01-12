@@ -461,6 +461,7 @@
           "INITIALIZED",
           "VALIDATED",
           "DELETED",
+          "REPLACED",
           "ERROR"
         ]
       },
