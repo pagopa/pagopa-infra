@@ -29,6 +29,8 @@ module "vmss_snet" {
     "Microsoft.AzureCosmosDB"
   ]
 
+  tags = module.tag_config.tags
+
 }
 
 resource "azurerm_subnet_nat_gateway_association" "vmss_snet_nat" {
@@ -46,6 +48,7 @@ module "vmss_pls_snet" {
   product_name      = local.prefix
   env               = var.env
 
+  tags = module.tag_config.tags
 }
 
 data "azurerm_key_vault_secret" "vmss_admin_login" {
