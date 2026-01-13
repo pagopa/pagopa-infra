@@ -5,7 +5,7 @@ metadata:
   namespace: ${namespace}
 data:
   check_kafka_connect.sh: |
-    #!/bin/bash
+    #!/bin/sh
     echo "Debezium health checker monitor start."
 
     STATUS_URL="http://debezium-connect-cluster-connect-api:8083/connectors/debezium-connector-postgres/status"
