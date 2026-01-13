@@ -154,7 +154,7 @@ locals {
  * Checkout resource group
  **/
 resource "azurerm_resource_group" "checkout_fe_rg" {
-  count = var.checkout_enabled ? 1 : 0
+  count    = var.checkout_enabled ? 1 : 0
   name     = format("%s-checkout-fe-rg", local.parent_project)
   location = var.location
 
