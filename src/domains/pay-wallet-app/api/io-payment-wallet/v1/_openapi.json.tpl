@@ -462,6 +462,7 @@
           "VALIDATED",
           "DELETED",
           "REPLACED",
+          "VALIDATION_REQUESTED",
           "ERROR"
         ]
       },
