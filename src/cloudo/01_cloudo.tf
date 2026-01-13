@@ -1,22 +1,29 @@
 
 resource "azurerm_resource_group" "rg" {
-  name     = "${var.prefix}-cloudo-rg"
-  location = var.location
+  name     = "${var.prefix}-${var.env_short}-${var.location_short_ita}-cloudo-rg"
+  location = var.location_ita
 
   tags = module.tag_config.tags
 }
 
 module "cloudo" {
-  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=d9d92e13f2d01f3b3a1483b5e6ad4dc479c7c0fe"
+  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=PAYMCLOUD-626-cloudo-add-iac-subnet-deployment"
 
   prefix                    = local.product
+  product_name              = var.prefix
+  cluodo_ui_tier            = "basic_external_plan"
   env                       = var.env
-  location                  = var.location
+  location                  = var.location_ita
   resource_group_name       = azurerm_resource_group.rg.name
   service_plan_sku          = "B1"
   application_insights_name = data.azurerm_application_insights.app_insight.name
   application_insights_rg   = data.azurerm_application_insights.app_insight.resource_group_name
   subscription_id           = data.azurerm_subscription.current.subscription_id
+  vnet_name                 = data.azurerm_virtual_network.network_tools_vnet.name
+  vnet_rg                   = data.azurerm_virtual_network.network_tools_vnet.resource_group_name
+
+  vpn_subnet_id                = data.azurerm_subnet.vpn_subnet.id
+  private_endpoint_dns_zone_id = data.azurerm_private_dns_zone.private_endpoint_dns_zone.id
 
   github_repo_info = {
     repo_name    = "pagopa/pagopa-infra"
@@ -64,6 +71,14 @@ module "cloudo" {
     image_tag         = var.cloudo_worker.image_tag
     registry_url      = var.cloudo_worker.registry_url
     registry_username = var.cloudo_worker.registry_username
+    registry_password = data.azurerm_key_vault_secret.github_pat.value
+  }
+
+  ui_image = {
+    image_name        = var.cloudo_ui.image_name
+    image_tag         = var.cloudo_ui.image_tag
+    registry_url      = var.cloudo_ui.registry_url
+    registry_username = var.cloudo_ui.registry_username
     registry_password = data.azurerm_key_vault_secret.github_pat.value
   }
 

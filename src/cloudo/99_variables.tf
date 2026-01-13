@@ -85,6 +85,16 @@ variable "cloudo_orchestrator" {
   description = "Configuration for the ClouDO orchestrator container, including container image details and registry authentication."
 }
 
+variable "cloudo_ui" {
+  type = object({
+    image_name        = optional(string, "pagopa/cloudo-ui")
+    image_tag         = optional(string, "0.0.0")
+    registry_url      = optional(string, "https://ghcr.io")
+    registry_username = optional(string)
+    registry_password = optional(string)
+  })
+  description = "Configuration for the ClouDO UI App Service, including container image details and registry authentication."
+}
 
 variable "cloudo_worker" {
   type = object({

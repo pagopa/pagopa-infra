@@ -37,3 +37,8 @@ data "azurerm_kubernetes_cluster" "aks_itn" {
   name                = "${local.product_ita}-${var.env}-aks"
   resource_group_name = "${local.product_ita}-${var.env}-aks-rg"
 }
+
+data "azurerm_virtual_network" "network_tools_vnet" {
+  name                = "${var.prefix}-${var.env_short}-${var.location_short_ita}-network-tools-vnet"
+  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short_ita}-network-hub-spoke-rg"
+}

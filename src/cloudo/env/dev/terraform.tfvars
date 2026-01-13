@@ -24,6 +24,14 @@ cloudo_orchestrator = {
   registry_username = "payments-cloud-bot"
 }
 
+# ClouDO UI parameters
+cloudo_ui = {
+  image_name        = "pagopa/cloudo-ui"
+  image_tag         = "0.0.0"
+  registry_url      = "https://ghcr.io"
+  registry_username = "payments-cloud-bot"
+}
+
 # ClouDO worker parameters
 cloudo_worker = {
   image_name        = "pagopa/cloudo-worker"
