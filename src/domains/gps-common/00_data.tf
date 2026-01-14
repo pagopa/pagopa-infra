@@ -127,3 +127,29 @@ data "azurerm_eventhub_authorization_rule" "nodo_dei_pagamenti_cache_aca_rx" {
   eventhub_name       = "nodo-dei-pagamenti-cache"
   resource_group_name = "${local.product}-msg-rg"
 }
+
+data "azurerm_data_factory" "data_factory" {
+  name                = "pagopa-${var.env_short}-weu-nodo-df"
+  resource_group_name = "pagopa-${var.env_short}-weu-nodo-df-rg"
+}
+
+#gps security resource group
+data "azurerm_resource_group" "sec_rg" {
+  name = "${local.product}-${var.domain}-sec-rg"
+}
+
+# gps KV
+data "azurerm_key_vault" "gps_kv" {
+  name                = "${local.product}-${var.domain}-kv"
+  resource_group_name = data.azurerm_resource_group.sec_rg.name
+}
+
+data "azurerm_key_vault_secret" "gpd_db_usr" {
+  name         = "db-apd-user-name"
+  key_vault_id = data.azurerm_key_vault.gps_kv.id
+}
+
+data "azurerm_key_vault_secret" "gpd_db_pwd" {
+  name         = "db-apd-user-password"
+  key_vault_id = data.azurerm_key_vault.gps_kv.id
+}

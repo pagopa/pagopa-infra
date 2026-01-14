@@ -115,15 +115,11 @@ locals {
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
     {
-      name               = "cart-for-receipts",
-      partition_key_path = "/eventId",
-      default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
-      conflict_resolution_policy = {
-        mode      = "Custom",
-        path      = null,
-        procedure = "dbs/db/colls/cart-for-receipts/sprocs/cart-for-receipts-merge-procedure"
-      }
+      name                       = "cart-for-receipts",
+      partition_key_path         = "/eventId",
+      default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
+      autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
+      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
     {
       name                       = "receipts-message-errors",
@@ -153,6 +149,13 @@ locals {
       autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
+    {
+      name                       = "cart-receipts-io-messages",
+      partition_key_path         = "/cartId",
+      default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
+      autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
+      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
+    },
   ]
 }
 
@@ -175,36 +178,10 @@ module "receipts_datastore_cosmosdb_containers" {
   autoscale_settings = contains(var.receipts_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
 }
 
-# module "azurerm_cosmosdb_sql_stored_procedure" {
-#   # source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_stored_procedure?ref=7eea8d90faa331e7f3efc90edf396917120197b7"
-#   # source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_stored_procedure?ref=PRDP-276-feat-add-conflict-resolution-policy-and-stored-procedure"
-#   source              = "./.terraform/modules/__v3__/cosmosdb_sql_stored_procedure"
-
-#   depends_on          = [module.receipts_datastore_cosmosdb_containers]
-#   name                = "cart-for-receipts-merge-procedure"
-#   resource_group_name = azurerm_resource_group.receipts_rg.name
-#   account_name        = module.receipts_datastore_cosmosdb_account.name
-#   database_name       = module.receipts_datastore_cosmosdb_database.name
-#   container_name      = "cart-for-receipts"
-
-#   body = file("./scripts/store_procedure.js")
-
-# }
-
-
-resource "azurerm_cosmosdb_sql_stored_procedure" "azurerm_cosmosdb_sql_stored_procedure" {
-  depends_on          = [module.receipts_datastore_cosmosdb_containers]
-  name                = "cart-for-receipts-merge-procedure"
-  resource_group_name = azurerm_resource_group.receipts_rg.name
-  account_name        = module.receipts_datastore_cosmosdb_account.name
-  database_name       = module.receipts_datastore_cosmosdb_database.name
-  container_name      = "cart-for-receipts"
-
-  body = file("./scripts/store_procedure.js")
-}
-
-resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
+resource "azurerm_monitor_metric_alert" "cosmos_receipt_db_normalized_ru_exceeded" {
   count = var.env_short == "p" ? 1 : 0
+
+  enabled = false # :warning: disabling alert for the moment as it is firing too often even if RU are below threshold - to be investigated see https://pagopa.atlassian.net/browse/PAGOPA-3418?focusedCommentId=278105
 
   name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.receipts_datastore_cosmosdb_account.name}] Normalized RU Exceeded"
   resource_group_name = azurerm_resource_group.receipts_rg.name
@@ -230,13 +207,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
     dimension {
       name     = "Region"
       operator = "Include"
-      values   = [azurerm_resource_group.receipts_rg.location]
-    }
-
-    dimension {
-      name     = "CollectionName"
-      operator = "Include"
-      values   = ["*"]
+      values   = ["West Europe"]
     }
 
   }
@@ -255,10 +226,10 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
 }
 
 
-resource "azurerm_monitor_metric_alert" "cosmos_db_provisioned_throughput_exceeded_ProvisionedThroughput" { # https://github.com/pagopa/terraform-azurerm-v3/blob/58f14dc120e10bd3515bcc34e0685e74d1d11047/cosmosdb_account/main.tf#L205
+resource "azurerm_monitor_metric_alert" "cosmos_receipt_db_provisioned_throughput_exceeded" { # https://github.com/pagopa/terraform-azurerm-v3/blob/58f14dc120e10bd3515bcc34e0685e74d1d11047/cosmosdb_account/main.tf#L205
   count = var.env_short == "p" ? 1 : 0
 
-  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.receipts_datastore_cosmosdb_account.name}] Provisioned Throughput Exceeded - ProvisionedThroughput"
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.receipts_datastore_cosmosdb_account.name}] 429 Errors"
   resource_group_name = azurerm_resource_group.receipts_rg.name
   scopes              = [module.receipts_datastore_cosmosdb_account.id]
   description         = "A collection throughput (RU/s) exceed provisioned throughput, and it's raising 429 errors. Please, consider to increase RU. Runbook: not needed."
@@ -277,22 +248,15 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_provisioned_throughput_exceed
     operator               = "GreaterThan"
     threshold              = 0 // var.receipts_datastore_cosmos_db_params.max_throughput
     skip_metric_validation = false
-
-
     dimension {
-      name     = "Region"
+      name     = "CollectionName"
       operator = "Include"
-      values   = [var.location]
+      values   = ["Receipts"]
     }
     dimension {
       name     = "StatusCode"
       operator = "Include"
       values   = ["429"]
-    }
-    dimension {
-      name     = "CollectionName"
-      operator = "Include"
-      values   = ["*"]
     }
 
   }

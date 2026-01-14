@@ -10,9 +10,10 @@ instance       = "prod"
 
 ### FEATURES FLAGS
 is_feature_enabled = {
-  cosmos  = true
-  redis   = true
-  storage = true
+  cosmos                 = true
+  redis                  = true
+  storage                = true
+  redis_hub_spoke_pe_dns = false
 }
 
 ### External resources
@@ -86,7 +87,7 @@ redis_pay_wallet_params = {
 }
 
 redis_std_pay_wallet_params = {
-  capacity   = 0
+  capacity   = 1
   sku_name   = "Standard"
   family     = "C"
   version    = 6
