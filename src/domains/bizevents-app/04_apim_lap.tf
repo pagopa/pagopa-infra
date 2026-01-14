@@ -144,8 +144,8 @@ module "apim_api_bizevents_lap_api_jwt_v1" {
 resource "azurerm_api_management_api_operation_policy" "policy_lap_generatePDF" { #
 
   api_name            = module.apim_api_bizevents_lap_api_v1.name
-  api_management_name   = local.pagopa_apim_name
-  resource_group_name   = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   operation_id        = "generatePDF"
 
   #tfsec:ignore:GEN005
@@ -157,8 +157,8 @@ resource "azurerm_api_management_api_operation_policy" "policy_lap_generatePDF" 
 resource "azurerm_api_management_api_operation_policy" "policy_lap_generatePDF_jwt" { #
 
   api_name            = module.apim_api_bizevents_lap_api_jwt_v1.name
-  api_management_name   = local.pagopa_apim_name
-  resource_group_name   = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   operation_id        = "generatePDF"
 
   #tfsec:ignore:GEN005
