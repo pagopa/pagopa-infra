@@ -185,7 +185,7 @@ module "checkout_cdn" {
   keyvault_id = data.azurerm_key_vault.key_vault.id
   tenant_id   = data.azurerm_client_config.current.tenant_id
 
-  querystring_caching_behaviour = "BypassCaching"
+  querystring_caching_behaviour = "IgnoreQueryString"
 
   custom_domains         = local.custom_domains
   global_delivery_rules  = local.global_delivery_rules
