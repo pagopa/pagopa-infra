@@ -36,6 +36,31 @@ module "cosmosdb_account_mongodb" {
   tags = module.tag_config.tags
 }
 
+# hub spoke private endpoint
+resource "azurerm_private_endpoint" "cosmos_data_mongo_pe" {
+  count = var.is_feature_enabled.cosmos && var.is_feature_enabled.cosmos_hub_spoke_pe_dns && var.env_short != "d" ? 1 : 0
+
+  name                = "${local.project}-cosmos-data-mongo-pe"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.db_rg.name
+  subnet_id           = module.cosmos_spoke_pay_wallet_snet[0].subnet_id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-cosmos-data-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.cosmos.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-cosmos-data-private-service-connection"
+    private_connection_resource_id = module.cosmosdb_account_mongodb[0].id
+    is_manual_connection           = false
+    subresource_names              = ["MongoDB"]
+  }
+
+  tags = module.tag_config.tags
+}
+
+
 resource "azurerm_cosmosdb_mongo_database" "notices_mongo_db" {
   count = var.is_feature_enabled.cosmosdb_notice ? 1 : 0
 
