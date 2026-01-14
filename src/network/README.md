@@ -13,13 +13,17 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 4a50ddb69cafbc09cf43cd317848a75d61f33050 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | da30369e66508e38252f34aa7209c645ba208546 |
 | <a name="module_load_balancer_observ_egress"></a> [load\_balancer\_observ\_egress](#module\_load\_balancer\_observ\_egress) | ./.terraform/modules/__v4__/load_balancer | n/a |
-| <a name="module_network_security_group"></a> [network\_security\_group](#module\_network\_security\_group) | ./.terraform/modules/__V4__/network_security_group | n/a |
-| <a name="module_network_watcher_storage_account"></a> [network\_watcher\_storage\_account](#module\_network\_watcher\_storage\_account) | ./.terraform/modules/__V4__/IDH/storage_account | n/a |
+| <a name="module_network_security_group"></a> [network\_security\_group](#module\_network\_security\_group) | ./.terraform/modules/__v4__/network_security_group | n/a |
+| <a name="module_network_watcher_storage_account"></a> [network\_watcher\_storage\_account](#module\_network\_watcher\_storage\_account) | ./.terraform/modules/__v4__/IDH/storage_account | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../tag_config | n/a |
 | <a name="module_vmss_pls_snet"></a> [vmss\_pls\_snet](#module\_vmss\_pls\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_vmss_snet"></a> [vmss\_snet](#module\_vmss\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
+| <a name="module_vnet_hub_spoke"></a> [vnet\_hub\_spoke](#module\_vnet\_hub\_spoke) | ./.terraform/modules/__v4__/virtual_network | n/a |
+| <a name="module_vnet_hub_spoke_peering"></a> [vnet\_hub\_spoke\_peering](#module\_vnet\_hub\_spoke\_peering) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
+| <a name="module_vnet_itn_compute_peering"></a> [vnet\_itn\_compute\_peering](#module\_vnet\_itn\_compute\_peering) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
+| <a name="module_vnet_weu_fe_peering"></a> [vnet\_weu\_fe\_peering](#module\_vnet\_weu\_fe\_peering) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
 
 ## Resources
 
@@ -29,6 +33,7 @@
 | [azurerm_linux_virtual_machine_scale_set.vmss-egress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine_scale_set) | resource |
 | [azurerm_monitor_autoscale_setting.vmss-scale](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_private_link_service.vmss_pls](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_link_service) | resource |
+| [azurerm_resource_group.hub_spoke_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.nsg_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.vmss_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_subnet_nat_gateway_association.vmss_snet_nat](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_nat_gateway_association) | resource |
@@ -40,9 +45,12 @@
 | [azurerm_key_vault_secret.external_database_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.vmss_admin_login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.vmss_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.vnet_address_space](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_nat_gateway.pagopa_nat](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/nat_gateway) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet_integration](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
+| [azurerm_virtual_network.vnet_itn_compute](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
+| [azurerm_virtual_network.vnet_weu_fe](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 
 ## Inputs
 
@@ -53,11 +61,14 @@
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | general | `string` | n/a | yes |
 | <a name="input_external_database_connection"></a> [external\_database\_connection](#input\_external\_database\_connection) | Map of external database connection configurations | <pre>map(object({<br/>    connector_name       = string<br/>    url                  = string<br/>    params               = optional(map(string), {})<br/>    user_secret_name     = string<br/>    password_secret_name = string<br/>  }))</pre> | `{}` | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
+| <a name="input_location_hub_spoke"></a> [location\_hub\_spoke](#input\_location\_hub\_spoke) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |
+| <a name="input_location_short_hub_spoke"></a> [location\_short\_hub\_spoke](#input\_location\_short\_hub\_spoke) | One of wue, neu | `string` | n/a | yes |
 | <a name="input_nsg_network_watcher_enabled"></a> [nsg\_network\_watcher\_enabled](#input\_nsg\_network\_watcher\_enabled) | (Optional) Enable Network Watcher for all NSG (subnet associated to nsg) | `bool` | `false` | no |
 | <a name="input_nsg_regions"></a> [nsg\_regions](#input\_nsg\_regions) | (Optional) Regions where NSG must be created | `list(string)` | <pre>[<br/>  "westeurope"<br/>]</pre> | no |
 | <a name="input_trino_xmx"></a> [trino\_xmx](#input\_trino\_xmx) | n/a | `string` | `"4G"` | no |
 | <a name="input_vmss_size"></a> [vmss\_size](#input\_vmss\_size) | n/a | `string` | `"Standard_D2ds_v5"` | no |
+| <a name="input_vnet_ita_ddos_protection_plan"></a> [vnet\_ita\_ddos\_protection\_plan](#input\_vnet\_ita\_ddos\_protection\_plan) | n/a | <pre>object({<br/>    id     = string<br/>    enable = bool<br/>  })</pre> | `null` | no |
 | <a name="input_vpn_gateway_address_space"></a> [vpn\_gateway\_address\_space](#input\_vpn\_gateway\_address\_space) | n/a | `string` | `"172.16.1.0/24"` | no |
 
 ## Outputs

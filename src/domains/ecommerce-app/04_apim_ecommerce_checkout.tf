@@ -279,6 +279,15 @@ resource "azurerm_api_management_api_operation_policy" "get_fees_v2" {
   })
 }
 
+resource "azurerm_api_management_api_operation_policy" "post_payment_methods_v2" {
+  api_name            = "${local.project}-ecommerce-checkout-api-v2"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getAllPaymentMethods"
+
+  xml_content = file("./api/ecommerce-checkout/v2/_post_payment_methods_policy.xml.tpl")
+}
+
 # pagopa-ecommerce APIs for checkout V3 (authenticated)
 
 module "apim_ecommerce_checkout_api_v3" {
@@ -361,4 +370,13 @@ module "apim_ecommerce_checkout_api_v4" {
     checkout_origin            = var.env_short == "d" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}"
     checkout_ingress_hostname  = local.checkout_hostname
   })
+}
+
+resource "azurerm_api_management_api_operation_policy" "post_payment_methods_v4" {
+  api_name            = "${local.project}-checkout-api-v4"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getAllPaymentMethodsAuth"
+
+  xml_content = file("./api/ecommerce-checkout/v4/_post_payment_methods_policy.xml.tpl")
 }

@@ -5,7 +5,7 @@
         <set-variable name="deviceVersion" value="@(context.Request.Url.Query.GetValueOrDefault("deviceVersion", ""))" />
         <set-variable name="userDevice" value="@(context.Request.Url.Query.GetValueOrDefault("devicePlatform", ""))" />
         <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
-            <set-url>https://${ecommerce_hostname}/pagopa-ecommerce-payment-methods-handler/payment-methods</set-url>
+            <set-url>https://${ecommerce_ingress_hostname}/pagopa-ecommerce-payment-methods-handler/payment-methods</set-url>
             <set-method>POST</set-method>
             <set-header name="Content-Type" exists-action="override">
                 <value>application/json</value>
@@ -19,18 +19,18 @@
             </set-header>
             <set-body>@{
                     var userTouchpoint = "IO";
-                    var totalAmountValue = Convert.ToInt64("1");
+                    var totalAmountValue = Convert.ToInt64(context.Variables.GetValueOrDefault("totalAmount", "1"));
                     var deviceVersion = context.Variables.GetValueOrDefault("deviceVersion", "");
                     var userDevice = context.Variables.GetValueOrDefault("userDevice", "");
                     var paymentNotice = new JObject();
                     paymentNotice["paymentAmount"] = totalAmountValue;
                     var paymentNoticeList = new JArray();
-                    paymentNoticeList.Add(paymentNotice);
                     var language = "IT";
                     var sortBy = "DESCRIPTION";
                     var sortOrder = "ASC";
                     var priorityGroups = new JArray();
                     priorityGroups.Add("CP");
+                    paymentNoticeList.Add(paymentNotice);
                     return new JObject(
                             new JProperty("userTouchpoint", userTouchpoint),
                             new JProperty("totalAmount", totalAmountValue),
@@ -65,14 +65,16 @@
                         <value>application/json</value>
                     </set-header>
                     <set-body>@{
+                        var totalAmountValue = Convert.ToInt64(context.Variables.GetValueOrDefault("totalAmount", "0"));
+
                         JObject paymentMethodsResponseBody = ((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>();
                         JArray paymentHandlerResponse = new JArray();
 
                         JArray rangesArray = new JArray();
                         JObject rangeItem = new JObject
                         {
-                            { "min", 0 },
-                            { "max", 10000 }
+                            { "min", totalAmountValue },
+                            { "max", totalAmountValue + 1 }
                         };
                         rangesArray.Add(rangeItem);
 

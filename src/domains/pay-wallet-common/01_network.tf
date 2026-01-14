@@ -50,3 +50,48 @@ module "storage_pay_wallet_snet" {
   ]
 }
 
+
+# hub spoke
+module "redis_spoke_pay_wallet_snet" {
+  source            = "./.terraform/modules/__v4__/IDH/subnet"
+  count             = var.env_short == "d" ? 0 : 1
+  env               = var.env
+  idh_resource_tier = "slash28_privatelink_true"
+  name              = "${local.project}-redis-pe-snet"
+  product_name      = var.prefix
+
+  resource_group_name  = local.vnet_hub_spoke_rg_name
+  virtual_network_name = local.vnet_spoke_data_name
+  tags                 = module.tag_config.tags
+
+  custom_nsg_configuration = {
+    target_service               = "redis"
+    source_address_prefixes_name = "Paywallet"
+    source_address_prefixes      = ["*"]
+  }
+}
+
+module "cosmos_spoke_pay_wallet_snet" {
+  source            = "./.terraform/modules/__v4__/IDH/subnet"
+  count             = var.env_short == "d" ? 0 : 1
+  env               = var.env
+  idh_resource_tier = "slash28_privatelink_true"
+  name              = "${local.project}-cosmos-pe-snet"
+  product_name      = var.prefix
+
+  resource_group_name  = local.vnet_hub_spoke_rg_name
+  virtual_network_name = local.vnet_spoke_data_name
+  tags                 = module.tag_config.tags
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+  ]
+
+  custom_nsg_configuration = {
+    target_service               = "cosmos"
+    source_address_prefixes_name = "Paywallet"
+    source_address_prefixes      = ["*"]
+  }
+}
+
