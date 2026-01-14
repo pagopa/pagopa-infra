@@ -51,14 +51,14 @@ module "vnet_weu_fe_peering" {
   source_virtual_network_name      = module.vnet_hub_spoke[each.key].name
   source_remote_virtual_network_id = module.vnet_hub_spoke[each.key].id
   source_use_remote_gateways       = false
-  source_allow_forwarded_traffic   = false
+  source_allow_forwarded_traffic   = true
   source_allow_gateway_transit     = true
 
   target_resource_group_name       = local.vnet_integration_resource_group_name
   target_virtual_network_name      = data.azurerm_virtual_network.vnet_weu_fe.name
   target_remote_virtual_network_id = data.azurerm_virtual_network.vnet_weu_fe.id
   target_allow_gateway_transit     = true
-  target_allow_forwarded_traffic   = false
+  target_allow_forwarded_traffic   = true
 }
 
 # peerings to itn compute vnet
@@ -75,6 +75,6 @@ module "vnet_itn_compute_peering" {
   target_resource_group_name       = local.vnet_italy_resource_group_name
   target_virtual_network_name      = data.azurerm_virtual_network.vnet_itn_compute.name
   target_remote_virtual_network_id = data.azurerm_virtual_network.vnet_itn_compute.id
-  target_allow_gateway_transit     = false
+  target_allow_gateway_transit     = true
   target_allow_forwarded_traffic   = true
 }

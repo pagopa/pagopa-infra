@@ -10,9 +10,10 @@ instance       = "uat"
 
 ### FEATURES FLAGS
 is_feature_enabled = {
-  cosmos  = true
-  redis   = true
-  storage = true
+  cosmos                 = true
+  redis                  = true
+  storage                = true
+  redis_hub_spoke_pe_dns = true
 }
 
 ### External resources
