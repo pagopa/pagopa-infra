@@ -15,7 +15,6 @@ module "cloudo" {
   env                       = var.env
   location                  = var.location_ita
   resource_group_name       = azurerm_resource_group.rg.name
-  service_plan_sku          = "B1"
   application_insights_name = data.azurerm_application_insights.app_insight.name
   application_insights_rg   = data.azurerm_application_insights.app_insight.resource_group_name
   subscription_id           = data.azurerm_subscription.current.subscription_id
@@ -39,11 +38,6 @@ module "cloudo" {
     itn = {
       cluster_id = data.azurerm_kubernetes_cluster.aks_itn.id
     }
-  }
-
-  app_service_logs = {
-    retention_period_days = 3
-    disk_quota_mb         = 35
   }
 
   slack_integration = {
