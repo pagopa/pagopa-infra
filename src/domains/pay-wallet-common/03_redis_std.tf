@@ -60,19 +60,16 @@ module "pagopa_pay_wallet_redis_std" {
 
 # hub spoke private endpoint
 resource "azurerm_private_endpoint" "redis_data_pe" {
-  count = var.is_feature_enabled.redis && var.env_short != "d" ? 1 : 0
+  count = var.is_feature_enabled.redis && var.env_short != "d" && var.is_feature_enabled.redis_hub_spoke_pe_dns ? 1 : 0
 
   name                = "${local.project}-redis-std-data-pe"
   location            = var.location
   resource_group_name = azurerm_resource_group.redis_std_pay_wallet_rg.name
-  subnet_id           = module.redis_spoke_pay_wallet_snet.subnet_id
+  subnet_id           = module.redis_spoke_pay_wallet_snet[0].subnet_id
 
-  dynamic "private_dns_zone_group" {
-    for_each = var.is_feature_enabled.redis_hub_spoke_pe_dns ? [1] : []
-    content {
-      name                 = "${local.project}-redis-std-data-private-dns-zone-group"
-      private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
-    }
+  private_dns_zone_group {
+    name                 = "${local.project}-redis-std-data-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
   }
 
   private_service_connection {
