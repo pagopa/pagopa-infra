@@ -10,30 +10,20 @@
 
         <!-- Extracting variables from request -->
         <set-variable name="fiscal_code" value="@((string) context.Request.Headers.GetValueOrDefault("x-fiscal-code", "N/A"))" />
-        <set-variable name="event_id" value="@((string) context.Request.MatchedParameters["event-id"])" />
-
-        <!-- Generating hashed key -->
-        <set-variable name="hashed_key" value="@{
-
+        <set-variable name="event_id" value="@{
             try {
-                string fiscalCode = (string) context.Variables["fiscal_code"];
-                string eventId = (string) context.Variables["event_id"];
-                string key = fiscalCode + ":" + eventId;
-
-                var keyAsByteArray = Encoding.UTF8.GetBytes(key);
-                var hashedKey = SHA256.Create().ComputeHash(keyAsByteArray);
-                var builder = new System.Text.StringBuilder(hashedKey.Length * 2);
-                foreach (var b in hashedKey) {
-                    builder.Append(b.ToString("x2"));
+                string eventId = (string) context.Request.MatchedParameters["event-id"];
+                if (eventId != null) {
+                    return eventId.Split(new[] { "_CART_" }, StringSplitOptions.None)[0];
                 }
-                return "lap::" + builder.ToString();
+                return "lap::ERROR_DURING_EVENTID_EXTRACTION";
             } catch (Exception e) {
-                return "lap::ERROR_DURING_KEY_HASHING";
+                return "lap::ERROR_DURING_EVENTID_EXTRACTION";
             }
         }" />
 
         <!-- Execute a lookup on APIM cache, checking if guard check lock was inserted  -->
-        <cache-lookup-value key="@((string) context.Variables["hashed_key"])" variable-name="attachment_generation_lock" default-value="NONE" caching-type="internal" />
+        <cache-lookup-value key="@((string) context.Variables["event_id"])" variable-name="attachment_generation_lock" default-value="NONE" caching-type="internal" />
         <choose>
 
             <!-- If guard check lock was set, return a custom error message -->
@@ -80,7 +70,7 @@
                 <choose>
                     <!-- Store hashed key in internal cache (with TTL of 60s) if applicative code refers to re-generation -->
                     <when condition="@( ((string) context.Variables["applicative_error_code"]).Equals("AT_404_002") )">
-                        <cache-store-value key="@((string)context.Variables["hashed_key"])" value="GENERATING_ATTACHMENT" duration="${guard-lock-duration}" caching-type="internal" />
+                        <cache-store-value key="@((string)context.Variables["event_id"])" value="GENERATING_ATTACHMENT" duration="${guard-lock-duration}" caching-type="internal" />
                     </when>
                 </choose>
             </when>
