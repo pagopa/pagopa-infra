@@ -17,10 +17,10 @@
               "settings": {
                 "content": {
                   "content": "- `0` - Success \n- `1` - Generic error \n- `2` - Authorization error \n- `3` - Invalid data \n- `4` - Timeout \n- `5` - Unsupported circuit \n- `6` - Missing data \n- `7` - Invalid card: expired card etc \n- `8` - Canceled by the user \n- `9` - Double transaction \n- `10` - Excessive amount \n- `11` - Order not present \n- `12` - Invalid method \n- `13` - Retriable KO \n- `14` - Invalid session\n- `15` - Already onboarded\n- `25` - Psp error\n- `116` - Balance limit\n- `117` - CVV error\n- `121` - Limit exceeded",
-                  "title": "Outcome Codes",
-                  "subtitle": "",
                   "markdownSource": 1,
-                  "markdownUri": ""
+                  "markdownUri": "",
+                  "subtitle": "",
+                  "title": "Outcome Codes"
                 }
               }
             }
@@ -140,12 +140,15 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"payment-wallet-outcomes/v1/wallets/outcomes\" and (requestQuery_s contains \"outcome\")\n| extend outcome = extract(@\"outcome=([^&]+)\", 1, requestQuery_s)\n| summarize req=count() by outcome, Time=bin(TimeGenerated,15m)\n| render barchart with (kind=stacked)\n\n",
                   "ControlType": "FrameControlChart",
-                  "SpecificChart": "StackedColumn",
-                  "PartTitle": "Wallet onboarding outcome",
-                  "PartSubTitle": "payment-wallet-outcomes/v1/wallets/outcomes?outcome={outcome}",
                   "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [
+                      {
+                        "name": "outcome",
+                        "type": "string"
+                      }
+                    ],
                     "xAxis": {
                       "name": "Time",
                       "type": "datetime"
@@ -155,15 +158,12 @@
                         "name": "req",
                         "type": "long"
                       }
-                    ],
-                    "splitBy": [
-                      {
-                        "name": "outcome",
-                        "type": "string"
-                      }
-                    ],
-                    "aggregation": "Sum"
-                  }
+                    ]
+                  },
+                  "PartSubTitle": "payment-wallet-outcomes/v1/wallets/outcomes?outcome={outcome}",
+                  "PartTitle": "Wallet onboarding outcome",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"payment-wallet-outcomes/v1/wallets/outcomes\" and (requestQuery_s contains \"outcome\")\n| extend outcome = extract(@\"outcome=([^&]+)\", 1, requestQuery_s)\n| summarize req=count() by outcome, Time=bin(TimeGenerated,15m)\n| render barchart with (kind=stacked)\n\n",
+                  "SpecificChart": "StackedColumn"
                 }
               }
             }
@@ -283,12 +283,10 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"payment-wallet-outcomes/v1/wallets/outcomes\" and (requestQuery_s contains \"outcome\")\n| extend outcome = extract(@\"outcome=([^&]+)\", 1, requestQuery_s)\n| summarize req=count() by outcome, Time=bin(TimeGenerated,15m)\n| render piechart \n\n",
                   "ControlType": "FrameControlChart",
-                  "SpecificChart": "Pie",
-                  "PartTitle": "Wallet onboarding outcome",
-                  "PartSubTitle": "payment-wallet-outcomes/v1/wallets/outcomes?outcome={outcome}",
                   "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
                     "xAxis": {
                       "name": "outcome",
                       "type": "string"
@@ -298,10 +296,12 @@
                         "name": "req",
                         "type": "long"
                       }
-                    ],
-                    "splitBy": [],
-                    "aggregation": "Sum"
-                  }
+                    ]
+                  },
+                  "PartSubTitle": "payment-wallet-outcomes/v1/wallets/outcomes?outcome={outcome}",
+                  "PartTitle": "Wallet onboarding outcome",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"payment-wallet-outcomes/v1/wallets/outcomes\" and (requestQuery_s contains \"outcome\")\n| extend outcome = extract(@\"outcome=([^&]+)\", 1, requestQuery_s)\n| summarize req=count() by outcome, Time=bin(TimeGenerated,15m)\n| render piechart \n\n",
+                  "SpecificChart": "Pie"
                 }
               }
             }
@@ -421,10 +421,9 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.9;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"io-payment-wallet/v1/wallets\" and httpMethod_s == \"POST\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
-                  "PartTitle": "Availability (15m)",
-                  "PartSubTitle": "POST io-payment-wallets/v1/wallets",
                   "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -438,10 +437,11 @@
                         "name": "watermark",
                         "type": "real"
                       }
-                    ],
-                    "splitBy": [],
-                    "aggregation": "Sum"
-                  }
+                    ]
+                  },
+                  "PartSubTitle": "POST io-payment-wallets/v1/wallets",
+                  "PartTitle": "Availability (15m)",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.9;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"io-payment-wallet/v1/wallets\" and httpMethod_s == \"POST\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n"
                 }
               }
             }
@@ -557,10 +557,6 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_url = \"io-payment-wallet/v1/wallets\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"POST\"\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
-                  "SpecificChart": "StackedArea",
-                  "PartTitle": "Response Codes (15m)",
-                  "PartSubTitle": "POST io-payment-wallets/v1/wallets",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [
@@ -579,7 +575,11 @@
                         "type": "long"
                       }
                     ]
-                  }
+                  },
+                  "PartSubTitle": "POST io-payment-wallets/v1/wallets",
+                  "PartTitle": "Response Codes (15m)",
+                  "Query": "let api_url = \"io-payment-wallet/v1/wallets\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"POST\"\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
+                  "SpecificChart": "StackedArea"
                 }
               }
             }
@@ -695,426 +695,424 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"io-payment-wallet/v1/wallets\" and httpMethod_s == \"POST\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
-                  "SpecificChart": "Line",
-                  "PartTitle": "Percentile Response Time (15m)",
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "watermark",
+                        "type": "long"
+                      },
+                      {
+                        "name": "duration_percentile_95",
+                        "type": "real"
+                      }
+                    ]
+                  },
                   "PartSubTitle": "POST io-payment-wallet/v1/wallets",
-                  "Dimensions": {
-                    "aggregation": "Sum",
-                    "splitBy": [],
-                    "xAxis": {
-                      "name": "TimeGenerated",
-                      "type": "datetime"
-                    },
-                    "yAxis": [
-                      {
-                        "name": "watermark",
-                        "type": "long"
-                      },
-                      {
-                        "name": "duration_percentile_95",
-                        "type": "real"
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          },
-          {
-            "position": {
-              "x": 0,
-              "y": 9,
-              "colSpan": 6,
-              "rowSpan": 4
-            },
-            "metadata": {
-              "inputs": [
-                {
-                  "name": "resourceTypeMode",
-                  "isOptional": true
-                },
-                {
-                  "name": "ComponentId",
-                  "isOptional": true
-                },
-                {
-                  "name": "Scope",
-                  "value": {
-                    "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
-                    ]
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "PartId",
-                  "isOptional": true
-                },
-                {
-                  "name": "Version",
-                  "value": "2.0",
-                  "isOptional": true
-                },
-                {
-                  "name": "TimeRange",
-                  "value": "PT4H",
-                  "isOptional": true
-                },
-                {
-                  "name": "DashboardId",
-                  "isOptional": true
-                },
-                {
-                  "name": "DraftRequestParameters",
-                  "value": {
-                    "scope": "hierarchy"
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "Query",
-                  "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"ecommerce/checkout/v1/transactions\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n",
-                  "isOptional": true
-                },
-                {
-                  "name": "ControlType",
-                  "value": "FrameControlChart",
-                  "isOptional": true
-                },
-                {
-                  "name": "SpecificChart",
-                  "value": "Line",
-                  "isOptional": true
-                },
-                {
-                  "name": "PartTitle",
-                  "value": "Availability (15m)",
-                  "isOptional": true
-                },
-                {
-                  "name": "PartSubTitle",
-                  "value": "ecommerce/checkout/v1/transactions",
-                  "isOptional": true
-                },
-                {
-                  "name": "Dimensions",
-                  "value": {
-                    "aggregation": "Sum",
-                    "splitBy": [],
-                    "xAxis": {
-                      "name": "TimeGenerated",
-                      "type": "datetime"
-                    },
-                    "yAxis": [
-                      {
-                        "name": "availability",
-                        "type": "real"
-                      },
-                      {
-                        "name": "watermark",
-                        "type": "real"
-                      }
-                    ]
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "LegendOptions",
-                  "value": {
-                    "isEnabled": true,
-                    "position": "Bottom"
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "IsQueryContainTimeRange",
-                  "value": false,
-                  "isOptional": true
-                }
-              ],
-              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
-              "settings": {
-                "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s == \"/io-payment-wallet/v1/wallets\" and httpMethod_s == \"GET\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
-                  "PartTitle": "Availability (15m)",
-                  "PartSubTitle": "GET /io-payment-wallet/v1/wallets",
-                  "Dimensions": {
-                    "xAxis": {
-                      "name": "TimeGenerated",
-                      "type": "datetime"
-                    },
-                    "yAxis": [
-                      {
-                        "name": "availability",
-                        "type": "real"
-                      },
-                      {
-                        "name": "watermark",
-                        "type": "real"
-                      }
-                    ],
-                    "splitBy": [],
-                    "aggregation": "Sum"
-                  }
-                }
-              }
-            }
-          },
-          {
-            "position": {
-              "x": 6,
-              "y": 9,
-              "colSpan": 6,
-              "rowSpan": 4
-            },
-            "metadata": {
-              "inputs": [
-                {
-                  "name": "resourceTypeMode",
-                  "isOptional": true
-                },
-                {
-                  "name": "ComponentId",
-                  "isOptional": true
-                },
-                {
-                  "name": "Scope",
-                  "value": {
-                    "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
-                    ]
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "PartId",
-                  "isOptional": true
-                },
-                {
-                  "name": "Version",
-                  "value": "2.0",
-                  "isOptional": true
-                },
-                {
-                  "name": "TimeRange",
-                  "value": "PT4H",
-                  "isOptional": true
-                },
-                {
-                  "name": "DashboardId",
-                  "isOptional": true
-                },
-                {
-                  "name": "DraftRequestParameters",
-                  "value": {
-                    "scope": "hierarchy"
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "Query",
-                  "value": "\nlet api_url = \"ecommerce/checkout/v1/transactions\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
-                  "isOptional": true
-                },
-                {
-                  "name": "ControlType",
-                  "value": "FrameControlChart",
-                  "isOptional": true
-                },
-                {
-                  "name": "SpecificChart",
-                  "value": "Pie",
-                  "isOptional": true
-                },
-                {
-                  "name": "PartTitle",
-                  "value": "Response Codes (15m)",
-                  "isOptional": true
-                },
-                {
-                  "name": "PartSubTitle",
-                  "value": "ecommerce/checkout/v1/transactions",
-                  "isOptional": true
-                },
-                {
-                  "name": "Dimensions",
-                  "value": {
-                    "aggregation": "Sum",
-                    "splitBy": [],
-                    "xAxis": {
-                      "name": "httpStatus_d",
-                      "type": "string"
-                    },
-                    "yAxis": [
-                      {
-                        "name": "count_",
-                        "type": "long"
-                      }
-                    ]
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "LegendOptions",
-                  "value": {
-                    "isEnabled": true,
-                    "position": "Bottom"
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "IsQueryContainTimeRange",
-                  "value": false,
-                  "isOptional": true
-                }
-              ],
-              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
-              "settings": {
-                "content": {
-                  "Query": "let api_url_v1 = \"/io-payment-wallet/v1/wallets\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s == api_url_v1 and httpMethod_s == \"GET\"\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
-                  "SpecificChart": "StackedArea",
-                  "PartTitle": "Response Codes (15m)",
-                  "PartSubTitle": "GET /io-payment-wallet/v1/wallets",
-                  "Dimensions": {
-                    "aggregation": "Sum",
-                    "splitBy": [
-                      {
-                        "name": "HTTPStatus",
-                        "type": "string"
-                      }
-                    ],
-                    "xAxis": {
-                      "name": "TimeGenerated",
-                      "type": "datetime"
-                    },
-                    "yAxis": [
-                      {
-                        "name": "count_",
-                        "type": "long"
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          },
-          {
-            "position": {
-              "x": 12,
-              "y": 9,
-              "colSpan": 6,
-              "rowSpan": 4
-            },
-            "metadata": {
-              "inputs": [
-                {
-                  "name": "resourceTypeMode",
-                  "isOptional": true
-                },
-                {
-                  "name": "ComponentId",
-                  "isOptional": true
-                },
-                {
-                  "name": "Scope",
-                  "value": {
-                    "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
-                    ]
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "PartId",
-                  "isOptional": true
-                },
-                {
-                  "name": "Version",
-                  "value": "2.0",
-                  "isOptional": true
-                },
-                {
-                  "name": "TimeRange",
-                  "value": "PT4H",
-                  "isOptional": true
-                },
-                {
-                  "name": "DashboardId",
-                  "isOptional": true
-                },
-                {
-                  "name": "DraftRequestParameters",
-                  "value": {
-                    "scope": "hierarchy"
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "Query",
-                  "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"ecommerce/checkout/v1/transactions\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n",
-                  "isOptional": true
-                },
-                {
-                  "name": "ControlType",
-                  "value": "FrameControlChart",
-                  "isOptional": true
-                },
-                {
-                  "name": "SpecificChart",
-                  "value": "StackedColumn",
-                  "isOptional": true
-                },
-                {
-                  "name": "PartTitle",
-                  "value": "Percentile Response Time (15m)",
-                  "isOptional": true
-                },
-                {
-                  "name": "PartSubTitle",
-                  "value": "ecommerce/checkout/v1/transactions",
-                  "isOptional": true
-                },
-                {
-                  "name": "Dimensions",
-                  "value": {
-                    "aggregation": "Sum",
-                    "splitBy": [],
-                    "xAxis": {
-                      "name": "TimeGenerated",
-                      "type": "datetime"
-                    },
-                    "yAxis": [
-                      {
-                        "name": "duration_percentile_95",
-                        "type": "real"
-                      }
-                    ]
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "LegendOptions",
-                  "value": {
-                    "isEnabled": true,
-                    "position": "Bottom"
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "IsQueryContainTimeRange",
-                  "value": false,
-                  "isOptional": true
-                }
-              ],
-              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
-              "settings": {
-                "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.25;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s == \"/io-payment-wallet/v1/wallets\" and httpMethod_s == \"GET\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95)\n    by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
-                  "SpecificChart": "Line",
                   "PartTitle": "Percentile Response Time (15m)",
-                  "PartSubTitle": "GET /io-payment-wallet/v1/wallets",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"io-payment-wallet/v1/wallets\" and httpMethod_s == \"POST\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "SpecificChart": "Line"
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 9,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"ecommerce/checkout/v1/transactions\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Availability (15m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "ecommerce/checkout/v1/transactions",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
                   "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ]
+                  },
+                  "PartSubTitle": "GET /io-payment-wallet/v1/wallets",
+                  "PartTitle": "Availability (15m)",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s == \"/io-payment-wallet/v1/wallets\" and httpMethod_s == \"GET\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n"
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 9,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet api_url = \"ecommerce/checkout/v1/transactions\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Pie",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Response Codes (15m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "ecommerce/checkout/v1/transactions",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "httpStatus_d",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [
+                      {
+                        "name": "HTTPStatus",
+                        "type": "string"
+                      }
+                    ],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  },
+                  "PartSubTitle": "GET /io-payment-wallet/v1/wallets",
+                  "PartTitle": "Response Codes (15m)",
+                  "Query": "let api_url_v1 = \"/io-payment-wallet/v1/wallets\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s == api_url_v1 and httpMethod_s == \"GET\"\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
+                  "SpecificChart": "StackedArea"
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 12,
+              "y": 9,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"ecommerce/checkout/v1/transactions\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedColumn",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Percentile Response Time (15m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "ecommerce/checkout/v1/transactions",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "duration_percentile_95",
+                        "type": "real"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -1128,10 +1126,12 @@
                         "name": "duration_percentile_95",
                         "type": "real"
                       }
-                    ],
-                    "splitBy": [],
-                    "aggregation": "Sum"
-                  }
+                    ]
+                  },
+                  "PartSubTitle": "GET /io-payment-wallet/v1/wallets",
+                  "PartTitle": "Percentile Response Time (15m)",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.25;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s == \"/io-payment-wallet/v1/wallets\" and httpMethod_s == \"GET\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95)\n    by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "SpecificChart": "Line"
                 }
               }
             }
@@ -1251,10 +1251,9 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/io-payment-wallet/v1/wallets/[^/]+/applications\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
-                  "PartTitle": "Availability (15m)",
-                  "PartSubTitle": "PUT /io-payment-wallet/v1/wallets/{walletId}/applications",
                   "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -1268,10 +1267,11 @@
                         "name": "watermark",
                         "type": "real"
                       }
-                    ],
-                    "splitBy": [],
-                    "aggregation": "Sum"
-                  }
+                    ]
+                  },
+                  "PartSubTitle": "PUT /io-payment-wallet/v1/wallets/{walletId}/applications",
+                  "PartTitle": "Availability (15m)",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/io-payment-wallet/v1/wallets/[^/]+/applications\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n"
                 }
               }
             }
@@ -1387,10 +1387,14 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_url = \"/io-payment-wallet/v1/wallets/[^/]+/applications\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
-                  "SpecificChart": "StackedArea",
-                  "PartSubTitle": "PUT /io-payment-wallet/v1/wallets/{walletId}/applications",
                   "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [
+                      {
+                        "name": "HTTPStatus",
+                        "type": "string"
+                      }
+                    ],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -1400,15 +1404,11 @@
                         "name": "count_",
                         "type": "long"
                       }
-                    ],
-                    "splitBy": [
-                      {
-                        "name": "HTTPStatus",
-                        "type": "string"
-                      }
-                    ],
-                    "aggregation": "Sum"
-                  }
+                    ]
+                  },
+                  "PartSubTitle": "PUT /io-payment-wallet/v1/wallets/{walletId}/applications",
+                  "Query": "let api_url = \"/io-payment-wallet/v1/wallets/[^/]+/applications\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
+                  "SpecificChart": "StackedArea"
                 }
               }
             }
@@ -1524,10 +1524,9 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/io-payment-wallet/v1/wallets/[^/]+/applications\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
-                  "SpecificChart": "Line",
-                  "PartSubTitle": "PUT /io-payment-wallet/v1/wallets/{walletId}/applications",
                   "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -1541,10 +1540,11 @@
                         "name": "duration_percentile_95",
                         "type": "real"
                       }
-                    ],
-                    "splitBy": [],
-                    "aggregation": "Sum"
-                  }
+                    ]
+                  },
+                  "PartSubTitle": "PUT /io-payment-wallet/v1/wallets/{walletId}/applications",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/io-payment-wallet/v1/wallets/[^/]+/applications\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "SpecificChart": "Line"
                 }
               }
             }
@@ -1664,10 +1664,9 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/io-payment-wallet/v1/wallets/[^/]+\" and httpMethod_s == \"GET\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
-                  "PartTitle": "Availability (15m)",
-                  "PartSubTitle": "GET /io-payment-wallet/v1/wallets/{walletId}",
                   "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -1681,10 +1680,11 @@
                         "name": "watermark",
                         "type": "real"
                       }
-                    ],
-                    "splitBy": [],
-                    "aggregation": "Sum"
-                  }
+                    ]
+                  },
+                  "PartSubTitle": "GET /io-payment-wallet/v1/wallets/{walletId}",
+                  "PartTitle": "Availability (15m)",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/io-payment-wallet/v1/wallets/[^/]+\" and httpMethod_s == \"GET\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n"
                 }
               }
             }
@@ -1800,10 +1800,6 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_url = \"/io-payment-wallet/v1/wallets/[^/]+\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"GET\"\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
-                  "SpecificChart": "StackedArea",
-                  "PartTitle": "Response Codes (15m)",
-                  "PartSubTitle": "GET /io-payment-wallet/v1/wallets/{walletId}",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [
@@ -1822,7 +1818,11 @@
                         "type": "long"
                       }
                     ]
-                  }
+                  },
+                  "PartSubTitle": "GET /io-payment-wallet/v1/wallets/{walletId}",
+                  "PartTitle": "Response Codes (15m)",
+                  "Query": "let api_url = \"/io-payment-wallet/v1/wallets/[^/]+\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"GET\"\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
+                  "SpecificChart": "StackedArea"
                 }
               }
             }
@@ -1938,10 +1938,6 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/io-payment-wallet/v1/wallets/[^/]+\" and httpMethod_s == \"GET\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
-                  "SpecificChart": "Line",
-                  "PartTitle": "Percentile Response Time (15m)",
-                  "PartSubTitle": "GET /io-payment-wallet/v1/wallets/{walletId}",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [],
@@ -1959,7 +1955,11 @@
                         "type": "real"
                       }
                     ]
-                  }
+                  },
+                  "PartSubTitle": "GET /io-payment-wallet/v1/wallets/{walletId}",
+                  "PartTitle": "Percentile Response Time (15m)",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/io-payment-wallet/v1/wallets/[^/]+\" and httpMethod_s == \"GET\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "SpecificChart": "Line"
                 }
               }
             }
@@ -2079,10 +2079,9 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.99;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/payment-wallet-notifications/v1/wallets/[^/]+/sessions/[^/]+/notifications\" and httpMethod_s == \"POST\"\n| summarize\n  Total=count(),\n  Success=countif(httpStatus_d < 500 and timeTaken_d < 0.25) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n",
-                  "PartTitle": "Availability (15m)",
-                  "PartSubTitle": "POST /payment-wallet-notifications/v1/wallets/{walletId}/sessions/{sessionId}/notifications",
                   "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -2096,10 +2095,11 @@
                         "name": "watermark",
                         "type": "real"
                       }
-                    ],
-                    "splitBy": [],
-                    "aggregation": "Sum"
-                  }
+                    ]
+                  },
+                  "PartSubTitle": "POST /payment-wallet-notifications/v1/wallets/{walletId}/sessions/{sessionId}/notifications",
+                  "PartTitle": "Availability (15m)",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.99;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/payment-wallet-notifications/v1/wallets/[^/]+/sessions/[^/]+/notifications\" and httpMethod_s == \"POST\"\n| summarize\n  Total=count(),\n  Success=countif(httpStatus_d < 500 and timeTaken_d < 0.25) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n"
                 }
               }
             }
@@ -2215,10 +2215,6 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_url = \"/payment-wallet-notifications/v1/wallets/[^/]+/sessions/[^/]+/notifications\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"POST\"\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d == 400, \"400\",\n  httpStatus_d == 401, \"401\",\n  httpStatus_d between (402 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
-                  "SpecificChart": "StackedArea",
-                  "PartTitle": "Response Codes (15m)",
-                  "PartSubTitle": "POST /payment-wallet-notifications/v1/wallets/{walletId}/sessions/{sessionId}/notifications",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [
@@ -2237,7 +2233,11 @@
                         "type": "long"
                       }
                     ]
-                  }
+                  },
+                  "PartSubTitle": "POST /payment-wallet-notifications/v1/wallets/{walletId}/sessions/{sessionId}/notifications",
+                  "PartTitle": "Response Codes (15m)",
+                  "Query": "let api_url = \"/payment-wallet-notifications/v1/wallets/[^/]+/sessions/[^/]+/notifications\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"POST\"\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d == 400, \"400\",\n  httpStatus_d == 401, \"401\",\n  httpStatus_d between (402 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
+                  "SpecificChart": "StackedArea"
                 }
               }
             }
@@ -2353,10 +2353,6 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/payment-wallet-notifications/v1/wallets/[^/]+/sessions/[^/]+/notifications\" and httpMethod_s == \"POST\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
-                  "SpecificChart": "Line",
-                  "PartTitle": "Percentile Response Time (15m)",
-                  "PartSubTitle": "POST /payment-wallet-notifications/v1/wallets/{walletId}/sessions/{sessionId}/notifications",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [],
@@ -2374,7 +2370,11 @@
                         "type": "real"
                       }
                     ]
-                  }
+                  },
+                  "PartSubTitle": "POST /payment-wallet-notifications/v1/wallets/{walletId}/sessions/{sessionId}/notifications",
+                  "PartTitle": "Percentile Response Time (15m)",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/payment-wallet-notifications/v1/wallets/[^/]+/sessions/[^/]+/notifications\" and httpMethod_s == \"POST\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "SpecificChart": "Line"
                 }
               }
             }
@@ -2494,10 +2494,9 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/webview-payment-wallet/v1/wallets/[^/]+/sessions$\" and httpMethod_s == \"POST\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
-                  "PartTitle": "Availability (15m)",
-                  "PartSubTitle": "POST webview create wallet session",
                   "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -2511,10 +2510,11 @@
                         "name": "watermark",
                         "type": "real"
                       }
-                    ],
-                    "splitBy": [],
-                    "aggregation": "Sum"
-                  }
+                    ]
+                  },
+                  "PartSubTitle": "POST webview create wallet session",
+                  "PartTitle": "Availability (15m)",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/webview-payment-wallet/v1/wallets/[^/]+/sessions$\" and httpMethod_s == \"POST\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n"
                 }
               }
             }
@@ -2630,10 +2630,6 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_url = \"/webview-payment-wallet/v1/wallets/[^/]+/sessions$\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"POST\"\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
-                  "SpecificChart": "StackedArea",
-                  "PartTitle": "Response Codes (15m)",
-                  "PartSubTitle": "POST webview create wallet session",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [
@@ -2652,7 +2648,11 @@
                         "type": "long"
                       }
                     ]
-                  }
+                  },
+                  "PartSubTitle": "POST webview create wallet session",
+                  "PartTitle": "Response Codes (15m)",
+                  "Query": "let api_url = \"/webview-payment-wallet/v1/wallets/[^/]+/sessions$\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"POST\"\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
+                  "SpecificChart": "StackedArea"
                 }
               }
             }
@@ -2768,10 +2768,6 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/webview-payment-wallet/v1/wallets/[^/]+/sessions$\" and httpMethod_s == \"POST\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
-                  "SpecificChart": "Line",
-                  "PartTitle": "Percentile Response Time (15m)",
-                  "PartSubTitle": "POST webview create wallet session",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [],
@@ -2789,7 +2785,11 @@
                         "type": "real"
                       }
                     ]
-                  }
+                  },
+                  "PartSubTitle": "POST webview create wallet session",
+                  "PartTitle": "Percentile Response Time (15m)",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/webview-payment-wallet/v1/wallets/[^/]+/sessions$\" and httpMethod_s == \"POST\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "SpecificChart": "Line"
                 }
               }
             }
@@ -2909,10 +2909,9 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/webview-payment-wallet/v1/wallets/[^/]+/sessions/[^/]+/validations\" and httpMethod_s == \"POST\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
-                  "PartTitle": "Availability (15m)",
-                  "PartSubTitle": "POST wallet webview create validation",
                   "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -2926,10 +2925,11 @@
                         "name": "watermark",
                         "type": "real"
                       }
-                    ],
-                    "splitBy": [],
-                    "aggregation": "Sum"
-                  }
+                    ]
+                  },
+                  "PartSubTitle": "POST wallet webview create validation",
+                  "PartTitle": "Availability (15m)",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/webview-payment-wallet/v1/wallets/[^/]+/sessions/[^/]+/validations\" and httpMethod_s == \"POST\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n"
                 }
               }
             }
@@ -3045,10 +3045,6 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_url = \"/webview-payment-wallet/v1/wallets/[^/]+/sessions/[^/]+/validations\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"POST\"\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
-                  "SpecificChart": "StackedArea",
-                  "PartTitle": "Response Codes (15m)",
-                  "PartSubTitle": "POST wallet webview create validation",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [
@@ -3067,7 +3063,11 @@
                         "type": "long"
                       }
                     ]
-                  }
+                  },
+                  "PartSubTitle": "POST wallet webview create validation",
+                  "PartTitle": "Response Codes (15m)",
+                  "Query": "let api_url = \"/webview-payment-wallet/v1/wallets/[^/]+/sessions/[^/]+/validations\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"POST\"\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
+                  "SpecificChart": "StackedArea"
                 }
               }
             }
@@ -3183,10 +3183,6 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/webview-payment-wallet/v1/wallets/[^/]+/sessions/[^/]+/validations\" and httpMethod_s == \"POST\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
-                  "SpecificChart": "Line",
-                  "PartTitle": "Percentile Response Time (15m)",
-                  "PartSubTitle": "POST wallet webview create validation",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [],
@@ -3204,7 +3200,11 @@
                         "type": "real"
                       }
                     ]
-                  }
+                  },
+                  "PartSubTitle": "POST wallet webview create validation",
+                  "PartTitle": "Percentile Response Time (15m)",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/webview-payment-wallet/v1/wallets/[^/]+/sessions/[^/]+/validations\" and httpMethod_s == \"POST\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "SpecificChart": "Line"
                 }
               }
             }
@@ -3324,10 +3324,9 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/webview-payment-wallet/v1/wallets/[^/]+/sessions\" and httpMethod_s == \"GET\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
-                  "PartTitle": "Availability (15m)",
-                  "PartSubTitle": "GET /webview-payment-wallet/v1/wallets/{walletId}/sessions",
                   "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -3341,10 +3340,11 @@
                         "name": "watermark",
                         "type": "real"
                       }
-                    ],
-                    "splitBy": [],
-                    "aggregation": "Sum"
-                  }
+                    ]
+                  },
+                  "PartSubTitle": "GET /webview-payment-wallet/v1/wallets/{walletId}/sessions",
+                  "PartTitle": "Availability (15m)",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/webview-payment-wallet/v1/wallets/[^/]+/sessions\" and httpMethod_s == \"GET\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n"
                 }
               }
             }
@@ -3460,10 +3460,6 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_url = \"/webview-payment-wallet/v1/wallets/[^/]+/sessions\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"GET\"\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
-                  "SpecificChart": "StackedArea",
-                  "PartTitle": "Response Codes (15m)",
-                  "PartSubTitle": "GET /webview-payment-wallet/v1/wallets/{walletId}/sessions",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [
@@ -3482,7 +3478,11 @@
                         "type": "long"
                       }
                     ]
-                  }
+                  },
+                  "PartSubTitle": "GET /webview-payment-wallet/v1/wallets/{walletId}/sessions",
+                  "PartTitle": "Response Codes (15m)",
+                  "Query": "let api_url = \"/webview-payment-wallet/v1/wallets/[^/]+/sessions\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"GET\"\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
+                  "SpecificChart": "StackedArea"
                 }
               }
             }
@@ -3598,10 +3598,6 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 2;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/webview-payment-wallet/v1/wallets/[^/]+/sessions\" and httpMethod_s == \"GET\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
-                  "SpecificChart": "Line",
-                  "PartTitle": "Percentile Response Time (15m)",
-                  "PartSubTitle": "GET /webview-payment-wallet/v1/wallets/{walletId}/sessions",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [],
@@ -3619,7 +3615,11 @@
                         "type": "real"
                       }
                     ]
-                  }
+                  },
+                  "PartSubTitle": "GET /webview-payment-wallet/v1/wallets/{walletId}/sessions",
+                  "PartTitle": "Percentile Response Time (15m)",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 2;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/webview-payment-wallet/v1/wallets/[^/]+/sessions\" and httpMethod_s == \"GET\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "SpecificChart": "Line"
                 }
               }
             }
@@ -3739,10 +3739,9 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.99;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/webview-payment-wallet/v1/wallets/[^/]+/psps\" and httpMethod_s == \"GET\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
-                  "PartTitle": "Availability (15m)",
-                  "PartSubTitle": "GET psps for wallet",
                   "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -3756,10 +3755,11 @@
                         "name": "watermark",
                         "type": "real"
                       }
-                    ],
-                    "splitBy": [],
-                    "aggregation": "Sum"
-                  }
+                    ]
+                  },
+                  "PartSubTitle": "GET psps for wallet",
+                  "PartTitle": "Availability (15m)",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.99;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/webview-payment-wallet/v1/wallets/[^/]+/psps\" and httpMethod_s == \"GET\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n"
                 }
               }
             }
@@ -3875,10 +3875,6 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_url = \"/webview-payment-wallet/v1/wallets/[^/]+/psps\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"GET\"\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
-                  "SpecificChart": "StackedArea",
-                  "PartTitle": "Response Codes (15m)",
-                  "PartSubTitle": "GET psps for wallet",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [
@@ -3897,7 +3893,11 @@
                         "type": "long"
                       }
                     ]
-                  }
+                  },
+                  "PartSubTitle": "GET psps for wallet",
+                  "PartTitle": "Response Codes (15m)",
+                  "Query": "let api_url = \"/webview-payment-wallet/v1/wallets/[^/]+/psps\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"GET\"\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
+                  "SpecificChart": "StackedArea"
                 }
               }
             }
@@ -4013,10 +4013,6 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/webview-payment-wallet/v1/wallets/[^/]+/psps\" and httpMethod_s == \"GET\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
-                  "SpecificChart": "Line",
-                  "PartTitle": "Percentile Response Time (15m)",
-                  "PartSubTitle": "GET psps for wallet",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [],
@@ -4034,7 +4030,11 @@
                         "type": "real"
                       }
                     ]
-                  }
+                  },
+                  "PartSubTitle": "GET psps for wallet",
+                  "PartTitle": "Percentile Response Time (15m)",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/webview-payment-wallet/v1/wallets/[^/]+/psps\" and httpMethod_s == \"GET\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "SpecificChart": "Line"
                 }
               }
             }
@@ -4119,6 +4119,8 @@
                 {
                   "name": "Dimensions",
                   "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -4132,9 +4134,7 @@
                         "name": "watermark",
                         "type": "real"
                       }
-                    ],
-                    "splitBy": [],
-                    "aggregation": "Sum"
+                    ]
                   },
                   "isOptional": true
                 },
@@ -4155,8 +4155,8 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "PartTitle": "Availability (15 min)",
-                  "PartSubTitle": "GET auth-data"
+                  "PartSubTitle": "GET auth-data",
+                  "PartTitle": "Availability (15 min)"
                 }
               }
             }
@@ -4241,6 +4241,8 @@
                 {
                   "name": "Dimensions",
                   "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -4254,9 +4256,7 @@
                         "name": "watermark",
                         "type": "real"
                       }
-                    ],
-                    "splitBy": [],
-                    "aggregation": "Sum"
+                    ]
                   },
                   "isOptional": true
                 },
@@ -4277,11 +4277,14 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "AzureDiagnostics\n| where url_s matches regex \"https://api.platform.pagopa.it/payment-wallet-for-ecommerce/v1/wallets/[^/]+/auth-data\" and method_s == \"GET\"\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
-                  "SpecificChart": "StackedArea",
-                  "PartTitle": "Response Codes (15m)",
-                  "PartSubTitle": "GET auth-data",
                   "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [
+                      {
+                        "name": "HTTPStatus",
+                        "type": "string"
+                      }
+                    ],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -4291,15 +4294,12 @@
                         "name": "count_",
                         "type": "long"
                       }
-                    ],
-                    "splitBy": [
-                      {
-                        "name": "HTTPStatus",
-                        "type": "string"
-                      }
-                    ],
-                    "aggregation": "Sum"
-                  }
+                    ]
+                  },
+                  "PartSubTitle": "GET auth-data",
+                  "PartTitle": "Response Codes (15m)",
+                  "Query": "AzureDiagnostics\n| where url_s matches regex \"https://api.platform.pagopa.it/payment-wallet-for-ecommerce/v1/wallets/[^/]+/auth-data\" and method_s == \"GET\"\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+                  "SpecificChart": "StackedArea"
                 }
               }
             }
@@ -4384,6 +4384,8 @@
                 {
                   "name": "Dimensions",
                   "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -4397,9 +4399,7 @@
                         "name": "watermark",
                         "type": "real"
                       }
-                    ],
-                    "splitBy": [],
-                    "aggregation": "Sum"
+                    ]
                   },
                   "isOptional": true
                 },
@@ -4420,9 +4420,9 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let threshold = 250;\nAzureDiagnostics\n| where url_s matches regex \"https://api.platform.pagopa.it/payment-wallet-for-ecommerce/v1/wallets/[^/]+/auth-data\" and method_s == \"GET\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n",
-                  "PartTitle": "Availability GET auth-data",
                   "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -4436,10 +4436,10 @@
                         "name": "duration_percentile_95",
                         "type": "long"
                       }
-                    ],
-                    "splitBy": [],
-                    "aggregation": "Sum"
-                  }
+                    ]
+                  },
+                  "PartTitle": "Availability GET auth-data",
+                  "Query": "let threshold = 250;\nAzureDiagnostics\n| where url_s matches regex \"https://api.platform.pagopa.it/payment-wallet-for-ecommerce/v1/wallets/[^/]+/auth-data\" and method_s == \"GET\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n"
                 }
               }
             }
@@ -4457,51 +4457,51 @@
                   "name": "options",
                   "value": {
                     "chart": {
-                      "metrics": [
-                        {
-                          "resourceMetadata": {
-                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
-                          },
-                          "name": "NormalizedRUConsumption",
-                          "aggregationType": 3,
-                          "namespace": "microsoft.documentdb/databaseaccounts",
-                          "metricVisualization": {
-                            "displayName": "Normalized RU Consumption",
-                            "color": null
-                          }
-                        }
-                      ],
-                      "title": "Highest RU Consuming Shard {DatabaseText} {ContainerText} ",
-                      "titleKind": 2,
-                      "visualization": {
-                        "chartType": 2,
-                        "legendVisualization": {
-                          "isVisible": true,
-                          "position": 2,
-                          "hideSubtitle": false
-                        },
-                        "axisVisualization": {
-                          "x": {
-                            "isVisible": true,
-                            "axisType": 2
-                          },
-                          "y": {
-                            "isVisible": true,
-                            "axisType": 1
-                          }
-                        }
-                      },
                       "grouping": {
                         "dimension": "Region",
                         "sort": 2,
                         "top": 10
                       },
+                      "metrics": [
+                        {
+                          "aggregationType": 3,
+                          "metricVisualization": {
+                            "color": null,
+                            "displayName": "Normalized RU Consumption"
+                          },
+                          "name": "NormalizedRUConsumption",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          }
+                        }
+                      ],
                       "timespan": {
+                        "grain": 1,
                         "relative": {
                           "duration": 14400000
                         },
-                        "showUTCTime": false,
-                        "grain": 1
+                        "showUTCTime": false
+                      },
+                      "title": "Highest RU Consuming Shard {DatabaseText} {ContainerText} ",
+                      "titleKind": 2,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideSubtitle": false,
+                          "isVisible": true,
+                          "position": 2
+                        }
                       }
                     }
                   },
@@ -4517,47 +4517,47 @@
                 "content": {
                   "options": {
                     "chart": {
+                      "grouping": {
+                        "dimension": "Region",
+                        "sort": 2,
+                        "top": 10
+                      },
                       "metrics": [
                         {
-                          "resourceMetadata": {
-                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-itn-pay-wallet-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-itn-pay-wallet-cosmos-account"
-                          },
-                          "name": "NormalizedRUConsumption",
                           "aggregationType": 3,
-                          "namespace": "microsoft.documentdb/databaseaccounts",
                           "metricVisualization": {
                             "displayName": "Normalized RU Consumption",
                             "resourceDisplayName": "pagopa-p-itn-pay-wallet-cosmos-account"
+                          },
+                          "name": "NormalizedRUConsumption",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-itn-pay-wallet-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-itn-pay-wallet-cosmos-account"
                           }
                         }
                       ],
                       "title": "Max Normalized RU for pagopa-p-itn-pay-wallet-cosmos-account by Region",
                       "titleKind": 2,
                       "visualization": {
-                        "chartType": 2,
-                        "legendVisualization": {
-                          "isVisible": true,
-                          "position": 2,
-                          "hideSubtitle": false,
-                          "hideHoverCard": false,
-                          "hideLabelNames": true
-                        },
                         "axisVisualization": {
                           "x": {
-                            "isVisible": true,
-                            "axisType": 2
+                            "axisType": 2,
+                            "isVisible": true
                           },
                           "y": {
-                            "isVisible": true,
-                            "axisType": 1
+                            "axisType": 1,
+                            "isVisible": true
                           }
                         },
-                        "disablePinning": true
-                      },
-                      "grouping": {
-                        "dimension": "Region",
-                        "sort": 2,
-                        "top": 10
+                        "chartType": 2,
+                        "disablePinning": true,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "hideSubtitle": false,
+                          "isVisible": true,
+                          "position": 2
+                        }
                       }
                     }
                   }
@@ -4597,46 +4597,46 @@
                 "content": {
                   "options": {
                     "chart": {
+                      "grouping": {
+                        "dimension": "Region",
+                        "sort": 2,
+                        "top": 10
+                      },
                       "metrics": [
                         {
-                          "resourceMetadata": {
-                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-itn-pay-wallet-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-itn-pay-wallet-cosmos-account"
-                          },
-                          "name": "ProvisionedThroughput",
                           "aggregationType": 3,
-                          "namespace": "microsoft.documentdb/databaseaccounts",
                           "metricVisualization": {
                             "displayName": "Provisioned Throughput",
                             "resourceDisplayName": "pagopa-p-itn-pay-wallet-cosmos-account"
+                          },
+                          "name": "ProvisionedThroughput",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-itn-pay-wallet-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-itn-pay-wallet-cosmos-account"
                           }
                         }
                       ],
                       "title": "Max Provisioned Throughput for pagopa-p-itn-pay-wallet-cosmos-account by Region",
                       "titleKind": 1,
                       "visualization": {
-                        "chartType": 2,
-                        "legendVisualization": {
-                          "isVisible": true,
-                          "position": 2,
-                          "hideHoverCard": false,
-                          "hideLabelNames": true
-                        },
                         "axisVisualization": {
                           "x": {
-                            "isVisible": true,
-                            "axisType": 2
+                            "axisType": 2,
+                            "isVisible": true
                           },
                           "y": {
-                            "isVisible": true,
-                            "axisType": 1
+                            "axisType": 1,
+                            "isVisible": true
                           }
                         },
-                        "disablePinning": true
-                      },
-                      "grouping": {
-                        "dimension": "Region",
-                        "sort": 2,
-                        "top": 10
+                        "chartType": 2,
+                        "disablePinning": true,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
                       }
                     }
                   }
@@ -4647,7 +4647,7 @@
           {
             "position": {
               "x": 0,
-              "y": 54,
+              "y": 55,
               "colSpan": 18,
               "rowSpan": 4
             },
@@ -4748,7 +4748,7 @@
           {
             "position": {
               "x": 0,
-              "y": 58,
+              "y": 59,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -4773,7 +4773,6 @@
                 },
                 {
                   "name": "PartId",
-                  "value": "9273e582-270e-4b9b-aa66-e8080b4916f1",
                   "isOptional": true
                 },
                 {
@@ -4799,34 +4798,57 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let api_url = \"/io-payment-wallet/v1/wallets/[^/]+\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"DELETE\"\n| project  httpMethod_s, originalRequestUriWithArgs_s, httpStatus_d, clientIP_s, userAgent_s, transactionId_g, TimeGenerated\n| extend walletId = extract(@\"wallets/([^/]+)\", 1, originalRequestUriWithArgs_s)\n| extend gateway = iff(walletId startswith \"00000000-0000-4000-0000\", \"PM\", \"NPG\")\n| project gateway, httpStatus_d, originalRequestUriWithArgs_s\n",
+                  "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"ecommerce/checkout/v1/transactions\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n",
                   "isOptional": true
                 },
                 {
                   "name": "ControlType",
-                  "value": "AnalyticsGrid",
+                  "value": "FrameControlChart",
                   "isOptional": true
                 },
                 {
                   "name": "SpecificChart",
+                  "value": "Line",
                   "isOptional": true
                 },
                 {
                   "name": "PartTitle",
-                  "value": "Analytics",
+                  "value": "Availability (15m)",
                   "isOptional": true
                 },
                 {
                   "name": "PartSubTitle",
-                  "value": "pagopa-p-app-gw",
+                  "value": "ecommerce/checkout/v1/transactions",
                   "isOptional": true
                 },
                 {
                   "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ]
+                  },
                   "isOptional": true
                 },
                 {
                   "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
                   "isOptional": true
                 },
                 {
@@ -4838,10 +4860,7 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_url = \"/io-payment-wallet/v1/wallets/[^/]+\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"DELETE\"\n| project  httpMethod_s, originalRequestUriWithArgs_s, httpStatus_d, clientIP_s, userAgent_s, transactionId_g, TimeGenerated\n| extend walletId = extract(@\"wallets/([^/]+)\", 1, originalRequestUriWithArgs_s)\n| extend gateway = iff(walletId startswith \"00000000-0000-4000-0000\", \"PM\", \"NPG\")\n| project gateway, httpStatus_d, originalRequestUriWithArgs_s, TimeGenerated\n| summarize count() by bin(TimeGenerated, 15m), gateway\n",
-                  "ControlType": "FrameControlChart",
-                  "SpecificChart": "StackedColumn",
-                  "PartTitle": "Delete PM vs NPG ",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/io-payment-wallet/v1/wallets/[^/]+\" and httpMethod_s == \"DELETE\"\n| summarize\n    Total=count(),\n    Success=count(httpStatus_d < 500)\n    by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
                   "Dimensions": {
                     "xAxis": {
                       "name": "TimeGenerated",
@@ -4849,31 +4868,30 @@
                     },
                     "yAxis": [
                       {
-                        "name": "count_",
-                        "type": "long"
-                      }
-                    ],
-                    "splitBy": [
+                        "name": "availability",
+                        "type": "real"
+                      },
                       {
-                        "name": "gateway",
-                        "type": "string"
+                        "name": "watermark",
+                        "type": "real"
                       }
                     ],
+                    "splitBy": [],
                     "aggregation": "Sum"
-                  },
-                  "LegendOptions": {
-                    "isEnabled": true,
-                    "position": "Bottom"
                   }
                 }
+              },
+              "partHeader": {
+                "title": "Availability (15m)",
+                "subtitle": "DELETE /io-payment-wallet/v1/wallets/{walletId}"
               }
             }
           },
           {
             "position": {
-              "x": 0,
-              "y": 62,
-              "colSpan": 9,
+              "x": 6,
+              "y": 59,
+              "colSpan": 6,
               "rowSpan": 4
             },
             "metadata": {
@@ -4897,7 +4915,6 @@
                 },
                 {
                   "name": "PartId",
-                  "value": "0e7c37bc-cb62-406c-a12b-8bc7f415d761",
                   "isOptional": true
                 },
                 {
@@ -4923,7 +4940,147 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"payment-wallet-outcomes/v1/wallets/outcomes\" and (requestQuery_s contains \"outcome\")\n| extend outcome = extract(@\"outcome=([^&]+)\", 1, requestQuery_s)\n| extend walletId = extract(@\"walletId=([^&]+)\", 1, originalRequestUriWithArgs_s)\n| where walletId startswith \"00000000-0000-4000-0000\"\n| project outcome, TimeGenerated\n| summarize req=count() by Time=bin(TimeGenerated,15m), outcome\n",
+                  "value": "\nlet api_url = \"ecommerce/checkout/v1/transactions\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Pie",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Response Codes (15m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "ecommerce/checkout/v1/transactions",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "httpStatus_d",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let api_url = \"/io-payment-wallet/v1/wallets/[^/]+\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"DELETE\"\n| extend HTTPStatus = case(\n                          httpStatus_d between (100 .. 199),\n                          \"1XX\",\n                          httpStatus_d between (200 .. 299),\n                          \"2XX\",\n                          httpStatus_d between (300 .. 399),\n                          \"3XX\",\n                          httpStatus_d between (400 .. 499),\n                          \"4XX\",\n                          \"5XX\"\n                      )\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
+                  "ControlType": "FrameControlChart",
+                  "SpecificChart": "StackedArea",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "HTTPStatus",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  }
+                }
+              },
+              "partHeader": {
+                "subtitle": "DELETE /io-payment-wallet/v1/wallets/{walletId}"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 12,
+              "y": 59,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"ecommerce/checkout/v1/transactions\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n",
                   "isOptional": true
                 },
                 {
@@ -4938,34 +5095,29 @@
                 },
                 {
                   "name": "PartTitle",
-                  "value": "Analytics",
+                  "value": "Percentile Response Time (15m)",
                   "isOptional": true
                 },
                 {
                   "name": "PartSubTitle",
-                  "value": "pagopa-p-app-gw",
+                  "value": "ecommerce/checkout/v1/transactions",
                   "isOptional": true
                 },
                 {
                   "name": "Dimensions",
                   "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
                     "xAxis": {
-                      "name": "Time",
+                      "name": "TimeGenerated",
                       "type": "datetime"
                     },
                     "yAxis": [
                       {
-                        "name": "req",
-                        "type": "long"
+                        "name": "duration_percentile_95",
+                        "type": "real"
                       }
-                    ],
-                    "splitBy": [
-                      {
-                        "name": "outcome",
-                        "type": "string"
-                      }
-                    ],
-                    "aggregation": "Sum"
+                    ]
                   },
                   "isOptional": true
                 },
@@ -4986,17 +5138,466 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "PartTitle": "onboarding Outcome PM"
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.25;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/io-payment-wallet/v1/wallets/[^/]+\" and httpMethod_s == \"DELETE\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95)\n    by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "SpecificChart": "Line",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      },
+                      {
+                        "name": "duration_percentile_95",
+                        "type": "real"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  }
                 }
+              },
+              "partHeader": {
+                "subtitle": "DELETE /io-payment-wallet/v1/wallets/{walletId}"
               }
             }
           },
           {
             "position": {
-              "x": 9,
-              "y": 62,
-              "colSpan": 10,
+              "x": 0,
+              "y": 63,
+              "colSpan": 6,
               "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"ecommerce/checkout/v1/transactions\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Availability (15m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "ecommerce/checkout/v1/transactions",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s == \"/io-payment-wallet/v1/payment-methods\" and httpMethod_s == \"GET\"\n| summarize\n    Total=count(),\n    Success=count(httpStatus_d < 500)\n    by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
+                  "PartTitle": "Availability (15m)",
+                  "PartSubTitle": "GET /io-payment-wallet/v1/wallets",
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ]
+                  }
+                }
+              },
+              "partHeader": {
+                "title": "Avialability(15m)",
+                "subtitle": "GET /io-payment-wallet/v1/payment-methods"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 63,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet api_url = \"ecommerce/checkout/v1/transactions\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Pie",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Response Codes (15m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "ecommerce/checkout/v1/transactions",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "httpStatus_d",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let api_url_v1 = \"/io-payment-wallet/v1/payment-methods\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s == api_url_v1 and httpMethod_s == \"GET\"\n| extend HTTPStatus = case(\n                          httpStatus_d between (100 .. 199),\n                          \"1XX\",\n                          httpStatus_d between (200 .. 299),\n                          \"2XX\",\n                          httpStatus_d between (300 .. 399),\n                          \"3XX\",\n                          httpStatus_d between (400 .. 499),\n                          \"4XX\",\n                          \"5XX\"\n                      )\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
+                  "SpecificChart": "StackedArea",
+                  "PartTitle": "Response Codes (15m)",
+                  "PartSubTitle": "GET /io-payment-wallet/v1/wallets",
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [
+                      {
+                        "name": "HTTPStatus",
+                        "type": "string"
+                      }
+                    ],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  }
+                }
+              },
+              "partHeader": {
+                "title": "Response Codes (15m)",
+                "subtitle": "GET /io-payment-wallet/v1/payment-methods"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 12,
+              "y": 63,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"ecommerce/checkout/v1/transactions\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedColumn",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Percentile Response Time (15m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "ecommerce/checkout/v1/transactions",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "duration_percentile_95",
+                        "type": "real"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.25;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s == \"/io-payment-wallet/v1/payment-methods\" and httpMethod_s == \"GET\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95)\n    by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "SpecificChart": "Line",
+                  "PartTitle": "Percentile Response Time (15m)",
+                  "PartSubTitle": "GET /io-payment-wallet/v1/wallets",
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      },
+                      {
+                        "name": "duration_percentile_95",
+                        "type": "real"
+                      }
+                    ]
+                  }
+                }
+              },
+              "partHeader": {
+                "title": "Percentile Response Time(15m)",
+                "subtitle": "GET /io-payment-wallet/v1/payment-methods"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 67,
+              "colSpan": 18,
+              "rowSpan": 5
             },
             "metadata": {
               "inputs": [
@@ -5084,11 +5685,15 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"payment-wallet-outcomes/v1/wallets/outcomes\" and (requestQuery_s contains \"outcome\")\n| extend outcome = extract(@\"outcome=([^&]+)\", 1, requestQuery_s)\n| extend walletId = extract(@\"walletId=([^&]+)\", 1, originalRequestUriWithArgs_s)\n| where walletId !startswith \"00000000-0000-4000-0000\" and walletId != \"\"\n| project outcome, TimeGenerated\n| summarize req=count() by Time=bin(TimeGenerated,15m), outcome",
                   "ControlType": "FrameControlChart",
-                  "SpecificChart": "StackedColumn",
-                  "PartTitle": "onboarding Outcome NPG",
                   "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [
+                      {
+                        "name": "outcome",
+                        "type": "string"
+                      }
+                    ],
                     "xAxis": {
                       "name": "Time",
                       "type": "datetime"
@@ -5098,19 +5703,15 @@
                         "name": "req",
                         "type": "long"
                       }
-                    ],
-                    "splitBy": [
-                      {
-                        "name": "outcome",
-                        "type": "string"
-                      }
-                    ],
-                    "aggregation": "Sum"
+                    ]
                   },
                   "LegendOptions": {
                     "isEnabled": true,
                     "position": "Bottom"
-                  }
+                  },
+                  "PartTitle": "onboarding Outcome NPG",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"payment-wallet-outcomes/v1/wallets/outcomes\" and (requestQuery_s contains \"outcome\")\n| extend outcome = extract(@\"outcome=([^&]+)\", 1, requestQuery_s)\n| extend walletId = extract(@\"walletId=([^&]+)\", 1, originalRequestUriWithArgs_s)\n| where walletId !startswith \"00000000-0000-4000-0000\" and walletId != \"\"\n| project outcome, TimeGenerated\n| summarize req=count() by Time=bin(TimeGenerated,15m), outcome",
+                  "SpecificChart": "StackedColumn"
                 }
               }
             }
@@ -5118,8 +5719,8 @@
           {
             "position": {
               "x": 0,
-              "y": 66,
-              "colSpan": 19,
+              "y": 72,
+              "colSpan": 18,
               "rowSpan": 5
             },
             "metadata": {
@@ -5195,6 +5796,13 @@
                 {
                   "name": "Dimensions",
                   "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [
+                      {
+                        "name": "HTTPStatus",
+                        "type": "string"
+                      }
+                    ],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -5204,14 +5812,7 @@
                         "name": "count_",
                         "type": "long"
                       }
-                    ],
-                    "splitBy": [
-                      {
-                        "name": "HTTPStatus",
-                        "type": "string"
-                      }
-                    ],
-                    "aggregation": "Sum"
+                    ]
                   },
                   "isOptional": true
                 },
@@ -5240,8 +5841,8 @@
           {
             "position": {
               "x": 0,
-              "y": 71,
-              "colSpan": 10,
+              "y": 77,
+              "colSpan": 9,
               "rowSpan": 4
             },
             "metadata": {
@@ -5254,41 +5855,6 @@
                   "name": "options",
                   "value": {
                     "chart": {
-                      "metrics": [
-                        {
-                          "resourceMetadata": {
-                            "id": "/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-itn-observ-evh-rg/providers/Microsoft.EventHub/namespaces/pagopa-u-itn-observ-evh"
-                          },
-                          "name": "IncomingMessages",
-                          "aggregationType": 1,
-                          "namespace": "microsoft.eventhub/namespaces",
-                          "metricVisualization": {
-                            "displayName": "Incoming Messages",
-                            "resourceDisplayName": "pagopa-u-itn-observ-evh"
-                          }
-                        }
-                      ],
-                      "title": null,
-                      "titleKind": 0,
-                      "visualization": {
-                        "chartType": 2,
-                        "legendVisualization": {
-                          "isVisible": true,
-                          "position": 2,
-                          "hideHoverCard": false,
-                          "hideLabelNames": true
-                        },
-                        "axisVisualization": {
-                          "x": {
-                            "isVisible": true,
-                            "axisType": 2
-                          },
-                          "y": {
-                            "isVisible": true,
-                            "axisType": 1
-                          }
-                        }
-                      },
                       "filterCollection": {
                         "filters": [
                           {
@@ -5300,12 +5866,47 @@
                           }
                         ]
                       },
+                      "metrics": [
+                        {
+                          "aggregationType": 1,
+                          "metricVisualization": {
+                            "displayName": "Incoming Messages",
+                            "resourceDisplayName": "pagopa-u-itn-observ-evh"
+                          },
+                          "name": "IncomingMessages",
+                          "namespace": "microsoft.eventhub/namespaces",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-itn-observ-evh-rg/providers/Microsoft.EventHub/namespaces/pagopa-u-itn-observ-evh"
+                          }
+                        }
+                      ],
                       "timespan": {
+                        "grain": 1,
                         "relative": {
                           "duration": 86400000
                         },
-                        "showUTCTime": false,
-                        "grain": 1
+                        "showUTCTime": false
+                      },
+                      "title": null,
+                      "titleKind": 0,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
                       }
                     }
                   },
@@ -5319,39 +5920,39 @@
                     "chart": {
                       "metrics": [
                         {
-                          "resourceMetadata": {
-                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-itn-observ-evh-rg/providers/Microsoft.EventHub/namespaces/pagopa-p-itn-observ-evh"
-                          },
-                          "name": "IncomingMessages",
                           "aggregationType": 1,
-                          "namespace": "microsoft.eventhub/namespaces",
                           "metricVisualization": {
                             "displayName": "Incoming Messages",
                             "resourceDisplayName": "pagopa-p-itn-observ-evh"
+                          },
+                          "name": "IncomingMessages",
+                          "namespace": "microsoft.eventhub/namespaces",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-itn-observ-evh-rg/providers/Microsoft.EventHub/namespaces/pagopa-p-itn-observ-evh"
                           }
                         }
                       ],
                       "title": "CDC Event Hub Incoming Messages",
                       "titleKind": 2,
                       "visualization": {
-                        "chartType": 2,
-                        "legendVisualization": {
-                          "isVisible": true,
-                          "position": 2,
-                          "hideHoverCard": false,
-                          "hideLabelNames": true
-                        },
                         "axisVisualization": {
                           "x": {
-                            "isVisible": true,
-                            "axisType": 2
+                            "axisType": 2,
+                            "isVisible": true
                           },
                           "y": {
-                            "isVisible": true,
-                            "axisType": 1
+                            "axisType": 1,
+                            "isVisible": true
                           }
                         },
-                        "disablePinning": true
+                        "chartType": 2,
+                        "disablePinning": true,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
                       }
                     }
                   }
@@ -5371,8 +5972,8 @@
           },
           {
             "position": {
-              "x": 10,
-              "y": 71,
+              "x": 9,
+              "y": 77,
               "colSpan": 9,
               "rowSpan": 4
             },
@@ -5449,6 +6050,13 @@
                 {
                   "name": "Dimensions",
                   "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [
+                      {
+                        "name": "OperationName",
+                        "type": "string"
+                      }
+                    ],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -5458,14 +6066,7 @@
                         "name": "count_",
                         "type": "long"
                       }
-                    ],
-                    "splitBy": [
-                      {
-                        "name": "OperationName",
-                        "type": "string"
-                      }
-                    ],
-                    "aggregation": "Sum"
+                    ]
                   },
                   "isOptional": true
                 },
@@ -5494,8 +6095,8 @@
           {
             "position": {
               "x": 0,
-              "y": 75,
-              "colSpan": 20,
+              "y": 81,
+              "colSpan": 18,
               "rowSpan": 4
             },
             "metadata": {
@@ -5571,6 +6172,13 @@
                 {
                   "name": "Dimensions",
                   "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [
+                      {
+                        "name": "HTTPStatus",
+                        "type": "string"
+                      }
+                    ],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -5580,14 +6188,7 @@
                         "name": "count_",
                         "type": "long"
                       }
-                    ],
-                    "splitBy": [
-                      {
-                        "name": "HTTPStatus",
-                        "type": "string"
-                      }
-                    ],
-                    "aggregation": "Sum"
+                    ]
                   },
                   "isOptional": true
                 },
@@ -5639,48 +6240,52 @@
                 "value": "Past 4 hours"
               },
               "filteredPartIds": [
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d04d",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d04f",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d051",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d053",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d055",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d057",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d059",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d05b",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d05d",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d05f",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d061",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d063",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d065",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d067",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d069",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d06b",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d06d",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d06f",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d071",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d073",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d075",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d077",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d079",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d07b",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d07d",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d07f",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d081",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d083",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d085",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d087",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d089",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d08b",
-                "StartboardPart-MonitorChartPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d08d",
-                "StartboardPart-MonitorChartPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d08f",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d091",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d093",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d095",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d097",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d099",
-                "StartboardPart-MonitorChartPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d09b",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d09d",
-                "StartboardPart-LogsDashboardPart-59b1dbce-8a55-4e1c-a9f1-29279bd6d09f"
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d52a",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d540",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d556",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d56c",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d574",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d576",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d578",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d57a",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d57c",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d52c",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d52e",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d530",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d532",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d534",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d536",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d538",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d53a",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d53c",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d53e",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d542",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d544",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d546",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d548",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d54a",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d54c",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d54e",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d550",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d552",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d554",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d558",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d55a",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d55c",
+                "StartboardPart-MonitorChartPart-cde02a7e-5392-4795-b439-c8957d14d55e",
+                "StartboardPart-MonitorChartPart-cde02a7e-5392-4795-b439-c8957d14d560",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d562",
+                "StartboardPart-LogsDashboardPart-15ceb02c-8ddc-4466-a97a-91d9f58110d3",
+                "StartboardPart-LogsDashboardPart-15ceb02c-8ddc-4466-a97a-91d9f58110ff",
+                "StartboardPart-LogsDashboardPart-15ceb02c-8ddc-4466-a97a-91d9f581111e",
+                "StartboardPart-LogsDashboardPart-1edc6242-320c-4e01-b20f-7ae1be5824f1",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d8da",
+                "StartboardPart-LogsDashboardPart-1edc6242-320c-4e01-b20f-7ae1be58234e",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d568",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d56a",
+                "StartboardPart-MonitorChartPart-cde02a7e-5392-4795-b439-c8957d14d56e",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d570",
+                "StartboardPart-LogsDashboardPart-cde02a7e-5392-4795-b439-c8957d14d572"
               ]
             }
           }
