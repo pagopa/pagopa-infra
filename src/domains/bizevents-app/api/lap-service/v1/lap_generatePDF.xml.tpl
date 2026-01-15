@@ -10,7 +10,8 @@
 
         <!-- Extracting variables from request -->
         <set-variable name="fiscal_code" value="@((string) context.Request.Headers.GetValueOrDefault("x-fiscal-code", "N/A"))" />
-        <set-variable name="event_id" value="@{
+        <set-variable name="event_id" value="@((string) context.Request.MatchedParameters["event-id"])" />
+        <set-variable name="cached_key" value="@{
             try {
                 string eventId = (string) context.Request.MatchedParameters["event-id"];
                 if (eventId != null) {
@@ -23,7 +24,7 @@
         }" />
 
         <!-- Execute a lookup on APIM cache, checking if guard check lock was inserted  -->
-        <cache-lookup-value key="@((string) context.Variables["event_id"])" variable-name="attachment_generation_lock" default-value="NONE" caching-type="internal" />
+        <cache-lookup-value key="@((string) context.Variables["cached_key"])" variable-name="attachment_generation_lock" default-value="NONE" caching-type="internal" />
         <choose>
 
             <!-- If guard check lock was set, return a custom error message -->
@@ -70,7 +71,7 @@
                 <choose>
                     <!-- Store hashed key in internal cache (with TTL of 60s) if applicative code refers to re-generation -->
                     <when condition="@( ((string) context.Variables["applicative_error_code"]).Equals("AT_404_002") )">
-                        <cache-store-value key="@((string)context.Variables["event_id"])" value="GENERATING_ATTACHMENT" duration="${guard-lock-duration}" caching-type="internal" />
+                        <cache-store-value key="@((string)context.Variables["cached_key"])" value="GENERATING_ATTACHMENT" duration="${guard-lock-duration}" caching-type="internal" />
                     </when>
                 </choose>
             </when>
