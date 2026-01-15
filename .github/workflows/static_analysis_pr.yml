@@ -21,7 +21,7 @@ jobs:
           start_folder: "src"
           include_folders: "src/tag_config"
           include_patterns: "src,domains"
-          stopper_folders: "env,tests,api,api_product,helm"
+          stopper_folders: "env,tests,api,api_product,helm,yaml"
 
       - name: 👀 See folders downloaded
         if: env.dir_changes_detected == 'true'
