@@ -11,11 +11,13 @@
         <!-- Extracting variables from request -->
         <set-variable name="fiscal_code" value="@((string) context.Request.Headers.GetValueOrDefault("x-fiscal-code", "N/A"))" />
         <set-variable name="event_id" value="@((string) context.Request.MatchedParameters["event-id"])" />
+
+        <!-- Generating cacheable key -->
         <set-variable name="cached_key" value="@{
             try {
                 string eventId = (string) context.Request.MatchedParameters["event-id"];
                 if (eventId != null) {
-                    return eventId.Split(new[] { "_CART_" }, StringSplitOptions.None)[0];
+                    return "lap::" + eventId.Split(new[] { "_CART_" }, StringSplitOptions.None)[0];
                 }
                 return "lap::ERROR_DURING_EVENTID_EXTRACTION";
             } catch (Exception e) {
