@@ -9,10 +9,11 @@ resource "azurerm_private_dns_a_record" "ingress" {
 ###
 
 resource "azurerm_subnet" "cosmosdb_italy_snet" {
-  name                 = "${local.project}-cosmosdb-snet"
-  resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
-  address_prefixes     = var.cidr_printit_cosmosdb_italy
+  name                              = "${local.project}-cosmosdb-snet"
+  resource_group_name               = data.azurerm_resource_group.rg_vnet_italy.name
+  virtual_network_name              = data.azurerm_virtual_network.vnet_italy.name
+  address_prefixes                  = var.cidr_printit_cosmosdb_italy
+  private_endpoint_network_policies = "Enabled"
 
   service_endpoints = [
     "Microsoft.Web",
@@ -21,25 +22,29 @@ resource "azurerm_subnet" "cosmosdb_italy_snet" {
 }
 
 resource "azurerm_subnet" "cidr_storage_italy" {
-  name                 = "${local.project}-storage-snet"
-  resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
-  address_prefixes     = var.cidr_printit_storage_italy
+  name                              = "${local.project}-storage-snet"
+  resource_group_name               = data.azurerm_resource_group.rg_vnet_italy.name
+  virtual_network_name              = data.azurerm_virtual_network.vnet_italy.name
+  address_prefixes                  = var.cidr_printit_storage_italy
+  private_endpoint_network_policies = "Enabled"
+
 }
 
 resource "azurerm_subnet" "cidr_redis_italy" {
-  name                 = "${local.project}-redis-snet"
-  resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
-  address_prefixes     = var.cidr_printit_redis_italy
+  name                              = "${local.project}-redis-snet"
+  resource_group_name               = data.azurerm_resource_group.rg_vnet_italy.name
+  virtual_network_name              = data.azurerm_virtual_network.vnet_italy.name
+  address_prefixes                  = var.cidr_printit_redis_italy
+  private_endpoint_network_policies = "Enabled"
 }
 
 resource "azurerm_subnet" "pdf_engine_italy_snet" {
   name = "${local.project}-pdf-engine-snet"
 
-  resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
-  address_prefixes     = var.cidr_printit_pdf_engine_italy
+  resource_group_name               = data.azurerm_resource_group.rg_vnet_italy.name
+  virtual_network_name              = data.azurerm_virtual_network.vnet_italy.name
+  address_prefixes                  = var.cidr_printit_pdf_engine_italy
+  private_endpoint_network_policies = "Enabled"
 
   delegation {
     name = "delegation"
@@ -51,8 +56,10 @@ resource "azurerm_subnet" "pdf_engine_italy_snet" {
 }
 
 resource "azurerm_subnet" "eventhub_italy" {
-  name                 = "${local.project}-eventhub-snet"
-  resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
-  address_prefixes     = var.cidr_printit_eventhub_italy
+  name                              = "${local.project}-eventhub-snet"
+  resource_group_name               = data.azurerm_resource_group.rg_vnet_italy.name
+  virtual_network_name              = data.azurerm_virtual_network.vnet_italy.name
+  address_prefixes                  = var.cidr_printit_eventhub_italy
+  private_endpoint_network_policies = "Enabled"
+
 }
