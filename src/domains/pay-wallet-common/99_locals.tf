@@ -23,7 +23,7 @@ locals {
   vnet_italy_name                = "${local.product_italy}-vnet"
   vnet_italy_resource_group_name = "${local.product_italy}-vnet-rg"
 
-  vnet_spoke_data_name   = "${local.product_italy}-network-data-vnet"
+  vnet_spoke_data_name   = "${local.product_italy}-spoke-data-vnet"
   vnet_hub_spoke_rg_name = "${local.product_italy}-network-hub-spoke-rg"
 
   vpn_subnet_name = "GatewaySubnet"
