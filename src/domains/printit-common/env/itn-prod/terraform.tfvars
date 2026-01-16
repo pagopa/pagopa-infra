@@ -15,7 +15,7 @@ is_feature_enabled = {
   storage_notice          = true
   storage_templates       = true
   eventhub                = true
-  cosmos_hub_spoke_pe_dns = true
+  cosmos_hub_spoke_pe_dns = false
 }
 
 ### CIRDs
