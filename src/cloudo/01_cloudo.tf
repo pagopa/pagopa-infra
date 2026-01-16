@@ -7,11 +7,10 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "cloudo" {
-  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=PAYMCLOUD-626-cloudo-add-iac-subnet-deployment"
+  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=12da457405883a371ebfc06a8199ad4a75f97bef"
 
   prefix                    = local.product
   product_name              = var.prefix
-  cluodo_ui_tier            = "basic_external_plan"
   env                       = var.env
   location                  = var.location_ita
   resource_group_name       = azurerm_resource_group.rg.name
@@ -38,6 +37,10 @@ module "cloudo" {
     itn = {
       cluster_id = data.azurerm_kubernetes_cluster.aks_itn.id
     }
+  }
+
+  approval_runbook = {
+    ttl_min = "120"
   }
 
   slack_integration = {
