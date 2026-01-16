@@ -4,6 +4,7 @@ locals {
   domain            = "network"
   project           = "${local.product}-${var.location_short}-${local.domain}"
   project_hub_spoke = "${local.product}-${var.location_short_hub_spoke}-${local.domain}"
+  product_location_hub_spoke = "${local.product}-${var.location_short_hub_spoke}"
 
   vnet_italy_name                = "${local.product}-itn-vnet"
   vnet_italy_resource_group_name = "${local.product}-itn-vnet-rg"
@@ -65,19 +66,19 @@ locals {
       address_space_secret_key = "address-space-vnet-hub"
       peer_with                = []
     }
-    data = {
+    spoke-data = {
       address_space_secret_key = "address-space-spoke-data"
       peer_with                = ["hub"]
     }
-    security = {
+    spoke-security = {
       address_space_secret_key = "address-space-spoke-security"
       peer_with                = ["hub"]
     }
-    tools = {
+    spoke-tools = {
       address_space_secret_key = "address-space-spoke-tools"
-      peer_with                = ["hub", "data", "security", "streaming"]
+      peer_with                = ["hub", "spoke-data", "spoke-security", "spoke-streaming"]
     }
-    streaming = {
+    spoke-streaming = {
       address_space_secret_key = "address-space-spoke-streaming"
       peer_with                = ["hub"]
     }
