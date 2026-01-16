@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "db_rg" {
 }
 
 module "cosmosdb_account_mongodb" {
-  source = "./.terraform/modules/__v3__//cosmosdb_account"
+  source = "./.terraform/modules/__v4__/cosmosdb_account"
   count  = var.is_feature_enabled.cosmosdb_notice ? 1 : 0
 
   domain              = var.domain
@@ -21,7 +21,7 @@ module "cosmosdb_account_mongodb" {
   enable_free_tier     = var.cosmos_mongo_db_notices_params.enable_free_tier
 
   public_network_access_enabled     = var.cosmos_mongo_db_notices_params.public_network_access_enabled
-  private_endpoint_enabled          = var.cosmos_mongo_db_notices_params.private_endpoint_enabled
+  private_endpoint_enabled          = var.cosmos_mongo_db_notices_params.private_endpoint_enabled && !var.is_feature_enabled.cosmos_hub_spoke_pe_dns
   subnet_id                         = azurerm_subnet.cosmosdb_italy_snet.id
   private_dns_zone_mongo_ids        = [data.azurerm_private_dns_zone.cosmos.id]
   is_virtual_network_filter_enabled = var.cosmos_mongo_db_notices_params.is_virtual_network_filter_enabled
@@ -35,6 +35,31 @@ module "cosmosdb_account_mongodb" {
 
   tags = module.tag_config.tags
 }
+
+# hub spoke private endpoint
+resource "azurerm_private_endpoint" "cosmos_data_mongo_pe" {
+  count = var.is_feature_enabled.cosmosdb_notice && var.cosmos_mongo_db_notices_params.private_endpoint_enabled && var.is_feature_enabled.cosmos_hub_spoke_pe_dns && var.env_short != "d" ? 1 : 0
+
+  name                = "${local.project}-cosmos-data-mongo-pe"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.db_rg.name
+  subnet_id           = module.cosmos_spoke_printit_snet[0].subnet_id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-cosmos-data-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.cosmos.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-cosmos-data-private-service-connection"
+    private_connection_resource_id = module.cosmosdb_account_mongodb[0].id
+    is_manual_connection           = false
+    subresource_names              = ["MongoDB"]
+  }
+
+  tags = module.tag_config.tags
+}
+
 
 resource "azurerm_cosmosdb_mongo_database" "notices_mongo_db" {
   count = var.is_feature_enabled.cosmosdb_notice ? 1 : 0
@@ -86,7 +111,7 @@ locals {
 }
 
 module "cosmosdb_notices_collections" {
-  source = "./.terraform/modules/__v3__//cosmosdb_mongodb_collection"
+  source = "./.terraform/modules/__v4__/cosmosdb_mongodb_collection"
 
   for_each = var.is_feature_enabled.cosmosdb_notice ? { for index, coll in local.collections : coll.name => coll } : {}
 
