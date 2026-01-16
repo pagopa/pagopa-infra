@@ -2,19 +2,19 @@
 
 variable "is_feature_enabled" {
   type = object({
-    cosmosdb_notice      = bool
-    storage_institutions = bool
-    storage_notice       = bool
-    storage_templates    = bool
-    eventhub             = bool
+    cosmosdb_notice         = bool
+    storage_institutions    = bool
+    storage_notice          = bool
+    storage_templates       = bool
+    eventhub                = bool
     cosmos_hub_spoke_pe_dns = optional(bool, false),
   })
   default = {
-    cosmosdb_notice      = false
-    storage_institutions = false
-    storage_notice       = false
-    storage_templates    = false
-    eventhub             = false
+    cosmosdb_notice         = false
+    storage_institutions    = false
+    storage_notice          = false
+    storage_templates       = false
+    eventhub                = false
     cosmos_hub_spoke_pe_dns = false
   }
 }
