@@ -13,8 +13,8 @@ is_feature_enabled = {
   cosmos                  = true
   redis                   = true
   storage                 = true
-  redis_hub_spoke_pe_dns  = false
-  cosmos_hub_spoke_pe_dns = false
+  redis_hub_spoke_pe_dns  = true
+  cosmos_hub_spoke_pe_dns = true
 
 }
 
