@@ -1,8 +1,8 @@
 locals {
-  prefix            = "pagopa"
-  product           = "${local.prefix}-${var.env_short}"
-  domain            = "audit"
-  project           = "${local.product}-${var.location_short}-${local.domain}"
+  prefix  = "pagopa"
+  product = "${local.prefix}-${var.env_short}"
+  domain  = "audit"
+  project = "${local.product}-${var.location_short}-${local.domain}"
 
   vnet_italy_name                = "${local.product}-itn-vnet"
   vnet_italy_resource_group_name = "${local.product}-itn-vnet-rg"

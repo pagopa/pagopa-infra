@@ -6,6 +6,6 @@ location_short = "itn"
 
 
 enabled_features = {
-  data_explorer        = true
+  data_explorer = true
 }
 
