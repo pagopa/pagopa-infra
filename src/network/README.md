@@ -23,6 +23,7 @@
 | <a name="module_vnet_hub_spoke"></a> [vnet\_hub\_spoke](#module\_vnet\_hub\_spoke) | ./.terraform/modules/__v4__/virtual_network | n/a |
 | <a name="module_vnet_hub_spoke_peering"></a> [vnet\_hub\_spoke\_peering](#module\_vnet\_hub\_spoke\_peering) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
 | <a name="module_vnet_itn_compute_peering"></a> [vnet\_itn\_compute\_peering](#module\_vnet\_itn\_compute\_peering) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
+| <a name="module_vnet_weu_core_peering"></a> [vnet\_weu\_core\_peering](#module\_vnet\_weu\_core\_peering) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
 | <a name="module_vnet_weu_fe_peering"></a> [vnet\_weu\_fe\_peering](#module\_vnet\_weu\_fe\_peering) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
 
 ## Resources
@@ -50,6 +51,7 @@
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet_integration](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet_itn_compute](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
+| [azurerm_virtual_network.vnet_weu_core](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet_weu_fe](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 
 ## Inputs

@@ -13,7 +13,6 @@ locals {
   vnet_integration_resource_group_name = "${local.product}-vnet-rg"
   vnet_integration_name                = "${local.product}-vnet-integration"
 
-
   log_analytics_italy_workspace_name                = "${local.product}-itn-core-law"
   log_analytics_italy_workspace_resource_group_name = "${local.product}-itn-core-monitor-rg"
 
