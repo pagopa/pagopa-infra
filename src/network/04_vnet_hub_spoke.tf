@@ -78,3 +78,22 @@ module "vnet_itn_compute_peering" {
   target_allow_gateway_transit     = true
   target_allow_forwarded_traffic   = true
 }
+
+# peerings to weu vnet
+module "vnet_weu_core_peering" {
+  source                           = "./.terraform/modules/__v4__/virtual_network_peering"
+  for_each                         = local.hub_spoke_vnet
+  source_resource_group_name       = azurerm_resource_group.hub_spoke_rg.name
+  source_virtual_network_name      = module.vnet_hub_spoke[each.key].name
+  source_remote_virtual_network_id = module.vnet_hub_spoke[each.key].id
+  source_use_remote_gateways       = true
+  source_allow_forwarded_traffic   = true
+  source_allow_gateway_transit     = false
+
+  target_resource_group_name       = local.vnet_core_resource_group_name
+  target_virtual_network_name      = data.azurerm_virtual_network.vnet_weu_core.name
+  target_remote_virtual_network_id = data.azurerm_virtual_network.vnet_weu_core.id
+  target_allow_gateway_transit     = true
+  target_allow_forwarded_traffic   = true
+  target_use_remote_gateways       = false
+}
