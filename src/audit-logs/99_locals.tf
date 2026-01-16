@@ -12,7 +12,7 @@ locals {
   vnet_integration_resource_group_name = "${local.product}-vnet-rg"
   vnet_integration_name                = "${local.product}-vnet-integration"
 
-  vnet_data_italy_name                = "${local.product}-itn-network-data-vnet"
+  vnet_data_italy_name                = "${local.product}-itn-spoke-data-vnet"
   vnet_data_italy_resource_group_name = "${local.product}-itn-network-hub-spoke-rg"
 
 
