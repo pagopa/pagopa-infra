@@ -1,9 +1,9 @@
 locals {
-  prefix            = "pagopa"
-  product           = "${local.prefix}-${var.env_short}"
-  domain            = "network"
-  project           = "${local.product}-${var.location_short}-${local.domain}"
-  project_hub_spoke = "${local.product}-${var.location_short_hub_spoke}-${local.domain}"
+  prefix                     = "pagopa"
+  product                    = "${local.prefix}-${var.env_short}"
+  domain                     = "network"
+  project                    = "${local.product}-${var.location_short}-${local.domain}"
+  project_hub_spoke          = "${local.product}-${var.location_short_hub_spoke}-${local.domain}"
   product_location_hub_spoke = "${local.product}-${var.location_short_hub_spoke}"
 
   vnet_italy_name                = "${local.product}-itn-vnet"
