@@ -46,7 +46,7 @@ resource "azurerm_log_analytics_data_export_rule" "export_to_eventhub_weu" {
   for_each = toset(["ContainerLog"])
 
   name                    = each.value
-  resource_group_name     = "pagopa-d-monitor-rg"
+  resource_group_name     = local.log_analytics_weu_workspace_resource_group_name
   workspace_resource_id   = data.azurerm_log_analytics_workspace.log_analytics_weu.id
   destination_resource_id = module.azure_auditlogs.eventhub_id
   table_names             = [each.value]
