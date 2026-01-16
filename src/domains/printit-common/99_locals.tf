@@ -1,5 +1,6 @@
 locals {
   product       = "${var.prefix}-${var.env_short}"
+  product_italy = "${var.prefix}-${var.env_short}-${var.location_short}"
   project_short = "${var.prefix}-${var.env_short}-${var.domain}"
   project       = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
 
@@ -16,6 +17,9 @@ locals {
 
   aks_subnet_name    = "${local.product}-${var.location_short}-${var.env}-user-aks"
   cosmos_subnet_name = "${local.product}-${var.location_short}-${var.env}-user-aks"
+
+  vnet_spoke_data_name   = "${local.product_italy}-network-data-vnet"
+  vnet_hub_spoke_rg_name = "${local.product_italy}-network-hub-spoke-rg"
 
   ingress_hostname = "${var.location_short}.${var.domain}"
 
