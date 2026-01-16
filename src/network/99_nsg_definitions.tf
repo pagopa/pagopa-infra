@@ -146,14 +146,14 @@ locals {
     }
     allow_vpn_gateway_to_postgres = {
       name                    = "AllowVpnGWPostgreSQL"
-      priority                = 301
+      priority                = 310
       target_service          = "postgresql"
       source_address_prefixes = [var.vpn_gateway_address_space]
       description             = "Allow vpn gw to access PostgreSQL"
     }
     deny_vpn_subnet_to_postgres = {
       name                    = "DenyVpnSubnetPostgreSQL"
-      priority                = 300
+      priority                = 320
       target_service          = "postgresql"
       source_subnet_name      = "GatewaySubnet"
       source_subnet_vnet_name = "pagopa-${var.env_short}-vnet"
@@ -162,7 +162,7 @@ locals {
     }
     deny_vpn_gateway_to_postgres = {
       name                    = "DenyVpnGWPostgreSQL"
-      priority                = 301
+      priority                = 330
       target_service          = "postgresql"
       source_address_prefixes = [var.vpn_gateway_address_space]
       description             = "Deny vpn gw to access PostgreSQL"
@@ -178,7 +178,7 @@ locals {
     }
     allow_aks_itn_user_to_postgres = {
       name                    = "AllowAKSItnUserPostgreSQL"
-      priority                = 401
+      priority                = 410
       target_service          = "postgresql"
       source_subnet_name      = "pagopa-${var.env_short}-itn-${var.env}-user-aks"
       source_subnet_vnet_name = "pagopa-${var.env_short}-itn-vnet"
@@ -186,7 +186,7 @@ locals {
     }
     allow_aks_itn_system_to_postgres = {
       name                    = "AllowAKSItnSystemPostgreSQL"
-      priority                = 402
+      priority                = 420
       target_service          = "postgresql"
       source_subnet_name      = "pagopa-${var.env_short}-itn-${var.env}-system-aks"
       source_subnet_vnet_name = "pagopa-${var.env_short}-itn-vnet"
@@ -194,7 +194,7 @@ locals {
     }
     allow_aks_itn_paywallet_to_postgres = {
       name                    = "AllowAKSItnPaywalletPostgreSQL"
-      priority                = 403
+      priority                = 430
       target_service          = "postgresql"
       source_subnet_name      = "pagopa-${var.env_short}-itn-pay-wallet-user-aks"
       source_subnet_vnet_name = "pagopa-${var.env_short}-itn-vnet"
@@ -202,7 +202,7 @@ locals {
     }
     allow_metabase_to_postgres = {
       name                    = "AllowMetabasePostgreSQL"
-      priority                = 404
+      priority                = 440
       target_service          = "postgresql"
       source_subnet_name      = "pagopa-${var.env_short}-itn-dbsecurity-app-snet"
       source_subnet_vnet_name = "pagopa-${var.env_short}-itn-vnet"
@@ -210,7 +210,7 @@ locals {
     }
     allow_azdo_to_postgres = {
       name                    = "AllowAZDOPostgreSQL"
-      priority                = 405
+      priority                = 450
       target_service          = "postgresql"
       source_subnet_name      = "pagopa-${var.env_short}-azdoa-snet"
       source_subnet_vnet_name = "pagopa-${var.env_short}-vnet"
@@ -218,7 +218,7 @@ locals {
     }
     allow_tools_cae_to_postgres = {
       name                    = "AllowToolsCaePostgreSQL"
-      priority                = 406
+      priority                = 460
       target_service          = "postgresql"
       source_subnet_name      = "pagopa-${var.env_short}-tools-cae-subnet"
       source_subnet_vnet_name = "pagopa-${var.env_short}-vnet"
@@ -226,7 +226,7 @@ locals {
     }
     allow_tools_cae_itn_to_postgres = {
       name                    = "AllowToolsCaeItnPostgreSQL"
-      priority                = 407
+      priority                = 470
       target_service          = "postgresql"
       source_subnet_name      = "pagopa-${var.env_short}-itn-core-tools-cae-subnet"
       source_subnet_vnet_name = "pagopa-${var.env_short}-itn-vnet"
@@ -234,7 +234,7 @@ locals {
     }
     allow_gh_runner_itn_to_postgres = {
       name                    = "AllowGhRunnerItnPostgreSQL"
-      priority                = 408
+      priority                = 480
       target_service          = "postgresql"
       source_subnet_name      = "github-runner-snet-ita"
       source_subnet_vnet_name = "pagopa-${var.env_short}-itn-vnet"
@@ -242,7 +242,7 @@ locals {
     }
     allow_gh_runner_weu_to_postgres = {
       name                    = "AllowGhRunnerWeuPostgreSQL"
-      priority                = 409
+      priority                = 490
       target_service          = "postgresql"
       source_subnet_name      = "github-runner-snet"
       source_subnet_vnet_name = "pagopa-${var.env_short}-vnet"
@@ -250,14 +250,14 @@ locals {
     }
     allow_data_factory_to_postgres = {
       name                    = "AllowDataFactoryPostgreSQL"
-      priority                = 410
+      priority                = 500
       target_service          = "postgresql"
       source_address_prefixes = ["DataFactory"]
       description             = "Allow data factory to access PostgreSQL"
     }
     allow_data_factory_proxy_to_postgres = var.enabled_features.data_factory_proxy ? {
       name                    = "AllowDataFactoryProxyPostgreSQL"
-      priority                = 411
+      priority                = 510
       target_service          = "postgresql"
       source_subnet_name      = module.vmss_snet.name
       source_subnet_vnet_name = "pagopa-${var.env_short}-vnet"
@@ -265,7 +265,7 @@ locals {
     } : null
     allow_pe_subnet_to_postgres = {
       name                    = "AllowPESubnetPostgreSQL"
-      priority                = 412
+      priority                = 520
       target_service          = "postgresql"
       source_subnet_name      = "pagopa-${var.env_short}-common-private-endpoint-snet"
       source_subnet_vnet_name = "pagopa-${var.env_short}-vnet"
@@ -273,7 +273,7 @@ locals {
     }
     allow_nodo_weu_to_postgres = {
       name                    = "AllowNodoPostgreSQL"
-      priority                = 450
+      priority                = 530
       target_service          = "postgresql"
       source_subnet_name      = "pagopa-${var.env_short}-weu-nodo-pgres-flexible-snet"
       source_subnet_vnet_name = "pagopa-${var.env_short}-vnet"
@@ -281,7 +281,7 @@ locals {
     }
     allow_nodo_storico_to_postgres = {
       name                    = "AllowNodoStoricoPostgreSQL"
-      priority                = 451
+      priority                = 540
       target_service          = "postgresql"
       source_subnet_name      = "pagopa-${var.env_short}-weu-nodo-storico-pgres-flexible-snet"
       source_subnet_vnet_name = "pagopa-${var.env_short}-vnet"
@@ -289,14 +289,14 @@ locals {
     }
     allow_all_to_postgres = {
       name                    = "AllowPostgreSQL"
-      priority                = 4096
+      priority                = 4080
       target_service          = "postgresql"
       source_address_prefixes = ["*"]
       description             = "Allow all subnets to access PostgreSQL"
     }
     deny_from_all_vnet = {
       name                    = "DenyFromAllVNet"
-      priority                = 4095
+      priority                = 4090
       destination_port_ranges = ["*"]
       source_address_prefixes = ["*"]
       protocol                = "*"
