@@ -1,1335 +1,1329 @@
 {
-    "annotations": {
-      "list": [
-        {
-          "builtIn": 1,
-          "datasource": {
-            "type": "grafana",
-            "uid": "-- Grafana --"
-          },
-          "enable": true,
-          "hide": true,
-          "iconColor": "rgba(0, 211, 255, 1)",
-          "name": "Annotations & Alerts",
-          "target": {
-            "limit": 100,
-            "matchAny": false,
-            "tags": [],
-            "type": "dashboard"
-          },
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
           "type": "dashboard"
-        }
-      ]
-    },
-    "editable": true,
-    "fiscalYearStartMonth": 0,
-    "graphTooltip": 0,
-    "id": 42,
-    "links": [],
-    "liveNow": false,
-    "panels": [
-      {
-        "collapsed": true,
-        "gridPos": {
-          "h": 1,
-          "w": 24,
-          "x": 0,
-          "y": 0
         },
-        "id": 16,
-        "panels": [
-          {
-            "datasource": {
-              "type": "grafana-azure-data-explorer-datasource",
-              "uid": "2mZ1xay4z"
-            },
-            "description": "Questi errori sono privi di iuv/idDominio pertanto non possono essere raggruppabili",
-            "fieldConfig": {
-              "defaults": {
-                "color": {
-                  "mode": "thresholds"
-                },
-                "custom": {
-                  "align": "auto",
-                  "cellOptions": {
-                    "type": "auto"
-                  },
-                  "inspect": false
-                },
-                "mappings": [],
-                "thresholds": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green"
-                    },
-                    {
-                      "color": "red",
-                      "value": 80
-                    }
-                  ]
-                }
-              },
-              "overrides": []
-            },
-            "gridPos": {
-              "h": 7,
-              "w": 11,
-              "x": 0,
-              "y": 1
-            },
-            "id": 18,
-            "options": {
-              "cellHeight": "sm",
-              "footer": {
-                "countRows": false,
-                "fields": "",
-                "reducer": [
-                  "sum"
-                ],
-                "show": false
-              },
-              "showHeader": true
-            },
-            "pluginVersion": "9.5.13",
-            "targets": [
-              {
-                "database": "re",
-                "datasource": {
-                  "type": "grafana-azure-data-explorer-datasource",
-                  "uid": "2mZ1xay4z"
-                },
-                "expression": {
-                  "from": {
-                    "property": {
-                      "name": "ReEvent",
-                      "type": "string"
-                    },
-                    "type": "property"
-                  },
-                  "groupBy": {
-                    "expressions": [],
-                    "type": "and"
-                  },
-                  "reduce": {
-                    "expressions": [],
-                    "type": "and"
-                  },
-                  "where": {
-                    "expressions": [],
-                    "type": "and"
-                  }
-                },
-                "pluginVersion": "4.7.0",
-                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where faultCode == 'PPT_SINTASSI_XSD'\n| extend intermediario = substring(stazione, 0, strlen(stazione)-3) \n| project insertedTimestamp, tipoEvento , faultCode , faultDescription, sessionId , sessionIdOriginal , uniqueId \n| extend insertedTimestamp = datetime_add(\"hour\", -1 , insertedTimestamp)\n",
-                "querySource": "raw",
-                "queryType": "KQL",
-                "rawMode": true,
-                "refId": "A",
-                "resultFormat": "table"
-              }
-            ],
-            "title": "PPT_SINTASSI_XSD",
-            "type": "table"
-          },
-          {
-            "datasource": {
-              "type": "grafana-azure-data-explorer-datasource",
-              "uid": "2mZ1xay4z"
-            },
-            "fieldConfig": {
-              "defaults": {
-                "color": {
-                  "mode": "palette-classic"
-                },
-                "custom": {
-                  "hideFrom": {
-                    "legend": false,
-                    "tooltip": false,
-                    "viz": false
-                  }
-                },
-                "mappings": []
-              },
-              "overrides": []
-            },
-            "gridPos": {
-              "h": 7,
-              "w": 12,
-              "x": 11,
-              "y": 1
-            },
-            "id": 22,
-            "options": {
-              "legend": {
-                "displayMode": "list",
-                "placement": "bottom",
-                "showLegend": true
-              },
-              "pieType": "pie",
-              "reduceOptions": {
-                "calcs": [
-                  "lastNotNull"
-                ],
-                "fields": "",
-                "values": true
-              },
-              "tooltip": {
-                "mode": "single",
-                "sort": "none"
-              }
-            },
-            "targets": [
-              {
-                "database": "re",
-                "datasource": {
-                  "type": "grafana-azure-data-explorer-datasource",
-                  "uid": "2mZ1xay4z"
-                },
-                "expression": {
-                  "from": {
-                    "property": {
-                      "name": "ReEvent",
-                      "type": "string"
-                    },
-                    "type": "property"
-                  },
-                  "groupBy": {
-                    "expressions": [],
-                    "type": "and"
-                  },
-                  "reduce": {
-                    "expressions": [],
-                    "type": "and"
-                  },
-                  "where": {
-                    "expressions": [],
-                    "type": "and"
-                  }
-                },
-                "pluginVersion": "4.7.0",
-                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where faultCode == 'PPT_SINTASSI_XSD'\n| extend intermediario = substring(stazione, 0, strlen(stazione)-3) \n| summarize cnt=count() by tipoEvento\n",
-                "querySource": "raw",
-                "queryType": "KQL",
-                "rawMode": true,
-                "refId": "A",
-                "resultFormat": "table"
-              }
-            ],
-            "title": "PPT_SINTASSI_XSD",
-            "type": "piechart"
-          }
-        ],
-        "title": "PPT_SINTASSI_XSD",
-        "type": "row"
-      },
-      {
-        "gridPos": {
-          "h": 1,
-          "w": 24,
-          "x": 0,
-          "y": 1
-        },
-        "id": 14,
-        "title": "Vista Applicativa",
-        "type": "row"
-      },
-      {
-        "datasource": {
-          "type": "grafana-azure-data-explorer-datasource",
-          "uid": "2mZ1xay4z"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "fillOpacity": 80,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "lineWidth": 1,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "links": [
-              {
-                "targetBlank": false,
-                "title": "Dettaglio",
-                "url": "https://﻿pagopa-p-weu-grafana-avb5f4e0fqawgyea.weu.grafana.azure.com/d/f8cZA_IVz/monitor-ec-applicativo?orgId=1&var-sdc=﻿﻿${__data.fields.intermediario}﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿&﻿﻿﻿${__url_time_range}"
-              }
-            ],
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            }
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 9,
-          "w": 13,
-          "x": 0,
-          "y": 2
-        },
-        "id": 2,
-        "options": {
-          "barRadius": 0,
-          "barWidth": 1,
-          "fullHighlight": false,
-          "groupWidth": 0.7,
-          "legend": {
-            "calcs": [],
-            "displayMode": "table",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "orientation": "horizontal",
-          "showValue": "auto",
-          "stacking": "none",
-          "text": {
-            "valueSize": 15
-          },
-          "tooltip": {
-            "mode": "single",
-            "sort": "none"
-          },
-          "xTickLabelRotation": 0,
-          "xTickLabelSpacing": 0
-        },
-        "pluginVersion": "9.0.8.1",
-        "targets": [
-          {
-            "database": "re",
-            "datasource": {
-              "type": "grafana-azure-data-explorer-datasource",
-              "uid": "2mZ1xay4z"
-            },
-            "expression": {
-              "from": {
-                "property": {
-                  "name": "ReEvent",
-                  "type": "string"
-                },
-                "type": "property"
-              },
-              "groupBy": {
-                "expressions": [],
-                "type": "and"
-              },
-              "reduce": {
-                "expressions": [],
-                "type": "and"
-              },
-              "where": {
-                "expressions": [],
-                "type": "and"
-              }
-            },
-            "pluginVersion": "4.6.2",
-            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\", \"paGetPaymentV2\", \"paSendRTV2\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| extend intermediario = substring(stazione, 0, strlen(stazione)-3) \n| summarize Totale=count() by intermediario\n| where intermediario != \"\"\n| sort by Totale desc \n| top 10 by Totale\n",
-            "querySource": "raw",
-            "queryType": "KQL",
-            "rawMode": true,
-            "refId": "A",
-            "resultFormat": "table"
-          },
-          {
-            "database": "re",
-            "datasource": {
-              "type": "grafana-azure-data-explorer-datasource",
-              "uid": "2mZ1xay4z"
-            },
-            "expression": {
-              "from": {
-                "property": {
-                  "name": "ReEvent",
-                  "type": "string"
-                },
-                "type": "property"
-              },
-              "groupBy": {
-                "expressions": [],
-                "type": "and"
-              },
-              "reduce": {
-                "expressions": [],
-                "type": "and"
-              },
-              "where": {
-                "expressions": [],
-                "type": "and"
-              }
-            },
-            "hide": false,
-            "pluginVersion": "4.6.2",
-            "query": "INTERMEDIARI_PA\n| project-rename intermediario=ID_INTERMEDIARIO_PA",
-            "querySource": "raw",
-            "queryType": "KQL",
-            "rawMode": true,
-            "refId": "B",
-            "resultFormat": "table"
-          }
-        ],
-        "title": "Disservizi Applicativi",
-        "transformations": [
-          {
-            "id": "joinByField",
-            "options": {
-              "byField": "intermediario",
-              "mode": "inner"
-            }
-          },
-          {
-            "id": "sortBy",
-            "options": {
-              "fields": {},
-              "sort": [
-                {
-                  "desc": true,
-                  "field": "Totale"
-                }
-              ]
-            }
-          },
-          {
-            "id": "organize",
-            "options": {
-              "excludeByName": {
-                "ENABLED": true
-              },
-              "indexByName": {
-                "ENABLED": 3,
-                "INTERMEDIARIO_DESCR": 0,
-                "count_": 1,
-                "intermediario": 2
-              },
-              "renameByName": {}
-            }
-          }
-        ],
-        "transparent": true,
-        "type": "barchart"
-      },
-      {
-        "datasource": {
-          "type": "grafana-azure-data-explorer-datasource",
-          "uid": "2mZ1xay4z"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              }
-            },
-            "mappings": [],
-            "unit": "none"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 9,
-          "w": 10,
-          "x": 13,
-          "y": 2
-        },
-        "id": 6,
-        "options": {
-          "displayLabels": [
-            "percent"
-          ],
-          "legend": {
-            "displayMode": "table",
-            "placement": "right",
-            "showLegend": true,
-            "values": [
-              "value",
-              "percent"
-            ]
-          },
-          "pieType": "pie",
-          "reduceOptions": {
-            "calcs": [],
-            "fields": "",
-            "limit": 25,
-            "values": true
-          },
-          "tooltip": {
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "9.0.8.1",
-        "targets": [
-          {
-            "database": "re",
-            "datasource": {
-              "type": "grafana-azure-data-explorer-datasource",
-              "uid": "2mZ1xay4z"
-            },
-            "expression": {
-              "from": {
-                "property": {
-                  "name": "ReEvent",
-                  "type": "string"
-                },
-                "type": "property"
-              },
-              "groupBy": {
-                "expressions": [],
-                "type": "and"
-              },
-              "reduce": {
-                "expressions": [],
-                "type": "and"
-              },
-              "where": {
-                "expressions": [],
-                "type": "and"
-              }
-            },
-            "pluginVersion": "4.6.2",
-            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nlet okResp = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\", \"paGetPaymentV2\", \"paSendRTV2\")\n| where sottoTipoEvento == \"RESP\"\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| extend faultCode = extract(\"<faultCode>(.*)</faultCode>\", 1, base64_decode_tostring(payload))\n| where isempty(faultCode) == true\n| extend faultCode = \"RISPOSTE OK\"\n| summarize sum=count() by faultCode;\nlet koResp = FAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\", \"paGetPaymentV2\", \"paSendRTV2\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| summarize sum=count() by faultCode;\nunion okResp, koResp",
-            "querySource": "raw",
-            "queryType": "KQL",
-            "rawMode": true,
-            "refId": "A",
-            "resultFormat": "table"
-          }
-        ],
-        "title": "Dettaglio su: $sdc",
-        "type": "piechart"
-      },
-      {
-        "datasource": {
-          "type": "grafana-azure-data-explorer-datasource",
-          "uid": "2mZ1xay4z"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "fillOpacity": 80,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "lineWidth": 1,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "none"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 23,
-          "x": 0,
-          "y": 11
-        },
-        "id": 24,
-        "options": {
-          "barRadius": 0,
-          "barWidth": 0.97,
-          "fullHighlight": false,
-          "groupWidth": 0.7,
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "orientation": "auto",
-          "showValue": "always",
-          "stacking": "none",
-          "tooltip": {
-            "mode": "single",
-            "sort": "none"
-          },
-          "xField": "insertedTimestamp",
-          "xTickLabelRotation": 0,
-          "xTickLabelSpacing": 100
-        },
-        "targets": [
-          {
-            "database": "re",
-            "datasource": {
-              "type": "grafana-azure-data-explorer-datasource",
-              "uid": "2mZ1xay4z"
-            },
-            "expression": {
-              "from": {
-                "property": {
-                  "name": "ReEvent",
-                  "type": "string"
-                },
-                "type": "property"
-              },
-              "groupBy": {
-                "expressions": [],
-                "type": "and"
-              },
-              "reduce": {
-                "expressions": [],
-                "type": "and"
-              },
-              "where": {
-                "expressions": [],
-                "type": "and"
-              }
-            },
-            "pluginVersion": "4.6.2",
-            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nlet _step=$Step;\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\", \"paGetPaymentV2\", \"paSendRTV2\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where faultCode in ($fault)\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| summarize TOTALE=count() by bin(insertedTimestamp, $Step)\n| sort by insertedTimestamp asc\n| extend insertedTimestamp=format_datetime(insertedTimestamp, \"HH:mm\")\n| extend Fascia=insertedTimestamp\n| project insertedTimestamp , Fascia , TOTALE ",
-            "querySource": "raw",
-            "queryType": "KQL",
-            "rawMode": true,
-            "refId": "A",
-            "resultFormat": "table"
-          }
-        ],
-        "title": "Distribuzione nel tempo (Campionamento su $Step)",
-        "type": "barchart"
-      },
-      {
-        "datasource": {
-          "type": "grafana-azure-data-explorer-datasource",
-          "uid": "2mZ1xay4z"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              }
-            },
-            "mappings": []
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 9,
-          "x": 0,
-          "y": 19
-        },
-        "id": 8,
-        "options": {
-          "displayLabels": [],
-          "legend": {
-            "displayMode": "table",
-            "placement": "right",
-            "showLegend": true,
-            "values": [
-              "percent",
-              "value"
-            ]
-          },
-          "pieType": "pie",
-          "reduceOptions": {
-            "calcs": [],
-            "fields": "",
-            "values": true
-          },
-          "tooltip": {
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "9.0.8.1",
-        "targets": [
-          {
-            "database": "re",
-            "datasource": {
-              "type": "grafana-azure-data-explorer-datasource",
-              "uid": "2mZ1xay4z"
-            },
-            "expression": {
-              "from": {
-                "property": {
-                  "name": "ReEvent",
-                  "type": "string"
-                },
-                "type": "property"
-              },
-              "groupBy": {
-                "expressions": [],
-                "type": "and"
-              },
-              "reduce": {
-                "expressions": [],
-                "type": "and"
-              },
-              "where": {
-                "expressions": [],
-                "type": "and"
-              }
-            },
-            "pluginVersion": "4.6.2",
-            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\", \"paGetPaymentV2\", \"paSendRTV2\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where faultCode in ($fault)\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| summarize count=count() by idDominio",
-            "querySource": "raw",
-            "queryType": "KQL",
-            "rawMode": true,
-            "refId": "A",
-            "resultFormat": "table"
-          },
-          {
-            "database": "re",
-            "datasource": {
-              "type": "grafana-azure-data-explorer-datasource",
-              "uid": "2mZ1xay4z"
-            },
-            "expression": {
-              "from": {
-                "property": {
-                  "name": "ReEvent",
-                  "type": "string"
-                },
-                "type": "property"
-              },
-              "groupBy": {
-                "expressions": [],
-                "type": "and"
-              },
-              "reduce": {
-                "expressions": [],
-                "type": "and"
-              },
-              "where": {
-                "expressions": [],
-                "type": "and"
-              }
-            },
-            "hide": false,
-            "pluginVersion": "4.6.2",
-            "query": "PA\n| project-rename idDominio=ID_DOMINIO",
-            "querySource": "raw",
-            "queryType": "KQL",
-            "rawMode": true,
-            "refId": "B",
-            "resultFormat": "table"
-          }
-        ],
-        "title": "Dettaglio su intermediati",
-        "transformations": [
-          {
-            "id": "joinByField",
-            "options": {
-              "byField": "idDominio",
-              "mode": "inner"
-            }
-          },
-          {
-            "id": "sortBy",
-            "options": {
-              "fields": {},
-              "sort": [
-                {
-                  "desc": true,
-                  "field": "count"
-                }
-              ]
-            }
-          },
-          {
-            "id": "organize",
-            "options": {
-              "excludeByName": {
-                "DESCRIZIONE": true,
-                "ENABLED": true,
-                "RENDICONTAZIONE_FTP": true,
-                "RENDICONTAZIONE_ZIP": true,
-                "idDominio": true
-              },
-              "indexByName": {
-                "DESCRIZIONE": 3,
-                "ENABLED": 4,
-                "RAGIONE_SOCIALE": 0,
-                "RENDICONTAZIONE_FTP": 5,
-                "RENDICONTAZIONE_ZIP": 6,
-                "count": 1,
-                "idDominio": 2
-              },
-              "renameByName": {}
-            }
-          }
-        ],
-        "type": "piechart"
-      },
-      {
-        "datasource": {
-          "type": "grafana-azure-data-explorer-datasource",
-          "uid": "2mZ1xay4z"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              }
-            },
-            "mappings": []
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 6,
-          "x": 9,
-          "y": 19
-        },
-        "id": 20,
-        "options": {
-          "legend": {
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "pieType": "pie",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": true
-          },
-          "tooltip": {
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "targets": [
-          {
-            "database": "re",
-            "datasource": {
-              "type": "grafana-azure-data-explorer-datasource",
-              "uid": "2mZ1xay4z"
-            },
-            "expression": {
-              "from": {
-                "property": {
-                  "name": "ReEvent",
-                  "type": "string"
-                },
-                "type": "property"
-              },
-              "groupBy": {
-                "expressions": [],
-                "type": "and"
-              },
-              "reduce": {
-                "expressions": [],
-                "type": "and"
-              },
-              "where": {
-                "expressions": [],
-                "type": "and"
-              }
-            },
-            "pluginVersion": "4.6.2",
-            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\", \"paGetPaymentV2\", \"paSendRTV2\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where faultCode in ($fault)\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| summarize sum=count() by psp",
-            "querySource": "raw",
-            "queryType": "KQL",
-            "rawMode": true,
-            "refId": "A",
-            "resultFormat": "table"
-          },
-          {
-            "database": "re",
-            "datasource": {
-              "type": "grafana-azure-data-explorer-datasource",
-              "uid": "2mZ1xay4z"
-            },
-            "expression": {
-              "from": {
-                "property": {
-                  "name": "ReEvent",
-                  "type": "string"
-                },
-                "type": "property"
-              },
-              "groupBy": {
-                "expressions": [],
-                "type": "and"
-              },
-              "reduce": {
-                "expressions": [],
-                "type": "and"
-              },
-              "where": {
-                "expressions": [],
-                "type": "and"
-              }
-            },
-            "hide": false,
-            "pluginVersion": "4.6.2",
-            "query": "PSP\n| project-rename psp=ID_PSP",
-            "querySource": "raw",
-            "queryType": "KQL",
-            "rawMode": true,
-            "refId": "B",
-            "resultFormat": "table"
-          }
-        ],
-        "title": "Impatti su PSP",
-        "transformations": [
-          {
-            "id": "joinByField",
-            "options": {
-              "byField": "psp",
-              "mode": "inner"
-            }
-          },
-          {
-            "id": "sortBy",
-            "options": {
-              "fields": {},
-              "sort": [
-                {
-                  "desc": true,
-                  "field": "sum"
-                }
-              ]
-            }
-          },
-          {
-            "id": "organize",
-            "options": {
-              "excludeByName": {
-                "DESCRIZIONE": true,
-                "ENABLED": true,
-                "psp": true
-              },
-              "indexByName": {
-                "DESCRIZIONE": 3,
-                "ENABLED": 4,
-                "RAGIONE_SOCIALE": 0,
-                "psp": 2,
-                "sum": 1
-              },
-              "renameByName": {}
-            }
-          }
-        ],
-        "type": "piechart"
-      },
-      {
-        "datasource": {
-          "type": "grafana-azure-data-explorer-datasource",
-          "uid": "2mZ1xay4z"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              }
-            },
-            "mappings": []
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 8,
-          "x": 15,
-          "y": 19
-        },
-        "id": 10,
-        "options": {
-          "legend": {
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "pieType": "pie",
-          "reduceOptions": {
-            "calcs": [],
-            "fields": "/^sum$/",
-            "values": true
-          },
-          "tooltip": {
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "targets": [
-          {
-            "database": "re",
-            "datasource": {
-              "type": "grafana-azure-data-explorer-datasource",
-              "uid": "2mZ1xay4z"
-            },
-            "expression": {
-              "from": {
-                "property": {
-                  "name": "ReEvent",
-                  "type": "string"
-                },
-                "type": "property"
-              },
-              "groupBy": {
-                "expressions": [],
-                "type": "and"
-              },
-              "reduce": {
-                "expressions": [],
-                "type": "and"
-              },
-              "where": {
-                "expressions": [],
-                "type": "and"
-              }
-            },
-            "pluginVersion": "4.6.2",
-            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\", \"paGetPaymentV2\", \"paSendRTV2\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where faultCode in ($fault)\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| summarize sum=count() by tipoEvento",
-            "querySource": "raw",
-            "queryType": "KQL",
-            "rawMode": true,
-            "refId": "A",
-            "resultFormat": "table"
-          }
-        ],
-        "title": "Dettaglio su metodo",
-        "type": "piechart"
-      },
-      {
-        "datasource": {
-          "type": "grafana-azure-data-explorer-datasource",
-          "uid": "2mZ1xay4z"
-        },
-        "description": "Qui è possibile vedere il dettaglio di ogni singolo evento",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "custom": {
-              "align": "auto",
-              "cellOptions": {
-                "type": "auto"
-              },
-              "filterable": true,
-              "inspect": false
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "insertedTimestamp"
-              },
-              "properties": [
-                {
-                  "id": "custom.width",
-                  "value": 221
-                }
-              ]
-            }
-          ]
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 23,
-          "x": 0,
-          "y": 27
-        },
-        "id": 12,
-        "options": {
-          "cellHeight": "sm",
-          "footer": {
-            "countRows": false,
-            "enablePagination": true,
-            "fields": "",
-            "reducer": [
-              "sum"
-            ],
-            "show": false
-          },
-          "showHeader": true,
-          "sortBy": [
-            {
-              "desc": true,
-              "displayName": "insertedTimestamp"
-            }
-          ]
-        },
-        "pluginVersion": "10.4.15",
-        "targets": [
-          {
-            "database": "re",
-            "datasource": {
-              "type": "grafana-azure-data-explorer-datasource",
-              "uid": "2mZ1xay4z"
-            },
-            "expression": {
-              "from": {
-                "property": {
-                  "name": "ReEvent",
-                  "type": "string"
-                },
-                "type": "property"
-              },
-              "groupBy": {
-                "expressions": [],
-                "type": "and"
-              },
-              "reduce": {
-                "expressions": [],
-                "type": "and"
-              },
-              "where": {
-                "expressions": [],
-                "type": "and"
-              }
-            },
-            "pluginVersion": "4.6.2",
-            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\", \"paGetPaymentV2\", \"paSendRTV2\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where faultCode in ($fault)\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| sort by insertedTimestamp\n| extend insertedTimestamp = datetime_local_to_utc(insertedTimestamp, \"Europe/Rome\")",
-            "querySource": "raw",
-            "queryType": "KQL",
-            "rawMode": true,
-            "refId": "A",
-            "resultFormat": "table"
-          }
-        ],
-        "title": "Dettaglio errori",
-        "type": "table"
+        "type": "dashboard"
       }
-    ],
-    "refresh": "",
-    "revision": 1,
-    "schemaVersion": 39,
-    "tags": [],
-    "templating": {
-      "list": [
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 42,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 16,
+      "panels": [
         {
-          "current": {
-            "selected": false,
-            "text": "A-Tono Srl",
-            "value": "13075050156"
-          },
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
             "uid": "2mZ1xay4z"
           },
-          "definition": "INTERMEDIARI_PA\n| extend variable = strcat(ID_INTERMEDIARIO_PA,\"|\",INTERMEDIARIO_DESCR)\n| extend v = strcat(ID_INTERMEDIARIO_PA, \" : \", INTERMEDIARIO_DESCR)\n| sort by INTERMEDIARIO_DESCR asc\n| project variable",
-          "hide": 2,
-          "includeAll": false,
-          "multi": false,
-          "name": "sdc",
-          "options": [],
-          "query": {
-            "database": "re",
-            "expression": {
-              "groupBy": {
-                "expressions": [],
-                "type": "and"
+          "description": "Questi errori sono privi di iuv/idDominio pertanto non possono essere raggruppabili",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
               },
-              "reduce": {
-                "expressions": [],
-                "type": "and"
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
               },
-              "where": {
-                "expressions": [],
-                "type": "and"
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
               }
             },
-            "pluginVersion": "4.7.0",
-            "query": "INTERMEDIARI_PA\n| extend variable = strcat(ID_INTERMEDIARIO_PA,\"|\",INTERMEDIARIO_DESCR)\n| extend v = strcat(ID_INTERMEDIARIO_PA, \" : \", INTERMEDIARIO_DESCR)\n| sort by INTERMEDIARIO_DESCR asc\n| project variable",
-            "querySource": "raw",
-            "queryType": "KQL",
-            "rawMode": true,
-            "refId": "adx-INTERMEDIARI_PA\n| project tostring(ID_INTERMEDIARIO_PA)",
-            "resultFormat": "table"
+            "overrides": []
           },
-          "refresh": 1,
-          "regex": "/(?<value>.*)\\|(?<text>.*)/",
-          "skipUrlSync": false,
-          "sort": 1,
-          "type": "query"
+          "gridPos": {
+            "h": 7,
+            "w": 11,
+            "x": 0,
+            "y": 1
+          },
+          "id": 18,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true
+          },
+          "pluginVersion": "11.6.3",
+          "targets": [
+            {
+              "database": "re",
+              "datasource": {
+                "type": "grafana-azure-data-explorer-datasource",
+                "uid": "2mZ1xay4z"
+              },
+              "expression": {
+                "from": {
+                  "property": {
+                    "name": "ReEvent",
+                    "type": "string"
+                  },
+                  "type": "property"
+                },
+                "groupBy": {
+                  "expressions": [],
+                  "type": "and"
+                },
+                "reduce": {
+                  "expressions": [],
+                  "type": "and"
+                },
+                "where": {
+                  "expressions": [],
+                  "type": "and"
+                }
+              },
+              "pluginVersion": "4.7.0",
+              "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where faultCode == 'PPT_SINTASSI_XSD'\n| extend intermediario = substring(stazione, 0, strlen(stazione)-3) \n| project insertedTimestamp, tipoEvento , faultCode , faultDescription, sessionId , sessionIdOriginal , uniqueId \n| extend insertedTimestamp = datetime_add(\"hour\", -1 , insertedTimestamp)\n",
+              "querySource": "raw",
+              "queryType": "KQL",
+              "rawMode": true,
+              "refId": "A",
+              "resultFormat": "table"
+            }
+          ],
+          "title": "PPT_SINTASSI_XSD",
+          "type": "table"
         },
         {
-          "current": {
-            "selected": false,
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                }
+              },
+              "mappings": []
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 12,
+            "x": 11,
+            "y": 1
+          },
+          "id": 22,
+          "options": {
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "pieType": "pie",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "11.6.3",
+          "targets": [
+            {
+              "database": "re",
+              "datasource": {
+                "type": "grafana-azure-data-explorer-datasource",
+                "uid": "2mZ1xay4z"
+              },
+              "expression": {
+                "from": {
+                  "property": {
+                    "name": "ReEvent",
+                    "type": "string"
+                  },
+                  "type": "property"
+                },
+                "groupBy": {
+                  "expressions": [],
+                  "type": "and"
+                },
+                "reduce": {
+                  "expressions": [],
+                  "type": "and"
+                },
+                "where": {
+                  "expressions": [],
+                  "type": "and"
+                }
+              },
+              "pluginVersion": "4.7.0",
+              "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where faultCode == 'PPT_SINTASSI_XSD'\n| extend intermediario = substring(stazione, 0, strlen(stazione)-3) \n| summarize cnt=count() by tipoEvento\n",
+              "querySource": "raw",
+              "queryType": "KQL",
+              "rawMode": true,
+              "refId": "A",
+              "resultFormat": "table"
+            }
+          ],
+          "title": "PPT_SINTASSI_XSD",
+          "type": "piechart"
+        }
+      ],
+      "title": "PPT_SINTASSI_XSD",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 14,
+      "panels": [],
+      "title": "Vista Applicativa",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "2mZ1xay4z"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [
+            {
+              "targetBlank": false,
+              "title": "Dettaglio",
+              "url": "https://﻿pagopa-p-weu-grafana-avb5f4e0fqawgyea.weu.grafana.azure.com/d/f8cZA_IVz/monitor-ec-applicativo?orgId=1&var-sdc=﻿﻿${__data.fields.intermediario}﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿&﻿﻿﻿${__url_time_range}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 13,
+        "x": 0,
+        "y": 2
+      },
+      "id": 2,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 1,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
+        "text": {
+          "valueSize": 15
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "11.6.3",
+      "targets": [
+        {
+          "database": "re",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "expression": {
+            "from": {
+              "property": {
+                "name": "ReEvent",
+                "type": "string"
+              },
+              "type": "property"
+            },
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "4.6.2",
+          "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paDemandPaymentNotice\", \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\", \"paGetPaymentV2\", \"paSendRTV2\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| extend intermediario = substring(stazione, 0, strlen(stazione)-3) \n| summarize Totale=count() by intermediario\n| where intermediario != \"\"\n| sort by Totale desc \n| top 10 by Totale\n",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        },
+        {
+          "database": "re",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "expression": {
+            "from": {
+              "property": {
+                "name": "ReEvent",
+                "type": "string"
+              },
+              "type": "property"
+            },
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "hide": false,
+          "pluginVersion": "4.6.2",
+          "query": "INTERMEDIARI_PA\n| project-rename intermediario=ID_INTERMEDIARIO_PA",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "B",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Disservizi Applicativi",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "intermediario",
+            "mode": "inner"
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Totale"
+              }
+            ]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ENABLED": true
+            },
+            "indexByName": {
+              "ENABLED": 3,
+              "INTERMEDIARIO_DESCR": 0,
+              "count_": 1,
+              "intermediario": 2
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "2mZ1xay4z"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 10,
+        "x": 13,
+        "y": 2
+      },
+      "id": 6,
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "limit": 25,
+          "values": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.3",
+      "targets": [
+        {
+          "database": "re",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "expression": {
+            "from": {
+              "property": {
+                "name": "ReEvent",
+                "type": "string"
+              },
+              "type": "property"
+            },
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "4.6.2",
+          "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nlet okResp = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paDemandPaymentNotice\", \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\", \"paGetPaymentV2\", \"paSendRTV2\")\n| where sottoTipoEvento == \"RESP\"\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| extend faultCode = extract(\"<faultCode>(.*)</faultCode>\", 1, base64_decode_tostring(payload))\n| where isempty(faultCode) == true\n| extend faultCode = \"RISPOSTE OK\"\n| summarize sum=count() by faultCode;\nlet koResp = FAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\", \"paGetPaymentV2\", \"paSendRTV2\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| summarize sum=count() by faultCode;\nunion okResp, koResp",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Dettaglio su: $sdc",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "2mZ1xay4z"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 23,
+        "x": 0,
+        "y": 11
+      },
+      "id": 24,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "always",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xField": "insertedTimestamp",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 100
+      },
+      "pluginVersion": "11.6.3",
+      "targets": [
+        {
+          "database": "re",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "expression": {
+            "from": {
+              "property": {
+                "name": "ReEvent",
+                "type": "string"
+              },
+              "type": "property"
+            },
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "4.6.2",
+          "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nlet _step=$Step;\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paDemandPaymentNotice\", \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\", \"paGetPaymentV2\", \"paSendRTV2\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where faultCode in ($fault)\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| summarize TOTALE=count() by bin(insertedTimestamp, $Step)\n| sort by insertedTimestamp asc\n| extend insertedTimestamp=format_datetime(insertedTimestamp, \"HH:mm\")\n| extend Fascia=insertedTimestamp\n| project insertedTimestamp , Fascia , TOTALE ",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Distribuzione nel tempo (Campionamento su $Step)",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "2mZ1xay4z"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 0,
+        "y": 19
+      },
+      "id": 8,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent",
+            "value"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.3",
+      "targets": [
+        {
+          "database": "re",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "expression": {
+            "from": {
+              "property": {
+                "name": "ReEvent",
+                "type": "string"
+              },
+              "type": "property"
+            },
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "4.6.2",
+          "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paDemandPaymentNotice\", \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\", \"paGetPaymentV2\", \"paSendRTV2\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where faultCode in ($fault)\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| summarize count=count() by idDominio",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        },
+        {
+          "database": "re",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "expression": {
+            "from": {
+              "property": {
+                "name": "ReEvent",
+                "type": "string"
+              },
+              "type": "property"
+            },
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "hide": false,
+          "pluginVersion": "4.6.2",
+          "query": "PA\n| project-rename idDominio=ID_DOMINIO",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "B",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Dettaglio su intermediati",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "idDominio",
+            "mode": "inner"
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "count"
+              }
+            ]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "DESCRIZIONE": true,
+              "ENABLED": true,
+              "RENDICONTAZIONE_FTP": true,
+              "RENDICONTAZIONE_ZIP": true,
+              "idDominio": true
+            },
+            "indexByName": {
+              "DESCRIZIONE": 3,
+              "ENABLED": 4,
+              "RAGIONE_SOCIALE": 0,
+              "RENDICONTAZIONE_FTP": 5,
+              "RENDICONTAZIONE_ZIP": 6,
+              "count": 1,
+              "idDominio": 2
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "2mZ1xay4z"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 9,
+        "y": 19
+      },
+      "id": 20,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.3",
+      "targets": [
+        {
+          "database": "re",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "expression": {
+            "from": {
+              "property": {
+                "name": "ReEvent",
+                "type": "string"
+              },
+              "type": "property"
+            },
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "4.6.2",
+          "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paDemandPaymentNotice\", \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\", \"paGetPaymentV2\", \"paSendRTV2\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where faultCode in ($fault)\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| summarize sum=count() by psp",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        },
+        {
+          "database": "re",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "expression": {
+            "from": {
+              "property": {
+                "name": "ReEvent",
+                "type": "string"
+              },
+              "type": "property"
+            },
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "hide": false,
+          "pluginVersion": "4.6.2",
+          "query": "PSP\n| project-rename psp=ID_PSP",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "B",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Impatti su PSP",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "psp",
+            "mode": "inner"
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "sum"
+              }
+            ]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "DESCRIZIONE": true,
+              "ENABLED": true,
+              "psp": true
+            },
+            "indexByName": {
+              "DESCRIZIONE": 3,
+              "ENABLED": 4,
+              "RAGIONE_SOCIALE": 0,
+              "psp": 2,
+              "sum": 1
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "2mZ1xay4z"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 15,
+        "y": 19
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/^sum$/",
+          "values": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.3",
+      "targets": [
+        {
+          "database": "re",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "expression": {
+            "from": {
+              "property": {
+                "name": "ReEvent",
+                "type": "string"
+              },
+              "type": "property"
+            },
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "4.6.2",
+          "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paDemandPaymentNotice\", \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\", \"paGetPaymentV2\", \"paSendRTV2\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where faultCode in ($fault)\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| summarize sum=count() by tipoEvento",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Dettaglio su metodo",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "2mZ1xay4z"
+      },
+      "description": "Qui è possibile vedere il dettaglio di ogni singolo evento",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "insertedTimestamp"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 221
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 23,
+        "x": 0,
+        "y": 27
+      },
+      "id": 12,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "insertedTimestamp"
+          }
+        ]
+      },
+      "pluginVersion": "11.6.3",
+      "targets": [
+        {
+          "database": "re",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "expression": {
+            "from": {
+              "property": {
+                "name": "ReEvent",
+                "type": "string"
+              },
+              "type": "property"
+            },
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "4.6.2",
+          "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paDemandPaymentNotice\", \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\", \"paGetPaymentV2\", \"paSendRTV2\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where faultCode in ($fault)\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| sort by insertedTimestamp\n| extend insertedTimestamp = datetime_local_to_utc(insertedTimestamp, \"Europe/Rome\")",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Dettaglio errori",
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "ACI Automobile Club Italia",
+          "value": "00493410583"
+        },
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "definition": "INTERMEDIARI_PA\n| extend variable = strcat(ID_INTERMEDIARIO_PA,\"|\",INTERMEDIARIO_DESCR)\n| extend v = strcat(ID_INTERMEDIARIO_PA, \" : \", INTERMEDIARIO_DESCR)\n| sort by INTERMEDIARIO_DESCR asc\n| project variable",
+        "hide": 2,
+        "includeAll": false,
+        "name": "sdc",
+        "options": [],
+        "query": {
+          "database": "re",
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "4.7.0",
+          "query": "INTERMEDIARI_PA\n| extend variable = strcat(ID_INTERMEDIARIO_PA,\"|\",INTERMEDIARIO_DESCR)\n| extend v = strcat(ID_INTERMEDIARIO_PA, \" : \", INTERMEDIARIO_DESCR)\n| sort by INTERMEDIARIO_DESCR asc\n| project variable",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "adx-INTERMEDIARI_PA\n| project tostring(ID_INTERMEDIARIO_PA)",
+          "resultFormat": "table"
+        },
+        "refresh": 1,
+        "regex": "/(?<value>.*)\\|(?<text>.*)/",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "1m",
+          "value": "1m"
+        },
+        "includeAll": false,
+        "name": "Step",
+        "options": [
+          {
+            "selected": true,
             "text": "1m",
             "value": "1m"
           },
-          "hide": 0,
-          "includeAll": false,
-          "multi": false,
-          "name": "Step",
-          "options": [
-            {
-              "selected": true,
-              "text": "1m",
-              "value": "1m"
-            },
-            {
-              "selected": false,
-              "text": "10m",
-              "value": "10m"
-            },
-            {
-              "selected": false,
-              "text": "15m",
-              "value": "15m"
-            },
-            {
-              "selected": false,
-              "text": "30m",
-              "value": "30m"
-            },
-            {
-              "selected": false,
-              "text": "1h",
-              "value": "1h"
-            }
-          ],
-          "query": "1m, 10m, 15m, 30m, 1h",
-          "queryValue": "",
-          "skipUrlSync": false,
-          "type": "custom"
-        },
-        {
-          "current": {
+          {
             "selected": false,
-            "text": "All",
-            "value": "$__all"
+            "text": "10m",
+            "value": "10m"
           },
-          "datasource": {
-            "type": "grafana-azure-data-explorer-datasource",
-            "uid": "2mZ1xay4z"
+          {
+            "selected": false,
+            "text": "15m",
+            "value": "15m"
           },
-          "definition": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| summarize sum=count() by faultCode",
-          "hide": 0,
-          "includeAll": true,
-          "label": "faultCode",
-          "multi": true,
-          "name": "fault",
-          "options": [],
-          "query": {
-            "database": "re",
-            "expression": {
-              "groupBy": {
-                "expressions": [],
-                "type": "and"
-              },
-              "reduce": {
-                "expressions": [],
-                "type": "and"
-              },
-              "where": {
-                "expressions": [],
-                "type": "and"
-              }
+          {
+            "selected": false,
+            "text": "30m",
+            "value": "30m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          }
+        ],
+        "query": "1m, 10m, 15m, 30m, 1h",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "definition": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| summarize sum=count() by faultCode",
+        "includeAll": true,
+        "label": "faultCode",
+        "multi": true,
+        "name": "fault",
+        "options": [],
+        "query": {
+          "database": "re",
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
             },
-            "pluginVersion": "4.7.0",
-            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| summarize sum=count() by faultCode",
-            "querySource": "raw",
-            "queryType": "KQL",
-            "rawMode": true,
-            "refId": "adx-let start=todatetime(unixtime_milliseconds_todatetime($__from + 7200000));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to + 7200000));\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| summarize sum=count() by faultCode",
-            "resultFormat": "table"
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
           },
-          "refresh": 1,
-          "regex": "",
-          "skipUrlSync": false,
-          "sort": 0,
-          "type": "query"
-        }
-      ]
-    },
-    "time": {
-      "from": "now-30m",
-      "to": "now"
-    },
-    "timepicker": {
-      "hidden": false
-    },
-    "timezone": "browser",
-    "title": "Monitor EC Applicativo",
-    "uid": "f8cZA_IVz",
-    "version": 8,
-    "weekStart": ""
-  }
+          "pluginVersion": "4.7.0",
+          "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| summarize sum=count() by faultCode",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "adx-let start=todatetime(unixtime_milliseconds_todatetime($__from + 7200000));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to + 7200000));\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in~ (\"paaChiediNumeroAvviso\" , \"paaVerificaRPT\" , \"paaAttivaRPT\" , \"paaInviaRT\" , \"paVerifyPaymentNotice\" , \"paGetPayment\" , \"paSendRT\")\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| extend intermediario = tostring(substring(stazione, 0, strlen(stazione)-3))\n| where intermediario == \"$sdc\"\n| summarize sum=count() by faultCode",
+          "resultFormat": "table"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-3h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "Europe/Rome",
+  "title": "Monitor EC Applicativo",
+  "uid": "f8cZA_IVz",
+  "version": 15
+}
