@@ -70,6 +70,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
     urlenvpath                = var.env_short
     url_aks                   = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
+    ndphost_variable          = file("./api_product/nodo_pagamenti_api/env/${var.env}/ndphost_header.xml")
   })
 }
 
@@ -85,6 +86,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_p
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
     urlenvpath                = var.env_short
     url_aks                   = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
+    ndphost_variable          = file("./api_product/nodo_pagamenti_api/env/${var.env}/ndphost_header.xml")
   })
 
 }

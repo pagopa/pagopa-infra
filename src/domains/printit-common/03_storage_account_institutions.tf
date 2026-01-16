@@ -1,5 +1,5 @@
 module "institutions_sa" {
-  source = "./.terraform/modules/__v3__//storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
   count  = var.is_feature_enabled.storage_institutions ? 1 : 0
 
   name                            = replace("${local.project_short}-ci", "-", "")
