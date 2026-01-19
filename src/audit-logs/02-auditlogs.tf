@@ -1,6 +1,6 @@
 module "azure_auditlogs" {
 
-  source                     = "git::https://github.com/pagopa/terraform-azure-auditlogs?ref=PAYMCLOUD-633_auditlogs_output_eventhub"
+  source                     = "git::https://github.com/pagopa/terraform-azure-auditlogs?ref=v1.2.0"
   resource_group_name        = azurerm_resource_group.rg.name
   location                   = var.location
   debug                      = false # true only for test use, set to false in production envs
