@@ -1667,24 +1667,7 @@
             "format": "date"
           },
           "paymentTypeCode": {
-            "type": "string",
-            "enum": [
-              "CP",
-              "MYBK",
-              "BPAY",
-              "PPAL",
-              "RPIC",
-              "RBPS",
-              "SATY",
-              "APPL",
-              "RICO",
-              "RBPB",
-              "RBPP",
-              "RBPR",
-              "GOOG",
-              "KLRN",
-              "RFPB"
-            ]
+            "type": "string"
           },
           "paymentMethodTypes": {
             "type": "array",
