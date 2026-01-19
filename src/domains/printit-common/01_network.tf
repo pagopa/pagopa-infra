@@ -70,7 +70,7 @@ module "cosmos_spoke_printit_snet" {
   count             = var.env_short == "d" ? 0 : 1
   env               = var.env
   idh_resource_tier = "slash28_privatelink_true"
-  name              = "${local.project}-cosmos-pe-snet"
+  name              = "${local.project}-spoke-data-cosmos-pe-snet"
   product_name      = var.prefix
 
   resource_group_name  = local.vnet_hub_spoke_rg_name
