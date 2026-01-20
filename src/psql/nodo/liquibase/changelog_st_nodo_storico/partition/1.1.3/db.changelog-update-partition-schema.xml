@@ -14,28 +14,28 @@
       encoding="UTF-8"
       path="sql/modify_partition_monthly_integer.sql"
       relativeToChangelogFile="true"
-      splitStatements="true"
+      splitStatements="false"
       stripComments="true"/>
 
     <sqlFile
       encoding="UTF-8"
       path="sql/modify_partition_monthly_integer_integer.sql"
       relativeToChangelogFile="true"
-      splitStatements="true"
+      splitStatements="false"
       stripComments="true"/>
 
     <sqlFile
       encoding="UTF-8"
       path="sql/archive_partition.sql"
       relativeToChangelogFile="true"
-      splitStatements="true"
+      splitStatements="false"
       stripComments="true"/>
 
     <sqlFile
       encoding="UTF-8"
       path="sql/archive_partition_monthly.sql"
       relativeToChangelogFile="true"
-      splitStatements="true"
+      splitStatements="false"
       stripComments="true"/>
 
   </changeSet>
