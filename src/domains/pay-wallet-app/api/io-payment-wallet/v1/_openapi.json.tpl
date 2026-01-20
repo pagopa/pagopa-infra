@@ -111,6 +111,71 @@
             "description": "Timeout serving request"
           }
         }
+      },
+     "post": {
+        "tags": [
+          "paymentMethods"
+        ],
+        "operationId": "getAllPaymentMethodsForIOPost",
+        "summary": "Retrieve all Payment Methods for IO (by filter)",
+        "description": "POST with body payload - no resources created: API for retrieves payment methods using filter criteria provided in the request body.",
+        "security": [
+          {
+            "pagoPAPlatformSessionToken": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentMethodsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Payment method successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentMethodsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/wallets": {
@@ -419,6 +484,142 @@
   },
   "components": {
     "schemas": {
+      "PaymentMethodsRequest": {
+        "required": [
+          "paymentNotice",
+          "totalAmount",
+          "userTouchpoint"
+        ],
+        "type": "object",
+        "properties": {
+          "userTouchpoint": {
+            "type": "string",
+            "enum": [
+              "IO",
+              "CHECKOUT",
+              "CHECKOUT_CART"
+            ]
+          },
+          "userDevice": {
+            "type": "string",
+            "enum": [
+              "IOS",
+              "ANDROID",
+              "WEB",
+              "SAFARI"
+            ]
+          },
+          "language": {
+             "type": "string",
+             "description": "The user language",
+             "enum": [
+                 "IT",
+                 "EN",
+                 "FR",
+                 "DE",
+                 "SL"
+             ]
+          },
+          "sortBy": {
+             "type": "string",
+             "enum": [
+                 "NAME",
+                 "DESCRIPTION",
+                 "FEE"
+             ]
+          },
+          "sortOrder": {
+             "type": "string",
+             "enum": [
+                 "ASC",
+                 "DESC"
+             ]
+          },
+          "totalAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "priorityGroups": {
+             "type": "array",
+             "items": {
+                 "type": "string",
+                 "enum": [
+                     "CP",
+                     "MYBK",
+                     "BPAY",
+                     "PPAL",
+                     "RPIC",
+                     "RBPS",
+                     "SATY",
+                     "APPL",
+                     "RICO",
+                     "RBPB",
+                     "RBPP",
+                     "RBPR",
+                     "GOOG",
+                     "KLRN"
+                 ]
+             }
+          },
+          "paymentNotice": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentNoticeItem"
+            }
+          },
+          "allCCp": {
+            "type": "boolean"
+          },
+          "targetKey": {
+            "type": "string"
+          },
+          "deviceVersion": {
+            "type": "string",
+            "description": "The user device version"
+
+          }
+        }
+      },
+      "PaymentNoticeItem": {
+        "required": [
+          "paymentAmount",
+          "primaryCreditorInstitution"
+        ],
+        "type": "object",
+        "properties": {
+          "paymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "primaryCreditorInstitution": {
+            "type": "string"
+          },
+          "transferList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferListItem"
+            }
+          }
+        }
+      },
+      "TransferListItem": {
+        "description": "Transfer list item",
+        "type": "object",
+        "properties": {
+          "creditorInstitution": {
+            "description": "Creditor institution",
+            "type": "string"
+          },
+          "digitalStamp": {
+            "description": "Boolean value indicating if there is digital stamp",
+            "type": "boolean"
+          },
+          "transferCategory": {
+            "description": "Transfer category",
+            "type": "string"
+          }
+        }
+      },
       "WalletId": {
         "description": "Wallet identifier",
         "type": "string",
