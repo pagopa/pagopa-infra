@@ -23,7 +23,7 @@ locals {
   network_watcher_rg_name = "NetworkWatcherRG"
 
   flow_log_retention_days = 20
-
+  external_domain         = "pagopa.it"
 
   nsg_network_regions = {
     westeurope = {
