@@ -111,3 +111,8 @@ variable "vnet_ita_ddos_protection_plan" {
   })
   default = null
 }
+
+variable "platform_dns_zone_prefix" {
+  type        = string
+  description = "platform dns prefix"
+}

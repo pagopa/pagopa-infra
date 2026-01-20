@@ -17,3 +17,5 @@ enabled_features = {
   nsg                 = false
 }
 
+
+platform_dns_zone_prefix = "dev.platform"
