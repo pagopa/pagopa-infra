@@ -39,6 +39,7 @@
                         allowedPaymentTypeCodes.Add("RICO");//iConto
                         allowedPaymentTypeCodes.Add("KLRN");//Klarna
                         allowedPaymentTypeCodes.Add("GOOG");//Google Pay
+                        allowedPaymentTypeCodes.Add("RFPB");//Fabrick pay by bank
                         for(int i = methods.Count - 1; i >= 0; i--) {
                             String paymentTypeCode = (string)((JObject)methods[i])["paymentTypeCode"];
                             if( !allowedPaymentTypeCodes.Contains(paymentTypeCode) ) {
