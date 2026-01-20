@@ -18,3 +18,5 @@ enabled_features = {
   vpn_database_access = true
   nsg                 = true
 }
+
+platform_dns_zone_prefix = "uat.platform"
