@@ -133,16 +133,3 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_a
   resource_group_name   = data.azurerm_private_dns_zone.privatelink_postgres_azure_com[0].resource_group_name
   tags                  = module.tag_config.tags
 }
-
-
-# cstar integration vnet links
-
-resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_servicebus_windows_net_vnet_cstar_integration_link" {
-  for_each              = local.hub_spoke_vnet
-  name                  = module.vnet_hub_spoke[each.key].name
-  virtual_network_id    = module.vnet_hub_spoke[each.key].id
-  private_dns_zone_name = data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.name
-  resource_group_name   = data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.resource_group_name
-  tags                  = module.tag_config.tags
-}
-
