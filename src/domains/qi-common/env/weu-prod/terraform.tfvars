@@ -139,3 +139,42 @@ ehns_metric_alerts_qi = {
   #   ],
   # },
 }
+
+### Cosmos
+
+cosmos_mongo_db_params = {
+  enabled      = true
+  kind         = "MongoDB"
+  capabilities = ["EnableMongo", "DisableRateLimitingResponses"]
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
+  }
+  server_version                   = "7.0"
+  main_geo_location_zone_redundant = true
+  enable_free_tier                 = false
+
+  additional_geo_locations = [{
+    location          = "northeurope"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = true
+
+  backup_continuous_enabled                    = true
+  enable_provisioned_throughput_exceeded_alert = false
+
+}
+
+cosmos_mongo_db_accounting_reconciliation_params = {
+  enable_serverless  = false
+  enable_autoscaling = true
+  max_throughput     = 5000
+  throughput         = 1000
+}
+
+cidr_subnet_cosmosdb_qi = ["10.1.132.0/24"]

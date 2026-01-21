@@ -29,6 +29,22 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+variable "location_hub_spoke" {
+  type        = string
+  description = "One of westeurope, northeurope"
+}
+
+variable "location_short_hub_spoke" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_short_hub_spoke) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "One of wue, neu"
+}
+
 
 variable "nsg_regions" {
   type        = list(string)
@@ -86,4 +102,17 @@ variable "external_database_connection" {
   }))
   description = "Map of external database connection configurations"
   default     = {}
+}
+
+variable "vnet_ita_ddos_protection_plan" {
+  type = object({
+    id     = string
+    enable = bool
+  })
+  default = null
+}
+
+variable "platform_dns_zone_prefix" {
+  type        = string
+  description = "platform dns prefix"
 }

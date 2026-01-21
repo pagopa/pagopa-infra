@@ -139,7 +139,12 @@ module "checkout_cdn" {
       order = 4
 
       // conditions
-      url_path_conditions       = []
+      url_path_conditions = [{
+        operator         = "BeginsWith"
+        match_values     = ["/fonts/"]
+        negate_condition = false
+        transforms       = []
+      }]
       cookies_conditions        = []
       device_conditions         = []
       http_version_conditions   = []
@@ -154,11 +159,16 @@ module "checkout_cdn" {
         transforms       = []
         negate_condition = false
       }]
-      request_method_conditions     = []
-      request_scheme_conditions     = []
-      request_uri_conditions        = []
-      url_file_extension_conditions = []
-      url_file_name_conditions      = []
+      request_method_conditions = []
+      request_scheme_conditions = []
+      request_uri_conditions    = []
+      url_file_extension_conditions = [{
+        operator         = "Equal"
+        match_values     = ["ttf"]
+        negate_condition = false
+        transforms       = []
+      }]
+      url_file_name_conditions = []
 
       // actions
       modify_response_header_actions = [{
