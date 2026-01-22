@@ -16,6 +16,11 @@ data "azurerm_key_vault_secret" "external_database_password" {
   key_vault_id = data.azurerm_key_vault.kv_domain.id
 }
 
+data "azurerm_virtual_network" "vnet_weu_core" {
+  name                = local.vnet_core_name
+  resource_group_name = local.vnet_core_resource_group_name
+}
+
 data "azurerm_virtual_network" "vnet_weu_fe" {
   name                = local.vnet_integration_name
   resource_group_name = local.vnet_integration_resource_group_name
