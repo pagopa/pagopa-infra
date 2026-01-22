@@ -164,7 +164,7 @@ module "apim_api_statuspage_api_v1" {
           "receiptpdfgeneratorhelpdesk" = format("%s/pagopa-receipt-pdf-generator-helpdesk", format(local.aks_path, "receipts"))
           "receiptpdfnotifier"          = format("%s/pagopa-receipt-pdf-notifier", format(local.aks_path, "receipts"))
           "receiptpdfservice"           = format("%s/pagopa-receipt-pdf-service", format(local.aks_path, "receipts"))
-          "receiptpdfhelpdesk"          = format("%s/pagopa-receipt-pdf-helpdesk", format(local.aks_path, "receipts")),
+          "receiptpdfservicehelpdesk"   = format("%s/pagopa-receipt-pdf-service-helpdesk", format(local.aks_path, "receipts"))
           "printpaymentnoticegenerator" = format("%s/pagopa-print-payment-notice-generator", format(local.aks_ita_path, "printit"))
           "printpaymentnoticefunctions" = format("%s/pagopa-print-payment-notice-functions", format(local.aks_ita_path, "printit"))
           "printpaymentnoticeservice"   = format("%s/pagopa-print-payment-notice-service", format(local.aks_ita_path, "printit"))
