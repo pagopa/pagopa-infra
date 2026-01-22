@@ -1,7 +1,9 @@
 -- Aggiunge le colonne 'mesi_retention' e 'tipo' se non esistono e rende nullable le colonne 'giorni_retention' e 'mesi_retention'
 ALTER TABLE partition.storico_config
 ADD COLUMN IF NOT EXISTS mesi_retention integer,
-ADD COLUMN IF NOT EXISTS tipo character varying(50),
+ADD COLUMN IF NOT EXISTS tipo character varying(50);
+
+ALTER TABLE partition.storico_config
 ALTER COLUMN giorni_retention DROP NOT NULL,
 ALTER COLUMN mesi_retention DROP NOT NULL;
 
