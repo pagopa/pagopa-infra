@@ -59,11 +59,11 @@ variables:
     REQUIRE_VALIDATION: false
   ${{ elseif eq(parameters.env, 'uat') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
-    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-clone-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
+    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-clone2-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
     JDBC_URL_STORICO: jdbc:postgresql://pagopa-u-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-clone-flexible-postgresql.postgres.database.azure.com:5432/postgres?sslmode=require&prepareThreshold=0
+    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-clone2-flexible-postgresql.postgres.database.azure.com:5432/postgres?sslmode=require&prepareThreshold=0
     POSTGRES_JDBC_URL_STORICO: jdbc:postgresql://pagopa-u-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:5432/postgres?sslmode=require&prepareThreshold=0
-    NODO_DB_HOST: pagopa-u-weu-nodo-clone-flexible-postgresql.postgres.database.azure.com
+    NODO_DB_HOST: pagopa-u-weu-nodo-clone2-flexible-postgresql.postgres.database.azure.com
     NODO_DB_PORT: 6432
     KEY_VAULT_NAME: pagopa-u-nodo-kv
     poolImage: 'pagopa-uat-linux-infra'
