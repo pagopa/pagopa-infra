@@ -4,7 +4,7 @@
     "title": "Receipts Helpdesk",
     "description": "Microservice for exposing REST APIs about receipts helpdesk.",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.5.1"
+    "version": "0.11.23"
   },
   "servers": [
     {

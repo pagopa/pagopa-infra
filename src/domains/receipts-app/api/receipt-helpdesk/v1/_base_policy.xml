@@ -11,13 +11,13 @@
          -->
         <choose>
             <when condition="@(context.Operation.Id == "RegenerateReceiptPdf")">
-                <set-variable name="servicePath"value="pagopa-receipt-pdf-generator-helpdesk"/>
+                <set-variable name="servicePath" value="pagopa-receipt-pdf-generator-helpdesk"/>
             </when>
             <when condition="@(new [] {
                     "healthCheck", "GetReceipt", "GetReceiptByOrganizationFiscalCodeAndIUV",
                     "GetReceiptMessage", "GetReceiptPdf", "GetReceiptError", "GetCart"
                     }.Contains(context.Operation.Id))">
-                <set-variable name="servicePath"value="pagopa-receipt-pdf-service-helpdesk"/>
+                <set-variable name="servicePath" value="pagopa-receipt-pdf-service-helpdesk"/>
             </when>
             <when condition="@(new [] {
                     "ReceiptToReviewed", "RecoverFailedReceipt", "RecoverFailedReceiptMassive",
