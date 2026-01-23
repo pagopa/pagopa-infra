@@ -1,0 +1,26 @@
+[
+    {
+        "name": "ID_DOMINIO",
+        "type": "string"
+    },
+    {
+        "name": "DESCRIZIONE",
+        "type": "string"
+    },
+    {
+        "name": "RAGIONE_SOCIALE",
+        "type": "string"
+    },
+    {
+        "name": "ENABLED",
+        "type": "string"
+    },
+    {
+        "name": "RENDICONTAZIONE_FTP",
+        "type": "string"
+    },
+    {
+        "name": "RENDICONTAZIONE_ZIP",
+        "type": "string"
+    }
+]
