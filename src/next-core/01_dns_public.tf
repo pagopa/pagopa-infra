@@ -230,7 +230,7 @@ resource "azurerm_dns_txt_record" "dns-txt-forwarder-platform-pagopa-it-digicert
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   record {
-    value = "_ir6ygwqx8fwk1fvatutka6puoqkpc4s"
+    value = "_s0z8yt7tycb0u7ieit5re0mgtnucpf4"
   }
   tags = module.tag_config.tags
 }
@@ -243,7 +243,7 @@ resource "azurerm_dns_txt_record" "dns-txt-www-forwarder-platform-pagopa-it-digi
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   record {
-    value = "_ir6ygwqx8fwk1fvatutka6puoqkpc4s"
+    value = "_s0z8yt7tycb0u7ieit5re0mgtnucpf4"
   }
   tags = module.tag_config.tags
 }
