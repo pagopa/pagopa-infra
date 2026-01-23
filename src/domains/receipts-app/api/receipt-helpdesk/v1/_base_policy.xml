@@ -2,7 +2,13 @@
     <inbound>
         <base />
         <set-variable name="backendBaseUrl"
-                      value="https://weudev.receipts.internal.dev.platform.pagopa.it"/>
+                      value="https://${hostname}"/>
+        <!--
+            Redirect Logic
+            - healthCheck and GET Receipts and Cart operations -> pdf-service
+            - Recover operations -> pdf-datastore
+            - RegenerateReceiptPdf -> pdf-generator
+         -->
         <choose>
             <when condition="@(context.Operation.Id == "RegenerateReceiptPdf")">
                 <set-variable name="servicePath"value="pagopa-receipt-pdf-generator-helpdesk"/>
@@ -20,6 +26,7 @@
                     }.Contains(context.Operation.Id))">
                 <set-variable name="servicePath" value="pagopa-receipt-pdf-datastore-helpdesk"/>
                 <choose>
+                    <!-- rewrite-uri is necessary because path has been changed for RecoverFailedCart and RecoverFailedCartMassive -->
                     <when condition="@(context.Operation.Id == "RecoverFailedCart")">
                         <rewrite-uri template="/cart-receipts/{cart-id}/recover-failed"/>
                     </when>
