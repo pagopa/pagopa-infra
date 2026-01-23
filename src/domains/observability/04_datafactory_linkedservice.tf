@@ -6,7 +6,7 @@
 resource "azurerm_data_factory_linked_service_kusto" "dataexp_ls" {
   count = var.dexp_db.enable ? 1 : 0
 
-  name                 = "AzureDataExplorer${var.env_short}LinkService"
+  name                 = local.dataexplorer_ls_name
   data_factory_id      = data.azurerm_data_factory.qi_data_factory.id
   kusto_endpoint       = azurerm_kusto_cluster.data_explorer_cluster[count.index].uri
   kusto_database_name  = azurerm_kusto_database.re_db[count.index].name
