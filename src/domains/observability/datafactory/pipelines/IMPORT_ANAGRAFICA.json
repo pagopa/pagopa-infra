@@ -1,0 +1,530 @@
+{
+    "name": "Delete content table INTERMEDIARI_PA",
+    "type": "AzureDataExplorerCommand",
+    "dependsOn": [],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "command": ".clear table INTERMEDIARI_PA data",
+        "commandTimeout": "01:00:00"
+    },
+    "linkedServiceName": {
+        "referenceName": "${dataexplorerset}",
+        "type": "LinkedServiceReference"
+    }
+},
+{
+    "name": "Import Data Intermediari PA",
+    "type": "Copy",
+    "dependsOn": [
+        {
+            "activity": "Delete content table INTERMEDIARI_PA",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "AzurePostgreSqlSource",
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00"
+        },
+        "sink": {
+            "type": "AzureDataExplorerSink"
+        },
+        "enableStaging": false,
+        "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+                {
+                    "source": {
+                        "name": "id_intermediario_pa",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ID_INTERMEDIARIO_PA",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "codice_intermediario",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "INTERMEDIARIO_DESCR",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                }
+            ],
+            "typeConversion": true,
+            "typeConversionSettings": {
+                "allowDataTruncation": true,
+                "treatBooleanAsNumber": false
+            }
+        }
+    },
+    "inputs": [
+        {
+            "referenceName": "${inputdataset_PT_PA}",
+            "type": "DatasetReference"
+        }
+    ],
+    "outputs": [
+        {
+            "referenceName": "${outputdataset_PT_PA}",
+            "type": "DatasetReference"
+        }
+    ]
+},
+{
+    "name": "Error Copy",
+    "description": "Log error if copy goes in error",
+    "type": "Fail",
+    "dependsOn": [
+        {
+            "activity": "Delete content table INTERMEDIARI_PA",
+            "dependencyConditions": [
+                "Failed"
+            ]
+        },
+        {
+            "activity": "Delete content table INTERMEDIARI_PSP",
+            "dependencyConditions": [
+                "Failed"
+            ]
+        },
+        {
+            "activity": "Delete content table PSP",
+            "dependencyConditions": [
+                "Failed"
+            ]
+        },
+        {
+            "activity": "Delete content table PA",
+            "dependencyConditions": [
+                "Failed"
+            ]
+        }
+    ],
+    "userProperties": [],
+    "typeProperties": {
+        "message": {
+            "value": "@concat('Errore cancellazione tabella/e')",
+            "type": "Expression"
+        },
+        "errorCode": {
+            "value": "412",
+            "type": "Expression"
+        }
+    }
+},
+{
+    "name": "Delete content table INTERMEDIARI_PSP",
+    "type": "AzureDataExplorerCommand",
+    "dependsOn": [],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "command": ".clear table INTERMEDIARI_PSP data",
+        "commandTimeout": "01:00:00"
+    },
+    "linkedServiceName": {
+        "referenceName": "${dataexplorerset}",
+        "type": "LinkedServiceReference"
+    }
+},
+{
+    "name": "Import Data Intermediari PSP",
+    "type": "Copy",
+    "dependsOn": [
+        {
+            "activity": "Delete content table INTERMEDIARI_PSP",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "AzurePostgreSqlSource",
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00"
+        },
+        "sink": {
+            "type": "AzureDataExplorerSink"
+        },
+        "enableStaging": false,
+        "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+                {
+                    "source": {
+                        "name": "id_intermediario_psp",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ID_INTERMEDIARIO_PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "codice_intermediario",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "INTERMEDIARIO_DESCR",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                }
+            ],
+            "typeConversion": true,
+            "typeConversionSettings": {
+                "allowDataTruncation": true,
+                "treatBooleanAsNumber": false
+            }
+        }
+    },
+    "inputs": [
+        {
+            "referenceName": "${inputdataset_PT_PSP}",
+            "type": "DatasetReference"
+        }
+    ],
+    "outputs": [
+        {
+            "referenceName": "${outputdataset_PT_PSP}",
+            "type": "DatasetReference"
+        }
+    ]
+},
+{
+    "name": "Delete content table PSP",
+    "type": "AzureDataExplorerCommand",
+    "dependsOn": [],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "command": ".clear table PSP data",
+        "commandTimeout": "01:00:00"
+    },
+    "linkedServiceName": {
+        "referenceName": "${dataexplorerset}",
+        "type": "LinkedServiceReference"
+    }
+},
+{
+    "name": "Delete content table PA",
+    "type": "AzureDataExplorerCommand",
+    "dependsOn": [],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "command": ".clear table PA data",
+        "commandTimeout": "01:00:00"
+    },
+    "linkedServiceName": {
+        "referenceName": "${dataexplorerset}",
+        "type": "LinkedServiceReference"
+    }
+},
+{
+    "name": "Import Data PSP",
+    "type": "Copy",
+    "dependsOn": [
+        {
+            "activity": "Delete content table PSP",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "AzurePostgreSqlSource",
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00"
+        },
+        "sink": {
+            "type": "AzureDataExplorerSink"
+        },
+        "enableStaging": false,
+        "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+                {
+                    "source": {
+                        "name": "id_psp",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ID_PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "descrizione",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "DESCRIZIONE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ragione_sociale",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "RAGIONE_SOCIALE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                }
+            ],
+            "typeConversion": true,
+            "typeConversionSettings": {
+                "allowDataTruncation": true,
+                "treatBooleanAsNumber": false
+            }
+        }
+    },
+    "inputs": [
+        {
+            "referenceName": "${inputdataset_PSP}",
+            "type": "DatasetReference"
+        }
+    ],
+    "outputs": [
+        {
+            "referenceName": "${outputdataset_PSP}",
+            "type": "DatasetReference"
+        }
+    ]
+},
+{
+    "name": "Import Data PA",
+    "type": "Copy",
+    "dependsOn": [
+        {
+            "activity": "Delete content table PA",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "AzurePostgreSqlSource",
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00"
+        },
+        "sink": {
+            "type": "AzureDataExplorerSink"
+        },
+        "enableStaging": false,
+        "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+                {
+                    "source": {
+                        "name": "id_dominio",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ID_DOMINIO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "descrizione",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "DESCRIZIONE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ragione_sociale",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "RAGIONE_SOCIALE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "rendicontazione_ftp",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "RENDICONTAZIONE_FTP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "rendicontazione_zip",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "RENDICONTAZIONE_ZIP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                }
+            ],
+            "typeConversion": true,
+            "typeConversionSettings": {
+                "allowDataTruncation": true,
+                "treatBooleanAsNumber": false
+            }
+        }
+    },
+    "inputs": [
+        {
+            "referenceName": "${inputdataset_PA}",
+            "type": "DatasetReference"
+        }
+    ],
+    "outputs": [
+        {
+            "referenceName": "${outputdataset_PA}",
+            "type": "DatasetReference"
+        }
+    ]
+}

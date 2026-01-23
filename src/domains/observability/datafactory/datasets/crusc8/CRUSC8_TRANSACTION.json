@@ -1,0 +1,38 @@
+[
+    {
+        "name": "id",
+        "precision": 0,
+        "scale": 0,
+        "type": "bigint"
+    },
+    {
+        "name": "cf_partner",
+        "precision": 0,
+        "scale": 0,
+        "type": "character varying"
+    },
+    {
+        "name": "cf_institution",
+        "precision": 0,
+        "scale": 0,
+        "type": "character varying"
+    },
+    {
+        "name": "date",
+        "precision": 0,
+        "scale": 0,
+        "type": "timestamp without time zone"
+    },
+    {
+        "name": "station",
+        "precision": 0,
+        "scale": 0,
+        "type": "character varying"
+    },
+    {
+        "name": "transaction_total",
+        "precision": 0,
+        "scale": 0,
+        "type": "integer"
+    }
+]

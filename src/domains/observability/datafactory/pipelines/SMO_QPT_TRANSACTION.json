@@ -1,0 +1,162 @@
+{
+    "dependsOn": [],
+    "description": "Configure trigger start date variable  ",
+    "name": "Start Date Pipeline",
+    "policy": {
+        "secureInput": false,
+        "secureOutput": false
+    },
+    "type": "SetVariable",
+    "typeProperties": {
+        "value": {
+            "type": "Expression",
+            "value": "@pipeline().TriggerTime"
+        },
+        "variableName": "start_date"
+    },
+    "userProperties": []
+},
+{
+    "dependsOn": [
+        {
+            "activity": "Start Date Pipeline",
+            "dependencyConditions": [
+                "Completed"
+            ]
+        }
+    ],
+    "inputs": [
+        {
+            "referenceName": "${inputdataset}",
+            "type": "DatasetReference"
+        }
+    ],
+    "name": "Copy data on Postgres",
+    "outputs": [
+        {
+            "referenceName": "${outputdataset}",
+            "type": "DatasetReference"
+        }
+    ],
+    "policy": {
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureInput": false,
+        "secureOutput": false,
+        "timeout": "0.12:00:00"
+    },
+    "type": "Copy",
+    "typeProperties": {
+        "enableStaging": false,
+        "sink": {
+            "type": "AzurePostgreSqlSink",
+            "writeBatchSize": 1000000,
+            "writeBatchTimeout": "00:30:00",
+            "writeMethod": "CopyCommand"
+        },
+        "source": {
+            "noTruncation": true,
+            "query": {
+                "type": "Expression",
+                "value": "let trigger_start=bin(datetime_utc_to_local(datetime('@{variables('start_date')}'), \"Europe/Rome\"), 1d);\nlet start=trigger_start;\nlet end=endofday(start);\nReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"activatePaymentNotice\", \"activatePaymentNoticeV2\")\n| where sottoTipoEvento == \"REQ\"\n| summarize count() by stazione, idDominio, bin(insertedTimestamp, 1d)\n| where isempty(stazione) == false\n| where isempty(idDominio) == false\n| extend intermediario = tostring(split(stazione,\"_\")[0])\n| project CF_PARTNER=intermediario, CF_INSTITUTION=idDominio, GIORNATA=insertedTimestamp, STATION=stazione, TRANSACTION_TOTAL=count_"
+            },
+            "queryTimeout": "01:00:00",
+            "type": "AzureDataExplorerSource"
+        },
+        "translator": {
+            "mappings": [
+                {
+                    "sink": {
+                        "name": "cf_partner",
+                        "physicalType": "character varying",
+                        "type": "String"
+                    },
+                    "source": {
+                        "name": "CF_PARTNER",
+                        "physicalType": "string",
+                        "type": "String"
+                    }
+                },
+                {
+                    "sink": {
+                        "name": "cf_institution",
+                        "physicalType": "character varying",
+                        "type": "String"
+                    },
+                    "source": {
+                        "name": "CF_INSTITUTION",
+                        "physicalType": "string",
+                        "type": "String"
+                    }
+                },
+                {
+                    "sink": {
+                        "name": "date",
+                        "physicalType": "timestamp without time zone",
+                        "type": "DateTime"
+                    },
+                    "source": {
+                        "name": "GIORNATA",
+                        "physicalType": "datetime",
+                        "type": "DateTime"
+                    }
+                },
+                {
+                    "sink": {
+                        "name": "station",
+                        "physicalType": "character varying",
+                        "type": "String"
+                    },
+                    "source": {
+                        "name": "STATION",
+                        "physicalType": "string",
+                        "type": "String"
+                    }
+                },
+                {
+                    "sink": {
+                        "name": "transaction_total",
+                        "physicalType": "integer",
+                        "type": "Int32"
+                    },
+                    "source": {
+                        "name": "TRANSACTION_TOTAL",
+                        "physicalType": "long",
+                        "type": "Int64"
+                    }
+                }
+            ],
+            "type": "TabularTranslator",
+            "typeConversion": true,
+            "typeConversionSettings": {
+                "allowDataTruncation": true,
+                "treatBooleanAsNumber": false
+            }
+        }
+    },
+    "userProperties": []
+},
+{
+    "dependsOn": [
+        {
+            "activity": "Copy data on Postgres",
+            "dependencyConditions": [
+                "Failed"
+            ]
+        }
+    ],
+    "description": "Log error if copy goes in error",
+    "name": "Error Copy",
+    "type": "Fail",
+    "typeProperties": {
+        "errorCode": {
+            "type": "Expression",
+            "value": "412"
+        },
+        "message": {
+            "type": "Expression",
+            "value": "@concat('Lette :' ,activity('Copy Data on Postgres').output.rowsRead, ' Scritte : ', activity('Copy Data on Postgres').output.rowsCopied)"
+        }
+    },
+    "userProperties": []
+}

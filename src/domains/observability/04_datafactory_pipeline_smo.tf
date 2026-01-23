@@ -777,3 +777,84 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_SMO_QPT_RECEIPT" {
   pipeline_name = azurerm_data_factory_pipeline.pipeline_SMO_QPT_RECEIPT.name
 
 }
+
+
+########################### KPI QPT TRANSACTION ###########################
+
+resource "azurerm_data_factory_pipeline" "pipeline_SMO_QPT_TRANSACTION" {
+
+  name            = "SMO_QPT_TRANSACTION_Pipeline"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  variables = {
+    run_id         = "",
+    start_pipeline = ""
+  }
+
+  activities_json = "[${templatefile("datafactory/pipelines/SMO_QPT_TRANSACTION.json", {
+    inputdataset  = "SMO_ReEvent_DataSet"
+    outputdataset = "CRUSC8_PAYMENT_RECEIPT"
+  })}]"
+
+  depends_on = [
+    azurerm_data_factory_custom_dataset.qi_datasets
+  ]
+}
+
+resource "azurerm_data_factory_trigger_schedule" "Trigger_SMO_QPT_TRANSACTION" {
+
+  name            = "Trigger_SMO_QPT_TRANSACTION"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  interval   = 1
+  frequency  = "Day"
+  activated  = true
+  time_zone  = "W. Europe Standard Time"
+  start_time = "2026-01-01T05:00:00Z"
+
+  description   = "Description of SMO_QPT_TRANSACTION"
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_SMO_QPT_TRANSACTION.name
+
+}
+
+
+########################### IMPORT ANAGRAFICA ###########################
+
+resource "azurerm_data_factory_pipeline" "pipeline_SMO_IMPORT_ANAGRAFICA" {
+
+  name            = "SMO_IMPORT_ANAGRAFICA_Pipeline"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  activities_json = "[${templatefile("datafactory/pipelines/IMPORT_ANAGRAFICA.json", {
+    inputdataset_PT_PA   = "CFG_INTERMEDIARI_PA"
+    outputdataset_PT_PA  = "SMO_INTERMEDIARI_PA_DataSet"
+    inputdataset_PT_PSP  = "CFG_INTERMEDIARI_PSP"
+    outputdataset_PT_PSP = "SMO_INTERMEDIARI_PSP_DataSet"
+    inputdataset_PA      = "CFG_PA"
+    outputdataset_PA     = "SMO_PA_DataSet"
+    inputdataset_PSP     = "CFG_PSP"
+    outputdataset_PSP    = "SMO_PSP_DataSet"
+    dataexplorerset      = "AzureDataExplorer${var.env_short}LinkService"
+  })}]"
+
+  depends_on = [
+    azurerm_data_factory_custom_dataset.qi_datasets
+  ]
+}
+
+
+resource "azurerm_data_factory_trigger_schedule" "Trigger_SMO_IMPORT_ANAGRAFICA" {
+
+  name            = "Trigger_SMO_IMPORT_ANAGRAFICA"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  interval   = 1
+  frequency  = "Day"
+  activated  = true
+  time_zone  = "W. Europe Standard Time"
+  start_time = "2026-01-01T03:00:00Z"
+
+  description   = "Description of SMO_IMPORT_ANAGRAFICA"
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_SMO_IMPORT_ANAGRAFICA.name
+
+}

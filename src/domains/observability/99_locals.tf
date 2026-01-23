@@ -26,6 +26,8 @@ locals {
   vnet_italy_name                = "${local.product}-itn-vnet"
   vnet_italy_resource_group_name = "${local.product}-itn-vnet-rg"
 
+  dataexplorer_ls_name = "AzureDataExplorer${var.env_short}LinkService"
+
   linked_service_cruscotto_kv_name = "crusc8-${var.env_short}-key-vault"
   linked_service_nodo_kv_name      = "nodo-${var.env_short}-key-vault"
 
@@ -51,6 +53,39 @@ locals {
       dataset_schema_file = "datafactory/datasets/crusc8/CRUSC8_TAXONOMY_AGGREGATE_POSITION.json"
       table_name          = "pagopa_taxonomy_aggregate_position"
       schema_name         = "cruscotto"
+    },
+    {
+      dataset_name        = "CRUSC8_TRANSACTION"
+      dataset_schema_file = "datafactory/datasets/crusc8/CRUSC8_TRANSACTION.json"
+      table_name          = "pagopa_transaction"
+      schema_name         = "cruscotto"
     }
+  ]
+
+  cfg_tables_list_datasets = [
+    {
+      dataset_name        = "CFG_INTERMEDIARI_PA"
+      dataset_schema_file = "datafactory/datasets/cfg/CFG_INTERMEDIARI_PA.json"
+      table_name          = "intermediari_pa"
+      schema_name         = "cfg"
+    },
+    {
+      dataset_name        = "CFG_INTERMEDIARI_PSP"
+      dataset_schema_file = "datafactory/datasets/cfg/CFG_INTERMEDIARI_PSP.json"
+      table_name          = "intermediari_psp"
+      schema_name         = "cfg"
+    },
+    {
+      dataset_name        = "CFG_PA"
+      dataset_schema_file = "datafactory/datasets/cfg/CFG_PA.json"
+      table_name          = "pa"
+      schema_name         = "cfg"
+    },
+    {
+      dataset_name        = "CFG_PSP"
+      dataset_schema_file = "datafactory/datasets/cfg/CFG_PSP.json"
+      table_name          = "psp"
+      schema_name         = "cfg"
+    },
   ]
 }
