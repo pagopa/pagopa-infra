@@ -826,15 +826,15 @@ resource "azurerm_data_factory_pipeline" "pipeline_SMO_IMPORT_ANAGRAFICA" {
   data_factory_id = data.azurerm_data_factory.qi_data_factory.id
 
   activities_json = "[${templatefile("datafactory/pipelines/IMPORT_ANAGRAFICA.json", {
-    inputdataset_PT_PA    = "CFG_INTERMEDIARI_PA"
-    outputdataset_PT_PA   = "SMO_INTERMEDIARI_PA_DataSet"
-    inputdataset_PT_PSP   = "CFG_INTERMEDIARI_PSP"
-    outputdataset_PT_PSP  = "SMO_INTERMEDIARI_PSP_DataSet"
-    inputdataset_PA       = "CFG_PA"
-    outputdataset_PA      = "SMO_PA_DataSet"
-    inputdataset_PSP      = "CFG_PSP"
-    outputdataset_PSP     = "SMO_PSP_DataSet"
-    dataexplorerset       = "AzureDataExplorer${var.env_short}LinkService"
+    inputdataset_PT_PA   = "CFG_INTERMEDIARI_PA"
+    outputdataset_PT_PA  = "SMO_INTERMEDIARI_PA_DataSet"
+    inputdataset_PT_PSP  = "CFG_INTERMEDIARI_PSP"
+    outputdataset_PT_PSP = "SMO_INTERMEDIARI_PSP_DataSet"
+    inputdataset_PA      = "CFG_PA"
+    outputdataset_PA     = "SMO_PA_DataSet"
+    inputdataset_PSP     = "CFG_PSP"
+    outputdataset_PSP    = "SMO_PSP_DataSet"
+    dataexplorerset      = "AzureDataExplorer${var.env_short}LinkService"
   })}]"
 
   depends_on = [
