@@ -21,17 +21,8 @@ dns_zone_internal_prefix = "internal.dev.platform"
 
 # Networking
 
-cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
-ingress_load_balancer_ip       = "10.1.100.250"
+ingress_load_balancer_ip = "10.1.100.250"
 
-# pagopa-proxy Redis
-
-pagopa_proxy_redis_capacity = 0
-pagopa_proxy_redis_sku_name = "Basic"
-pagopa_proxy_redis_family   = "C"
-
-redis_private_endpoint_enabled = true
-redis_zones                    = []
 
 # IAC Policy
 enable_iac_pipeline = true

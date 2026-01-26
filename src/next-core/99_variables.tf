@@ -340,13 +340,6 @@ variable "redis_version" {
   default     = "6"
 }
 
-variable "redis_private_endpoint_enabled" {
-  type        = bool
-  description = "Enable private endpoints for redis instances?"
-  default     = true
-}
-
-
 variable "storage_queue_private_endpoint_enabled" {
   type        = bool
   description = "Whether private endpoint for Azure Storage Queues is enabled"
