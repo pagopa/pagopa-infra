@@ -198,30 +198,6 @@ variable "dns_a_reconds_dbnodonexipostgres_prf_ips" {
   default     = []
 }
 
-variable "dns_a_reconds_dbnodonexipostgres_prf_balancer_1_ips" {
-  type        = list(string)
-  description = "IPs address of DB Nodo PostgreSQL Nexi"
-  default     = []
-}
-
-variable "dns_a_reconds_dbnodonexipostgres_prf_balancer_2_ips" {
-  type        = list(string)
-  description = "IPs address of DB Nodo PostgreSQL Nexi"
-  default     = []
-}
-
-variable "dns_a_reconds_dbnodonexipostgres_balancer_1_ips" {
-  type        = list(string)
-  description = "IPs address of DB Nodo PostgreSQL Nexi"
-  default     = []
-}
-
-variable "dns_a_reconds_dbnodonexipostgres_balancer_2_ips" {
-  type        = list(string)
-  description = "IPs address of DB Nodo PostgreSQL Nexi"
-  default     = []
-}
-
 #
 # dns forwarder
 #
@@ -462,12 +438,6 @@ variable "upload_endpoint_enabled" {
   type        = bool
   description = "Enable upload for heavy payload size on appgw"
   default     = true
-}
-
-variable "app_gateway_prf_certificate_name" {
-  type        = string
-  description = "Application gateway api certificate name on Key Vault"
-  default     = ""
 }
 
 variable "app_gateway_portal_certificate_name" {
@@ -812,7 +782,6 @@ variable "is_feature_enabled" {
     node_forwarder_ha_enabled = bool
     vpn                       = optional(bool, false)
     dns_forwarder_lb          = optional(bool, false)
-    postgres_private_dns      = bool
     azdoa                     = optional(bool, true)
     apim_core_import          = optional(bool, false)
     use_new_apim              = optional(bool, false)

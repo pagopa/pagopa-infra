@@ -17,7 +17,6 @@ is_feature_enabled = {
   node_forwarder_ha_enabled = false,
   vpn                       = true,
   dns_forwarder_lb          = true,
-  postgres_private_dns      = true,
   apim_core_import          = true,
   use_new_apim              = false
 }
