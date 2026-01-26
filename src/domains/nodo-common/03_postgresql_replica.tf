@@ -33,7 +33,7 @@ module "postgresql_nodo_replica_itn_db" {
   resource_group_name = azurerm_resource_group.db_rg.name
   location            = var.location_replica
 
-  private_dns_zone_id      = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
+  private_dns_zone_id      = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres.id : null
   delegated_subnet_id      = module.postgres_flexible_snet_replica_itn[0].id
   private_endpoint_enabled = var.pgres_flex_params.pgres_flex_private_endpoint_enabled
 

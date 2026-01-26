@@ -17,7 +17,6 @@ is_feature_enabled = {
   node_forwarder_ha_enabled = false,
   vpn                       = false,
   dns_forwarder_lb          = true,
-  postgres_private_dns      = true,
   apim_core_import          = true
   use_new_apim              = false
 }
@@ -732,7 +731,6 @@ azdo_agent_vm_image_name              = "pagopa-u-azdo-agent-ubuntu2204-image-v3
 app_gateway_api_certificate_name        = "api-uat-platform-pagopa-it-stable"
 app_gateway_upload_certificate_name     = "upload-uat-platform-pagopa-it-stable"
 upload_endpoint_enabled                 = true
-app_gateway_prf_certificate_name        = "api-prf-platform-pagopa-it-stable"
 app_gateway_portal_certificate_name     = "portal-uat-platform-pagopa-it-stable"
 app_gateway_management_certificate_name = "management-uat-platform-pagopa-it-stable"
 app_gateway_wisp2_certificate_name      = "uat-wisp2-pagopa-it-stable"

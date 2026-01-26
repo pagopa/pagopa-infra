@@ -36,7 +36,7 @@ module "postgres_storico_flexible_server" {
   resource_group_name = azurerm_resource_group.db_rg.name
 
   private_endpoint_enabled    = var.pgres_flex_storico_params.pgres_flex_private_endpoint_enabled
-  private_dns_zone_id         = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
+  private_dns_zone_id         = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres.id : null
   delegated_subnet_id         = var.env_short != "d" ? module.postgres_storico_flexible_snet.id : null
   high_availability_enabled   = var.pgres_flex_storico_params.pgres_flex_ha_enabled
   standby_availability_zone   = var.env_short != "d" ? var.pgres_flex_storico_params.standby_ha_zone : null

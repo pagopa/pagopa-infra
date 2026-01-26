@@ -60,7 +60,7 @@ resource "azurerm_private_endpoint" "sftp_blob" {
 
   private_dns_zone_group {
     name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.storage[0].id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.storage.id]
   }
 
   tags = module.tag_config.tags
