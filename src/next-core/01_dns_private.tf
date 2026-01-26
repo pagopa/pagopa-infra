@@ -61,45 +61,60 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo_nexi_postg
 ### 🔮 Private dns zone: Redis
 
 resource "azurerm_private_dns_zone" "privatelink_redis_cache_windows_net" {
-  count               = var.redis_private_endpoint_enabled ? 1 : 0
   name                = "privatelink.redis.cache.windows.net"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
   tags = module.tag_config.tags
 }
 
+moved {
+  from = azurerm_private_dns_zone.privatelink_redis_cache_windows_net[0]
+  to   = azurerm_private_dns_zone.privatelink_redis_cache_windows_net
+}
+
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_redis_cache_windows_net_vnet" {
-  count                 = var.redis_private_endpoint_enabled ? 1 : 0
   name                  = module.vnet.name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
-  private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache_windows_net[0].name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache_windows_net.name
   virtual_network_id    = module.vnet.id
   registration_enabled  = false
 
   tags = module.tag_config.tags
 }
 
+moved {
+  from = azurerm_private_dns_zone_virtual_network_link.privatelink_redis_cache_windows_net_vnet[0]
+  to   = azurerm_private_dns_zone_virtual_network_link.privatelink_redis_cache_windows_net_vnet
+}
+
 ### 🔮 Private dns zone: storage queue
 
 resource "azurerm_private_dns_zone" "privatelink_queue_core_windows_net" {
-  count = var.storage_queue_private_endpoint_enabled ? 1 : 0
-
   name                = "privatelink.queue.core.windows.net"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
   tags = module.tag_config.tags
 }
 
+moved {
+  from = azurerm_private_dns_zone.privatelink_queue_core_windows_net[0]
+  to   = azurerm_private_dns_zone.privatelink_queue_core_windows_net
+}
+
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_link_privatelink_queue_core_windows_net" {
-  count = var.storage_queue_private_endpoint_enabled ? 1 : 0
 
   name                  = module.vnet.name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
-  private_dns_zone_name = azurerm_private_dns_zone.privatelink_queue_core_windows_net[0].name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_queue_core_windows_net.name
   virtual_network_id    = module.vnet.id
   registration_enabled  = false
 
   tags = module.tag_config.tags
+}
+
+moved {
+  from = azurerm_private_dns_zone_virtual_network_link.vnet_link_privatelink_queue_core_windows_net[0]
+  to   = azurerm_private_dns_zone_virtual_network_link.vnet_link_privatelink_queue_core_windows_net
 }
 
 ### 🔮 DNS private 👉 <prod|uat|dev>.platform.pagopa.it

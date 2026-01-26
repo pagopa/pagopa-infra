@@ -21,17 +21,7 @@ dns_zone_internal_prefix = "internal.platform"
 
 # Networking
 
-cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
-ingress_load_balancer_ip       = "10.1.100.250"
-
-# pagopa-proxy Redis
-
-pagopa_proxy_redis_capacity = 0
-pagopa_proxy_redis_sku_name = "Standard"
-pagopa_proxy_redis_family   = "C"
-
-redis_private_endpoint_enabled = true
-redis_zones                    = [1, 2, 3]
+ingress_load_balancer_ip = "10.1.100.250"
 
 
 # Checkout Redis parameters: Premium
