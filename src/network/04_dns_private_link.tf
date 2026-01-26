@@ -126,10 +126,10 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_table_cosm
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_azure_com_vnet_link" {
-  for_each              = var.env_short != "d" ? local.hub_spoke_vnet : {}
+  for_each              = local.hub_spoke_vnet
   name                  = module.vnet_hub_spoke[each.key].name
   virtual_network_id    = module.vnet_hub_spoke[each.key].id
-  private_dns_zone_name = data.azurerm_private_dns_zone.privatelink_postgres_azure_com[0].name
-  resource_group_name   = data.azurerm_private_dns_zone.privatelink_postgres_azure_com[0].resource_group_name
+  private_dns_zone_name = data.azurerm_private_dns_zone.privatelink_postgres_azure_com.name
+  resource_group_name   = data.azurerm_private_dns_zone.privatelink_postgres_azure_com.resource_group_name
   tags                  = module.tag_config.tags
 }

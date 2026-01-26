@@ -31,7 +31,7 @@ module "postgresql_gpd_itn_replica_db" {
   resource_group_name = azurerm_resource_group.flex_data[0].name
   location            = var.location_replica
 
-  private_dns_zone_id      = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
+  private_dns_zone_id      = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres.id : null
   delegated_subnet_id      = module.postgres_flexible_itn_snet_replica[0].id
   private_endpoint_enabled = var.pgres_flex_params.private_endpoint_enabled
 

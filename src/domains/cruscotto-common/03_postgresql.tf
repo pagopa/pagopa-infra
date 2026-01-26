@@ -39,7 +39,7 @@ module "postgres_flexible_server_crus8" {
   idh_resource = var.pgres_flex_params.idh_resource
   prefix       = var.prefix
 
-  private_dns_zone_id = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
+  private_dns_zone_id = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres.id : null
   delegated_subnet_id = module.postgres_flexible_snet.id
 
   administrator_login    = data.azurerm_key_vault_secret.pgres_flex_admin_login.value
