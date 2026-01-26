@@ -71,6 +71,7 @@ module "cloudo" {
     registry_password = data.azurerm_key_vault_secret.github_pat.value
   }
 
+  enable_ui = true
   ui_image = {
     image_name        = var.cloudo_ui.image_name
     image_tag         = var.cloudo_ui.image_tag
