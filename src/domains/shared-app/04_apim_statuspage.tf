@@ -129,12 +129,12 @@ module "apim_api_statuspage_api_v1" {
           "backofficeexternalpagopa" = format("%s/backoffice-external", format(local.aks_path, "selfcare"))
           "canoneunico"              = format("%s/", data.azurerm_function_app.canone_unico.default_hostname)
           // FdR - All instances
-          "fdrfase1"                = format("%s/pagopa-fdr-nodo-service", format(local.aks_path, "fdr"))
-          "fdrfase3"                = format("%s/pagopa-fdr-service-core", format(local.aks_path, "fdr"))
-          "fdr2evh"                 = format("%s/pagopa-fdr-to-event-hub-recovery-service", format(local.aks_path, "fdr"))
-          "fdrjson2xml"             = format("%s/pagopa-fdr-json-to-xml", format(local.aks_path, "fdr"))
-          "fdrxml2json"             = format("%s/pagopa-fdr-xml-to-json/blobtrigger-notuser", format(local.aks_path, "fdr"))
-          "fdrts"                   = format("%s/pagopa-fdr-technical-support-service", format(local.aks_path, "fdr"))
+          "fdrfase1"    = format("%s/pagopa-fdr-nodo-service", format(local.aks_path, "fdr"))
+          "fdrfase3"    = format("%s/pagopa-fdr-service-core", format(local.aks_path, "fdr"))
+          "fdr2evh"     = format("%s/pagopa-fdr-to-event-hub-recovery-service", format(local.aks_path, "fdr"))
+          "fdrjson2xml" = format("%s/pagopa-fdr-json-to-xml", format(local.aks_path, "fdr"))
+          "fdrxml2json" = format("%s/pagopa-fdr-xml-to-json/blobtrigger-notuser", format(local.aks_path, "fdr"))
+          "fdrts"       = format("%s/pagopa-fdr-technical-support-service", format(local.aks_path, "fdr"))
           // WISP Dismantling
           "wispconverter"               = format("%s/pagopa-wispconverter", format(local.aks_path, "nodo"))
           "wispsoapconverter"           = format("%s/wisp-soapconverter", format(local.aks_path, "nodo"))
