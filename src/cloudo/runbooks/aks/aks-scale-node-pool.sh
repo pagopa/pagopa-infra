@@ -34,7 +34,7 @@ get_current_node_count() {
         --cluster-name "$cluster_name" \
         --name "$nodepool_name" \
         --query "$query" \
-        --output tsv)
+        --output tsv) || exit 1
 
     echo "$current_count"
 }
@@ -58,7 +58,7 @@ scale_node_pool() {
         --cluster-name "$cluster_name" \
         --name "$nodepool_name" \
         --query 'enableAutoScaling' \
-        --output tsv)
+        --output tsv) || exit 1
 
     echo "Current nodepool mode -> $mode"
 
@@ -75,14 +75,14 @@ scale_node_pool() {
             --name "$nodepool_name" \
             --update-cluster-autoscaler \
             --max-count "$new_count" \
-            --min-count "$min_count"
+            --min-count "$min_count" || exit 1
     else
         echo "Scaling node pool from $current_count to $new_count nodes..."
         az aks nodepool scale \
             --resource-group "$resource_group" \
             --cluster-name "$cluster_name" \
             --name "$nodepool_name" \
-            --node-count "$new_count"
+            --node-count "$new_count" || exit 1
     fi
 }
 

@@ -22,8 +22,8 @@ fi
 
 # Perform deployment rollout
 echo "Performing rollout for deployment $DEPLOYMENT_NAME in namespace $NAMESPACE..."
-kubectl rollout restart deployment/$DEPLOYMENT_NAME -n $NAMESPACE
+kubectl rollout restart deployment/$DEPLOYMENT_NAME -n $NAMESPACE || exit 1
 
 # Check rollout status
 echo "Checking rollout status..."
-kubectl rollout status deployment/$DEPLOYMENT_NAME -n $NAMESPACE
+kubectl rollout status deployment/$DEPLOYMENT_NAME -n $NAMESPACE || exit 1

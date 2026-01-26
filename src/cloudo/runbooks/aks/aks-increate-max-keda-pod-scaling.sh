@@ -32,6 +32,6 @@ else
 fi
 
 # Patch ScaledObject with new maxReplicaCount
-kubectl patch scaledobject $SCALED_OBJECT_NAME -n $NAMESPACE --type='json' -p="[{'op': 'replace', 'path': '/spec/maxReplicaCount', 'value': $NEW_MAX}]"
+kubectl patch scaledobject $SCALED_OBJECT_NAME -n $NAMESPACE --type='json' -p="[{'op': 'replace', 'path': '/spec/maxReplicaCount', 'value': $NEW_MAX}]" || exit 1
 
 echo "Successfully updated maxReplicaCount from $CURRENT_MAX to $NEW_MAX"

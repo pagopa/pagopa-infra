@@ -13,6 +13,8 @@ fi
 
 echo "Analyzing pods in namespace: $NAMESPACE"
 
+EXIT_CODE=0
+
 # Get pods that are not Running or Succeeded
 CRASHING_PODS=$(kubectl get pods -n "$NAMESPACE" --no-headers | grep -vE "Running|Completed" | awk '{print $1}')
 
@@ -20,6 +22,8 @@ if [ -z "$CRASHING_PODS" ]; then
   echo "No crashing pods found in namespace $NAMESPACE."
   exit 0
 fi
+
+EXIT_CODE=1
 
 for POD in $CRASHING_PODS; do
   echo "---------------------------------------------------"
@@ -50,3 +54,5 @@ for POD in $CRASHING_PODS; do
     echo "Mitigation failed: Cannot pull image $IMAGE. Please check if the image exists and registry credentials."
   fi
 done
+
+exit $EXIT_CODE
