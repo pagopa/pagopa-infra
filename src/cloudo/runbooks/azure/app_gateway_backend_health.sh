@@ -7,8 +7,8 @@
 
 set -euo pipefail
 
-RG_NAME=${RESOURCE_RG:-""}
-APPGW_NAME=${RESOURCE_NAME:-""}
+RG_NAME=${RESOURCE_RG:-$2}
+APPGW_NAME=${RESOURCE_NAME:-$1}
 
 if [ -z "$RG_NAME" ] || [ -z "$APPGW_NAME" ]; then
   echo "Error: RESOURCE_RG and RESOURCE_NAME environment variables are required."
