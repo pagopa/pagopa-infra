@@ -1,0 +1,14 @@
+[
+    {
+        "name": "ID_INTERMEDIARIO_PSP",
+        "type": "string"
+    },
+    {
+        "name": "INTERMEDIARIO_DESCR",
+        "type": "string"
+    },
+    {
+        "name": "ENABLED",
+        "type": "string"
+    }
+]

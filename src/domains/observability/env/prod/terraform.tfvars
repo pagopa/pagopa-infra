@@ -68,8 +68,8 @@ ehns_sku_name = "Standard"
 
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
 ehns_auto_inflate_enabled     = true
-ehns_maximum_throughput_units = 5
-ehns_capacity                 = 5
+ehns_maximum_throughput_units = 30
+ehns_capacity                 = 20
 ehns_alerts_enabled           = true
 ehns_zone_redundant           = true
 
@@ -362,7 +362,7 @@ eventhubs_gpd = [
 ]
 
 app_forwarder_ip_restriction_default_action = "Deny"
-# alert evh
+# alert evh ⚠️ TODO
 # ehns_metric_alerts_gpd = {
 #   no_trx = {
 #     aggregation = "Total"

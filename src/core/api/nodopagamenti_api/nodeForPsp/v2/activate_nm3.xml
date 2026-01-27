@@ -1,6 +1,7 @@
 <policies>
     <inbound>
         <base />
+        ${ndphost_variable}
         <set-variable name="psps" value="{{brokerlist}}" />
         <set-variable name="ecs" value="{{ecblacklist}}" />
         <set-variable name="requestPayload" value="@(context.Request.Body.As<string>(preserveContent: true))" />
@@ -249,6 +250,9 @@
                             </set-header>
                             <set-header name="proto" exists-action="override">
                                 <value>http</value>
+                            </set-header>
+                            <set-header name="ndphost" exists-action="override">
+                                <value>@(context.Variables.GetValueOrDefault<string>("ndphost", ""))</value>
                             </set-header>
                             <set-body template="liquid">
 								<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">

@@ -24,7 +24,7 @@ module "pagopa_pay_wallet_redis_std" {
   custom_zones = var.redis_std_pay_wallet_params.zones
 
   private_endpoint = {
-    enabled              = var.env_short != "d"
+    enabled              = var.env_short != "d" && !var.is_feature_enabled.redis_hub_spoke_pe_dns
     virtual_network_id   = data.azurerm_virtual_network.vnet_italy.id
     subnet_id            = module.redis_pagopa_pay_wallet_snet.id
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
@@ -53,6 +53,31 @@ module "pagopa_pay_wallet_redis_std" {
       start_hour_utc = 23
     },
   ]
+
+  tags = module.tag_config.tags
+}
+
+
+# hub spoke private endpoint
+resource "azurerm_private_endpoint" "redis_data_pe" {
+  count = var.is_feature_enabled.redis && var.env_short != "d" && var.is_feature_enabled.redis_hub_spoke_pe_dns ? 1 : 0
+
+  name                = "${local.project}-redis-std-data-pe"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.redis_std_pay_wallet_rg.name
+  subnet_id           = module.redis_spoke_pay_wallet_snet[0].subnet_id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-redis-std-data-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-redis-std-data-private-service-connection"
+    private_connection_resource_id = module.pagopa_pay_wallet_redis_std[0].id
+    is_manual_connection           = false
+    subresource_names              = ["redisCache"]
+  }
 
   tags = module.tag_config.tags
 }
