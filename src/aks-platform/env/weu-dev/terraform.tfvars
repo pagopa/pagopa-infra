@@ -60,7 +60,7 @@ ingress_load_balancer_ip  = "10.1.100.250"
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
 # Pinned versions from "4.7.2" release: https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.7.2/charts/ingress-nginx/values.yaml
 nginx_helm = {
-  version = "4.12.1"
+  version = "4.14.2"
   controller = {
     image = {
       registry     = "k8s.gcr.io"
@@ -84,7 +84,7 @@ nginx_helm = {
 # keda image tags: https://github.com/kedacore/keda/pkgs/container/keda/versions
 # keda-metrics-apiserver image tags: https://github.com/kedacore/keda/pkgs/container/keda-metrics-apiserver/versions
 keda_helm = {
-  chart_version = "2.17.1"
+  chart_version = "2.17.2"
   keda = {
     image_name = "ghcr.io/kedacore/keda"
     image_tag  = "2.11.2@sha256:d8d3ef2937e22da29daa7cd9485626a577f1166bab47c582c43ff776d47d764b"
