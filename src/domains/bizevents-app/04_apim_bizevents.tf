@@ -1,23 +1,3 @@
-data "azurerm_key_vault_secret" "list_trx_for_io_api_key_secret" {
-  name         = "list-trx-4-io-api-key"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
-
-# data "azurerm_key_vault_secret" "list_trx_for_io_api_key_secret_apim_v2" {
-#   name         = "list-trx-4-io-api-key"
-#   key_vault_id = data.azurerm_key_vault.kv.id
-# }
-
-resource "azurerm_api_management_named_value" "list_trx_for_io_api_key_secret" {
-  name                = "list-trx-for-io-api-key"
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-  display_name        = "list-trx-for-io-api-key"
-  value               = data.azurerm_key_vault_secret.list_trx_for_io_api_key_secret.value
-  secret              = true
-}
-
-
 #####################################
 ##    API Biz Events & Transaction ##
 #####################################
