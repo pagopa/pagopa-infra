@@ -213,7 +213,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_biz_db_normalized_ru_exceeded" {
   window_size         = "PT5M"
   frequency           = "PT5M"
   auto_mitigate       = false
-  enabled             = false # TODO diabled TMP
+  enabled             = false # TODO disabled TMP
 
 
   # Metric info
