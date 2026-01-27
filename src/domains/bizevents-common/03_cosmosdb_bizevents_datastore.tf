@@ -248,6 +248,12 @@ resource "azurerm_monitor_metric_alert" "cosmos_biz_db_normalized_ru_exceeded" {
   tags = module.tag_config.tags
 }
 
+
+# In general, for a production workload, if you see between 1-5% of requests with 429s, 
+# and your end-to-end latency is acceptable, this is a healthy sign that the RU/s are being fully utilized. 
+# In this case, the normalized RU consumption metric reaching 100% only means that in a given second, 
+# at least one partition key range used all its provisioned throughput. 
+# This is acceptable because the overall rate of 429s is still low. No further action is required.
 resource "azurerm_monitor_metric_alert" "cosmos_biz_db_provisioned_throughput_exceeded" { # https://github.com/pagopa/terraform-azurerm-v3/blob/58f14dc120e10bd3515bcc34e0685e74d1d11047/cosmosdb_account/main.tf#L205
   count = var.env_short == "p" ? 1 : 0
 
@@ -268,7 +274,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_biz_db_provisioned_throughput_ex
     metric_name            = "TotalRequestUnits"
     aggregation            = "Total"
     operator               = "GreaterThan"
-    threshold              = 100
+    threshold              = 100 # https://learn.microsoft.com/en-us/azure/cosmos-db/monitor-normalized-request-units?utm_source=chatgpt.com#what-to-expect-and-do-when-normalized-rus-is-higher
     skip_metric_validation = false
 
     dimension {
