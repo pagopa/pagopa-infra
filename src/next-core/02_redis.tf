@@ -30,7 +30,7 @@ module "redis" {
     enabled              = !var.redis_cache_params.public_access
     virtual_network_id   = module.vnet.id
     subnet_id            = module.redis_snet.id
-    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_redis_cache_windows_net[0].id]
+    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_redis_cache_windows_net.id]
   }
 
   // when azure can apply patch?
@@ -63,7 +63,7 @@ module "redis" {
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_integration_network_link" {
   name                  = format("%s-vnet-integration", local.product)
   resource_group_name   = azurerm_resource_group.rg_vnet.name
-  private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache_windows_net[0].name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache_windows_net.name
   virtual_network_id    = module.vnet_integration.id
 }
 

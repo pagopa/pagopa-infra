@@ -33,7 +33,7 @@ module "metabase_postgres_db" {
   resource_group_name = azurerm_resource_group.metabase_rg.name
 
 
-  private_dns_zone_id = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
+  private_dns_zone_id = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres.id : null
   delegated_subnet_id = module.postgres_flexible_snet.id
 
   administrator_login    = module.secret_core_itn.values["metabase-db-admin-login"].value
