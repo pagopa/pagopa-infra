@@ -15,47 +15,55 @@ data "azurerm_container_registry" "container_registry" {
 ################
 
 module "printit_pdf_engine_app_service" {
-  source = "./.terraform/modules/__v3__/app_service"
+  source = "./.terraform/modules/__v4__/IDH/app_service_webapp"
 
   count = var.is_feature_enabled.pdf_engine ? 1 : 0
 
-  vnet_integration    = false
+  env                 = var.env
+  idh_resource_tier   = var.idh_app_service_resource_tier
+  product_name        = var.prefix
   resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
   location            = var.location
 
-  # App service plan vars
-  plan_name = "${local.project}-plan-pdf-engine"
-  sku_name  = var.app_service_pdf_engine_sku_name
-
   # App service plan
-  name                = "${local.project}-app-pdf-engine"
-  client_cert_enabled = false
-  always_on           = var.app_service_pdf_engine_always_on
+  name                  = "${local.project}-app-pdf-engine"
+  app_service_plan_name = "${local.project}-plan-pdf-engine"
 
-  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
-  docker_image_tag = "latest"
+  always_on                = var.app_service_pdf_engine_always_on
+  docker_image             = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
+  docker_image_tag         = "latest"
+  docker_registry_url      = "https://${data.azurerm_container_registry.container_registry.login_server}"
+  docker_registry_username = data.azurerm_container_registry.container_registry.admin_username
+  docker_registry_password = data.azurerm_container_registry.container_registry.admin_password
 
-  health_check_path = "/info"
+  health_check_path            = "/info"
+  health_check_maxpingfailures = 2
 
-  ip_restriction_default_action = var.app_service_ip_restriction_default_action
+  app_settings                 = local.printit_pdf_engine_app_settings
+  private_endpoint_dns_zone_id = data.azurerm_private_dns_zone.internal.id
 
+  allowed_subnet_ids = [data.azurerm_subnet.apim_vnet.id]
+  allowed_ips        = []
 
-  app_settings = local.printit_pdf_engine_app_settings
+  embedded_subnet = {
+    vnet_name    = data.azurerm_virtual_network.vnet.name
+    vnet_rg_name = data.azurerm_virtual_network.vnet.resource_group_name
+    enabled      = true
+  }
 
-  zone_balancing_enabled = var.app_service_pdf_engine_zone_balancing_enabled
-  allowed_subnets        = [data.azurerm_subnet.apim_vnet.id]
-  allowed_ips            = []
-
-  subnet_id = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
+  autoscale_settings = {
+    max_capacity                  = 1
+    scale_up_requests_threshold   = 250
+    scale_down_requests_threshold = 150
+  }
 
   tags = module.tag_config.tags
-
 }
 
 module "printit_pdf_engine_slot_staging" {
   count = var.env_short != "d" && var.is_feature_enabled.pdf_engine ? 1 : 0
 
-  source = "./.terraform/modules/__v3__/app_service_slot"
+  source = "./.terraform/modules/__v4__/app_service_slot"
 
   # App service plan
   # app_service_plan_id = module.printit_pdf_engine_app_service.plan_id
@@ -81,8 +89,6 @@ module "printit_pdf_engine_slot_staging" {
   subnet_id       = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
   tags = module.tag_config.tags
-
-
 }
 
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_engine_autoscale" {
@@ -253,44 +259,55 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
 #java
 ###############
 module "printit_pdf_engine_app_service_java" {
-  source = "./.terraform/modules/__v3__/app_service"
+  source = "./.terraform/modules/__v4__/IDH/app_service_webapp"
   count  = var.is_feature_enabled.pdf_engine ? 1 : 0
 
-  vnet_integration    = false
+  env               = var.env
+  idh_resource_tier = var.idh_app_service_resource_tier
+  product_name      = var.prefix
+
   resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
   location            = var.location
 
-  # App service plan vars
-  plan_name              = "${local.project}-plan-pdf-engine-java"
-  sku_name               = var.app_service_pdf_engine_sku_name_java
-  zone_balancing_enabled = var.app_service_pdf_engine_sku_name_java_zone_balancing_enabled
-
   # App service plan
-  name                = "${local.project}-app-pdf-engine-java"
-  client_cert_enabled = false
-  always_on           = var.app_service_pdf_engine_always_on
-  docker_image        = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
-  docker_image_tag    = "latest"
+  name                  = "${local.project}-app-pdf-engine-java"
+  app_service_plan_name = "${local.project}-plan-pdf-engine-java"
 
-  health_check_path = "/info"
+  always_on                = var.app_service_pdf_engine_always_on
+  docker_image             = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
+  docker_image_tag         = "latest"
+  docker_registry_url      = "https://${data.azurerm_container_registry.container_registry.login_server}"
+  docker_registry_username = data.azurerm_container_registry.container_registry.admin_username
+  docker_registry_password = data.azurerm_container_registry.container_registry.admin_password
 
-  app_settings = local.printit_pdf_engine_app_settings_java
+  health_check_path            = "/info"
+  health_check_maxpingfailures = 2
 
-  ip_restriction_default_action = var.app_service_ip_restriction_default_action
-  allowed_subnets               = [data.azurerm_subnet.apim_vnet.id]
-  allowed_ips                   = []
+  app_settings                 = local.printit_pdf_engine_app_settings_java
+  private_endpoint_dns_zone_id = data.azurerm_private_dns_zone.internal.id
 
-  subnet_id = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
+  allowed_subnet_ids = [data.azurerm_subnet.apim_vnet.id]
+  allowed_ips        = []
+
+  embedded_subnet = {
+    vnet_name    = data.azurerm_virtual_network.vnet.name
+    vnet_rg_name = data.azurerm_virtual_network.vnet.resource_group_name
+    enabled      = true
+  }
+
+  autoscale_settings = {
+    max_capacity                  = 1
+    scale_up_requests_threshold   = 250
+    scale_down_requests_threshold = 150
+  }
 
   tags = module.tag_config.tags
-
-
 }
 
 module "printit_pdf_engine_java_slot_staging" {
   count = var.env_short != "d" && var.is_feature_enabled.pdf_engine ? 1 : 0
 
-  source = "./.terraform/modules/__v3__/app_service_slot"
+  source = "./.terraform/modules/__v4__/app_service_slot"
 
   # App service plan
   # app_service_plan_id = module.printit_pdf_engine_app_service.plan_id
@@ -482,3 +499,22 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
   }
 }
 
+moved {
+  from = module.printit_pdf_engine_app_service[0].azurerm_linux_web_app.this
+  to   = module.printit_pdf_engine_app_service[0].module.main_slot.azurerm_linux_web_app.this
+}
+
+moved {
+  from = module.printit_pdf_engine_app_service[0].azurerm_service_plan.this[0]
+  to   = module.printit_pdf_engine_app_service[0].module.main_slot.azurerm_service_plan.this[0]
+}
+
+moved {
+  from = module.printit_pdf_engine_app_service_java[0].azurerm_linux_web_app.this
+  to   = module.printit_pdf_engine_app_service_java[0].module.main_slot.azurerm_linux_web_app.this
+}
+
+moved {
+  from = module.printit_pdf_engine_app_service_java[0].azurerm_service_plan.this[0]
+  to   = module.printit_pdf_engine_app_service_java[0].module.main_slot.azurerm_service_plan.this[0]
+}
