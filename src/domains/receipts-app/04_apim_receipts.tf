@@ -2,15 +2,27 @@
 ## Products ##
 ##############
 
-data "azurerm_api_management_product" "apim_receipts_product" {
-  product_id          = "receipts"
+module "apim_receipts_product" {
+  source = "./.terraform/modules/__v3__/api_management_product"
+
+  product_id   = "receipts"
+  display_name = "Receipts Service PDF"
+  description  = "Servizio per gestire recupero ricevute"
+
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
+
+  published             = true
+  subscription_required = true
+  approval_required     = true
+  subscriptions_limit   = 1000
+
+  policy_xml = file("./api_product/_base_policy.xml")
 }
 
-#################
+########################
 ##    API Biz Events  ##
-#################
+########################
 locals {
   apim_receipts_helpdesk_api = {
     display_name          = "Receipts Helpdesk PDF"
@@ -30,13 +42,16 @@ resource "azurerm_api_management_api_version_set" "api_receipts_helpdesk_api" {
   versioning_scheme   = "Segment"
 }
 
+/*
+ @Deprecated
+ */
 module "apim_api_receipts_helpdesk_api_v1" {
   source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-receipts-helpdesk-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [data.azurerm_api_management_product.apim_receipts_product.product_id, "technical_support_api"]
+  product_ids           = ["technical_support_api"]
   subscription_required = local.apim_receipts_helpdesk_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_receipts_helpdesk_api.id
   api_version           = "v1"
