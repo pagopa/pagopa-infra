@@ -2,7 +2,7 @@
     <inbound>
         <base />
         <set-variable name="backendBaseUrl"
-                      value="https://${hostname}"/>
+                      value="${hostname}"/>
         <!--
             Redirect Logic
             - healthCheck and GET Receipts and Cart operations -> pdf-service
@@ -21,19 +21,9 @@
             </when>
             <when condition="@(new [] {
                     "ReceiptToReviewed", "RecoverFailedReceipt", "RecoverFailedReceiptMassive",
-                    "RecoverNotNotifiedReceipt", "RecoverNotNotifiedReceiptMassive",
-                    "RecoverFailedCart", "RecoverFailedCartMassive"
+                    "RecoverNotNotifiedReceipt", "RecoverNotNotifiedReceiptMassive"
                     }.Contains(context.Operation.Id))">
                 <set-variable name="servicePath" value="pagopa-receipt-pdf-datastore-helpdesk"/>
-                <choose>
-                    <!-- rewrite-uri is necessary because path has been changed for RecoverFailedCart and RecoverFailedCartMassive -->
-                    <when condition="@(context.Operation.Id == "RecoverFailedCart")">
-                        <rewrite-uri template="/cart-receipts/{cart-id}/recover-failed"/>
-                    </when>
-                    <when condition="@(context.Operation.Id == "RecoverFailedCartMassive")">
-                        <rewrite-uri template="/cart-receipts/recover-failed"/>
-                    </when>
-                </choose>
             </when>
             <otherwise>
                 <set-variable name="servicePath" value="pagopa-receipt-pdf-helpdesk"/>

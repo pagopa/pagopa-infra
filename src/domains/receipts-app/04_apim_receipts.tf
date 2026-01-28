@@ -68,6 +68,6 @@ module "apim_api_receipts_helpdesk_api_v1" {
   })
 
   xml_content = templatefile("./api/receipt-helpdesk/v1/_base_policy.xml", {
-    hostname = local.receipts_hostname
+    hostname = "https://${local.receipts_hostname}"
   })
 }
