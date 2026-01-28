@@ -43,6 +43,7 @@
 | [azapi_resource_action.approve_privatelink_private_endpoint_connection](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource_action) | resource |
 | [azurerm_api_management_api_version_set.app_forwarder_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_subscription.apim_app_forwarder_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/api_management_subscription) | resource |
+| [azurerm_data_factory_custom_dataset.cfg_tables_list_datasets](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_custom_dataset) | resource |
 | [azurerm_data_factory_custom_dataset.crusc8_tables_datasets](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_custom_dataset) | resource |
 | [azurerm_data_factory_custom_dataset.qi_datasets](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_custom_dataset) | resource |
 | [azurerm_data_factory_custom_dataset.qi_datasets_cosmos](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_custom_dataset) | resource |
@@ -77,9 +78,11 @@
 | [azurerm_data_factory_pipeline.pipeline_PDND_KPI_TPNP](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_pipeline) | resource |
 | [azurerm_data_factory_pipeline.pipeline_PDND_KPI_WAFDR](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_pipeline) | resource |
 | [azurerm_data_factory_pipeline.pipeline_PDND_KPI_WPNFDR](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_pipeline) | resource |
+| [azurerm_data_factory_pipeline.pipeline_SMO_IMPORT_ANAGRAFICA](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_pipeline) | resource |
 | [azurerm_data_factory_pipeline.pipeline_SMO_QPT_RECEIPT](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_pipeline) | resource |
 | [azurerm_data_factory_pipeline.pipeline_SMO_QPT_TAXONOMY_AGGREGATE](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_pipeline) | resource |
 | [azurerm_data_factory_pipeline.pipeline_SMO_QPT_TIMEOUT](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_pipeline) | resource |
+| [azurerm_data_factory_pipeline.pipeline_SMO_QPT_TRANSACTION](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_pipeline) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_KPI_FDR_IMPORT_ESITI](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_KPI_FDR_RENDICONTAZIONI](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_KPI_TNSPO](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
@@ -97,9 +100,11 @@
 | [azurerm_data_factory_trigger_schedule.Trigger_PDND_KPI_TPNP](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_PDND_KPI_WAFDR](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_PDND_KPI_WPNFDR](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
+| [azurerm_data_factory_trigger_schedule.Trigger_SMO_IMPORT_ANAGRAFICA](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_SMO_QPT_RECEIPT](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_SMO_QPT_TAXONOMY_AGGREGATE](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_SMO_QPT_TIMEOUT](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
+| [azurerm_data_factory_trigger_schedule.Trigger_SMO_QPT_TRANSACTION](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_eventhub_consumer_group.rtp_consumer_gpd](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/eventhub_consumer_group) | resource |
 | [azurerm_eventhub_namespace_authorization_rule.cdc_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/eventhub_namespace_authorization_rule) | resource |
 | [azurerm_eventhub_namespace_authorization_rule.cdc_test_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/eventhub_namespace_authorization_rule) | resource |
