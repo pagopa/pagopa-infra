@@ -24,7 +24,7 @@ parameters:
   - name: dbVersionSt
     displayName: Database Version Storico patch
     type: string
-    default: '1.1.2'
+    default: '1.1.3'
   - name: dbVersionPagoPA
     displayName: Database Version PagoPA patch
     type: string
@@ -900,7 +900,7 @@ stages:
               LIQUIBASE_SCHEMA_NAME: public
               CHANGELOG_LOCK_TABLE: DATABASECHANGELOGLOCK_CRON
               CHANGELOG_TABLE: DATABASECHANGELOG_CRON
-          # admin st_nodo_storico apply
+          # admin st_nodo apply
           - template: ./templates/liquibase-apply.yml
             parameters:
               DATABASE_NAME: admin-postgres
