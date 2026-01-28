@@ -1,3 +1,0 @@
-module.apim_receipts_product
-module.apim_api_receipts_api_v1
-resource.azurerm_api_management_api_version_set.api_receipts_api
