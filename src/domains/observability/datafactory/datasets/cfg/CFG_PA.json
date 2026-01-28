@@ -1,0 +1,92 @@
+[
+    {
+        "name": "obj_id",
+        "precision": 0,
+        "scale": 0,
+        "type": "numeric"
+    },
+    {
+        "name": "id_dominio",
+        "precision": 0,
+        "scale": 0,
+        "type": "character varying"
+    },
+    {
+        "name": "enabled",
+        "precision": 0,
+        "scale": 0,
+        "type": "character"
+    },
+    {
+        "name": "descrizione",
+        "precision": 0,
+        "scale": 0,
+        "type": "character varying"
+    },
+    {
+        "name": "ragione_sociale",
+        "precision": 0,
+        "scale": 0,
+        "type": "character varying"
+    },
+    {
+        "name": "fk_int_quadrature",
+        "precision": 0,
+        "scale": 0,
+        "type": "numeric"
+    },
+    {
+        "name": "indirizzo_domicilio_fiscale",
+        "precision": 0,
+        "scale": 0,
+        "type": "character varying"
+    },
+    {
+        "name": "sigla_provincia_domicilio_fiscale",
+        "precision": 0,
+        "scale": 0,
+        "type": "character varying"
+    },
+    {
+        "name": "comune_domicilio_fiscale",
+        "precision": 0,
+        "scale": 0,
+        "type": "character varying"
+    },
+    {
+        "name": "denominazione_domicilio_fiscale",
+        "precision": 0,
+        "scale": 0,
+        "type": "character varying"
+    },
+    {
+        "name": "pagamento_presso_psp",
+        "precision": 0,
+        "scale": 0,
+        "type": "character"
+    },
+    {
+        "name": "rendicontazione_ftp",
+        "precision": 0,
+        "scale": 0,
+        "type": "character"
+    },
+    {
+        "name": "rendicontazione_zip",
+        "precision": 0,
+        "scale": 0,
+        "type": "character"
+    },
+    {
+        "name": "cap_domicilio_fiscale",
+        "precision": 0,
+        "scale": 0,
+        "type": "character"
+    },
+    {
+        "name": "cbill",
+        "precision": 0,
+        "scale": 0,
+        "type": "character varying"
+    }
+]

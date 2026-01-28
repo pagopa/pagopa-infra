@@ -22,7 +22,7 @@ module "cosmosdb_account_mongodb" {
   enable_free_tier = var.cosmos_mongo_db_params.enable_free_tier
 
   public_network_access_enabled      = var.cosmos_mongo_db_params.public_network_access_enabled
-  private_endpoint_enabled           = var.cosmos_mongo_db_params.private_endpoint_enabled
+  private_endpoint_enabled           = var.cosmos_mongo_db_params.private_endpoint_enabled && !var.is_feature_enabled.cosmos_hub_spoke_pe_dns
   subnet_id                          = module.cosmosdb_pay_wallet_snet.id
   private_dns_zone_mongo_ids         = [data.azurerm_private_dns_zone.cosmos.id]
   is_virtual_network_filter_enabled  = var.cosmos_mongo_db_params.is_virtual_network_filter_enabled
@@ -37,6 +37,30 @@ module "cosmosdb_account_mongodb" {
   ip_range                  = var.cosmos_mongo_db_params.ip_range_filter
 
   enable_provisioned_throughput_exceeded_alert = var.cosmos_mongo_db_params.enable_provisioned_throughput_exceeded_alert
+
+  tags = module.tag_config.tags
+}
+
+# hub spoke private endpoint
+resource "azurerm_private_endpoint" "cosmos_data_mongo_pe" {
+  count = var.is_feature_enabled.cosmos && var.is_feature_enabled.cosmos_hub_spoke_pe_dns && var.env_short != "d" ? 1 : 0
+
+  name                = "${local.project}-cosmos-data-mongo-pe"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.cosmosdb_pay_wallet_rg.name
+  subnet_id           = module.cosmos_spoke_pay_wallet_snet[0].subnet_id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-cosmos-data-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.cosmos.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-cosmos-data-private-service-connection"
+    private_connection_resource_id = module.cosmosdb_account_mongodb[0].id
+    is_manual_connection           = false
+    subresource_names              = ["MongoDB"]
+  }
 
   tags = module.tag_config.tags
 }
