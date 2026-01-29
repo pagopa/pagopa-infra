@@ -221,3 +221,29 @@ resource "azurerm_dns_txt_record" "dns-txt-www-acc-recon-platform-pagopa-it-digi
   }
   tags = module.tag_config.tags
 }
+
+# Node Forwarder DCV TXT record
+resource "azurerm_dns_txt_record" "dns-txt-forwarder-platform-pagopa-it-digicert" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "forwarder"
+  zone_name           = azurerm_dns_zone.public[0].name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  record {
+    value = "_s0z8yt7tycb0u7ieit5re0mgtnucpf4"
+  }
+  tags = module.tag_config.tags
+}
+
+# Node Forwarder www DCV TXT record
+resource "azurerm_dns_txt_record" "dns-txt-www-forwarder-platform-pagopa-it-digicert" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "www.forwarder"
+  zone_name           = azurerm_dns_zone.public[0].name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  record {
+    value = "_s0z8yt7tycb0u7ieit5re0mgtnucpf4"
+  }
+  tags = module.tag_config.tags
+}

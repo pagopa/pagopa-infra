@@ -47,7 +47,6 @@ module "postgres_flexible_snet" {
 }
 
 data "azurerm_private_dns_zone" "postgres" {
-  count               = var.env_short != "d" ? 1 : 0 # forced ( before exits only in UAT and PROD now DEV too)
   name                = "private.postgres.database.azure.com"
   resource_group_name = local.vnet_resource_group_name
 }
@@ -65,7 +64,7 @@ module "postgres_flexible_server_private_db" {
 
   ### Network
   private_endpoint_enabled      = var.pgres_flex_params.private_endpoint_enabled
-  private_dns_zone_id           = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
+  private_dns_zone_id           = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres.id : null
   delegated_subnet_id           = module.postgres_flexible_snet[0].id
   public_network_access_enabled = var.pgres_flex_params.public_network_access_enabled
 
