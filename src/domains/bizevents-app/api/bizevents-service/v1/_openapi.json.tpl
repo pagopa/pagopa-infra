@@ -4,7 +4,7 @@
     "title": "Biz-Events Service - Payment Receipts REST APIs",
     "description": "Microservice for exposing REST APIs about payment receipts.\n### APP ERROR CODES ###\n\n\n<details><summary>Details</summary>\n\n| Code | Group | Domain | Description |\n| ---- | ----- | ------ | ----------- |\n| **BZ_404_001** | *NOT FOUND* | biz event | Biz Event not found with IUR and IUV |\n| **BZ_404_002** | *NOT FOUND* | biz event | Biz Event not found with IUR |\n| **BZ_404_003** | *NOT FOUND* | biz event | Biz Event not found with ID |\n| **BZ_404_004** | *NOT FOUND* | biz event | Biz Event not found with CF and IUV |\n| **BZ_422_001** | *Unprocessable Entity* | biz event | Multiple BizEvents found with IUR and IUV |\n| **BZ_422_002** | *Unprocessable Entity* | biz event | Multiple BizEvents found with CF and IUR |\n| **BZ_422_003** | *Unprocessable Entity* | biz event | Multiple BizEvents found with CF and IUV |\n| **GN_400_001** | *BAD REQUEST* | generic | - |\n| **GN_400_002** | *BAD REQUEST* | generic | Invalid input |\n| **GN_400_003** | *BAD REQUEST* | generic | Invalid CF (Tax Code) |\n| **GN_400_004** | *BAD REQUEST* | generic | Invalid input type |\n| **GN_400_005** | *BAD REQUEST* | generic | Invalid input parameter constraints |\n| **GN_500_001** | *Internal Server Error* | generic | Generic Error |\n| **GN_500_002** | *Internal Server Error* | generic | Generic Error |\n| **GN_500_003** | *Internal Server Error* | generic | Generic Error |\n| **GN_500_004** | *Internal Server Error* | generic | Generic Error |\n| **FG_000_001** | *Variable* | feign client | Error occurred during call to underlying services |\n| **VU_404_001** | *NOT FOUND* | view user | View User not found with CF |\n| **VU_404_002** | *NOT FOUND* | view user | View User not found with CF and filters |\n| **VU_404_003** | *NOT FOUND* | view user | View User not found with ID |\n| **VG_404_001** | *NOT FOUND* | view general | View General not found with ID |\n| **VC_404_001** | *NOT FOUND* | view cart | View Cart not found with ID and CF |\n| **AT_404_001** | *NOT FOUND* | attachment | Attachment not found |\n| **AT_404_002** | *NOT FOUND* | attachment | Attachment not found because it is currently being generated |\n| **UN_500_000** | *Internal Server Error* | unknown | Unexpected error |\n| **TS_000_000** | *test* | test | used for testing |\n</details>",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.2.2"
+    "version": "0.2.3"
   },
   "servers": [
     {
@@ -40,6 +40,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -63,6 +72,17 @@
           },
           "429": {
             "description": "Too many requests.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong or missing function key.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -125,17 +145,6 @@
                 }
               }
             }
-          },
-          "401": {
-            "description": "Wrong or missing function key.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
           }
         },
         "security": [
@@ -143,18 +152,7 @@
             "ApiKey": []
           }
         ]
-      },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "required": false,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ]
+      }
     },
     "/organizations/{organizationfiscalcode}/receipts/{iur}/paymentoptions/{iuv}": {
       "get": {
@@ -190,6 +188,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -213,6 +220,17 @@
           },
           "429": {
             "description": "Too many requests.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong or missing function key.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -275,17 +293,6 @@
                 }
               }
             }
-          },
-          "401": {
-            "description": "Wrong or missing function key.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
           }
         },
         "security": [
@@ -293,18 +300,7 @@
             "ApiKey": []
           }
         ]
-      },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "required": false,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ]
+      }
     },
     "/info": {
       "get": {
@@ -314,6 +310,17 @@
         "summary": "health check",
         "description": "Return OK if application is started",
         "operationId": "healthCheck",
+        "parameters": [
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "401": {
             "description": "Unauthorized",
@@ -337,17 +344,6 @@
               }
             }
           },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
           "400": {
             "description": "Bad Request",
             "headers": {
@@ -362,6 +358,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -408,18 +415,7 @@
             "ApiKey": []
           }
         ]
-      },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "required": false,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ]
+      }
     }
   },
   "components": {
