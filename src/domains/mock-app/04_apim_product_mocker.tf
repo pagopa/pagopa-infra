@@ -36,6 +36,25 @@ module "apim_mocker_config_product" {
   policy_xml = file("./api_product/v1/_base_policy.xml")
 }
 
+module "apim_remora_engine_product" {
+  count  = var.env_short != "p" ? 1 : 0
+  source = "./.terraform/modules/__v3__/api_management_product"
+
+  product_id   = local.remora_engine_api_locals.product_id
+  display_name = local.remora_engine_api_locals.display_name
+  description  = local.remora_engine_api_locals.description
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = true
+  subscription_required = local.remora_engine_api_locals.subscription_required
+  approval_required     = false
+  subscriptions_limit   = local.remora_engine_api_locals.subscription_limit
+
+  policy_xml = file("./api_product/v1/_base_policy.xml")
+}
+
 resource "azurerm_api_management_product_group" "access_control_developers_for_mocker_role" {
   count               = var.env_short != "p" ? 1 : 0
   product_id          = module.apim_mocker_core_product[0].product_id
