@@ -23,6 +23,7 @@ jobs:
           types: |
             fix
             feat
+            refactor
             docs
             chore
             breaking
