@@ -24,16 +24,16 @@ data "azurerm_resource_group" "data" {
 
 # Postgres Flexible Server subnet
 module "postgres_flexible_snet" {
-  source = "./.terraform/modules/__v3__/subnet"
+  source = "./.terraform/modules/__v4__/subnet"
 
   count = 1 # forced ( before exits only in UAT and PROD now DEV too)
 
-  name                                      = format("%s-pgres-flexible-snet", local.product)
-  address_prefixes                          = var.cidr_subnet_pg_flex_dbms
-  resource_group_name                       = local.vnet_resource_group_name
-  virtual_network_name                      = local.vnet_name
-  service_endpoints                         = ["Microsoft.Storage"]
-  private_endpoint_network_policies_enabled = false
+  name                              = format("%s-pgres-flexible-snet", local.product)
+  address_prefixes                  = var.cidr_subnet_pg_flex_dbms
+  resource_group_name               = local.vnet_resource_group_name
+  virtual_network_name              = local.vnet_name
+  service_endpoints                 = ["Microsoft.Storage"]
+  private_endpoint_network_policies = "Disabled"
 
   delegation = {
     name = "delegation"
@@ -55,7 +55,7 @@ data "azurerm_private_dns_zone" "postgres" {
 ########
 # https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server
 module "postgres_flexible_server_private_db" {
-  source = "./.terraform/modules/__v3__/postgres_flexible_server"
+  source = "./.terraform/modules/__v4__/postgres_flexible_server"
 
   name = format("%s-%s-gpd-pgflex", local.product, var.location_short)
 
