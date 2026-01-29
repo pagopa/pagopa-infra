@@ -6,13 +6,12 @@ resource "azurerm_resource_group" "gps_rg" {
 }
 
 module "gps_cosmosdb_snet" {
-  source               = "./.terraform/modules/__v3__/subnet"
-  name                 = "${local.project}-cosmosdb-snet"
-  address_prefixes     = var.cidr_subnet_gps_cosmosdb
-  resource_group_name  = local.vnet_resource_group_name
-  virtual_network_name = local.vnet_name
-
-  private_endpoint_network_policies_enabled = false
+  source                            = "./.terraform/modules/__v4__/subnet"
+  name                              = "${local.project}-cosmosdb-snet"
+  address_prefixes                  = var.cidr_subnet_gps_cosmosdb
+  resource_group_name               = local.vnet_resource_group_name
+  virtual_network_name              = local.vnet_name
+  private_endpoint_network_policies = "Disabled"
 
   service_endpoints = [
     "Microsoft.Web",
@@ -22,7 +21,7 @@ module "gps_cosmosdb_snet" {
 }
 
 module "gps_cosmosdb_account" {
-  source   = "./.terraform/modules/__v3__/cosmosdb_account"
+  source   = "./.terraform/modules/__v4__/cosmosdb_account"
   name     = "${local.project}-cosmos-account"
   location = var.location
   domain   = var.domain
@@ -47,7 +46,6 @@ module "gps_cosmosdb_account" {
 
   is_virtual_network_filter_enabled = var.cosmos_gps_db_params.is_virtual_network_filter_enabled
 
-  ip_range = ""
 
   # add data.azurerm_subnet.<my_service>.id
   allowed_virtual_network_subnet_ids = var.cosmos_gps_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
@@ -64,7 +62,7 @@ module "gps_cosmosdb_account" {
 
 # cosmosdb database
 module "gps_cosmosdb_database" {
-  source              = "./.terraform/modules/__v3__/cosmosdb_sql_database"
+  source              = "./.terraform/modules/__v4__/cosmosdb_sql_database"
   name                = "db"
   resource_group_name = azurerm_resource_group.gps_rg.name
   account_name        = module.gps_cosmosdb_account.name
@@ -72,7 +70,7 @@ module "gps_cosmosdb_database" {
 
 # GPD cosmosdb database
 module "gpd_cosmosdb_database" {
-  source              = "./.terraform/modules/__v3__/cosmosdb_sql_database"
+  source              = "./.terraform/modules/__v4__/cosmosdb_sql_database"
   name                = "gpd_db"
   resource_group_name = azurerm_resource_group.gps_rg.name
   account_name        = module.gps_cosmosdb_account.name
@@ -108,14 +106,14 @@ locals {
 
 # cosmosdb container
 module "gpd_cosmosdb_containers" {
-  source   = "./.terraform/modules/__v3__/cosmosdb_sql_container"
+  source   = "./.terraform/modules/__v4__/cosmosdb_sql_container"
   for_each = { for c in local.gpd_cosmosdb_containers : c.name => c }
 
   name                = each.value.name
   resource_group_name = azurerm_resource_group.gps_rg.name
   account_name        = module.gps_cosmosdb_account.name
   database_name       = module.gpd_cosmosdb_database.name
-  partition_key_path  = each.value.partition_key_path
+  partition_key_paths = [each.value.partition_key_path]
   throughput          = lookup(each.value, "throughput", null)
   default_ttl         = each.value.default_ttl
 
@@ -125,21 +123,21 @@ module "gpd_cosmosdb_containers" {
 
 # cosmosdb container
 module "gps_cosmosdb_containers" {
-  source   = "./.terraform/modules/__v3__/cosmosdb_sql_container"
+  source   = "./.terraform/modules/__v4__/cosmosdb_sql_container"
   for_each = { for c in local.gps_cosmosdb_containers : c.name => c }
 
   name                = each.value.name
   resource_group_name = azurerm_resource_group.gps_rg.name
   account_name        = module.gps_cosmosdb_account.name
   database_name       = module.gps_cosmosdb_database.name
-  partition_key_path  = each.value.partition_key_path
+  partition_key_paths = [each.value.partition_key_path]
   throughput          = lookup(each.value, "throughput", null)
 
   autoscale_settings = contains(var.cosmos_gps_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
 }
 
 module "gpd_payments_cosmosdb_account" {
-  source   = "./.terraform/modules/__v3__/cosmosdb_account"
+  source   = "./.terraform/modules/__v4__/cosmosdb_account"
   name     = "${local.project}-payments-cosmos-account"
   location = var.location
   domain   = var.domain
@@ -162,8 +160,6 @@ module "gpd_payments_cosmosdb_account" {
   backup_continuous_enabled  = var.cosmos_gpd_payments_db_params.backup_continuous_enabled
 
   is_virtual_network_filter_enabled = var.cosmos_gpd_payments_db_params.is_virtual_network_filter_enabled
-
-  ip_range = ""
 
   # add data.azurerm_subnet.<my_service>.id
   allowed_virtual_network_subnet_ids = var.cosmos_gpd_payments_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
