@@ -20,6 +20,24 @@ module "apim_receipts_product" {
   policy_xml = file("./api_product/receipt-service/_base_policy.xml")
 }
 
+module "apim_receipts_internal_product" {
+  source = "./.terraform/modules/__v3__/api_management_product"
+
+  product_id   = "receipts-internal"
+  display_name = "Receipts Service PDF Internal"
+  description  = "Servizio per gestire recupero ricevute, chiamato dai servizi interni"
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = true
+  subscription_required = true
+  approval_required     = true
+  subscriptions_limit   = 1000
+
+  policy_xml = file("./api_product/receipt-service/_base_policy.xml")
+}
+
 #################
 ##    API Biz Events  ##
 #################
