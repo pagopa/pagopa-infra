@@ -109,3 +109,22 @@ custom_metric_alerts = {
     severity         = 2
   }
 }
+
+# Storage Account
+cidr_subnet_storage_account = ["10.3.8.0/27"]
+cruscotto_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "ZRS"
+  blob_versioning_enabled       = true
+  advanced_threat_protection    = true
+  public_network_access_enabled = false
+  blob_delete_retention_days    = 30
+  enable_low_availability_alert = true
+  backup_enabled                = true
+  backup_retention              = 7
+}
+
+cruscotto_blobs_retention_days = 60
+
+
