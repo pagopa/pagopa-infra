@@ -64,12 +64,12 @@ pgres_flex_params = {
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   # https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compute-storage#storage
   storage_mb                                       = 1048576 # 1Tib
-  zone                                             = 2
+  zone                                             = 1
   backup_retention_days                            = 30
   geo_redundant_backup_enabled                     = true
   create_mode                                      = "Default"
   high_availability_enabled                        = true
-  standby_availability_zone                        = 1
+  standby_availability_zone                        = 2
   pgbouncer_enabled                                = true
   alerts_enabled                                   = true
   max_connections                                  = 5000
@@ -192,7 +192,7 @@ eventhub_namespace_rtp = {
   auto_inflate_enabled     = true
   sku_name                 = "Standard"
   capacity                 = 5
-  maximum_throughput_units = 5
+  maximum_throughput_units = 20
   public_network_access    = true
   private_endpoint_created = true
   metric_alerts_create     = true
