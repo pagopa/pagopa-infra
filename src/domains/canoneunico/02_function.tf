@@ -51,7 +51,7 @@ module "canoneunico_function" {
     MAX_ATTEMPTS         = 3
     QUEUE_TIME_TO_LIVE   = 7200                                // 2h
     QUEUE_DELAY          = var.canoneunico_queue_message_delay // 2m
-    CUP_YEAR             = "2024"
+    CUP_YEAR             = "2026"
     PO_DUE_DATE          = "2026-05-31T23:59:59.999Z"
 
     BATCH_SIZE_DEBT_POS_QUEUE = var.canoneunico_batch_size_debt_pos_queue
