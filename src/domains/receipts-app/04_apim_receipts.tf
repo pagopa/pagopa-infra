@@ -35,7 +35,7 @@ module "apim_receipts_internal_product" {
   approval_required     = true
   subscriptions_limit   = 1000
 
-  policy_xml = file("./api_product/receipt-service/_base_policy.xml")
+  policy_xml = file("./api_product/_base_policy.xml")
 }
 
 ########################
