@@ -50,7 +50,6 @@ resource "azurerm_servicebus_namespace" "service_bus_wisp" {
   location            = var.location
   resource_group_name = local.sb_resource_group_name
   sku                 = var.service_bus_wisp.sku
-  zone_redundant      = var.service_bus_wisp.sku == "Premium"
   # https://learn.microsoft.com/en-us/azure/well-architected/service-guides/service-bus/reliability
 
   capacity                     = try(var.service_bus_wisp.capacity, null)
@@ -83,8 +82,7 @@ resource "azurerm_servicebus_queue" "service_bus_wisp_queue" {
 
   name         = local.queue_values[count.index].name
   namespace_id = azurerm_servicebus_namespace.service_bus_wisp.id
-
-  enable_partitioning = local.queue_values[count.index].enable_partitioning
+  partitioning_enabled = local.queue_values[count.index].enable_partitioning
   default_message_ttl = var.service_bus_wisp.queue_default_message_ttl
 
   depends_on = [

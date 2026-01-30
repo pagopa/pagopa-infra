@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "sftp" {
 }
 
 module "sftp" {
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
   #source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=add-SFTP-to-sa"
 
   name                = replace("${local.project}-sftp", "-", "")

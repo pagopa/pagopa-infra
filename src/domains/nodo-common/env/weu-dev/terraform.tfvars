@@ -31,7 +31,7 @@ storage_account_snet_private_link_service_network_policies_enabled = false
 pgres_flex_params = {
 
   enabled    = true
-  sku_name   = "GP_Standard_D4s_v3"
+  sku_name   = "GP_Standard_D4ds_v5"
   db_version = "16"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
