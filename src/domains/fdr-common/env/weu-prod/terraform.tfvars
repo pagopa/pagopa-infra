@@ -137,12 +137,12 @@ cosmos_mongo_db_fdr_re_params = {
 
   container_default_ttl = 10368000 # 120 days
 
-  enable_serverless  = false
-  enable_autoscaling = true
-  max_throughput     = 20000
-  throughput         = 1000
+  enable_serverless      = false
+  enable_autoscaling     = true
+  max_throughput         = 20000
+  throughput             = 1000
   burst_capacity_enabled = true
-  ip_range = ["109.115.21.25"]
+  ip_range               = ["109.115.21.25"]
 }
 
 # Storage Account

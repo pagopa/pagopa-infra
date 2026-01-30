@@ -282,8 +282,8 @@ variable "cosmos_mongo_db_fdr_re_params" {
     throughput                        = number
     max_throughput                    = number
     container_default_ttl             = number
-    burst_capacity_enabled = optional(bool, false)
-    ip_range               = optional(list(string), [])
+    burst_capacity_enabled            = optional(bool, false)
+    ip_range                          = optional(list(string), [])
   })
 }
 # Storage account

@@ -24,9 +24,9 @@ module "cosmosdb_account_mongodb_fdr_re" {
   additional_geo_locations         = var.cosmos_mongo_db_fdr_re_params.additional_geo_locations
 
   backup_continuous_enabled = var.cosmos_mongo_db_fdr_re_params.backup_continuous_enabled
-  burst_capacity_enabled =  var.cosmos_mongo_db_fdr_re_params.burst_capacity_enabled
-  ip_range = var.cosmos_mongo_db_fdr_re_params.ip_range
-  tags = module.tag_config.tags
+  burst_capacity_enabled    = var.cosmos_mongo_db_fdr_re_params.burst_capacity_enabled
+  ip_range                  = var.cosmos_mongo_db_fdr_re_params.ip_range
+  tags                      = module.tag_config.tags
 }
 
 resource "azurerm_cosmosdb_mongo_database" "fdr_re" {
