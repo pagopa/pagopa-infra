@@ -1,5 +1,5 @@
 module "cosmosdb_account_mongodb_fdr_re" {
-  source              = "./.terraform/modules/__v3__/cosmosdb_account"
+  source              = "./.terraform/modules/__v4__/cosmosdb_account"
   domain              = var.domain
   name                = "${local.project}-re-cosmos-account"
   location            = var.location
@@ -24,7 +24,8 @@ module "cosmosdb_account_mongodb_fdr_re" {
   additional_geo_locations         = var.cosmos_mongo_db_fdr_re_params.additional_geo_locations
 
   backup_continuous_enabled = var.cosmos_mongo_db_fdr_re_params.backup_continuous_enabled
-
+  burst_capacity_enabled =  var.cosmos_mongo_db_fdr_re_params.burst_capacity_enabled
+  ip_range = var.cosmos_mongo_db_fdr_re_params.ip_range
   tags = module.tag_config.tags
 }
 
@@ -96,7 +97,7 @@ locals {
 }
 
 module "cosmosdb_fdr_re_collections" {
-  source = "./.terraform/modules/__v3__/cosmosdb_mongodb_collection"
+  source = "./.terraform/modules/__v4__/cosmosdb_mongodb_collection"
 
   for_each = {
     for index, coll in local.fdr_re_collections :
