@@ -37,17 +37,17 @@ locals {
         {
           action = "Overwrite"
           name   = local.cdn_frontdoor_csp_header_name
-          value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it https://privacyportalde-cdn.onetrust.com https://privacyportal-de.onetrust.com", var.dns_zone_prefix, var.external_domain)
+          value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://privacyportalde-cdn.onetrust.com https://privacyportal-de.onetrust.com", var.dns_zone_prefix, var.external_domain)
         },
         {
           action = "Append"
           name   = local.cdn_frontdoor_csp_header_name
-          value  = " https://acardste.vaservices.eu:* https://recaptcha.net/;"
+          value  = " https://recaptcha.net/;"
         },
         {
           action = "Append"
           name   = local.cdn_frontdoor_csp_header_name
-          value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.sia.eu *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;"
+          value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;"
         }
       ]
     },
@@ -57,7 +57,7 @@ locals {
         {
           action = "Append"
           name   = local.cdn_frontdoor_csp_header_name
-          value  = "img-src 'self' https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it https://privacyportalde-cdn.onetrust.com;"
+          value  = "img-src 'self' https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it https://privacyportalde-cdn.onetrust.com;"
         },
         {
           action = "Append"
