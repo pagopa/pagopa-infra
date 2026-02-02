@@ -95,7 +95,7 @@ module "cosmosdb_account_standin_containers" {
 resource "azurerm_key_vault_secret" "cosmos_standin_connection_string_readonly" {
   depends_on   = [module.cosmosdb_account_standin]
   name         = "cosmos-standin-connection-string-readonly"
-  value        = module.cosmosdb_account_standin.primary_connection_string_readonly
+  value        = module.cosmosdb_account_standin.primary_sql_connection_string_readonly
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
