@@ -182,7 +182,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "cache-dumping-error" {
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.smo_opsgenie[0].id]
     email_subject          = "node-cfg-sync-cache-dumping-error"
     custom_webhook_payload = "{}"
   }
