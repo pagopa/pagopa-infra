@@ -6,8 +6,9 @@ resource "azurerm_resource_group" "rtp_rg" {
 }
 
 
+
 module "eventhub_rtp_namespace_integration" {
-  source                   = "./.terraform/modules/__v3__/eventhub"
+  source                   = "./.terraform/modules/__v4__/eventhub"
   name                     = "${local.project_itn}-rtp-integration-evh"
   location                 = var.location_ita # <-- italy north
   resource_group_name      = azurerm_resource_group.rtp_rg.name
@@ -17,20 +18,15 @@ module "eventhub_rtp_namespace_integration" {
   maximum_throughput_units = var.eventhub_namespace_rtp.maximum_throughput_units
   #zone_redundat is always true
 
-  virtual_network_ids           = [data.azurerm_virtual_network.vnet_italy_cstar_integration.id]
+
   public_network_access_enabled = false
   private_endpoint_subnet_id    = data.azurerm_subnet.common_itn_cstar_integration_private_endpoint_subnet.id
   private_endpoint_created      = var.eventhub_namespace_rtp.private_endpoint_created
 
   private_endpoint_resource_group_name = azurerm_resource_group.rtp_rg.name
 
-  private_dns_zones = {
-    id                  = [data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
-    name                = [data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.name]
-    resource_group_name = data.azurerm_resource_group.rg_event_private_dns_zone.name
-  }
+  private_dns_zones_ids = [data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
 
-  private_dns_zone_record_A_name = "${var.domain}.${var.location_short_ita}.integration.eventhub_rtp"
 
   eventhubs = var.eventhubs_rtp
 
@@ -58,3 +54,28 @@ module "eventhub_rtp_namespace_integration" {
 
   tags = module.tag_config.tags
 }
+
+
+# resource "azurerm_private_endpoint" "rtp_integration_eventhub_private_endpoint" {
+#   location            = var.location_ita
+#   name                = "${local.project_itn}-rtp-integration-evh-private-endpoint"
+#   resource_group_name = azurerm_resource_group.rtp_rg.name
+#   subnet_id           = data.azurerm_subnet.common_itn_private_endpoint_subnet.id
+#
+#   private_service_connection {
+#     name                           = "rtpintegrationeventhuv"
+#     private_connection_resource_id = module.eventhub_rtp_namespace_integration.namespace_id
+#     is_manual_connection           = false
+#     subresource_names              = ["namespace"]
+#   }
+#
+#   private_dns_zone_group {
+#     name                 = "${var.prefix}-eventhub-zone-group"
+#     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
+#   }
+#
+#
+#
+#   tags = module.tag_config.tags
+#
+# }

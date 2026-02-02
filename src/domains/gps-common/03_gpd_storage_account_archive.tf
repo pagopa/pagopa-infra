@@ -4,7 +4,7 @@
 
 # # storage
 # module "gpd_archive_sa" {
-#   source = "./.terraform/modules/__v3__/storage_account"
+#   source = "./.terraform/modules/__v4__/storage_account"
 
 #   name                            = replace(format("%s-%s-gpd-archive-sa", local.product, var.location_short), "-", "")
 #   account_kind                    = "StorageV2"
