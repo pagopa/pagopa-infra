@@ -179,16 +179,14 @@ locals {
 
 /**
  * CDN Front Door
- * NOTE: After switch, rename module to "checkout_cdn" and run:
+ * NOTE: After cleanup, rename module to "checkout_cdn" and run:
  *   terraform state mv module.checkout_cdn_frontdoor module.checkout_cdn
  */
 module "checkout_cdn_frontdoor" {
   source = "./.terraform/modules/__v4__/cdn_frontdoor"
 
-  count = var.checkout_enabled ? 1 : 0
-
   cdn_prefix_name     = local.project
-  resource_group_name = azurerm_resource_group.checkout_fe_rg[0].name // refers to the RG defined in 05_checkout_fe.tf before switch 
+  resource_group_name = azurerm_resource_group.checkout_fe_rg[0].name // refers to resource group in 05_checkout_fe.tf, to be changed after cleanup
   location            = var.location
 
   https_rewrite_enabled = true
@@ -216,14 +214,14 @@ module "checkout_cdn_frontdoor" {
 
 /**
  * Web Test for CDN
- * NOTE: After switch, rename module to "checkout_fe_web_test" and run:
+ * NOTE: After cleanup, rename module to "checkout_fe_web_test" and run:
  *   terraform state mv module.checkout_fe_frontdoor_web_test module.checkout_fe_web_test
  */
 module "checkout_fe_frontdoor_web_test" {
-  count  = var.checkout_enabled && var.env_short == "p" ? 1 : 0
+  count  = var.env_short == "p" ? 1 : 0
   source = "./.terraform/modules/__v4__/application_insights_standard_web_test"
 
-  https_endpoint                        = "https://${module.checkout_cdn_frontdoor[0].fqdn}"
+  https_endpoint                        = "https://${module.checkout_cdn_frontdoor.fqdn}"
   https_endpoint_path                   = "/index.html"
   alert_name                            = "${local.project}-fe-web-test"
   location                              = var.location
@@ -241,21 +239,21 @@ module "checkout_fe_frontdoor_web_test" {
 }
 
 # Outputs for CDN
-# These outputs are useful during Phase 1 (before DNS switch) for:
+# These outputs are useful before DNS switch for:
 # - Testing the Front Door via .azurefd.net URL
 # - Verifying storage account name for pipeline configuration
-# After DNS switch, access via custom domain (checkout.pagopa.it) instead and remove these outputs
+# After DNS switch, access via custom domain (e.g. checkout.pagopa.it) instead and remove these outputs
 output "checkout_cdn_endpoint" {
-  value       = var.checkout_enabled ? module.checkout_cdn_frontdoor[0].hostname : null
+  value       = module.checkout_cdn_frontdoor.hostname
   description = "CDN endpoint hostname"
 }
 
 output "checkout_cdn_fqdn" {
-  value       = var.checkout_enabled ? module.checkout_cdn_frontdoor[0].fqdn : null
-  description = "CDN FQDN - use this URL to test Front Door before DNS switch"
+  value       = module.checkout_cdn_frontdoor.fqdn
+  description = "CDN FQDN"
 }
 
 output "checkout_cdn_storage_account_name" {
-  value       = var.checkout_enabled ? module.checkout_cdn_frontdoor[0].storage_name : null
-  description = "CDN storage account name - verify this matches pipeline config"
+  value       = module.checkout_cdn_frontdoor.storage_name
+  description = "CDN storage account name"
 }
