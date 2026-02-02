@@ -4,7 +4,7 @@ data "azurerm_resource_group" "reporting_fdr_rg" {
 
 ## Flows Storage Account
 module "fdr_flows_sa" {
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                            = replace("${local.product}-fdr-flows-sa", "-", "")
   account_kind                    = "StorageV2"
