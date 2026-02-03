@@ -8,7 +8,7 @@ echo "Checking status of all nodes in the cluster..."
 echo "---------------------------------------------------"
 
 # Get nodes and their status
-NODES_STATUS=$(kubectl get nodes -o custom-columns=NAME:.metadata.name,STATUS:.status.conditions[?(@.type==\"Ready\")].status,REASON:.status.conditions[?(@.type==\"Ready\")].reason)
+NODES_STATUS=$(kubectl get nodes -o custom-columns='NAME:.metadata.name,STATUS:.status.conditions[?(@.type=="Ready")].status,REASON:.status.conditions[?(@.type=="Ready")].reason')
 
 echo "$NODES_STATUS"
 echo "---------------------------------------------------"
@@ -42,7 +42,7 @@ if [ -n "$PRESSURE_NODES" ]; then
   EXIT_CODE=1
   for NODE in $PRESSURE_NODES; do
      echo "Node: $NODE"
-     kubectl get node "$NODE" -o custom-columns=NAME:.metadata.name,DISK_PRESSURE:.status.conditions[?(@.type==\"DiskPressure\")].status,MEM_PRESSURE:.status.conditions[?(@.type==\"MemoryPressure\")].status,PID_PRESSURE:.status.conditions[?(@.type==\"PIDPressure\")].status
+     kubectl get node "$NODE" -o custom-columns='NAME:.metadata.name,DISK_PRESSURE:.status.conditions[?(@.type=="DiskPressure")].status,MEM_PRESSURE:.status.conditions[?(@.type=="MemoryPressure")].status,PID_PRESSURE:.status.conditions[?(@.type=="PIDPressure")].status'
   done
 else
   echo "No resource pressure detected on any node."

@@ -7,6 +7,49 @@
 # - CPU_THRESHOLD_PERCENT (default: 80) - Informational only if metrics-server doesn't provide limits
 # - MEM_THRESHOLD_PERCENT (default: 80)
 
+# Function to convert memory units to Mi
+parse_memory() {
+  local mem=$1
+  if [[ -z "$mem" || "$mem" == "null" ]]; then return; fi
+  
+  # Remove quotes if present
+  mem=$(echo "$mem" | tr -d '"')
+  
+  if [[ "$mem" =~ ^([0-9.]+)(Ei|Pi|Ti|Gi|Mi|Ki|E|P|T|G|M|K|i)?$ ]]; then
+    local value=${BASH_REMATCH[1]}
+    local unit=${BASH_REMATCH[2]}
+    
+    case "$unit" in
+      Gi|G|GiB) echo "$value * 1024" | bc ;;
+      Mi|M|MiB) echo "$value" | bc ;;
+      Ki|K|KiB) echo "$value / 1024" | bc ;;
+      Ti|T|TiB) echo "$value * 1024 * 1024" | bc ;;
+      *) echo "$value / 1048576" | bc ;; # Assume bytes if no unit
+    esac
+  fi
+}
+
+# Function to convert CPU units to m (millicores)
+parse_cpu() {
+  local cpu=$1
+  if [[ -z "$cpu" || "$cpu" == "null" ]]; then return; fi
+  
+  # Remove quotes if present
+  cpu=$(echo "$cpu" | tr -d '"')
+  
+  if [[ "$cpu" =~ ^([0-9.]+)(m)?$ ]]; then
+    local value=${BASH_REMATCH[1]}
+    local unit=${BASH_REMATCH[2]}
+    
+    if [ "$unit" == "m" ]; then
+      echo "$value" | bc
+    else
+      # If no unit, it's in cores, convert to millicores
+      echo "$value * 1000" | bc
+    fi
+  fi
+}
+
 NAMESPACE=${AKS_NAMESPACE:-"default"}
 CPU_THRESHOLD=${CPU_THRESHOLD_PERCENT:-80}
 MEM_THRESHOLD=${MEM_THRESHOLD_PERCENT:-80}
@@ -50,28 +93,33 @@ while read -r line; do
   POD_NAME=$(echo "$line" | awk '{print $1}')
   
   if [ "$METRICS_AVAILABLE" = true ]; then
-    CPU_USAGE=$(echo "$line" | awk '{print $2}' | sed 's/m//')
-    MEM_USAGE=$(echo "$line" | awk '{print $3}' | sed 's/Mi//')
+    CPU_USAGE=$(echo "$line" | awk '{print $2}')
+    MEM_USAGE=$(echo "$line" | awk '{print $3}')
+    
+    CPU_USAGE=$(parse_cpu "$CPU_USAGE")
+    MEM_USAGE=$(parse_memory "$MEM_USAGE")
   fi
 
   # Fetching limits and requests for the pod
   RESOURCES=$(kubectl get pod "$POD_NAME" -n "$NAMESPACE" -o jsonpath='{.spec.containers[*].resources}')
   echo "Pod: $POD_NAME"
   
-  if [ -n "$RESOURCES" ]; then
-    CPU_LIMIT=$(kubectl get pod "$POD_NAME" -n "$NAMESPACE" -o jsonpath='{.spec.containers[0].resources.limits.cpu}' | sed 's/m//')
-    MEM_LIMIT=$(kubectl get pod "$POD_NAME" -n "$NAMESPACE" -o jsonpath='{.spec.containers[0].resources.limits.memory}' | sed 's/Mi//' | sed 's/Gi/ * 1024/' | bc 2>/dev/null)
+  if [ -n "$RESOURCES" ] && [ "$RESOURCES" != "{}" ]; then
+    CPU_LIMIT=$(kubectl get pod "$POD_NAME" -n "$NAMESPACE" -o jsonpath='{.spec.containers[0].resources.limits.cpu}')
+    MEM_LIMIT=$(kubectl get pod "$POD_NAME" -n "$NAMESPACE" -o jsonpath='{.spec.containers[0].resources.limits.memory}')
     
-    CPU_REQUEST=$(kubectl get pod "$POD_NAME" -n "$NAMESPACE" -o jsonpath='{.spec.containers[0].resources.requests.cpu}' | sed 's/m//')
-    MEM_REQUEST=$(kubectl get pod "$POD_NAME" -n "$NAMESPACE" -o jsonpath='{.spec.containers[0].resources.requests.memory}' | sed 's/Mi//' | sed 's/Gi/ * 1024/' | bc 2>/dev/null)
+    CPU_REQUEST=$(kubectl get pod "$POD_NAME" -n "$NAMESPACE" -o jsonpath='{.spec.containers[0].resources.requests.cpu}')
+    MEM_REQUEST=$(kubectl get pod "$POD_NAME" -n "$NAMESPACE" -o jsonpath='{.spec.containers[0].resources.requests.memory}')
+
+    CPU_LIMIT=$(parse_cpu "$CPU_LIMIT")
+    MEM_LIMIT=$(parse_memory "$MEM_LIMIT")
+    CPU_REQUEST=$(parse_cpu "$CPU_REQUEST")
+    MEM_REQUEST=$(parse_memory "$MEM_REQUEST")
 
     echo "  Limits:   CPU: ${CPU_LIMIT:-N/A}m, Memory: ${MEM_LIMIT:-N/A}Mi"
     echo "  Requests: CPU: ${CPU_REQUEST:-N/A}m, Memory: ${MEM_REQUEST:-N/A}Mi"
 
-    # If it's something like "1", convert to 1000. If it has 'm', it was already stripped.
-    if [[ "$CPU_LIMIT" =~ ^[0-9]+$ ]] && [ "$CPU_LIMIT" -lt 100 ]; then
-        CPU_LIMIT=$((CPU_LIMIT * 1000))
-    fi
+    # Removed old CPU conversion logic that was redundant with parse_cpu
 
     if [ "$METRICS_AVAILABLE" = true ]; then
       if [ -n "$CPU_LIMIT" ] && [ "$CPU_LIMIT" -gt 0 ]; then
