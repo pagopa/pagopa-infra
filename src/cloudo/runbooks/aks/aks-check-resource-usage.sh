@@ -7,45 +7,63 @@
 # - CPU_THRESHOLD_PERCENT (default: 80) - Informational only if metrics-server doesn't provide limits
 # - MEM_THRESHOLD_PERCENT (default: 80)
 
-# Function to convert memory units to Mi
+# Function to convert memory units to Mi (no external bc dependency)
 parse_memory() {
   local mem=$1
   if [[ -z "$mem" || "$mem" == "null" ]]; then return; fi
-  
+
   # Remove quotes if present
   mem=$(echo "$mem" | tr -d '"')
-  
+
   if [[ "$mem" =~ ^([0-9.]+)(Ei|Pi|Ti|Gi|Mi|Ki|E|P|T|G|M|K|i)?$ ]]; then
     local value=${BASH_REMATCH[1]}
     local unit=${BASH_REMATCH[2]}
-    
+
     case "$unit" in
-      Gi|G|GiB) echo "$value * 1024" | bc ;;
-      Mi|M|MiB) echo "$value" | bc ;;
-      Ki|K|KiB) echo "$value / 1024" | bc ;;
-      Ti|T|TiB) echo "$value * 1024 * 1024" | bc ;;
-      *) echo "$value / 1048576" | bc ;; # Assume bytes if no unit
+      Gi|G|GiB)
+        awk -v v="$value" 'BEGIN { printf "%.0f", v*1024 }'
+        ;;
+      Mi|M|MiB)
+        awk -v v="$value" 'BEGIN { printf "%.0f", v }'
+        ;;
+      Ki|K|KiB)
+        awk -v v="$value" 'BEGIN { printf "%.0f", v/1024 }'
+        ;;
+      Ti|T|TiB)
+        awk -v v="$value" 'BEGIN { printf "%.0f", v*1024*1024 }'
+        ;;
+      Ei|E|EiB)
+        awk -v v="$value" 'BEGIN { printf "%.0f", v*1024*1024*1024*1024*1024*1024 }'
+        ;;
+      Pi|P|PiB)
+        awk -v v="$value" 'BEGIN { printf "%.0f", v*1024*1024*1024*1024*1024 }'
+        ;;
+      *)
+        # Assume raw bytes if no recognized unit
+        awk -v v="$value" 'BEGIN { printf "%.0f", v/1048576 }'
+        ;;
     esac
   fi
 }
 
-# Function to convert CPU units to m (millicores)
+# Function to convert CPU units to m (millicores) without bc
 parse_cpu() {
   local cpu=$1
   if [[ -z "$cpu" || "$cpu" == "null" ]]; then return; fi
-  
+
   # Remove quotes if present
   cpu=$(echo "$cpu" | tr -d '"')
-  
+
   if [[ "$cpu" =~ ^([0-9.]+)(m)?$ ]]; then
     local value=${BASH_REMATCH[1]}
     local unit=${BASH_REMATCH[2]}
-    
+
     if [ "$unit" == "m" ]; then
-      echo "$value" | bc
+      # Already in millicores
+      awk -v v="$value" 'BEGIN { printf "%.0f", v }'
     else
       # If no unit, it's in cores, convert to millicores
-      echo "$value * 1000" | bc
+      awk -v v="$value" 'BEGIN { printf "%.0f", v*1000 }'
     fi
   fi
 }
