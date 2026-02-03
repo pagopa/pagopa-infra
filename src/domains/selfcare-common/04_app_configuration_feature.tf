@@ -251,3 +251,18 @@ resource "azurerm_app_configuration_feature" "quicksight_product_free_trial" {
     ]
   }
 }
+
+resource "azurerm_app_configuration_feature" "settings_section" {
+  configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
+  description            = "Feature flag used to enable/disable settings f.e. section"
+  name                   = "settings-section"
+  enabled                = false
+
+  lifecycle {
+    ignore_changes = [
+      enabled,
+      targeting_filter,
+      timewindow_filter
+    ]
+  }
+}
