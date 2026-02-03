@@ -455,3 +455,13 @@ moved {
   from = module.printit_pdf_engine_app_service_java[0].azurerm_service_plan.this[0]
   to   = module.printit_pdf_engine_app_service_java[0].module.main_slot.azurerm_service_plan.this[0]
 }
+
+moved {
+  from = module.printit_pdf_engine_slot_staging[0].azurerm_linux_web_app_slot.this
+  to   = module.printit_pdf_engine_app_service[0].module.staging_slot[0].azurerm_linux_web_app_slot.this
+}
+
+moved {
+  from = module.printit_pdf_engine_java_slot_staging[0].azurerm_linux_web_app_slot.this
+  to   = module.printit_pdf_engine_app_service_java[0].module.staging_slot[0].azurerm_linux_web_app_slot.this
+}
