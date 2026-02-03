@@ -4,10 +4,10 @@
 # Required environment variables:
 # - AKS_NAMESPACE
 # Optional environment variables:
-# - CPU_THRESHOLD_PERCENT (default: 80) - Informational only if metrics-server doesn't provide limits
+# - CPU_THRESHOLD_PERCENT (default: 80)
 # - MEM_THRESHOLD_PERCENT (default: 80)
 
-# Function to convert memory units to Mi (no external bc dependency)
+# Function to convert memory units to Mi
 parse_memory() {
   local mem=$1
   if [[ -z "$mem" || "$mem" == "null" ]]; then return; fi
@@ -46,7 +46,7 @@ parse_memory() {
   fi
 }
 
-# Function to convert CPU units to m (millicores) without bc
+# Function to convert CPU units to m (millicores)
 parse_cpu() {
   local cpu=$1
   if [[ -z "$cpu" || "$cpu" == "null" ]]; then return; fi
@@ -59,16 +59,15 @@ parse_cpu() {
     local unit=${BASH_REMATCH[2]}
 
     if [ "$unit" == "m" ]; then
-      # Already in millicores
       awk -v v="$value" 'BEGIN { printf "%.0f", v }'
     else
-      # If no unit, it's in cores, convert to millicores
       awk -v v="$value" 'BEGIN { printf "%.0f", v*1000 }'
     fi
   fi
 }
 
 NAMESPACE=${AKS_NAMESPACE:-"default"}
+POD_FILTER=${AKS_POD:-""}
 CPU_THRESHOLD=${CPU_THRESHOLD_PERCENT:-80}
 MEM_THRESHOLD=${MEM_THRESHOLD_PERCENT:-80}
 
@@ -77,13 +76,17 @@ if [ "$MONITOR_CONDITION" == "Resolved" ]; then
   exit 0
 fi
 
-echo "Checking resource usage in namespace: $NAMESPACE"
+if [ -n "$POD_FILTER" ]; then
+  echo "Checking resource usage for pod: $POD_FILTER in namespace: $NAMESPACE"
+else
+  echo "Checking resource usage in namespace: $NAMESPACE"
+fi
 echo "---------------------------------------------------"
 
 # Check if metrics-server is available by running kubectl top
 METRICS_AVAILABLE=true
 if ! kubectl top pods -n "$NAMESPACE" > /dev/null 2>&1; then
-  echo "Warning: kubectl top pods failed. metrics-server might not be installed."
+  echo "Warning: kubectl top pods failed."
   echo "Falling back to showing Pod resource requests and limits only."
   METRICS_AVAILABLE=false
 fi
@@ -98,11 +101,27 @@ EXIT_CODE=0
 
 if [ "$METRICS_AVAILABLE" = true ]; then
   # Get pods and their usage
-  # Format: NAME CPU(cores) MEMORY(bytes)
-  USAGE_DATA=$(kubectl top pods -n "$NAMESPACE" --no-headers)
+  if [ -n "$POD_FILTER" ]; then
+    USAGE_DATA=$(kubectl top pods "$POD_FILTER" -n "$NAMESPACE" --no-headers 2>/dev/null)
+    if [ -z "$USAGE_DATA" ]; then
+       echo "Error: Pod $POD_FILTER not found in namespace $NAMESPACE or no metrics available for it."
+       exit 1
+    fi
+  else
+    USAGE_DATA=$(kubectl top pods -n "$NAMESPACE" --no-headers)
+  fi
 else
   # If no metrics, just get the list of pods to check limits/requests
-  USAGE_DATA=$(kubectl get pods -n "$NAMESPACE" --no-headers -o custom-columns=NAME:.metadata.name)
+  if [ -n "$POD_FILTER" ]; then
+    if kubectl get pod "$POD_FILTER" -n "$NAMESPACE" > /dev/null 2>&1; then
+      USAGE_DATA="$POD_FILTER"
+    else
+      echo "Error: Pod $POD_FILTER not found in namespace $NAMESPACE."
+      exit 1
+    fi
+  else
+    USAGE_DATA=$(kubectl get pods -n "$NAMESPACE" --no-headers -o custom-columns=NAME:.metadata.name)
+  fi
 fi
 
 while read -r line; do
