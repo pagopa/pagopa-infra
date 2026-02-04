@@ -20,18 +20,16 @@ locals {
   # DNS switch will happen in a separate PR (PR #3 / PIDM-1410) which will (process to be validated):
   #   1. Remove custom domain from CDN Classic
   #   2. Add custom domain to Front Door (with enable_dns_records = false for staged DNS switch)
-  custom_domains_for_switch = [
-    # {
-    #   domain_name             = local.dns_zone_key
-    #   dns_name                = data.azurerm_dns_zone.checkout_public[0].name
-    #   dns_resource_group_name = data.azurerm_dns_zone.checkout_public[0].resource_group_name
-    #   ttl                     = var.dns_default_ttl_sec
-    #   enable_dns_records      = false
-    # }
-  ]
 
-  # empty for now, will be set to custom_domains_for_switch in PR #3
-  custom_domains = []
+  custom_domains = [
+    {
+      domain_name             = local.dns_zone_key
+      dns_name                = data.azurerm_dns_zone.checkout_public[0].name
+      dns_resource_group_name = data.azurerm_dns_zone.checkout_public[0].resource_group_name
+      ttl                     = var.dns_default_ttl_sec
+      enable_dns_records      = false
+    }
+  ]
 
   global_delivery_rules = [
     {
