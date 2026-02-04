@@ -47,7 +47,7 @@ resource "azurerm_private_dns_zone" "adf" {
   name                = "privatelink.datafactory.azure.net"
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
 
-  tags = { domain = "core"}
+  tags = { domain = "core" }
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "adf_vnet" {
@@ -56,7 +56,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "adf_vnet" {
   private_dns_zone_name = azurerm_private_dns_zone.adf.name
   virtual_network_id    = data.azurerm_virtual_network.vnet.id
 
-  tags = { domain = "core"}
+  tags = { domain = "core" }
 }
 
 data "azurerm_subnet" "private_endpoint_snet" {

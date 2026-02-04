@@ -80,10 +80,10 @@ resource "azurerm_servicebus_namespace" "service_bus_wisp" {
 resource "azurerm_servicebus_queue" "service_bus_wisp_queue" {
   count = length(local.queue_values)
 
-  name         = local.queue_values[count.index].name
-  namespace_id = azurerm_servicebus_namespace.service_bus_wisp.id
+  name                 = local.queue_values[count.index].name
+  namespace_id         = azurerm_servicebus_namespace.service_bus_wisp.id
   partitioning_enabled = local.queue_values[count.index].enable_partitioning
-  default_message_ttl = var.service_bus_wisp.queue_default_message_ttl
+  default_message_ttl  = var.service_bus_wisp.queue_default_message_ttl
 
   depends_on = [
     azurerm_servicebus_namespace.service_bus_wisp
