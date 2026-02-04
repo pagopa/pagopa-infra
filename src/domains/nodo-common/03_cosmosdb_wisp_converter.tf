@@ -161,7 +161,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_wisp_normalized_ru_exceeded" {
   window_size         = "PT5M"
   frequency           = "PT5M"
   auto_mitigate       = false
-
+  enabled             = false
 
   # Metric info
   # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
@@ -171,6 +171,56 @@ resource "azurerm_monitor_metric_alert" "cosmos_wisp_normalized_ru_exceeded" {
     aggregation            = "Maximum"
     operator               = "GreaterThan"
     threshold              = "80"
+    skip_metric_validation = false
+
+
+    dimension {
+      name     = "Region"
+      operator = "Include"
+      values   = [azurerm_resource_group.wisp_converter_rg[0].location]
+    }
+
+    dimension {
+      name     = "CollectionName"
+      operator = "Include"
+      values   = ["*"]
+    }
+
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+  action {
+    action_group_id = azurerm_monitor_action_group.slack.id
+  }
+  action {
+    action_group_id = data.azurerm_monitor_action_group.opsgenie[0].id
+  }
+
+  tags = module.tag_config.tags
+}
+
+resource "azurerm_monitor_metric_alert" "cosmos_db_provisioned_throughput_exceeded" {
+  count = (var.env_short == "p" && var.create_wisp_converter) ? 1 : 0
+
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmosdb_account_wispconv[0].name}] Provisioned Throughput Exceeded"
+  resource_group_name = azurerm_resource_group.wisp_converter_rg[0].name
+  scopes              = [module.cosmosdb_account_wispconv[0].id]
+  description         = "A collection throughput (RU/s) exceed provisioned throughput, and it's raising 429 errors. Please, consider to increase RU. Runbook: not needed."
+  severity            = 0
+  window_size         = "PT5M"
+  frequency           = "PT1M"
+  auto_mitigate       = true
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
+  criteria {
+    metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
+    metric_name            = "ProvisionedThroughput"
+    aggregation            = "Maximum"
+    operator               = "GreaterThan"
+    threshold              = "25000"
     skip_metric_validation = false
 
 
