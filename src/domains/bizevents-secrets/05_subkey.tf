@@ -1,3 +1,4 @@
+# internal subscription key for receipt service
 resource "azurerm_api_management_subscription" "receipt_service_internal_subkey" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
