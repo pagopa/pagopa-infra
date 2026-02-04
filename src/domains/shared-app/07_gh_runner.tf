@@ -38,6 +38,10 @@ module "gh_runner_job" {
     {
       name : "pagopa-taxonomy",
       short_name : "taxonomy"
+    },
+        {
+      name : "pagopa-pdf-engine",
+      short_name : "pdf-engine"
     }
   ]
 
