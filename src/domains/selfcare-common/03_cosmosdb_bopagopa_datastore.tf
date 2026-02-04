@@ -184,3 +184,26 @@ module "mongdb_collection_maintenance" {
 
   lock_enable = true
 }
+
+module "mongdb_collection_institutions_services_rtp_consent" {
+  source                       = "./.terraform/modules/__v3__/cosmosdb_mongodb_collection"
+  name                         = "institutions-services-rtp-consent"
+  resource_group_name          = azurerm_resource_group.bopagopa_rg.name
+  cosmosdb_mongo_account_name  = module.bopagopa_cosmosdb_mongo_account.name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.pagopa_backoffice.name
+  indexes = [
+    {
+      keys   = ["_id"]
+      unique = true
+    },
+    {
+      keys   = ["consent"]
+      unique = false
+    },
+    {
+      keys   = ["consentDate"]
+      unique = false
+    }
+  ]
+  lock_enable = true
+}
