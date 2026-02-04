@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "nodo_verifyko_to_datastore_rg" {
 }
 
 module "cosmosdb_account_nodo_verifyko" {
-  source              = "./.terraform/modules/__v3__/cosmosdb_account"
+  source              = "./.terraform/modules/__v4__/cosmosdb_account"
   domain              = var.domain
   name                = "${local.project}-verifyko-cosmos-account"
   location            = var.location
@@ -25,7 +25,6 @@ module "cosmosdb_account_nodo_verifyko" {
   private_endpoint_sql_name           = "${local.project}-verifyko-cosmos-nosql-endpoint"
   private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos_nosql.id]
   is_virtual_network_filter_enabled   = var.verifyko_cosmos_nosql_db_params.is_virtual_network_filter_enabled
-  ip_range                            = ""
 
   allowed_virtual_network_subnet_ids = var.verifyko_cosmos_nosql_db_params.public_network_access_enabled ? [] : [module.cosmosdb_nodo_verifyko_snet.id]
 
@@ -43,7 +42,7 @@ module "cosmosdb_account_nodo_verifyko" {
 
 # cosmosdb database for nodo_verify_ko
 module "cosmosdb_account_nodo_verifyko_db" {
-  source              = "./.terraform/modules/__v3__/cosmosdb_sql_database"
+  source              = "./.terraform/modules/__v4__/cosmosdb_sql_database"
   name                = "nodo_verifyko"
   resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
   account_name        = module.cosmosdb_account_nodo_verifyko.name
@@ -65,14 +64,14 @@ locals {
 
 # cosmosdb container for nodo re datastore
 module "cosmosdb_account_nodo_verifyko_containers" {
-  source   = "./.terraform/modules/__v3__/cosmosdb_sql_container"
+  source   = "./.terraform/modules/__v4__/cosmosdb_sql_container"
   for_each = { for c in local.nodo_verify_ko_containers : c.name => c }
 
   name                = each.value.name
   resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
   account_name        = module.cosmosdb_account_nodo_verifyko.name
   database_name       = module.cosmosdb_account_nodo_verifyko_db.name
-  partition_key_path  = each.value.partition_key_path
+  partition_key_paths = [each.value.partition_key_path]
   throughput          = lookup(each.value, "throughput", null)
   default_ttl         = lookup(each.value, "default_ttl", null)
 

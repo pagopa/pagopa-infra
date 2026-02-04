@@ -1,5 +1,5 @@
 module "cosmosdb_account_standin" {
-  source              = "./.terraform/modules/__v3__/cosmosdb_account"
+  source              = "./.terraform/modules/__v4__/cosmosdb_account"
   domain              = var.domain
   name                = "${local.project}-standin-cosmos-account"
   location            = var.location
@@ -18,7 +18,6 @@ module "cosmosdb_account_standin" {
   private_endpoint_sql_name           = "${local.project}-standin-cosmos-nosql-endpoint"
   private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos_nosql.id]
   is_virtual_network_filter_enabled   = var.standin_cosmos_nosql_db_params.is_virtual_network_filter_enabled
-  ip_range                            = ""
 
   allowed_virtual_network_subnet_ids = var.standin_cosmos_nosql_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
@@ -36,7 +35,7 @@ module "cosmosdb_account_standin" {
 
 # cosmosdb database for standin
 module "cosmosdb_account_standin_db" {
-  source              = "./.terraform/modules/__v3__/cosmosdb_sql_database"
+  source              = "./.terraform/modules/__v4__/cosmosdb_sql_database"
   name                = "standin"
   resource_group_name = azurerm_resource_group.standin_rg.name
   account_name        = module.cosmosdb_account_standin.name
@@ -79,14 +78,14 @@ locals {
 
 # cosmosdb container for stand-in datastore
 module "cosmosdb_account_standin_containers" {
-  source   = "./.terraform/modules/__v3__/cosmosdb_sql_container"
+  source   = "./.terraform/modules/__v4__/cosmosdb_sql_container"
   for_each = { for c in local.standin_containers : c.name => c }
 
   name                = each.value.name
   resource_group_name = azurerm_resource_group.standin_rg.name
   account_name        = module.cosmosdb_account_standin.name
   database_name       = module.cosmosdb_account_standin_db.name
-  partition_key_path  = each.value.partition_key_path
+  partition_key_paths = [each.value.partition_key_path]
   throughput          = lookup(each.value, "throughput", null)
   default_ttl         = lookup(each.value, "default_ttl", null)
 
@@ -96,7 +95,7 @@ module "cosmosdb_account_standin_containers" {
 resource "azurerm_key_vault_secret" "cosmos_standin_connection_string_readonly" {
   depends_on   = [module.cosmosdb_account_standin]
   name         = "cosmos-standin-connection-string-readonly"
-  value        = module.cosmosdb_account_standin.connection_strings[2]
+  value        = module.cosmosdb_account_standin.primary_sql_connection_string_readonly
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id

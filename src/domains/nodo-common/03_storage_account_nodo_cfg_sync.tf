@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "nodo_cfg_sync_rg" {
 }
 
 module "nodo_cfg_sync_re_storage_account" {
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                            = replace(format("%s-cfg-syn-re-st", local.project), "-", "")
   account_kind                    = var.nodo_cfg_sync_storage_account.account_kind

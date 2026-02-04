@@ -1,6 +1,6 @@
 module "wisp_converter_storage_account" {
   count  = var.create_wisp_converter ? 1 : 0
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                            = replace(format("%s-wisp-conv-st", local.project), "-", "")
   account_kind                    = var.wisp_converter_storage_account.account_kind

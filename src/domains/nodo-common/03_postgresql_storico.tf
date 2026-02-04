@@ -10,7 +10,7 @@ data "azurerm_key_vault_secret" "pgres_storico_flex_admin_pwd" {
 
 # Postgres Flexible Server subnet
 module "postgres_storico_flexible_snet" {
-  source                                        = "./.terraform/modules/__v3__/subnet"
+  source                                        = "./.terraform/modules/__v4__/subnet"
   name                                          = format("%s-storico-pgres-flexible-snet", local.project)
   address_prefixes                              = var.cidr_subnet_flex_storico_dbms
   resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
@@ -30,7 +30,7 @@ module "postgres_storico_flexible_snet" {
 }
 
 module "postgres_storico_flexible_server" {
-  source              = "./.terraform/modules/__v3__/postgres_flexible_server"
+  source              = "./.terraform/modules/__v4__/postgres_flexible_server"
   name                = format("%s-storico-flexible-postgresql", local.project)
   location            = azurerm_resource_group.db_rg.location
   resource_group_name = azurerm_resource_group.db_rg.name

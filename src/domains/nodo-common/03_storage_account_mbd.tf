@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "mbd_rg" {
 }
 
 module "mbd_storage_account" {
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                            = replace(format("%s-mbd-st", local.project), "-", "")
   account_kind                    = var.mbd_storage_account.account_kind

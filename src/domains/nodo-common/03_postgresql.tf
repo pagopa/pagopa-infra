@@ -17,7 +17,7 @@ data "azurerm_key_vault_secret" "pgres_flex_admin_pwd" {
 
 # Postgres Flexible Server subnet
 module "postgres_flexible_snet" {
-  source                                        = "./.terraform/modules/__v3__/subnet"
+  source                                        = "./.terraform/modules/__v4__/subnet"
   name                                          = format("%s-pgres-flexible-snet", local.project)
   address_prefixes                              = var.cidr_subnet_flex_dbms
   resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
@@ -37,7 +37,7 @@ module "postgres_flexible_snet" {
 }
 
 module "postgres_flexible_server" {
-  source              = "./.terraform/modules/__v3__/postgres_flexible_server"
+  source              = "./.terraform/modules/__v4__/postgres_flexible_server"
   name                = format("%s-flexible-postgresql", local.project)
   location            = azurerm_resource_group.db_rg.location
   resource_group_name = azurerm_resource_group.db_rg.name

@@ -7,7 +7,7 @@ data "azurerm_resource_group" "nodo_re_to_datastore_rg" {
 
 module "nodo_re_storage_account" {
   count  = var.enable_nodo_re ? 1 : 0
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                            = replace(format("%s-re-2-data-st", local.project), "-", "")
   account_kind                    = var.nodo_re_storage_account.account_kind
