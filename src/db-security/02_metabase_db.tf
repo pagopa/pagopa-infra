@@ -17,8 +17,24 @@ module "postgres_flexible_snet" {
   product_name      = var.prefix
   env               = var.env
 
+  tags = module.tag_config.tags
 }
 
+# Route Table
+module "route_table_app_service_snet" {
+  source = "./.terraform/modules/__v4__/route_table"
+  count  = length(var.route_table_routes) > 0 ? 1 : 0
+
+  name                = "${local.project}-rt"
+  resource_group_name = azurerm_resource_group.metabase_rg.name
+  location            = azurerm_resource_group.metabase_rg.location
+
+  routes = var.route_table_routes
+
+  subnet_ids = [module.app_service_snet.id]
+
+  tags = module.tag_config.tags
+}
 
 module "metabase_postgres_db" {
   source = "./.terraform/modules/__v4__/IDH/postgres_flexible_server"
@@ -54,6 +70,9 @@ module "metabase_postgres_db" {
   private_dns_record_cname = "metabase-db"
 
   additional_azure_extensions = ["citext"]
+  embedded_subnet = {
+    enabled = false
+  }
 
   tags = module.tag_config.tags
 
