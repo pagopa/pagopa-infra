@@ -33,6 +33,8 @@ module "cosmosdb_account_wispconv" {
 
   backup_continuous_enabled = var.wisp_converter_cosmos_nosql_db_params.backup_continuous_enabled
 
+  enable_provisioned_throughput_exceeded_alert = false # uses custom defined alert
+
   tags = module.tag_config.tags
 
   depends_on = [
