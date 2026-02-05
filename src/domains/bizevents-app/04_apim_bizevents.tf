@@ -137,12 +137,12 @@ resource "azurerm_api_management_api_version_set" "api_bizevents_helpdesk_api" {
 ## OpenApi  ##
 ##############
 
-# #fetch technical support api product APIM product
-# data "azurerm_api_management_product" "technical_support_api_product" {
-#   product_id          = "technical_support_api"
-#   api_management_name = local.pagopa_apim_name
-#   resource_group_name = local.pagopa_apim_rg
-# }
+#fetch technical support api product APIM product
+data "azurerm_api_management_product" "technical_support_api_product" {
+  product_id          = "technical_support_api"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
 
 module "apim_api_bizevents_api_v1" {
   source = "./.terraform/modules/__v3__/api_management_api"
