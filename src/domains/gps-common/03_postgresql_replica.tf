@@ -63,8 +63,8 @@ module "postgres_flexible_itn_spoke_snet_replica" {
   count                = var.geo_replica_enabled ? 1 : 0
   source               = "./.terraform/modules/__v4__/IDH/subnet"
   name                 = "${local.project_replica}-pgres-spoke-flexible-snet"
-  resource_group_name  = data.azurerm_virtual_network.vnet_italy.resource_group_name
-  virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
+  resource_group_name  = data.azurerm_virtual_network.spoke_data_vnet.resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.spoke_data_vnet.name
   service_endpoints    = ["Microsoft.Storage"]
 
   env               = var.env
