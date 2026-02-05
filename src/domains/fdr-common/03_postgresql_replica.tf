@@ -1,5 +1,5 @@
 variable "spoke_replica" {
-  type = bool
+  type    = bool
   default = false
 }
 
@@ -61,16 +61,16 @@ module "postgresql_fdr_replica_itn_db" {
 }
 
 module "postgres_flexible_itn_spoke_snet_replica" {
-  count                                         = var.geo_replica_enabled ? 1 : 0
-  source                                        = "./.terraform/modules/__v4__/IDH/subnet"
-  name                                          = "${local.project_replica}-pgres-spoke-flexible-snet"
-  resource_group_name                           = data.azurerm_virtual_network.vnet_italy.resource_group_name
-  virtual_network_name                          = data.azurerm_virtual_network.vnet_italy.name
-  service_endpoints                             = ["Microsoft.Storage"]
+  count                = var.geo_replica_enabled ? 1 : 0
+  source               = "./.terraform/modules/__v4__/IDH/subnet"
+  name                 = "${local.project_replica}-pgres-spoke-flexible-snet"
+  resource_group_name  = data.azurerm_virtual_network.vnet_italy.resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
+  service_endpoints    = ["Microsoft.Storage"]
 
-  env = var.env
+  env               = var.env
   idh_resource_tier = "postgres_flexible"
-  product_name = var.prefix
+  product_name      = var.prefix
 
   tags = module.tag_config.tags
 }
@@ -111,7 +111,7 @@ resource "azurerm_postgresql_flexible_server_virtual_endpoint" "virtual_endpoint
   count             = var.geo_replica_enabled ? 1 : 0
   name              = "${local.project}-pgflex-ve"
   source_server_id  = module.postgres_flexible_server_fdr.id
-  replica_server_id = var.spoke_replica ? module.postgresql_fdr_spoke_replica_itn_db[0].id :module.postgresql_fdr_replica_itn_db[0].id
+  replica_server_id = var.spoke_replica ? module.postgresql_fdr_spoke_replica_itn_db[0].id : module.postgresql_fdr_replica_itn_db[0].id
   type              = "ReadWrite"
 }
 
