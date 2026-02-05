@@ -245,3 +245,6 @@ rtp_storage_account = {
   backup_enabled                     = false
   backup_retention                   = 0
 }
+
+
+spoke_replica = false

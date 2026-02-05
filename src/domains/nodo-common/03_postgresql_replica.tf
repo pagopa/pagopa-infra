@@ -6,6 +6,8 @@ variable "spoke_replica" {
   default = false
 }
 
+
+
 module "postgres_flexible_snet_replica_itn" {
   count                                         = var.geo_replica_enabled ? 1 : 0
   source                                        = "./.terraform/modules/__v4__/subnet"
