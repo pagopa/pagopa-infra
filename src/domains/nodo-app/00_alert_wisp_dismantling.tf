@@ -194,3 +194,32 @@ traces
   }
 }
 
+# cache not in sync after 3 retries
+resource "azurerm_monitor_scheduled_query_rules_alert" "wisp_cache_not_in_sync_after_retries" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "pagopa-${var.env_short}-pagopa-wisp-converter-cache-not-in-sync"
+  resource_group_name = data.azurerm_resource_group.wisp_converter_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.opsgenie[0].id]
+    email_subject          = "wisp-converter cache not in sync after retries"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "Problem to have wisp cache in sync after retries"
+  enabled        = true
+  query       = <<-QUERY
+        customEvents
+          | where name == "WISP-CONVERTER"
+          | where customDimensions["details"] contains "LoadCache from cache API failed after 3 attempts"
+          | order by timestamp desc
+      QUERY
+  severity       = 0
+  frequency      = 5
+  time_window    = 5
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+}

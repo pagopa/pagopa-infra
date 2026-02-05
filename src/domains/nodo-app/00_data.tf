@@ -21,3 +21,7 @@ data "azurerm_resource_group" "node_cfg_sync_rg" {
 data "azurerm_resource_group" "identity_rg" {
   name = "${local.product}-identity-rg"
 }
+
+data "azurerm_resource_group" "wisp_converter_rg" {
+  name = "${local.project}-wisp-converter-rg"
+}
