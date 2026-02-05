@@ -7,8 +7,9 @@ resource "azurerm_private_dns_a_record" "ingress" {
 }
 
 resource "azurerm_subnet" "eventhub_italy" {
-  name                 = "${local.project}-eventhub-snet"
-  resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
-  address_prefixes     = var.cidr_paymentoptions_eventhub_italy
+  name                              = "${local.project}-eventhub-snet"
+  resource_group_name               = data.azurerm_resource_group.rg_vnet_italy.name
+  virtual_network_name              = data.azurerm_virtual_network.vnet_italy.name
+  address_prefixes                  = var.cidr_paymentoptions_eventhub_italy
+  private_endpoint_network_policies = "Enabled"
 }
