@@ -41,3 +41,11 @@ resource "azurerm_key_vault_secret" "selfcare_service_principal_client_secret" {
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
+
+data "azuread_group" "adgroup_admin" {
+  display_name = "${local.product}-adgroup-admin"
+}
+
+data "azuread_group" "adgroup_developers" {
+  display_name = "${local.product}-adgroup-developers"
+}
