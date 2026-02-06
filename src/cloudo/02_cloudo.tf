@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "cloudo" {
-  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=12da457405883a371ebfc06a8199ad4a75f97bef"
+  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=2ae6d1f6b941cd31f7be508bb127fa944ed6e4f0"
 
   prefix                    = local.product
   product_name              = var.prefix
@@ -20,13 +20,14 @@ module "cloudo" {
   vnet_name                 = data.azurerm_virtual_network.network_tools_vnet.name
   vnet_rg                   = data.azurerm_virtual_network.network_tools_vnet.resource_group_name
 
-  vpn_subnet_id                = data.azurerm_subnet.vpn_subnet.id
-  private_endpoint_dns_zone_id = data.azurerm_private_dns_zone.private_endpoint_dns_zone.id
+  vpn_subnet_id                  = data.azurerm_subnet.vpn_subnet.id
+  private_endpoint_dns_zone_name = data.azurerm_private_dns_zone.private_endpoint_dns_zone.name
+
+  cloudo_google_sso_integration_client_id = data.azurerm_key_vault_secret.google_client_id.value
 
   github_repo_info = {
     repo_name    = "pagopa/pagopa-infra"
-    repo_branch  = "PAYMCLOUD-541-cloudo-first-deploy-on-pagopa-dev-subscription"
-    repo_token   = ""
+    repo_branch  = "main"
     runbook_path = "src/cloudo/runbooks"
   }
 
@@ -44,7 +45,7 @@ module "cloudo" {
   }
 
   slack_integration = {
-    channel = "#cloudo-test"
+    channel = "#cloudo-${var.prefix}-${var.env}"
     token   = data.azurerm_key_vault_secret.cloudo_slack_token.value
   }
 
