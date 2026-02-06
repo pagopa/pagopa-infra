@@ -195,3 +195,85 @@ rtp_storage_account = {
   blob_delete_retention_days         = 30
   enable_low_availability_alert      = false
 }
+
+# Postgres Flexible Storico
+
+cidr_subnet_flex_storico_dbms = ["10.1.xxx.xxx/24"]
+
+pgres_flex_storico_params = {
+
+  enabled    = true
+  sku_name   = "GP_Standard_D2ds_v5"
+  db_version = "16"
+  # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
+  # 2097152, 4194304, 8388608, 16777216, and 33554432.
+  storage_mb                             = 32768
+  zone                                   = 3
+  standby_ha_zone                        = 2
+  backup_retention_days                  = 7
+  geo_redundant_backup_enabled           = false
+  create_mode                            = "Default"
+  pgres_flex_private_endpoint_enabled    = false
+  pgres_flex_ha_enabled                  = false
+  pgres_flex_pgbouncer_enabled           = true
+  alerts_enabled                         = false
+  pgres_flex_diagnostic_settings_enabled = false
+  max_connections                        = 850
+  enable_private_dns_registration        = true
+  max_worker_processes                   = 16
+  public_network_access_enabled          = true
+}
+
+pgflex_storico_public_metric_alerts = {
+
+  cpu_percent = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Average"
+    metric_name      = "cpu_percent"
+    operator         = "GreaterThan"
+    threshold        = 80
+    severity         = 2
+  },
+  memory_percent = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Average"
+    metric_name      = "memory_percent"
+    operator         = "GreaterThan"
+    threshold        = 80
+    severity         = 2
+  },
+  storage_percent = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Average"
+    metric_name      = "storage_percent"
+    operator         = "GreaterThan"
+    threshold        = 80
+    severity         = 2
+  },
+  active_connections = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Average"
+    metric_name      = "active_connections"
+    operator         = "GreaterThan"
+    threshold        = 1000
+    severity         = 2
+  },
+  connections_failed = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Total"
+    metric_name      = "connections_failed"
+    operator         = "GreaterThan"
+    threshold        = 50
+    severity         = 2
+  }
+}
