@@ -197,9 +197,6 @@ rtp_storage_account = {
 }
 
 # Postgres Flexible Storico
-
-cidr_subnet_flex_storico_dbms = ["10.1.xxx.xxx/24"]
-
 pgres_flex_storico_params = {
 
   enabled    = true

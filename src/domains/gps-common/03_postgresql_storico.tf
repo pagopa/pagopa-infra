@@ -10,23 +10,16 @@ data "azurerm_key_vault_secret" "pgres_storico_admin_pwd" {
 
 # Postgres Flexible Server subnet
 module "postgres_storico_flexible_snet" {
-  source                                        = "./.terraform/modules/__v4__/subnet"
-  name                                          = format("%s-storico-pgres-flexible-snet", local.project)
-  address_prefixes                              = var.cidr_subnet_flex_storico_dbms
+  source                                        = "./.terraform/modules/__v4__/IDH/subnet"
+  name                                          = "${local.product}-test-idh-snet"
   resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
   virtual_network_name                          = data.azurerm_virtual_network.vnet.name
   service_endpoints                             = ["Microsoft.Storage"]
-  private_link_service_network_policies_enabled = true
 
-  delegation = {
-    name = "delegation"
-    service_delegation = {
-      name = "Microsoft.DBforPostgreSQL/flexibleServers"
-      actions = [
-        "Microsoft.Network/virtualNetworks/subnets/join/action",
-      ]
-    }
-  }
+  idh_resource_tier = "postgres_flexible"
+  product_name = var.prefix
+  env = var.env
+
 }
 
 module "postgres_storico_flexible_server_private_db" {

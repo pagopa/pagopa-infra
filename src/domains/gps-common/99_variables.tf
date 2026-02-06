@@ -549,12 +549,6 @@ variable "rtp_storage_account" {
 ######################
 #GPD-PG-STORICO-START#
 ######################
-
-variable "cidr_subnet_flex_storico_dbms" {
-  type        = list(string)
-  description = "Postgresql network address space."
-}
-
 variable "pgres_flex_storico_params" {
   type = object({
     enabled                                = bool
