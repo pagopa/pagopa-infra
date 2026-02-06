@@ -20,9 +20,10 @@ locals {
   vnet_resource_group_name           = "${local.product}-vnet-rg"
   vnet_italy_name                    = "${local.product}-${var.location_replica_short}-vnet"
   vnet_italy_resource_group_name     = "${local.product}-${var.location_replica_short}-vnet-rg"
-
-  acr_name                = replace("${local.product}commonacr", "-", "")
-  acr_resource_group_name = "${local.product}-container-registry-rg"
+  spoke_data_vnet_name               = "${local.product}-${var.location_replica_short}-spoke-data-vnet"
+  hub_spoke_vnet_rg_name             = "${local.product}-${var.location_replica_short}-network-hub-spoke-rg"
+  acr_name                           = replace("${local.product}commonacr", "-", "")
+  acr_resource_group_name            = "${local.product}-container-registry-rg"
 
   pagopa_apim_name = "${local.product}-apim"
   pagopa_apim_rg   = "${local.product}-api-rg"

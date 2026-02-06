@@ -26,10 +26,10 @@
 | <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | ./.terraform/modules/__v4__/github_federated_identity | n/a |
 | <a name="module_identity_ci_01"></a> [identity\_ci\_01](#module\_identity\_ci\_01) | ./.terraform/modules/__v4__/github_federated_identity | n/a |
 | <a name="module_identity_oidc_01"></a> [identity\_oidc\_01](#module\_identity\_oidc\_01) | ./.terraform/modules/__v4__/github_federated_identity | n/a |
+| <a name="module_postgres_flexible_itn_spoke_snet_replica"></a> [postgres\_flexible\_itn\_spoke\_snet\_replica](#module\_postgres\_flexible\_itn\_spoke\_snet\_replica) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_postgres_flexible_server_fdr"></a> [postgres\_flexible\_server\_fdr](#module\_postgres\_flexible\_server\_fdr) | ./.terraform/modules/__v4__/postgres_flexible_server | n/a |
 | <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
-| <a name="module_postgres_flexible_snet_itn_replica"></a> [postgres\_flexible\_snet\_itn\_replica](#module\_postgres\_flexible\_snet\_itn\_replica) | ./.terraform/modules/__v4__/subnet | n/a |
-| <a name="module_postgresql_fdr_replica_itn_db"></a> [postgresql\_fdr\_replica\_itn\_db](#module\_postgresql\_fdr\_replica\_itn\_db) | ./.terraform/modules/__v4__/postgres_flexible_server_replica | n/a |
+| <a name="module_postgresql_fdr_spoke_replica_itn_db"></a> [postgresql\_fdr\_spoke\_replica\_itn\_db](#module\_postgresql\_fdr\_spoke\_replica\_itn\_db) | ./.terraform/modules/__v4__/postgres_flexible_server_replica | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v4__/kubernetes_workload_identity_init | n/a |
 
@@ -124,6 +124,7 @@
 | [azurerm_resource_group.rg_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_subnet.aks_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
+| [azurerm_virtual_network.spoke_data_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet_italy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 

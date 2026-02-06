@@ -6,7 +6,7 @@ env       = "prod"
 databases = {
   GPS = {
     type                    = "postgresql"
-    host                    = "pagopa-p-weu-gpd-pgflex.postgres.database.azure.com"
+    host                    = "pagopa-p-weu-gpd-pgflex-ve.reader.postgres.database.azure.com"
     db_name                 = "apd"
     username                = "metabase"
     password_required       = true
@@ -26,7 +26,7 @@ databases = {
   }
   Nodo = {
     type                    = "postgresql"
-    host                    = "pagopa-p-itn-nodo-flexible-postgresql.postgres.database.azure.com"
+    host                    = "pagopa-p-weu-nodo-pgflex-ve.reader.postgres.database.azure.com"
     db_name                 = "nodo"
     username                = "metabase"
     password_required       = true
@@ -46,7 +46,7 @@ databases = {
   }
   FDR = {
     type                    = "postgresql"
-    host                    = "pagopa-p-itn-fdr-flexible-postgresql.postgres.database.azure.com"
+    host                    = "pagopa-p-weu-fdr-pgflex-ve.reader.postgres.database.azure.com"
     db_name                 = "fdr"
     username                = "metabase"
     password_required       = true
@@ -56,7 +56,7 @@ databases = {
   }
   FDR3 = {
     type                    = "postgresql"
-    host                    = "pagopa-p-itn-fdr-flexible-postgresql.postgres.database.azure.com"
+    host                    = "pagopa-p-weu-fdr-pgflex-ve.reader.postgres.database.azure.com"
     db_name                 = "fdr3"
     username                = "metabase"
     password_required       = true
