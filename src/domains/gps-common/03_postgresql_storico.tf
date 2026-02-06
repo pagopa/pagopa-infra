@@ -31,14 +31,14 @@ module "postgres_storico_flexible_server_private_db" {
   resource_group_name = azurerm_resource_group.flex_data[0].name
 
   idh_resource_tier = "pgflex2"
-  product_name = var.prefix
-  env = var.env
+  product_name      = var.prefix
+  env               = var.env
 
-  private_dns_zone_id           =  var.env_short != "d" ? data.azurerm_private_dns_zone.postgres.id : null
+  private_dns_zone_id = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres.id : null
   embedded_subnet = {
-    enabled              = true
-    vnet_name            = data.azurerm_virtual_network.vnet.name
-    vnet_rg_name         = data.azurerm_resource_group.rg_vnet.name
+    enabled      = true
+    vnet_name    = data.azurerm_virtual_network.vnet.name
+    vnet_rg_name = data.azurerm_resource_group.rg_vnet.name
   }
 
   embedded_nsg_configuration = {
@@ -79,10 +79,10 @@ module "postgres_storico_flexible_server_private_db" {
   tags = module.tag_config.tags
 
   geo_replication = {
-    enabled = var.pgflex_storico_geo_replication.enabled
-    name = var.pgflex_storico_geo_replication.name
-    subnet_id = module.postgres_flexible_snet[0].id
-    location = var.pgflex_storico_geo_replication.location
+    enabled                     = var.pgflex_storico_geo_replication.enabled
+    name                        = var.pgflex_storico_geo_replication.name
+    subnet_id                   = module.postgres_flexible_snet[0].id
+    location                    = var.pgflex_storico_geo_replication.location
     private_dns_registration_ve = var.pgflex_storico_geo_replication.private_dns_registration_ve
   }
 }

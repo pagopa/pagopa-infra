@@ -645,9 +645,9 @@ variable "gpd_db_storico_name" {
 
 variable "pgflex_storico_geo_replication" {
   type = object({
-    enabled           = bool
-    name = string
-    location = string
+    enabled                     = bool
+    name                        = string
+    location                    = string
     private_dns_registration_ve = bool
   })
 }

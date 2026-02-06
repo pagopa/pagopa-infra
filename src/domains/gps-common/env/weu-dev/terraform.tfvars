@@ -261,9 +261,9 @@ pgflex_storico_public_metric_alerts = {
 }
 
 pgflex_storico_geo_replication = {
-    enabled           = false
-    name = "gpd-storico-test-replica"
-    location = "italynorth"
-    private_dns_registration_ve = false
+  enabled                     = false
+  name                        = "gpd-storico-test-replica"
+  location                    = "italynorth"
+  private_dns_registration_ve = false
 }
 
