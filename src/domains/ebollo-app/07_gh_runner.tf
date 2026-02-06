@@ -1,10 +1,10 @@
 locals {
-  tools_cae_name = "${local.product}-${var.location_short}-core-tools-cae"
+  tools_cae_name = var.env_short == "d" ? "${local.product}-${var.location_short}-core-spoke-tools-cae" : "${local.product}-${var.location_short}-core-tools-cae"
   tools_cae_rg   = "${local.product}-${var.location_short}-core-tools-rg"
 }
 
 module "gh_runner_job" {
-  source = "./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup"
+  source = "./.terraform/modules/__v4__/gh_runner_container_app_job_domain_setup"
 
   domain_name        = var.domain
   env_short          = var.env_short
