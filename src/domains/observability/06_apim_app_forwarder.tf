@@ -15,7 +15,7 @@ locals {
 module "apim_app_forwarder_product" {
   count = var.app_forwarder_enabled ? 1 : 0
 
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "product-app-forwarder"
   display_name = "Product ${local.apim_app_forwarder_api.display_name}"
@@ -45,7 +45,7 @@ resource "azurerm_api_management_api_version_set" "app_forwarder_api" {
 module "apim_app_forwarder_api" {
   count = var.app_forwarder_enabled ? 1 : 0
 
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${var.env_short}-app-forwarder-api"
   api_management_name   = local.pagopa_apim_name
@@ -80,7 +80,7 @@ module "apim_app_forwarder_api" {
 }
 
 
-# ApiKey section 
+# ApiKey section
 resource "azurerm_api_management_subscription" "apim_app_forwarder_subkey" {
   count = var.app_forwarder_enabled ? 1 : 0
 

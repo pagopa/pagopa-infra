@@ -32,7 +32,6 @@ resource "azurerm_kusto_cluster" "data_explorer_cluster" {
 
   public_network_access_enabled = var.dexp_params.public_network_access_enabled
   double_encryption_enabled     = var.dexp_params.double_encryption_enabled
-  engine                        = "V3"
 
   tags = module.tag_config.tags
 

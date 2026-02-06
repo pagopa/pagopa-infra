@@ -35,9 +35,7 @@ locals {
     WEBSITES_PORT                       = 8080
     # WEBSITE_SWAP_WARMUP_PING_PATH       = "/actuator/health"
     # WEBSITE_SWAP_WARMUP_PING_STATUSES   = "200"
-    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
+
 
     # Connection Pool
     MAX_CONNECTIONS           = 80
@@ -85,7 +83,7 @@ data "azurerm_container_registry" "acr" {
 module "app_forwarder_app_service" {
   count = var.app_forwarder_enabled ? 1 : 0
 
-  source = "./.terraform/modules/__v3__/app_service"
+  source = "./.terraform/modules/__v4__/app_service"
 
   vnet_integration    = false
   resource_group_name = data.azurerm_resource_group.rg_node_forwarder.name
@@ -97,6 +95,9 @@ module "app_forwarder_app_service" {
   plan_name = format("%s-plan-app-forwarder", local.project)
   sku_name  = "S1"
 
+  docker_registry_url = "https://${data.azurerm_container_registry.acr.login_server}"
+  docker_registry_username = data.azurerm_container_registry.acr.admin_username
+  docker_registry_password = data.azurerm_container_registry.acr.admin_password
 
   # App service plan
   name                = format("%s-app-app-forwarder", local.project)
@@ -106,6 +107,9 @@ module "app_forwarder_app_service" {
   docker_image_tag    = "latest"
   # linux_fx_version    = format("DOCKER|%s/pagopanodeforwarder:%s", data.azurerm_container_registry.acr.login_server, "latest")
   health_check_path = "/actuator/info"
+  health_check_maxpingfailures = 10
+
+  minimum_tls_version = "1.2"
 
   app_settings = local.app_forwarder_app_settings
 
@@ -120,7 +124,7 @@ module "app_forwarder_app_service" {
 module "app_forwarder_slot_staging" {
   count = var.app_forwarder_enabled ? 1 : 0
 
-  source = "./.terraform/modules/__v3__/app_service_slot"
+  source = "./.terraform/modules/__v4__/app_service_slot"
 
   # App service plan
   app_service_id   = module.app_forwarder_app_service[0].id
@@ -134,9 +138,15 @@ module "app_forwarder_slot_staging" {
   always_on           = true
   # linux_fx_version    = format("DOCKER|%s/pagopanodeforwarder:%s", module.container_registry.login_server, "latest")
   docker_image      = "${data.azurerm_container_registry.acr.login_server}/pagopanodeforwarder"
+  docker_registry_url = "https://${data.azurerm_container_registry.acr.login_server}"
+  docker_registry_username = data.azurerm_container_registry.acr.admin_username
+  docker_registry_password = data.azurerm_container_registry.acr.admin_password
   docker_image_tag  = "latest"
   health_check_path = "/actuator/info"
 
+  minimum_tls_version = "1.2"
+
+  health_check_maxpingfailures = 10
 
   # App settings
   app_settings = local.app_forwarder_app_settings

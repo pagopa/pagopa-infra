@@ -36,6 +36,7 @@ resource "azurerm_subnet" "eventhub_observability_snet" {
   resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
   virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
   address_prefixes     = var.cidr_subnet_observability_evh
+  private_endpoint_network_policies = "Enabled"
 }
 
 resource "azurerm_subnet" "eventhub_observability_gpd_snet" {
