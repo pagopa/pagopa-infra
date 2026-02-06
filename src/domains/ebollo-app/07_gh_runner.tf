@@ -1,5 +1,5 @@
 locals {
-  tools_cae_name = "${local.product}-${var.location_short}-core-spoke-tools-cae"
+  tools_cae_name = var.env_short == "d" ? "${local.product}-${var.location_short}-core-spoke-tools-cae" : "${local.product}-${var.location_short}-core-tools-cae"
   tools_cae_rg   = "${local.product}-${var.location_short}-core-tools-rg"
 }
 
