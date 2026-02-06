@@ -213,6 +213,3 @@ reporting_fdr_storage_account = {
   blob_delete_retention_days         = 30
   account_replication_type           = "GZRS"
 }
-
-
-spoke_replica = false

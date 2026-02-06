@@ -424,6 +424,3 @@ service_bus_wisp_queues = [
     ]
   }
 ]
-
-
-spoke_replica = false
