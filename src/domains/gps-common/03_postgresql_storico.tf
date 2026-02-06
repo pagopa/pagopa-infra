@@ -20,45 +20,42 @@ module "postgres_storico_flexible_snet" {
   product_name      = var.prefix
   env               = var.env
 
+  tags = module.tag_config.tags
 }
 
 module "postgres_storico_flexible_server_private_db" {
-  source              = "./.terraform/modules/__v4__/postgres_flexible_server"
-  name                = format("%s-storico-flexible-postgresql", local.project)
+  source = "./.terraform/modules/__v4__/IDH/postgres_flexible_server"
+
+  name                = format("%s-%s-gpd-storico-pgflex", local.product, var.location_short)
   location            = azurerm_resource_group.flex_data[0].location
   resource_group_name = azurerm_resource_group.flex_data[0].name
 
-  private_endpoint_enabled    = var.pgres_flex_storico_params.pgres_flex_private_endpoint_enabled
-  private_dns_zone_id         = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres.id : null
-  delegated_subnet_id         = var.env_short != "d" ? module.postgres_storico_flexible_snet.id : null
-  high_availability_enabled   = var.pgres_flex_storico_params.pgres_flex_ha_enabled
-  standby_availability_zone   = var.env_short != "d" ? var.pgres_flex_storico_params.standby_ha_zone : null
-  pgbouncer_enabled           = var.pgres_flex_storico_params.pgres_flex_pgbouncer_enabled
-  diagnostic_settings_enabled = var.pgres_flex_storico_params.pgres_flex_diagnostic_settings_enabled
-  administrator_login         = data.azurerm_key_vault_secret.pgres_storico_admin_login.value
-  administrator_password      = data.azurerm_key_vault_secret.pgres_storico_admin_pwd.value
+  idh_resource_tier = "pgflex2"
+  product_name = var.prefix
+  env = var.env
 
-  sku_name                     = var.pgres_flex_storico_params.sku_name
-  db_version                   = var.pgres_flex_storico_params.db_version
-  storage_mb                   = var.pgres_flex_storico_params.storage_mb
-  zone                         = var.pgres_flex_storico_params.zone
-  backup_retention_days        = var.pgres_flex_storico_params.backup_retention_days
-  geo_redundant_backup_enabled = var.pgres_flex_storico_params.geo_redundant_backup_enabled
-  create_mode                  = var.pgres_flex_storico_params.create_mode
-  auto_grow_enabled            = var.pgres_flex_storico_params.auto_grow_enabled
+  private_dns_zone_id           =  var.env_short != "d" ? data.azurerm_private_dns_zone.postgres.id : null
+  embedded_subnet = {
+    enabled              = true
+    vnet_name            = data.azurerm_virtual_network.vnet.name
+    vnet_rg_name         = data.azurerm_resource_group.rg_vnet.name
+  }
 
-  private_dns_registration = var.pgres_flex_storico_params.enable_private_dns_registration
-  private_dns_zone_name    = "${var.env_short}.internal.postgresql.pagopa.it"
-  private_dns_zone_rg_name = data.azurerm_resource_group.rg_vnet.name
-  private_dns_record_cname = "gpd-storico-db"
+  embedded_nsg_configuration = {
+    source_address_prefixes      = ["*"]
+    source_address_prefixes_name = var.domain
+  }
 
-  public_network_access_enabled = var.pgres_flex_storico_params.public_network_access_enabled
+  administrator_login    = data.azurerm_key_vault_secret.pgres_storico_admin_login.value
+  administrator_password = data.azurerm_key_vault_secret.pgres_storico_admin_pwd.value
 
 
-  log_analytics_workspace_id = var.env_short != "d" ? data.azurerm_log_analytics_workspace.log_analytics.id : null
-  custom_metric_alerts       = var.pgres_flex_storico_params.alerts_enabled ? var.pgflex_storico_public_metric_alerts : {}
-  alerts_enabled             = var.pgres_flex_storico_params.alerts_enabled
-  alert_action = var.pgres_flex_storico_params.alerts_enabled ? [
+  diagnostic_settings_enabled = var.pgflex_storico_params.pgres_flex_diagnostic_settings_enabled
+  log_analytics_workspace_id  = data.azurerm_log_analytics_workspace.log_analytics.id
+
+  custom_metric_alerts = var.pgflex_storico_public_metric_alerts
+
+  alert_action = var.pgflex_storico_params.alerts_enabled ? [
     {
       action_group_id    = data.azurerm_monitor_action_group.email.id
       webhook_properties = null
@@ -72,7 +69,22 @@ module "postgres_storico_flexible_server_private_db" {
       webhook_properties = null
     }
   ] : []
+
+  private_dns_registration = var.pgflex_storico_params.enable_private_dns_registration
+  private_dns_zone_name    = "${var.env_short}.internal.postgresql.pagopa.it"
+  private_dns_zone_rg_name = data.azurerm_resource_group.rg_vnet.name
+  private_dns_record_cname = "gpd-storico-db"
+
+
   tags = module.tag_config.tags
+
+  geo_replication = {
+    enabled = var.pgflex_storico_geo_replication.enabled
+    name = var.pgflex_storico_geo_replication.name
+    subnet_id = module.postgres_flexible_snet[0].id
+    location = var.pgflex_storico_geo_replication.location
+    private_dns_registration_ve = var.pgflex_storico_geo_replication.private_dns_registration_ve
+  }
 }
 
 # APD database
@@ -90,7 +102,7 @@ resource "azurerm_postgresql_flexible_server_database" "pg_storico_charset" {
 resource "azurerm_postgresql_flexible_server_configuration" "pg_storico_max_connections" {
   name      = "max_connections"
   server_id = module.postgres_storico_flexible_server_private_db.id
-  value     = var.pgres_flex_storico_params.max_connections
+  value     = var.pgflex_storico_params.max_connections
 }
 
 # PG bouncer config
@@ -104,30 +116,30 @@ resource "azurerm_postgresql_flexible_server_configuration" "pg_storico_max_conn
 # pgbouncer.stats_users               Comma-separated list of database users that are allowed to connect and run read-only queries on the pgBouncer console.
 
 resource "azurerm_postgresql_flexible_server_configuration" "pg_storico_pgbouncer_ignore_startup_parameters" {
-  count     = var.pgres_flex_storico_params.pgres_flex_pgbouncer_enabled ? 1 : 0
+  count     = var.pgflex_storico_params.pgres_flex_pgbouncer_enabled ? 1 : 0
   name      = "pgbouncer.ignore_startup_parameters"
   server_id = module.postgres_storico_flexible_server_private_db.id
   value     = "extra_float_digits,search_path"
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "pg_storico_pgbouncer_min_pool_size" {
-  count     = var.pgres_flex_storico_params.pgres_flex_pgbouncer_enabled ? 1 : 0
+  count     = var.pgflex_storico_params.pgres_flex_pgbouncer_enabled ? 1 : 0
   name      = "pgbouncer.min_pool_size"
   server_id = module.postgres_storico_flexible_server_private_db.id
   value     = 20
 }
 resource "azurerm_postgresql_flexible_server_configuration" "pg_storico_pgbouncer_default_pool_size" {
-  count     = var.pgres_flex_storico_params.pgres_flex_pgbouncer_enabled ? 1 : 0
+  count     = var.pgflex_storico_params.pgres_flex_pgbouncer_enabled ? 1 : 0
   name      = "pgbouncer.default_pool_size"
   server_id = module.postgres_storico_flexible_server_private_db.id
   value     = 10
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "pg_storico_pgbouncer_max_client_conn" {
-  count     = var.pgres_flex_storico_params.pgres_flex_pgbouncer_enabled ? 1 : 0
+  count     = var.pgflex_storico_params.pgres_flex_pgbouncer_enabled ? 1 : 0
   name      = "pgbouncer.max_client_conn"
   server_id = module.postgres_storico_flexible_server_private_db.id
-  value     = var.pgres_flex_storico_params.max_connections
+  value     = var.pgflex_storico_params.max_connections
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "pg_storico_flex_extension" {
@@ -152,6 +164,6 @@ resource "azurerm_postgresql_flexible_server_configuration" "pg_storico_flex_pre
 resource "azurerm_postgresql_flexible_server_configuration" "pg_storico_flex_max_worker_processes" {
   name      = "max_worker_processes"
   server_id = module.postgres_storico_flexible_server_private_db.id
-  value     = var.pgres_flex_storico_params.max_worker_processes
+  value     = var.pgflex_storico_params.max_worker_processes
 }
 

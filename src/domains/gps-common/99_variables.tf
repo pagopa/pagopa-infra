@@ -549,28 +549,14 @@ variable "rtp_storage_account" {
 ######################
 #GPD-PG-STORICO-START#
 ######################
-variable "pgres_flex_storico_params" {
+variable "pgflex_storico_params" {
   type = object({
-    enabled                                = bool
-    sku_name                               = string
-    db_version                             = string
-    storage_mb                             = string
-    zone                                   = number
-    standby_ha_zone                        = number
-    backup_retention_days                  = number
-    geo_redundant_backup_enabled           = bool
-    create_mode                            = string
-    pgres_flex_private_endpoint_enabled    = bool
-    pgres_flex_ha_enabled                  = bool
     pgres_flex_pgbouncer_enabled           = bool
     alerts_enabled                         = bool
     pgres_flex_diagnostic_settings_enabled = bool
     max_connections                        = number
     enable_private_dns_registration        = optional(bool, false)
     max_worker_processes                   = number
-    public_network_access_enabled          = optional(bool, false)
-    auto_grow_enabled                      = optional(bool, true)
-    max_client_conn                        = optional(number, 850)
   })
 }
 
@@ -655,6 +641,15 @@ variable "gpd_db_storico_name" {
   type        = string
   description = "GPD Storico DB name"
   default     = "apd"
+}
+
+variable "pgflex_storico_geo_replication" {
+  type = object({
+    enabled           = bool
+    name = string
+    location = string
+    private_dns_registration_ve = bool
+  })
 }
 
 ####################
