@@ -207,9 +207,9 @@ data "azuread_group" "adgroup_technical_project_managers" {
 
 locals {
   dataexp_contributor_groups = [
-    data.azuread_group.adgroup_technical_project_managers.id,
-    data.azuread_group.adgroup_operations.id,
-    data.azuread_group.adgroup_externals.id,
+    data.azuread_group.adgroup_technical_project_managers.object_id,
+    data.azuread_group.adgroup_operations.object_id,
+    data.azuread_group.adgroup_externals.object_id,
   ]
 
 }
