@@ -30,6 +30,8 @@
 | <a name="module_postgres_flexible_itn_spoke_snet_replica"></a> [postgres\_flexible\_itn\_spoke\_snet\_replica](#module\_postgres\_flexible\_itn\_spoke\_snet\_replica) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_postgres_flexible_server_private_db"></a> [postgres\_flexible\_server\_private\_db](#module\_postgres\_flexible\_server\_private\_db) | ./.terraform/modules/__v4__/postgres_flexible_server | n/a |
 | <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_postgres_storico_flexible_server_private_db"></a> [postgres\_storico\_flexible\_server\_private\_db](#module\_postgres\_storico\_flexible\_server\_private\_db) | ./.terraform/modules/__v4__/IDH/postgres_flexible_server | n/a |
+| <a name="module_postgres_storico_flexible_snet"></a> [postgres\_storico\_flexible\_snet](#module\_postgres\_storico\_flexible\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_postgresql_gpd_itn_replica_spoke_db"></a> [postgresql\_gpd\_itn\_replica\_spoke\_db](#module\_postgresql\_gpd\_itn\_replica\_spoke\_db) | ./.terraform/modules/__v4__/postgres_flexible_server_replica | n/a |
 | <a name="module_storage_account_snet"></a> [storage\_account\_snet](#module\_storage\_account\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
