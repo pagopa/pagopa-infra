@@ -54,7 +54,7 @@
         <set-variable name="paymentMethodId" value="@(((IResponse) context.Variables["walletResponse"]).Body.As<JObject>()["paymentMethodId"])" />
 
         <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
-            <set-url>@("https://${ecommerce_hostname}/pagopa-ecommerce-payment-methods-handler/payment-methods/" + context.Variables["paymentMethodId"])</set-url>
+            <set-url>@("https://${ecommerce_hostname}/pagopa-ecommerce-payment-methods-service/payment-methods/" + context.Variables["paymentMethodId"])</set-url>
             <set-method>GET</set-method>
             <set-header name="x-client-id" exists-action="override">
                 <value>IO</value>
