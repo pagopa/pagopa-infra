@@ -540,7 +540,7 @@ AzureDiagnostics
     Success=countif(outcome == "0")
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
-| where Availability < 95
+| where Availability < 75
   QUERY
   )
   severity    = 1
