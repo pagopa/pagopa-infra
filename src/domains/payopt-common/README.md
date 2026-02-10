@@ -77,7 +77,7 @@
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
 | <a name="input_ingress_load_balancer_ip"></a> [ingress\_load\_balancer\_ip](#input\_ingress\_load\_balancer\_ip) | n/a | `string` | n/a | yes |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
-| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | n/a | <pre>object({<br/>    eventhub     = bool<br/>    evh_spoke_pe = optional(bool, false)<br/>  })</pre> | <pre>{<br/>  "eventhub": false,<br/>  "evh_spoke_pe": false<br/>}</pre> | no |
+| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | n/a | <pre>object({<br/>    eventhub         = bool<br/>    evh_spoke_pe     = optional(bool, false)<br/>    evh_spoke_pe_dns = optional(bool, false)<br/><br/>  })</pre> | <pre>{<br/>  "eventhub": false,<br/>  "evh_spoke_pe": false,<br/>  "evh_spoke_pe_dns": false<br/>}</pre> | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | `"itn"` | no |
 | <a name="input_log_analytics_italy_workspace_name"></a> [log\_analytics\_italy\_workspace\_name](#input\_log\_analytics\_italy\_workspace\_name) | Specifies the name of the Log Analytics Workspace Italy. | `string` | n/a | yes |

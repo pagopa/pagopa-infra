@@ -382,11 +382,14 @@ variable "gpd_ingestion_storage_account" {
 
 variable "is_feature_enabled" {
   type = object({
-    evh_spoke_pe = optional(bool, false)
+    evh_spoke_pe     = optional(bool, false)
+    evh_spoke_pe_dns = optional(bool, false)
+
   })
 
   default = {
-    evh_spoke_pe = false
+    evh_spoke_pe     = false
+    evh_spoke_pe_dns = false
   }
 
 }

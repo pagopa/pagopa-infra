@@ -122,7 +122,7 @@
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
 | <a name="input_ingress_load_balancer_ip"></a> [ingress\_load\_balancer\_ip](#input\_ingress\_load\_balancer\_ip) | n/a | `string` | n/a | yes |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
-| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | n/a | <pre>object({<br/>    evh_spoke_pe = optional(bool, false)<br/>  })</pre> | <pre>{<br/>  "evh_spoke_pe": false<br/>}</pre> | no |
+| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | n/a | <pre>object({<br/>    evh_spoke_pe     = optional(bool, false)<br/>    evh_spoke_pe_dns = optional(bool, false)<br/>  })</pre> | <pre>{<br/>  "evh_spoke_pe": false,<br/>  "evh_spoke_pe_dns": false<br/>}</pre> | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_itn"></a> [location\_itn](#input\_location\_itn) | Default italynorth | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |

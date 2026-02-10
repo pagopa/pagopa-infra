@@ -48,9 +48,12 @@ resource "azurerm_private_endpoint" "eventhub_spoke_pe" {
   resource_group_name = azurerm_resource_group.qi_evh_resource_group.name
   subnet_id           = module.eventhub_spoke_pe_snet.subnet_id
 
-  private_dns_zone_group {
-    name                 = "${local.project}-evh-spoke-private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.eventhub.id]
+  dynamic "private_dns_zone_group" {
+    for_each = var.ehns_private_endpoint_is_present && var.is_feature_enabled.evh_spoke_pe_dns ? [1] : []
+    content {
+      name                 = "${local.project}-evh-spoke-private-dns-zone-group"
+      private_dns_zone_ids = [data.azurerm_private_dns_zone.eventhub.id]
+    }
   }
 
   private_service_connection {
