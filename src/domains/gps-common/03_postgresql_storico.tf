@@ -37,8 +37,8 @@ module "postgres_storico_flexible_server_private_db" {
   private_dns_zone_id = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres.id : null
   embedded_subnet = {
     enabled      = true
-    vnet_name    = data.azurerm_virtual_network.vnet.name
-    vnet_rg_name = data.azurerm_resource_group.rg_vnet.name
+    vnet_name    = data.azurerm_virtual_network.spoke_data_vnet.name
+    vnet_rg_name = data.azurerm_resource_group.rg_spoke_vnet.name
   }
 
   embedded_nsg_configuration = {
