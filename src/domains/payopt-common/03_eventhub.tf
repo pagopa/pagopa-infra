@@ -45,7 +45,7 @@ module "eventhub_namespace" {
 
 # hub spoke private endpoint
 resource "azurerm_private_endpoint" "eventhub_spoke_pe" {
-  count = var.ehns_private_endpoint_is_present ? 1 : 0
+  count = var.ehns_private_endpoint_is_present && var.is_feature_enabled.evh_spoke_pe ? 1 : 0
 
   name                = "${local.project}-evh-spoke-pe"
   location            = var.location
