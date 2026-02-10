@@ -591,7 +591,7 @@ variable "pgflex_storico_public_metric_alerts" {
       aggregation      = "Average"
       metric_name      = "cpu_percent"
       operator         = "GreaterThan"
-      threshold        = 4500
+      threshold        = 80
       severity         = 2
     },
     memory_percent = {
