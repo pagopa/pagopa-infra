@@ -18,7 +18,7 @@ module "eventhub_namespace" {
 
   private_endpoint_subnet_id    = azurerm_subnet.eventhub_italy.id
   public_network_access_enabled = var.ehns_public_network_access
-  private_endpoint_created      = var.ehns_private_endpoint_is_present
+  private_endpoint_created      = var.ehns_private_endpoint_is_present && !var.is_feature_enabled.evh_spoke_pe
 
   private_dns_zones_ids = [data.azurerm_private_dns_zone.eventhub.id]
 
@@ -40,6 +40,31 @@ module "eventhub_namespace" {
 
   metric_alerts_create = var.ehns_alerts_enabled
   metric_alerts        = var.ehns_metric_alerts
+
+  tags = module.tag_config.tags
+}
+
+
+# hub spoke private endpoint
+resource "azurerm_private_endpoint" "eventhub_spoke_pe" {
+  count = var.ehns_private_endpoint_is_present && var.is_feature_enabled.evh_spoke_pe ? 1 : 0
+
+  name                = "${local.project}-evh-spoke-pe"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.eventhub_ita_rg.name
+  subnet_id           = module.eventhub_spoke_pe_snet.subnet_id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-evh-spoke-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.eventhub.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-evh-spoke-private-service-connection"
+    private_connection_resource_id = module.eventhub_namespace.namespace_id
+    is_manual_connection           = false
+    subresource_names              = ["namespace"]
+  }
 
   tags = module.tag_config.tags
 }
