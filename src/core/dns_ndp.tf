@@ -51,7 +51,7 @@ resource "azurerm_dns_caa_record" "ndp_pagopa_it" {
 }
 
 # Test Nexi NDP DCV TXT record
-resource "azurerm_dns_txt_record" "dns-txt-www-nexi-ndp-pagopa-it-digicert" {
+resource "azurerm_dns_txt_record" "dns-txt-test-nexi-ndp-pagopa-it-digicert" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "test.nexi"
   zone_name           = azurerm_dns_zone.ndp_public[0].name
@@ -64,7 +64,7 @@ resource "azurerm_dns_txt_record" "dns-txt-www-nexi-ndp-pagopa-it-digicert" {
 }
 
 # Test Nexi NDP www DCV TXT record
-resource "azurerm_dns_txt_record" "dns-txt-www-nexi-ndp-pagopa-it-digicert" {
+resource "azurerm_dns_txt_record" "dns-txt-www-test-nexi-ndp-pagopa-it-digicert" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "www.test.nexi"
   zone_name           = azurerm_dns_zone.ndp_public[0].name
@@ -77,7 +77,7 @@ resource "azurerm_dns_txt_record" "dns-txt-www-nexi-ndp-pagopa-it-digicert" {
 }
 
 # Nexi NDP DCV TXT record
-resource "azurerm_dns_txt_record" "dns-txt-www-nexi-ndp-pagopa-it-digicert" {
+resource "azurerm_dns_txt_record" "dns-txt-nexi-ndp-pagopa-it-digicert" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "nexi"
   zone_name           = azurerm_dns_zone.ndp_public[0].name
