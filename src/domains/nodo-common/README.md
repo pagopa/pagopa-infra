@@ -37,12 +37,12 @@
 | <a name="module_nodo_re_storage_account"></a> [nodo\_re\_storage\_account](#module\_nodo\_re\_storage\_account) | ./.terraform/modules/__v4__/storage_account | n/a |
 | <a name="module_nodo_storico_storage_account"></a> [nodo\_storico\_storage\_account](#module\_nodo\_storico\_storage\_account) | ./.terraform/modules/__v4__/storage_account | n/a |
 | <a name="module_nodo_verifyko_storage_account"></a> [nodo\_verifyko\_storage\_account](#module\_nodo\_verifyko\_storage\_account) | ./.terraform/modules/__v4__/storage_account | n/a |
+| <a name="module_postgres_flexible_itn_spoke_snet_replica"></a> [postgres\_flexible\_itn\_spoke\_snet\_replica](#module\_postgres\_flexible\_itn\_spoke\_snet\_replica) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_postgres_flexible_server"></a> [postgres\_flexible\_server](#module\_postgres\_flexible\_server) | ./.terraform/modules/__v4__/postgres_flexible_server | n/a |
 | <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
-| <a name="module_postgres_flexible_snet_replica_itn"></a> [postgres\_flexible\_snet\_replica\_itn](#module\_postgres\_flexible\_snet\_replica\_itn) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_postgres_storico_flexible_server"></a> [postgres\_storico\_flexible\_server](#module\_postgres\_storico\_flexible\_server) | ./.terraform/modules/__v4__/postgres_flexible_server | n/a |
 | <a name="module_postgres_storico_flexible_snet"></a> [postgres\_storico\_flexible\_snet](#module\_postgres\_storico\_flexible\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
-| <a name="module_postgresql_nodo_replica_itn_db"></a> [postgresql\_nodo\_replica\_itn\_db](#module\_postgresql\_nodo\_replica\_itn\_db) | ./.terraform/modules/__v4__/postgres_flexible_server_replica | n/a |
+| <a name="module_postgresql_nodo_spoke_replica_itn_db"></a> [postgresql\_nodo\_spoke\_replica\_itn\_db](#module\_postgresql\_nodo\_spoke\_replica\_itn\_db) | ./.terraform/modules/__v4__/postgres_flexible_server_replica | n/a |
 | <a name="module_sftp"></a> [sftp](#module\_sftp) | ./.terraform/modules/__v4__/storage_account | n/a |
 | <a name="module_storage_account_snet"></a> [storage\_account\_snet](#module\_storage\_account\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
@@ -213,6 +213,7 @@
 | [azurerm_subnet.nodo_re_to_datastore_function_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.private_endpoint_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
+| [azurerm_virtual_network.spoke_data_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet_italy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 
