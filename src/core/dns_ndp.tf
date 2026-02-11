@@ -50,4 +50,54 @@ resource "azurerm_dns_caa_record" "ndp_pagopa_it" {
   tags = module.tag_config.tags
 }
 
+# Test Nexi NDP DCV TXT record
+resource "azurerm_dns_txt_record" "dns-txt-www-nexi-ndp-pagopa-it-digicert" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "test.nexi"
+  zone_name           = azurerm_dns_zone.ndp_public[0].name
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  record {
+    value = "_nb1jfifxr4o29727gbe615csg8wm9ad"
+  }
+  tags = module.tag_config.tags
+}
 
+# Test Nexi NDP www DCV TXT record
+resource "azurerm_dns_txt_record" "dns-txt-www-nexi-ndp-pagopa-it-digicert" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "www.test.nexi"
+  zone_name           = azurerm_dns_zone.ndp_public[0].name
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  record {
+    value = "_nb1jfifxr4o29727gbe615csg8wm9ad"
+  }
+  tags = module.tag_config.tags
+}
+
+# Nexi NDP DCV TXT record
+resource "azurerm_dns_txt_record" "dns-txt-www-nexi-ndp-pagopa-it-digicert" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "nexi"
+  zone_name           = azurerm_dns_zone.ndp_public[0].name
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  record {
+    value = "_5t6hvva3dxwrozvogcfjojdouvkujmi"
+  }
+  tags = module.tag_config.tags
+}
+
+# Nexi NDP www DCV TXT record
+resource "azurerm_dns_txt_record" "dns-txt-www-nexi-ndp-pagopa-it-digicert" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "www.nexi"
+  zone_name           = azurerm_dns_zone.ndp_public[0].name
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  record {
+    value = "_5t6hvva3dxwrozvogcfjojdouvkujmi"
+  }
+  tags = module.tag_config.tags
+}
