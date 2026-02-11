@@ -61,7 +61,7 @@ module "eventhub_spoke_pe_snet" {
   source            = "./.terraform/modules/__v4__/IDH/subnet"
   env               = var.env
   idh_resource_tier = "slash28_privatelink_true"
-  name              = "${local.project}-spoke-streaming-evh-pe-snet"
+  name              = "${local.project_itn}-spoke-streaming-evh-pe-snet"
   product_name      = var.prefix
 
   resource_group_name  = local.vnet_hub_spoke_rg_name

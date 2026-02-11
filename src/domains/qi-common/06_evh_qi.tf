@@ -44,7 +44,7 @@ resource "azurerm_private_endpoint" "eventhub_spoke_pe" {
   count = var.ehns_private_endpoint_is_present && var.is_feature_enabled.evh_spoke_pe ? 1 : 0
 
   name                = "${local.project}-evh-spoke-pe"
-  location            = var.location
+  location            = var.location_itn
   resource_group_name = azurerm_resource_group.qi_evh_resource_group.name
   subnet_id           = module.eventhub_spoke_pe_snet.subnet_id
 

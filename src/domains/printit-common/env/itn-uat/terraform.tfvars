@@ -17,6 +17,8 @@ is_feature_enabled = {
   eventhub                = true
   cosmos_hub_spoke_pe_dns = true
   evh_spoke_pe            = false
+  evh_spoke_pe            = true
+  evh_spoke_pe_dns        = true
 }
 
 ### CIRDs
