@@ -54,7 +54,7 @@ module "postgres_storico_flexible_server_private_db" {
   diagnostic_settings_enabled = var.pgflex_storico_params.pgres_flex_diagnostic_settings_enabled
   log_analytics_workspace_id  = data.azurerm_log_analytics_workspace.log_analytics.id
 
-  custom_metric_alerts = var.pgflex_storico_public_metric_alerts
+  custom_metric_alerts = var.pgflex_public_metric_alerts
 
   alert_action = var.pgflex_storico_params.alerts_enabled ? [
     {
