@@ -4,11 +4,6 @@ resource "kubernetes_namespace" "keda" {
   }
 }
 
-locals {
-  keda_namespace_name = kubernetes_namespace.keda.metadata[0].name
-}
-
-
 resource "helm_release" "keda" {
   name       = "keda"
   chart      = "keda"
@@ -18,17 +13,17 @@ resource "helm_release" "keda" {
   wait       = false
 
   set {
-    name  = "podIdentity.provider"
-    value = "azure-workload"
+    name  = "podIdentity.azureWorkload.enabled"
+    value = true
   }
 
   set {
-    name  = "podIdentity.identityId"
+    name  = "podIdentity.azureWorkload.clientId"
     value = module.keda_workload_identity_configuration.workload_identity_client_id
   }
 
   set {
-    name  = "podIdentity.identityTenantId"
+    name  = "podIdentity.azureWorkload.tenantId"
     value = data.azurerm_client_config.current.tenant_id
   }
 
