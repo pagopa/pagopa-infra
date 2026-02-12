@@ -158,3 +158,8 @@ cosmos_mongo_db_accounting_reconciliation_params = {
 }
 
 cidr_subnet_cosmosdb_qi = ["10.1.132.0/24"]
+
+is_feature_enabled = {
+  evh_spoke_pe     = false
+  evh_spoke_pe_dns = false
+}

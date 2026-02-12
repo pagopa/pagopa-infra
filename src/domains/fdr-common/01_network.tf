@@ -9,6 +9,11 @@ data "azurerm_virtual_network" "vnet_italy" {
   resource_group_name = local.vnet_italy_rg_name
 }
 
+data "azurerm_virtual_network" "spoke_data_vnet" {
+  name                = local.spoke_data_vnet_name
+  resource_group_name = local.hub_spoke_vnet_rg_name
+}
+
 data "azurerm_private_dns_zone" "internal" {
   name                = local.internal_dns_zone_name
   resource_group_name = local.internal_dns_zone_resource_group_name
@@ -59,14 +64,13 @@ data "azurerm_private_dns_zone" "privatelink_queue_azure_com" {
 
 module "fdr_storage_snet" {
   count  = var.env_short == "d" ? 0 : 1
-  source = "./.terraform/modules/__v3__/subnet"
+  source = "./.terraform/modules/__v4__/subnet"
 
-  name                 = "${local.project}-storage-snet"
-  address_prefixes     = var.cidr_subnet_storage_account
-  resource_group_name  = local.vnet_resource_group_name
-  virtual_network_name = local.vnet_name
-
-  private_endpoint_network_policies_enabled = true
+  name                              = "${local.project}-storage-snet"
+  address_prefixes                  = var.cidr_subnet_storage_account
+  resource_group_name               = local.vnet_resource_group_name
+  virtual_network_name              = local.vnet_name
+  private_endpoint_network_policies = "Enabled"
 
   service_endpoints = [
     "Microsoft.Storage",
@@ -74,7 +78,7 @@ module "fdr_storage_snet" {
 }
 
 module "cosmosdb_fdr_snet" {
-  source               = "./.terraform/modules/__v3__/subnet"
+  source               = "./.terraform/modules/__v4__/subnet"
   name                 = "${local.project}-cosmosb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_fdr
   resource_group_name  = local.vnet_resource_group_name

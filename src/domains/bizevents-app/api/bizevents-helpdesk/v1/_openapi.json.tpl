@@ -4,7 +4,7 @@
     "title": "Biz-Events Service - Biz-Events Helpdesk",
     "description": "Microservice for exposing REST APIs for bizevent Helpdesk.",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.2.2"
+    "version": "0.2.3"
   },
   "servers": [
     {
@@ -23,6 +23,17 @@
         "summary": "health check",
         "description": "Return OK if application is started",
         "operationId": "healthCheck",
+        "parameters": [
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "401": {
             "description": "Unauthorized",
@@ -46,17 +57,6 @@
               }
             }
           },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
           "400": {
             "description": "Bad Request",
             "headers": {
@@ -71,6 +71,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -117,18 +128,7 @@
             "ApiKey": []
           }
         ]
-      },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "required": false,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ]
+      }
     },
     "/events/{biz-event-id}": {
       "get": {
@@ -146,6 +146,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -160,38 +169,13 @@
               }
             }
           },
-          "422": {
-            "description": "Unable to process the request.",
+          "401": {
+            "description": "Wrong or missing function key.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found the biz-event.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -214,6 +198,42 @@
               }
             }
           },
+          "404": {
+            "description": "Not found the biz-event.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unable to process the request.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Service unavailable.",
             "headers": {
@@ -231,17 +251,6 @@
                 }
               }
             }
-          },
-          "401": {
-            "description": "Wrong or missing function key.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
           }
         },
         "security": [
@@ -249,18 +258,7 @@
             "ApiKey": []
           }
         ]
-      },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "required": false,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ]
+      }
     },
     "/events/organizations/{organization-fiscal-code}/iuvs/{iuv}": {
       "get": {
@@ -287,6 +285,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -301,38 +308,13 @@
               }
             }
           },
-          "422": {
-            "description": "Unable to process the request.",
+          "401": {
+            "description": "Wrong or missing function key.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found the biz-event.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -355,6 +337,42 @@
               }
             }
           },
+          "404": {
+            "description": "Not found the biz-event.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unable to process the request.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Service unavailable.",
             "headers": {
@@ -372,17 +390,6 @@
                 }
               }
             }
-          },
-          "401": {
-            "description": "Wrong or missing function key.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
           }
         },
         "security": [
@@ -390,18 +397,7 @@
             "ApiKey": []
           }
         ]
-      },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "required": false,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ]
+      }
     }
   },
   "components": {

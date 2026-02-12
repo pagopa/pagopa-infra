@@ -17,8 +17,8 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | d0a0b3a81963169bdc974f79eba31e41e918e63d |
-| <a name="module_apim_api_receipts_api_v1"></a> [apim\_api\_receipts\_api\_v1](#module\_apim\_api\_receipts\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_receipts_helpdesk_api_v1"></a> [apim\_api\_receipts\_helpdesk\_api\_v1](#module\_apim\_api\_receipts\_helpdesk\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_receipts_internal_product"></a> [apim\_receipts\_internal\_product](#module\_apim\_receipts\_internal\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_receipts_product"></a> [apim\_receipts\_product](#module\_apim\_receipts\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v3__/cert_mounter | n/a |
 | <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup | n/a |
@@ -31,23 +31,10 @@
 
 | Name | Type |
 |------|------|
-| [azurerm_api_management_api_version_set.api_receipts_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_receipts_helpdesk_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.receipt-tokenizer-error-on-datastore-alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.receipt-tokenizer-error-on-notify-alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.receipt-tokenizer-error-on-service-alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.receipt-unable-to-notify-alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.receipts-cart-event-discarded-alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.receipts-datastore-not-sent-to-queue-alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.receipts-in-error-alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.receipts-missing-bizevent-property-alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.receipts-pdf-engine-response-ko](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.receipts-pdf-save-to-blob-error](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.receipts-sending-receipt-error-alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.receipts-to-notify-in-retry-alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_portal_dashboard.pdf-receipt-general-dashboard](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/portal_dashboard) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |

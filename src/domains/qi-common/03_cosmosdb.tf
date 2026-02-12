@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "cosmosdb_qi_rg" {
 
 module "cosmosdb_account_qi_mongodb" {
 
-  source = "./.terraform/modules/__v3__/cosmosdb_account"
+  source = "./.terraform/modules/__v4__/cosmosdb_account"
 
   name                = "${local.project}-cosmos-account"
   location            = var.location
@@ -85,7 +85,7 @@ locals {
 
 module "cosmosdb_accounting_reconciliation_collections" {
 
-  source   = "./.terraform/modules/__v3__/cosmosdb_mongodb_collection"
+  source   = "./.terraform/modules/__v4__/cosmosdb_mongodb_collection"
   for_each = { for index, coll in local.accounting_reconciliation_collections : coll.name => coll }
 
   name                = each.value.name

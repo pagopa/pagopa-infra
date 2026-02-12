@@ -2,10 +2,15 @@
 
 variable "is_feature_enabled" {
   type = object({
-    eventhub = bool
+    eventhub         = bool
+    evh_spoke_pe     = optional(bool, false)
+    evh_spoke_pe_dns = optional(bool, false)
+
   })
   default = {
-    eventhub = false
+    eventhub         = false
+    evh_spoke_pe     = false
+    evh_spoke_pe_dns = false
   }
 }
 
