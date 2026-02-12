@@ -86,5 +86,8 @@ module "postgres_storico_flexible_server_private_db" {
     location                    = var.pgflex_storico_geo_replication.location
     private_dns_registration_ve = var.pgflex_storico_geo_replication.private_dns_registration_ve
   }
+
+  additional_azure_extensions  = ["pg_partman"]
+  additional_preload_libraries = ["pg_partman_bgw"]
 }
 
