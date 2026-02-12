@@ -18,6 +18,7 @@
 | <a name="module_cosmosdb_qi_snet"></a> [cosmosdb\_qi\_snet](#module\_cosmosdb\_qi\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_eventhub_namespace_qi"></a> [eventhub\_namespace\_qi](#module\_eventhub\_namespace\_qi) | ./.terraform/modules/__v4__/eventhub | n/a |
 | <a name="module_eventhub_qi_configuration"></a> [eventhub\_qi\_configuration](#module\_eventhub\_qi\_configuration) | ./.terraform/modules/__v4__/eventhub_configuration | n/a |
+| <a name="module_eventhub_spoke_pe_snet"></a> [eventhub\_spoke\_pe\_snet](#module\_eventhub\_spoke\_pe\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | ./.terraform/modules/__v4__/github_federated_identity | n/a |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | ./.terraform/modules/__v4__/key_vault | n/a |
 | <a name="module_letsencrypt_qi"></a> [letsencrypt\_qi](#module\_letsencrypt\_qi) | ./.terraform/modules/__v4__/letsencrypt_credential | n/a |
@@ -54,6 +55,7 @@
 | [azurerm_key_vault_secret.qi_service_principal_client_id](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.qi_service_principal_client_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
+| [azurerm_private_endpoint.eventhub_spoke_pe](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.cosmosdb_qi_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.qi_evh_resource_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.qi_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
@@ -120,6 +122,7 @@
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
 | <a name="input_ingress_load_balancer_ip"></a> [ingress\_load\_balancer\_ip](#input\_ingress\_load\_balancer\_ip) | n/a | `string` | n/a | yes |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
+| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | n/a | <pre>object({<br/>    evh_spoke_pe     = optional(bool, false)<br/>    evh_spoke_pe_dns = optional(bool, false)<br/>  })</pre> | <pre>{<br/>  "evh_spoke_pe": false,<br/>  "evh_spoke_pe_dns": false<br/>}</pre> | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_itn"></a> [location\_itn](#input\_location\_itn) | Default italynorth | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |

@@ -57,6 +57,25 @@ resource "azurerm_subnet" "eventhub_qi_snet" {
   private_endpoint_network_policies = "Enabled"
 }
 
+module "eventhub_spoke_pe_snet" {
+  source            = "./.terraform/modules/__v4__/IDH/subnet"
+  env               = var.env
+  idh_resource_tier = "slash28_privatelink_true"
+  name              = "${local.project_itn}-spoke-streaming-evh-pe-snet"
+  product_name      = var.prefix
+
+  resource_group_name  = local.vnet_hub_spoke_rg_name
+  virtual_network_name = local.vnet_spoke_streaming_name
+
+  custom_nsg_configuration = {
+    target_service               = "eventhub"
+    source_address_prefixes_name = "All"
+    source_address_prefixes      = ["*"]
+  }
+
+  tags = module.tag_config.tags
+}
+
 module "cosmosdb_qi_snet" {
   source = "./.terraform/modules/__v4__/subnet"
 

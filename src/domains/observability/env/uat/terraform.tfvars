@@ -387,3 +387,9 @@ ehns_metric_alerts_gpd = {
     ],
   },
 }
+
+
+is_feature_enabled = {
+  evh_spoke_pe     = true
+  evh_spoke_pe_dns = true
+}
