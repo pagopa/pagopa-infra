@@ -30,3 +30,10 @@ db_vdi_settings = {
   session_limit         = 1
   host_pool_type        = "Pooled"
 }
+
+route_table_routes = [{
+  name                   = "dbsecurity-subnet-to-nexi-postgres-onprem-subnet"
+  address_prefix         = "10.102.1.93/32"
+  next_hop_type          = "VirtualAppliance"
+  next_hop_in_ip_address = "10.230.10.150"
+}]

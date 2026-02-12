@@ -1,12 +1,9 @@
-prefix             = "pagopa"
-env_short          = "d"
-env                = "dev"
-domain             = "core"
-location           = "italynorth"
-location_short     = "itn"
-location_ita       = "italynorth"
-location_short_ita = "itn"
-
+prefix         = "pagopa"
+env_short      = "d"
+env            = "dev"
+domain         = "core"
+location       = "italynorth"
+location_short = "itn"
 
 ### Feature Flag
 is_feature_enabled = {

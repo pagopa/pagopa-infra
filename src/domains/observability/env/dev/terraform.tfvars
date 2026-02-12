@@ -370,3 +370,9 @@ app_forwarder_ip_restriction_default_action = "Allow"
 #     ],
 #   },
 # }
+
+
+is_feature_enabled = {
+  evh_spoke_pe     = true
+  evh_spoke_pe_dns = false
+}

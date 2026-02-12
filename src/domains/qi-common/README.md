@@ -4,34 +4,35 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.38.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3.1 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.16 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | = 3.2.1 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f3485105e35ce8c801209dcbb4ef72f3d944f0e5 |
-| <a name="module_cosmosdb_account_qi_mongodb"></a> [cosmosdb\_account\_qi\_mongodb](#module\_cosmosdb\_account\_qi\_mongodb) | ./.terraform/modules/__v3__/cosmosdb_account | n/a |
-| <a name="module_cosmosdb_accounting_reconciliation_collections"></a> [cosmosdb\_accounting\_reconciliation\_collections](#module\_cosmosdb\_accounting\_reconciliation\_collections) | ./.terraform/modules/__v3__/cosmosdb_mongodb_collection | n/a |
-| <a name="module_cosmosdb_qi_snet"></a> [cosmosdb\_qi\_snet](#module\_cosmosdb\_qi\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
-| <a name="module_eventhub_namespace_qi"></a> [eventhub\_namespace\_qi](#module\_eventhub\_namespace\_qi) | ./.terraform/modules/__v3__/eventhub | n/a |
-| <a name="module_eventhub_qi_configuration"></a> [eventhub\_qi\_configuration](#module\_eventhub\_qi\_configuration) | ./.terraform/modules/__v3__/eventhub_configuration | n/a |
-| <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | n/a |
-| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | ./.terraform/modules/__v3__/key_vault | n/a |
-| <a name="module_letsencrypt_qi"></a> [letsencrypt\_qi](#module\_letsencrypt\_qi) | ./.terraform/modules/__v3__/letsencrypt_credential | n/a |
-| <a name="module_qi_fn_sa"></a> [qi\_fn\_sa](#module\_qi\_fn\_sa) | ./.terraform/modules/__v3__/storage_account | n/a |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | e014df915dd8cb6d112b3424abcf5252e78979c9 |
+| <a name="module_cosmosdb_account_qi_mongodb"></a> [cosmosdb\_account\_qi\_mongodb](#module\_cosmosdb\_account\_qi\_mongodb) | ./.terraform/modules/__v4__/cosmosdb_account | n/a |
+| <a name="module_cosmosdb_accounting_reconciliation_collections"></a> [cosmosdb\_accounting\_reconciliation\_collections](#module\_cosmosdb\_accounting\_reconciliation\_collections) | ./.terraform/modules/__v4__/cosmosdb_mongodb_collection | n/a |
+| <a name="module_cosmosdb_qi_snet"></a> [cosmosdb\_qi\_snet](#module\_cosmosdb\_qi\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_eventhub_namespace_qi"></a> [eventhub\_namespace\_qi](#module\_eventhub\_namespace\_qi) | ./.terraform/modules/__v4__/eventhub | n/a |
+| <a name="module_eventhub_qi_configuration"></a> [eventhub\_qi\_configuration](#module\_eventhub\_qi\_configuration) | ./.terraform/modules/__v4__/eventhub_configuration | n/a |
+| <a name="module_eventhub_spoke_pe_snet"></a> [eventhub\_spoke\_pe\_snet](#module\_eventhub\_spoke\_pe\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
+| <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | ./.terraform/modules/__v4__/github_federated_identity | n/a |
+| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | ./.terraform/modules/__v4__/key_vault | n/a |
+| <a name="module_letsencrypt_qi"></a> [letsencrypt\_qi](#module\_letsencrypt\_qi) | ./.terraform/modules/__v4__/letsencrypt_credential | n/a |
+| <a name="module_qi_fn_sa"></a> [qi\_fn\_sa](#module\_qi\_fn\_sa) | ./.terraform/modules/__v4__/storage_account | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
-| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
+| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v4__/kubernetes_workload_identity_init | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [azuread_application.qi_app](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/resources/application) | resource |
-| [azuread_application_password.qi_app_pwd](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/resources/application_password) | resource |
-| [azuread_service_principal.qi_sp](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/resources/service_principal) | resource |
+| [azuread_application.qi_app](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application) | resource |
+| [azuread_application_password.qi_app_pwd](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_password) | resource |
+| [azuread_service_principal.qi_sp](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal) | resource |
 | [azurerm_cosmosdb_mongo_database.accounting_reconciliation](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_database) | resource |
 | [azurerm_key_vault_access_policy.ad_group_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.adgroup_developers_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
@@ -54,6 +55,7 @@
 | [azurerm_key_vault_secret.qi_service_principal_client_id](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.qi_service_principal_client_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
+| [azurerm_private_endpoint.eventhub_spoke_pe](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.cosmosdb_qi_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.qi_evh_resource_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.qi_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
@@ -62,14 +64,14 @@
 | [azurerm_subnet.eventhub_qi_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
 | [null_resource.github_runner_app_permissions_to_namespace_cd_01](https://registry.terraform.io/providers/hashicorp/null/3.2.1/docs/resources/resource) | resource |
 | [time_rotating.qi_application_time](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/rotating) | resource |
-| [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_operations](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/data-sources/group) | data source |
-| [azuread_service_principal.iac_deploy_legacy](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/data-sources/service_principal) | data source |
-| [azuread_service_principal.iac_plan_legacy](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/data-sources/service_principal) | data source |
-| [azuread_service_principal.iac_principal](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/data-sources/service_principal) | data source |
+| [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_operations](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_service_principal.iac_deploy_legacy](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) | data source |
+| [azuread_service_principal.iac_plan_legacy](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) | data source |
+| [azuread_service_principal.iac_principal](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_eventhub_authorization_rule.pagopa-evh-ns04_quality-improvement-alerts_pagopa-qi-alert-rx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
@@ -120,6 +122,7 @@
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
 | <a name="input_ingress_load_balancer_ip"></a> [ingress\_load\_balancer\_ip](#input\_ingress\_load\_balancer\_ip) | n/a | `string` | n/a | yes |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
+| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | n/a | <pre>object({<br/>    evh_spoke_pe     = optional(bool, false)<br/>    evh_spoke_pe_dns = optional(bool, false)<br/>  })</pre> | <pre>{<br/>  "evh_spoke_pe": false,<br/>  "evh_spoke_pe_dns": false<br/>}</pre> | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_itn"></a> [location\_itn](#input\_location\_itn) | Default italynorth | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |

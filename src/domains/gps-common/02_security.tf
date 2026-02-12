@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "./.terraform/modules/__v3__/key_vault"
+  source = "./.terraform/modules/__v4__/key_vault"
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -111,10 +111,12 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
+
+
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "payments_cosmos_connection_string" {
   name         = format("gpd-payments-%s-cosmos-connection-string", var.env_short)
-  value        = module.gpd_payments_cosmosdb_account.connection_strings[4]
+  value        = module.gpd_payments_cosmosdb_account.legacy_primary_sql_connection_strings
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -458,7 +460,7 @@ resource "azurerm_key_vault_secret" "gpd_upload_db_key" {
 resource "azurerm_key_vault_secret" "gpd_archive_sa_connection_string" {
   name = "gpd-archive-${var.env_short}-sa-connection-string"
   # value        = module.gpd_archive_sa.primary_connection_string // az sa tables
-  value        = module.gpd_payments_cosmosdb_account.connection_strings[4] // az cosmos tables
+  value        = module.gpd_payments_cosmosdb_account.legacy_primary_sql_connection_strings // az cosmos tables
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
