@@ -31,6 +31,7 @@ module "postgres_storico_flexible_server_private_db" {
   resource_group_name = azurerm_resource_group.flex_data[0].name
 
   idh_resource_tier = "pgflex2"
+  storage_mb        = var.pgflex_storico_params.storage_mb
   product_name      = var.prefix
   env               = var.env
 
