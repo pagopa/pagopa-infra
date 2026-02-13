@@ -23,6 +23,7 @@ module "postgres_storico_flexible_snet" {
   tags = module.tag_config.tags
 }
 
+# After applying the first time remember to switch cron.database_name to apd in server parameters
 module "postgres_storico_flexible_server_private_db" {
   source = "./.terraform/modules/__v4__/IDH/postgres_flexible_server"
 
