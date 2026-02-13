@@ -3,6 +3,8 @@ locals {
   domain  = "synthetic"
   project = "${local.product}-${var.location_short}-${local.domain}"
 
+  grafana_rg_name = "${local.product}-${var.location_short}-grafana-rg"
+  grafana_name = "${local.product}-${var.location_short}-grafana"
 
   monitor_appinsights_name                 = "${local.product}-appinsights"
   monitor_action_group_slack_name          = "SlackPagoPA"

@@ -16,9 +16,20 @@ terraform {
       source  = "hashicorp/null"
       version = "<= 3.2.1"
     }
+    grafana = {
+      source  = "grafana/grafana"
+      version = "~> 3"
+    }
   }
 
   backend "azurerm" {}
+}
+
+provider "grafana" {
+  alias = "cloudinternal"
+
+  url  = data.azurerm_dashboard_grafana.managed_grafana.endpoint
+  auth = data.azurerm_key_vault_secret.grafana_key.value
 }
 
 provider "azurerm" {
@@ -33,7 +44,7 @@ data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
 
-module "__v3__" {
-  # v8.95.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=af5980583baf38b7d796a7afa3b82ced1fe369d2"
+module "__v4__" {
+  # v8.8.2
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=2093f55a78bcc673e1671a4ce8b0e88e10d7eb07"
 }
