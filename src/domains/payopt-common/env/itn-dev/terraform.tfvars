@@ -10,7 +10,9 @@ instance       = "dev"
 ### 🚩Features flags
 
 is_feature_enabled = {
-  eventhub = true
+  eventhub         = true
+  evh_spoke_pe     = true
+  evh_spoke_pe_dns = true
 }
 
 ### CIRDs

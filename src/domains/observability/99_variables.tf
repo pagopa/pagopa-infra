@@ -380,8 +380,16 @@ variable "gpd_ingestion_storage_account" {
   }
 }
 
+variable "is_feature_enabled" {
+  type = object({
+    evh_spoke_pe     = optional(bool, false)
+    evh_spoke_pe_dns = optional(bool, false)
 
-variable "app_forwarder_ip_restriction_default_action" {
-  type        = string
-  description = "(Required) The Default action for traffic that does not match any ip_restriction rule. possible values include Allow and Deny. "
+  })
+
+  default = {
+    evh_spoke_pe     = false
+    evh_spoke_pe_dns = false
+  }
+
 }
