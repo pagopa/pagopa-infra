@@ -52,5 +52,5 @@ bopagopa_datastore_cosmos_db_params = {
 # CosmosDb MongoDb
 cidr_subnet_cosmosdb_mongodb = ["10.1.166.0/24"]
 # cosmosdb_mongodb_extra_capabilities = ["EnableServerless"]
-cosmosdb_mongodb_max_throughput     = 8000
+cosmosdb_mongodb_max_throughput     = 1000
 cosmosdb_mongodb_enable_autoscaling = true
