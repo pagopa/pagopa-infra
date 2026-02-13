@@ -129,6 +129,7 @@ No outputs.
 | <a name="module_identity_ref_01"></a> [identity\_ref\_01](#module\_identity\_ref\_01) | ./.terraform/modules/__v4__/github_federated_identity | n/a |
 | <a name="module_institutions_sa"></a> [institutions\_sa](#module\_institutions\_sa) | ./.terraform/modules/__v4__/storage_account | n/a |
 | <a name="module_notices_sa"></a> [notices\_sa](#module\_notices\_sa) | ./.terraform/modules/__v4__/storage_account | n/a |
+| <a name="module_storage_spoke_printit_snet"></a> [storage\_spoke\_printit\_snet](#module\_storage\_spoke\_printit\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_templates_sa"></a> [templates\_sa](#module\_templates\_sa) | ./.terraform/modules/__v4__/storage_account | n/a |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v4__/kubernetes_workload_identity_init | n/a |
