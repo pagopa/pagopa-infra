@@ -197,11 +197,7 @@ module "mongdb_collection_institutions_services_rtp_consent" {
       unique = true
     },
     {
-      keys   = ["consent"]
-      unique = false
-    },
-    {
-      keys   = ["consentDate"]
+      keys   = ["consent","consentDate"]
       unique = false
     }
   ]
