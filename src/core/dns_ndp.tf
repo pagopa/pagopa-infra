@@ -50,6 +50,9 @@ resource "azurerm_dns_caa_record" "ndp_pagopa_it" {
   tags = module.tag_config.tags
 }
 
+# ⚠️TMP DIGICERT requires test.nexi records for validation, even if they have the same value
+# https://pagopa.atlassian.net/wiki/pages/resumedraft.action?draftId=2645983363
+
 # Test Nexi NDP DCV TXT record
 resource "azurerm_dns_txt_record" "dns-txt-test-nexi-ndp-pagopa-it-digicert" {
   count               = var.env_short == "p" ? 1 : 0
@@ -62,6 +65,9 @@ resource "azurerm_dns_txt_record" "dns-txt-test-nexi-ndp-pagopa-it-digicert" {
   }
   tags = module.tag_config.tags
 }
+
+# ⚠️TMP DIGICERT requires nexi records for validation, even if they have the same value
+# https://pagopa.atlassian.net/wiki/pages/resumedraft.action?draftId=2645983363
 
 # Nexi NDP DCV TXT record
 resource "azurerm_dns_txt_record" "dns-txt-nexi-ndp-pagopa-it-digicert" {
