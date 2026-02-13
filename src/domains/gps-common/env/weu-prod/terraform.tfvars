@@ -245,3 +245,20 @@ rtp_storage_account = {
   backup_enabled                     = false
   backup_retention                   = 0
 }
+
+# Postgres Flexible Storico
+pgflex_storico_params = {
+  pgres_flex_pgbouncer_enabled           = true
+  alerts_enabled                         = false
+  pgres_flex_diagnostic_settings_enabled = false
+  max_connections                        = 850
+  enable_private_dns_registration        = true
+  max_worker_processes                   = 16
+}
+
+pgflex_storico_geo_replication = {
+  enabled                     = false
+  name                        = "pagopa-p-gpd-storico-pgflex-replica"
+  location                    = "italynorth"
+  private_dns_registration_ve = false
+}

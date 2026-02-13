@@ -208,7 +208,7 @@ pgflex_storico_params = {
 
 pgflex_storico_geo_replication = {
   enabled                     = false
-  name                        = "gpd-storico-test-replica"
+  name                        = "pagopa-d-gpd-storico-pgflex-replica"
   location                    = "italynorth"
   private_dns_registration_ve = false
 }
