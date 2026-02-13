@@ -557,6 +557,7 @@ variable "pgflex_storico_params" {
     max_connections                        = number
     enable_private_dns_registration        = optional(bool, false)
     max_worker_processes                   = number
+    storage_mb                             = number
   })
 }
 

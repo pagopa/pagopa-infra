@@ -204,6 +204,7 @@ pgflex_storico_params = {
   max_connections                        = 850
   enable_private_dns_registration        = true
   max_worker_processes                   = 16
+  storage_mb                             = 32768
 }
 
 pgflex_storico_geo_replication = {
