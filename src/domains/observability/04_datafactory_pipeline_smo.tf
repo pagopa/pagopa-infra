@@ -825,16 +825,30 @@ resource "azurerm_data_factory_pipeline" "pipeline_SMO_IMPORT_ANAGRAFICA" {
   name            = "SMO_IMPORT_ANAGRAFICA_Pipeline"
   data_factory_id = data.azurerm_data_factory.qi_data_factory.id
 
+  variables = {
+    run_id     = "",
+    start_date = ""
+  }
+
+
   activities_json = "[${templatefile("datafactory/pipelines/IMPORT_ANAGRAFICA.json", {
-    inputdataset_PT_PA   = "CFG_INTERMEDIARI_PA"
-    outputdataset_PT_PA  = "SMO_INTERMEDIARI_PA_DataSet"
-    inputdataset_PT_PSP  = "CFG_INTERMEDIARI_PSP"
-    outputdataset_PT_PSP = "SMO_INTERMEDIARI_PSP_DataSet"
-    inputdataset_PA      = "CFG_PA"
-    outputdataset_PA     = "SMO_PA_DataSet"
-    inputdataset_PSP     = "CFG_PSP"
-    outputdataset_PSP    = "SMO_PSP_DataSet"
-    dataexplorerset      = "AzureDataExplorer${var.env_short}LinkService"
+    inputdataset_PT_PA                  = "CFG_INTERMEDIARI_PA"
+    outputdataset_PT_PA                 = "SMO_INTERMEDIARI_PA_DataSet"
+    inputdataset_PT_PSP                 = "CFG_INTERMEDIARI_PSP"
+    outputdataset_PT_PSP                = "SMO_INTERMEDIARI_PSP_DataSet"
+    inputdataset_PA                     = "CFG_PA"
+    outputdataset_PA                    = "SMO_PA_DataSet"
+    inputdataset_PSP                    = "CFG_PSP"
+    outputdataset_PSP                   = "SMO_PSP_DataSet"
+    output_PA_HISTORY                   = "SMO_PA_HISTORY_DataSet"
+    output_PSP_HISTORY                  = "SMO_PSP_HISTORY_DataSet"
+    output_INTERMEDIARI_PSP_HISTORY     = "SMO_INTERMEDIARI_PSP_HISTORY_DataSet"
+    output_INTERMEDIARI_PA_HISTORY      = "SMO_INTERMEDIARI_PA_HISTORY_DataSet"
+    output_INTERMEDIARI_REL_PA          = "SMO_INTERMEDIARI_REL_PA_DataSet"
+    output_INTERMEDIARI_REL_PSP         = "SMO_INTERMEDIARI_REL_PSP_DataSet"
+    output_INTERMEDIARI_REL_PA_HISTORY  = "SMO_INTERMEDIARI_REL_PA_HISTORY_DataSet"
+    output_INTERMEDIARI_REL_PSP_HISTORY = "SMO_INTERMEDIARI_REL_PSP_HISTORY_DataSet"
+    dataexplorerset                     = "AzureDataExplorer${var.env_short}LinkService"
   })}]"
 
   depends_on = [
