@@ -3,13 +3,13 @@ module "monitoring_function" {
   source     = "./.terraform/modules/__v4__/monitoring_function"
 
   providers = {
-      grafana = grafana.cloudinternal
+    grafana = grafana.cloudinternal
   }
 
-  location            = var.location
+  location              = var.location
   location_display_name = var.location
-  prefix              = "${local.product}-${var.location_short}"
-  resource_group_name = azurerm_resource_group.synthetic_rg.name
+  prefix                = "${local.product}-${var.location_short}"
+  resource_group_name   = azurerm_resource_group.synthetic_rg.name
 
   application_insight_name              = azurerm_application_insights.application_insights.name
   application_insight_rg_name           = azurerm_application_insights.application_insights.resource_group_name
@@ -23,6 +23,7 @@ module "monitoring_function" {
     cron_scheduling              = "*/5 * * * *"
     container_app_environment_id = data.azurerm_container_app_environment.tools_cae.id
     http_client_timeout          = 30000
+    workload_profile             = "None"
   }
 
   storage_account_settings = {
@@ -35,7 +36,7 @@ module "monitoring_function" {
 
   tags = module.tag_config.tags
 
-  enabled_sythetic_dashboard = true
+  enabled_sythetic_dashboard = false
   subscription_id            = data.azurerm_client_config.current.subscription_id
 
 
