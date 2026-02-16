@@ -60,6 +60,11 @@ data "azurerm_public_ip" "appgateway_public_ip" {
   resource_group_name = data.azurerm_resource_group.rg_vnet_core.name
 }
 
+data "azurerm_dashboard_grafana" "managed_grafana" {
+  name                = local.grafana_name
+  resource_group_name = local.grafana_rg_name
+}
+
 #
 # 🔒 Secrets
 #
@@ -69,3 +74,7 @@ data "azurerm_key_vault" "key_vault" {
   resource_group_name = local.key_vault_rg_name
 }
 
+data "azurerm_key_vault_secret" "grafana_key" {
+  name         = "grafana-api-key"
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
