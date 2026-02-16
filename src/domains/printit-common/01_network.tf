@@ -55,14 +55,6 @@ resource "azurerm_subnet" "pdf_engine_italy_snet" {
   }
 }
 
-resource "azurerm_subnet" "eventhub_italy" {
-  name                              = "${local.project}-eventhub-snet"
-  resource_group_name               = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name              = data.azurerm_virtual_network.vnet_italy.name
-  address_prefixes                  = var.cidr_printit_eventhub_italy
-  private_endpoint_network_policies = "Enabled"
-
-}
 
 module "eventhub_spoke_pe_snet" {
   source            = "./.terraform/modules/__v4__/IDH/subnet"
