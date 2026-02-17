@@ -58,25 +58,6 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-### Italy location
-variable "location_ita" {
-  type        = string
-  description = "Main location"
-  default     = "italynorth"
-}
-
-variable "location_short_ita" {
-  type = string
-  validation {
-    condition = (
-      length(var.location_short_ita) == 3
-    )
-    error_message = "Length must be 3 chars."
-  }
-  description = "Location short for italy: itn"
-  default     = "itn"
-}
-
 variable "vnet_ita_ddos_protection_plan" {
   type = object({
     id     = string

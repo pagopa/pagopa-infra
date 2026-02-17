@@ -1,6 +1,6 @@
 module "cosmosdb_account_nodo_re" {
   count               = var.enable_nodo_re ? 1 : 0
-  source              = "./.terraform/modules/__v3__/cosmosdb_account"
+  source              = "./.terraform/modules/__v4__/cosmosdb_account"
   domain              = var.domain
   name                = "${local.project}-re-cosmos-nosql-account"
   location            = var.location
@@ -20,7 +20,6 @@ module "cosmosdb_account_nodo_re" {
   private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos_nosql.id]
   is_virtual_network_filter_enabled   = var.cosmos_nosql_db_params.is_virtual_network_filter_enabled
   allowed_virtual_network_subnet_ids  = var.cosmos_nosql_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id, data.azurerm_subnet.nodo_re_to_datastore_function_snet[0].id]
-  ip_range                            = ""
 
   enable_automatic_failover = true
 
@@ -37,7 +36,7 @@ module "cosmosdb_account_nodo_re" {
 # cosmosdb database for nodo_re
 module "cosmosdb_account_nodo_re_db" {
   count               = var.enable_nodo_re ? 1 : 0
-  source              = "./.terraform/modules/__v3__/cosmosdb_sql_database"
+  source              = "./.terraform/modules/__v4__/cosmosdb_sql_database"
   name                = "nodo_re"
   resource_group_name = azurerm_resource_group.db_rg.name
   account_name        = var.enable_nodo_re ? module.cosmosdb_account_nodo_re[0].name : "no-account-name"
@@ -63,7 +62,7 @@ locals {
 
 # cosmosdb container for nodo re datastore
 module "cosmosdb_account_nodo_re_containers" {
-  source = "./.terraform/modules/__v3__/cosmosdb_sql_container"
+  source = "./.terraform/modules/__v4__/cosmosdb_sql_container"
   for_each = {
     for c in local.nodo_re_containers : c.name => c if var.enable_nodo_re
   }
@@ -72,7 +71,7 @@ module "cosmosdb_account_nodo_re_containers" {
   resource_group_name = azurerm_resource_group.db_rg.name
   account_name        = var.enable_nodo_re ? module.cosmosdb_account_nodo_re[0].name : "no-account-name"
   database_name       = var.enable_nodo_re ? module.cosmosdb_account_nodo_re_db[0].name : "no-database-name"
-  partition_key_path  = each.value.partition_key_path
+  partition_key_paths = [each.value.partition_key_path]
   throughput          = lookup(each.value, "throughput", null)
   default_ttl         = lookup(each.value, "default_ttl", null)
 

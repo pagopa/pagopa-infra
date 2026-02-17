@@ -36,8 +36,8 @@ pgres_flex_params = {
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                                       = 1048576
-  zone                                             = 1
-  standby_ha_zone                                  = 2
+  zone                                             = 2
+  standby_ha_zone                                  = 1
   backup_retention_days                            = 30
   geo_redundant_backup_enabled                     = true
   create_mode                                      = "Default"
@@ -241,7 +241,7 @@ wisp_converter_cosmos_nosql_db_params = {
   data_ttl                           = 10368000 # 120 days in second
   data_max_throughput                = 2000
   re_ttl                             = 31536000 # 1 year in second
-  re_max_throughput                  = 25000    # aligned to prod actual value
+  re_max_throughput                  = 30000    # aligned to prod actual value
   receipt_ttl                        = -1       # max
   receipt_max_throughput             = 2000
   receipt_dead_letter_ttl            = 7884000 # 3 months in second
