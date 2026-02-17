@@ -164,7 +164,7 @@
               "returnWaitingUrl": {
                 "type": "string",
                 "format": "uri",
-                "description": "URL where the user is redirected while payment is pending",une.di.prova.it/pagopa/waiting.html"
+                "description": "URL where the user is redirected while payment is pending"
                 "example": "www.comune.di.prova.it/pagopa/waiting.html"
               }
             }
