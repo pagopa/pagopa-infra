@@ -15,9 +15,8 @@ module "eventhub_namespace_qi" {
   maximum_throughput_units = var.ehns_maximum_throughput_units
   #zone_redundat is always true
 
-  private_endpoint_subnet_id    = azurerm_subnet.eventhub_qi_snet.id
   public_network_access_enabled = var.ehns_public_network_access
-  private_endpoint_created      = var.ehns_private_endpoint_is_present && !var.is_feature_enabled.evh_spoke_pe
+  private_endpoint_created      = false
 
   private_endpoint_resource_group_name = azurerm_resource_group.qi_evh_resource_group.name
   private_dns_zones_ids                = [data.azurerm_private_dns_zone.eventhub.id]
@@ -41,19 +40,16 @@ module "eventhub_namespace_qi" {
 }
 
 resource "azurerm_private_endpoint" "eventhub_spoke_pe" {
-  count = var.ehns_private_endpoint_is_present && var.is_feature_enabled.evh_spoke_pe ? 1 : 0
+  count = var.ehns_private_endpoint_is_present ? 1 : 0
 
   name                = "${local.project}-evh-spoke-pe"
   location            = var.location_itn
   resource_group_name = azurerm_resource_group.qi_evh_resource_group.name
   subnet_id           = module.eventhub_spoke_pe_snet.subnet_id
 
-  dynamic "private_dns_zone_group" {
-    for_each = var.ehns_private_endpoint_is_present && var.is_feature_enabled.evh_spoke_pe_dns ? [1] : []
-    content {
-      name                 = "${local.project}-evh-spoke-private-dns-zone-group"
-      private_dns_zone_ids = [data.azurerm_private_dns_zone.eventhub.id]
-    }
+  private_dns_zone_group {
+    name                 = "${local.project}-evh-spoke-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.eventhub.id]
   }
 
   private_service_connection {

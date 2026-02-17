@@ -48,14 +48,6 @@ data "azurerm_resource_group" "rg_event_private_dns_zone" {
   name = local.msg_resource_group_name
 }
 
-# all snet for each evh(s)
-resource "azurerm_subnet" "eventhub_qi_snet" {
-  name                              = "${local.project_itn}-evh-qi-snet"
-  resource_group_name               = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name              = data.azurerm_virtual_network.vnet_italy.name
-  address_prefixes                  = var.cidr_subnet_qi_evh
-  private_endpoint_network_policies = "Enabled"
-}
 
 module "eventhub_spoke_pe_snet" {
   source            = "./.terraform/modules/__v4__/IDH/subnet"
