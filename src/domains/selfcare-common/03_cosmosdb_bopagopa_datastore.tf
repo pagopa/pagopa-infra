@@ -207,3 +207,36 @@ module "mongdb_collection_institutions_services_rtp_consent" {
   ]
   lock_enable = true
 }
+
+module "mongdb_collection_iban_deletion_requests" {
+  source = "./.terraform/modules/__v3__/cosmosdb_mongodb_collection"
+
+  name                = "ibanDeletionRequests"
+  resource_group_name = azurerm_resource_group.bopagopa_rg.name
+
+  cosmosdb_mongo_account_name  = module.bopagopa_cosmosdb_mongo_account.name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.pagopa_backoffice.name
+
+  shard_key = "_id"
+
+  indexes = [
+    {
+      keys   = ["_id"]
+      unique = true
+    },
+    {
+      keys   = ["creditorInstitutionCode", "status"]
+      unique = false
+    },
+    {
+      keys   = ["status", "scheduledExecutionDate"]
+      unique = false
+    },
+    {
+      keys   = ["creditorInstitutionCode", "status", "ibanValue"]
+      unique = false
+    },
+  ]
+
+  lock_enable = var.env_short != "d"
+}
