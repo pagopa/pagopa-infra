@@ -20,6 +20,8 @@
 | <a name="module_eventhub_namespace_observability_gpd"></a> [eventhub\_namespace\_observability\_gpd](#module\_eventhub\_namespace\_observability\_gpd) | ./.terraform/modules/__v4__/eventhub | n/a |
 | <a name="module_eventhub_observability_configuration"></a> [eventhub\_observability\_configuration](#module\_eventhub\_observability\_configuration) | ./.terraform/modules/__v4__/eventhub_configuration | n/a |
 | <a name="module_eventhub_observability_gpd_configuration"></a> [eventhub\_observability\_gpd\_configuration](#module\_eventhub\_observability\_gpd\_configuration) | ./.terraform/modules/__v4__/eventhub_configuration | n/a |
+| <a name="module_eventhub_observability_gpd_spoke_pe_snet"></a> [eventhub\_observability\_gpd\_spoke\_pe\_snet](#module\_eventhub\_observability\_gpd\_spoke\_pe\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
+| <a name="module_eventhub_observability_spoke_pe_snet"></a> [eventhub\_observability\_spoke\_pe\_snet](#module\_eventhub\_observability\_spoke\_pe\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_gpd_ingestion_sa"></a> [gpd\_ingestion\_sa](#module\_gpd\_ingestion\_sa) | ./.terraform/modules/__v4__/storage_account | n/a |
 | <a name="module_observability_sa"></a> [observability\_sa](#module\_observability\_sa) | ./.terraform/modules/__v4__/storage_account | n/a |
 | <a name="module_observability_st_snet"></a> [observability\_st\_snet](#module\_observability\_st\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
@@ -113,6 +115,8 @@
 | [azurerm_kusto_eventhub_data_connection.eventhub_connection_for_ingestion_qi_iuvs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kusto_eventhub_data_connection) | resource |
 | [azurerm_kusto_eventhub_data_connection.eventhub_connection_for_re_event](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kusto_eventhub_data_connection) | resource |
 | [azurerm_kusto_script.create_merge_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kusto_script) | resource |
+| [azurerm_private_endpoint.eventhub_gpd_spoke_pe](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.eventhub_spoke_pe](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.observability_storage_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.eventhub_observability_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.gpd_ingestion_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
@@ -121,8 +125,6 @@
 | [azurerm_role_assignment.fdr_qi_fdr_iuvs_data_evh_data_receiver_role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.fdr_qi_flow_data_evh_data_receiver_role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_storage_container.blob-observability-st](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
-| [azurerm_subnet.eventhub_observability_gpd_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
-| [azurerm_subnet.eventhub_observability_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
 | [azapi_resource.privatelink_private_endpoint_connection](https://registry.terraform.io/providers/azure/azapi/latest/docs/data-sources/resource) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
@@ -159,7 +161,6 @@
 | [azurerm_private_dns_zone.storage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_link_service.vmss_pls](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_link_service) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
-| [azurerm_resource_group.rg_event_private_dns_zone](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.rg_vnet_italy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_storage_account.observ_storage_account](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
@@ -172,7 +173,6 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_apim_dns_zone_prefix"></a> [apim\_dns\_zone\_prefix](#input\_apim\_dns\_zone\_prefix) | The dns subdomain for apim. | `string` | `null` | no |
 | <a name="input_app_forwarder_enabled"></a> [app\_forwarder\_enabled](#input\_app\_forwarder\_enabled) | Enable app\_forwarder | `bool` | `false` | no |
-| <a name="input_app_forwarder_ip_restriction_default_action"></a> [app\_forwarder\_ip\_restriction\_default\_action](#input\_app\_forwarder\_ip\_restriction\_default\_action) | (Required) The Default action for traffic that does not match any ip\_restriction rule. possible values include Allow and Deny. | `string` | n/a | yes |
 | <a name="input_cidr_subnet_observability_evh"></a> [cidr\_subnet\_observability\_evh](#input\_cidr\_subnet\_observability\_evh) | Address prefixes evh | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_observability_gpd_evh"></a> [cidr\_subnet\_observability\_gpd\_evh](#input\_cidr\_subnet\_observability\_gpd\_evh) | Address prefixes evh | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_observability_storage"></a> [cidr\_subnet\_observability\_storage](#input\_cidr\_subnet\_observability\_storage) | Storage address space | `list(string)` | `null` | no |
@@ -199,6 +199,7 @@
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
 | <a name="input_gpd_ingestion_storage_account"></a> [gpd\_ingestion\_storage\_account](#input\_gpd\_ingestion\_storage\_account) | n/a | <pre>object({<br/>    advanced_threat_protection    = bool<br/>    blob_delete_retention_days    = number<br/>    blob_versioning_enabled       = bool<br/>    backup_enabled                = bool<br/>    backup_retention              = optional(number, 0)<br/>    account_replication_type      = string<br/>    public_network_access_enabled = bool<br/><br/>  })</pre> | <pre>{<br/>  "account_replication_type": "LRS",<br/>  "advanced_threat_protection": false,<br/>  "backup_enabled": false,<br/>  "backup_retention": 0,<br/>  "blob_delete_retention_days": 30,<br/>  "blob_versioning_enabled": false,<br/>  "public_network_access_enabled": true<br/>}</pre> | no |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
+| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | n/a | <pre>object({<br/><br/>  })</pre> | `{}` | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_itn"></a> [location\_itn](#input\_location\_itn) | italynorth | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |
