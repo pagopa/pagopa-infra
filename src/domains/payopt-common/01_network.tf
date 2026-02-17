@@ -6,14 +6,6 @@ resource "azurerm_private_dns_a_record" "ingress" {
   records             = [var.ingress_load_balancer_ip]
 }
 
-resource "azurerm_subnet" "eventhub_italy" {
-  name                              = "${local.project}-eventhub-snet"
-  resource_group_name               = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name              = data.azurerm_virtual_network.vnet_italy.name
-  address_prefixes                  = var.cidr_paymentoptions_eventhub_italy
-  private_endpoint_network_policies = "Enabled"
-}
-
 module "eventhub_spoke_pe_snet" {
   source            = "./.terraform/modules/__v4__/IDH/subnet"
   env               = var.env
