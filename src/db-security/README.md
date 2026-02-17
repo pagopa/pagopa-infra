@@ -35,7 +35,7 @@ After creating the VM, login as admin user and follow these instructions:
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 91f7e70706ce328dc819a908d6e953f0b7b0fed3 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | a8779d9a41e1afb803cacbcfd778acb2e86e9a0a |
 | <a name="module_app_service_snet"></a> [app\_service\_snet](#module\_app\_service\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_metabase_app_service"></a> [metabase\_app\_service](#module\_metabase\_app\_service) | ./.terraform/modules/__v4__/IDH/app_service_webapp | n/a |
 | <a name="module_metabase_postgres_db"></a> [metabase\_postgres\_db](#module\_metabase\_postgres\_db) | ./.terraform/modules/__v4__/IDH/postgres_flexible_server | n/a |
