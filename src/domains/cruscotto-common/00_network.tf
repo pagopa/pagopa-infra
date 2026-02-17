@@ -27,6 +27,11 @@ data "azurerm_subnet" "aks_subnet" {
   resource_group_name  = local.vnet_italy_resource_group_name
 }
 
+data "azurerm_virtual_network" "spoke_data_vnet" {
+  name                = local.spoke_data_vnet_name
+  resource_group_name = local.hub_spoke_vnet_rg_name
+}
+
 #
 # Private DNS Zones
 #

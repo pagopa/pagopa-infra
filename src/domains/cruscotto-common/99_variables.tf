@@ -289,27 +289,14 @@ variable "cruscotto_blobs_retention_days" {
 }
 
 
-# IDH https://github.com/pagopa/terraform-azurerm-v4/blob/main/IDH/storage_account/LIBRARY.md#pagopa
+# IDH 
+# https://github.com/pagopa/terraform-azurerm-v4/blob/main/IDH/storage_account/LIBRARY.md#pagopa
+# https://github.com/pagopa/terraform-azurerm-v4/tree/main/IDH/storage_account#input_embedded_subnet
 variable "crusc8_sa_report" {
   type = object({
-    enabled           = bool
     idh_resource_tier = string
-    # https://github.com/pagopa/terraform-azurerm-v4/tree/main/IDH/storage_account#input_embedded_subnet
-    # embedded_subnets = object(
-    #   {
-    #     enabled      = bool
-    #     vnet_name    = optional(string, null)
-    #     vnet_rg_name = optional(string, null)
-    # })
   })
-
   default = {
-    enabled           = false
     idh_resource_tier = "basic" # idh_resource_tier is used in the name of the storage account, so it can't be empty
-    # embedded_subnets = {
-    #   enabled      = true
-    #   vnet_name    = null
-    #   vnet_rg_name = null
-    # }
   }
 }
