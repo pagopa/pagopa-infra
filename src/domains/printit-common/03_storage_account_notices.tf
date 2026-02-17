@@ -22,7 +22,7 @@ module "notices_sa" {
   public_network_access_enabled   = var.notices_storage_account.public_network_access_enabled
   enable_low_availability_alert   = var.notices_storage_account.enable_low_availability_alert
 
-  private_endpoint_enabled  = var.is_feature_enabled.sa_hub_spoke_pe && var.is_feature_enabled.storage && var.env_short != "d"
+  private_endpoint_enabled  = var.is_feature_enabled.sa_hub_spoke_pe && var.is_feature_enabled.storage_notice && var.env_short != "d"
   private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.privatelink_blob_azure_com.id]
   subnet_id                 = var.env_short != "d" ? module.storage_spoke_printit_snet[0].id : null
 
