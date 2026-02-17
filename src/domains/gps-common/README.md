@@ -27,10 +27,10 @@
 | <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | ./.terraform/modules/__v4__/github_federated_identity | n/a |
 | <a name="module_identity_oidc_01"></a> [identity\_oidc\_01](#module\_identity\_oidc\_01) | ./.terraform/modules/__v4__/github_federated_identity | n/a |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | ./.terraform/modules/__v4__/key_vault | n/a |
-| <a name="module_postgres_flexible_itn_snet_replica"></a> [postgres\_flexible\_itn\_snet\_replica](#module\_postgres\_flexible\_itn\_snet\_replica) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_postgres_flexible_itn_spoke_snet_replica"></a> [postgres\_flexible\_itn\_spoke\_snet\_replica](#module\_postgres\_flexible\_itn\_spoke\_snet\_replica) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_postgres_flexible_server_private_db"></a> [postgres\_flexible\_server\_private\_db](#module\_postgres\_flexible\_server\_private\_db) | ./.terraform/modules/__v4__/postgres_flexible_server | n/a |
 | <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
-| <a name="module_postgresql_gpd_itn_replica_db"></a> [postgresql\_gpd\_itn\_replica\_db](#module\_postgresql\_gpd\_itn\_replica\_db) | ./.terraform/modules/__v4__/postgres_flexible_server_replica | n/a |
+| <a name="module_postgresql_gpd_itn_replica_spoke_db"></a> [postgresql\_gpd\_itn\_replica\_spoke\_db](#module\_postgresql\_gpd\_itn\_replica\_spoke\_db) | ./.terraform/modules/__v4__/postgres_flexible_server_replica | n/a |
 | <a name="module_storage_account_snet"></a> [storage\_account\_snet](#module\_storage\_account\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v4__/kubernetes_workload_identity_init | n/a |
@@ -180,6 +180,7 @@
 | [azurerm_subnet.common_itn_private_endpoint_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_user_assigned_identity.iac_federated_azdo](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
+| [azurerm_virtual_network.spoke_data_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet_italy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet_italy_cstar_integration](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |

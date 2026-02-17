@@ -273,3 +273,11 @@ variable "cidr_subnet_cosmosdb_qi" {
   type        = list(string)
   description = "Cosmos DB address space for qi."
 }
+
+variable "is_feature_enabled" {
+  type = object({
+  })
+  default = {
+  }
+}
+
