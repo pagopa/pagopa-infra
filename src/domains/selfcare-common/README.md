@@ -58,6 +58,7 @@
 | [azurerm_key_vault_secret.selfcare_service_principal_client_id](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.selfcare_service_principal_client_secret](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_management_lock.mongodb_pagopa_backoffice](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/management_lock) | resource |
+| [azurerm_portal_dashboard.backoffice_services_consent_dashboard](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/portal_dashboard) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/private_dns_a_record) | resource |
 | [azurerm_resource_group.bopagopa_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/resource_group) | resource |
 | [azurerm_role_assignment.appconf_dataowner_adgroup_admin](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/role_assignment) | resource |
