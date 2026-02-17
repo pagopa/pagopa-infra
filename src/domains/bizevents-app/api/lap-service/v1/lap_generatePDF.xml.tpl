@@ -33,6 +33,9 @@
             <when condition="@( !((string) context.Variables["attachment_generation_lock"]).Equals("NONE") )">
                 <return-response>
                     <set-status code="404" reason="Not found" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
                     <set-body>@{
                         string fiscalCode = (string) context.Variables["fiscal_code"];
                         string eventId = (string) context.Variables["event_id"];

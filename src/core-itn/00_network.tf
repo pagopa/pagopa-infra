@@ -35,3 +35,9 @@ data "azurerm_key_vault_secret" "cstar_subscription_id" {
   name         = "cstar-subscription-id"
   key_vault_id = module.key_vault.id
 }
+
+### Vnet Hub - Spoke
+data "azurerm_virtual_network" "spoke_tools" {
+  name                = "${local.product_ita}-spoke-tools-vnet"
+  resource_group_name = "${local.product_ita}-network-hub-spoke-rg"
+}

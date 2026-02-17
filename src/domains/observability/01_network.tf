@@ -30,17 +30,49 @@ data "azurerm_resource_group" "rg_event_private_dns_zone" {
 }
 
 # all snet for each evh(s)
-
-resource "azurerm_subnet" "eventhub_observability_snet" {
-  name                 = "${local.project_itn}-evh-observability-snet"
-  resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
-  address_prefixes     = var.cidr_subnet_observability_evh
-}
-
 resource "azurerm_subnet" "eventhub_observability_gpd_snet" {
   name                 = "${local.project_itn}-evh-observability-gpd--snet"
   resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
   virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
   address_prefixes     = var.cidr_subnet_observability_gpd_evh
+
+  private_endpoint_network_policies = "Enabled"
+}
+
+module "eventhub_observability_spoke_pe_snet" {
+  source            = "./.terraform/modules/__v4__/IDH/subnet"
+  env               = var.env
+  idh_resource_tier = "slash28_privatelink_true"
+  name              = "${local.project}-spoke-streaming-evh-pe-snet"
+  product_name      = var.prefix
+
+  resource_group_name  = local.vnet_hub_spoke_rg_name
+  virtual_network_name = local.vnet_spoke_streaming_name
+
+  custom_nsg_configuration = {
+    target_service               = "eventhub"
+    source_address_prefixes_name = "All"
+    source_address_prefixes      = ["*"]
+  }
+
+  tags = module.tag_config.tags
+}
+
+module "eventhub_observability_gpd_spoke_pe_snet" {
+  source            = "./.terraform/modules/__v4__/IDH/subnet"
+  env               = var.env
+  idh_resource_tier = "slash28_privatelink_true"
+  name              = "${local.project}-spoke-streaming-evh-gpd-pe-snet"
+  product_name      = var.prefix
+
+  resource_group_name  = local.vnet_hub_spoke_rg_name
+  virtual_network_name = local.vnet_spoke_streaming_name
+
+  custom_nsg_configuration = {
+    target_service               = "eventhub"
+    source_address_prefixes_name = "All"
+    source_address_prefixes      = ["*"]
+  }
+
+  tags = module.tag_config.tags
 }

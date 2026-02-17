@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "gpd_ingestion_rg" {
 }
 
 module "gpd_ingestion_sa" {
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                            = replace(format("%s-gpd-ingest-sa", local.product), "-", "")
   account_kind                    = "StorageV2"

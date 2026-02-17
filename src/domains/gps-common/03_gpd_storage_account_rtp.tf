@@ -1,5 +1,5 @@
 module "gpd_rtp_sa" {
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                            = replace("${local.project}-rtp-sa", "-", "")
   account_kind                    = var.rtp_storage_account.account_kind

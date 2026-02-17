@@ -1,5 +1,5 @@
 locals {
-  tools_cae_name = "${local.product}-${var.location_short}-core-tools-cae"
+  tools_cae_name = var.env_short != "p" ? "${local.project_core_itn}-spoke-tools-cae" : "${local.product}-${var.location_short}-core-tools-cae"
   tools_cae_rg   = "${local.product}-${var.location_short}-core-tools-rg"
 }
 
@@ -12,7 +12,7 @@ module "gh_runner_job" {
   environment_rg     = local.tools_cae_rg
   gh_identity_suffix = "job-01"
   gh_env             = var.env
-  runner_labels      = ["self-hosted-job", "${var.env}"]
+  runner_labels      = ["self-hosted-job", var.env]
   gh_repositories = [
     {
       name : "pagopa-cruscotto-frontend",
@@ -24,7 +24,8 @@ module "gh_runner_job" {
     }
   ]
   job = {
-    name = var.domain
+    name                 = var.domain
+    scale_max_executions = 1
   }
   job_meta = {}
   key_vault = {
@@ -43,6 +44,6 @@ module "gh_runner_job" {
   prefix                  = var.prefix
   resource_group_name     = data.azurerm_resource_group.identity_rg.name
   domain_security_rg_name = "${local.project}-sec-rg"
-  tags                    = module.tag_config.tags
 
+  tags = module.tag_config.tags
 }
