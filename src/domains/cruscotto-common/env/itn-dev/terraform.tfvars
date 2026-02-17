@@ -110,7 +110,7 @@ custom_metric_alerts = {
   }
 }
 
-# Storage Account
+# Storage Account Crusc8  Report 
 cidr_subnet_storage_account = ["10.3.8.0/27"]
 cruscotto_storage_account = {
   account_kind                  = "StorageV2"
@@ -127,4 +127,7 @@ cruscotto_storage_account = {
 
 cruscotto_blobs_retention_days = 30
 
-
+crusc8_sa_report = {
+  enabled           = true
+  idh_resource_tier = "basic"
+}

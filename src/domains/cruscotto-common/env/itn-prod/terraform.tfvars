@@ -127,4 +127,9 @@ cruscotto_storage_account = {
 
 cruscotto_blobs_retention_days = 90
 
+crusc8_sa_report = {
+  enabled           = false
+  idh_resource_tier = "backup30"
+}
+
 
