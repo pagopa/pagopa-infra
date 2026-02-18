@@ -1,9 +1,9 @@
-# resource "azurerm_resource_group" "cruscotto_rg" {
-#   name     = "${local.project}-sa-rg"
-#   location = var.location
+resource "azurerm_resource_group" "cruscotto_rg" {
+  name     = "${local.project}-sa-rg"
+  location = var.location
 
-#   tags = module.tag_config.tags
-# }
+  tags = module.tag_config.tags
+}
 
 module "crusc8_sa_report" {
   source            = "./.terraform/modules/__v4__/IDH/storage_account"
