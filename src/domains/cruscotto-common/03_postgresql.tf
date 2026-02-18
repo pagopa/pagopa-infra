@@ -22,10 +22,12 @@ module "postgres_flexible_snet" {
   resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
   virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
   service_endpoints    = ["Microsoft.Storage"]
+  product_name         = var.prefix
 
-  env          = var.env
-  idh_resource = "postgres_flexible"
-  prefix       = var.prefix
+  env               = var.env
+  idh_resource_tier = "postgres_flexible"
+
+  tags = module.tag_config.tags
 }
 
 module "postgres_flexible_server_crus8" {
@@ -35,9 +37,9 @@ module "postgres_flexible_server_crus8" {
   location            = azurerm_resource_group.db_rg.location
   resource_group_name = azurerm_resource_group.db_rg.name
 
-  env          = var.env_short != "p" ? var.env : "uat" # ⚠️⚠️⚠️ Italy : Cannot create a server with geo-redundant backup enabled in this location
-  idh_resource = var.pgres_flex_params.idh_resource
-  prefix       = var.prefix
+  env               = var.env_short != "p" ? var.env : "uat" # ⚠️⚠️⚠️ Italy : Cannot create a server with geo-redundant backup enabled in this location
+  idh_resource_tier = var.pgres_flex_params.idh_resource
+  product_name      = var.prefix
 
   private_dns_zone_id = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres.id : null
   delegated_subnet_id = module.postgres_flexible_snet.id

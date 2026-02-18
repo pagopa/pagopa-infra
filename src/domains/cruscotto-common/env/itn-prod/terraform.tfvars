@@ -109,3 +109,8 @@ custom_metric_alerts = {
     severity         = 2
   }
 }
+
+# Storage Account Crusc8  Report 
+crusc8_sa_report = {
+  idh_resource_tier = "backup30"
+}
