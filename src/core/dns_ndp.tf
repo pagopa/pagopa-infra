@@ -71,7 +71,7 @@ resource "azurerm_dns_txt_record" "dns-txt-www-test-nexi-ndp-pagopa-it-digicert"
   count               = var.env_short == "p" ? 1 : 0
   name                = "www.test.nexi"
   zone_name           = azurerm_dns_zone.ndp_public[0].name
-  resource_group_name = data.azurerm_resource_group.rg_vnet.name 
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   record {
     value = "_y1p650ps9fu6viiwifzplb9rtxt9wl7"
