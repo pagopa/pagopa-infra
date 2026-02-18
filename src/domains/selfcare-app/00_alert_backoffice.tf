@@ -267,22 +267,21 @@ AzureDiagnostics
   }
 }
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "alert_pagopa_backoffice_frontend_consent_availability" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "alert_pagopa_backoffice_bff_consent_availability" {
   count = var.env_short == "p" ? 1 : 0
 
-  name                = "alert-pagopa-backoffice-frontend-consent-availability"
+  name                = "alert-pagopa-backoffice-bff-consent-availability"
   resource_group_name = "dashboards"
   location            = var.location
 
   action {
     action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "[Selfcare-ms-backoffice-frontend] Service availability less than 99% in the last 15 minutes"
+    email_subject          = "[Selfcare-ms-backoffice-bff] Service availability less than 99% in the last 15 minutes"
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "Service availability less than 99% in the last 15 minutes"
   enabled        = true
-  #TO DO: tuning alert thresholds based 503 status code
   query = (<<-QUERY
 AzureDiagnostics
 | where (url_s matches regex "https://api.platform.pagopa.it/backoffice/v1/institutions/[^/]+/services/consents" and method_s == "GET") or 
