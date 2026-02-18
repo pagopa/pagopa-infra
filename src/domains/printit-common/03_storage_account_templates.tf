@@ -64,7 +64,7 @@ resource "azurerm_private_endpoint" "templates_blob_private_endpoint" {
 
 # https://github.com/hashicorp/terraform-provider-azurerm/issues/5820
 resource "azurerm_private_endpoint" "notices_table_private_endpoint" {
-  count = var.is_feature_enabled.storage_templates && var.env_short != "d" ? 1 : 0
+  count = var.is_feature_enabled.storage_templates && var.env_short != "d" && !var.is_feature_enabled.sa_hub_spoke_pe ? 1 : 0
 
   name                = "${local.project}-table-private-endpoint"
   location            = var.location
