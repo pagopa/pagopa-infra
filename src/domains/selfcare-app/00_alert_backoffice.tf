@@ -243,7 +243,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_pagopa_backoffice_
     email_subject          = "[Backoffice-external] Service availability less than 99% in the last 15 minutes"
     custom_webhook_payload = "{}"
   }
-  data_source_id = data.azurerm_application_insights.application_insights.id
+  data_source_id = data.azurerm_api_management.apim.id
   description    = "Service availability less than 99% in the last 15 minutes"
   enabled        = true
   query = (<<-QUERY
@@ -278,7 +278,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_pagopa_backoffice_
     email_subject          = "[Selfcare-ms-backoffice-bff] Service availability less than 99% in the last 15 minutes"
     custom_webhook_payload = "{}"
   }
-  data_source_id = data.azurerm_application_insights.application_insights.id
+  data_source_id = data.azurerm_api_management.apim.id
   description    = "Service availability less than 99% in the last 15 minutes"
   enabled        = true
   query = (<<-QUERY
