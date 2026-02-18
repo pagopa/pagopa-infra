@@ -16,6 +16,7 @@ is_feature_enabled = {
   storage_templates       = true
   eventhub                = true
   cosmos_hub_spoke_pe_dns = false
+  sa_hub_spoke_pe         = true
 }
 
 ### CIRDs

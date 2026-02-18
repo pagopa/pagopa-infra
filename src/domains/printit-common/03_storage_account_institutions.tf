@@ -17,6 +17,11 @@ module "institutions_sa" {
 
   blob_delete_retention_days = var.institutions_storage_account.blob_delete_retention_days
 
+  private_endpoint_enabled  = var.is_feature_enabled.storage_institutions && var.env_short != "d" && var.is_feature_enabled.sa_hub_spoke_pe
+  private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.privatelink_blob_azure_com.id]
+  subnet_id                 = var.env_short != "d" ? module.storage_spoke_printit_snet[0].id : null
+
+
   blob_change_feed_enabled             = var.institutions_storage_account.backup_enabled
   blob_change_feed_retention_in_days   = var.institutions_storage_account.backup_enabled ? var.institutions_storage_account.backup_retention + 1 : null
   blob_container_delete_retention_days = var.institutions_storage_account.backup_retention
@@ -29,7 +34,7 @@ module "institutions_sa" {
 }
 
 resource "azurerm_private_endpoint" "institutions_blob_private_endpoint" {
-  count = var.is_feature_enabled.storage_institutions && var.env_short != "d" ? 1 : 0
+  count = var.is_feature_enabled.storage_institutions && var.env_short != "d" && !var.is_feature_enabled.sa_hub_spoke_pe ? 1 : 0
 
   name                = "${local.project}-institution-blob-private-endpoint"
   location            = var.location

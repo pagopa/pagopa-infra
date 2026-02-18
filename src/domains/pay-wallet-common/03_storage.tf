@@ -23,10 +23,14 @@ module "pay_wallet_storage" {
 
   blob_delete_retention_days = var.pay_wallet_storage_params.retention_days
 
+  private_endpoint_enabled   = var.is_feature_enabled.sa_hub_spoke_pe ? var.is_feature_enabled.storage && var.env_short != "d" : false
+  private_dns_zone_queue_ids = [data.azurerm_private_dns_zone.privatelink_queue_azure_com.id]
+  subnet_id                  = var.env_short != "d" ? module.storage_spoke_pay_wallet_snet[0].id : null
+
   network_rules = var.env_short != "d" ? {
     default_action             = "Deny"
     ip_rules                   = []
-    virtual_network_subnet_ids = [module.storage_pay_wallet_snet.id]
+    virtual_network_subnet_ids = [module.storage_pay_wallet_snet.id, module.storage_spoke_pay_wallet_snet[0].id]
     bypass                     = ["AzureServices"]
   } : null
   tags = module.tag_config.tags
@@ -34,7 +38,7 @@ module "pay_wallet_storage" {
 
 
 resource "azurerm_private_endpoint" "storage_private_endpoint" {
-  count = var.is_feature_enabled.storage && var.env_short != "d" ? 1 : 0
+  count = var.is_feature_enabled.storage && var.env_short != "d" && !var.is_feature_enabled.sa_hub_spoke_pe ? 1 : 0
 
   name                = "${local.project}-tr-storage-private-endpoint"
   location            = var.location
