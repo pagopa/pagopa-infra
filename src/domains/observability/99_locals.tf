@@ -1,9 +1,10 @@
 locals {
-  project         = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  project_itn     = "${var.prefix}-${var.env_short}-${var.location_short_itn}-${var.domain}"
-  project_legacy  = "${var.prefix}-${var.env_short}"
-  product         = "${var.prefix}-${var.env_short}"
-  product_network = "${var.prefix}-${var.env_short}-${var.location_short}-network"
+  project              = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_itn          = "${var.prefix}-${var.env_short}-${var.location_short_itn}-${var.domain}"
+  project_legacy       = "${var.prefix}-${var.env_short}"
+  product              = "${var.prefix}-${var.env_short}"
+  product_location_itn = "${var.prefix}-${var.env_short}-${var.location_short_itn}"
+  product_network      = "${var.prefix}-${var.env_short}-${var.location_short}-network"
 
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
 
@@ -25,6 +26,9 @@ locals {
 
   vnet_italy_name                = "${local.product}-itn-vnet"
   vnet_italy_resource_group_name = "${local.product}-itn-vnet-rg"
+
+  vnet_hub_spoke_rg_name    = "${local.product_location_itn}-network-hub-spoke-rg"
+  vnet_spoke_streaming_name = "${local.product_location_itn}-spoke-streaming-vnet"
 
   dataexplorer_ls_name = "AzureDataExplorer${var.env_short}LinkService"
 
