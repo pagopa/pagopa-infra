@@ -1,0 +1,46 @@
+[
+    {
+        "name": "ID_PSP",
+        "type": "string"
+    },
+    {
+        "name": "DESCRIZIONE",
+        "type": "string"
+    },
+    {
+        "name": "RAGIONE_SOCIALE",
+        "type": "string"
+    },
+    {
+        "name": "ENABLED",
+        "type": "string"
+    },
+    {
+        "name": "ABI",
+        "type": "string"
+    },
+    {
+        "name": "BIC",
+        "type": "string"
+    },
+    {
+        "name": "CODICE_MYBANK",
+        "type": "string"
+    },
+    {
+        "name": "MARCA_BOLLO_DIGITALE",
+        "type": "string"
+    },
+    {
+        "name": "CODICE_FISCALE",
+        "type": "string"
+    },
+    {
+        "name": "INSERTED_TIMESTAMP",
+        "type": "datetime"
+    },
+    {
+        "name": "UNIQUE_ID",
+        "type": "guid"
+    }
+]

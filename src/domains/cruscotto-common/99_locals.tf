@@ -17,6 +17,9 @@ locals {
   vnet_italy_resource_group_name = "${local.product}-itn-vnet-rg"
   vnet_core_resource_group_name  = "${local.product}-vnet-rg"
 
+  spoke_data_vnet_name   = "${local.product}-${var.location_short}-spoke-data-vnet"
+  hub_spoke_vnet_rg_name = "${local.product}-${var.location_short}-network-hub-spoke-rg"
+
   aks_subnet_name = "${local.product}-${var.location_short}-${var.env}-user-aks"
 
   ingress_hostname = "${var.location_short}.${var.domain}"

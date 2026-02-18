@@ -9,6 +9,8 @@ location_ita       = "italynorth"
 location_short_ita = "itn"
 instance           = "dev"
 
+cloudo_function_tier = "basic_private"
+cloudo_ui_tier       = "basic"
 
 ### External resources
 

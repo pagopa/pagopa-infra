@@ -10,9 +10,7 @@ instance       = "uat"
 ### 🚩Features flags
 
 is_feature_enabled = {
-  eventhub         = true
-  evh_spoke_pe     = true
-  evh_spoke_pe_dns = true
+  eventhub = true
 }
 
 ### CIRDs
