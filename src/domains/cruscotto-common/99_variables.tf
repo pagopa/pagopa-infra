@@ -248,12 +248,7 @@ variable "postgres_dns_registration_enabled" {
   default     = true
 }
 
-# Storage Account
-variable "cidr_subnet_storage_account" {
-  type        = list(string)
-  description = "Storage account network address space."
-}
-
+# Storage Account Cruscotto report
 # IDH 
 # https://github.com/pagopa/terraform-azurerm-v4/blob/main/IDH/storage_account/LIBRARY.md#pagopa
 # https://github.com/pagopa/terraform-azurerm-v4/tree/main/IDH/storage_account#input_embedded_subnet
