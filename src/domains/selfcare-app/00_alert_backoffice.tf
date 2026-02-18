@@ -246,7 +246,6 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_pagopa_backoffice_
   data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "Service availability less than 99% in the last 15 minutes"
   enabled        = true
-  #TO DO: tuning alert thresholds based 503 status code
   query = (<<-QUERY
 AzureDiagnostics
 | where url_s matches regex "https://api.platform.pagopa.it/backoffice/pagopa/services/v1/institutions/services/[^/]+/consents" and method_s == "GET"
