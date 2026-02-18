@@ -111,22 +111,6 @@ custom_metric_alerts = {
 }
 
 # Storage Account Crusc8  Report 
-cidr_subnet_storage_account = ["10.3.8.0/27"]
-cruscotto_storage_account = {
-  account_kind                  = "StorageV2"
-  account_tier                  = "Standard"
-  account_replication_type      = "LRS"
-  blob_versioning_enabled       = false
-  advanced_threat_protection    = false
-  public_network_access_enabled = true
-  blob_delete_retention_days    = 30
-  enable_low_availability_alert = false
-  backup_enabled                = false
-  backup_retention              = 0
-}
-
-cruscotto_blobs_retention_days = 30
-
 crusc8_sa_report = {
   idh_resource_tier = "basic"
 }
