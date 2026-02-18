@@ -30,6 +30,21 @@ module "postgres_flexible_snet" {
   tags = module.tag_config.tags
 }
 
+# Postgres Flexible Server subnet Hub&Spoke
+module "postgres_flexible_hub_spoke_snet" {
+  source               = "./.terraform/modules/__v4__/IDH/subnet"
+  name                 = "${local.project}-data-spoke-pgres-flexible-snet"
+  resource_group_name  = data.azurerm_virtual_network.spoke_data_vnet.resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.spoke_data_vnet.name
+  service_endpoints    = ["Microsoft.Storage"]
+  product_name         = var.prefix
+
+  env               = var.env
+  idh_resource_tier = "postgres_flexible"
+
+  tags = module.tag_config.tags
+}
+
 module "postgres_flexible_server_crus8" {
   source = "./.terraform/modules/__v4__/IDH/postgres_flexible_server"
 
