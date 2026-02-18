@@ -37,7 +37,7 @@ cloudo_ui = {
 # ClouDO worker parameters
 cloudo_worker = {
   image_name        = "pagopa/cloudo-worker"
-  image_tag         = "0.9.0"
+  image_tag         = "0.9.1"
   registry_url      = "https://ghcr.io"
   registry_username = "payments-cloud-bot"
 }
