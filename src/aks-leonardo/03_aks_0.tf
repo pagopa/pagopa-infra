@@ -133,7 +133,8 @@ resource "azurerm_kubernetes_cluster_node_pool" "user_nodepool_default" {
   enable_node_public_ip = false
 
   upgrade_settings {
-    max_surge = var.aks_user_node_pool.upgrade_settings_max_surge
+    max_surge                = var.aks_user_node_pool.upgrade_settings_max_surge
+    drain_timeout_in_minutes = 30
   }
 
   tags = merge(module.tag_config.tags, var.aks_user_node_pool.node_tags)
