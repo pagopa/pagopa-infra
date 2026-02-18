@@ -78,9 +78,9 @@ module "apim_checkout_carts_auth_v2" {
   api_version           = "v2"
   service_url           = local.apim_checkout_carts_auth.service_url
 
-  description  = "${local.apim_checkout_carts_auth.description} - v2"
-  display_name = "${local.apim_checkout_carts_auth.display_name} - v2"
-  path         = "${local.apim_checkout_carts_auth.path}/v2"
+  description  = local.apim_checkout_carts_auth.description
+  display_name = local.apim_checkout_carts_auth.display_name
+  path         = local.apim_checkout_carts_auth.path
   protocols    = ["https"]
 
   content_format = "openapi"
