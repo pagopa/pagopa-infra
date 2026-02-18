@@ -109,5 +109,14 @@ databases = {
     schema            = "re"
     catalog           = "nexi_re"
   }
+  RE_Storico = {
+    type              = "nexi"
+    host              = "10.1.131.14"
+    port              = "8080"
+    username          = "admin"
+    password_required = false
+    schema            = "re"
+    catalog           = "nexi_re_storico"
+  }
 
 }
