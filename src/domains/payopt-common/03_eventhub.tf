@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "eventhub_ita_rg" {
 }
 
 module "eventhub_namespace" {
-  source                   = "./.terraform/modules/__v3__/eventhub"
+  source                   = "./.terraform/modules/__v4__/eventhub"
   name                     = "${local.project}-evh"
   location                 = var.location
   resource_group_name      = azurerm_resource_group.eventhub_ita_rg.name
@@ -16,20 +16,14 @@ module "eventhub_namespace" {
   maximum_throughput_units = var.ehns_maximum_throughput_units
   #zone_redundat is always true
 
-  virtual_network_ids           = [data.azurerm_virtual_network.vnet_italy.id]
-  private_endpoint_subnet_id    = azurerm_subnet.eventhub_italy.id
+
   public_network_access_enabled = var.ehns_public_network_access
-  private_endpoint_created      = var.ehns_private_endpoint_is_present
+  private_endpoint_created      = false
 
   private_endpoint_resource_group_name = azurerm_resource_group.eventhub_ita_rg.name
 
-  private_dns_zones = {
-    id                  = [data.azurerm_private_dns_zone.eventhub.id]
-    name                = [data.azurerm_private_dns_zone.eventhub.name]
-    resource_group_name = data.azurerm_resource_group.rg_event_private_dns_zone.name
-  }
+  private_dns_zones_ids = [data.azurerm_private_dns_zone.eventhub.id]
 
-  private_dns_zone_record_A_name = "${var.domain}.${var.location_short}"
 
   action = [
     {
@@ -48,11 +42,35 @@ module "eventhub_namespace" {
   tags = module.tag_config.tags
 }
 
+# hub spoke private endpoint
+resource "azurerm_private_endpoint" "eventhub_spoke_pe" {
+  count = var.ehns_private_endpoint_is_present ? 1 : 0
+
+  name                = "${local.project}-evh-spoke-pe"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.eventhub_ita_rg.name
+  subnet_id           = module.eventhub_spoke_pe_snet.subnet_id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-evh-spoke-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.eventhub.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-evh-spoke-private-service-connection"
+    private_connection_resource_id = module.eventhub_namespace.namespace_id
+    is_manual_connection           = false
+    subresource_names              = ["namespace"]
+  }
+
+  tags = module.tag_config.tags
+}
+
 #
 # CONFIGURATION
 #
 module "eventhub_paymentoptions_configuration" {
-  source = "./.terraform/modules/__v3__/eventhub_configuration"
+  source = "./.terraform/modules/__v4__/eventhub_configuration"
   count  = var.is_feature_enabled.eventhub ? 1 : 0
 
   event_hub_namespace_name                = module.eventhub_namespace.name

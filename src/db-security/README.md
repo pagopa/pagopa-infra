@@ -35,11 +35,12 @@ After creating the VM, login as admin user and follow these instructions:
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | a4b4d4eeb688973df4c4f70cb996086497d84bd4 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 498aa770edfe95264936e9e8f7e209322e4a3820 |
 | <a name="module_app_service_snet"></a> [app\_service\_snet](#module\_app\_service\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_metabase_app_service"></a> [metabase\_app\_service](#module\_metabase\_app\_service) | ./.terraform/modules/__v4__/IDH/app_service_webapp | n/a |
 | <a name="module_metabase_postgres_db"></a> [metabase\_postgres\_db](#module\_metabase\_postgres\_db) | ./.terraform/modules/__v4__/IDH/postgres_flexible_server | n/a |
 | <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
+| <a name="module_route_table_app_service_snet"></a> [route\_table\_app\_service\_snet](#module\_route\_table\_app\_service\_snet) | ./.terraform/modules/__v4__/route_table | n/a |
 | <a name="module_secret_core"></a> [secret\_core](#module\_secret\_core) | ./.terraform/modules/__v4__/key_vault_secrets_query | n/a |
 | <a name="module_secret_core_itn"></a> [secret\_core\_itn](#module\_secret\_core\_itn) | ./.terraform/modules/__v4__/key_vault_secrets_query | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../tag_config | n/a |
@@ -98,6 +99,7 @@ After creating the VM, login as admin user and follow these instructions:
 | <a name="input_metabase_pgflex_params"></a> [metabase\_pgflex\_params](#input\_metabase\_pgflex\_params) | n/a | <pre>object({<br/>    idh_tier                               = string<br/>    db_version                             = string<br/>    storage_mb                             = string<br/>    pgres_flex_diagnostic_settings_enabled = bool<br/>    alerts_enabled                         = bool<br/>    private_dns_registration_enabled       = bool<br/>  })</pre> | n/a | yes |
 | <a name="input_metabase_plan_idh_tier"></a> [metabase\_plan\_idh\_tier](#input\_metabase\_plan\_idh\_tier) | IDH resource tier for metabase app service | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
+| <a name="input_route_table_routes"></a> [route\_table\_routes](#input\_route\_table\_routes) | n/a | <pre>list(object({<br/>    name                   = string<br/>    address_prefix         = string<br/>    next_hop_type          = string<br/>    next_hop_in_ip_address = string<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
