@@ -70,7 +70,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-pagopa-backoffice-
 
   data_source_id = data.azurerm_api_management.apim.id
   description    = "Availability for ${each.value.base_path} is less than or equal to 99%"
-  enabled        = false
+  enabled        = true
   query = var.env_short == "p" ? (<<-QUERY
 let threshold = 0.9;
 AzureDiagnostics
@@ -150,7 +150,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-pagopa-backoffice-
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "Error while running brokerIbansExport cron, the process failed while attempting to extract and persist all Iban of CI associated to a broker"
-  enabled        = false
+  enabled        = true
   query = format(<<-QUERY
   exceptions
     | where cloud_RoleName == "%s"
