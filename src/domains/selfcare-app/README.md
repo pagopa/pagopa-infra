@@ -20,7 +20,7 @@
 | <a name="module_apim_selfcare_backoffice_external_ec_product"></a> [apim\_selfcare\_backoffice\_external\_ec\_product](#module\_apim\_selfcare\_backoffice\_external\_ec\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_selfcare_backoffice_external_psp_product"></a> [apim\_selfcare\_backoffice\_external\_psp\_product](#module\_apim\_selfcare\_backoffice\_external\_psp\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_selfcare_backoffice_helpdesk_product"></a> [apim\_selfcare\_backoffice\_helpdesk\_product](#module\_apim\_selfcare\_backoffice\_helpdesk\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_selfcare_backoffice_institution_services_product"></a> [apim\_selfcare\_backoffice\_institution\_services\_product](#module\_apim\_selfcare\_backoffice\_institution\_services\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_selfcare_backoffice_institution_services_consents_product"></a> [apim\_selfcare\_backoffice\_institution\_services\_consents\_product](#module\_apim\_selfcare\_backoffice\_institution\_services\_consents\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_selfcare_product"></a> [apim\_selfcare\_product](#module\_apim\_selfcare\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v3__/cert_mounter | n/a |
 | <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup | n/a |
