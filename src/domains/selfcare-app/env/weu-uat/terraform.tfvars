@@ -28,3 +28,5 @@ tls_cert_check_helm = {
 
 selfcare_fe_enabled  = true
 robots_indexed_paths = []
+
+backoffice_external_for_rtp_sub_key_user = "Cstar ApiGateway"

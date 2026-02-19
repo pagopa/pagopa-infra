@@ -39,3 +39,6 @@ pod_disruption_budgets = {
     }
   },
 }
+
+
+backoffice_external_for_rtp_sub_key_user = "cstar api-gateway"

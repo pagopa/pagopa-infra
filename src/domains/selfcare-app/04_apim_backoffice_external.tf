@@ -116,3 +116,29 @@ module "apim_selfcare_backoffice_institution_services_product" {
 
   policy_xml = file("./api_product/_base_policy.xml")
 }
+
+#fetch the v1 api version
+data "azurerm_api_management_api" "apim_api_backoffice_institution_services_api_v1" {
+  name                = "${var.env_short}-backoffice-institution-services-api-v1"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  revision            = "1"
+}
+
+# fetch the apim rtp user to be used resource
+data "azurerm_api_management_user" "backoffice_external_for_rtp_sub_key_user" {
+  api_management_name = local.apim.name
+  resource_group_name = local.apim.rg
+  user_id             = var.backoffice_external_for_rtp_sub_key_user
+}
+
+#subscription key for RTP for api apim_api_backoffice_institution_services_api_v1
+resource "azurerm_api_management_subscription" "backoffice_external_for_rtp" {
+  api_management_name = local.apim.name
+  resource_group_name = local.apim.rg
+  display_name        = "Backoffice-external for RTP"
+  api_id              = replace(data.azurerm_api_management_api.apim_api_backoffice_institution_services_api_v1.id, ";rev=1", "")
+  allow_tracing       = false
+  state               = "active"
+  user_id             = data.azurerm_api_management_user.backoffice_external_for_rtp_sub_key_user
+}
