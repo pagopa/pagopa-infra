@@ -118,8 +118,8 @@ module "apim_selfcare_backoffice_external_institution_services_consents_product"
 }
 
 #fetch the v1 api version
-data "azurerm_api_management_api" "apim_api_backoffice_institution_services_api_v1" {
-  name                = "${var.env_short}-backoffice-institution-services-api-v1"
+data "azurerm_api_management_api" "apim_api_backoffice_external_institution_services_api_v1" {
+  name                = "${var.env_short}-backoffice-external-institution-services-api-v1"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
   revision            = "1"
@@ -132,12 +132,12 @@ data "azurerm_api_management_user" "backoffice_external_for_rtp_sub_key_user" {
   user_id             = var.backoffice_external_for_rtp_sub_key_user
 }
 
-#subscription key for RTP for api apim_api_backoffice_institution_services_api_v1
+#subscription key for RTP for api apim_api_backoffice_external_institution_services_api_v1
 resource "azurerm_api_management_subscription" "backoffice_external_for_rtp" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
   display_name        = "Backoffice-external for RTP"
-  api_id              = replace(data.azurerm_api_management_api.apim_api_backoffice_institution_services_api_v1.id, ";rev=1", "")
+  api_id              = replace(data.azurerm_api_management_api.apim_api_backoffice_external_institution_services_api_v1.id, ";rev=1", "")
   allow_tracing       = false
   state               = "active"
   user_id             = data.azurerm_api_management_user.backoffice_external_for_rtp_sub_key_user.id
