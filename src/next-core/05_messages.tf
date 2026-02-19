@@ -47,6 +47,8 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_integration_link_
 
 
 //replaces ns01
+
+
 module "event_hub03" {
   source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v7.62.0"
   name                     = "${local.project}-evh-ns03"
@@ -54,9 +56,9 @@ module "event_hub03" {
   resource_group_name      = azurerm_resource_group.msg_rg.name
   auto_inflate_enabled     = var.ehns_auto_inflate_enabled
   sku                      = var.ehns_sku_name
-  capacity                 = var.ehns_capacity
-  maximum_throughput_units = var.ehns_maximum_throughput_units
-  zone_redundant           = var.ehns_zone_redundant
+  capacity                 = var.ehns_03_capacity
+  maximum_throughput_units = var.ehns_03_maximum_throughput_units
+  zone_redundant           = var.ehns_03_zone_redundant
 
   virtual_network_ids = [module.vnet_integration.id, module.vnet.id]
   subnet_id           = module.eventhub_snet.id
@@ -107,7 +109,7 @@ module "event_hub04" {
   resource_group_name      = azurerm_resource_group.msg_rg.name
   auto_inflate_enabled     = var.ehns_auto_inflate_enabled
   sku                      = var.ehns_sku_name
-  capacity                 = var.ehns_capacity
+  capacity                 = var.ehns_04_capacity
   maximum_throughput_units = var.ehns_maximum_throughput_units
   zone_redundant           = var.ehns_zone_redundant
 
@@ -150,6 +152,8 @@ module "event_hub04" {
   tags = module.tag_config.tags
 }
 
+
+
 module "event_hubprf" {
   count                    = var.env_short == "u" ? 1 : 0
   source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v7.62.0"
@@ -158,9 +162,9 @@ module "event_hubprf" {
   resource_group_name      = azurerm_resource_group.msg_rg.name
   auto_inflate_enabled     = var.ehns_auto_inflate_enabled
   sku                      = var.ehns_sku_name
-  capacity                 = var.ehns_capacity
-  maximum_throughput_units = var.ehns_maximum_throughput_units
-  zone_redundant           = var.ehns_zone_redundant
+  capacity                 = var.ehns_prf_capacity
+  maximum_throughput_units = var.ehns_prf_maximum_throughput_units
+  zone_redundant           = var.ehns_prf_zone_redundant
 
   virtual_network_ids = [module.vnet_integration.id, module.vnet.id]
   subnet_id           = module.eventhub_snet.id

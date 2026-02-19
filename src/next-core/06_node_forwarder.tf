@@ -192,8 +192,13 @@ resource "azurerm_private_endpoint" "forwarder_input_private_endpoint" {
   tags = module.tag_config.tags
 }
 
-resource "azurerm_private_endpoint" "forwarder_staging_input_private_endpoint" {
+# moved {
+#   from = azurerm_private_endpoint.forwarder_staging_input_private_endpoint
+#   to   = azurerm_private_endpoint.forwarder_staging_input_private_endpoint[0]
+# }
 
+resource "azurerm_private_endpoint" "forwarder_staging_input_private_endpoint" {
+  # count = var.env_short != "d" ? 1 : 0
   name                = "${local.project}-node-forwarder-staging-private-endpoint"
   location            = var.location
   resource_group_name = azurerm_resource_group.node_forwarder_rg.name
@@ -226,7 +231,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
     name = "default"
 
     capacity {
-      default = 5
+      default = 3
       minimum = 3
       maximum = 10
     }
@@ -322,6 +327,8 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
     }
 
   }
+
+  tags = module.tag_config.tags
 
 }
 

@@ -160,7 +160,7 @@ locals {
 }
 
 #
-# 🔱 APP GW Integration
+#  APP GW Integration
 #
 module "app_gw_integration" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v8.93.1"

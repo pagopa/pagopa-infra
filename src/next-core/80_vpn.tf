@@ -27,13 +27,14 @@ moved {
   to   = module.vpn
 }
 
+
 module "vpn" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//vpn_gateway?ref=v8.33.0"
 
   name                  = "${local.product}-vpn"
   location              = var.location
   resource_group_name   = azurerm_resource_group.rg_vnet.name
-  sku                   = "VpnGw1"
+  sku                   = var.vpn_gw_sku
   pip_sku               = var.vpn_gw_pip_sku
   pip_allocation_method = var.vpn_gw_pip_allocation_method
   subnet_id             = module.vpn_snet.id
