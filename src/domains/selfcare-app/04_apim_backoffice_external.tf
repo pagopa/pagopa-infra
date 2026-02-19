@@ -116,6 +116,7 @@ module "apim_selfcare_backoffice_external_institution_services_consents_product"
 
   policy_xml = file("./api_product/_base_policy.xml")
 }
+<<<<<<< add-rtp-subscription-key
 
 #fetch the v1 api version
 data "azurerm_api_management_api" "apim_api_backoffice_external_institution_services_api_v1" {
@@ -142,3 +143,5 @@ resource "azurerm_api_management_subscription" "backoffice_external_for_rtp" {
   state               = "active"
   user_id             = data.azurerm_api_management_user.backoffice_external_for_rtp_sub_key_user.id
 }
+=======
+>>>>>>> main
