@@ -37,6 +37,7 @@
 | [azurerm_api_management_api_operation.pagopa_token_exchange](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation) | resource |
 | [azurerm_api_management_api_operation_policy.pagopa_token_exchange_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_certificate.pagopa_token_exchange_cert_jwt](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_certificate) | resource |
+| [azurerm_api_management_subscription.backoffice_external_for_rtp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.notices_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.status_page_improvement_api_key_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_key_vault_certificate.pagopa_jwt_signing_cert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate) | resource |
@@ -75,8 +76,10 @@
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/data-sources/group) | data source |
 | [azurerm_api_management.apim](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
+| [azurerm_api_management_api.apim_api_backoffice_external_institution_services_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_api) | data source |
 | [azurerm_api_management_api.apim_backoffice-helpdesk_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_api) | data source |
 | [azurerm_api_management_product.apim_notices_product](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
+| [azurerm_api_management_user.backoffice_external_for_rtp_sub_key_user](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_user) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_key_vault.kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
@@ -100,6 +103,7 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_apim_dns_zone_prefix"></a> [apim\_dns\_zone\_prefix](#input\_apim\_dns\_zone\_prefix) | The dns subdomain for apim. | `string` | `null` | no |
+| <a name="input_backoffice_external_for_rtp_sub_key_user"></a> [backoffice\_external\_for\_rtp\_sub\_key\_user](#input\_backoffice\_external\_for\_rtp\_sub\_key\_user) | (Mandatory) The user name to which associate backoffice external service subscription key to | `string` | `null` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
