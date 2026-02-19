@@ -127,15 +127,15 @@ data "azurerm_api_management_api" "apim_api_backoffice_institution_services_api_
 
 # fetch the apim rtp user to be used resource
 data "azurerm_api_management_user" "backoffice_external_for_rtp_sub_key_user" {
-  api_management_name = local.apim.name
-  resource_group_name = local.apim.rg
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   user_id             = var.backoffice_external_for_rtp_sub_key_user
 }
 
 #subscription key for RTP for api apim_api_backoffice_institution_services_api_v1
 resource "azurerm_api_management_subscription" "backoffice_external_for_rtp" {
-  api_management_name = local.apim.name
-  resource_group_name = local.apim.rg
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   display_name        = "Backoffice-external for RTP"
   api_id              = replace(data.azurerm_api_management_api.apim_api_backoffice_institution_services_api_v1.id, ";rev=1", "")
   allow_tracing       = false
