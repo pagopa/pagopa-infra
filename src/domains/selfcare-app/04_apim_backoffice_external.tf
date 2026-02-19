@@ -140,5 +140,5 @@ resource "azurerm_api_management_subscription" "backoffice_external_for_rtp" {
   api_id              = replace(data.azurerm_api_management_api.apim_api_backoffice_institution_services_api_v1.id, ";rev=1", "")
   allow_tracing       = false
   state               = "active"
-  user_id             = data.azurerm_api_management_user.backoffice_external_for_rtp_sub_key_user
+  user_id             = data.azurerm_api_management_user.backoffice_external_for_rtp_sub_key_user.id
 }
