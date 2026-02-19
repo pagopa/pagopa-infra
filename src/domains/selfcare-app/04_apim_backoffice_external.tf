@@ -14,6 +14,10 @@ locals {
     display_name = "Selfcare Backoffice Helpdesk Product pagoPA"
     description  = "API for Backoffice Helpdesk"
   }
+  apim_selfcare_backoffice_institution_services_api = {
+    display_name = "Selfcare Backoffice Helpdesk Product pagoPA"
+    description  = "API for Backoffice Helpdesk"
+  }
 }
 
 
@@ -92,4 +96,23 @@ resource "azurerm_api_management_subscription" "status_page_improvement_api_key_
   display_name  = "Status Page Improvement API Key for Backoffice Helpdesk"
   allow_tracing = false
   state         = "active"
+}
+
+#Backoffice institutions service product
+module "apim_selfcare_backoffice_institution_services_product" {
+  source = "./.terraform/modules/__v3__/api_management_product"
+
+  product_id   = "selfcare-bo-institution-services"
+  display_name = local.apim_selfcare_backoffice_institution_services_api.display_name
+  description  = local.apim_selfcare_backoffice_institution_services_api.description
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = true
+  subscription_required = true
+  approval_required     = true
+  subscriptions_limit   = 10000
+
+  policy_xml = file("./api_product/_base_policy.xml")
 }
