@@ -118,5 +118,22 @@ databases = {
     schema            = "re"
     catalog           = "nexi_re_storico"
   }
-
+  NodoOnlineStorico = {
+    type              = "nexi"
+    host              = "10.1.131.14"
+    port              = "8080"
+    username          = "admin"
+    password_required = false
+    schema            = "nodo_online"
+    catalog           = "nexi_online_storico"
+  }
+  NodoOfflineStorico = {
+    type              = "nexi"
+    host              = "10.1.131.14"
+    port              = "8080"
+    username          = "admin"
+    password_required = false
+    schema            = "nodo_offline"
+    catalog           = "nexi_offline_storico"
+  }
 }
