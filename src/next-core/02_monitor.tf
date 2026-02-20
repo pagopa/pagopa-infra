@@ -75,13 +75,14 @@ resource "azurerm_private_endpoint" "monitor_workspace_private_endpoint" {
 }
 
 # Application insights
-resource "azurerm_application_insights" "application_insights" {
-  name                = format("%s-appinsights", local.product)
-  location            = azurerm_resource_group.monitor_rg.location
-  resource_group_name = azurerm_resource_group.monitor_rg.name
-  application_type    = "other"
 
-  workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+resource "azurerm_application_insights" "application_insights" {
+  name                 = format("%s-appinsights", local.product)
+  location             = azurerm_resource_group.monitor_rg.location
+  resource_group_name  = azurerm_resource_group.monitor_rg.name
+  application_type     = "other"
+  daily_data_cap_in_gb = var.app_inisght_daily_data_cap_gb
+  workspace_id         = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   tags = module.tag_config.tags
 }
@@ -293,7 +294,7 @@ locals {
 }
 
 module "web_test_standard" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_standard_web_test?ref=v8.29.0"
+  source = "./.terraform/modules/__v4__/application_insights_standard_web_test"
 
   for_each = { for v in concat(local.test_urls, var.monitor_env_test_urls) : v.host => v if v != null }
 
@@ -322,6 +323,7 @@ module "web_test_standard" {
   alert_use_web_test_criteria              = true
   alert_enabled                            = try(each.value.alert_enabled, true)
 
+  tags = module.tag_config.tags
 
 }
 
@@ -333,43 +335,15 @@ resource "azurerm_monitor_diagnostic_setting" "activity_log" {
   log_analytics_workspace_id = data.azurerm_key_vault_secret.sec_workspace_id[0].value
   storage_account_id         = data.azurerm_key_vault_secret.sec_storage_id[0].value
 
-  log {
+  enabled_log {
     category = "Administrative"
-    enabled  = true
   }
 
-  log {
+  enabled_log {
     category = "Security"
-    enabled  = true
   }
 
-  log {
+  enabled_log {
     category = "Alert"
-    enabled  = true
-  }
-
-  log {
-    category = "Autoscale"
-    enabled  = false
-  }
-
-  log {
-    category = "Policy"
-    enabled  = false
-  }
-
-  log {
-    category = "Recommendation"
-    enabled  = false
-  }
-
-  log {
-    category = "ResourceHealth"
-    enabled  = false
-  }
-
-  log {
-    category = "ServiceHealth"
-    enabled  = false
   }
 }

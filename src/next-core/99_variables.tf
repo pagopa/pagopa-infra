@@ -304,6 +304,11 @@ variable "apim_v2_alerts_enabled" {
   default     = true
 }
 
+variable "app_inisght_daily_data_cap_gb" {
+  type        = number
+  description = "Daily data cap in GB for Application Insights."
+  default     = 20
+}
 
 ## Redis cache
 variable "redis_cache_params" {
@@ -312,12 +317,14 @@ variable "redis_cache_params" {
     capacity      = number
     sku_name      = string
     family        = string
+    zones         = optional(list(string), [])
   })
   default = {
     public_access = false
     capacity      = 1
     sku_name      = "Basic"
     family        = "C"
+    zones         = []
   }
 }
 
@@ -328,11 +335,6 @@ variable "create_redis_multiaz" {
 }
 
 
-variable "redis_zones" {
-  type        = list(string)
-  description = "(Optional) Zone list where redis will be deployed"
-  default     = ["1"]
-}
 
 variable "redis_version" {
   type        = string
@@ -816,7 +818,7 @@ variable "is_feature_enabled" {
     azdoa                     = optional(bool, true)
     apim_core_import          = optional(bool, false)
     use_new_apim              = optional(bool, false)
-    azdoa_extension           = optional(bool, false)
+    azdoa_extension           = optional(bool, true)
   })
   description = "Features enabled in this domain"
 }

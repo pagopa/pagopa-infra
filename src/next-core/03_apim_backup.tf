@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "data" {
 # Storage account to store backups: mainly api management
 module "backupstorage" {
   count  = var.env_short == "p" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.2.0"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                            = replace(format("%s-backupstorage", local.product), "-", "")
   account_kind                    = "StorageV2"

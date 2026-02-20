@@ -185,6 +185,7 @@ redis_cache_params = {
   capacity      = 1
   sku_name      = "Premium"
   family        = "P"
+  zones         = ["1", "2", "3"]
 }
 
 

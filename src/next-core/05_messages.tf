@@ -7,13 +7,13 @@ resource "azurerm_resource_group" "msg_rg" {
 
 ## Eventhub subnet
 module "eventhub_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.2.0"
-  name                                      = format("%s-eventhub-snet", local.product)
-  address_prefixes                          = var.cidr_subnet_eventhub
-  resource_group_name                       = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                      = module.vnet_integration.name
-  service_endpoints                         = ["Microsoft.EventHub"]
-  private_endpoint_network_policies_enabled = false
+  source                            = "./.terraform/modules/__v4__/subnet"
+  name                              = format("%s-eventhub-snet", local.product)
+  address_prefixes                  = var.cidr_subnet_eventhub
+  resource_group_name               = azurerm_resource_group.rg_vnet.name
+  virtual_network_name              = module.vnet_integration.name
+  service_endpoints                 = ["Microsoft.EventHub"]
+  private_endpoint_network_policies = "Disabled"
 }
 
 
@@ -47,10 +47,8 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_integration_link_
 
 
 //replaces ns01
-
-
 module "event_hub03" {
-  source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v7.62.0"
+  source                   = "./.terraform/modules/__v4__/eventhub"
   name                     = "${local.project}-evh-ns03"
   location                 = var.location
   resource_group_name      = azurerm_resource_group.msg_rg.name
@@ -58,20 +56,16 @@ module "event_hub03" {
   sku                      = var.ehns_sku_name
   capacity                 = var.ehns_03_capacity
   maximum_throughput_units = var.ehns_03_maximum_throughput_units
-  zone_redundant           = var.ehns_03_zone_redundant
-
-  virtual_network_ids = [module.vnet_integration.id, module.vnet.id]
-  subnet_id           = module.eventhub_snet.id
 
   eventhubs = var.eventhubs_03
 
   public_network_access_enabled = var.ehns_public_network_access
 
-  private_dns_zones = {
-    id   = [azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
-    name = [azurerm_private_dns_zone.privatelink_servicebus_windows_net.name]
-  }
-  private_dns_zone_record_A_name = "event_hub03"
+  private_endpoint_created             = true
+  private_dns_zones_ids                = [azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
+  private_endpoint_subnet_id           = module.eventhub_snet.id
+  private_endpoint_resource_group_name = azurerm_resource_group.msg_rg.name
+  network_rulesets                     = []
 
   alerts_enabled = var.ehns03_alerts_enabled
   metric_alerts  = var.ehns03_metric_alerts
@@ -103,7 +97,7 @@ module "event_hub03" {
 
 //replaces ns02
 module "event_hub04" {
-  source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v7.62.0"
+  source                   = "./.terraform/modules/__v4__/eventhub"
   name                     = "${local.project}-evh-ns04"
   location                 = var.location
   resource_group_name      = azurerm_resource_group.msg_rg.name
@@ -111,19 +105,14 @@ module "event_hub04" {
   sku                      = var.ehns_sku_name
   capacity                 = var.ehns_04_capacity
   maximum_throughput_units = var.ehns_maximum_throughput_units
-  zone_redundant           = var.ehns_zone_redundant
 
-  virtual_network_ids           = [module.vnet_integration.id, module.vnet.id]
-  subnet_id                     = module.eventhub_snet.id
-  public_network_access_enabled = var.ehns_public_network_access
-  private_dns_zones = {
-    id   = [azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
-    name = [azurerm_private_dns_zone.privatelink_servicebus_windows_net.name]
-  }
-  private_dns_zone_record_A_name = "event_hub04"
-
-  alerts_enabled = var.ehns04_alerts_enabled
-  metric_alerts  = var.ehns04_metric_alerts
+  private_endpoint_subnet_id           = module.eventhub_snet.id
+  public_network_access_enabled        = var.ehns_public_network_access
+  private_endpoint_created             = true
+  private_dns_zones_ids                = [azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
+  private_endpoint_resource_group_name = azurerm_resource_group.msg_rg.name
+  alerts_enabled                       = var.ehns04_alerts_enabled
+  metric_alerts                        = var.ehns04_metric_alerts
 
   eventhubs = var.eventhubs_04
 
@@ -156,7 +145,7 @@ module "event_hub04" {
 
 module "event_hubprf" {
   count                    = var.env_short == "u" ? 1 : 0
-  source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v7.62.0"
+  source                   = "./.terraform/modules/__v4__/eventhub"
   name                     = "${local.project}-evh-nsprf"
   location                 = var.location
   resource_group_name      = azurerm_resource_group.msg_rg.name
@@ -164,22 +153,15 @@ module "event_hubprf" {
   sku                      = var.ehns_sku_name
   capacity                 = var.ehns_prf_capacity
   maximum_throughput_units = var.ehns_prf_maximum_throughput_units
-  zone_redundant           = var.ehns_prf_zone_redundant
 
-  virtual_network_ids = [module.vnet_integration.id, module.vnet.id]
-  subnet_id           = module.eventhub_snet.id
+  private_endpoint_subnet_id = module.eventhub_snet.id
+  eventhubs                  = var.eventhubs_prf
 
-  eventhubs = var.eventhubs_prf
-
-  public_network_access_enabled = var.ehns_public_network_access
-
-  private_dns_zones = {
-    id   = [azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
-    name = [azurerm_private_dns_zone.privatelink_servicebus_windows_net.name]
-  }
-  private_dns_zone_record_A_name = "event_hubprf"
-
-  alerts_enabled = false # var.ehns_alerts_enabled
+  public_network_access_enabled        = var.ehns_public_network_access
+  private_dns_zones_ids                = [azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
+  private_endpoint_resource_group_name = azurerm_resource_group.msg_rg.name
+  private_endpoint_created             = true
+  alerts_enabled                       = false # var.ehns_alerts_enabled
   # metric_alerts  = var.ehns_metric_alerts
 
   # takes a list and replaces any elements that are lists with a
