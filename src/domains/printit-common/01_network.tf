@@ -21,14 +21,6 @@ resource "azurerm_subnet" "cosmosdb_italy_snet" {
   ]
 }
 
-resource "azurerm_subnet" "cidr_storage_italy" {
-  name                              = "${local.project}-storage-snet"
-  resource_group_name               = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name              = data.azurerm_virtual_network.vnet_italy.name
-  address_prefixes                  = var.cidr_printit_storage_italy
-  private_endpoint_network_policies = "Enabled"
-
-}
 
 resource "azurerm_subnet" "cidr_redis_italy" {
   name                              = "${local.project}-redis-snet"
