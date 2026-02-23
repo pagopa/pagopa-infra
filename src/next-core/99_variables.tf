@@ -842,6 +842,12 @@ variable "node_forwarder_logging_level" {
   default     = "INFO"
 }
 
+variable "node_forwarder_image_tag" {
+  type        = string
+  description = "The tag of the docker image to deploy for node forwarder"
+  default     = "latest"
+}
+
 variable "node_forwarder_autoscale_enabled" {
   type    = bool
   default = true

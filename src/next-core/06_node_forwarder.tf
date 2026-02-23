@@ -103,6 +103,7 @@ resource "azurerm_subnet_nat_gateway_association" "nodefw_ha_snet_nat_associatio
 }
 
 
+
 module "node_forwarder_app_service" {
   source = "./.terraform/modules/__v4__/app_service"
 
@@ -123,7 +124,7 @@ module "node_forwarder_app_service" {
   app_settings        = local.node_forwarder_app_settings
 
   docker_image             = "pagopanodeforwarder"
-  docker_image_tag         = "latest"
+  docker_image_tag         = var.node_forwarder_image_tag
   docker_registry_username = data.azurerm_container_registry.container_registry.admin_username
   docker_registry_password = data.azurerm_container_registry.container_registry.admin_password
   docker_registry_url      = "https://${data.azurerm_container_registry.container_registry.login_server}"
@@ -169,7 +170,7 @@ module "node_forwarder_slot_staging" {
   # App settings
   app_settings             = local.node_forwarder_app_settings
   docker_image             = "${data.azurerm_container_registry.container_registry.login_server}/pagopanodeforwarder"
-  docker_image_tag         = "latest"
+  docker_image_tag         = var.node_forwarder_image_tag
   docker_registry_username = data.azurerm_container_registry.container_registry.admin_username
   docker_registry_password = data.azurerm_container_registry.container_registry.admin_password
   docker_registry_url      = "https://${data.azurerm_container_registry.container_registry.login_server}"

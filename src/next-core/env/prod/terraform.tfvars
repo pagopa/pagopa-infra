@@ -19,6 +19,7 @@ is_feature_enabled = {
   dns_forwarder_lb          = true,
   apim_core_import          = true
   use_new_apim              = false
+  azdoa_extension           = false
 }
 
 #

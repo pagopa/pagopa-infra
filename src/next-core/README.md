@@ -484,6 +484,7 @@
 | <a name="input_nat_gateway_public_ips"></a> [nat\_gateway\_public\_ips](#input\_nat\_gateway\_public\_ips) | Number of public outbound ips | `number` | `1` | no |
 | <a name="input_node_forwarder_always_on"></a> [node\_forwarder\_always\_on](#input\_node\_forwarder\_always\_on) | Node Forwarder always on property | `bool` | `true` | no |
 | <a name="input_node_forwarder_autoscale_enabled"></a> [node\_forwarder\_autoscale\_enabled](#input\_node\_forwarder\_autoscale\_enabled) | n/a | `bool` | `true` | no |
+| <a name="input_node_forwarder_image_tag"></a> [node\_forwarder\_image\_tag](#input\_node\_forwarder\_image\_tag) | The tag of the docker image to deploy for node forwarder | `string` | `"latest"` | no |
 | <a name="input_node_forwarder_logging_level"></a> [node\_forwarder\_logging\_level](#input\_node\_forwarder\_logging\_level) | Logging level of Node Forwarder | `string` | `"INFO"` | no |
 | <a name="input_node_forwarder_sku"></a> [node\_forwarder\_sku](#input\_node\_forwarder\_sku) | (Required) The SKU for the plan. Possible values include B1, B2, B3, D1, F1, I1, I2, I3, I1v2, I2v2, I3v2, I4v2, I5v2, I6v2, P1v2, P2v2, P3v2, P0v3, P1v3, P2v3, P3v3, P1mv3, P2mv3, P3mv3, P4mv3, P5mv3, S1, S2, S3, SHARED, EP1, EP2, EP3, WS1, WS2, WS3, and Y1. | `string` | `"P3v3"` | no |
 | <a name="input_node_forwarder_zone_balancing_enabled"></a> [node\_forwarder\_zone\_balancing\_enabled](#input\_node\_forwarder\_zone\_balancing\_enabled) | (Optional) enables the load balancing for node forwarder app service plan | `bool` | `true` | no |
