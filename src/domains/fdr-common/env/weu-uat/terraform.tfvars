@@ -28,7 +28,7 @@ enable_iac_pipeline = true
 pgres_flex_params = {
 
   sku_name   = "GP_Standard_D4ds_v4"
-  db_version = "15"
+  db_version = "17"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                             = 1048576 # 1Tib
@@ -46,7 +46,7 @@ pgres_flex_params = {
   pgbouncer_min_pool_size                = 10
   max_worker_process                     = 8
   wal_level                              = "replica"
-  shared_preoload_libraries              = "pg_failover_slots"
+  shared_preoload_libraries              = "pg_cron,pg_failover_slots"
   public_network_access_enabled          = false
 }
 
