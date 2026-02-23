@@ -5,16 +5,6 @@ resource "azurerm_resource_group" "db_rg" {
   tags = module.tag_config.tags
 }
 
-data "azurerm_key_vault_secret" "pgres_flex_admin_login" {
-  name         = "db-administrator-login"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "pgres_flex_admin_pwd" {
-  name         = "db-administrator-login-password"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
 # Postgres Flexible Server subnet
 module "postgres_flexible_snet" {
   source                                        = "./.terraform/modules/__v4__/subnet"
