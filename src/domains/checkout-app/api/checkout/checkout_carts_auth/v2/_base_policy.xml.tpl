@@ -3,7 +3,7 @@
   <inbound>
       <base />
       <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
-      <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service")"/>
+      <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service/v2")"/>
       <set-header name="x-client-id" exists-action="delete" />
       <choose>
           <when condition="@(context.Subscription != null && context.Subscription.Id.ToLower().Equals("wisp-dismantling-checkout"))">
