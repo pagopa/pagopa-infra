@@ -155,7 +155,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_wal_lev
 #
 #   name      = "shared_preload_libraries"
 #   server_id = module.postgres_flexible_server_fdr.id
-#   value     = var.pgres_flex_params.shared_preoload_libraries # "pg_failover_slots"
+#   value     = var.pgres_flex_params.shared_preload_libraries # "pg_failover_slots"
 # }
 
 
