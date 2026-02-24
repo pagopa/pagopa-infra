@@ -146,10 +146,6 @@ No outputs.
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_endpoint.cosmos_data_mongo_pe](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.eventhub_spoke_pe](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_private_endpoint.institutions_blob_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_private_endpoint.notices_blob_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_private_endpoint.notices_table_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_private_endpoint.templates_blob_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.db_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.eventhub_ita_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.printit_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
@@ -161,7 +157,6 @@ No outputs.
 | [azurerm_storage_management_policy.st_blob_receipts_management_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy) | resource |
 | [azurerm_storage_table.template_data_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
 | [azurerm_subnet.cidr_redis_italy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
-| [azurerm_subnet.cidr_storage_italy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
 | [azurerm_subnet.cosmosdb_italy_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
 | [azurerm_subnet.pdf_engine_italy_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
 | [azurerm_user_assigned_identity.identity_blob_storage_pdf](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
@@ -217,7 +212,7 @@ No outputs.
 | <a name="input_ingress_load_balancer_ip"></a> [ingress\_load\_balancer\_ip](#input\_ingress\_load\_balancer\_ip) | n/a | `string` | n/a | yes |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
 | <a name="input_institutions_storage_account"></a> [institutions\_storage\_account](#input\_institutions\_storage\_account) | n/a | <pre>object({<br/>    account_kind                  = string<br/>    account_tier                  = string<br/>    account_replication_type      = string<br/>    advanced_threat_protection    = bool<br/>    blob_versioning_enabled       = bool<br/>    public_network_access_enabled = bool<br/>    blob_delete_retention_days    = number<br/>    enable_low_availability_alert = bool<br/>    backup_enabled                = optional(bool, false)<br/>    backup_retention              = optional(number, 0)<br/>  })</pre> | n/a | yes |
-| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | n/a | <pre>object({<br/>    cosmosdb_notice         = bool<br/>    storage_institutions    = bool<br/>    storage_notice          = bool<br/>    storage_templates       = bool<br/>    eventhub                = bool<br/>    cosmos_hub_spoke_pe_dns = optional(bool, false),<br/>    sa_hub_spoke_pe         = optional(bool, false),<br/>  })</pre> | <pre>{<br/>  "cosmos_hub_spoke_pe_dns": false,<br/>  "cosmosdb_notice": false,<br/>  "eventhub": false,<br/>  "sa_hub_spoke_pe": false,<br/>  "storage_institutions": false,<br/>  "storage_notice": false,<br/>  "storage_templates": false<br/>}</pre> | no |
+| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | n/a | <pre>object({<br/>    cosmosdb_notice         = bool<br/>    storage_institutions    = bool<br/>    storage_notice          = bool<br/>    storage_templates       = bool<br/>    eventhub                = bool<br/>    cosmos_hub_spoke_pe_dns = optional(bool, false),<br/>  })</pre> | <pre>{<br/>  "cosmos_hub_spoke_pe_dns": false,<br/>  "cosmosdb_notice": false,<br/>  "eventhub": false,<br/>  "storage_institutions": false,<br/>  "storage_notice": false,<br/>  "storage_templates": false<br/>}</pre> | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | `"itn"` | no |
 | <a name="input_log_analytics_italy_workspace_name"></a> [log\_analytics\_italy\_workspace\_name](#input\_log\_analytics\_italy\_workspace\_name) | Specifies the name of the Log Analytics Workspace Italy. | `string` | n/a | yes |

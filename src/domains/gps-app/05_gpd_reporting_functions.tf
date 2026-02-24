@@ -47,8 +47,8 @@ locals {
     FDR1_APIM_SUBSCRIPTION_KEY  = azurerm_key_vault_secret.fdr1_subscription_key.value
     FDR1_BASE_URL               = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "fdr-nodo/service-internal", "v1")
     FDR3_BASE_URL               = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "fdr-org/service", "v1")
-    FDR3_FLOW_LIST_DEPTH        = "2"
-    FDR3_LIST_ELEMENTS_FOR_PAGE = "30000"
+    FDR3_FLOW_LIST_DEPTH        = "1"
+    FDR3_LIST_ELEMENTS_FOR_PAGE = "1000"
 
     GPD_BASE_PATH            = "https://${local.apim_hostname}/gpd/api/v2"
     GPD_SUBKEY               = azurerm_api_management_subscription.gpd_for_reporting_subkey.primary_key
