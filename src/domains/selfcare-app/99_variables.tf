@@ -154,3 +154,10 @@ variable "gh_runner_job_location" {
   description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
   default     = "westeurope"
 }
+
+
+variable "backoffice_external_for_rtp_sub_key_user" {
+  type        = string
+  description = "(Mandatory) The user name to which associate backoffice external service subscription key to"
+  default     = null
+}
