@@ -11,7 +11,7 @@ locals {
 }
 
 module "apim_notices_service_product_external" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
   count  = var.is_feature_enabled.printit ? 1 : 0
 
   product_id   = "pagopa_notices_service_external"
@@ -30,7 +30,7 @@ module "apim_notices_service_product_external" {
 }
 
 module "apim_notices_service_product_internal" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
   count  = var.is_feature_enabled.printit ? 1 : 0
 
   product_id   = "pagopa_notices_service_internal"
