@@ -34,4 +34,3 @@ nexi_ndp_host                            = "nodo-p.npc.sia.eu"
 nexi_ndp_host_postgres                   = "nexi.ndp.pagopa.it"
 nexi_ndp_host_2                          = "nodo-dei-pagamenti.npc.sia.eu"
 
-test_nexi_postgres =
