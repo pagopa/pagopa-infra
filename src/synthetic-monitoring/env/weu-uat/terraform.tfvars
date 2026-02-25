@@ -12,7 +12,7 @@ use_private_endpoint             = true
 # Feature Flags
 #
 enabled_resource = {
-  container_app_tools_cae = true
+  test_nexi_postgres = true
 }
 
 # monitoring
