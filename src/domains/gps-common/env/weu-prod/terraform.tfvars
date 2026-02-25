@@ -1,10 +1,12 @@
-prefix         = "pagopa"
-env_short      = "p"
-env            = "prod"
-domain         = "gps"
-location       = "westeurope"
-location_short = "weu"
-instance       = "prod"
+prefix             = "pagopa"
+env_short          = "p"
+env                = "prod"
+domain             = "gps"
+location           = "westeurope"
+location_short     = "weu"
+location_itn       = "italynorth"
+location_itn_short = "itn"
+instance           = "prod"
 
 
 ### External resources
@@ -244,4 +246,22 @@ rtp_storage_account = {
   enable_low_availability_alert      = true
   backup_enabled                     = false
   backup_retention                   = 0
+}
+
+# Postgres Flexible Storico
+pgflex_storico_params = {
+  pgres_flex_pgbouncer_enabled           = false
+  alerts_enabled                         = false
+  pgres_flex_diagnostic_settings_enabled = false
+  max_connections                        = 850
+  enable_private_dns_registration        = true
+  max_worker_processes                   = 16
+  storage_mb                             = 1048576
+}
+
+pgflex_storico_geo_replication = {
+  enabled                     = false
+  name                        = "pagopa-p-gpd-storico-pgflex-replica"
+  location                    = "westeurope"
+  private_dns_registration_ve = false
 }

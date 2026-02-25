@@ -1,10 +1,12 @@
-prefix         = "pagopa"
-env_short      = "u"
-env            = "uat"
-domain         = "gps"
-location       = "westeurope"
-location_short = "weu"
-instance       = "uat"
+prefix             = "pagopa"
+env_short          = "u"
+env                = "uat"
+domain             = "gps"
+location           = "westeurope"
+location_short     = "weu"
+location_itn       = "italynorth"
+location_itn_short = "itn"
+instance           = "uat"
 
 
 ### External resources
@@ -218,4 +220,22 @@ rtp_storage_account = {
   public_network_access_enabled      = true
   blob_delete_retention_days         = 90
   enable_low_availability_alert      = false
+}
+
+# Postgres Flexible Storico
+pgflex_storico_params = {
+  pgres_flex_pgbouncer_enabled           = false
+  alerts_enabled                         = false
+  pgres_flex_diagnostic_settings_enabled = false
+  max_connections                        = 850
+  enable_private_dns_registration        = true
+  max_worker_processes                   = 16
+  storage_mb                             = 524288
+}
+
+pgflex_storico_geo_replication = {
+  enabled                     = false
+  name                        = "pagopa-u-gpd-storico-pgflex-replica"
+  location                    = "westeurope"
+  private_dns_registration_ve = false
 }
