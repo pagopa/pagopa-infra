@@ -71,7 +71,7 @@ resource "azapi_resource" "gpd_postgres_archive_linked_service" {
           },
           secretName = "${data.azurerm_key_vault_secret.gpd_db_pwd.name}"
         }
-        port     = "5436"                                                  // "8432" // adhoc private endpoint port
+        port     = "5436"                                                          // "8432" // adhoc private endpoint port
         server   = "gpd-storico-db.${var.env_short}.internal.postgresql.pagopa.it" // "172.205.217.81" // adhoc private endpoint host
         sslMode  = 3
         username = "${data.azurerm_key_vault_secret.gpd_db_usr.value}"
@@ -119,20 +119,20 @@ resource "azurerm_data_factory_pipeline" "pipeline_lifecycle_management" {
   data_factory_id = data.azurerm_data_factory.data_factory.id
 
   parameters = {
-    MaxAmountToMigrate = ""
-    ChunkSize    = 10000
+    MaxAmountToMigrate = 60000
+    ChunkSize          = 10000
   }
 
   variables = {
-    CurrentOffset       = 1
-    TempOffset = 0
-    AmountToMigrate    = 0
+    CurrentOffset   = 0
+    TempOffset      = 0
+    AmountToMigrate = 0
   }
 
   folder = "GPD_MIGRATION_PIPELINE"
 
   activities_json = "[${templatefile("datafactory/pipelines/GPD_LIFECYCLE_MANAGEMENT.json", {
-    linked_service_gpd = azapi_resource.gpd_postgres_linked_service.name,
+    linked_service_gpd         = azapi_resource.gpd_postgres_linked_service.name,
     linked_service_gpd_archive = azapi_resource.gpd_postgres_archive_linked_service.name,
   })}]"
 }
