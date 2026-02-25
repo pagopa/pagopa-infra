@@ -32,7 +32,7 @@ check_position_body = {
   notice_number = "310115803416020234"
 }
 verify_payment_internal_expected_outcome = "KO"
-nexi_node_ip                             = "10.70.66.200"
-nexi_node_ip_postgres                    = "10.70.66.200"
-nexi_ndp_host                            = "nodo-p-sit.tst-npc.sia.eu"
-nexi_ndp_host_postgres                   = "nodo-p-sit.tst-npc.sia.eu"
+nexi_node_ip                             = "10.79.20.63"
+nexi_node_ip_postgres                    = "10.79.20.63"
+nexi_ndp_host                            = "nodo-p-sit.nexigroup.com"
+nexi_ndp_host_postgres                   = "nodo-p-sit.nexigroup.com"

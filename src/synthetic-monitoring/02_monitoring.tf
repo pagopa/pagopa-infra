@@ -60,7 +60,6 @@ module "monitoring_function" {
     nexi_ndp_host                            = var.nexi_ndp_host
     nexi_ndp_host_postgres                   = var.nexi_ndp_host_postgres
     developers_action_group_ids              = jsonencode((can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]))
-    nexi_postgres_enabled                    = var.env == "prod" ? true : false
-
+    nexi_postgres_enabled                    = true
   })
 }
