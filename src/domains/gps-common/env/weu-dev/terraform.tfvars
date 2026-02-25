@@ -1,12 +1,12 @@
-prefix         = "pagopa"
-env_short      = "d"
-env            = "dev"
-domain         = "gps"
-location       = "westeurope"
-location_short = "weu"
+prefix             = "pagopa"
+env_short          = "d"
+env                = "dev"
+domain             = "gps"
+location           = "westeurope"
+location_short     = "weu"
 location_itn       = "italynorth"
-location_itn_short       = "itn"
-instance       = "dev"
+location_itn_short = "itn"
+instance           = "dev"
 
 
 ### External resources

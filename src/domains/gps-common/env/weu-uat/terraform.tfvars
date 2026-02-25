@@ -1,12 +1,12 @@
-prefix         = "pagopa"
-env_short      = "u"
-env            = "uat"
-domain         = "gps"
-location       = "westeurope"
-location_short = "weu"
+prefix             = "pagopa"
+env_short          = "u"
+env                = "uat"
+domain             = "gps"
+location           = "westeurope"
+location_short     = "weu"
 location_itn       = "italynorth"
-location_itn_short       = "itn"
-instance       = "uat"
+location_itn_short = "itn"
+instance           = "uat"
 
 
 ### External resources
