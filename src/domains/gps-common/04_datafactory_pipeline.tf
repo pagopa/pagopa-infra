@@ -108,3 +108,31 @@ resource "azurerm_data_factory_pipeline" "pipeline_odp_backfill" {
     linked_service_gpd = azapi_resource.gpd_postgres_linked_service.name
   })}]"
 }
+
+resource "azurerm_data_factory_pipeline" "pipeline_lifecycle_management" {
+  depends_on = [
+    azapi_resource.gpd_postgres_linked_service,
+    azapi_resource.gpd_postgres_archive_linked_service,
+  ]
+
+  name            = "GPD_LIFECYCLE_MANAGEMENT" #TODO update this folder
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+
+  parameters = {
+    MaxAmountToMigrate = ""
+    ChunkSize    = 10000
+  }
+
+  variables = {
+    CurrentOffset       = 1
+    TempOffset = 0
+    AmountToMigrate    = 0
+  }
+
+  folder = "GPD_MIGRATION_PIPELINE"
+
+  activities_json = "[${templatefile("datafactory/pipelines/GPD_LIFECYCLE_MANAGEMENT.json", {
+    linked_service_gpd = azapi_resource.gpd_postgres_linked_service.name,
+    linked_service_gpd_archive = azapi_resource.gpd_postgres_archive_linked_service.name,
+  })}]"
+}

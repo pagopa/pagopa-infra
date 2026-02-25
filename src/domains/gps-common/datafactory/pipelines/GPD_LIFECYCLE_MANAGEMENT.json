@@ -1,0 +1,300 @@
+{
+  "name": "GPD_LIFECYCLE_MANAGEMENT",
+  "properties": {
+    "activities": [
+      {
+        "name": "Until_fetch_store_delete_items",
+        "type": "Until",
+        "dependsOn": [
+          {
+            "activity": "Compute_to_migrate",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "expression": {
+            "value": "@greaterOrEquals(variables('CurrentOffset'), min(pipeline().parameters.MaxAmountToMigrate, int(activity('Compute_to_migrate').output.resultSets[0].rows[0].count)))",
+            "type": "Expression"
+          },
+          "activities": [
+            {
+              "name": "Retrieve_elements_from_online",
+              "type": "Script",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "linkedServiceName": {
+                "referenceName": "${linked_service_gpd}",
+                "type": "LinkedServiceReference"
+              },
+              "typeProperties": {
+                "scripts": [
+                  {
+                    "type": "Query",
+                    "text": {
+                      "value": "@concat('SELECT * FROM apd.get_archiving_chunk(', string(pipeline().parameters.ChunkSize),' ,', variables('CurrentOffset'),')')",
+                      "type": "Expression"
+                    }
+                  }
+                ],
+                "scriptBlockExecutionTimeout": "02:00:00"
+              }
+            },
+            {
+              "name": "Set variable1",
+              "type": "SetVariable",
+              "dependsOn": [
+                {
+                  "activity": "Delete_elements_from_online",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "variableName": "TempOffset",
+                "value": {
+                  "value": "@add(variables('CurrentOffset'), min(pipeline().parameters.ChunkSize,int(activity('Retrieve_elements_from_online').output.resultSets[0].rows[0].p_count)))",
+                  "type": "Expression"
+                }
+              }
+            },
+            {
+              "name": "Set variable2",
+              "type": "SetVariable",
+              "dependsOn": [
+                {
+                  "activity": "Set variable1",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "variableName": "CurrentOffset",
+                "value": {
+                  "value": "@variables('TempOffset')",
+                  "type": "Expression"
+                }
+              }
+            },
+            {
+              "name": "Store_elements_in_offline",
+              "type": "Script",
+              "dependsOn": [
+                {
+                  "activity": "Retrieve_elements_from_online",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "linkedServiceName": {
+                "referenceName": "${linked_service_gpd_archive}",
+                "type": "LinkedServiceReference"
+              },
+              "typeProperties": {
+                "scripts": [
+                  {
+                    "type": "Query",
+                    "text": {
+                      "value": "CALL apd.ingest_payment_positions_bulk($$@{activity('Retrieve_elements_from_online').output.resultSets[0].rows[0].p_json_data}$$::jsonb)",
+                      "type": "Expression"
+                    }
+                  }
+                ],
+                "scriptBlockExecutionTimeout": "02:00:00"
+              }
+            },
+            {
+              "name": "Delete_elements_from_online",
+              "type": "Script",
+              "dependsOn": [
+                {
+                  "activity": "Store_elements_in_offline",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "linkedServiceName": {
+                "referenceName": "${linked_service_gpd}",
+                "type": "LinkedServiceReference"
+              },
+              "typeProperties": {
+                "scripts": [
+                  {
+                    "type": "Query",
+                    "text": {
+                      "value": "@concat('CALL apd.delete_archived_chunk(',string(min(pipeline().parameters.ChunkSize,int(activity('Retrieve_elements_from_online').output.resultSets[0].rows[0].p_count))),', ',variables('CurrentOffset'),')')",
+                      "type": "Expression"
+                    }
+                  }
+                ],
+                "scriptBlockExecutionTimeout": "02:00:00"
+              }
+            }
+          ],
+          "timeout": "0.12:00:00"
+        }
+      },
+      {
+        "name": "Refresh_materialized_view_first_step",
+        "description": "Refresh materialized view",
+        "type": "Script",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 3,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "linkedServiceName": {
+          "referenceName": "${linked_service_gpd}",
+          "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "Query",
+              "text": "CALL apd.refresh_archiving_buffer()"
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        }
+      },
+      {
+        "name": "Compute_to_migrate",
+        "type": "Script",
+        "dependsOn": [
+          {
+            "activity": "Refresh_materialized_view_first_step",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 3,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "linkedServiceName": {
+          "referenceName": "${linked_service_gpd}",
+          "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "Query",
+              "text": {
+                "value": "@concat('SELECT COUNT(*) \nFROM (\n    SELECT 1 \n    FROM apd.archiving_selection_buffer \n    LIMIT', string(pipeline().parameters.MaxAmountToMigrate),'\n) AS subquery;')",
+                "type": "Expression"
+              }
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        }
+      },
+      {
+        "name": "Refresh_materialized_view_last_step",
+        "description": "Refresh materialized view",
+        "type": "Script",
+        "dependsOn": [
+          {
+            "activity": "Until_fetch_store_delete_items",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "linkedServiceName": {
+          "referenceName": "${linked_service_gpd}",
+          "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "Query",
+              "text": "CALL apd.refresh_archiving_buffer()"
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        }
+      }
+    ],
+    "parameters": {
+      "MaxAmountToMigrate": {
+        "type": "int",
+        "defaultValue": 5
+      },
+      "ChunkSize": {
+        "type": "int",
+        "defaultValue": 1
+      }
+    },
+    "variables": {
+      "CurrentOffset": {
+        "type": "Integer",
+        "defaultValue": 0
+      },
+      "TempOffset": {
+        "type": "Integer"
+      },
+      "AmountToMigrate": {
+        "type": "Integer"
+      }
+    },
+    "annotations": [],
+    "lastPublishTime": "2026-02-25T13:59:00Z"
+  },
+  "type": "Microsoft.DataFactory/factories/pipelines"
+}
