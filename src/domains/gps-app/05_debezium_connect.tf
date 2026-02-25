@@ -28,7 +28,7 @@ resource "helm_release" "strimzi-kafka-operator" {
   name       = "strimzi-kafka-operator"
   chart      = "strimzi-kafka-operator"
   repository = "oci://quay.io/strimzi-helm"
-  version    = "0.43.0"
+  version    = "0.50.1"
   namespace  = "gps" # kubernetes_namespace.namespace.metadata[0].name
   values = [
     file("${path.module}/yaml/node-affinity.yaml")

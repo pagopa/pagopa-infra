@@ -21,14 +21,6 @@ resource "azurerm_subnet" "cosmosdb_italy_snet" {
   ]
 }
 
-resource "azurerm_subnet" "cidr_storage_italy" {
-  name                              = "${local.project}-storage-snet"
-  resource_group_name               = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name              = data.azurerm_virtual_network.vnet_italy.name
-  address_prefixes                  = var.cidr_printit_storage_italy
-  private_endpoint_network_policies = "Enabled"
-
-}
 
 resource "azurerm_subnet" "cidr_redis_italy" {
   name                              = "${local.project}-redis-snet"
@@ -55,14 +47,6 @@ resource "azurerm_subnet" "pdf_engine_italy_snet" {
   }
 }
 
-resource "azurerm_subnet" "eventhub_italy" {
-  name                              = "${local.project}-eventhub-snet"
-  resource_group_name               = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name              = data.azurerm_virtual_network.vnet_italy.name
-  address_prefixes                  = var.cidr_printit_eventhub_italy
-  private_endpoint_network_policies = "Enabled"
-
-}
 
 module "eventhub_spoke_pe_snet" {
   source            = "./.terraform/modules/__v4__/IDH/subnet"
@@ -104,6 +88,29 @@ module "cosmos_spoke_printit_snet" {
   custom_nsg_configuration = {
     target_service               = "cosmos"
     source_address_prefixes_name = "Printit"
+    source_address_prefixes      = ["*"]
+  }
+}
+
+module "storage_spoke_printit_snet" {
+  source            = "./.terraform/modules/__v4__/IDH/subnet"
+  count             = var.env_short == "d" ? 0 : 1
+  env               = var.env
+  idh_resource_tier = "slash28_privatelink_true"
+  name              = "${local.project}-spoke-data-storage-pe-snet"
+  product_name      = var.prefix
+
+  resource_group_name  = local.vnet_hub_spoke_rg_name
+  virtual_network_name = local.vnet_spoke_data_name
+  tags                 = module.tag_config.tags
+
+  service_endpoints = [
+    "Microsoft.Storage",
+  ]
+
+  custom_nsg_configuration = {
+    target_service               = "storage"
+    source_address_prefixes_name = "All"
     source_address_prefixes      = ["*"]
   }
 }

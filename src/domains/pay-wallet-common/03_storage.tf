@@ -23,37 +23,20 @@ module "pay_wallet_storage" {
 
   blob_delete_retention_days = var.pay_wallet_storage_params.retention_days
 
+  private_endpoint_enabled   = var.is_feature_enabled.storage && var.env_short != "d"
+  private_dns_zone_queue_ids = [data.azurerm_private_dns_zone.privatelink_queue_azure_com.id]
+  subnet_id                  = var.env_short != "d" ? module.storage_spoke_pay_wallet_snet[0].id : null
+
   network_rules = var.env_short != "d" ? {
     default_action             = "Deny"
     ip_rules                   = []
-    virtual_network_subnet_ids = [module.storage_pay_wallet_snet.id]
+    virtual_network_subnet_ids = [module.storage_spoke_pay_wallet_snet[0].id]
     bypass                     = ["AzureServices"]
   } : null
   tags = module.tag_config.tags
 }
 
 
-resource "azurerm_private_endpoint" "storage_private_endpoint" {
-  count = var.is_feature_enabled.storage && var.env_short != "d" ? 1 : 0
-
-  name                = "${local.project}-tr-storage-private-endpoint"
-  location            = var.location
-  resource_group_name = azurerm_resource_group.storage_pay_wallet_rg.name
-  subnet_id           = module.storage_pay_wallet_snet.id
-  private_dns_zone_group {
-    name                 = "${local.project}-storage-private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_queue_azure_com.id]
-  }
-
-  private_service_connection {
-    name                           = "${local.project}-storage-private-service-connection"
-    private_connection_resource_id = module.pay_wallet_storage[0].id
-    is_manual_connection           = false
-    subresource_names              = ["queue"]
-  }
-
-  tags = module.tag_config.tags
-}
 
 resource "azurerm_storage_queue" "pay_wallet_wallet_expiration_queue" {
   name                 = "${local.project}-expiration-queue"

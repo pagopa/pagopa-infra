@@ -16,6 +16,12 @@ module "templates_sa" {
   public_network_access_enabled   = var.templates_storage_account.public_network_access_enabled
   enable_low_availability_alert   = var.templates_storage_account.enable_low_availability_alert
 
+  private_endpoint_enabled   = var.is_feature_enabled.storage_templates && var.env_short != "d"
+  private_dns_zone_blob_ids  = [data.azurerm_private_dns_zone.privatelink_blob_azure_com.id]
+  private_dns_zone_table_ids = [data.azurerm_private_dns_zone.privatelink_table_azure_com.id]
+  subnet_id                  = var.env_short != "d" ? module.storage_spoke_printit_snet[0].id : null
+
+
   blob_delete_retention_days = var.templates_storage_account.blob_delete_retention_days
 
   blob_change_feed_enabled             = var.templates_storage_account.backup_enabled
@@ -27,61 +33,6 @@ module "templates_sa" {
   }
 
   tags = module.tag_config.tags
-}
-
-resource "azurerm_private_endpoint" "templates_blob_private_endpoint" {
-  count = var.is_feature_enabled.storage_templates && var.env_short != "d" ? 1 : 0
-
-  name                = "${local.project}-template-blob-private-endpoint"
-  location            = var.location
-  resource_group_name = azurerm_resource_group.printit_rg.name
-  subnet_id           = azurerm_subnet.cidr_storage_italy.id
-
-  private_dns_zone_group {
-    name                 = "${local.project}-template-blob-sa-private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_azure_com.id]
-  }
-
-  private_service_connection {
-    name                           = "${local.project}-template-blob-sa-private-service-connection"
-    private_connection_resource_id = module.templates_sa[0].id
-    is_manual_connection           = false
-    subresource_names              = ["blob"]
-  }
-
-  tags = module.tag_config.tags
-
-  depends_on = [
-    module.templates_sa
-  ]
-}
-
-# https://github.com/hashicorp/terraform-provider-azurerm/issues/5820
-resource "azurerm_private_endpoint" "notices_table_private_endpoint" {
-  count = var.is_feature_enabled.storage_templates && var.env_short != "d" ? 1 : 0
-
-  name                = "${local.project}-table-private-endpoint"
-  location            = var.location
-  resource_group_name = azurerm_resource_group.printit_rg.name
-  subnet_id           = azurerm_subnet.cidr_storage_italy.id
-
-  private_dns_zone_group {
-    name                 = "${local.project}-table-sa-private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_table_azure_com.id]
-  }
-
-  private_service_connection {
-    name                           = "${local.project}-table-sa-private-service-connection"
-    private_connection_resource_id = module.templates_sa[0].id
-    is_manual_connection           = false
-    subresource_names              = ["table"]
-  }
-
-  tags = module.tag_config.tags
-
-  depends_on = [
-    module.templates_sa
-  ]
 }
 
 resource "azurerm_storage_container" "template_blob_file" {

@@ -74,6 +74,16 @@ variable "application_insisght_resource_group_name" {
 ###################
 ### ClouDO Vars ###
 ###################
+variable "cloudo_ui_tier" {
+  type    = string
+  default = "basic"
+}
+
+variable "cloudo_function_tier" {
+  type    = string
+  default = "basic"
+}
+
 variable "cloudo_orchestrator" {
   type = object({
     image_name        = optional(string, "pagopa/cloudo-orchestrator")
