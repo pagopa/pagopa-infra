@@ -15,20 +15,6 @@ data "azurerm_key_vault_secret" "pgres_flex_admin_pwd" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
-# Postgres Flexible Server subnet
-module "postgres_flexible_snet" {
-  source               = "./.terraform/modules/__v4__/IDH/subnet"
-  name                 = "${local.project}-pgres-flexible-snet"
-  resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
-  service_endpoints    = ["Microsoft.Storage"]
-  product_name         = var.prefix
-
-  env               = var.env
-  idh_resource_tier = "postgres_flexible"
-
-  tags = module.tag_config.tags
-}
 
 # Postgres Flexible Server subnet Hub&Spoke
 module "postgres_flexible_hub_spoke_snet" {
@@ -57,7 +43,7 @@ module "postgres_flexible_server_crus8" {
   product_name      = var.prefix
 
   private_dns_zone_id = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres.id : null
-  delegated_subnet_id = module.postgres_flexible_snet.id
+  delegated_subnet_id = module.postgres_flexible_hub_spoke_snet.id
 
   administrator_login    = data.azurerm_key_vault_secret.pgres_flex_admin_login.value
   administrator_password = data.azurerm_key_vault_secret.pgres_flex_admin_pwd.value
