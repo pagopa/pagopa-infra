@@ -28,7 +28,9 @@ tls_cert_check_helm = {
 }
 
 # function_app docker
-reporting_analysis_image = "pagopagpdreportinganalysis"
+reporting_analysis_image             = "pagopagpdreportinganalysis"
+reporting_function_autoscale_minimum = 3
+reporting_function_autoscale_default = 5
 
 # gpd-reporting-functions
 gpd_paa_id_intermediario = "15376371009"
