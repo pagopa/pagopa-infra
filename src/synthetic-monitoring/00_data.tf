@@ -3,14 +3,6 @@ data "azurerm_container_app_environment" "tools_cae" {
   resource_group_name = "${local.product}-core-tools-rg"
 }
 
-
-data "azurerm_resource_group" "tools_rg" {
-  count = var.enabled_resource.container_app_tools_cae ? 1 : 0
-  name  = "${local.product}-core-tools-rg"
-}
-
-
-
 data "azurerm_monitor_action_group" "slack" {
   resource_group_name = local.monitor_resource_group_name
   name                = local.monitor_action_group_slack_name
