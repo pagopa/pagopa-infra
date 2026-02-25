@@ -39,7 +39,7 @@ resource "azurerm_resource_group" "rg" {
 
 module "endpoint_snet" {
   source               = "./.terraform/modules/__v4__/IDH/subnet"
-  name                 = "${local.project}-snet"
+  name                 = "${local.project}-data-spoke-snet"
   resource_group_name  = local.vnet_data_italy_resource_group_name
   virtual_network_name = local.vnet_data_italy_name
   service_endpoints    = ["Microsoft.Storage"]

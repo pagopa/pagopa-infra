@@ -2,15 +2,15 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "= 3.36.0"
+      version = "> 4.0.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "= 2.10.0"
+      version = "~> 3.1"
     }
     null = {
       source  = "hashicorp/null"
-      version = "= 3.1.0"
+      version = "~> 3.2"
     }
 
   }
@@ -29,3 +29,9 @@ provider "azurerm" {
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
+
+
+module "__v4__" {
+  # v9.2.1
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=2aacf6a67baf3e9618b9b58d70ab5692d316aa94"
+}

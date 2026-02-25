@@ -15,7 +15,6 @@ is_feature_enabled = {
   storage                 = true
   redis_hub_spoke_pe_dns  = false
   cosmos_hub_spoke_pe_dns = false
-  sa_hub_spoke_pe         = true
 }
 
 
