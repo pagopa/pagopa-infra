@@ -71,7 +71,7 @@ resource "azapi_resource" "gpd_postgres_archive_linked_service" {
           },
           secretName = "${data.azurerm_key_vault_secret.gpd_db_pwd.name}"
         }
-        port     = "5433"                                                  // "8432" // adhoc private endpoint port
+        port     = "5436"                                                  // "8432" // adhoc private endpoint port
         server   = "gpd-storico-db.${var.env_short}.internal.postgresql.pagopa.it" // "172.205.217.81" // adhoc private endpoint host
         sslMode  = 3
         username = "${data.azurerm_key_vault_secret.gpd_db_usr.value}"

@@ -321,8 +321,12 @@ locals {
       fqdn             = "fdr-db.${var.env_short}.internal.postgresql.pagopa.it"
       external_port    = 5435
       destination_port = 5432
+    },
+    {
+      fqdn             = "gpd-storico-db.${var.env_short}.internal.postgresql.pagopa.it"
+      external_port    = 5436
+      destination_port = 5432
     }
-
   ]
 
   ## Postgres FQDN to Port mapping for ADF proxy
