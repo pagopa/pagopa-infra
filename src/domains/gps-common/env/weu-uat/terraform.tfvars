@@ -4,6 +4,8 @@ env            = "uat"
 domain         = "gps"
 location       = "westeurope"
 location_short = "weu"
+location_itn       = "italynorth"
+location_itn_short       = "itn"
 instance       = "uat"
 
 
@@ -222,7 +224,7 @@ rtp_storage_account = {
 
 # Postgres Flexible Storico
 pgflex_storico_params = {
-  pgres_flex_pgbouncer_enabled           = true
+  pgres_flex_pgbouncer_enabled           = false
   alerts_enabled                         = false
   pgres_flex_diagnostic_settings_enabled = false
   max_connections                        = 850
@@ -234,6 +236,6 @@ pgflex_storico_params = {
 pgflex_storico_geo_replication = {
   enabled                     = false
   name                        = "pagopa-u-gpd-storico-pgflex-replica"
-  location                    = "italynorth"
+  location                    = "westeurope"
   private_dns_registration_ve = false
 }

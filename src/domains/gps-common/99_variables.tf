@@ -50,6 +50,22 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+variable "location_itn" {
+  type        = string
+  description = "italynorth"
+}
+
+variable "location_itn_short" {
+  type = string
+  validation {
+    condition = (
+    length(var.location_itn_short) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "itn"
+}
+
 ### Italy location
 variable "location_ita" {
   type        = string

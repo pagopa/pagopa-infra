@@ -27,9 +27,9 @@ module "postgres_storico_flexible_snet" {
 module "postgres_storico_flexible_server_private_db" {
   source = "./.terraform/modules/__v4__/IDH/postgres_flexible_server"
 
-  name                = format("%s-%s-gpd-storico-pgflex", local.product, var.location_short)
-  location            = azurerm_resource_group.flex_data[0].location
-  resource_group_name = azurerm_resource_group.flex_data[0].name
+  name                = format("%s-%s-gpd-storico-pgflex", local.product, var.location_itn_short)
+  location            = azurerm_resource_group.flex_data_storico.location
+  resource_group_name = azurerm_resource_group.flex_data_storico.name
 
   idh_resource_tier = "pgflex2"
   storage_mb        = var.pgflex_storico_params.storage_mb
