@@ -169,7 +169,7 @@ module "node_forwarder_slot_staging" {
   minimum_tls_version = local.node_forwarder_min_tls_version
   # App settings
   app_settings             = local.node_forwarder_app_settings
-  docker_image             = "${data.azurerm_container_registry.container_registry.login_server}/pagopanodeforwarder"
+  docker_image             = "pagopanodeforwarder"
   docker_image_tag         = var.node_forwarder_image_tag
   docker_registry_username = data.azurerm_container_registry.container_registry.admin_username
   docker_registry_password = data.azurerm_container_registry.container_registry.admin_password

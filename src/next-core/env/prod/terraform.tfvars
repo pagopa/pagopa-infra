@@ -767,6 +767,7 @@ eventhubs_04 = [
 
 node_forwarder_zone_balancing_enabled = true
 node_forwarder_sku                    = "P3v3"
+node_forwarder_image_tag = 256378
 node_fw_ha_snet_cidr                  = ["10.1.157.0/24"]
 node_fw_dbg_snet_cidr                 = ["10.1.195.0/24"]
 devops_agent_zones                    = [1, 2, 3]

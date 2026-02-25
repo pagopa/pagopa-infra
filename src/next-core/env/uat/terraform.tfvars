@@ -851,9 +851,14 @@ app_gateway_allowed_paths_upload = [
 
 route_tools = [
   {
-    # dev aks nodo oncloud
     name                   = "tools-outbound-to-nexy-nodo"
     address_prefix         = "10.70.74.200/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.9.150"
+  },
+  {
+    name                   = "tools-outbound-to-nexi"
+    address_prefix         = "10.79.20.63/32"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.9.150"
   }
