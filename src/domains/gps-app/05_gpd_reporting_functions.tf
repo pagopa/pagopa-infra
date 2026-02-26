@@ -19,8 +19,8 @@ resource "azurerm_app_service_plan" "gpd_reporting_service_plan" {
   reserved = var.reporting_functions_app_sku.kind == "Linux" ? true : false
 
   sku {
-    tier     = var.reporting_functions_app_sku.sku_tier
-    size     = var.reporting_functions_app_sku.sku_size
+    tier = var.reporting_functions_app_sku.sku_tier
+    size = var.reporting_functions_app_sku.sku_size
   }
 
   tags = module.tag_config.tags
