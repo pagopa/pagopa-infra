@@ -1,13 +1,12 @@
 # APIM subnet
 module "apim_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.23.0"
-  name                 = format("%s-apim-snet", local.product)
-  resource_group_name  = azurerm_resource_group.rg_vnet.name
-  virtual_network_name = module.vnet_integration.name
-  address_prefixes     = var.cidr_subnet_apim
-
-  private_endpoint_network_policies_enabled = false
-  service_endpoints                         = ["Microsoft.Web"]
+  source                            = "./.terraform/modules/__v4__/subnet"
+  name                              = format("%s-apim-snet", local.product)
+  resource_group_name               = azurerm_resource_group.rg_vnet.name
+  virtual_network_name              = module.vnet_integration.name
+  address_prefixes                  = var.cidr_subnet_apim
+  private_endpoint_network_policies = "Disabled"
+  service_endpoints                 = ["Microsoft.Web"]
 }
 
 resource "azurerm_resource_group" "rg_api" {
@@ -21,6 +20,8 @@ resource "azurerm_network_security_group" "apimv2_snet_nsg" {
   name                = "${local.project}-apimv2-snet-nsg"
   location            = var.location
   resource_group_name = azurerm_resource_group.rg_vnet.name
+
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_network_security_rule" "apimv2_snet_nsg_rules" {
@@ -76,7 +77,7 @@ resource "azurerm_subnet_network_security_group_association" "apim_snet_sg_assoc
 
 module "apim" {
   count               = 1
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v8.23.0"
+  source              = "./.terraform/modules/__v4__/api_management"
   subnet_id           = module.apim_snet.id
   location            = azurerm_resource_group.rg_api.location
   name                = "${local.product}-apim"
@@ -100,7 +101,7 @@ module "apim" {
   zones                                         = startswith(var.apim_v2_sku, "Premium") ? var.apim_v2_zones : null
   management_logger_applicaiton_insight_enabled = false
 
-
+  diagnostic_operation_name_format = "Name"
   # This enables the Username and Password Identity Provider
   sign_up_enabled = false
 

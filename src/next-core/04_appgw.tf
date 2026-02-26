@@ -291,6 +291,7 @@ locals {
           request_header_configurations  = []
           response_header_configurations = []
           url = {
+            components   = "path_only"
             path         = "notfound"
             query_string = null
           }
@@ -307,6 +308,7 @@ locals {
           request_header_configurations  = []
           response_header_configurations = []
           url = {
+            components   = "path_only"
             path         = "notfound"
             query_string = null
           }
@@ -329,6 +331,7 @@ locals {
           request_header_configurations  = []
           response_header_configurations = []
           url = {
+            components   = "path_only"
             path         = "notfound"
             query_string = null
           }
@@ -378,6 +381,7 @@ locals {
           request_header_configurations  = []
           response_header_configurations = []
           url = {
+            components   = "path_only"
             path         = "notfound"
             query_string = null
           }
@@ -408,6 +412,7 @@ locals {
           request_header_configurations  = []
           response_header_configurations = []
           url = {
+            components   = "path_only"
             path         = "notfound"
             query_string = null
           }
@@ -437,17 +442,17 @@ resource "azurerm_public_ip" "appgateway_public_ip" {
 
 # Subnet to host the application gateway
 module "appgateway_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.8.0"
-  name                                      = format("%s-appgateway-snet", local.product)
-  address_prefixes                          = var.cidr_subnet_appgateway
-  resource_group_name                       = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                      = module.vnet.name
-  private_endpoint_network_policies_enabled = true
+  source                            = "./.terraform/modules/__v4__/subnet"
+  name                              = format("%s-appgateway-snet", local.product)
+  address_prefixes                  = var.cidr_subnet_appgateway
+  resource_group_name               = azurerm_resource_group.rg_vnet.name
+  virtual_network_name              = module.vnet.name
+  private_endpoint_network_policies = "Enabled"
 }
 
 # Application gateway: Multilistener configuraiton
 module "app_gw" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v8.8.0"
+  source = "./.terraform/modules/__v4__/app_gateway"
 
   resource_group_name = azurerm_resource_group.rg_vnet.name
   location            = azurerm_resource_group.rg_vnet.location
@@ -558,7 +563,7 @@ module "app_gw" {
         {
           aggregation = "Average"
           metric_name = "ComputeUnits"
-          operator    = "GreaterThan"
+          operator    = "GreaterThanOrEqual"
           threshold   = floor(var.app_gateway_max_capacity * 90 / 100)
           dimension   = []
         }

@@ -4,62 +4,63 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.47.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.85.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 3.0.2 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | > 4.0.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.12.1 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.25.2 |
-| <a name="requirement_null"></a> [null](#requirement\_null) | = 3.1.1 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_apim"></a> [apim](#module\_apim) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management | v8.23.0 |
-| <a name="module_apim_monitor"></a> [apim\_monitor](#module\_apim\_monitor) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v8.8.0 |
-| <a name="module_apim_snet"></a> [apim\_snet](#module\_apim\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.23.0 |
-| <a name="module_app_gw"></a> [app\_gw](#module\_app\_gw) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway | v8.8.0 |
-| <a name="module_app_gw_integration"></a> [app\_gw\_integration](#module\_app\_gw\_integration) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway | v8.93.1 |
-| <a name="module_appgateway_snet"></a> [appgateway\_snet](#module\_appgateway\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.8.0 |
-| <a name="module_assets_cdn_platform"></a> [assets\_cdn\_platform](#module\_assets\_cdn\_platform) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn | v7.50.0 |
-| <a name="module_azdoa_li_app"></a> [azdoa\_li\_app](#module\_azdoa\_li\_app) | git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent | v8.13.0 |
-| <a name="module_azdoa_li_infra"></a> [azdoa\_li\_infra](#module\_azdoa\_li\_infra) | git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent | v8.13.0 |
-| <a name="module_azdoa_loadtest_li"></a> [azdoa\_loadtest\_li](#module\_azdoa\_loadtest\_li) | git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent | v8.13.0 |
-| <a name="module_azdoa_snet"></a> [azdoa\_snet](#module\_azdoa\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.13.0 |
-| <a name="module_backupstorage"></a> [backupstorage](#module\_backupstorage) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.2.0 |
-| <a name="module_common_private_endpoint_snet"></a> [common\_private\_endpoint\_snet](#module\_common\_private\_endpoint\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.62.0 |
-| <a name="module_container_registry"></a> [container\_registry](#module\_container\_registry) | git::https://github.com/pagopa/terraform-azurerm-v3.git//container_registry | v8.22.0 |
-| <a name="module_dns_forwarder"></a> [dns\_forwarder](#module\_dns\_forwarder) | git::https://github.com/pagopa/terraform-azurerm-v3.git//dns_forwarder | v8.22.0 |
-| <a name="module_dns_forwarder_backup_snet"></a> [dns\_forwarder\_backup\_snet](#module\_dns\_forwarder\_backup\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.76.0 |
-| <a name="module_dns_forwarder_backup_vmss_li"></a> [dns\_forwarder\_backup\_vmss\_li](#module\_dns\_forwarder\_backup\_vmss\_li) | git::https://github.com/pagopa/terraform-azurerm-v3.git//dns_forwarder_scale_set_vm | v7.76.0 |
-| <a name="module_dns_forwarder_snet"></a> [dns\_forwarder\_snet](#module\_dns\_forwarder\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.76.0 |
-| <a name="module_domain_key_vault_secrets_query"></a> [domain\_key\_vault\_secrets\_query](#module\_domain\_key\_vault\_secrets\_query) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault_secrets_query | v7.50.0 |
-| <a name="module_event_hub03"></a> [event\_hub03](#module\_event\_hub03) | git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub | v7.62.0 |
-| <a name="module_event_hub04"></a> [event\_hub04](#module\_event\_hub04) | git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub | v7.62.0 |
-| <a name="module_event_hubprf"></a> [event\_hubprf](#module\_event\_hubprf) | git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub | v7.62.0 |
-| <a name="module_eventhub_snet"></a> [eventhub\_snet](#module\_eventhub\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.2.0 |
-| <a name="module_integration_appgateway_snet"></a> [integration\_appgateway\_snet](#module\_integration\_appgateway\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.50.0 |
-| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v8.22.0 |
-| <a name="module_loadtest_agent_snet"></a> [loadtest\_agent\_snet](#module\_loadtest\_agent\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.13.0 |
-| <a name="module_logos_donation_flows_sa"></a> [logos\_donation\_flows\_sa](#module\_logos\_donation\_flows\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.50.0 |
-| <a name="module_nat_gw"></a> [nat\_gw](#module\_nat\_gw) | git::https://github.com/pagopa/terraform-azurerm-v3.git//nat_gateway | v8.47.0 |
-| <a name="module_node_forwarder_app_service"></a> [node\_forwarder\_app\_service](#module\_node\_forwarder\_app\_service) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v8.28.0 |
-| <a name="module_node_forwarder_dbg_app_service"></a> [node\_forwarder\_dbg\_app\_service](#module\_node\_forwarder\_dbg\_app\_service) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v7.69.1 |
-| <a name="module_node_forwarder_dbg_slot_staging"></a> [node\_forwarder\_dbg\_slot\_staging](#module\_node\_forwarder\_dbg\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v7.60.0 |
-| <a name="module_node_forwarder_dbg_snet"></a> [node\_forwarder\_dbg\_snet](#module\_node\_forwarder\_dbg\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.69.1 |
-| <a name="module_node_forwarder_ha_snet"></a> [node\_forwarder\_ha\_snet](#module\_node\_forwarder\_ha\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.69.1 |
-| <a name="module_node_forwarder_slot_staging"></a> [node\_forwarder\_slot\_staging](#module\_node\_forwarder\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v8.28.0 |
-| <a name="module_node_forwarder_snet"></a> [node\_forwarder\_snet](#module\_node\_forwarder\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.69.1 |
-| <a name="module_redis"></a> [redis](#module\_redis) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v7.50.0 |
-| <a name="module_redis_snet"></a> [redis\_snet](#module\_redis\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.50.0 |
-| <a name="module_route_table_peering_nexi"></a> [route\_table\_peering\_nexi](#module\_route\_table\_peering\_nexi) | git::https://github.com/pagopa/terraform-azurerm-v3.git//route_table | v8.33.0 |
-| <a name="module_route_table_peering_sia"></a> [route\_table\_peering\_sia](#module\_route\_table\_peering\_sia) | git::https://github.com/pagopa/terraform-azurerm-v3.git//route_table | v7.62.0 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 2aacf6a67baf3e9618b9b58d70ab5692d316aa94 |
+| <a name="module_apim"></a> [apim](#module\_apim) | ./.terraform/modules/__v4__/api_management | n/a |
+| <a name="module_apim_monitor"></a> [apim\_monitor](#module\_apim\_monitor) | ./.terraform/modules/__v4__/api_management_api | n/a |
+| <a name="module_apim_snet"></a> [apim\_snet](#module\_apim\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_app_gw"></a> [app\_gw](#module\_app\_gw) | ./.terraform/modules/__v4__/app_gateway | n/a |
+| <a name="module_app_gw_integration"></a> [app\_gw\_integration](#module\_app\_gw\_integration) | ./.terraform/modules/__v4__/app_gateway | n/a |
+| <a name="module_appgateway_snet"></a> [appgateway\_snet](#module\_appgateway\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_assets_cdn_platform"></a> [assets\_cdn\_platform](#module\_assets\_cdn\_platform) | ./.terraform/modules/__v4__/cdn | n/a |
+| <a name="module_azdoa_li_app"></a> [azdoa\_li\_app](#module\_azdoa\_li\_app) | ./.terraform/modules/__v4__/azure_devops_agent | n/a |
+| <a name="module_azdoa_li_infra"></a> [azdoa\_li\_infra](#module\_azdoa\_li\_infra) | ./.terraform/modules/__v4__/azure_devops_agent | n/a |
+| <a name="module_azdoa_loadtest_li"></a> [azdoa\_loadtest\_li](#module\_azdoa\_loadtest\_li) | ./.terraform/modules/__v4__/azure_devops_agent | n/a |
+| <a name="module_azdoa_snet"></a> [azdoa\_snet](#module\_azdoa\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_backupstorage"></a> [backupstorage](#module\_backupstorage) | ./.terraform/modules/__v4__/storage_account | n/a |
+| <a name="module_common_private_endpoint_snet"></a> [common\_private\_endpoint\_snet](#module\_common\_private\_endpoint\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_container_registry"></a> [container\_registry](#module\_container\_registry) | ./.terraform/modules/__v4__/container_registry | n/a |
+| <a name="module_dns_forwarder"></a> [dns\_forwarder](#module\_dns\_forwarder) | ./.terraform/modules/__v4__/dns_forwarder_deprecated | n/a |
+| <a name="module_dns_forwarder_backup_snet"></a> [dns\_forwarder\_backup\_snet](#module\_dns\_forwarder\_backup\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_dns_forwarder_backup_vmss_li"></a> [dns\_forwarder\_backup\_vmss\_li](#module\_dns\_forwarder\_backup\_vmss\_li) | ./.terraform/modules/__v4__/dns_forwarder_scale_set_vm | n/a |
+| <a name="module_dns_forwarder_snet"></a> [dns\_forwarder\_snet](#module\_dns\_forwarder\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_domain_key_vault_secrets_query"></a> [domain\_key\_vault\_secrets\_query](#module\_domain\_key\_vault\_secrets\_query) | ./.terraform/modules/__v4__/key_vault_secrets_query | n/a |
+| <a name="module_event_hub03"></a> [event\_hub03](#module\_event\_hub03) | ./.terraform/modules/__v4__/eventhub | n/a |
+| <a name="module_event_hub04"></a> [event\_hub04](#module\_event\_hub04) | ./.terraform/modules/__v4__/eventhub | n/a |
+| <a name="module_event_hubprf"></a> [event\_hubprf](#module\_event\_hubprf) | ./.terraform/modules/__v4__/eventhub | n/a |
+| <a name="module_eventhub_snet"></a> [eventhub\_snet](#module\_eventhub\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_integration_appgateway_snet"></a> [integration\_appgateway\_snet](#module\_integration\_appgateway\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | ./.terraform/modules/__v4__/key_vault | n/a |
+| <a name="module_loadtest_agent_snet"></a> [loadtest\_agent\_snet](#module\_loadtest\_agent\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_logos_donation_flows_sa"></a> [logos\_donation\_flows\_sa](#module\_logos\_donation\_flows\_sa) | ./.terraform/modules/__v4__/storage_account | n/a |
+| <a name="module_nat_gw"></a> [nat\_gw](#module\_nat\_gw) | ./.terraform/modules/__v4__/nat_gateway | n/a |
+| <a name="module_node_forwarder_app_service"></a> [node\_forwarder\_app\_service](#module\_node\_forwarder\_app\_service) | ./.terraform/modules/__v4__/app_service | n/a |
+| <a name="module_node_forwarder_dbg_app_service"></a> [node\_forwarder\_dbg\_app\_service](#module\_node\_forwarder\_dbg\_app\_service) | ./.terraform/modules/__v4__/app_service | n/a |
+| <a name="module_node_forwarder_dbg_slot_staging"></a> [node\_forwarder\_dbg\_slot\_staging](#module\_node\_forwarder\_dbg\_slot\_staging) | ./.terraform/modules/__v4__/app_service_slot | n/a |
+| <a name="module_node_forwarder_dbg_snet"></a> [node\_forwarder\_dbg\_snet](#module\_node\_forwarder\_dbg\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_node_forwarder_ha_snet"></a> [node\_forwarder\_ha\_snet](#module\_node\_forwarder\_ha\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_node_forwarder_slot_staging"></a> [node\_forwarder\_slot\_staging](#module\_node\_forwarder\_slot\_staging) | ./.terraform/modules/__v4__/app_service_slot | n/a |
+| <a name="module_node_forwarder_snet"></a> [node\_forwarder\_snet](#module\_node\_forwarder\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_redis"></a> [redis](#module\_redis) | ./.terraform/modules/__v4__/redis_cache | n/a |
+| <a name="module_redis_snet"></a> [redis\_snet](#module\_redis\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_route_table_peering_nexi"></a> [route\_table\_peering\_nexi](#module\_route\_table\_peering\_nexi) | ./.terraform/modules/__v4__/route_table | n/a |
+| <a name="module_route_table_peering_sia"></a> [route\_table\_peering\_sia](#module\_route\_table\_peering\_sia) | ./.terraform/modules/__v4__/route_table | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../tag_config | n/a |
-| <a name="module_vnet"></a> [vnet](#module\_vnet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network | v7.62.0 |
-| <a name="module_vnet_core_peering"></a> [vnet\_core\_peering](#module\_vnet\_core\_peering) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering | v8.32.0 |
-| <a name="module_vnet_integration"></a> [vnet\_integration](#module\_vnet\_integration) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network | v7.62.0 |
-| <a name="module_vpn"></a> [vpn](#module\_vpn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//vpn_gateway | v8.33.0 |
-| <a name="module_vpn_snet"></a> [vpn\_snet](#module\_vpn\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.76.0 |
-| <a name="module_web_test_standard"></a> [web\_test\_standard](#module\_web\_test\_standard) | git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_standard_web_test | v8.29.0 |
+| <a name="module_vnet"></a> [vnet](#module\_vnet) | ./.terraform/modules/__v4__/virtual_network | n/a |
+| <a name="module_vnet_core_peering"></a> [vnet\_core\_peering](#module\_vnet\_core\_peering) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
+| <a name="module_vnet_integration"></a> [vnet\_integration](#module\_vnet\_integration) | ./.terraform/modules/__v4__/virtual_network | n/a |
+| <a name="module_vpn"></a> [vpn](#module\_vpn) | ./.terraform/modules/__v4__/vpn_gateway | n/a |
+| <a name="module_vpn_snet"></a> [vpn\_snet](#module\_vpn\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_web_test_standard"></a> [web\_test\_standard](#module\_web\_test\_standard) | ./.terraform/modules/__v4__/application_insights_standard_web_test | n/a |
 
 ## Resources
 
@@ -284,10 +285,10 @@
 | [azurerm_user_assigned_identity.appgateway_public](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
 | [azurerm_virtual_machine_scale_set_extension.custom_script_extension_app](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_scale_set_extension) | resource |
 | [azurerm_virtual_machine_scale_set_extension.custom_script_extension_infra](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_scale_set_extension) | resource |
-| [null_resource.change_auth_donations_blob_container_logo10](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
-| [null_resource.change_auth_donations_blob_container_logo7](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
-| [null_resource.change_auth_donations_blob_container_logo8](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
-| [null_resource.change_auth_donations_blob_container_logo9](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
+| [null_resource.change_auth_donations_blob_container_logo10](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.change_auth_donations_blob_container_logo7](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.change_auth_donations_blob_container_logo8](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.change_auth_donations_blob_container_logo9](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [random_id.dns_forwarder_hash](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 | [azuread_application.vpn_app](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application) | data source |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
@@ -372,6 +373,7 @@
 | <a name="input_app_gateway_wfespgovit_certificate_name"></a> [app\_gateway\_wfespgovit\_certificate\_name](#input\_app\_gateway\_wfespgovit\_certificate\_name) | Application gateway wfespgovit certificate name on Key Vault | `string` | `""` | no |
 | <a name="input_app_gateway_wisp2_certificate_name"></a> [app\_gateway\_wisp2\_certificate\_name](#input\_app\_gateway\_wisp2\_certificate\_name) | Application gateway wisp2 certificate name on Key Vault | `string` | n/a | yes |
 | <a name="input_app_gateway_wisp2govit_certificate_name"></a> [app\_gateway\_wisp2govit\_certificate\_name](#input\_app\_gateway\_wisp2govit\_certificate\_name) | Application gateway wisp2govit certificate name on Key Vault | `string` | n/a | yes |
+| <a name="input_app_inisght_daily_data_cap_gb"></a> [app\_inisght\_daily\_data\_cap\_gb](#input\_app\_inisght\_daily\_data\_cap\_gb) | Daily data cap in GB for Application Insights. | `number` | `20` | no |
 | <a name="input_azdo_agent_vm_image_name"></a> [azdo\_agent\_vm\_image\_name](#input\_azdo\_agent\_vm\_image\_name) | (Required) Azure devops agent image name | `string` | n/a | yes |
 | <a name="input_azuread_service_principal_azure_cdn_frontdoor_id"></a> [azuread\_service\_principal\_azure\_cdn\_frontdoor\_id](#input\_azuread\_service\_principal\_azure\_cdn\_frontdoor\_id) | Azure CDN Front Door Principal ID | `string` | `"f3b3f72f-4770-47a5-8c1e-aa298003be12"` | no |
 | <a name="input_backup_storage_replication_type"></a> [backup\_storage\_replication\_type](#input\_backup\_storage\_replication\_type) | (Optional) Backup storage account replication type | `string` | `"GZRS"` | no |
@@ -428,9 +430,15 @@
 | <a name="input_ehns03_metric_alerts"></a> [ehns03\_metric\_alerts](#input\_ehns03\_metric\_alerts) | Map of name = criteria objects | <pre>map(object({<br/>    # criteria.*.aggregation to be one of [Average Count Minimum Maximum Total]<br/>    aggregation = string<br/>    metric_name = string<br/>    description = string<br/>    # criteria.0.operator to be one of [Equals NotEquals GreaterThan GreaterThanOrEqual LessThan LessThanOrEqual]<br/>    operator  = string<br/>    threshold = number<br/>    # Possible values are PT1M, PT5M, PT15M, PT30M and PT1H<br/>    frequency = string<br/>    # Possible values are PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H and P1D.<br/>    window_size = string<br/><br/>    dimension = list(object(<br/>      {<br/>        name     = string<br/>        operator = string<br/>        values   = list(string)<br/>      }<br/>    ))<br/>  }))</pre> | `{}` | no |
 | <a name="input_ehns04_alerts_enabled"></a> [ehns04\_alerts\_enabled](#input\_ehns04\_alerts\_enabled) | Event hub 04 alerts enabled? | `bool` | `false` | no |
 | <a name="input_ehns04_metric_alerts"></a> [ehns04\_metric\_alerts](#input\_ehns04\_metric\_alerts) | Map of name = criteria objects | <pre>map(object({<br/>    # criteria.*.aggregation to be one of [Average Count Minimum Maximum Total]<br/>    aggregation = string<br/>    metric_name = string<br/>    description = string<br/>    # criteria.0.operator to be one of [Equals NotEquals GreaterThan GreaterThanOrEqual LessThan LessThanOrEqual]<br/>    operator  = string<br/>    threshold = number<br/>    # Possible values are PT1M, PT5M, PT15M, PT30M and PT1H<br/>    frequency = string<br/>    # Possible values are PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H and P1D.<br/>    window_size = string<br/><br/>    dimension = list(object(<br/>      {<br/>        name     = string<br/>        operator = string<br/>        values   = list(string)<br/>      }<br/>    ))<br/>  }))</pre> | `{}` | no |
+| <a name="input_ehns_03_capacity"></a> [ehns\_03\_capacity](#input\_ehns\_03\_capacity) | Specifies the Capacity / Throughput Units for EVH 03. | `number` | `null` | no |
+| <a name="input_ehns_03_maximum_throughput_units"></a> [ehns\_03\_maximum\_throughput\_units](#input\_ehns\_03\_maximum\_throughput\_units) | Specifies the maximum number of throughput units when Auto Inflate is Enabled | `number` | `15` | no |
+| <a name="input_ehns_03_zone_redundant"></a> [ehns\_03\_zone\_redundant](#input\_ehns\_03\_zone\_redundant) | Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones). | `bool` | `false` | no |
+| <a name="input_ehns_04_capacity"></a> [ehns\_04\_capacity](#input\_ehns\_04\_capacity) | Specifies the Capacity / Throughput Units for EVH 04. | `number` | `null` | no |
 | <a name="input_ehns_auto_inflate_enabled"></a> [ehns\_auto\_inflate\_enabled](#input\_ehns\_auto\_inflate\_enabled) | Is Auto Inflate enabled for the EventHub Namespace? | `bool` | `false` | no |
-| <a name="input_ehns_capacity"></a> [ehns\_capacity](#input\_ehns\_capacity) | Specifies the Capacity / Throughput Units for a Standard SKU namespace. | `number` | `null` | no |
 | <a name="input_ehns_maximum_throughput_units"></a> [ehns\_maximum\_throughput\_units](#input\_ehns\_maximum\_throughput\_units) | Specifies the maximum number of throughput units when Auto Inflate is Enabled | `number` | `null` | no |
+| <a name="input_ehns_prf_capacity"></a> [ehns\_prf\_capacity](#input\_ehns\_prf\_capacity) | Specifies the Capacity / Throughput Units for EVH prf | `number` | `12` | no |
+| <a name="input_ehns_prf_maximum_throughput_units"></a> [ehns\_prf\_maximum\_throughput\_units](#input\_ehns\_prf\_maximum\_throughput\_units) | Specifies the maximum number of throughput units when Auto Inflate is Enabled | `number` | `15` | no |
+| <a name="input_ehns_prf_zone_redundant"></a> [ehns\_prf\_zone\_redundant](#input\_ehns\_prf\_zone\_redundant) | Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones). | `bool` | `false` | no |
 | <a name="input_ehns_public_network_access"></a> [ehns\_public\_network\_access](#input\_ehns\_public\_network\_access) | (Required) enables public network access to the event hubs | `bool` | n/a | yes |
 | <a name="input_ehns_sku_name"></a> [ehns\_sku\_name](#input\_ehns\_sku\_name) | Defines which tier to use. | `string` | `"Standard"` | no |
 | <a name="input_ehns_zone_redundant"></a> [ehns\_zone\_redundant](#input\_ehns\_zone\_redundant) | Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones). | `bool` | `false` | no |
@@ -456,7 +464,7 @@
 | <a name="input_integration_app_gateway_waf_enabled"></a> [integration\_app\_gateway\_waf\_enabled](#input\_integration\_app\_gateway\_waf\_enabled) | Enable waf | `bool` | `false` | no |
 | <a name="input_integration_appgateway_private_ip"></a> [integration\_appgateway\_private\_ip](#input\_integration\_appgateway\_private\_ip) | Integration app gateway private ip | `string` | n/a | yes |
 | <a name="input_integration_appgateway_zones"></a> [integration\_appgateway\_zones](#input\_integration\_appgateway\_zones) | Integration app gateway private ip | `list(number)` | n/a | yes |
-| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | Features enabled in this domain | <pre>object({<br/>    vnet_ita                  = bool,<br/>    container_app_tools_cae   = optional(bool, false),<br/>    node_forwarder_ha_enabled = bool<br/>    vpn                       = optional(bool, false)<br/>    dns_forwarder_lb          = optional(bool, false)<br/>    azdoa                     = optional(bool, true)<br/>    apim_core_import          = optional(bool, false)<br/>    use_new_apim              = optional(bool, false)<br/>    azdoa_extension           = optional(bool, false)<br/>  })</pre> | n/a | yes |
+| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | Features enabled in this domain | <pre>object({<br/>    vnet_ita                  = bool,<br/>    container_app_tools_cae   = optional(bool, false),<br/>    node_forwarder_ha_enabled = bool<br/>    vpn                       = optional(bool, false)<br/>    dns_forwarder_lb          = optional(bool, false)<br/>    azdoa                     = optional(bool, true)<br/>    apim_core_import          = optional(bool, false)<br/>    use_new_apim              = optional(bool, false)<br/>    azdoa_extension           = optional(bool, true)<br/>  })</pre> | n/a | yes |
 | <a name="input_law_daily_quota_gb"></a> [law\_daily\_quota\_gb](#input\_law\_daily\_quota\_gb) | The workspace daily quota for ingestion in GB. | `number` | `-1` | no |
 | <a name="input_law_retention_in_days"></a> [law\_retention\_in\_days](#input\_law\_retention\_in\_days) | The workspace data retention in days | `number` | `30` | no |
 | <a name="input_law_sku"></a> [law\_sku](#input\_law\_sku) | Sku of the Log Analytics Workspace | `string` | `"PerGB2018"` | no |
@@ -476,6 +484,7 @@
 | <a name="input_nat_gateway_public_ips"></a> [nat\_gateway\_public\_ips](#input\_nat\_gateway\_public\_ips) | Number of public outbound ips | `number` | `1` | no |
 | <a name="input_node_forwarder_always_on"></a> [node\_forwarder\_always\_on](#input\_node\_forwarder\_always\_on) | Node Forwarder always on property | `bool` | `true` | no |
 | <a name="input_node_forwarder_autoscale_enabled"></a> [node\_forwarder\_autoscale\_enabled](#input\_node\_forwarder\_autoscale\_enabled) | n/a | `bool` | `true` | no |
+| <a name="input_node_forwarder_image_tag"></a> [node\_forwarder\_image\_tag](#input\_node\_forwarder\_image\_tag) | The tag of the docker image to deploy for node forwarder | `string` | `"latest"` | no |
 | <a name="input_node_forwarder_logging_level"></a> [node\_forwarder\_logging\_level](#input\_node\_forwarder\_logging\_level) | Logging level of Node Forwarder | `string` | `"INFO"` | no |
 | <a name="input_node_forwarder_sku"></a> [node\_forwarder\_sku](#input\_node\_forwarder\_sku) | (Required) The SKU for the plan. Possible values include B1, B2, B3, D1, F1, I1, I2, I3, I1v2, I2v2, I3v2, I4v2, I5v2, I6v2, P1v2, P2v2, P3v2, P0v3, P1v3, P2v3, P3v3, P1mv3, P2mv3, P3mv3, P4mv3, P5mv3, S1, S2, S3, SHARED, EP1, EP2, EP3, WS1, WS2, WS3, and Y1. | `string` | `"P3v3"` | no |
 | <a name="input_node_forwarder_zone_balancing_enabled"></a> [node\_forwarder\_zone\_balancing\_enabled](#input\_node\_forwarder\_zone\_balancing\_enabled) | (Optional) enables the load balancing for node forwarder app service plan | `bool` | `true` | no |
@@ -487,9 +496,8 @@
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_private_dns_zone_db_nodo_pagamenti"></a> [private\_dns\_zone\_db\_nodo\_pagamenti](#input\_private\_dns\_zone\_db\_nodo\_pagamenti) | n/a | `string` | `"dev.db-nodo-pagamenti.com"` | no |
 | <a name="input_redis_cache_enabled"></a> [redis\_cache\_enabled](#input\_redis\_cache\_enabled) | redis cache enabled | `bool` | `false` | no |
-| <a name="input_redis_cache_params"></a> [redis\_cache\_params](#input\_redis\_cache\_params) | # Redis cache | <pre>object({<br/>    public_access = bool<br/>    capacity      = number<br/>    sku_name      = string<br/>    family        = string<br/>  })</pre> | <pre>{<br/>  "capacity": 1,<br/>  "family": "C",<br/>  "public_access": false,<br/>  "sku_name": "Basic"<br/>}</pre> | no |
+| <a name="input_redis_cache_params"></a> [redis\_cache\_params](#input\_redis\_cache\_params) | # Redis cache | <pre>object({<br/>    public_access = bool<br/>    capacity      = number<br/>    sku_name      = string<br/>    family        = string<br/>    zones         = optional(list(string), [])<br/>  })</pre> | <pre>{<br/>  "capacity": 1,<br/>  "family": "C",<br/>  "public_access": false,<br/>  "sku_name": "Basic",<br/>  "zones": []<br/>}</pre> | no |
 | <a name="input_redis_version"></a> [redis\_version](#input\_redis\_version) | The version of Redis to use: 4 (deprecated) or 6 | `string` | `"6"` | no |
-| <a name="input_redis_zones"></a> [redis\_zones](#input\_redis\_zones) | (Optional) Zone list where redis will be deployed | `list(string)` | <pre>[<br/>  "1"<br/>]</pre> | no |
 | <a name="input_route_table_peering_sia_additional_routes"></a> [route\_table\_peering\_sia\_additional\_routes](#input\_route\_table\_peering\_sia\_additional\_routes) | (Optional) additional routes for route table peering sia | <pre>list(object({<br/>    address_prefix         = string<br/>    name                   = string<br/>    next_hop_in_ip_address = string<br/>    next_hop_type          = string<br/>    }<br/>  ))</pre> | `[]` | no |
 | <a name="input_route_tools"></a> [route\_tools](#input\_route\_tools) | AKS routing table | <pre>list(object({<br/>    name                   = string<br/>    address_prefix         = string<br/>    next_hop_type          = string<br/>    next_hop_in_ip_address = string<br/>  }))</pre> | n/a | yes |
 | <a name="input_schema_ip_nexi"></a> [schema\_ip\_nexi](#input\_schema\_ip\_nexi) | Nodo Pagamenti Nexi schema://ip | `string` | n/a | yes |
@@ -498,6 +506,7 @@
 | <a name="input_vnet_ita_ddos_protection_plan"></a> [vnet\_ita\_ddos\_protection\_plan](#input\_vnet\_ita\_ddos\_protection\_plan) | n/a | <pre>object({<br/>    id     = string<br/>    enable = bool<br/>  })</pre> | `null` | no |
 | <a name="input_vpn_gw_pip_allocation_method"></a> [vpn\_gw\_pip\_allocation\_method](#input\_vpn\_gw\_pip\_allocation\_method) | VPN GW PIP ALLOCATION METHOD | `string` | `"Dynamic"` | no |
 | <a name="input_vpn_gw_pip_sku"></a> [vpn\_gw\_pip\_sku](#input\_vpn\_gw\_pip\_sku) | VPN GW PIP SKU | `string` | `"Basic"` | no |
+| <a name="input_vpn_gw_sku"></a> [vpn\_gw\_sku](#input\_vpn\_gw\_sku) | VPN gateway sku | `string` | `"VpnGw1"` | no |
 | <a name="input_vpn_random_specials_char"></a> [vpn\_random\_specials\_char](#input\_vpn\_random\_specials\_char) | Enable random special characters in VPN gateway's pip name | `bool` | `true` | no |
 
 ## Outputs

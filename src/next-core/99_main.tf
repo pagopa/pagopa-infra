@@ -2,15 +2,15 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "<= 3.85.0"
+      version = "> 4.0.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "<= 2.47.0"
+      version = "<= 3.0.2"
     }
     null = {
       source  = "hashicorp/null"
-      version = "= 3.1.1"
+      version = "<= 3.2.1"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -37,13 +37,7 @@ data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
 
-# data "terraform_remote_state" "core" {
-#   backend = "azurerm"
-
-#   config = {
-#     resource_group_name  = var.terraform_remote_state_core.resource_group_name
-#     storage_account_name = var.terraform_remote_state_core.storage_account_name
-#     container_name       = var.terraform_remote_state_core.container_name
-#     key                  = var.terraform_remote_state_core.key
-#   }
-# }
+module "__v4__" {
+  # v9.2.1
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=2aacf6a67baf3e9618b9b58d70ab5692d316aa94"
+}

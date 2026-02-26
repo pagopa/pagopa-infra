@@ -1,16 +1,16 @@
 module "redis_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.50.0"
-  name                                      = format("%s-redis-snet", local.product)
-  address_prefixes                          = var.cidr_subnet_redis
-  resource_group_name                       = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                      = module.vnet.name # module.vnet_integration.name ???
-  private_endpoint_network_policies_enabled = var.redis_cache_params.public_access
+  source                            = "./.terraform/modules/__v4__/subnet"
+  name                              = format("%s-redis-snet", local.product)
+  address_prefixes                  = var.cidr_subnet_redis
+  resource_group_name               = azurerm_resource_group.rg_vnet.name
+  virtual_network_name              = module.vnet.name # module.vnet_integration.name ???
+  private_endpoint_network_policies = var.redis_cache_params.public_access ? "Enabled" : "Disabled"
 }
 
 
 module "redis" {
   count  = 1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.50.0"
+  source = "./.terraform/modules/__v4__/redis_cache"
   # name differentiated because the new ha version had to exist at the same time of the old version for migration purposes
   name                  = var.create_redis_multiaz ? "${local.product_region}-redis" : format("%s-redis", local.product)
   resource_group_name   = azurerm_resource_group.data.name
@@ -24,7 +24,7 @@ module "redis" {
   public_network_access_enabled = var.redis_cache_params.public_access
 
   redis_version = var.redis_version
-  zones         = var.redis_zones
+  custom_zones  = var.redis_cache_params.zones
 
   private_endpoint = {
     enabled              = !var.redis_cache_params.public_access
@@ -65,6 +65,8 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_integration_netwo
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache_windows_net.name
   virtual_network_id    = module.vnet_integration.id
+
+  tags = module.tag_config.tags
 }
 
 # From https://github.com/pagopa/terraform-azurerm-v4/blob/0a7c2d5439660df28f2154eb86f5a8af0bbe8892/IDH/redis/main.tf#L56-L91

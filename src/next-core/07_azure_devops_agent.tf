@@ -7,21 +7,20 @@ resource "azurerm_resource_group" "azdo_rg" {
 }
 
 module "azdoa_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.13.0"
-  count                                     = var.is_feature_enabled.azdoa ? 1 : 0
-  name                                      = "${local.product}-azdoa-snet"
-  address_prefixes                          = var.cidr_subnet_azdoa
-  resource_group_name                       = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                      = module.vnet.name
-  private_endpoint_network_policies_enabled = false
-
+  source                            = "./.terraform/modules/__v4__/subnet"
+  count                             = var.is_feature_enabled.azdoa ? 1 : 0
+  name                              = "${local.product}-azdoa-snet"
+  address_prefixes                  = var.cidr_subnet_azdoa
+  resource_group_name               = azurerm_resource_group.rg_vnet.name
+  virtual_network_name              = module.vnet.name
+  private_endpoint_network_policies = "Disabled"
   service_endpoints = [
     "Microsoft.Storage",
   ]
 }
 
 module "azdoa_li_app" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent?ref=v8.13.0"
+  source              = "./.terraform/modules/__v4__/azure_devops_agent"
   count               = var.is_feature_enabled.azdoa ? 1 : 0
   name                = "${local.product}-azdoa-vmss-ubuntu-app"
   resource_group_name = azurerm_resource_group.azdo_rg[0].name
@@ -35,11 +34,14 @@ module "azdoa_li_app" {
   zones        = var.devops_agent_zones
   zone_balance = var.devops_agent_balance_zones
 
+  scale_in_rule          = "Default"
+  force_deletion_enabled = false
+
   tags = module.tag_config.tags
 }
 
 module "azdoa_li_infra" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent?ref=v8.13.0"
+  source              = "./.terraform/modules/__v4__/azure_devops_agent"
   count               = var.is_feature_enabled.azdoa ? 1 : 0
   name                = "${local.product}-azdoa-vmss-ubuntu-infra"
   resource_group_name = azurerm_resource_group.azdo_rg[0].name
@@ -52,6 +54,9 @@ module "azdoa_li_infra" {
 
   zones        = var.devops_agent_zones
   zone_balance = var.devops_agent_balance_zones
+
+  scale_in_rule          = "Default"
+  force_deletion_enabled = false
 
   tags = module.tag_config.tags
 }
@@ -91,13 +96,13 @@ resource "azurerm_virtual_machine_scale_set_extension" "custom_script_extension_
 #
 
 module "loadtest_agent_snet" {
-  count                                     = var.env_short != "p" ? 1 : 0
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.13.0"
-  name                                      = "${local.product}-loadtest-agent-snet"
-  address_prefixes                          = var.cidr_subnet_loadtest_agent
-  resource_group_name                       = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                      = module.vnet.name
-  private_endpoint_network_policies_enabled = true
+  count                             = var.env_short != "p" ? 1 : 0
+  source                            = "./.terraform/modules/__v4__/subnet"
+  name                              = "${local.product}-loadtest-agent-snet"
+  address_prefixes                  = var.cidr_subnet_loadtest_agent
+  resource_group_name               = azurerm_resource_group.rg_vnet.name
+  virtual_network_name              = module.vnet.name
+  private_endpoint_network_policies = "Enabled"
 
   service_endpoints = [
     "Microsoft.Web",
@@ -108,7 +113,7 @@ module "loadtest_agent_snet" {
 
 
 module "azdoa_loadtest_li" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent?ref=v8.13.0"
+  source              = "./.terraform/modules/__v4__/azure_devops_agent"
   count               = var.env_short != "p" ? 1 : 0
   name                = "${local.product}-azdoa-vmss-loadtest-li"
   resource_group_name = azurerm_resource_group.azdo_rg[0].name
@@ -122,6 +127,9 @@ module "azdoa_loadtest_li" {
   zone_balance = var.devops_agent_balance_zones
 
   vm_sku = "Standard_D8ds_v5"
+
+  scale_in_rule          = "Default"
+  force_deletion_enabled = false
 
   tags = module.tag_config.tags
 }

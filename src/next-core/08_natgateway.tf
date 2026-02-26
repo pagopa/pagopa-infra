@@ -32,7 +32,7 @@ resource "azurerm_public_ip" "nat_ip_04" {
 
 module "nat_gw" {
   count  = var.nat_gateway_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//nat_gateway?ref=v8.47.0"
+  source = "./.terraform/modules/__v4__/nat_gateway"
 
   name                = format("%s-natgw", local.product)
   resource_group_name = azurerm_resource_group.rg_vnet.name
