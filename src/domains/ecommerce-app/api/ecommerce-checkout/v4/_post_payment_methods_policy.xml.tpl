@@ -7,17 +7,11 @@
       var languages = new string[]{"IT", "EN", "FR", "DE", "SL"};
       JObject requestBody = (JObject)context.Variables["paymentMethodsRequestBody"];
       string language = (string)requestBody["language"];
-      if(string.IsNullOrEmpty(language)) {
-        language = "IT";
-      } else {
-        if(language.Contains("-")) {
-          language = language.Split('-')[0].ToUpperInvariant();
-        }
-        if(!languages.Contains(language.ToUpperInvariant())) {
-          language = "IT";
-        } else {
-          language = language.ToUpperInvariant();
-        }
+      if(language.Contains("-")) {
+      language = language.Split('-')[0].ToUpperInvariant();
+      }
+      if(!languages.Contains(language)) {
+      language = "IT";
       }
       requestBody["language"] = language;
       return requestBody.ToString();
