@@ -8,10 +8,10 @@
       JObject requestBody = (JObject)context.Variables["paymentMethodsRequestBody"];
       string language = (string)requestBody["language"];
       if(language.Contains("-")) {
-      language = language.Split('-')[0].ToUpperInvariant();
+        language = language.Split('-')[0].ToUpperInvariant();
       }
       if(!languages.Contains(language)) {
-      language = "IT";
+        language = "IT";
       }
       requestBody["language"] = language;
       return requestBody.ToString();
