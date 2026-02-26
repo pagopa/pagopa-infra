@@ -34,9 +34,6 @@ locals {
     WEBSITES_PORT                       = 8080
     # WEBSITE_SWAP_WARMUP_PING_PATH       = "/actuator/health"
     # WEBSITE_SWAP_WARMUP_PING_STATUSES   = "200"
-    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.container_registry.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.container_registry.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.container_registry.admin_password
 
     # Connection Pool
     MAX_CONNECTIONS           = 120 #80
@@ -44,6 +41,10 @@ locals {
     CONN_TIMEOUT              = 8
 
   }
+
+  node_forwarder_min_tls_version               = "1.2"
+  node_forwarder_health_check_maxpingfailures  = 10
+  node_forwarder_ip_restriction_default_action = "Deny"
 
 
 }
@@ -59,7 +60,7 @@ resource "azurerm_resource_group" "node_forwarder_rg" {
 # Subnet to host the node forwarder
 module "node_forwarder_snet" {
   count                                         = var.is_feature_enabled.node_forwarder_ha_enabled ? 0 : 1
-  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.69.1"
+  source                                        = "./.terraform/modules/__v4__/subnet"
   name                                          = format("%s-node-forwarder-snet", local.product)
   address_prefixes                              = var.cidr_subnet_node_forwarder
   resource_group_name                           = azurerm_resource_group.rg_vnet.name
@@ -78,7 +79,7 @@ module "node_forwarder_snet" {
 
 
 module "node_forwarder_ha_snet" {
-  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.69.1"
+  source                                        = "./.terraform/modules/__v4__/subnet"
   count                                         = var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
   name                                          = "${local.project}-node-forwarder-ha-snet"
   address_prefixes                              = var.node_fw_ha_snet_cidr
@@ -102,8 +103,9 @@ resource "azurerm_subnet_nat_gateway_association" "nodefw_ha_snet_nat_associatio
 }
 
 
+
 module "node_forwarder_app_service" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.28.0"
+  source = "./.terraform/modules/__v4__/app_service"
 
   count = 1
 
@@ -119,21 +121,27 @@ module "node_forwarder_app_service" {
   client_cert_enabled = false
   always_on           = var.node_forwarder_always_on
   health_check_path   = "/actuator/info"
+  app_settings        = local.node_forwarder_app_settings
 
-  app_settings = local.node_forwarder_app_settings
-
-  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopanodeforwarder"
-  docker_image_tag = "latest"
+  docker_image             = "pagopanodeforwarder"
+  docker_image_tag         = var.node_forwarder_image_tag
+  docker_registry_username = data.azurerm_container_registry.container_registry.admin_username
+  docker_registry_password = data.azurerm_container_registry.container_registry.admin_password
+  docker_registry_url      = "https://${data.azurerm_container_registry.container_registry.login_server}"
 
   allowed_subnets = []
   allowed_ips     = []
 
   public_network_access_enabled = false
 
-  sku_name = var.node_forwarder_sku
+  sku_name            = var.node_forwarder_sku
+  minimum_tls_version = local.node_forwarder_min_tls_version
+
+  ip_restriction_default_action = local.node_forwarder_ip_restriction_default_action
+
 
   subnet_id                    = var.is_feature_enabled.node_forwarder_ha_enabled ? module.node_forwarder_ha_snet[0].id : module.node_forwarder_snet[0].id
-  health_check_maxpingfailures = 10
+  health_check_maxpingfailures = local.node_forwarder_health_check_maxpingfailures
 
   zone_balancing_enabled = var.node_forwarder_zone_balancing_enabled
 
@@ -143,7 +151,7 @@ module "node_forwarder_app_service" {
 module "node_forwarder_slot_staging" {
   count = var.env_short != "d" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v8.28.0"
+  source = "./.terraform/modules/__v4__/app_service_slot"
 
   # App service plan
   app_service_id   = module.node_forwarder_app_service[0].id
@@ -154,13 +162,18 @@ module "node_forwarder_slot_staging" {
   resource_group_name = local.node_forwarder_rg_name
   location            = var.location
 
-  always_on         = true
-  health_check_path = "/actuator/info"
+  always_on                    = true
+  health_check_path            = "/actuator/info"
+  health_check_maxpingfailures = local.node_forwarder_health_check_maxpingfailures
 
+  minimum_tls_version = local.node_forwarder_min_tls_version
   # App settings
-  app_settings     = local.node_forwarder_app_settings
-  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopanodeforwarder"
-  docker_image_tag = "latest"
+  app_settings             = local.node_forwarder_app_settings
+  docker_image             = "pagopanodeforwarder"
+  docker_image_tag         = var.node_forwarder_image_tag
+  docker_registry_username = data.azurerm_container_registry.container_registry.admin_username
+  docker_registry_password = data.azurerm_container_registry.container_registry.admin_password
+  docker_registry_url      = "https://${data.azurerm_container_registry.container_registry.login_server}"
 
   allowed_subnets               = []
   allowed_ips                   = []
@@ -192,8 +205,13 @@ resource "azurerm_private_endpoint" "forwarder_input_private_endpoint" {
   tags = module.tag_config.tags
 }
 
-resource "azurerm_private_endpoint" "forwarder_staging_input_private_endpoint" {
+moved {
+  from = azurerm_private_endpoint.forwarder_staging_input_private_endpoint
+  to   = azurerm_private_endpoint.forwarder_staging_input_private_endpoint[0]
+}
 
+resource "azurerm_private_endpoint" "forwarder_staging_input_private_endpoint" {
+  count               = var.env_short != "d" ? 1 : 0
   name                = "${local.project}-node-forwarder-staging-private-endpoint"
   location            = var.location
   resource_group_name = azurerm_resource_group.node_forwarder_rg.name
@@ -226,7 +244,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
     name = "default"
 
     capacity {
-      default = 5
+      default = 3
       minimum = 3
       maximum = 10
     }
@@ -322,6 +340,8 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
     }
 
   }
+
+  tags = module.tag_config.tags
 
 }
 

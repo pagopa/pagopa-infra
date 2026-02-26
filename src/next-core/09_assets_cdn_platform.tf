@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "assets_cdn_platform_rg" {
  * CDN
  */
 module "assets_cdn_platform" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v7.50.0"
+  source = "./.terraform/modules/__v4__/cdn"
 
   count                 = var.env_short == "p" ? 1 : 0
   name                  = "assets-platform"
@@ -31,6 +31,8 @@ module "assets_cdn_platform" {
   keyvault_vault_name          = module.key_vault.name
 
   storage_account_replication_type = var.cdn_storage_account_replication_type
+
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   querystring_caching_behaviour = "BypassCaching"
 

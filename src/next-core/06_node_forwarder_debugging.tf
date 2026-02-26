@@ -65,7 +65,7 @@ resource "azurerm_resource_group" "node_forwarder_dbg_rg" {
 # Subnet to host the node forwarder
 module "node_forwarder_dbg_snet" {
   count                                         = var.enable_node_forwarder_debug_instance ? 1 : 0
-  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.69.1"
+  source                                        = "./.terraform/modules/__v4__/subnet"
   name                                          = format("%s-node-forwarder-dbg-snet", local.product)
   address_prefixes                              = var.node_fw_dbg_snet_cidr
   resource_group_name                           = azurerm_resource_group.rg_vnet.name
@@ -90,7 +90,7 @@ resource "azurerm_subnet_nat_gateway_association" "nodefw_dbg_snet_nat_associati
 
 
 module "node_forwarder_dbg_app_service" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
+  source = "./.terraform/modules/__v4__/app_service"
 
   count = var.enable_node_forwarder_debug_instance ? 1 : 0
 
@@ -117,8 +117,9 @@ module "node_forwarder_dbg_app_service" {
 
   sku_name = var.node_forwarder_sku
 
-  subnet_id                    = module.node_forwarder_dbg_snet[0].id
-  health_check_maxpingfailures = 10
+  subnet_id                     = module.node_forwarder_dbg_snet[0].id
+  health_check_maxpingfailures  = 10
+  ip_restriction_default_action = "Deny"
 
   zone_balancing_enabled = var.node_forwarder_zone_balancing_enabled
 
@@ -128,7 +129,7 @@ module "node_forwarder_dbg_app_service" {
 module "node_forwarder_dbg_slot_staging" {
   count = var.env_short != "d" && var.enable_node_forwarder_debug_instance ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.60.0"
+  source = "./.terraform/modules/__v4__/app_service_slot"
 
   # App service plan
   app_service_id   = module.node_forwarder_dbg_app_service[0].id

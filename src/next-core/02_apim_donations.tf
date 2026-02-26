@@ -1,5 +1,5 @@
 module "logos_donation_flows_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.50.0"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                            = replace("${local.product}-logos-donation-sa", "-", "")
   account_kind                    = "StorageV2"

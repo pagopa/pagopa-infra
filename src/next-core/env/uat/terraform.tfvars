@@ -19,6 +19,7 @@ is_feature_enabled = {
   dns_forwarder_lb          = true,
   apim_core_import          = true
   use_new_apim              = false
+  azdoa_extension           = false
 }
 
 #
@@ -62,9 +63,10 @@ log_analytics_workspace_name                = "pagopa-u-law"
 log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 
 ### VPN
-dns_forwarder_vm_image_name = "pagopa-u-dns-forwarder-ubuntu2204-image-v4"
-
-
+dns_forwarder_vm_image_name  = "pagopa-u-dns-forwarder-ubuntu2204-image-v4"
+vpn_gw_pip_sku               = "Standard"
+vpn_gw_pip_allocation_method = "Static"
+vpn_gw_sku                   = "VpnGw1AZ"
 #
 # apim v2
 #
@@ -140,10 +142,11 @@ apim_v2_subnet_nsg_security_rules = [
   }
 ]
 
-apim_v2_publisher_name = "pagoPA Platform UAT"
-apim_v2_sku            = "Developer_1"
-apim_v2_alerts_enabled = false
-dns_zone_prefix        = "uat.platform"
+apim_v2_publisher_name           = "pagoPA Platform UAT"
+apim_v2_sku                      = "Developer_1"
+apim_v2_alerts_enabled           = false
+apim_enable_nm3_decoupler_switch = true
+dns_zone_prefix                  = "uat.platform"
 
 cidr_subnet_appgateway_integration                  = ["10.230.9.192/27"]
 integration_appgateway_private_ip                   = "10.230.9.200"
@@ -153,6 +156,7 @@ integration_app_gateway_api_certificate_name        = "api-uat-platform-pagopa-i
 integration_app_gateway_portal_certificate_name     = "portal-uat-platform-pagopa-it-stable"
 integration_app_gateway_management_certificate_name = "management-uat-platform-pagopa-it-stable"
 integration_appgateway_zones                        = []
+
 
 nodo_pagamenti_psp                           = "06529501006,97249640588,08301100015,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
 nodo_pagamenti_ec                            = "00493410583,77777777777,00113430573,00184260040,00103110573,00939820726,00109190579,00122520570,82501690018,80001220773,84515520017,03509990788,84002410540,00482510542,00326070166,01350940019,00197530298,00379480031,06396970482,00460900038,82005250285,82002770236,80013960036,83000970018,84002970162,82500110158,00429530546,01199250158,80003370477,00111190575,81001650548,00096090550,95001650167,00451080063,80038190163,00433320033,00449050061,82002270724,00682280284,00448140541,00344700034,81000550673,00450150065,80002860775,83001970017,00121490577,00383120037,00366270031,80023530167,01504430016,00221940364,00224320366,00246880397,01315320489,00354730392,00357850395,80008270375,00218770394,00226010395,00202300398,81002910396,00360090393,84002010365,00242920395,80005570561,80015230347,00236340477,92035800488,03428581205,00114510571,97086740582,80029030568,87007530170,92000530532,80023370168,01349510436,10718570012,01032450072,01248040998,00608810057,80094780378,82002730487,80016430045,03299640163,94032590278,01928010683,91007750937,80052310580,97169170822,80043570482,80011170505,94050080038,01013130073,09227921005,94055970480,01429910183,01013210073,80031650486,83002410260,00337870406,92001600524,80007270376,02928200241,80082160013,01242340998,83000730297,01266290996,80012150274,02508710585,01142420056,02438750586"
@@ -175,7 +179,10 @@ base_path_nodo_oncloud                       = "/nodo-uat"
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
 ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
-ehns_capacity                 = 5
+ehns_03_capacity              = 14
+ehns_04_capacity              = 5
+ehns_03_zone_redundant        = true
+ehns_prf_zone_redundant       = true
 ehns_public_network_access    = true
 
 ehns03_metric_alerts = {
@@ -722,6 +729,7 @@ eventhubs_04 = [
 node_forwarder_logging_level          = "DEBUG"
 node_forwarder_zone_balancing_enabled = false
 node_forwarder_sku                    = "P1v3"
+node_forwarder_image_tag              = "253102"
 node_fw_ha_snet_cidr                  = ["10.1.157.0/24"]
 node_fw_dbg_snet_cidr                 = ["10.1.195.0/24"]
 azdo_agent_vm_image_name              = "pagopa-u-azdo-agent-ubuntu2204-image-v3"
@@ -811,7 +819,7 @@ law_sku               = "PerGB2018"
 law_retention_in_days = 30
 law_daily_quota_gb    = 50
 
-
+app_inisght_daily_data_cap_gb = 60
 
 monitor_env_test_urls = [
   # api.prf.platform.pagopa.it
@@ -835,15 +843,22 @@ app_gateway_allowed_paths_upload = [
   "/nodo-auth/nodo-per-pa/.*",
   "/nodo-auth/node-for-pa/.*",
   "/nodo/node-for-psp/.*", # "/fdr-legacy/nodo-per-pa/.* and "/fdr-legacy/nodo-per-psp/.*"
-  "/fdr-psp/.*"            # ⚠️⚠️⚠️ Added temporarily as workaround for bug https://pagopa.atlassian.net/browse/PAGOPA-2263
+  "/fdr-legacy/.*",
+  "/fdr-psp/.*" # ⚠️⚠️⚠️ Added temporarily as workaround for bug https://pagopa.atlassian.net/browse/PAGOPA-2263
+
 ]
 
 
 route_tools = [
   {
-    # dev aks nodo oncloud
     name                   = "tools-outbound-to-nexy-nodo"
     address_prefix         = "10.70.74.200/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.9.150"
+  },
+  {
+    name                   = "tools-outbound-to-nexi"
+    address_prefix         = "10.79.20.63/32"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.9.150"
   }
