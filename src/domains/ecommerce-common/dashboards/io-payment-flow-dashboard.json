@@ -1270,7 +1270,7 @@
                   },
                   "PartSubTitle": "PUT ecommerce/user-stats-service/v1/user/lastPaymentMethodUsed",
                   "PartTitle": "Response Codes (15m)",
-                  "Query": "AzureDiagnostics\n| where url_s == \"https://api.platform.pagopa.it/ecommerce/user-stats-service/v1/user/lastPaymentMethodUsed\" and method_s == \"PUT\"\n| extend HTTPStatus = tostring(toint(httpStatus_d))\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
+                  "Query": "AzureDiagnostics\n| where url_s == \"https://api.platform.pagopa.it/ecommerce/user-stats-service/v1/user/lastPaymentMethodUsed\" and method_s == \"PUT\"\n| extend HTTPStatus = tostring(toint(responseCode_d))\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
                   "SpecificChart": "StackedArea"
                 }
               }
