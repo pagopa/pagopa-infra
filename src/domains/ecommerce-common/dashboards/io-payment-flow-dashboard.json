@@ -7049,11 +7049,11 @@
               "model": {
                 "format": "local",
                 "granularity": "auto",
-                "relative": "1h"
+                "relative": "4h"
               },
               "displayCache": {
                 "name": "Local Time",
-                "value": "Past hour"
+                "value": "Past 4 hours"
               },
               "filteredPartIds": [
                 "StartboardPart-LogsDashboardPart-a96a20b2-8e57-42aa-98d7-cc6b5f45732e",
