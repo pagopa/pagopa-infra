@@ -122,5 +122,3 @@ resource "azurerm_eventhub_consumer_group" "rtp_consumer_gpd" {
   eventhub_name       = "cdc-raw-auto.apd.payment_option"
   resource_group_name = azurerm_resource_group.eventhub_observability_rg.name
 }
-
-
