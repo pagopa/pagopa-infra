@@ -117,10 +117,8 @@ resource "azurerm_key_vault_secret" "azure_web_jobs_storage_kv" {
 }
 
 resource "azurerm_eventhub_consumer_group" "rtp_consumer_gpd" {
-  name                = "rtp"
+  name                = "rtp-consumer-group"
   namespace_name      = module.eventhub_namespace_observability_gpd.name
   eventhub_name       = "cdc-raw-auto.apd.payment_option"
   resource_group_name = azurerm_resource_group.eventhub_observability_rg.name
 }
-
-
