@@ -18,7 +18,9 @@ module "apim_gpd_product" {
   approval_required     = false
   subscriptions_limit   = 0
 
-  policy_xml = file("./api_product/gpd/_base_policy.xml")
+  policy_xml = templatefile("${path.module}/api_product/gpd/_base_policy.xml", {
+    env = var.env_short
+  })
 }
 
 ####################
