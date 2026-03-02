@@ -37,6 +37,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payments_gpd_inconsisten
 }
 
 resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_management_failure" {
+  count = var.env_short == "p" ? 1 : 0
+
   name                = "pipeline-gpd-lifecycle-management-failure-alert"
   resource_group_name = azurerm_resource_group.gps_rg.name
 
@@ -71,6 +73,8 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_management_failure" 
 }
 
 resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_script_execution" {
+  count = var.env_short == "p" ? 1 : 0
+
   name                = "pipeline-gpd-lifecycle_script_execution-failure-alert"
   resource_group_name = azurerm_resource_group.gps_rg.name
 
