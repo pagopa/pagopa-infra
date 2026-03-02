@@ -119,8 +119,8 @@ resource "azurerm_data_factory_pipeline" "pipeline_lifecycle_script_execution" {
   data_factory_id = data.azurerm_data_factory.data_factory.id
 
   parameters = {
-    ChunkSize       = 10000
-    CurrentOffset   = 0
+    ChunkSize     = 10000
+    CurrentOffset = 0
   }
 
   variables = {}
@@ -145,8 +145,8 @@ resource "azurerm_data_factory_pipeline" "pipeline_lifecycle_management" {
   concurrency = 1
 
   parameters = {
-    ChunkSize            = 10000
-    MaxAmountToMigrate   = 60000
+    ChunkSize          = 10000
+    MaxAmountToMigrate = 60000
   }
 
   variables = {
@@ -157,7 +157,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_lifecycle_management" {
   folder = "GPD_MIGRATION_PIPELINE"
 
   activities_json = "[${templatefile("datafactory/pipelines/GPD_LIFECYCLE_MANAGEMENT.json", {
-    linked_service_gpd         = azapi_resource.gpd_postgres_linked_service.name
+    linked_service_gpd = azapi_resource.gpd_postgres_linked_service.name
   })}]"
 }
 
