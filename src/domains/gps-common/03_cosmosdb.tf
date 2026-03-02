@@ -48,7 +48,7 @@ module "gps_cosmosdb_account" {
 
 
   # add data.azurerm_subnet.<my_service>.id
-  allowed_virtual_network_subnet_ids = var.cosmos_gps_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
+  allowed_virtual_network_subnet_ids = var.cosmos_gps_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_snet.id] : [data.azurerm_subnet.aks_snet.id]
 
   # private endpoint
   private_endpoint_sql_name           = "${local.project}-cosmos-sql-endpoint" # forced after update module vers
@@ -162,7 +162,7 @@ module "gpd_payments_cosmosdb_account" {
   is_virtual_network_filter_enabled = var.cosmos_gpd_payments_db_params.is_virtual_network_filter_enabled
 
   # add data.azurerm_subnet.<my_service>.id
-  allowed_virtual_network_subnet_ids = var.cosmos_gpd_payments_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
+  allowed_virtual_network_subnet_ids = var.env_short == "p" ? [data.azurerm_subnet.aks_snet.id] : [data.azurerm_subnet.aks_snet.id, data.azurerm_subnet.vpn_snet.id]
 
   # private endpoint
   private_endpoint_enabled   = var.cosmos_gpd_payments_db_params.private_endpoint_enabled
