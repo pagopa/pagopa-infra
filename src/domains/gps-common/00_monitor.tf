@@ -35,3 +35,68 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payments_gpd_inconsisten
     threshold = 1
   }
 }
+
+resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_management_failure" {
+  name = "pipeline-gpd-lifecycle-management-failure-alert"
+  resource_group_name = azurerm_resource_group.gps_rg.name
+
+  scopes = [data.azurerm_data_factory.data_factory.id]
+  description = "Triggers whenever GPD_LIFECYCLE_MANAGEMENT pipeline fails."
+
+  severity = 2
+
+  criteria {
+    metric_namespace = "Microsoft.DataFactory/factories"
+    metric_name      = "PipelineFailedRuns"
+    aggregation      = "Total"
+    operator         = "GreaterThan"
+    threshold        = 0
+
+    dimension {
+      name     = "PipelineName"
+      operator = "Include"
+      values = ["GPD_MIGRATION_PIPELINE"]
+    }
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+  action {
+    action_group_id = data.azurerm_monitor_action_group.opsgenie[0].id
+  }
+}
+
+resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_script_execution" {
+  name = "pipeline-gpd-lifecycle_script_execution-failure-alert"
+  resource_group_name = azurerm_resource_group.gps_rg.name
+
+  scopes = [data.azurerm_data_factory.data_factory.id]
+  description = "Triggers whenever GPD_LIFECYCLE_SCRIPT_EXECUTION pipeline fails."
+
+  severity = 3
+
+  criteria {
+    metric_namespace = "Microsoft.DataFactory/factories"
+    metric_name      = "PipelineFailedRuns"
+    aggregation      = "Total"
+    operator         = "GreaterThan"
+    threshold        = 0
+
+    dimension {
+      name     = "PipelineName"
+      operator = "Include"
+      values = ["GPD_LIFECYCLE_SCRIPT_EXECUTION"]
+    }
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+}
