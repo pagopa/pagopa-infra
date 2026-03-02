@@ -166,6 +166,6 @@ resource "azurerm_data_factory_trigger_schedule" "pipeline_lifecycle_management_
   data_factory_id = data.azurerm_data_factory.data_factory.id
   pipeline_name   = azurerm_data_factory_pipeline.pipeline_lifecycle_management.name
 
-  interval  = 24
-  frequency = "Day"
+  interval  = 1
+  frequency = "Hour"
 }
