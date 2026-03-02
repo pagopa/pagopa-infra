@@ -9,3 +9,4 @@ enabled_features = {
   data_explorer = true
 }
 
+immutable_retention_days = 3650
