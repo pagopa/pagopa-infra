@@ -1,0 +1,162 @@
+{
+  "name": "Retrieve_elements_from_online",
+  "type": "Script",
+  "dependsOn": [],
+  "policy": {
+    "timeout": "0.12:00:00",
+    "retry": 0,
+    "retryIntervalInSeconds": 30,
+    "secureOutput": false,
+    "secureInput": false
+  },
+  "userProperties": [],
+  "linkedServiceName": {
+    "referenceName": "${linked_service_gpd}",
+    "type": "LinkedServiceReference"
+  },
+  "typeProperties": {
+    "scripts": [
+      {
+        "type": "Query",
+        "text": {
+          "value": "@concat('SELECT * FROM apd.get_archiving_chunk(', string(pipeline().parameters.ChunkSize),' ,', string(pipeline().parameters.CurrentOffset),')')",
+          "type": "Expression"
+        }
+      }
+    ],
+    "scriptBlockExecutionTimeout": "02:00:00"
+  }
+}
+,
+{
+"name": "Store_elements_in_offline",
+"type": "Script",
+"dependsOn": [
+{
+"activity": "SetVariableToReturnOnSuccess",
+"dependencyConditions": [
+"Succeeded"
+]
+}
+],
+"policy": {
+"timeout": "0.12:00:00",
+"retry": 0,
+"retryIntervalInSeconds": 30,
+"secureOutput": false,
+"secureInput": false
+},
+"userProperties": [],
+"linkedServiceName": {
+"referenceName": "${linked_service_gpd_archive}",
+"type": "LinkedServiceReference"
+},
+"typeProperties": {
+"scripts": [
+{
+"type": "Query",
+"text": {
+"value": "CALL apd.ingest_payment_positions_bulk($$@{activity('Retrieve_elements_from_online').output.resultSets[0].rows[0].p_json_data}$$::jsonb)",
+"type": "Expression"
+}
+}
+],
+"scriptBlockExecutionTimeout": "02:00:00"
+}
+},
+{
+"name": "Delete_elements_from_online",
+"type": "Script",
+"dependsOn": [
+{
+"activity": "Store_elements_in_offline",
+"dependencyConditions": [
+"Succeeded"
+]
+}
+],
+"policy": {
+"timeout": "0.12:00:00",
+"retry": 0,
+"retryIntervalInSeconds": 30,
+"secureOutput": false,
+"secureInput": false
+},
+"userProperties": [],
+"linkedServiceName": {
+"referenceName": "${linked_service_gpd}",
+"type": "LinkedServiceReference"
+},
+"typeProperties": {
+"scripts": [
+{
+"type": "Query",
+"text": {
+"value": "@concat('CALL apd.delete_archived_chunk(',string(min(pipeline().parameters.ChunkSize,int(activity('Retrieve_elements_from_online').output.resultSets[0].rows[0].p_count))),', ',string(pipeline().parameters.CurrentOffset),')')",
+"type": "Expression"
+}
+}
+],
+"scriptBlockExecutionTimeout": "02:00:00"
+}
+},
+{
+"name": "SetVariableToReturnOnSuccess",
+"type": "SetVariable",
+"dependsOn": [
+{
+"activity": "Retrieve_elements_from_online",
+"dependencyConditions": [
+"Succeeded"
+]
+}
+],
+"policy": {
+"secureOutput": false,
+"secureInput": false
+},
+"userProperties": [],
+"typeProperties": {
+"variableName": "pipelineReturnValue",
+"value": [
+{
+"key": "pCount",
+"value": {
+"type": "Expression",
+"content": "@int(activity('Retrieve_elements_from_online').output.resultSets[0].rows[0].p_count)"
+}
+}
+],
+"setSystemVariable": true
+}
+},
+{
+"name": "SetVariableToReturnOnFail",
+"type": "SetVariable",
+"dependsOn": [
+{
+"activity": "Retrieve_elements_from_online",
+"dependencyConditions": [
+"Failed"
+]
+}
+],
+"policy": {
+"secureOutput": false,
+"secureInput": false
+},
+"userProperties": [],
+"typeProperties": {
+"variableName": "pipelineReturnValue",
+"value": [
+{
+"key": "pCount",
+"value": {
+"type": "Expression",
+"content": "@int(pipeline().parameters.ChunkSize)"
+}
+}
+],
+"setSystemVariable": true
+}
+}

@@ -109,30 +109,63 @@ resource "azurerm_data_factory_pipeline" "pipeline_odp_backfill" {
   })}]"
 }
 
+resource "azurerm_data_factory_pipeline" "pipeline_lifecycle_script_execution" {
+  depends_on = [
+    azapi_resource.gpd_postgres_linked_service,
+    azapi_resource.gpd_postgres_archive_linked_service,
+  ]
+
+  name            = "GPD_LIFECYCLE_SCRIPT_EXECUTION"
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+
+  parameters = {
+    ChunkSize       = 10000
+    CurrentOffset   = 0
+  }
+
+  variables = {}
+
+  folder = "GPD_MIGRATION_PIPELINE"
+
+  activities_json = "[${templatefile("datafactory/pipelines/GPD_LIFECYCLE_SCRIPT_EXECUTION.json", {
+    linked_service_gpd         = azapi_resource.gpd_postgres_linked_service.name,
+    linked_service_gpd_archive = azapi_resource.gpd_postgres_archive_linked_service.name,
+  })}]"
+}
+
 resource "azurerm_data_factory_pipeline" "pipeline_lifecycle_management" {
   depends_on = [
     azapi_resource.gpd_postgres_linked_service,
     azapi_resource.gpd_postgres_archive_linked_service,
   ]
 
-  name            = "GPD_LIFECYCLE_MANAGEMENT" #TODO update this folder
+  name            = "GPD_LIFECYCLE_MANAGEMENT"
   data_factory_id = data.azurerm_data_factory.data_factory.id
 
+  concurrency = 1
+
   parameters = {
-    MaxAmountToMigrate = 60000
-    ChunkSize          = 10000
+    ChunkSize            = 10000
+    MaxAmountToMigrate   = 60000
   }
 
   variables = {
-    CurrentOffset   = 0
-    TempOffset      = 0
-    AmountToMigrate = 0
+    CurrentOffset = 0
+    TempOffset    = 0
   }
 
   folder = "GPD_MIGRATION_PIPELINE"
 
   activities_json = "[${templatefile("datafactory/pipelines/GPD_LIFECYCLE_MANAGEMENT.json", {
-    linked_service_gpd         = azapi_resource.gpd_postgres_linked_service.name,
-    linked_service_gpd_archive = azapi_resource.gpd_postgres_archive_linked_service.name,
+    linked_service_gpd         = azapi_resource.gpd_postgres_linked_service.name
   })}]"
+}
+
+resource "azurerm_data_factory_trigger_schedule" "pipeline_lifecycle_management_schedule" {
+  name            = "GPD_LIFECYCLE_MANAGEMENT_SCHEDULE"
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+  pipeline_name   = azurerm_data_factory_pipeline.pipeline_lifecycle_management.name
+
+  interval  = 24
+  frequency = "Day"
 }
