@@ -72,7 +72,7 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_management_failure" 
   }
 }
 
-resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_script_execution" {
+resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_script_execution_failure" {
   count = var.env_short == "p" ? 1 : 0
 
   name                = "pipeline-gpd-lifecycle_script_execution-failure-alert"
@@ -102,5 +102,41 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_script_execution" {
   }
   action {
     action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+}
+
+resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_script_execution_delete_failure" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "pipeline-gpd-lifecycle-script-execution-delete-failure-alert"
+  resource_group_name = azurerm_resource_group.gps_rg.name
+
+  scopes      = [data.azurerm_data_factory.data_factory.id]
+  description = "Triggers whenever Delete_elements_from_online activity fails."
+
+  severity = 2
+
+  criteria {
+    metric_namespace = "Microsoft.DataFactory/factories"
+    metric_name      = "ActivityFailedRuns"
+    aggregation      = "Total"
+    operator         = "GreaterThan"
+    threshold        = 0
+
+    dimension {
+      name     = "ActivityName"
+      operator = "Include"
+      values   = ["Delete_elements_from_online"]
+    }
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+  action {
+    action_group_id = data.azurerm_monitor_action_group.opsgenie[0].id
   }
 }
