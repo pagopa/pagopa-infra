@@ -5,16 +5,6 @@ resource "azurerm_resource_group" "db_rg" {
   tags = module.tag_config.tags
 }
 
-data "azurerm_key_vault_secret" "pgres_flex_admin_login" {
-  name         = "db-administrator-login"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "pgres_flex_admin_pwd" {
-  name         = "db-administrator-login-password"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
 # Postgres Flexible Server subnet
 module "postgres_flexible_snet" {
   source                                        = "./.terraform/modules/__v4__/subnet"
@@ -165,9 +155,21 @@ resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_shared_
 
   name      = "shared_preload_libraries"
   server_id = module.postgres_flexible_server_fdr.id
-  value     = var.pgres_flex_params.shared_preoload_libraries # "pg_failover_slots"
+  value     = var.pgres_flex_params.shared_preload_libraries # "pg_failover_slots"
 }
 
+resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_extensions" {
+  name      = "azure.extensions"
+  server_id = module.postgres_flexible_server_fdr.id
+  value     = var.pgres_flex_params.azure_extensions
+}
+
+# configure pg_cron to use fdr3 database (:warning: needs restart)
+resource "azurerm_postgresql_flexible_server_configuration" "pg_cron_database" {
+  name      = "cron.database_name"
+  server_id = module.postgres_flexible_server_fdr.id
+  value     = azurerm_postgresql_flexible_server_database.fdr3_db.name
+}
 
 resource "azurerm_postgresql_flexible_server_database" "fdr_replica_db" {
   count     = var.env_short == "p" ? 0 : 1
