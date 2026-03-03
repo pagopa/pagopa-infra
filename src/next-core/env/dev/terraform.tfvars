@@ -139,10 +139,11 @@ apim_v2_subnet_nsg_security_rules = [
   }
 ]
 
-apim_v2_publisher_name = "pagoPA Platform DEV"
-apim_v2_sku            = "Developer_1"
-apim_v2_alerts_enabled = false
-dns_zone_prefix        = "dev.platform"
+apim_v2_publisher_name           = "pagoPA Platform DEV"
+apim_v2_sku                      = "Developer_1"
+apim_v2_alerts_enabled           = false
+apim_enable_nm3_decoupler_switch = true
+dns_zone_prefix                  = "dev.platform"
 
 cidr_subnet_appgateway_integration = ["10.230.8.192/27"]
 integration_appgateway_private_ip  = "10.230.8.200"
