@@ -62,19 +62,19 @@ resource "azapi_resource" "gpd_postgres_archive_linked_service" {
       version = "2.0"
       type    = "AzurePostgreSql"
       typeProperties = {
-        database = "${var.gpd_db_storico_name}"
+        database = var.gpd_db_storico_name
         password = {
           type = "AzureKeyVaultSecret",
           store = {
-            referenceName = "${azurerm_data_factory_linked_service_key_vault.gps_kv_linked_service.name}",
+            referenceName = azurerm_data_factory_linked_service_key_vault.gps_kv_linked_service.name,
             type          = "LinkedServiceReference"
           },
-          secretName = "${data.azurerm_key_vault_secret.pgres_admin_pwd.name}"
+          secretName = data.azurerm_key_vault_secret.pgres_admin_pwd.name
         }
         port     = "5436"                                                          // "8432" // adhoc private endpoint port
         server   = "gpd-storico-db.${var.env_short}.internal.postgresql.pagopa.it" // "172.205.217.81" // adhoc private endpoint host
         sslMode  = 3
-        username = "${data.azurerm_key_vault_secret.pgres_admin_login.name}"
+        username = data.azurerm_key_vault_secret.pgres_admin_login.value
       }
     }
   }
@@ -109,62 +109,41 @@ resource "azurerm_data_factory_pipeline" "pipeline_odp_backfill" {
   })}]"
 }
 
-resource "azurerm_data_factory_pipeline" "pipeline_lifecycle_script_execution" {
+resource "azapi_resource" "pipeline_lifecycle_script_execution" {
   depends_on = [
     azapi_resource.gpd_postgres_linked_service,
     azapi_resource.gpd_postgres_archive_linked_service,
   ]
 
-  name            = "GPD_LIFECYCLE_SCRIPT_EXECUTION"
-  data_factory_id = data.azurerm_data_factory.data_factory.id
+  type      = "Microsoft.DataFactory/factories/pipelines@2018-06-01"
+  name      = "GPD_LIFECYCLE_SCRIPT_EXECUTION"
+  parent_id = data.azurerm_data_factory.data_factory.id
 
-  parameters = {
-    ChunkSize     = 10000
-    CurrentOffset = 0
-  }
-
-  variables = {}
-
-  folder = "GPD_MIGRATION_PIPELINE"
-
-  activities_json = "[${templatefile("datafactory/pipelines/GPD_LIFECYCLE_SCRIPT_EXECUTION.json", {
-    linked_service_gpd         = azapi_resource.gpd_postgres_linked_service.name,
+  body = templatefile("datafactory/pipelines/GPD_LIFECYCLE_SCRIPT_EXECUTION.json", {
+    linked_service_gpd = azapi_resource.gpd_postgres_linked_service.name,
     linked_service_gpd_archive = azapi_resource.gpd_postgres_archive_linked_service.name,
-  })}]"
+  })
 }
 
-resource "azurerm_data_factory_pipeline" "pipeline_lifecycle_management" {
+resource "azapi_resource" "pipeline_lifecycle_management" {
   depends_on = [
     azapi_resource.gpd_postgres_linked_service,
-    azapi_resource.gpd_postgres_archive_linked_service,
+    azapi_resource.pipeline_lifecycle_script_execution,
   ]
 
-  name            = "GPD_LIFECYCLE_MANAGEMENT"
-  data_factory_id = data.azurerm_data_factory.data_factory.id
+  type      = "Microsoft.DataFactory/factories/pipelines@2018-06-01"
+  name      = "GPD_LIFECYCLE_MANAGEMENT"
+  parent_id = data.azurerm_data_factory.data_factory.id
 
-  concurrency = 1
-
-  parameters = {
-    ChunkSize          = 10000
-    MaxAmountToMigrate = 60000
-  }
-
-  variables = {
-    CurrentOffset = 0
-    TempOffset    = 0
-  }
-
-  folder = "GPD_MIGRATION_PIPELINE"
-
-  activities_json = "[${templatefile("datafactory/pipelines/GPD_LIFECYCLE_MANAGEMENT.json", {
-    linked_service_gpd = azapi_resource.gpd_postgres_linked_service.name
-  })}]"
+  body = templatefile("datafactory/pipelines/GPD_LIFECYCLE_MANAGEMENT.json", {
+linked_service_gpd = azapi_resource.gpd_postgres_linked_service.name
+})
 }
 
 resource "azurerm_data_factory_trigger_schedule" "pipeline_lifecycle_management_schedule" {
   name            = "GPD_LIFECYCLE_MANAGEMENT_SCHEDULE"
   data_factory_id = data.azurerm_data_factory.data_factory.id
-  pipeline_name   = azurerm_data_factory_pipeline.pipeline_lifecycle_management.name
+  pipeline_name   = azapi_resource.pipeline_lifecycle_management.name
 
   interval  = 1
   frequency = "Hour"
