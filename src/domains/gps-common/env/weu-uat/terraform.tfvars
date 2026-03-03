@@ -111,7 +111,6 @@ cosmos_gpd_payments_db_params = {
   }
 }
 
-cidr_subnet_gpd_payments_cosmosdb = ["10.1.149.0/24"]
 
 enable_iac_pipeline                   = true
 gpd_payments_sa_delete_retention_days = 0
@@ -215,7 +214,7 @@ rtp_storage_account = {
   blob_versioning_enabled            = false
   advanced_threat_protection         = false
   advanced_threat_protection_enabled = false
-  public_network_access_enabled      = true
+  public_network_access_enabled      = false
   blob_delete_retention_days         = 90
   enable_low_availability_alert      = false
 }
