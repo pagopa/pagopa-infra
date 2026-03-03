@@ -28,7 +28,7 @@
         },
         "responses": {
           "200": {
-            "description": "Cart initilized",
+            "description": "Cart initialized",
             "content": {
               "application/json": {
                 "schema": {
@@ -175,7 +175,8 @@
           },
           "allCCP": {
             "type": "boolean",
-            "example": "false"
+            "example": false,
+            "description": "Flag that indicates that all transfers are associated with a postal IBAN"
           }
         }
       },
@@ -222,7 +223,7 @@
           "checkoutRedirectUrl": {
             "type": "string",
             "format": "uri",
-            "example": "https://dev.checkout.pagopa.it.it/c/123"
+            "example": "https://dev.checkout.pagopa.it/c/123"
           }
         }
       }
