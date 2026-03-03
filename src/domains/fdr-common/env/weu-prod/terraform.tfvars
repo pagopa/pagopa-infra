@@ -48,7 +48,8 @@ pgres_flex_params = {
   pgbouncer_min_pool_size                = 10
   max_worker_process                     = 32
   wal_level                              = "logical"
-  shared_preload_libraries              = "pg_cron,pg_failover_slots"
+  shared_preload_libraries               = "pg_cron,pg_failover_slots"
+  azure_extensions                       = "pg_cron"
   public_network_access_enabled          = false
 }
 

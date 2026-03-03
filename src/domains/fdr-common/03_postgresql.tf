@@ -158,6 +158,11 @@ resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_shared_
   value     = var.pgres_flex_params.shared_preload_libraries # "pg_failover_slots"
 }
 
+resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_extensions" {
+  name      = "azure.extensions"
+  server_id = module.postgres_flexible_server_fdr.id
+  value     = var.pgres_flex_params.azure_extensions
+}
 
 resource "azurerm_postgresql_flexible_server_database" "fdr_replica_db" {
   count     = var.env_short == "p" ? 0 : 1
