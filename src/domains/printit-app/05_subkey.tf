@@ -44,9 +44,11 @@ resource "azurerm_api_management_subscription" "api_config_subkey" {
 
 // Subkey for CIE PDF Engine
 resource "azurerm_api_management_subscription" "receipt_service_helpdesk_subkey" {
+  count = var.is_feature_enabled.pdf_engine ? 1 : 0
+
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
-  api_id              = replace(module.apim_api_pdf_engine_cie_api_v1.id, ";rev=1", "")
+  api_id              = replace(module.apim_api_pdf_engine_cie_api_v1[0].id, ";rev=1", "")
   display_name        = "Subscription for PDF Engine for CIE Notice"
   allow_tracing       = false
   state               = "active"
