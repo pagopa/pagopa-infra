@@ -136,7 +136,8 @@ resource "azapi_resource" "pipeline_lifecycle_management" {
   parent_id = data.azurerm_data_factory.data_factory.id
 
   body = templatefile("datafactory/pipelines/GPD_LIFECYCLE_MANAGEMENT.json", {
-linked_service_gpd = azapi_resource.gpd_postgres_linked_service.name
+linked_service_gpd = azapi_resource.gpd_postgres_linked_service.name,
+    ai_instrumentation_key_secret = "https://${data.azurerm_key_vault.nodo_kv.name}.vault.azure.net/secrets/ai-instrumentation-key?api-version=7.0",
 })
 }
 

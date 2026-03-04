@@ -232,7 +232,7 @@
         "type": "Script",
         "dependsOn": [
           {
-            "activity": "Until_fetch_store_delete_items",
+            "activity": "Send_ai_event",
             "dependencyConditions": [
               "Succeeded"
             ]
@@ -259,34 +259,101 @@
           ],
           "scriptBlockExecutionTimeout": "02:00:00"
         }
+      },
+      {
+        "name": "Get_app_insight_instrumentation_key",
+        "type": "WebActivity",
+        "dependsOn": [
+          {
+            "activity": "Until_fetch_store_delete_items",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": true,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "method": "GET",
+          "url": "${ai_instrumentation_key_secret}",
+          "connectVia": {
+            "referenceName": "AutoResolveIntegrationRuntime",
+            "type": "IntegrationRuntimeReference"
+          },
+          "authentication": {
+            "type": "MSI",
+            "resource": "https://vault.azure.net"
+          }
+        }
+      },
+      {
+        "name": "Send_ai_event",
+        "type": "WebActivity",
+        "dependsOn": [
+          {
+            "activity": "Get_app_insight_instrumentation_key",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": true
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "method": "POST",
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "url": "https://westeurope-3.in.applicationinsights.azure.com/v2.1/track",
+          "connectVia": {
+            "referenceName": "AutoResolveIntegrationRuntime",
+            "type": "IntegrationRuntimeReference"
+          },
+          "body": {
+            "value": "@concat('{\"name\": \"AppEvents\",\"time\": \"', utcNow(), '\",\"iKey\":\"', activity('Get_app_insight_instrumentation_key').output.value, '\",\"data\": {\"baseType\": \"EventData\",\"baseData\": {\"ver\": 2,\"name\": \"ADF_DebtPositionsArchived\",\"properties\": {\"PipelineName\": \"', pipeline().Pipeline, '\",\"RunId\": \"', pipeline().RunId, '\",\"DebtPositionsArchived\":', variables('DebtPositionCounter'), ',\"StartTime\": \"', convertFromUtc(pipeline().TriggerTime,  'W. Europe Standard Time', 'yyyy-MM-dd HH:mm:ss.ffffff'), '\", \"EndTime\": \"', convertFromUtc(utcNow(), 'W. Europe Standard Time', 'yyyy-MM-dd HH:mm:ss.ffffff'),'\"}}}}')",
+            "type": "Expression"
+          }
+        }
       }
     ],
     "parameters": {
       "ChunkSize": {
         "type": "Int",
-        "defaultValue": "10000"
+        "defaultValue": 10000
       },
       "MaxAmountToMigrate": {
         "type": "Int",
-        "defaultValue": "60000"
+        "defaultValue": 60000
       }
     },
     "variables": {
       "CurrentOffset": {
         "type": "Integer",
-        "defaultValue": "0"
-      },
-      "TempOffset": {
-        "type": "Integer",
-        "defaultValue": "0"
+        "defaultValue": 0
       },
       "DebtPositionCounter": {
         "type": "Integer",
-        "defaultValue": "0"
+        "defaultValue": 0
       },
       "TempDebtPositionCounter": {
         "type": "Integer",
-        "defaultValue": "0"
+        "defaultValue": 0
+      },
+      "TempOffset": {
+        "type": "Integer",
+        "defaultValue": 0
       }
     }
   }
