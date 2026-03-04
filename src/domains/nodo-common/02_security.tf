@@ -504,3 +504,10 @@ resource "azurerm_key_vault_secret" "integration_test_technical_support_subscrip
 
   tags = module.tag_config.tags
 }
+
+resource "azurerm_key_vault_secret" "ai_instrumentation_key" {
+  name         = "ai-instrumentation-key"
+  value        = data.azurerm_application_insights.application_insights.instrumentation_key
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
