@@ -12,13 +12,13 @@
     "url" : "https://api.platform.pagopa.it/bizevents/service/v1"
   } ],
   "paths" : {
-    "/transactions/organizations/{organization-fiscal-code}/notices/{nav}" : {
+    "/transactions/organizations/{organizationfiscalcode}/notices/{nav}" : {
       "get" : {
         "tags" : [ "Payment Receipts REST APIs" ],
-        "summary" : "Retrieve the paid notice details given nav, organization-fiscal-code and debtorFiscalCode.",
-        "operationId" : "getPaidNoticeDetail",
+        "summary" : "Search an event filtering by citizen fiscal code, nav and entity fiscal code",
+        "operationId" : "getTransactionSearch",
         "parameters" : [ {
-          "name" : "organization-fiscal-code",
+          "name" : "organizationfiscalcode",
           "in" : "path",
           "description" : "The fiscal code of the Organization.",
           "required" : true,
@@ -28,47 +28,31 @@
         }, {
           "name" : "nav",
           "in" : "path",
-          "description" : "The unique payment identification. Alphanumeric code that uniquely associates and identifies three key elements of a payment: reason, payer, amount",
+          "description" : "The identifier of the advice.",
           "required" : true,
           "schema" : {
             "type" : "string"
           }
-        }, {
-          "name" : "x-fiscal-code",
-          "in" : "header",
-          "description" : "Fiscal code of the citizen.",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "X-Request-Id",
-          "in" : "header",
-          "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Obtained paid notice detail.",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/CartItem"
-                }
-              }
+        },
+          {
+            "name" : "X-Fiscal-Code",
+            "in" : "header",
+            "description" : "The fiscal code of the debtor.",
+            "required" : false,
+            "schema" : {
+              "type" : "string"
             }
           },
+          {
+            "name" : "X-Request-Id",
+            "in" : "header",
+            "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+            "required" : false,
+            "schema" : {
+              "type" : "string"
+            }
+          } ],
+        "responses" : {
           "400" : {
             "description" : "Bad Request",
             "headers" : {
@@ -87,19 +71,8 @@
               }
             }
           },
-          "401" : {
-            "description" : "Wrong or missing function key.",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
           "404" : {
-            "description" : "Not found the transaction.",
+            "description" : "Not found the receipt.",
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
@@ -144,6 +117,35 @@
                 }
               }
             }
+          },
+          "401" : {
+            "description" : "Wrong or missing function key.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Obtained receipt.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TransactionsResponse"
+                }
+              }
+            }
           }
         },
         "security" : [ {
@@ -181,39 +183,207 @@
           }
         }
       },
-      "CartItem" : {
-        "required" : [ "amount", "refNumberType", "refNumberValue", "subject" ],
+      "TransactionsResponse" : {
+        "required" : [ "companyName", "creditorReferenceId", "debtor", "description", "fiscalCode", "idChannel", "idPSP", "noticeNumber", "outcome", "paymentAmount", "pspCompanyName", "receiptId", "transferList" ],
         "type" : "object",
         "properties" : {
-          "subject" : {
+          "receiptId" : {
             "type" : "string"
           },
-          "amount" : {
+          "noticeNumber" : {
             "type" : "string"
           },
-          "payee" : {
-            "$ref" : "#/components/schemas/UserDetail"
+          "fiscalCode" : {
+            "type" : "string"
+          },
+          "outcome" : {
+            "type" : "string"
+          },
+          "creditorReferenceId" : {
+            "type" : "string"
+          },
+          "paymentAmount" : {
+            "type" : "number"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "companyName" : {
+            "type" : "string"
+          },
+          "officeName" : {
+            "type" : "string"
           },
           "debtor" : {
-            "$ref" : "#/components/schemas/UserDetail"
+            "$ref" : "#/components/schemas/Debtor"
           },
-          "refNumberValue" : {
+          "transferList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/TransferPA"
+            }
+          },
+          "idPSP" : {
             "type" : "string"
           },
-          "refNumberType" : {
+          "pspFiscalCode" : {
+            "type" : "string"
+          },
+          "pspPartitaIVA" : {
+            "type" : "string"
+          },
+          "pspCompanyName" : {
+            "type" : "string"
+          },
+          "idChannel" : {
+            "type" : "string"
+          },
+          "channelDescription" : {
+            "type" : "string"
+          },
+          "payer" : {
+            "$ref" : "#/components/schemas/Payer"
+          },
+          "paymentMethod" : {
+            "type" : "string"
+          },
+          "fee" : {
+            "type" : "number"
+          },
+          "primaryCiIncurredFee" : {
+            "type" : "number"
+          },
+          "idBundle" : {
+            "type" : "string"
+          },
+          "idCiBundle" : {
+            "type" : "string"
+          },
+          "paymentDateTime" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "paymentDateTimeFormatted" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "applicationDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "transferDate" : {
+            "type" : "string",
+            "format" : "date"
+          }
+        }
+      },
+      "Debtor" : {
+        "required" : [ "entityUniqueIdentifierType", "entityUniqueIdentifierValue", "fullName" ],
+        "type" : "object",
+        "properties" : {
+          "entityUniqueIdentifierType" : {
+            "type" : "string",
+            "enum" : [ "F", "G" ]
+          },
+          "entityUniqueIdentifierValue" : {
+            "type" : "string"
+          },
+          "fullName" : {
+            "type" : "string"
+          },
+          "streetName" : {
+            "type" : "string"
+          },
+          "civicNumber" : {
+            "type" : "string"
+          },
+          "postalCode" : {
+            "type" : "string"
+          },
+          "city" : {
+            "type" : "string"
+          },
+          "stateProvinceRegion" : {
+            "type" : "string"
+          },
+          "country" : {
+            "type" : "string"
+          },
+          "email" : {
             "type" : "string"
           }
         }
       },
-      "UserDetail" : {
-        "required" : [ "taxCode" ],
+      "Payer" : {
+        "required" : [ "entityUniqueIdentifierType", "entityUniqueIdentifierValue", "fullName" ],
         "type" : "object",
         "properties" : {
-          "name" : {
+          "entityUniqueIdentifierType" : {
+            "type" : "string",
+            "enum" : [ "F", "G" ]
+          },
+          "entityUniqueIdentifierValue" : {
             "type" : "string"
           },
-          "taxCode" : {
+          "fullName" : {
             "type" : "string"
+          },
+          "streetName" : {
+            "type" : "string"
+          },
+          "civicNumber" : {
+            "type" : "string"
+          },
+          "postalCode" : {
+            "type" : "string"
+          },
+          "city" : {
+            "type" : "string"
+          },
+          "stateProvinceRegion" : {
+            "type" : "string"
+          },
+          "country" : {
+            "type" : "string"
+          },
+          "email" : {
+            "type" : "string"
+          }
+        }
+      },
+      "TransferPA" : {
+        "required" : [ "fiscalCodePA", "iban", "mbdAttachment", "remittanceInformation", "transferAmount", "transferCategory" ],
+        "type" : "object",
+        "properties" : {
+          "idTransfer" : {
+            "maximum" : 5,
+            "minimum" : 1,
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "transferAmount" : {
+            "type" : "number"
+          },
+          "fiscalCodePA" : {
+            "type" : "string"
+          },
+          "iban" : {
+            "type" : "string"
+          },
+          "mbdAttachment" : {
+            "type" : "string"
+          },
+          "remittanceInformation" : {
+            "type" : "string"
+          },
+          "transferCategory" : {
+            "type" : "string"
+          },
+          "metadata" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/MapEntry"
+            }
           }
         }
       }
