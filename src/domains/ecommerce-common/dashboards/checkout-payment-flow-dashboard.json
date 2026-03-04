@@ -5985,7 +5985,7 @@
                 }
               },
               "partHeader": {
-                "title": "Polling Outcome > 50 for single transaction",
+                "title": "Polling Outcome <= 5 for single transaction",
                 "subtitle": ""
               }
             }
@@ -6526,7 +6526,7 @@
                 "content": {
                   "Query": "let api_url = \"ecommerce/checkout/v1/transactions/[^/]+/outcomes\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"GET\"\n| summarize count() by requestUri_s, bin(TimeGenerated, 15m)\n| where count_ > 20\n| summarize sum(count_) by TimeGenerated \n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
                   "SpecificChart": "UnstackedColumn",
-                  "PartTitle": "Polling Outcome >20 for single transaction ",
+                  "PartTitle": "Polling Outcome > 20 for single transaction ",
                   "PartSubTitle": "GET ecommerce/checkout/v1/transactions/{transactionId}/outcomes",
                   "Dimensions": {
                     "aggregation": "Sum",
@@ -6549,7 +6549,7 @@
                 }
               },
               "partHeader": {
-                "title": "Polling Outcome > 15 for single transaction",
+                "title": "Polling Outcome > 20 for single transaction",
                 "subtitle": ""
               }
             }
