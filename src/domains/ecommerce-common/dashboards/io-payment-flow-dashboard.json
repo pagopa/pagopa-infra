@@ -7114,11 +7114,11 @@
       }
     }
   },
-  "name": "Clone of io-payment-flow-dashboard",
+  "name": "io-payment-flow-dashboard",
   "type": "Microsoft.Portal/dashboards",
   "location": "INSERT LOCATION",
   "tags": {
-    "hidden-title": "Clone of io-payment-flow-dashboard"
+    "hidden-title": "io-payment-flow-dashboard"
   },
   "apiVersion": "2022-12-01-preview"
 }
