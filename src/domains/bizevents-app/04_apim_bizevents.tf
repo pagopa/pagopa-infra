@@ -26,6 +26,14 @@ locals {
     subscription_required = true
     service_url           = null
   }
+  apim_bizevents_searchtransactionsservice_api = {
+    // EC
+    display_name          = "Search Transactions Service"
+    description           = "API to handle search transactions"
+    path                  = "bizevents/searchtransactions"
+    subscription_required = true
+    service_url           = null
+  }
 }
 
 ##############
@@ -108,6 +116,25 @@ module "apim_bizevents_nodo_sync_product" {
   subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/nodo-sync/_base_policy.xml")
+}
+
+//BizEvent-Search Transactions service
+module "apim_bizevents_search_transactions" {
+  source = "./.terraform/modules/__v3__/api_management_product"
+
+  product_id   = "bizevents-searchtransactions"
+  display_name = local.apim_bizevents_searchtransactionsservice_api.display_name
+  description  = local.apim_bizevents_searchtransactionsservice_api.description
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = true
+  subscription_required = local.apim_bizevents_searchtransactionsservice_api.subscription_required
+  approval_required     = false
+  subscriptions_limit   = 1000
+
+  policy_xml = file("./api_product/search-transactions-service/_base_policy.xml")
 }
 
 ##############
@@ -206,6 +233,38 @@ module "apim_api_bizevents_helpdesk_api_v1" {
   })
 
   xml_content = templatefile("./api/bizevents-helpdesk/v1/_base_policy.xml", {
+    hostname = local.bizevents_hostname
+  })
+}
+
+module "apim_api_bizevents_search_transactions_api_v1" {
+  source = "./.terraform/modules/__v3__/api_management_api"
+
+  name                = format("%s-bizevents-service-api", local.project)
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  product_ids = var.env_short == "p" ? [
+    module.apim_bizevents_search_transactions.product_id
+    ] : [
+    module.apim_bizevents_search_transactions.product_id,
+    module.apim_bizevents_product_all_in_one[0].product_id
+  ]
+  subscription_required = local.apim_bizevents_searchtransactionsservice_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.api_bizevents_api.id
+  api_version           = "v1"
+
+  description  = local.apim_bizevents_searchtransactionsservice_api.description
+  display_name = local.apim_bizevents_searchtransactionsservice_api.display_name
+  path         = local.apim_bizevents_searchtransactionsservice_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_bizevents_searchtransactionsservice_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/search-transactions-service/v1/_openapi.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/search-transactions-service/v1/_base_policy.xml", {
     hostname = local.bizevents_hostname
   })
 }
