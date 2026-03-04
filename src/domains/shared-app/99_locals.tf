@@ -35,8 +35,9 @@ locals {
   pagopa_vnet_integration = "pagopa-${var.env_short}-vnet-integration"
   pagopa_vnet_rg          = "pagopa-${var.env_short}-vnet-rg"
 
-  apim_hostname   = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
-  shared_hostname = var.env == "prod" ? "weuprod.shared.internal.platform.pagopa.it" : "weu${var.env}.shared.internal.${var.env}.platform.pagopa.it"
+  apim_hostname               = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
+  shared_hostname             = var.env == "prod" ? "weuprod.shared.internal.platform.pagopa.it" : "weu${var.env}.shared.internal.${var.env}.platform.pagopa.it"
+  searchtransactions_hostname = var.env == "prod" ? "weuprod.${var.domain}.internal.platform.pagopa.it" : "weu${var.env}.${var.domain}.internal.${var.env}.platform.pagopa.it"
 
   cache_generator_hostname   = "${local.shared_hostname}/authorizer-functions/api"
   cache_generator_hostname_2 = "${local.shared_hostname}/authorizer-functions"
