@@ -1308,16 +1308,6 @@
           "timestamp"
         ]
       },
-      "DeadLetterExcludedPaymentGateway": {
-          "type": "array",
-          "items": {
-              "type": "string"
-          },
-          "description": "List of payment gateway to exclude",
-          "example": [
-              "NPG"
-          ]
-      }
       "DeadLetterTransactionInfo": {
         "type": "object",
         "description": "Dead letter transaction info",
@@ -2191,9 +2181,6 @@
                 "excludedStatuses": {
                   "$ref": "#/components/schemas/DeadLetterExcludedStatuses"
                 }
-                "excludedPaymentGateway": {
-                  "$ref": "#/components/schemas/DeadLetterExcludedPaymentGateway"
-                }
               },
               "required": [
                 "source"
@@ -2228,9 +2215,6 @@
                     "npgStatuses": [
                       "DECLINED",
                       "CANCELLED"
-                    ],
-                    "excludedPaymentGateway": [
-                      "NPG"
                     ]
                   }
                 }
