@@ -10,11 +10,18 @@ data "azurerm_key_vault_secret" "pgres_admin_pwd" {
 }
 
 resource "azurerm_resource_group" "flex_data" {
-  count = 1 # forced ( before exits only in UAT and PROD now DEV too)
+  count = 1 # forced ( before exits only in UAT and PROD now DEV too)
 
   name = format("%s-pgres-flex-rg", local.product)
 
   location = var.location
+  tags     = module.tag_config.tags
+}
+
+resource "azurerm_resource_group" "flex_data_storico" {
+  name = format("%s-pgres-flex-storico-rg", local.product)
+
+  location = var.location_itn
   tags     = module.tag_config.tags
 }
 
