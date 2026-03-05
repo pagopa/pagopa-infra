@@ -1,14 +1,13 @@
 <policies>
     <inbound>
-        <base />
-        <!-- rate limit by subscription key -->
-        <rate-limit calls="10" renewal-period="5" remaining-calls-variable-name="remainingCallsPerSubscription"/>
-        <set-variable name="nav" value="@(context.Request.MatchedParameters["nav"])" />
-        <choose>
-          <when condition="@(((string)context.Variables["nav"]).StartsWith('399'))">
-            <set-backend-service base-url="https://${hostname}/pagopa-biz-events-service" />
-          </when>
-        </choose>
+      <base />
+      <!-- rate limit by subscription key -->
+      <rate-limit calls="10" renewal-period="5" remaining-calls-variable-name="remainingCallsPerSubscription"/>
+      <set-variable name="nav" value="@(context.Request.MatchedParameters["nav"])" />
+      <choose>
+        <when condition="@(((string)context.Variables["nav"]).StartsWith("399"))">
+          <set-backend-service base-url="https://${hostname}/pagopa-biz-events-service" />
+        </when>
         <otherwise>
           <return-response>
             <set-status code="400"/>
@@ -25,9 +24,10 @@
             </set-body>
           </return-response>
         </otherwise>
+      </choose>
     </inbound>
     <outbound>
-        <base />
+      <base />
     </outbound>
     <backend>
         <base />
