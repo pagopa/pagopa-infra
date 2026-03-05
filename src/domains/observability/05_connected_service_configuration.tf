@@ -5,15 +5,16 @@ locals {
   # - fqdns: lista di FQDN (Fully Qualified Domain Names) recuperati da Key Vault,
   #          utilizzati per la risoluzione DNS dell'endpoint privato.
   # - subresource_name: nome della sottorisorsa per cui è necessario approvare la connessione (opzionale, dipende dal servizio di destinazione).
-  # - az_api_type: tipo di risorsa Azure API per la connessione, necessario per approvare il private endpoint
+  # - type: tipo di risorsa di destinazione, utilizzato per mappare correttamente le API di Azure durante l'approvazione della connessione privata.
   # es:
+  # GpdCosmosSql = {
+  #    target_resource_id = data.azurerm_cosmosdb_account.gpd_payments_cosmos_account.id
+  #    fqdns              = null
+  #    subresource_name   = "Sql"
+  #    type               = "cosmosdb"
+  #  }
   data_factory_managed_private_endpoint = {
-    GpdCosmosSql = {
-      target_resource_id = data.azurerm_cosmosdb_account.gpd_payments_cosmos_account.id
-      fqdns              = null
-      subresource_name   = "Sql"
-      type               = "cosmosdb"
-    }
+
   }
 
 
@@ -27,10 +28,7 @@ locals {
   #      database         = "TablesDb"
   #    }
   data_factory_linked_services_cosmosdb = {
-    GpdSql = {
-      connection_string  = data.azurerm_cosmosdb_account.gpd_payments_cosmos_account.primary_sql_connection_string
-      database         = "db"
-    }
+
   }
 
   # Configurazione dei Linked Services per Azure Blob Storage in Azure Data Factory.
@@ -40,9 +38,7 @@ locals {
   #      connection_string = "asd"
   #    }
   data_factory_linked_services_blob = {
-    # Audit = {
-    #   connection_string = data.azurerm_storage_account.audit_storage_account.primary_connection_string
-    # }
+
   }
 
 
@@ -64,18 +60,23 @@ locals {
   #        password_secret_name = "ls-cruscotto-password"
   #      }
   data_factory_linked_services_postgres = {
+
   }
 
 
 
   az_api_type_mappings = {
     cosmosdb = {
-      data_az_api_type = "Microsoft.DocumentDB/databaseAccounts@2025-10-15"
+      data_az_api_type    = "Microsoft.DocumentDB/databaseAccounts@2025-10-15"
       approve_az_api_type = "Microsoft.DocumentDB/databaseAccounts/privateEndpointConnections@2025-10-15"
     }
     storage = {
-      data_az_api_type = "Microsoft.Storage/storageAccounts@2025-08-01"
+      data_az_api_type    = "Microsoft.Storage/storageAccounts@2025-08-01"
       approve_az_api_type = "Microsoft.Storage/storageAccounts/privateEndpointConnections@2025-08-01"
+    }
+    postgres = {
+      data_az_api_type    = "Microsoft.Network/privateLinkServices@2022-09-01"
+      approve_az_api_type = "Microsoft.Network/privateLinkServices/privateEndpointConnections@2022-09-01"
     }
   }
 

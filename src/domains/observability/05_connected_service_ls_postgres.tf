@@ -1,23 +1,23 @@
 data "azurerm_key_vault_secret" "df_connection_postgres_host" {
-  for_each = local.data_factory_linked_services_postgres
+  for_each     = local.data_factory_linked_services_postgres
   name         = each.value.host_secret_name
   key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
 }
 
 data "azurerm_key_vault_secret" "df_connection_postgres_port" {
-  for_each = local.data_factory_linked_services_postgres
+  for_each     = local.data_factory_linked_services_postgres
   name         = each.value.port_secret_name
   key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
 }
 
 data "azurerm_key_vault_secret" "df_connection_postgres_database" {
-  for_each = local.data_factory_linked_services_postgres
+  for_each     = local.data_factory_linked_services_postgres
   name         = each.value.database_secret_name
   key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
 }
 
 data "azurerm_key_vault_secret" "df_connection_postgres_username" {
-  for_each = local.data_factory_linked_services_postgres
+  for_each     = local.data_factory_linked_services_postgres
   name         = each.value.username_secret_name
   key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
 }
@@ -25,8 +25,8 @@ data "azurerm_key_vault_secret" "df_connection_postgres_username" {
 
 
 
-resource "azurerm_key_vault_access_policy" "df_connecction_access_kv" {
-  for_each = local.data_factory_linked_services_postgres
+resource "azurerm_key_vault_access_policy" "df_connection_access_kv" {
+  for_each     = local.data_factory_linked_services_postgres
   key_vault_id = each.value.key_vault_id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
@@ -36,7 +36,7 @@ resource "azurerm_key_vault_access_policy" "df_connecction_access_kv" {
 }
 
 resource "azurerm_data_factory_linked_service_key_vault" "df_connection_linked_service_key_vault" {
-  for_each = local.data_factory_linked_services_postgres
+  for_each        = local.data_factory_linked_services_postgres
   name            = "${each.key}-${var.env_short}-key-vault"
   data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
   key_vault_id    = each.value.key_vault_id
@@ -44,9 +44,9 @@ resource "azurerm_data_factory_linked_service_key_vault" "df_connection_linked_s
 
 
 resource "azapi_resource" "df_connection_linked_service_postgres" {
-  for_each = local.data_factory_linked_services_postgres
+  for_each  = local.data_factory_linked_services_postgres
   type      = "Microsoft.DataFactory/factories/linkedservices@2018-06-01"
-  name      = "${each.key}-postgres-${var.env_short}-LinkService"
+  name      = "${each.key}-postgres-${var.env_short}-ls"
   parent_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   body = {
@@ -54,7 +54,7 @@ resource "azapi_resource" "df_connection_linked_service_postgres" {
       annotations = []
       connectVia = {
         parameters    = {}
-        referenceName = "AutoResolveIntegrationRuntime"
+        referenceName = local.adf_integration_runtime_name
         type          = "IntegrationRuntimeReference"
       }
       type = "AzurePostgreSql"

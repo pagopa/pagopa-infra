@@ -1,16 +1,29 @@
 resource "azurerm_data_factory_managed_private_endpoint" "df_connection_managed_private_endpoint" {
-  for_each = local.data_factory_managed_private_endpoint
+  for_each           = local.data_factory_managed_private_endpoint
   name               = "AzureDataFactoryTo${each.key}"
   data_factory_id    = data.azurerm_data_factory.obeserv_data_factory.id
   target_resource_id = each.value.target_resource_id
   fqdns              = each.value.fqdns != null ? each.value.fqdns : null
   # subresource_name is only required for some resources, so we set it to null if it's not provided
   subresource_name = each.value.subresource_name != null ? each.value.subresource_name : null
+
+  lifecycle {
+
+    precondition {
+      condition     = length([for k, v in local.data_factory_managed_private_endpoint : k if v.type == "postgres"]) <= 1
+      error_message = "Only one element in local.data_factory_managed_private_endpoint can have type 'postgres'. Multiple linked services must share the same private endpoint"
+    }
+
+    precondition {
+      condition     = alltrue([for k, v in local.data_factory_managed_private_endpoint : contains(keys(local.az_api_type_mappings), v.type)])
+      error_message = "All elements in local.data_factory_managed_private_endpoint must have a 'type' that is a valid key in local.az_api_type_mappings."
+    }
+  }
 }
 
 data "azapi_resource" "df_connection_privatelink_private_endpoint_connection" {
   # only those who require a private endpoint
-  for_each = local.data_factory_managed_private_endpoint
+  for_each               = local.data_factory_managed_private_endpoint
   type                   = local.az_api_type_mappings[each.value.type].data_az_api_type
   resource_id            = each.value.target_resource_id
   response_export_values = ["properties.privateEndpointConnections."]
@@ -24,17 +37,17 @@ data "azapi_resource" "df_connection_privatelink_private_endpoint_connection" {
 locals {
   # conn.id if conn.properties.privateLinkServiceConnectionState.status == "Pending" &&
   connection_to_approve = {
-    for key, value in local.data_factory_managed_private_endpoint:
-          key => [
-              for conn in data.azapi_resource.df_connection_privatelink_private_endpoint_connection[key].output.properties.privateEndpointConnections:
-                  conn.id if strcontains(conn.properties.privateEndpoint.id, azurerm_data_factory_managed_private_endpoint.df_connection_managed_private_endpoint[key].name)
-          ]
+    for key, value in local.data_factory_managed_private_endpoint :
+    key => [
+      for conn in data.azapi_resource.df_connection_privatelink_private_endpoint_connection[key].output.properties.privateEndpointConnections :
+      conn.id if strcontains(conn.properties.privateEndpoint.id, azurerm_data_factory_managed_private_endpoint.df_connection_managed_private_endpoint[key].name)
+    ]
   }
 }
 
 resource "azapi_resource_action" "df_connection_approve_private_endpoint_connection" {
   # only those who require a private endpoint approval
-  for_each = local.data_factory_managed_private_endpoint
+  for_each    = local.data_factory_managed_private_endpoint
   type        = local.az_api_type_mappings[each.value.type].approve_az_api_type
   resource_id = local.connection_to_approve[each.key][0]
   method      = "PUT"

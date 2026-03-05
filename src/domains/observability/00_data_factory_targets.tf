@@ -13,10 +13,6 @@ data "azurerm_cosmosdb_account" "bizevent_cosmos_account" {
   resource_group_name = "pagopa-${var.env_short}-${var.location_short}-bizevents-rg"
 }
 
-data "azurerm_cosmosdb_account" "gpd_payments_cosmos_account" {
-  name                = "pagopa-d-weu-gps-cosmos-account"
-  resource_group_name = "pagopa-d-weu-gps-rg"
-}
 
 
 ## DF_4_blob_sa
@@ -25,10 +21,6 @@ data "azurerm_storage_account" "observ_storage_account" {
   resource_group_name = "pagopa-${var.env_short}-${var.location_short_itn}-observ-st-rg"
 }
 
-data "azurerm_storage_account" "audit_storage_account" {
-  name                = "pagopaditnaudittmpst" # pagopa<ENV>itnobservsa
-  resource_group_name = "pagopa-d-itn-audit-rg"
-}
 
 ## DF_4_cosmos_afm
 data "azurerm_cosmosdb_account" "afm_cosmos_account" {

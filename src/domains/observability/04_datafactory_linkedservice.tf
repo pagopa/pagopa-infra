@@ -1,7 +1,11 @@
-
-
-
-
+####################
+#
+# ⚠️ ATTENTION ⚠️
+# DO NOT USE THIS FILE, DO NOT COPY-PASTE ITS CONTENTù
+#
+# Use the centralized configuration (check the README for details) defined in 05_connected_service_configuration.tf
+#
+####################
 # linked service df vs dataexp
 resource "azurerm_data_factory_linked_service_kusto" "dataexp_ls" {
   count = var.dexp_db.enable ? 1 : 0
