@@ -78,8 +78,8 @@ data "azurerm_linux_web_app" "pdf_engine" {
 }
 
 data "azurerm_linux_web_app" "pdf_engine_printit" {
-  name                = "${var.prefix}-${var.env_short}-${var.location_short}-printit-app-pdf-engine-java"
-  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-printit-pdf-engine-rg"
+  name                = "${var.prefix}-${var.env_short}-itn-printit-app-pdf-engine-java"
+  resource_group_name = "${var.prefix}-${var.env_short}-itn-printit-pdf-engine-rg"
 }
 
 module "apim_api_statuspage_api_v1" {
