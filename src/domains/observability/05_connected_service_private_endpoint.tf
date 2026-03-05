@@ -1,0 +1,57 @@
+resource "azurerm_data_factory_managed_private_endpoint" "df_connection_managed_private_endpoint" {
+  for_each = local.data_factory_managed_private_endpoint
+  name               = "AzureDataFactoryTo${each.key}"
+  data_factory_id    = data.azurerm_data_factory.obeserv_data_factory.id
+  target_resource_id = each.value.target_resource_id
+  fqdns              = each.value.fqdns != null ? each.value.fqdns : null
+  # subresource_name is only required for some resources, so we set it to null if it's not provided
+  subresource_name = each.value.subresource_name != null ? each.value.subresource_name : null
+}
+
+data "azapi_resource" "df_connection_privatelink_private_endpoint_connection" {
+  # only those who require a private endpoint
+  for_each = local.data_factory_managed_private_endpoint
+  type                   = local.az_api_type_mappings[each.value.type].data_az_api_type
+  resource_id            = each.value.target_resource_id
+  response_export_values = ["properties.privateEndpointConnections."]
+
+  depends_on = [
+    azurerm_data_factory_managed_private_endpoint.df_connection_managed_private_endpoint
+  ]
+}
+
+
+locals {
+  # conn.id if conn.properties.privateLinkServiceConnectionState.status == "Pending" &&
+  connection_to_approve = {
+    for key, value in local.data_factory_managed_private_endpoint:
+          key => [
+              for conn in data.azapi_resource.df_connection_privatelink_private_endpoint_connection[key].output.properties.privateEndpointConnections:
+                  conn.id if strcontains(conn.properties.privateEndpoint.id, azurerm_data_factory_managed_private_endpoint.df_connection_managed_private_endpoint[key].name)
+          ]
+  }
+}
+
+resource "azapi_resource_action" "df_connection_approve_private_endpoint_connection" {
+  # only those who require a private endpoint approval
+  for_each = local.data_factory_managed_private_endpoint
+  type        = local.az_api_type_mappings[each.value.type].approve_az_api_type
+  resource_id = local.connection_to_approve[each.key][0]
+  method      = "PUT"
+
+  body = {
+    properties = {
+      privateLinkServiceConnectionState = {
+        description = "Approved via Terraform - ${azurerm_data_factory_managed_private_endpoint.df_connection_managed_private_endpoint[each.key].name} df connection" # To identify which managed private endpoint this connection belongs to we add the managed private endpoint name to the description
+        status      = "Approved"
+      }
+    }
+  }
+
+}
+
+
+
+
+
+

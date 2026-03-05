@@ -14,10 +14,6 @@ resource "azurerm_data_factory_linked_service_kusto" "dataexp_ls" {
 }
 
 # linked service df vs cosmos
-data "azurerm_cosmosdb_account" "bizevent_cosmos_account" {
-  name                = "pagopa-${var.env_short}-${var.location_short}-bizevents-ds-cosmos-account"
-  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-bizevents-rg"
-}
 
 resource "azurerm_data_factory_linked_service_cosmosdb" "cosmos_biz" {
   name             = "CosmosDbNoSqlBizPositivi${var.env_short}LinkService"
@@ -45,11 +41,7 @@ resource "azurerm_kusto_database_principal_assignment" "qi_principal_assignment"
 
 ############### GEC CDC INGESTION LINKED SERVICEs #####################
 
-## DF_4_blob_sa
-data "azurerm_storage_account" "observ_storage_account" {
-  name                = "pagopa${var.env_short}${var.location_short_itn}observsa" # pagopa<ENV>itnobservsa
-  resource_group_name = "pagopa-${var.env_short}-${var.location_short_itn}-observ-st-rg"
-}
+
 
 # on DF json LinkSer config
 # {
@@ -86,11 +78,7 @@ resource "azurerm_data_factory_linked_service_azure_blob_storage" "afm_gec_stora
 
 }
 
-## DF_4_cosmos_afm
-data "azurerm_cosmosdb_account" "afm_cosmos_account" {
-  name                = "pagopa-${var.env_short}-${var.location_short}-afm-marketplace-cosmos-account"
-  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-afm-rg"
-}
+
 
 resource "azurerm_data_factory_linked_service_cosmosdb" "afm_gec_cosmosdb_linked_service" {
   name             = "afm-gec-${var.env_short}-${var.location_short}-cosmos-linked-service"
@@ -121,32 +109,7 @@ resource "azurerm_data_factory_linked_service_key_vault" "ls_df_to_kv" {
   key_vault_id    = data.azurerm_key_vault.cruscotto_kv.id
 }
 
-# fetch data config from kv for linked service to postgres
 
-data "azurerm_key_vault_secret" "cruscotto_db_host" {
-  name         = "ls-cruscotto-server"
-  key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
-}
-
-data "azurerm_key_vault_secret" "cruscotto_db_port" {
-  name         = "ls-cruscotto-port"
-  key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
-}
-
-data "azurerm_key_vault_secret" "cruscotto_db_database" {
-  name         = "ls-cruscotto-database"
-  key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
-}
-
-data "azurerm_key_vault_secret" "cruscotto_db_username" {
-  name         = "ls-cruscotto-username"
-  key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
-}
-
-data "azurerm_key_vault_secret" "cruscotto_db_password" {
-  name         = "ls-cruscotto-password"
-  key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
-}
 
 
 resource "azapi_resource" "ls_postgres_cruscotto" {
@@ -234,26 +197,6 @@ resource "azurerm_data_factory_linked_service_key_vault" "ls_df_to_kv_nodo" {
   key_vault_id    = data.azurerm_key_vault.nodo_kv.id
 }
 
-# fetch config value from kv
-data "azurerm_key_vault_secret" "nodo_db_host" {
-  name         = "ls-nodo-server"
-  key_vault_id = data.azurerm_key_vault.qi-kv.id
-}
-
-data "azurerm_key_vault_secret" "nodo_db_port" {
-  name         = "ls-nodo-port"
-  key_vault_id = data.azurerm_key_vault.qi-kv.id
-}
-
-data "azurerm_key_vault_secret" "nodo_db_database" {
-  name         = "ls-nodo-database"
-  key_vault_id = data.azurerm_key_vault.qi-kv.id
-}
-
-data "azurerm_key_vault_secret" "nodo_db_username" {
-  name         = "ls-nodo-username"
-  key_vault_id = data.azurerm_key_vault.qi-kv.id
-}
 
 resource "azapi_resource" "ls_postgres_nodo_tf" {
   depends_on = [azurerm_data_factory_linked_service_key_vault.ls_df_to_kv_nodo]
