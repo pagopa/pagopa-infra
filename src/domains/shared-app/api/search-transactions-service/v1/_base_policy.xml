@@ -2,8 +2,29 @@
     <inbound>
         <base />
         <!-- rate limit by subscription key -->
-        <rate-limit calls="1" renewal-period="5" remaining-calls-variable-name="remainingCallsPerSubscription"/>
-        <set-backend-service base-url="https://${hostname}/pagopa-biz-events-service" />
+        <rate-limit calls="10" renewal-period="5" remaining-calls-variable-name="remainingCallsPerSubscription"/>
+        <set-variable name="nav" value="@(context.Request.MatchedParameters["nav"])" />
+        <choose>
+          <when condition="@(((string)context.Variables["nav"]).StartsWith('399'))">
+            <set-backend-service base-url="https://${hostname}/pagopa-biz-events-service" />
+          </when>
+        </choose>
+        <otherwise>
+          <return-response>
+            <set-status code="400"/>
+            <set-header name="Content-Type" exists-action="override">
+              <value>application/json</value>
+            </set-header>
+            <set-body>@{
+              return new JObject(
+              new JProperty("title", "Bad request"),
+              new JProperty("status", 400),
+              new JProperty("detail", "Invalid NAV matching"))
+              .ToString();
+              }
+            </set-body>
+          </return-response>
+        </otherwise>
     </inbound>
     <outbound>
         <base />
