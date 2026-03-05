@@ -1,7 +1,7 @@
 ####################
 #
 # ⚠️ ATTENTION ⚠️
-# DO NOT USE THIS FILE, DO NOT COPY-PASTE ITS CONTENTù
+# DO NOT USE THIS FILE, DO NOT COPY-PASTE ITS CONTENT
 #
 # Use the centralized configuration (check the README for details) defined in 05_connected_service_configuration.tf
 #
