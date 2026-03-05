@@ -59,7 +59,7 @@ module "apim_api_search_transactions_api_v1" {
   name                  = format("%s-searchtransactions-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = module.apim_search_transactions.product_id
+  product_ids           = [module.apim_search_transactions.product_id]
   subscription_required = local.apim_searchtransactionsservice_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.searchtransactions_api.id
   api_version           = "v1"
