@@ -79,17 +79,3 @@ module "apim_api_search_transactions_webview_api_v1" {
   })
 }
 
-data "azurerm_key_vault_secret" "search_transactions_token_secret_webview" {
-  name         = "search-transactions-token-secret"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
-
-resource "azurerm_api_management_named_value" "search_transactions_token_secret_webview_value" {
-  name                = "search-transactions-token-secret-webview-value"
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-  display_name        = "search-transactions-token-secret-webview-value"
-  value               = data.azurerm_key_vault_secret.search_transactions_token_secret_webview.value
-  secret              = true
-}
-
