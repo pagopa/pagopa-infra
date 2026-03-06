@@ -15,8 +15,8 @@
             <set-body>@{
               return new JObject(
               new JProperty("title", "Forbidden"),
-              new JProperty("status", 403),
-              new JProperty("detail", "Invalid NAV matching"))
+              new JProperty("status", 401),
+              new JProperty("detail", "Invalid Token matching"))
               .ToString();
               }
             </set-body>
