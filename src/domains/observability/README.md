@@ -19,7 +19,7 @@ Add a new entry to the `data_factory_managed_private_endpoint` local map. Each e
 | `target_resource_id` | The Azure resource ID of the target service                                                                                                                                    |
 | `fqdns` | List of FQDNs retrieved from Key Vault for DNS resolution, or `null`                                                                                                           |
 | `subresource_name` | The sub-resource name required for connection approval (optional, service-dependent)                                                                                           |
-| `type` | The resource type, used to map the correct Azure API for private endpoint approval. Allowed values defined in `local.az_api_type_mappings` es: `cosmosdb`, `storage`, `postgres` |
+| `type` | The resource type, used to map the correct Azure API for private endpoint approval. Allowed values defined in `local.az_api_type_mappings`, e.g., `cosmosdb`, `storage`, `postgres` |
 
 **Example:**
 
