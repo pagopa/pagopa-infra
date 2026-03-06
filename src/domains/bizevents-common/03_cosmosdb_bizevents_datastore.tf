@@ -141,7 +141,7 @@ locals {
       indexes = [
         {
           keys   = ["refNumberValue", "payee.taxCode", "debtor.taxCode"]
-          unique = false
+          unique = true
         }
       ],
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
