@@ -3,14 +3,33 @@
       <base />
       <!-- rate limit by subscription key -->
       <rate-limit calls="10" renewal-period="5" remaining-calls-variable-name="remainingCallsPerSubscription"/>
+      <set-variable name="token" value="@(context.Request.Url.Query.GetValueOrDefault("token", ""))" />
       <set-variable name="nav" value="@(context.Request.MatchedParameters["nav"])" />
+      <choose>
+        <when condition="@(((string)context.Variables["token"]) != "{{search-transactions-token-secret-value}}")">
+          <return-response>
+            <set-status code="403"/>
+            <set-header name="Content-Type" exists-action="override">
+              <value>application/json</value>
+            </set-header>
+            <set-body>@{
+              return new JObject(
+              new JProperty("title", "Forbidden"),
+              new JProperty("status", 403),
+              new JProperty("detail", "Invalid NAV matching"))
+              .ToString();
+              }
+            </set-body>
+          </return-response>
+        </when>
+      </choose>
       <choose>
         <when condition="@(((string)context.Variables["nav"]).StartsWith("399"))">
           <set-backend-service base-url="https://${hostname}/pagopa-biz-events-service" />
         </when>
         <otherwise>
           <return-response>
-            <set-status code="400"/>
+            <set-status code="403"/>
             <set-header name="Content-Type" exists-action="override">
               <value>application/json</value>
             </set-header>
