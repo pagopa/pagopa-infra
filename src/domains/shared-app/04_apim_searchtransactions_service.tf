@@ -7,7 +7,7 @@ locals {
     display_name          = "Search Transactions Service"
     description           = "API to handle search transactions"
     path                  = "searchtransactions"
-    subscription_required = true
+    subscription_required = false
     service_url           = null
   }
 }
