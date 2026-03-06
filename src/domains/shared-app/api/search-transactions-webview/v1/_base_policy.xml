@@ -5,7 +5,7 @@
           <method>GET</method>
         </allowed-methods>
         <allowed-origins>
-          <origin>*</origin>
+          <origin>${search_transactions_origin}</origin>
         </allowed-origins>
       </cors>
       <base />

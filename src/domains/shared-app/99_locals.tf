@@ -39,6 +39,8 @@ locals {
   shared_hostname             = var.env == "prod" ? "weuprod.shared.internal.platform.pagopa.it" : "weu${var.env}.shared.internal.${var.env}.platform.pagopa.it"
   searchtransactions_hostname = var.env == "prod" ? "weuprod.bizevents.internal.platform.pagopa.it" : "weu${var.env}.bizevents.internal.${var.env}.platform.pagopa.it"
 
+  search_transactions_origin = var.env == "prod" ? "www.cartaidentita.interno.gov.it" : "*"
+
   cache_generator_hostname   = "${local.shared_hostname}/authorizer-functions/api"
   cache_generator_hostname_2 = "${local.shared_hostname}/authorizer-functions"
 
