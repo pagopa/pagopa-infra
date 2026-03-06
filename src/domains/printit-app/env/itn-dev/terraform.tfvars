@@ -7,6 +7,8 @@ location_short  = "itn"
 location_string = "Italy North"
 instance        = "dev"
 
+### IDH Variables
+idh_app_service_resource_tier = "basic"
 
 ### External resources
 

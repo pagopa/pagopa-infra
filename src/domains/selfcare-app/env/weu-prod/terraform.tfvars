@@ -39,3 +39,6 @@ pod_disruption_budgets = {
     }
   },
 }
+
+#this is the id of the user cstar api-gateway
+backoffice_external_for_rtp_sub_key_user = "cstar-pagopa-it"
