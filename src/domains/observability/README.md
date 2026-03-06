@@ -54,7 +54,7 @@ Add an entry to `data_factory_linked_services_cosmosdb`:
 data_factory_linked_services_cosmosdb = {
   MyCosmosService = {
     connection_string = data.azurerm_cosmosdb_account.my_cosmos_account.primary_sql_connection_string
-    account_key       = data.azurerm_cosmosdb_account.my_cosmos_account.primary_key
+    account_name       = data.azurerm_cosmosdb_account.my_cosmos_account.name
     database          = "MyDatabase"
   }
 }
@@ -261,8 +261,6 @@ The currently supported types are:
 | [azurerm_cosmosdb_account.afm_cosmos_account](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/cosmosdb_account) | data source |
 | [azurerm_cosmosdb_account.bizevent_cosmos_account](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/cosmosdb_account) | data source |
 | [azurerm_data_factory.obeserv_data_factory](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/data_factory) | data source |
-| [azurerm_data_factory.qi_data_factory](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/data_factory) | data source |
-| [azurerm_data_factory.qi_data_factory_cosmos](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/data_factory) | data source |
 | [azurerm_eventhub.pagopa-evh-ns03_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub) | data source |
 | [azurerm_eventhub.pagopa-evh-ns04_nodo-dei-pagamenti-fdr-qi-fdr-iuvs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub) | data source |
 | [azurerm_eventhub.pagopa-evh-ns04_nodo-dei-pagamenti-fdr-qi-flows](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub) | data source |

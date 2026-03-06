@@ -10,7 +10,6 @@ locals {
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "PagoPA"
 
-  adf_integration_runtime_name = "AutoResolveIntegrationRuntime"
 
 
   vnet_name                = "${local.product}-vnet"

@@ -24,7 +24,7 @@ locals {
   # - database: nome del database Cosmos DB a cui collegarsi.
   # es: GpdPayments = {
   #      connection_string = data.azurerm_cosmosdb_account.gpd_payments_cosmos_account.primary_sql_connection_string
-  #      account_key      = data.azurerm_cosmosdb_account.gpd_payments_cosmos_account.primary_key
+  #      account_name      = data.azurerm_cosmosdb_account.gpd_payments_cosmos_account.name
   #      database         = "TablesDb"
   #    }
   data_factory_linked_services_cosmosdb = {

@@ -5,7 +5,7 @@ resource "azurerm_data_factory_linked_service_azure_blob_storage" "df_connection
   data_factory_id   = data.azurerm_data_factory.obeserv_data_factory.id
   connection_string = each.value.connection_string
 
-  integration_runtime_name = local.adf_integration_runtime_name
+  integration_runtime_name = local.df_integration_runtime_name
   # connection_string_insecure = "DefaultEndpointsProtocol=https;AccountName=pagopa${var.env_short}itnobservsa;EndpointSuffix=core.windows.net;"
   use_managed_identity = true
 

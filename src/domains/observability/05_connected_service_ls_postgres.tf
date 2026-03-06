@@ -1,25 +1,25 @@
 data "azurerm_key_vault_secret" "df_connection_postgres_host" {
   for_each     = local.data_factory_linked_services_postgres
   name         = each.value.host_secret_name
-  key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
+  key_vault_id = each.value.key_vault_id
 }
 
 data "azurerm_key_vault_secret" "df_connection_postgres_port" {
   for_each     = local.data_factory_linked_services_postgres
   name         = each.value.port_secret_name
-  key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
+  key_vault_id = each.value.key_vault_id
 }
 
 data "azurerm_key_vault_secret" "df_connection_postgres_database" {
   for_each     = local.data_factory_linked_services_postgres
   name         = each.value.database_secret_name
-  key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
+  key_vault_id = each.value.key_vault_id
 }
 
 data "azurerm_key_vault_secret" "df_connection_postgres_username" {
   for_each     = local.data_factory_linked_services_postgres
   name         = each.value.username_secret_name
-  key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
+  key_vault_id = each.value.key_vault_id
 }
 
 
@@ -30,7 +30,7 @@ resource "azurerm_key_vault_access_policy" "df_connection_access_kv" {
   key_vault_id = each.value.key_vault_id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azurerm_data_factory.qi_data_factory.identity[0].principal_id
+  object_id = data.azurerm_data_factory.obeserv_data_factory.identity[0].principal_id
 
   secret_permissions = ["Get", "List"]
 }
@@ -54,7 +54,7 @@ resource "azapi_resource" "df_connection_linked_service_postgres" {
       annotations = []
       connectVia = {
         parameters    = {}
-        referenceName = local.adf_integration_runtime_name
+        referenceName = local.df_integration_runtime_name
         type          = "IntegrationRuntimeReference"
       }
       type = "AzurePostgreSql"

@@ -11,7 +11,7 @@ resource "azurerm_data_factory_linked_service_kusto" "dataexp_ls" {
   count = var.dexp_db.enable ? 1 : 0
 
   name                 = local.dataexplorer_ls_name
-  data_factory_id      = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id      = data.azurerm_data_factory.obeserv_data_factory.id
   kusto_endpoint       = azurerm_kusto_cluster.data_explorer_cluster[count.index].uri
   kusto_database_name  = azurerm_kusto_database.re_db[count.index].name
   use_managed_identity = true
@@ -21,7 +21,7 @@ resource "azurerm_data_factory_linked_service_kusto" "dataexp_ls" {
 
 resource "azurerm_data_factory_linked_service_cosmosdb" "cosmos_biz" {
   name             = "CosmosDbNoSqlBizPositivi${var.env_short}LinkService"
-  data_factory_id  = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id  = data.azurerm_data_factory.obeserv_data_factory.id
   account_endpoint = data.azurerm_cosmosdb_account.bizevent_cosmos_account.endpoint
   account_key      = data.azurerm_cosmosdb_account.bizevent_cosmos_account.primary_key
   database         = "db"
@@ -37,8 +37,8 @@ resource "azurerm_kusto_database_principal_assignment" "qi_principal_assignment"
   cluster_name        = azurerm_kusto_cluster.data_explorer_cluster[count.index].name
   database_name       = azurerm_kusto_database.re_db[count.index].name
 
-  tenant_id      = data.azurerm_data_factory.qi_data_factory.identity.0.tenant_id
-  principal_id   = data.azurerm_data_factory.qi_data_factory.identity.0.principal_id
+  tenant_id      = data.azurerm_data_factory.obeserv_data_factory.identity.0.tenant_id
+  principal_id   = data.azurerm_data_factory.obeserv_data_factory.identity.0.principal_id
   principal_type = "App"
   role           = "Admin"
 }
@@ -100,7 +100,7 @@ resource "azurerm_key_vault_access_policy" "df_see_kv_cruscotto" {
   key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azurerm_data_factory.qi_data_factory.identity[0].principal_id
+  object_id = data.azurerm_data_factory.obeserv_data_factory.identity[0].principal_id
 
   secret_permissions = ["Get", "List"]
 }
@@ -188,7 +188,7 @@ resource "azurerm_key_vault_access_policy" "df_see_kv_nodo" {
   key_vault_id = data.azurerm_key_vault.nodo_kv.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azurerm_data_factory.qi_data_factory.identity[0].principal_id
+  object_id = data.azurerm_data_factory.obeserv_data_factory.identity[0].principal_id
 
   secret_permissions = ["Get", "List"]
 }
