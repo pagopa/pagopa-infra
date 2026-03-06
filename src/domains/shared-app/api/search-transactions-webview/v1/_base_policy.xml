@@ -7,6 +7,9 @@
         <allowed-origins>
           <origin>${search_transactions_origin}</origin>
         </allowed-origins>
+        <allowed-headers>
+          <header>${search_transactions_header}</header>
+        </allowed-headers>
       </cors>
       <base />
       <rate-limit-by-key calls="100" renewal-period="50" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
