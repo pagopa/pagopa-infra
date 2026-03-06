@@ -32,7 +32,7 @@ module "apim_search_transactions" {
   approval_required     = false
   subscriptions_limit   = 1000
 
-  policy_xml = file("./api_product/search-transactions-service/_base_policy.xml")
+  policy_xml = file("./api_product/search-transactions/_base_policy.xml")
 }
 
 ##############
