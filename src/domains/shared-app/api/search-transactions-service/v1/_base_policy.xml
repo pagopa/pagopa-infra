@@ -16,8 +16,8 @@
             </set-header>
             <set-body>@{
               return new JObject(
-              new JProperty("title", "Bad request"),
-              new JProperty("status", 400),
+              new JProperty("title", "Forbidden"),
+              new JProperty("status", 403),
               new JProperty("detail", "Invalid NAV matching"))
               .ToString();
               }
