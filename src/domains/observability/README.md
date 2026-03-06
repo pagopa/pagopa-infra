@@ -47,7 +47,7 @@ Add an entry to `data_factory_linked_services_cosmosdb`:
 | Attribute | Description |
 |---|---|
 | `connection_string` | The primary SQL connection string of the Cosmos DB account |
-| `account_key` | The primary key of the Cosmos DB account |
+| `account_name` | The name of the Cosmos DB account |
 | `database` | The name of the target database |
 
 ```hcl
