@@ -46,9 +46,9 @@ locals {
 
 resource "azapi_resource_action" "df_connection_approve_private_endpoint_connection" {
   # only those who require a private endpoint approval
-  for_each    = { for key, value in local.data_factory_managed_private_endpoint : key => value if length(local.connection_to_approve[key]) > 0 }
+  for_each    = local.data_factory_managed_private_endpoint
   type        = local.az_api_type_mappings[each.value.type].approve_az_api_type
-  resource_id = local.connection_to_approve[each.key][0]
+  resource_id = try(local.connection_to_approve[each.key][0], null)
   method      = "PUT"
 
   body = {
@@ -60,6 +60,13 @@ resource "azapi_resource_action" "df_connection_approve_private_endpoint_connect
     }
   }
 
+
+  lifecycle {
+    precondition {
+      condition     = length(local.connection_to_approve[each.key]) > 0
+      error_message = "No private endpoint connection found to approve for managed private endpoint '${azurerm_data_factory_managed_private_endpoint.df_connection_managed_private_endpoint[each.key].name}'. This can happen if the connection is already approved or if the name-matching heuristic does not match any connection."
+    }
+  }
 }
 
 
