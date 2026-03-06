@@ -98,8 +98,26 @@
               }
             }
           },
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "404" : {
-            "description" : "Not found the transaction.",
+            "description" : "Transaction Not found",
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
