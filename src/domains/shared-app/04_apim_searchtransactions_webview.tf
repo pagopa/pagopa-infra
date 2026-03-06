@@ -7,7 +7,7 @@ locals {
     display_name          = "Search Transactions Webview"
     description           = "API to expose search transactions webview"
     path                  = "ciesearch"
-    subscription_required = true
+    subscription_required = false
     service_url           = null
   }
 }
@@ -30,7 +30,6 @@ module "apim_search_transactions_webview" {
   published             = true
   subscription_required = local.apim_searchtransactionswebview_api.subscription_required
   approval_required     = false
-  subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/search-transactions/_base_policy.xml")
 }
@@ -59,7 +58,7 @@ module "apim_api_search_transactions_webview_api_v1" {
   name                  = format("%s-searchtransactions-webview-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_search_transactions.product_id]
+  product_ids           = [module.apim_search_transactions_webview.product_id]
   subscription_required = local.apim_searchtransactionswebview_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.searchtransactions_webview_api.id
   api_version           = "v1"
@@ -73,5 +72,22 @@ module "apim_api_search_transactions_webview_api_v1" {
   content_format = "openapi"
   content_value  = file("./api/search-transactions-webview/v1/_openapi.json.tpl")
 
-  xml_content = file("./api/search-transactions-webview/v1/_base_policy.xml")
+  xml_content = templatefile("./api/search-transactions-webview/v1/_base_policy.xml", {
+    hostname = local.shared_hostname
+  })
 }
+
+data "azurerm_key_vault_secret" "search_transactions_token_secret_webview" {
+  name         = "search-transactions-token-secret"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "search_transactions_token_secret_webview_value" {
+  name                = "search-transactions-token-secret-webview-value"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "search-transactions-token-secret-webview-value"
+  value               = data.azurerm_key_vault_secret.search_transactions_token_secret_webview.value
+  secret              = true
+}
+
