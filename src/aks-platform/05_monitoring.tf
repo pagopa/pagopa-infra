@@ -15,21 +15,6 @@ resource "kubernetes_secret_v1" "prometheus_basic_auth" {
   }
 }
 
-# module "monitoring_pod_identity" {
-#   source = "./.terraform/modules/__v4__//kubernetes_pod_identity"
-#
-#   cluster_name        = module.aks.name
-#   resource_group_name = azurerm_resource_group.aks_rg.name
-#   location            = var.location
-#   tenant_id           = data.azurerm_subscription.current.tenant_id
-#
-#   identity_name = "monitoring-pod-identity"
-#   namespace     = kubernetes_namespace.monitoring.metadata[0].name
-#   key_vault_id  = data.azurerm_key_vault.kv.id
-#
-#   secret_permissions = ["Get"]
-# }
-
 resource "helm_release" "kube_prometheus_stack" {
   name       = "prometheus"
   repository = "https://prometheus-community.github.io/helm-charts"
