@@ -37,7 +37,7 @@
 | <a name="module_apim_pagopa_platform_statuspage_product"></a> [apim\_pagopa\_platform\_statuspage\_product](#module\_apim\_pagopa\_platform\_statuspage\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_pdf_engine_product"></a> [apim\_pdf\_engine\_product](#module\_apim\_pdf\_engine\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_poc_product"></a> [apim\_poc\_product](#module\_apim\_poc\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_search_transactions"></a> [apim\_search\_transactions](#module\_apim\_search\_transactions) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_search_transactions_service"></a> [apim\_search\_transactions\_service](#module\_apim\_search\_transactions\_service) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_session_wallet_api_v1"></a> [apim\_session\_wallet\_api\_v1](#module\_apim\_session\_wallet\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_session_wallet_product"></a> [apim\_session\_wallet\_product](#module\_apim\_session\_wallet\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_statuspage_nodo_pagamenti"></a> [apim\_statuspage\_nodo\_pagamenti](#module\_apim\_statuspage\_nodo\_pagamenti) | ./.terraform/modules/__v3__/api_management_product | n/a |
