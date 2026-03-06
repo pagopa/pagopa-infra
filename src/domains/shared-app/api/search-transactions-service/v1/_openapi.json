@@ -146,9 +146,7 @@
             }
           }
         },
-        "security" : [ {
-          "ApiKey" : [ ]
-        } ]
+        "security" : []
       }
     }
   },
@@ -216,14 +214,6 @@
             "type" : "string"
           }
         }
-      }
-    },
-    "securitySchemes" : {
-      "ApiKey" : {
-        "type" : "apiKey",
-        "description" : "The Azure Subscription Key to access this API.",
-        "name" : "Ocp-Apim-Subscription-Key",
-        "in" : "header"
       }
     }
   }
