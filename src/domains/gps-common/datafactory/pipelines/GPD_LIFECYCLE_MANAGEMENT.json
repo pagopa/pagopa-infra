@@ -331,11 +331,11 @@
     "parameters": {
       "ChunkSize": {
         "type": "Int",
-        "defaultValue": 10000
+        "defaultValue": 1000
       },
       "MaxAmountToMigrate": {
         "type": "Int",
-        "defaultValue": 60000
+        "defaultValue": 50000
       }
     },
     "variables": {
