@@ -360,6 +360,20 @@ locals {
       shard_key           = "transactionId",
       default_ttl_seconds = null
     },
+    {
+      name = "notes"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["transactionId"]
+          unique = false
+        }
+      ]
+      shard_key           = "transactionId",
+      default_ttl_seconds = null
+    }
   ]
 }
 
