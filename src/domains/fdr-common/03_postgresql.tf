@@ -158,6 +158,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_shared_
   value     = var.pgres_flex_params.shared_preload_libraries # "pg_failover_slots"
 }
 
+# add pg_cron extension to group azure_pg_admin
 resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_extensions" {
   name      = "azure.extensions"
   server_id = module.postgres_flexible_server_fdr.id
@@ -168,7 +169,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_extensi
 resource "azurerm_postgresql_flexible_server_configuration" "pg_cron_database" {
   name      = "cron.database_name"
   server_id = module.postgres_flexible_server_fdr.id
-  value     = azurerm_postgresql_flexible_server_database.fdr3_db.name
+  value     = "postgres"
 }
 
 resource "azurerm_postgresql_flexible_server_database" "fdr_replica_db" {
