@@ -150,7 +150,7 @@ resource "azurerm_data_factory_trigger_schedule" "pipeline_lifecycle_management_
   frequency = "Minute"
 
   pipeline_parameters = {
-    ChunkSize = 1000
-    MaxAmountToMigrate  = 50000
+    ChunkSize          = 1000
+    MaxAmountToMigrate = 50000
   }
 }
