@@ -27,6 +27,12 @@ locals {
         subresource_name   = "Analytical"
         type               = "cosmosdb"
       }
+      BizPositiviSql = {
+        target_resource_id = data.azurerm_cosmosdb_account.bizevent_cosmos_account.id
+        fqdns              = null
+        subresource_name   = "Sql"
+        type               = "cosmosdb"
+      }
     } : {}
   )
 
