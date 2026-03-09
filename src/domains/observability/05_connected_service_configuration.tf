@@ -27,7 +27,7 @@ locals {
         subresource_name   = "Analytical"
         type               = "cosmosdb"
       }
-    }: {}
+    } : {}
   )
 
 
