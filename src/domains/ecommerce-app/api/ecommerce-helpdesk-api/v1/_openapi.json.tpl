@@ -1023,6 +1023,14 @@
           "authorizationCode": {
             "type": "string"
           },
+          "authorizationOperationId": {
+            "type": "string",
+            "description": "Operation id for authorization. Present only if the payment gateway is NPG"
+          },
+          "refundOperationId": {
+            "type": "string",
+            "description": "Operation id for refund. Present only if the payment gateway is NPG"
+          },
           "paymentMethodName": {
             "type": "string"
           },
@@ -1061,6 +1069,8 @@
           "grandTotal": 110,
           "rrn": "rrn",
           "authorizationCode": "auth code",
+          "authorizationOperationId": "009911013",
+          "refundOperationId": "645561643244",
           "paymentMethodName": "payment method name",
           "brand": "brand",
           "authorizationRequestId": "authorizationRequestId",
