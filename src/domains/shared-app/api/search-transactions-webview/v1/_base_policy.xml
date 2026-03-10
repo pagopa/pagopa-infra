@@ -16,6 +16,27 @@
       </cors>
       <base />
       <rate-limit-by-key calls="100" renewal-period="50" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
+      <!--
+      <set-variable name="token" value="@(context.Request.Url.Query.GetValueOrDefault("token", ""))" />
+      <choose>
+        <when condition="@(((string)context.Variables["token"]) != "{{search-transactions-token-secret-value}}")">
+          <return-response>
+            <set-status code="401"/>
+            <set-header name="Content-Type" exists-action="override">
+              <value>application/json</value>
+            </set-header>
+            <set-body>@{
+              return new JObject(
+              new JProperty("title", "Unauthorized"),
+              new JProperty("status", 401),
+              new JProperty("detail", "Invalid Token matching"))
+              .ToString();
+              }
+            </set-body>
+          </return-response>
+        </when>
+      </choose>
+      -->
       <set-backend-service base-url="https://${hostname}/pagopa-search-transactions-fe/" />
     </inbound>
     <outbound>
