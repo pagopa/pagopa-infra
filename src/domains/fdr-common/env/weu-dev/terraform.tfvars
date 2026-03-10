@@ -36,7 +36,7 @@ pgres_flex_params = {
   backup_retention_days                  = 7
   geo_redundant_backup_enabled           = false
   create_mode                            = "Default"
-  pgres_flex_private_endpoint_enabled    = false
+  pgres_flex_private_endpoint_enabled    = true
   pgres_flex_ha_enabled                  = false
   pgres_flex_pgbouncer_enabled           = true
   standby_availability_zone              = 2
@@ -47,7 +47,7 @@ pgres_flex_params = {
   max_worker_process                     = 16
   wal_level                              = "logical"
   shared_preoload_libraries              = "pg_failover_slots"
-  public_network_access_enabled          = true
+  public_network_access_enabled          = false
 }
 
 custom_metric_alerts = {
@@ -120,8 +120,8 @@ cosmos_mongo_db_fdr_re_params = {
   enable_free_tier                 = false
 
   additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
   is_virtual_network_filter_enabled = false
 
   backup_continuous_enabled = false
