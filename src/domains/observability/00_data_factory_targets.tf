@@ -13,6 +13,11 @@ data "azurerm_cosmosdb_account" "bizevent_cosmos_account" {
   resource_group_name = "pagopa-${var.env_short}-${var.location_short}-bizevents-rg"
 }
 
+data "azurerm_cosmosdb_account" "ecommerce_cosmos_account" {
+  name                = "pagopa-${var.env_short}-${var.location_short}-ecommerce-cosmos-account"
+  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-ecommerce-cosmosdb-rg"
+}
+
 
 
 ## DF_4_blob_sa
