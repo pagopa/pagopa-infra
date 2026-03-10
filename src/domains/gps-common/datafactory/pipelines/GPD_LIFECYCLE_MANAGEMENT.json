@@ -127,7 +127,7 @@
                     "typeProperties": {
                       "variableName": "TempDebtPositionCounter",
                       "value": {
-                        "value": "@min(pipeline().parameters.ChunkSize, int(activity('Execute_GPD_LIFECYCLE_SCRIPT_EXECUTION').output.pipelineReturnValue.pCount))",
+                        "value": "@add(min(pipeline().parameters.ChunkSize, int(activity('Execute_GPD_LIFECYCLE_SCRIPT_EXECUTION').output.pipelineReturnValue.pCount)), variables('DebtPositionCounter'))",
                         "type": "Expression"
                       }
                     }
