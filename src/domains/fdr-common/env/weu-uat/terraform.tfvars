@@ -46,7 +46,7 @@ pgres_flex_params = {
   pgbouncer_min_pool_size                = 10
   max_worker_process                     = 8
   wal_level                              = "replica"
-  shared_preload_libraries              = "pg_cron,pg_failover_slots"
+  shared_preload_libraries               = "pg_cron,pg_failover_slots"
   public_network_access_enabled          = false
 }
 
