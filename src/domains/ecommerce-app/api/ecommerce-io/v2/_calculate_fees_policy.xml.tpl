@@ -3,7 +3,7 @@
         <base />
         <set-variable name="paymentMethodId" value="@(context.Request.MatchedParameters["id"])" />
         <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
-            <set-url>@($"https://${ecommerce-basepath}/pagopa-ecommerce-payment-methods-service/payment-methods/{(string)context.Variables["paymentMethodId"]}")</set-url>
+            <set-url>@($"https://${ecommerce-basepath}/pagopa-ecommerce-payment-methods-handler/payment-methods/{(string)context.Variables["paymentMethodId"]}")</set-url>
             <set-method>GET</set-method>
             <set-header name="X-Client-Id" exists-action="override">
                 <value>IO</value>
@@ -17,8 +17,6 @@
             <when condition="@(((int)((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode) == 200)">
                 <set-variable name="paymentMethod" value="@((JObject)((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>())" />
                 <set-variable name="paymentTypeCode" value="@((string)((JObject)context.Variables["paymentMethod"])["paymentTypeCode"])" />
-                <set-variable name="isPayPal" value="@(((string)context.Variables["paymentTypeCode"]).Equals("PPAL"))" />
-                <set-variable name="isBancomatPay" value="@(((string)context.Variables["paymentTypeCode"]).Equals("BPAY"))" />
                 <set-variable name="isCard" value="@(((string)context.Variables["paymentTypeCode"]).Equals("CP"))" />
             </when>
             <when condition="@(((int)((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode) == 404)">
