@@ -92,4 +92,22 @@ locals {
       schema_name         = "cfg"
     },
   ]
+
+  gpd_tables_list_datasets = [
+    {
+      dataset_name        = "ARCHIVING_SELECTION_BUFFER"
+      dataset_schema_file = "datafactory/datasets/gpd/ARCHIVING_SELECTION_BUFFER.json"
+      table_name          = "archiving_selection_buffer"
+      schema_name         = "apd"
+    }
+  ]
+
+  gpd_storico_tables_list_datasets = [
+    {
+      dataset_name        = "ARCHIVING_STAGING"
+      dataset_schema_file = "datafactory/datasets/gpd/ARCHIVING_STAGING.json"
+      table_name          = "archiving_staging"
+      schema_name         = "apd"
+    }
+  ]
 }

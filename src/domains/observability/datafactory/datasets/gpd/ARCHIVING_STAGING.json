@@ -1,0 +1,20 @@
+[
+  {
+    "name": "id",
+    "type": "bigint",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "run_id",
+    "type": "text",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "payload",
+    "type": "jsonb",
+    "precision": 0,
+    "scale": 0
+  }
+]

@@ -119,7 +119,7 @@ resource "azurerm_data_factory_custom_dataset" "crusc8_tables_datasets" {
   data_factory_id      = data.azurerm_data_factory.obeserv_data_factory.id
   type                 = "AzurePostgreSqlTable"
   type_properties_json = <<JSON
-      { 
+      {
       "schema" : "${each.value.schema_name}",
       "table"  : "${each.value.table_name}"
     }
@@ -138,7 +138,7 @@ resource "azurerm_data_factory_custom_dataset" "cfg_tables_list_datasets" {
   data_factory_id      = data.azurerm_data_factory.obeserv_data_factory.id
   type                 = "AzurePostgreSqlTable"
   type_properties_json = <<JSON
-      { 
+      {
       "schema" : "${each.value.schema_name}",
       "table"  : "${each.value.table_name}"
     }
@@ -148,5 +148,45 @@ resource "azurerm_data_factory_custom_dataset" "cfg_tables_list_datasets" {
 
   linked_service {
     name = "LinkedService-Nodo-Flexible"
+  }
+}
+
+resource "azurerm_data_factory_custom_dataset" "gpd_tables_list_datasets" {
+  for_each             = { for ds in local.gpd_tables_list_datasets : ds.dataset_name => ds }
+  name                 = each.key
+  data_factory_id      = data.azurerm_data_factory.obeserv_data_factory.id
+  type                 = "AzurePostgreSqlTable"
+  type_properties_json = <<JSON
+      {
+      "schema" : "${each.value.schema_name}",
+      "table"  : "${each.value.table_name}"
+    }
+    JSON
+
+  schema_json = file(each.value.dataset_schema_file)
+
+  linked_service {
+    name = "gpd-${var.env}-postgres-ls"
+
+  }
+}
+
+resource "azurerm_data_factory_custom_dataset" "gpd_storico_tables_list_datasets" {
+  for_each             = { for ds in local.gpd_storico_tables_list_datasets : ds.dataset_name => ds }
+  name                 = each.key
+  data_factory_id      = data.azurerm_data_factory.obeserv_data_factory.id
+  type                 = "AzurePostgreSqlTable"
+  type_properties_json = <<JSON
+      {
+      "schema" : "${each.value.schema_name}",
+      "table"  : "${each.value.table_name}"
+    }
+    JSON
+
+  schema_json = file(each.value.dataset_schema_file)
+
+  linked_service {
+    name = "gpd-${var.env}-postgres-archive-ls"
+
   }
 }
