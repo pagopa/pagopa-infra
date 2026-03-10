@@ -9,3 +9,5 @@ data "azurerm_kubernetes_cluster" "weu_aks" {
 
 
 data "kubernetes_all_namespaces" "all_ns" {}
+
+

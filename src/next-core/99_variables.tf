@@ -304,6 +304,11 @@ variable "apim_v2_alerts_enabled" {
   default     = true
 }
 
+variable "app_inisght_daily_data_cap_gb" {
+  type        = number
+  description = "Daily data cap in GB for Application Insights."
+  default     = 20
+}
 
 ## Redis cache
 variable "redis_cache_params" {
@@ -312,12 +317,14 @@ variable "redis_cache_params" {
     capacity      = number
     sku_name      = string
     family        = string
+    zones         = optional(list(string), [])
   })
   default = {
     public_access = false
     capacity      = 1
     sku_name      = "Basic"
     family        = "C"
+    zones         = []
   }
 }
 
@@ -328,11 +335,6 @@ variable "create_redis_multiaz" {
 }
 
 
-variable "redis_zones" {
-  type        = list(string)
-  description = "(Optional) Zone list where redis will be deployed"
-  default     = ["1"]
-}
 
 variable "redis_version" {
   type        = string
@@ -621,10 +623,28 @@ variable "ehns_sku_name" {
   default     = "Standard"
 }
 
-variable "ehns_capacity" {
+variable "ehns_03_capacity" {
   type        = number
-  description = "Specifies the Capacity / Throughput Units for a Standard SKU namespace."
+  description = "Specifies the Capacity / Throughput Units for EVH 03."
   default     = null
+}
+
+variable "ehns_prf_capacity" {
+  type        = number
+  default     = 12
+  description = "Specifies the Capacity / Throughput Units for EVH prf"
+}
+
+variable "ehns_04_capacity" {
+  type        = number
+  description = "Specifies the Capacity / Throughput Units for EVH 04."
+  default     = null
+}
+
+variable "ehns_03_maximum_throughput_units" {
+  type        = number
+  description = "Specifies the maximum number of throughput units when Auto Inflate is Enabled"
+  default     = 15
 }
 
 variable "ehns_maximum_throughput_units" {
@@ -633,7 +653,25 @@ variable "ehns_maximum_throughput_units" {
   default     = null
 }
 
+variable "ehns_prf_maximum_throughput_units" {
+  type        = number
+  description = "Specifies the maximum number of throughput units when Auto Inflate is Enabled"
+  default     = 15
+}
+
 variable "ehns_zone_redundant" {
+  type        = bool
+  description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
+  default     = false
+}
+
+variable "ehns_03_zone_redundant" {
+  type        = bool
+  description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
+  default     = false
+}
+
+variable "ehns_prf_zone_redundant" {
   type        = bool
   description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
   default     = false
@@ -701,6 +739,8 @@ variable "ehns04_alerts_enabled" {
   default     = false
   description = "Event hub 04 alerts enabled?"
 }
+
+
 
 
 variable "ehns_public_network_access" {
@@ -778,7 +818,7 @@ variable "is_feature_enabled" {
     azdoa                     = optional(bool, true)
     apim_core_import          = optional(bool, false)
     use_new_apim              = optional(bool, false)
-    azdoa_extension           = optional(bool, false)
+    azdoa_extension           = optional(bool, true)
   })
   description = "Features enabled in this domain"
 }
@@ -800,6 +840,12 @@ variable "node_forwarder_logging_level" {
   type        = string
   description = "Logging level of Node Forwarder"
   default     = "INFO"
+}
+
+variable "node_forwarder_image_tag" {
+  type        = string
+  description = "The tag of the docker image to deploy for node forwarder"
+  default     = "latest"
 }
 
 variable "node_forwarder_autoscale_enabled" {
@@ -1054,6 +1100,12 @@ variable "route_table_peering_sia_additional_routes" {
 variable "cidr_subnet_dns_forwarder" {
   type        = list(string)
   description = "DNS Forwarder network address space."
+}
+
+variable "vpn_gw_sku" {
+  type        = string
+  default     = "VpnGw1"
+  description = "VPN gateway sku"
 }
 
 variable "vpn_gw_pip_sku" {

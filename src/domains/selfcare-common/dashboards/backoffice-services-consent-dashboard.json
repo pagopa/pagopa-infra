@@ -120,9 +120,27 @@
               "settings": {
                 "content": {
                   "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.99;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/backoffice/pagopa/services/v1/institutions/services/[^/]+/consents\"\n| where httpMethod_s == \"GET\"\n| summarize\n    Total=count(),\n    Success=count(httpStatus_d < 500)\n    by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
-                  "ControlType": "AnalyticsGrid",
+                  "ControlType": "FrameControlChart",
                   "PartTitle": "Availability (5m)",
-                  "PartSubTitle": "GET /v1/institutions/services/{serviceId}/consents"
+                  "PartSubTitle": "[Backoffice-external] - GET /v1/institutions/services/{serviceId}/consents",
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ]
+                  }
                 }
               }
             }
@@ -239,10 +257,10 @@
               "settings": {
                 "content": {
                   "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.99;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/backoffice/pagopa/services/v1/institutions/services/[^/]+/consents\"\n| where httpMethod_s == \"GET\"\n| extend HTTPStatus = tostring(toint(httpStatus_d))\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
-                  "ControlType": "AnalyticsGrid",
+                  "ControlType": "FrameControlChart",
                   "SpecificChart": "StackedArea",
                   "PartTitle": "Response Codes (5m)",
-                  "PartSubTitle": "GET /v1/institutions/services/{serviceId}/consents",
+                  "PartSubTitle": "[Backoffice-external] - GET /v1/institutions/services/{serviceId}/consents",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [
@@ -377,11 +395,11 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 250;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/backoffice/pagopa/services/v1/institutions/services/[^/]+/consents\"\n| where httpMethod_s == \"GET\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95)\n    by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
-                  "ControlType": "AnalyticsGrid",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/backoffice/pagopa/services/v1/institutions/services/[^/]+/consents\"\n| where httpMethod_s == \"GET\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95)\n    by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "ControlType": "FrameControlChart",
                   "SpecificChart": "Line",
                   "PartTitle": "Percentile Response Time (5m)",
-                  "PartSubTitle": "GET /v1/institutions/services/{serviceId}/consents",
+                  "PartSubTitle": "[Backoffice-external] - GET /v1/institutions/services/{serviceId}/consents",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [],
@@ -520,9 +538,27 @@
               "settings": {
                 "content": {
                   "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.99;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/backoffice/v1/institutions/[^/]+/services/[^/]+/consent\"\n| where httpMethod_s == \"PUT\"\n| summarize\n    Total=count(),\n    Success=count(httpStatus_d < 500)\n    by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
-                  "ControlType": "AnalyticsGrid",
+                  "ControlType": "FrameControlChart",
                   "PartTitle": "Availability (5m)",
-                  "PartSubTitle": "PUT /v1/institutions/{institution-id}/services/{service-id}/consent"
+                  "PartSubTitle": "[Backoffice-bff] - PUT /v1/institutions/{institution-id}/services/{service-id}/consent",
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ]
+                  }
                 }
               }
             }
@@ -639,10 +675,10 @@
               "settings": {
                 "content": {
                   "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.99;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/backoffice/v1/institutions/[^/]+/services/[^/]+/consent\"\n| where httpMethod_s == \"PUT\"\n| extend HTTPStatus = tostring(toint(httpStatus_d))\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
-                  "ControlType": "AnalyticsGrid",
+                  "ControlType": "FrameControlChart",
                   "SpecificChart": "StackedArea",
                   "PartTitle": "Response Codes (5m)",
-                  "PartSubTitle": "PUT /v1/institutions/{institution-id}/services/{service-id}/consent",
+                  "PartSubTitle": "[Backoffice-bff] - PUT /v1/institutions/{institution-id}/services/{service-id}/consent",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [
@@ -777,11 +813,11 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.99;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/backoffice/v1/institutions/[^/]+/services/[^/]+/consent\"\n| where httpMethod_s == \"PUT\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95)\n    by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
-                  "ControlType": "AnalyticsGrid",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.25;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/backoffice/v1/institutions/[^/]+/services/[^/]+/consent\"\n| where httpMethod_s == \"PUT\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95)\n    by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "ControlType": "FrameControlChart",
                   "SpecificChart": "Line",
                   "PartTitle": "Percentile Response Time (5m)",
-                  "PartSubTitle": "PUT /v1/institutions/{institution-id}/services/{service-id}/consent",
+                  "PartSubTitle": "[Backoffice-bff] - PUT /v1/institutions/{institution-id}/services/{service-id}/consent",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [],
@@ -792,7 +828,7 @@
                     "yAxis": [
                       {
                         "name": "watermark",
-                        "type": "long"
+                        "type": "real"
                       },
                       {
                         "name": "duration_percentile_95",
@@ -920,9 +956,27 @@
               "settings": {
                 "content": {
                   "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.99;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/backoffice/v1/institutions/[^/]+/services/consents\"\n| where httpMethod_s == \"GET\"\n| summarize\n    Total=count(),\n    Success=count(httpStatus_d < 500)\n    by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
-                  "ControlType": "AnalyticsGrid",
+                  "ControlType": "FrameControlChart",
                   "PartTitle": "Availability (5m)",
-                  "PartSubTitle": "GET /v1/institutions/{institution-id}/services/consents"
+                  "PartSubTitle": "[Backoffice-bff] - GET /v1/institutions/{institution-id}/services/consents",
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ]
+                  }
                 }
               }
             }
@@ -1039,10 +1093,10 @@
               "settings": {
                 "content": {
                   "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.99;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/backoffice/v1/institutions/[^/]+/services/consents\"\n| where httpMethod_s == \"GET\"\n| extend HTTPStatus = tostring(toint(httpStatus_d))\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
-                  "ControlType": "AnalyticsGrid",
+                  "ControlType": "FrameControlChart",
                   "SpecificChart": "StackedArea",
                   "PartTitle": "Response Codes (5m)",
-                  "PartSubTitle": "GET /v1/institutions/{institution-id}/services/consents",
+                  "PartSubTitle": "[Backoffice-bff] - GET /v1/institutions/{institution-id}/services/consents",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [
@@ -1177,11 +1231,11 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.99;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/backoffice/v1/institutions/[^/]+/services/consents\"\n| where httpMethod_s == \"GET\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95)\n    by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
-                  "ControlType": "AnalyticsGrid",
+                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.25;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/backoffice/v1/institutions/[^/]+/services/consents\"\n| where httpMethod_s == \"GET\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95)\n    by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "ControlType": "FrameControlChart",
                   "SpecificChart": "Line",
                   "PartTitle": "Percentile Response Time (5m)",
-                  "PartSubTitle": "GET /v1/institutions/{institution-id}/services/consents",
+                  "PartSubTitle": "[Backoffice-bff] - GET /v1/institutions/{institution-id}/services/consents",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [],
@@ -1192,7 +1246,7 @@
                     "yAxis": [
                       {
                         "name": "watermark",
-                        "type": "long"
+                        "type": "real"
                       },
                       {
                         "name": "duration_percentile_95",
@@ -1234,15 +1288,15 @@
                 "value": "Past 4 hours"
               },
               "filteredPartIds": [
-                "StartboardPart-LogsDashboardPart-4c9c1982-646c-408e-9f94-113c4ec0d130",
-                "StartboardPart-LogsDashboardPart-4c9c1982-646c-408e-9f94-113c4ec0d132",
-                "StartboardPart-LogsDashboardPart-4c9c1982-646c-408e-9f94-113c4ec0d134",
-                "StartboardPart-LogsDashboardPart-4c9c1982-646c-408e-9f94-113c4ec0d179",
-                "StartboardPart-LogsDashboardPart-4c9c1982-646c-408e-9f94-113c4ec0d1b6",
-                "StartboardPart-LogsDashboardPart-4c9c1982-646c-408e-9f94-113c4ec0d1fc",
-                "StartboardPart-LogsDashboardPart-4c9c1982-646c-408e-9f94-113c4ec0d36b",
-                "StartboardPart-LogsDashboardPart-4c9c1982-646c-408e-9f94-113c4ec0d3c3",
-                "StartboardPart-LogsDashboardPart-4c9c1982-646c-408e-9f94-113c4ec0d424"
+                "StartboardPart-LogsDashboardPart-490c810f-ec04-439b-b571-20555e5464c7",
+                "StartboardPart-LogsDashboardPart-490c810f-ec04-439b-b571-20555e5464c9",
+                "StartboardPart-LogsDashboardPart-490c810f-ec04-439b-b571-20555e5464cb",
+                "StartboardPart-LogsDashboardPart-490c810f-ec04-439b-b571-20555e5464cd",
+                "StartboardPart-LogsDashboardPart-490c810f-ec04-439b-b571-20555e5464cf",
+                "StartboardPart-LogsDashboardPart-490c810f-ec04-439b-b571-20555e5464d1",
+                "StartboardPart-LogsDashboardPart-490c810f-ec04-439b-b571-20555e5464d3",
+                "StartboardPart-LogsDashboardPart-490c810f-ec04-439b-b571-20555e5464d5",
+                "StartboardPart-LogsDashboardPart-490c810f-ec04-439b-b571-20555e5464d7"
               ]
             }
           }

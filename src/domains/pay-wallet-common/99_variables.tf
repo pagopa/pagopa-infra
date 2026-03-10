@@ -69,7 +69,6 @@ variable "is_feature_enabled" {
     storage                 = optional(bool, false),
     redis_hub_spoke_pe_dns  = optional(bool, false),
     cosmos_hub_spoke_pe_dns = optional(bool, false),
-    sa_hub_spoke_pe         = optional(bool, false),
   })
   description = "Features enabled in this domain"
 }
