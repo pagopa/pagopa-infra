@@ -504,3 +504,48 @@ resource "azurerm_key_vault_secret" "integration_test_technical_support_subscrip
 
   tags = module.tag_config.tags
 }
+
+data "azurerm_api_management_user" "apim_touchpoint_user" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  user_id             = "touchpoint-pagopa-pagopa-it"
+}
+
+data "azurerm_api_management_api" "node_for_ecommerce_api_v1" {
+  name                = "pagopa-p-node-for-ecommerce-api-v1"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  revision            = "1"
+}
+
+
+data "azurerm_api_management_api" "node_for_ecommerce_api_v2" {
+  name                = "pagopa-p-node-for-ecommerce-api-v2"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  revision            = "1"
+}
+
+resource "azurerm_api_management_subscription" "node_for_ecommerce_api_v1_subscription_key" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  api_id  = data.azurerm_api_management_api.node_for_ecommerce_api_v1.id
+  user_id = data.azurerm_api_management_user.apim_touchpoint_user.id
+
+  display_name  = "Node API dedicated to eCommerce (v1)"
+  allow_tracing = false
+  state         = "active"
+}
+
+resource "azurerm_api_management_subscription" "node_for_ecommerce_api_v2_subscription_key" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  api_id  = data.azurerm_api_management_api.node_for_ecommerce_api_v1.id
+  user_id = data.azurerm_api_management_user.apim_touchpoint_user.id
+
+  display_name  = "Node API dedicated to eCommerce (v2)"
+  allow_tracing = false
+  state         = "active"
+}
