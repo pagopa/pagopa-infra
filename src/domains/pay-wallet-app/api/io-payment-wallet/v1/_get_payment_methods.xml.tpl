@@ -1,130 +1,19 @@
 <policies>
     <inbound>
-        <base />
-        <set-variable name="totalAmount" value="@(context.Request.Url.Query.GetValueOrDefault("amount","1"))" />
-        <set-variable name="deviceVersion" value="@(context.Request.Url.Query.GetValueOrDefault("deviceVersion", ""))" />
-        <set-variable name="userDevice" value="@(context.Request.Url.Query.GetValueOrDefault("devicePlatform", ""))" />
-        <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
-            <set-url>https://${ecommerce_hostname}/pagopa-ecommerce-payment-methods-handler/payment-methods</set-url>
-            <set-method>POST</set-method>
-            <set-header name="Content-Type" exists-action="override">
-                <value>application/json</value>
-            </set-header>
-            <set-header name="x-client-id" exists-action="override">
-                <value>IO</value>
-            </set-header>
-            <!-- Set payment-methods API Key header -->
-            <set-header name="x-api-key" exists-action="override">
-                <value>{{ecommerce-payment-methods-api-key-value}}</value>
-            </set-header>
-            <set-body>@{
-                    var userTouchpoint = "IO";
-                    var totalAmountValue = Convert.ToInt64("1");
-                    var deviceVersion = context.Variables.GetValueOrDefault("deviceVersion", "");
-                    var userDevice = context.Variables.GetValueOrDefault("userDevice", "");
-                    var paymentNotice = new JObject();
-                    paymentNotice["paymentAmount"] = totalAmountValue;
-                    var paymentNoticeList = new JArray();
-                    paymentNoticeList.Add(paymentNotice);
-                    var language = "IT";
-                    var sortBy = "DESCRIPTION";
-                    var sortOrder = "ASC";
-                    var priorityGroups = new JArray();
-                    priorityGroups.Add("CP");
-                    return new JObject(
-                            new JProperty("userTouchpoint", userTouchpoint),
-                            new JProperty("totalAmount", totalAmountValue),
-                            new JProperty("paymentNotice", paymentNoticeList),
-                            new JProperty("userDevice", String.IsNullOrEmpty(userDevice) ? null : userDevice),
-                            new JProperty("deviceVersion", String.IsNullOrEmpty(deviceVersion) ? null : deviceVersion),
-                            new JProperty("language", language),
-                            new JProperty("sortBy", sortBy),
-                            new JProperty("sortOrder", sortOrder),
-                            new JProperty("priorityGroups", priorityGroups)
-                        ).ToString();
-                  }</set-body>
-        </send-request>
-        <choose>
-            <when condition="@(((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode != 200)">
-                <return-response>
-                    <set-status code="502" reason="Bad Gateway" />
-                    <set-header name="Content-Type" exists-action="override">
-                        <value>application/json</value>
-                    </set-header>
-                    <set-body>{
-                                    "title": "Error retrieving eCommerce payment methods",
-                                    "status": 502,
-                                    "detail": "There was an error retrieving eCommerce payment methods"
-                                }</set-body>
-                </return-response>
-            </when>
-            <otherwise>
-                <return-response>
-                    <set-status code="200" reason="OK" />
-                    <set-header name="Content-Type" exists-action="override">
-                        <value>application/json</value>
-                    </set-header>
-                    <set-body>@{
-                        JObject paymentMethodsResponseBody = ((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>();
-                        JArray paymentHandlerResponse = new JArray();
-
-                        JArray rangesArray = new JArray();
-                        JObject rangeItem = new JObject
-                        {
-                            { "min", 0 },
-                            { "max", 10000 }
-                        };
-                        rangesArray.Add(rangeItem);
-
-                        foreach (var sourceMethod in paymentMethodsResponseBody["paymentMethods"]) {
-                            JObject paymentMethod = new JObject(
-                                new JProperty("id", sourceMethod["id"]),
-                                new JProperty("status", sourceMethod["status"]),
-                                new JProperty("paymentTypeCode",sourceMethod["paymentTypeCode"]),
-                                new JProperty("methodManagement", sourceMethod["methodManagement"]),
-                                new JProperty("asset", sourceMethod["paymentMethodAsset"]),
-                                new JProperty("ranges", rangesArray)
-                            );
-
-                            if (sourceMethod["paymentMethodsBrandAssets"] != null && sourceMethod["paymentMethodsBrandAssets"].HasValues) {
-                                paymentMethod["brandAssets"] = sourceMethod["paymentMethodsBrandAssets"];
-                            }
-
-                            if(sourceMethod["description"] != null) {
-                                 paymentMethod["description"] = sourceMethod["description"]["IT"];
-                            }
-
-                            if(sourceMethod["name"] != null) {
-                                string name = "no_name";
-                                if(((string)sourceMethod["paymentTypeCode"]) == "CP") {
-                                    name = "CARDS";
-                                } else {
-                                    name = (string)sourceMethod["name"]["IT"];
-                                }
-                                paymentMethod["name"] = name.ToUpper();
-                            }
-
-                            paymentHandlerResponse.Add(paymentMethod);
-                        }
-
-
-                        JObject targetJson = new JObject(
-                            new JProperty("paymentMethods", paymentHandlerResponse)
-                        );
-
-                        return targetJson.ToString();
-                    }</set-body>
-                </return-response>
-            </otherwise>
-        </choose>
+    <base />
+    <!-- Set payment-methods API Key header -->
+    <set-header name="x-api-key" exists-action="override">
+      <value>{{ecommerce-payment-methods-api-key-value}}</value>
+    </set-header>
+    <set-backend-service base-url="https://${ecommerce_hostname}/pagopa-ecommerce-payment-methods-service"/>
     </inbound>
     <outbound>
-        <base />
+      <base />
     </outbound>
-    <on-error>
-        <base />
-    </on-error>
     <backend>
-        <base />
+      <base />
     </backend>
-</policies>
+    <on-error>
+      <base />
+    </on-error>
+  </policies>
