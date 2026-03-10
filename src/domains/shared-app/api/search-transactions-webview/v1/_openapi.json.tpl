@@ -8,12 +8,8 @@
   },
   "tags": [
     {
-      "name": "sessionWalletToken",
-      "description": "Api's to generate Session wallet token pagoPA for App IO",
-      "externalDocs": {
-        "url": "https://pagopa.atlassian.net/wiki/x/XAAaP",
-        "description": "Documentation"
-      }
+      "name": "transactionsSearch",
+      "description": "Api's to expose cie-search FE",
     }
   ],
   "servers": [
@@ -22,14 +18,14 @@
     }
   ],
   "paths": {
-    "/transactionsSearch": {
+    "/*": {
       "get": {
         "tags": [
           "transactionsSearch"
         ],
         "summary": "Redirect to frontend useful to search some transactions by its nav, PA tax code and citizen taxcode",
         "description": "Show result if some transactions for that NAV and citizen exists",
-        "operationId": "transactionsSearch",
+        "operationId": "GETtransactionsSearch",
         "security": [
           {
           }
@@ -39,34 +35,92 @@
             "description": "Show frontend"
           },
           "400": {
-            "description": "Formally invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+            "description": "Formally invalid input"
           },
           "500": {
-            "description": "Internal server error serving request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+            "description": "Internal server error serving request"
           },
           "502": {
-            "description": "Gateway error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+            "description": "Gateway error"
+          },
+          "504": {
+            "description": "Timeout serving request"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "transactionsSearch"
+        ],
+        "summary": "Redirect to frontend useful to search some transactions by its nav, PA tax code and citizen taxcode",
+        "description": "Show result if some transactions for that NAV and citizen exists",
+        "operationId": "POSTtransactionsSearch",
+        "security": [
+          {
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Show frontend"
+          },
+          "400": {
+            "description": "Formally invalid input"
+          },
+          "500": {
+            "description": "Internal server error serving request"
+          },
+          "502": {
+            "description": "Gateway error"
+          },
+          "504": {
+            "description": "Timeout serving request"
+          }
+        }
+      },
+      "options": {
+        "tags": [
+          "transactionsSearch"
+        ],
+        "summary": "Redirect to frontend useful to search some transactions by its nav, PA tax code and citizen taxcode",
+        "description": "Show result if some transactions for that NAV and citizen exists",
+        "operationId": "OPTtransactionsSearch",
+        "responses": {
+          "200": {
+            "description": "Show frontend"
+          },
+          "400": {
+            "description": "Formally invalid input"
+          },
+          "500": {
+            "description": "Internal server error serving request"
+          },
+          "502": {
+            "description": "Gateway error"
+          },
+          "504": {
+            "description": "Timeout serving request"
+          }
+        }
+      },
+      "head": {
+        "tags": [
+          "transactionsSearch"
+        ],
+        "summary": "Redirect to frontend useful to search some transactions by its nav, PA tax code and citizen taxcode",
+        "description": "Show result if some transactions for that NAV and citizen exists",
+        "operationId": "HEADtransactionsSearch",
+        "responses": {
+          "200": {
+            "description": "Show frontend"
+          },
+          "400": {
+            "description": "Formally invalid input"
+          },
+          "500": {
+            "description": "Internal server error serving request"
+          },
+          "502": {
+            "description": "Gateway error"
           },
           "504": {
             "description": "Timeout serving request"
@@ -76,48 +130,7 @@
     }
   },
   "components": {
-    "schemas": {
-      "ProblemJson": {
-        "description": "Body definition for error responses containing failure details",
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "format": "uri",
-            "description": "An absolute URI that identifies the problem type. When dereferenced,\nit SHOULD provide human-readable documentation for the problem type\n(e.g., using HTML).",
-            "default": "about:blank",
-            "example": "https://example.com/problem/constraint-violation"
-          },
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Application Unavailable"
-          },
-          "status": {
-            "$ref": "#/components/schemas/HttpStatusCode"
-          },
-          "detail": {
-            "type": "string",
-            "description": "A human readable explanation specific to this occurrence of the\nproblem.",
-            "example": "There was an error processing the request"
-          },
-          "instance": {
-            "type": "string",
-            "format": "uri",
-            "description": "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced."
-          }
-        }
-      },
-      "HttpStatusCode": {
-        "type": "integer",
-        "format": "int32",
-        "description": "The HTTP status code generated by the origin server for this occurrence\nof the problem.",
-        "minimum": 100,
-        "maximum": 600,
-        "exclusiveMaximum": true,
-        "example": 502
-      }
-    },
-    "securitySchemes": {
-    }
+    "schemas": {},
+    "securitySchemes": {}
   }
 }
