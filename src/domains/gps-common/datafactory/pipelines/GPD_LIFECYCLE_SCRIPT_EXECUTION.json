@@ -1,40 +1,10 @@
 {
-  "name": "GPD_LIFECYCLE_SCRIPT_EXECUTION",
   "properties": {
     "folder": {
       "name": "GPD_MIGRATION_PIPELINE"
     },
     "concurrency": 1,
     "activities": [
-      {
-        "name": "Retrieve_elements_from_online",
-        "type": "Script",
-        "dependsOn": [],
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureOutput": false,
-          "secureInput": false
-        },
-        "userProperties": [],
-        "linkedServiceName": {
-          "referenceName": "${linked_service_gpd}",
-          "type": "LinkedServiceReference"
-        },
-        "typeProperties": {
-          "scripts": [
-            {
-              "type": "Query",
-              "text": {
-                "value": "@concat('SELECT * FROM apd.get_archiving_chunk(', string(pipeline().parameters.ChunkSize),' ,', string(pipeline().parameters.CurrentOffset),')')",
-                "type": "Expression"
-              }
-            }
-          ],
-          "scriptBlockExecutionTimeout": "02:00:00"
-        }
-      },
       {
         "name": "Store_elements_in_offline",
         "type": "Script",
@@ -63,7 +33,7 @@
             {
               "type": "Query",
               "text": {
-                "value": "CALL apd.ingest_payment_positions_bulk($$@{activity('Retrieve_elements_from_online').output.resultSets[0].rows[0].p_json_data}$$::jsonb)",
+                "value": "CALL apd.ingest_payment_positions_bulk('@{pipeline().RunId}')",
                 "type": "Expression"
               }
             }
@@ -99,7 +69,7 @@
             {
               "type": "Query",
               "text": {
-                "value": "@concat('CALL apd.delete_archived_chunk(',string(min(pipeline().parameters.ChunkSize,int(activity('Retrieve_elements_from_online').output.resultSets[0].rows[0].p_count))),', ',string(pipeline().parameters.CurrentOffset),')')",
+                "value": "@concat('CALL apd.delete_archived_chunk(',string(min(pipeline().parameters.ChunkSize,int(activity('Retrieve_count').output.resultSets[0].rows[0].count))),', ',string(pipeline().parameters.CurrentOffset),')')",
                 "type": "Expression"
               }
             }
@@ -112,7 +82,7 @@
         "type": "SetVariable",
         "dependsOn": [
           {
-            "activity": "Retrieve_elements_from_online",
+            "activity": "Retrieve_count",
             "dependencyConditions": [
               "Succeeded"
             ]
@@ -130,7 +100,7 @@
               "key": "pCount",
               "value": {
                 "type": "Expression",
-                "content": "@int(activity('Retrieve_elements_from_online').output.resultSets[0].rows[0].p_count)"
+                "content": "@int(activity('Retrieve_count').output.resultSets[0].rows[0].count)"
               }
             }
           ],
@@ -138,11 +108,137 @@
         }
       },
       {
-        "name": "SetVariableToReturnOnFail",
+        "name": "SetVariableToReturnOnFailRetrieve",
         "type": "SetVariable",
         "dependsOn": [
           {
-            "activity": "Retrieve_elements_from_online",
+            "activity": "Retrieve_count",
+            "dependencyConditions": [
+              "Failed"
+            ]
+          }
+        ],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "pipelineReturnValue",
+          "value": [
+            {
+              "key": "pCount",
+              "value": {
+                "type": "Expression",
+                "content": "@int(pipeline().parameters.ChunkSize)"
+              }
+            }
+          ],
+          "setSystemVariable": true
+        }
+      },
+      {
+        "name": "Move_jsonb_sto_archive",
+        "type": "Copy",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "source": {
+            "type": "AzurePostgreSqlSource",
+            "additionalColumns": [
+              {
+                "name": "run_id",
+                "value": {
+                  "value": "@pipeline().RunId",
+                  "type": "Expression"
+                }
+              }
+            ],
+            "query": {
+              "value": "@concat('SELECT * FROM apd.get_archiving_chunk(', string(pipeline().parameters.ChunkSize),' ,', string(pipeline().parameters.CurrentOffset),')')",
+              "type": "Expression"
+            },
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00"
+          },
+          "sink": {
+            "type": "AzurePostgreSqlSink",
+            "writeBatchSize": 1000000,
+            "writeBatchTimeout": "00:30:00",
+            "writeMethod": "CopyCommand"
+          },
+          "enableStaging": false,
+          "translator": {
+            "type": "TabularTranslator",
+            "typeConversion": true,
+            "typeConversionSettings": {
+              "allowDataTruncation": true,
+              "treatBooleanAsNumber": false
+            }
+          }
+        },
+        "inputs": [
+          {
+            "referenceName": "ARCHIVING_SELECTION_BUFFER",
+            "type": "DatasetReference"
+          }
+        ],
+        "outputs": [
+          {
+            "referenceName": "ARCHIVING_STAGING",
+            "type": "DatasetReference"
+          }
+        ]
+      },
+      {
+        "name": "Retrieve_count",
+        "type": "Script",
+        "dependsOn": [
+          {
+            "activity": "Move_jsonb_sto_archive",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "linkedServiceName": {
+          "referenceName": "gpd-dev-postgres-ls",
+          "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "Query",
+              "text": {
+                "value": "@concat('SELECT COUNT(*) FROM (SELECT * FROM apd.archiving_selection_buffer LIMIT ', string(pipeline().parameters.ChunkSize), ' OFFSET ', string(pipeline().parameters.CurrentOffset),') AS subquery;')",
+                "type": "Expression"
+              }
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        }
+      },
+      {
+        "name": "SetVariableToReturnOnFailCopy",
+        "type": "SetVariable",
+        "dependsOn": [
+          {
+            "activity": "Move_jsonb_sto_archive",
             "dependencyConditions": [
               "Failed"
             ]
@@ -171,11 +267,11 @@
     "parameters": {
       "ChunkSize": {
         "type": "Int",
-        "defaultValue": "10000"
+        "defaultValue": 10000
       },
       "CurrentOffset": {
         "type": "Int",
-        "defaultValue": "0"
+        "defaultValue": 0
       }
     }
   }
