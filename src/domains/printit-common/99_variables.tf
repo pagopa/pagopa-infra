@@ -8,7 +8,6 @@ variable "is_feature_enabled" {
     storage_templates       = bool
     eventhub                = bool
     cosmos_hub_spoke_pe_dns = optional(bool, false),
-    sa_hub_spoke_pe         = optional(bool, false),
   })
   default = {
     cosmosdb_notice         = false
@@ -17,7 +16,6 @@ variable "is_feature_enabled" {
     storage_templates       = false
     eventhub                = false
     cosmos_hub_spoke_pe_dns = false
-    sa_hub_spoke_pe         = false
   }
 }
 

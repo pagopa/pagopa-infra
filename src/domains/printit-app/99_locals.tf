@@ -9,7 +9,6 @@ locals {
   monitor_action_group_slack_name    = "SlackPagoPA"
   monitor_action_group_email_name    = "PagoPA"
   monitor_action_group_opsgenie_name = "Opsgenie"
-  monitor_appinsights_name           = "${local.product}-appinsights"
   monitor_appinsights_italy_name     = "${local.project_core_itn}-appinsights"
 
   vnet_name                = "${var.prefix}-${var.env_short}-${var.location_short}-vnet"
@@ -20,6 +19,7 @@ locals {
 
   ingress_hostname                      = "${var.domain}.itn"
   internal_dns_zone_name                = "${var.dns_zone_internal_prefix}.${var.external_domain}"
+  azure_website_dns_zone_name           = "privatelink.azurewebsites.net"
   internal_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 
   pagopa_apim_snet        = "${local.product}-apim-snet"
@@ -59,9 +59,6 @@ locals {
     WEBSITES_PORT                       = 3000
     # WEBSITE_SWAP_WARMUP_PING_PATH       = "/actuator/health"
     # WEBSITE_SWAP_WARMUP_PING_STATUSES   = "200"
-    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.container_registry.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.container_registry.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.container_registry.admin_password
 
     # Connection Pool
     MAX_CONNECTIONS           = 80
@@ -100,9 +97,6 @@ locals {
     WEBSITES_PORT                       = 80
     # WEBSITE_SWAP_WARMUP_PING_PATH       = "/actuator/health"
     # WEBSITE_SWAP_WARMUP_PING_STATUSES   = "200"
-    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.container_registry.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.container_registry.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.container_registry.admin_password
 
     # Connection Pool
     MAX_CONNECTIONS           = 80

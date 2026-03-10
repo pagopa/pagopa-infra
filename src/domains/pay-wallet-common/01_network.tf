@@ -35,22 +35,6 @@ module "redis_pagopa_pay_wallet_snet" {
   private_endpoint_network_policies = "Enabled"
 }
 
-module "storage_pay_wallet_snet" {
-  source = "./.terraform/modules/__v4__/subnet"
-
-  name                 = "${local.project}-storage-snet"
-  address_prefixes     = var.cidr_subnet_storage_pay_wallet
-  resource_group_name  = local.vnet_italy_resource_group_name
-  virtual_network_name = local.vnet_italy_name
-
-  private_endpoint_network_policies = "Enabled"
-
-  service_endpoints = [
-    "Microsoft.Storage",
-  ]
-}
-
-
 # hub spoke
 module "redis_spoke_pay_wallet_snet" {
   source            = "./.terraform/modules/__v4__/IDH/subnet"

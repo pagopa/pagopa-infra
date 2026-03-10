@@ -1,7 +1,7 @@
 
 ## monitor ##
 module "apim_monitor" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.8.0"
+  source              = "./.terraform/modules/__v4__/api_management_api"
   name                = format("%s-monitor", var.env_short)
   api_management_name = module.apim[0].name
   resource_group_name = azurerm_resource_group.rg_api.name

@@ -6,7 +6,7 @@ metadata:
   annotations:
     strimzi.io/use-connector-resources: "true"
 spec:
-  version: 3.7.0
+  version: 4.1.1
   replicas: ${replicas}
   bootstrapServers: ${bootstrap_servers}
   tls:
@@ -35,7 +35,6 @@ spec:
     config.storage.replication.factor: 1
     offset.storage.replication.factor: 1
     status.storage.replication.factor: 1
-    rest.advertised.host.name: connect
     offset.flush.interval.ms: 10000
     topic.creation.enable: "true"
     auto.create.topics.enable: "true" # https://debezium.io/documentation/reference/3.0/configuration/topic-auto-create-config.html#disabling-automatic-topic-creation-for-the-kafka-broker
@@ -49,7 +48,7 @@ spec:
     otel.propagators: tracecontext
     otel.exporter.otlp.endpoint: "${otlp_endpoint}"
     otel.resource.attributes: "${otlp_resource_attributes}"
-    otel.expoerter.oltp.header: "${otlp_headers}"
+    otel.exporter.otlp.header: "${otlp_headers}"
   build:
     output:
       type: docker
