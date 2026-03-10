@@ -44,8 +44,8 @@ pgres_flex_params = {
   alerts_enabled                         = false
   max_connections                        = 1718
   pgbouncer_min_pool_size                = 10
-  max_worker_process                     = 32
-  wal_level                              = "logical"
+  max_worker_process                     = 8
+  wal_level                              = "replica"
   shared_preload_libraries               = "pg_cron,pg_failover_slots"
   public_network_access_enabled          = false
 }
