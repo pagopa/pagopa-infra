@@ -46,13 +46,8 @@ pgres_flex_params = {
   pgbouncer_min_pool_size                = 1
   max_worker_process                     = 16
   wal_level                              = "logical"
-<<<<<<< Updated upstream
-  shared_preload_libraries               = "pg_cron,pg_failover_slots"
-  public_network_access_enabled          = true
-=======
   shared_preload_libraries              = "pg_cron,pg_failover_slots"
   public_network_access_enabled          = false
->>>>>>> Stashed changes
 }
 
 custom_metric_alerts = {
