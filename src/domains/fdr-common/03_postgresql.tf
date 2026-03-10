@@ -165,7 +165,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_extensi
   value     = var.pgres_flex_params.azure_extensions
 }
 
-# configure pg_cron to use fdr3 database (:warning: needs restart)
+# configure pg_cron to use postgres database (:warning: needs restart)
 resource "azurerm_postgresql_flexible_server_configuration" "pg_cron_database" {
   name      = "cron.database_name"
   server_id = module.postgres_flexible_server_fdr.id
