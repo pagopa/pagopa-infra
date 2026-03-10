@@ -119,6 +119,8 @@ resource "azapi_resource" "pipeline_lifecycle_script_execution" {
   name      = "GPD_LIFECYCLE_SCRIPT_EXECUTION"
   parent_id = data.azurerm_data_factory.data_factory.id
 
+  schema_validation_enabled = false
+
   body = templatefile("datafactory/pipelines/GPD_LIFECYCLE_SCRIPT_EXECUTION.json", {
     linked_service_gpd         = azapi_resource.gpd_postgres_linked_service.name,
     linked_service_gpd_archive = azapi_resource.gpd_postgres_archive_linked_service.name,

@@ -165,13 +165,12 @@
               "value": "@concat('SELECT * FROM apd.get_archiving_chunk(', string(pipeline().parameters.ChunkSize),' ,', string(pipeline().parameters.CurrentOffset),')')",
               "type": "Expression"
             },
-            "partitionOption": "None",
-            "queryTimeout": "02:00:00"
+            "queryTimeout": "05:00:00"
           },
           "sink": {
             "type": "AzurePostgreSqlSink",
             "writeBatchSize": 1000000,
-            "writeBatchTimeout": "00:30:00",
+            "writeBatchTimeout": "02:30:00",
             "writeMethod": "CopyCommand"
           },
           "enableStaging": false,
@@ -217,7 +216,7 @@
         },
         "userProperties": [],
         "linkedServiceName": {
-          "referenceName": "gpd-dev-postgres-ls",
+          "referenceName": "${linked_service_gpd}",
           "type": "LinkedServiceReference"
         },
         "typeProperties": {
