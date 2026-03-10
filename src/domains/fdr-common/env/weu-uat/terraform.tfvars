@@ -44,10 +44,10 @@ pgres_flex_params = {
   alerts_enabled                         = false
   max_connections                        = 1718
   pgbouncer_min_pool_size                = 10
-  max_worker_process                     = 32
-  wal_level                              = "logical"
-  shared_preload_libraries               = "pg_cron,pg_failover_slots"
-  azure_extensions                       = "pg_cron"
+  max_worker_process                     = 8
+  wal_level                              = "replica"
+  shared_preload_libraries               = "pg_cron,pg_stat_statements"
+  azure_extensions                       = "pg_cron,pg_stat_statements"
   public_network_access_enabled          = false
 }
 
