@@ -94,8 +94,8 @@ module "bizevents_datastore_cosmosdb_account_dev" {
   allowed_virtual_network_subnet_ids = []
 
   # private endpoint
-  private_endpoint_sql_name           = "${local.project}-ds-cosmos-sql-endpoint" # forced after update module vers
-  private_service_connection_sql_name = "${local.project}-ds-cosmos-sql-endpoint" # forced after update module vers
+  private_endpoint_sql_name           = "${local.project}-ds-cosmos-sql-endpoint-dev" # forced after update module vers
+  private_service_connection_sql_name = "${local.project}-ds-cosmos-sql-endpoint-dev" # forced after update module vers
   private_endpoint_enabled            = var.bizevents_datastore_cosmos_db_params.private_endpoint_enabled
   subnet_id                           = module.bizevents_datastore_cosmosdb_snet.id
   private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos.id]
@@ -249,10 +249,10 @@ resource "azurerm_monitor_metric_alert" "cosmos_biz_db_normalized_ru_exceeded" {
 }
 
 
-# In general, for a production workload, if you see between 1-5% of requests with 429s, 
-# and your end-to-end latency is acceptable, this is a healthy sign that the RU/s are being fully utilized. 
-# In this case, the normalized RU consumption metric reaching 100% only means that in a given second, 
-# at least one partition key range used all its provisioned throughput. 
+# In general, for a production workload, if you see between 1-5% of requests with 429s,
+# and your end-to-end latency is acceptable, this is a healthy sign that the RU/s are being fully utilized.
+# In this case, the normalized RU consumption metric reaching 100% only means that in a given second,
+# at least one partition key range used all its provisioned throughput.
 # This is acceptable because the overall rate of 429s is still low. No further action is required.
 resource "azurerm_monitor_metric_alert" "cosmos_biz_db_provisioned_throughput_exceeded" { # https://github.com/pagopa/terraform-azurerm-v3/blob/58f14dc120e10bd3515bcc34e0685e74d1d11047/cosmosdb_account/main.tf#L205
   count = var.env_short == "p" ? 1 : 0
