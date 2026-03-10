@@ -133,9 +133,12 @@ variable "enable_iac_pipeline" {
   default     = false
 }
 
-
-
 variable "cidr_subnet_flex_dbms" {
+  type        = list(string)
+  description = "Postgresql network address space."
+}
+
+variable "cidr_subnet_flex_dbms_archive" {
   type        = list(string)
   description = "Postgresql network address space."
 }
@@ -164,6 +167,33 @@ variable "pgres_flex_params" {
     public_network_access_enabled          = bool
   })
 
+}
+
+# Postgres Flexible
+variable "pgres_flex_archive_params" {
+  type = object({
+    enabled                                = bool
+    sku_name                               = string
+    db_version                             = string
+    storage_mb                             = string
+    zone                                   = number
+    standby_zone                           = optional(number, 1)
+    backup_retention_days                  = number
+    geo_redundant_backup_enabled           = bool
+    create_mode                            = string
+    pgres_flex_private_endpoint_enabled    = bool
+    pgres_flex_ha_enabled                  = bool
+    pgres_flex_pgbouncer_enabled           = bool
+    pgres_flex_diagnostic_settings_enabled = bool
+    alerts_enabled                         = bool
+    max_connections                        = number
+    pgbouncer_min_pool_size                = number
+    max_worker_process                     = number
+    wal_level                              = string
+    shared_preload_libraries               = string
+    azure_extensions                       = string
+    public_network_access_enabled          = bool
+  })
 }
 
 variable "pgres_flex_fdr_db_name" {
@@ -438,3 +468,4 @@ variable "geo_replica_cidr_subnet_postgresql" {
   description = "Address prefixes replica subnet postgresql"
   default     = null
 }
+

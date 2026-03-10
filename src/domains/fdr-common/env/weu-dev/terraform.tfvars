@@ -21,7 +21,8 @@ external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
 
 ## CIDR fdr per database pgsql
-cidr_subnet_flex_dbms = ["10.1.162.0/24"]
+cidr_subnet_flex_dbms         = ["10.1.162.0/24"]
+cidr_subnet_flex_dbms_archive = ["10.1.170.0/24"]
 
 enable_iac_pipeline = true
 
@@ -48,6 +49,34 @@ pgres_flex_params = {
   wal_level                              = "logical"
   shared_preoload_libraries              = "pg_failover_slots"
   public_network_access_enabled          = true
+}
+
+pgres_flex_archive_params = {
+
+  enabled    = true
+  sku_name   = "GP_Standard_D2ds_v4"
+  db_version = "17"
+
+  # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
+  # 2097152, 4194304, 8388608, 16777216, and 33554432.
+  storage_mb                             = 32768
+  zone                                   = 1
+  backup_retention_days                  = 7
+  geo_redundant_backup_enabled           = false
+  create_mode                            = "Default"
+  pgres_flex_private_endpoint_enabled    = true
+  pgres_flex_ha_enabled                  = false
+  pgres_flex_pgbouncer_enabled           = true
+  standby_availability_zone              = 2
+  pgres_flex_diagnostic_settings_enabled = false
+  alerts_enabled                         = false
+  max_connections                        = 859
+  pgbouncer_min_pool_size                = 1
+  max_worker_process                     = 16
+  wal_level                              = "logical"
+  shared_preload_libraries               = "pg_cron"
+  azure_extensions                       = "pg_cron"
+  public_network_access_enabled          = false
 }
 
 custom_metric_alerts = {
