@@ -414,5 +414,4 @@ app_forwarder_ip_restriction_default_action = "Deny"
 # }
 
 is_feature_enabled = {
-  evh_spoke_pe = false
 }

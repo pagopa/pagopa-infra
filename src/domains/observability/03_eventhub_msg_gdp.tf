@@ -11,10 +11,8 @@ module "eventhub_namespace_observability_gpd" {
   maximum_throughput_units = var.ehns_maximum_throughput_units
   #zone_redundat is always true
 
-  private_endpoint_subnet_id    = azurerm_subnet.eventhub_observability_gpd_snet.id
-  public_network_access_enabled = var.ehns_public_network_access
-  private_endpoint_created      = var.ehns_private_endpoint_is_present && !var.is_feature_enabled.evh_spoke_pe
-
+  public_network_access_enabled        = var.ehns_public_network_access
+  private_endpoint_created             = false
   private_endpoint_resource_group_name = azurerm_resource_group.eventhub_observability_rg.name
 
   private_dns_zones_ids = [data.azurerm_private_dns_zone.eventhub.id]
@@ -51,19 +49,16 @@ module "eventhub_observability_gpd_configuration" {
 
 # hub spoke private endpoint
 resource "azurerm_private_endpoint" "eventhub_gpd_spoke_pe" {
-  count = var.ehns_private_endpoint_is_present && var.is_feature_enabled.evh_spoke_pe ? 1 : 0
+  count = var.ehns_private_endpoint_is_present ? 1 : 0
 
   name                = "${local.project}-evh-gpd-spoke-pe"
   location            = var.location_itn
   resource_group_name = azurerm_resource_group.eventhub_observability_rg.name
   subnet_id           = module.eventhub_observability_gpd_spoke_pe_snet.subnet_id
 
-  dynamic "private_dns_zone_group" {
-    for_each = var.ehns_private_endpoint_is_present && var.is_feature_enabled.evh_spoke_pe_dns ? [1] : []
-    content {
-      name                 = "${local.project}-evh-gpd-spoke-private-dns-zone-group"
-      private_dns_zone_ids = [data.azurerm_private_dns_zone.eventhub.id]
-    }
+  private_dns_zone_group {
+    name                 = "${local.project}-evh-gpd-spoke-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.eventhub.id]
   }
 
 
@@ -122,10 +117,8 @@ resource "azurerm_key_vault_secret" "azure_web_jobs_storage_kv" {
 }
 
 resource "azurerm_eventhub_consumer_group" "rtp_consumer_gpd" {
-  name                = "rtp"
+  name                = "rtp-consumer-group"
   namespace_name      = module.eventhub_namespace_observability_gpd.name
   eventhub_name       = "cdc-raw-auto.apd.payment_option"
   resource_group_name = azurerm_resource_group.eventhub_observability_rg.name
 }
-
-

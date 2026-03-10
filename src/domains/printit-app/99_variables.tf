@@ -34,6 +34,11 @@ variable "domain" {
   }
 }
 
+variable "idh_app_service_resource_tier" {
+  type        = string
+  description = "The IDH resource tier of app services."
+}
+
 variable "location" {
   type        = string
   description = "One of westeurope, northeurope"
