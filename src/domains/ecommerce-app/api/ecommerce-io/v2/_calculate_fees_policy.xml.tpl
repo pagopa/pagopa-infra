@@ -110,7 +110,7 @@
                         <set-variable name="paymentMethodSessionResponseBody" value="@((JObject)((IResponse)context.Variables["paymentMethodSessionResponse"]).Body.As<JObject>())" />
                         <set-variable name="bin" value="@((string)((JObject)context.Variables["paymentMethodSessionResponseBody"])["bin"])" />
                     </when>
-                    <when condition="@(((int)((IResponse)context.Variables["paymentMethodSessionResponseBody"]).StatusCode) == 404)">
+                    <when condition="@(((int)((IResponse)context.Variables["paymentMethodSessionResponse"]).StatusCode) == 404)">
                         <return-response>
                             <set-status code="404" reason="Not found" />
                             <set-header name="Content-Type" exists-action="override">
