@@ -13,8 +13,7 @@
         </allowed-headers>
       </cors>
       <base />
-      <!-- rate limit by subscription key -->
-      <rate-limit calls="10" renewal-period="5" remaining-calls-variable-name="remainingCallsPerSubscription"/>
+      <rate-limit-by-key calls="10" renewal-period="5" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" remaining-calls-variable-name="remainingCallsPerIp"/>
       <set-variable name="authToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
       <choose>
         <when condition="@(((string)context.Variables["authToken"]) != "{{search-transactions-token-secret-value}}")">
