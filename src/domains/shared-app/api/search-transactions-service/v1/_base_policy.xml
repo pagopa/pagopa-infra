@@ -1,17 +1,5 @@
 <policies>
     <inbound>
-      <cors>
-        <allowed-origins>
-          <origin>${apim_origin_cie_search}</origin>
-        </allowed-origins>
-        <allowed-methods>
-          <method>GET</method>
-        </allowed-methods>
-        <allowed-headers>
-          <header>Authorization</header>
-          <header>x-fiscal-code</header>
-        </allowed-headers>
-      </cors>
       <base />
       <rate-limit-by-key calls="10" renewal-period="5" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" remaining-calls-variable-name="remainingCallsPerIp"/>
       <set-variable name="authToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
