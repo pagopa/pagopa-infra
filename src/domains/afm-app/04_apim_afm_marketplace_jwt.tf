@@ -3,7 +3,7 @@
 #################################
 locals {
   apim_afm_marketplace_service_api_jwt = {
-    display_name          = "AFM Marketplace pagoPA - marketplace of advanced fees management service API with JWT authentication"
+    display_name          = "AFM Marketplace JWT pagoPA - marketplace of advanced fees management service API with JWT authentication"
     description           = "Marketplace API to support advanced fees management service with JWT authentication"
     path                  = "afm/marketplace-service"
     service_url           = null
