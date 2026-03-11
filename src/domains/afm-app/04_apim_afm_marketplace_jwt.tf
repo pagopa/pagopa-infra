@@ -24,5 +24,8 @@ module "apim_afm_marketplace_jwt_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = file("./api_product/marketplace/_base_policy_jwt.xml")
+  policy_xml = file("./api_product/marketplace/_base_policy_jwt.xml",{
+    pagopa_tenant_id       = data.azurerm_client_config.current.tenant_id,
+    apiconfig_fe_client_id = data.azuread_application.apiconfig-fe.application_id
+  })
 }
