@@ -79,3 +79,17 @@ module "apim_api_search_transactions_api_v1" {
     hostname = local.searchtransactions_hostname
   })
 }
+
+data "azurerm_key_vault_secret" "search_transactions_token_secret" {
+  name         = "search-transactions-token-secret"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "search_transactions_token_secret_value" {
+  name                = "search-transactions-token-secret-value"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "search-transactions-token-secret-value"
+  value               = data.azurerm_key_vault_secret.search_transactions_token_secret.value
+  secret              = true
+}
