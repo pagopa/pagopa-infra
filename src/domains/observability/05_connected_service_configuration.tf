@@ -13,9 +13,44 @@ locals {
   #    subresource_name   = "Sql"
   #    type               = "cosmosdb"
   #  }
-  data_factory_managed_private_endpoint = {
+  data_factory_managed_private_endpoint = merge(
+    var.env_short == "d" ? { //private endpoint already created on other envs, to avoid destroy/recreate we conditionally create it only on dev env
+      AfmMarketplaceSql = {
+        target_resource_id = data.azurerm_cosmosdb_account.afm_cosmos_account.id
+        fqdns              = null
+        subresource_name   = "Sql"
+        type               = "cosmosdb"
+      }
+      AfmMarketplaceAnalytical = {
+        target_resource_id = data.azurerm_cosmosdb_account.afm_cosmos_account.id
+        fqdns              = null
+        subresource_name   = "Analytical"
+        type               = "cosmosdb"
+      }
+      BizPositiviSql = {
+        target_resource_id = data.azurerm_cosmosdb_account.bizevent_cosmos_account.id
+        fqdns              = null
+        subresource_name   = "Sql"
+        type               = "cosmosdb"
+      }
+      EcommerceMongo = {
+        target_resource_id = data.azurerm_cosmosdb_account.ecommerce_cosmos_account.id
+        fqdns              = null
+        subresource_name   = "MongoDB"
+        type               = "cosmosdb"
+      }
+    } : {},
 
-  }
+    var.env_short == "u" ? { //private endpoint already created on other envs, to avoid destroy/recreate we conditionally create it only on dev env
+      EcommerceMongo = {
+        target_resource_id = data.azurerm_cosmosdb_account.ecommerce_cosmos_account.id
+        fqdns              = null
+        subresource_name   = "MongoDB"
+        type               = "cosmosdb"
+      }
+    } : {}
+  )
+
 
 
   # Configurazione dei Linked Services per Azure Cosmos DB in Azure Data Factory.

@@ -94,8 +94,8 @@ module "bizevents_datastore_cosmosdb_account_dev" {
   allowed_virtual_network_subnet_ids = []
 
   # private endpoint
-  private_endpoint_sql_name           = "${local.project}-ds-cosmos-sql-endpoint" # forced after update module vers
-  private_service_connection_sql_name = "${local.project}-ds-cosmos-sql-endpoint" # forced after update module vers
+  private_endpoint_sql_name           = "${local.project}-ds-cosmos-sql-endpoint-dev" # forced after update module vers
+  private_service_connection_sql_name = "${local.project}-ds-cosmos-sql-endpoint-dev" # forced after update module vers
   private_endpoint_enabled            = var.bizevents_datastore_cosmos_db_params.private_endpoint_enabled
   subnet_id                           = module.bizevents_datastore_cosmosdb_snet.id
   private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos.id]

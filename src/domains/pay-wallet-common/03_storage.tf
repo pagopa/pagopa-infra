@@ -23,9 +23,9 @@ module "pay_wallet_storage" {
 
   blob_delete_retention_days = var.pay_wallet_storage_params.retention_days
 
-  private_endpoint_enabled   = var.is_feature_enabled.storage && var.env_short != "d"
+  private_endpoint_enabled   = var.is_feature_enabled.storage
   private_dns_zone_queue_ids = [data.azurerm_private_dns_zone.privatelink_queue_azure_com.id]
-  subnet_id                  = var.env_short != "d" ? module.storage_spoke_pay_wallet_snet[0].id : null
+  subnet_id                  = module.storage_spoke_pay_wallet_snet[0].id
 
   network_rules = var.env_short != "d" ? {
     default_action             = "Deny"
