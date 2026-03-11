@@ -35,7 +35,7 @@
       </choose>
       <set-variable name="nav" value="@(context.Request.MatchedParameters["nav"])" />
       <choose>
-        <when condition="@(((string)context.Variables["nav"]).StartsWith("399"))">
+        <when condition="@(((string)context.Variables["nav"]).StartsWith("${cie_search_segragation_code}"))">
           <set-backend-service base-url="https://${hostname}/pagopa-biz-events-service" />
         </when>
         <otherwise>
