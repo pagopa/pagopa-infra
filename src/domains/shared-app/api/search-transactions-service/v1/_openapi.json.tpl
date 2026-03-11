@@ -8,7 +8,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8080"
+      "url": "https://${host}"
     },
     {
       "url": "https://api.platform.pagopa.it/searchtransactions/v1"
@@ -252,13 +252,13 @@
           }
         }
       }
-    }
-  },
-  "securitySchemes" : {
-    "Authorization" : {
-      "type" : "http",
-      "description" : "Opaque token associated to the api",
-      "scheme" : "bearer"
+    },
+    "securitySchemes" : {
+      "Authorization" : {
+        "type" : "http",
+        "description" : "Opaque token associated to the api",
+        "scheme" : "bearer"
+      }
     }
   }
 }

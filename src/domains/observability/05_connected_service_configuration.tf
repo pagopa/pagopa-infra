@@ -33,6 +33,21 @@ locals {
         subresource_name   = "Sql"
         type               = "cosmosdb"
       }
+      EcommerceMongo = {
+        target_resource_id = data.azurerm_cosmosdb_account.ecommerce_cosmos_account.id
+        fqdns              = null
+        subresource_name   = "MongoDB"
+        type               = "cosmosdb"
+      }
+    } : {},
+
+    var.env_short == "u" ? { //private endpoint already created on other envs, to avoid destroy/recreate we conditionally create it only on dev env
+      EcommerceMongo = {
+        target_resource_id = data.azurerm_cosmosdb_account.ecommerce_cosmos_account.id
+        fqdns              = null
+        subresource_name   = "MongoDB"
+        type               = "cosmosdb"
+      }
     } : {}
   )
 
