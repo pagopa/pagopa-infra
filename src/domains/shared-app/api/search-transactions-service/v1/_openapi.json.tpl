@@ -8,7 +8,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8080"
+      "url": "https://${host}"
     },
     {
       "url": "https://api.platform.pagopa.it/searchtransactions/v1"
