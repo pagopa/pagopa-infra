@@ -76,7 +76,8 @@ module "apim_api_search_transactions_api_v1" {
   })
 
   xml_content = templatefile("./api/search-transactions-service/v1/_base_policy.xml", {
-    hostname = local.searchtransactions_hostname
+    hostname               = local.searchtransactions_hostname
+    apim_origin_cie_search = local.apim_origin_cie_search
   })
 }
 

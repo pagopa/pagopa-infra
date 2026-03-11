@@ -1,5 +1,17 @@
 <policies>
     <inbound>
+      <cors>
+        <allowed-origins>
+          <origin>${apim_origin_cie_search}</origin>
+        </allowed-origins>
+        <allowed-methods>
+          <method>GET</method>
+        </allowed-methods>
+        <allowed-headers>
+          <header>Authorization</header>
+          <header>x-fiscal-code</header>
+        </allowed-headers>
+      </cors>
       <base />
       <!-- rate limit by subscription key -->
       <rate-limit calls="10" renewal-period="5" remaining-calls-variable-name="remainingCallsPerSubscription"/>
