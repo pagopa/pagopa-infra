@@ -84,6 +84,7 @@
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/resource_group) | data source |
 | [azurerm_subnet.aks_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/subnet) | data source |
+| [azurerm_subnet.vpn_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/virtual_network) | data source |
 
