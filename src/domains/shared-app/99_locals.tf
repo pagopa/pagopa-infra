@@ -38,7 +38,6 @@ locals {
   apim_hostname               = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   shared_hostname             = var.env == "prod" ? "weuprod.shared.internal.platform.pagopa.it" : "weu${var.env}.shared.internal.${var.env}.platform.pagopa.it"
   searchtransactions_hostname = var.env == "prod" ? "weuprod.bizevents.internal.platform.pagopa.it" : "weu${var.env}.bizevents.internal.${var.env}.platform.pagopa.it"
-  apim_origin_cie_search      = "https://${local.apim_hostname}"
   cie_search_segragation_code = var.env == "dev" ? "" : "399"
 
   cache_generator_hostname   = "${local.shared_hostname}/authorizer-functions/api"
