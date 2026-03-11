@@ -4,7 +4,7 @@
     "title": "core",
     "description": "Spring application exposes APIs to manage configuration for CI/PSP on the Nodo dei Pagamenti",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.59.26"
+    "version": "0.59.36"
   },
   "servers": [
     {
@@ -10295,6 +10295,24 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "hasCBILL",
+            "in": "query",
+            "description": "Filter used to include creditor institutions with or without CBILL parameter",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "hasValidIban",
+            "in": "query",
+            "description": "Filter used to include creditor institutions with or without at least one valid iban",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -12599,6 +12617,15 @@
             "name": "label",
             "in": "query",
             "description": "Filter by label",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iban",
+            "in": "query",
+            "description": "Filter by iban",
             "required": false,
             "schema": {
               "type": "string"
@@ -19117,6 +19144,9 @@
         ],
         "type": "object",
         "properties": {
+          "active": {
+            "type": "boolean"
+          },
           "iban": {
             "maxLength": 35,
             "minLength": 0,
