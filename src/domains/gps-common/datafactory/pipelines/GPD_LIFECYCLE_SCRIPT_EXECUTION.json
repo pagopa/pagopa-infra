@@ -33,7 +33,7 @@
             {
               "type": "Query",
               "text": {
-                "value": "CALL apd.ingest_payment_positions_bulk('@{pipeline().RunId}')",
+                "value": "CALL apd.ingest_payment_positions_bulk_n_rows('@{pipeline().RunId}')",
                 "type": "Expression"
               }
             }
@@ -46,7 +46,7 @@
         "type": "Script",
         "dependsOn": [
           {
-            "activity": "Store_elements_in_offline",
+            "activity": "Mark_archived_in_online",
             "dependencyConditions": [
               "Succeeded"
             ]
@@ -138,7 +138,7 @@
         }
       },
       {
-        "name": "Move_jsonb_sto_archive",
+        "name": "Move_jsonb_to_archive",
         "type": "Copy",
         "dependsOn": [],
         "policy": {
@@ -162,7 +162,7 @@
               }
             ],
             "query": {
-              "value": "@concat('SELECT * FROM apd.get_archiving_chunk(', string(pipeline().parameters.ChunkSize),' ,', string(pipeline().parameters.CurrentOffset),')')",
+              "value": "@concat('SELECT apd.get_archiving_chunk_n_rows(', string(pipeline().parameters.ChunkSize),' ,', string(pipeline().parameters.CurrentOffset),') AS p_json_data')",
               "type": "Expression"
             },
             "queryTimeout": "05:00:00"
@@ -201,7 +201,7 @@
         "type": "Script",
         "dependsOn": [
           {
-            "activity": "Move_jsonb_sto_archive",
+            "activity": "Move_jsonb_to_archive",
             "dependencyConditions": [
               "Succeeded"
             ]
@@ -237,7 +237,7 @@
         "type": "SetVariable",
         "dependsOn": [
           {
-            "activity": "Move_jsonb_sto_archive",
+            "activity": "Move_jsonb_to_archive",
             "dependencyConditions": [
               "Failed"
             ]
@@ -260,6 +260,42 @@
             }
           ],
           "setSystemVariable": true
+        }
+      },
+      {
+        "name": "Mark_archived_in_online",
+        "type": "Script",
+        "dependsOn": [
+          {
+            "activity": "Store_elements_in_offline",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "linkedServiceName": {
+          "referenceName": "${linked_service_gpd}",
+          "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "Query",
+              "text": {
+                "value": "@concat('CALL apd.mark_archived_chunk(',string(min(pipeline().parameters.ChunkSize,int(activity('Retrieve_count').output.resultSets[0].rows[0].count))),', ',string(pipeline().parameters.CurrentOffset),')')",
+                "type": "Expression"
+              }
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
         }
       }
     ],
