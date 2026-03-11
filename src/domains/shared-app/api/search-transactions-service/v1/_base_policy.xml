@@ -19,7 +19,7 @@
       <choose>
         <when condition="@(((string)context.Variables["authToken"]) != "{{search-transactions-token-secret-value}}")">
           <return-response>
-            <set-status code="403"/>
+            <set-status code="401"/>
             <set-header name="Content-Type" exists-action="override">
               <value>application/json</value>
             </set-header>
