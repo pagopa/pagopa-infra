@@ -252,13 +252,13 @@
           }
         }
       }
-    }
-  },
-  "securitySchemes" : {
-    "Authorization" : {
-      "type" : "http",
-      "description" : "Opaque token associated to the api",
-      "scheme" : "bearer"
+    },
+    "securitySchemes" : {
+      "Authorization" : {
+        "type" : "http",
+        "description" : "Opaque token associated to the api",
+        "scheme" : "bearer"
+      }
     }
   }
 }
