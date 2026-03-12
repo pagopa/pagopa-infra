@@ -121,6 +121,7 @@ variable "bizevents_datastore_cosmos_db_params" {
     max_throughput                    = number
     max_throughput_view               = number
     max_throughput_view_alt           = number
+    max_throughput_view_user          = number
   })
 }
 

@@ -54,9 +54,10 @@ bizevents_datastore_cosmos_db_params = {
 
   container_default_ttl = 315576000 # 10 year in second
 
-  max_throughput          = 42000
-  max_throughput_view     = 44000
-  max_throughput_view_alt = 45000
+  max_throughput           = 42000
+  max_throughput_view      = 44000
+  max_throughput_view_alt  = 45000
+  max_throughput_view_user = 60000
 }
 
 # CosmosDB Negative Biz Events Datastore
