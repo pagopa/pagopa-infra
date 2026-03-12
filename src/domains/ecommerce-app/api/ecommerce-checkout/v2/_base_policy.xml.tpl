@@ -45,6 +45,9 @@
           <set-header name="x-api-key" exists-action="override">
             <value>{{ecommerce-payment-methods-api-key-value}}</value>
           </set-header>
+          <set-header name="X-Language" exists-action="override">
+            <value>IT</value>
+          </set-header>
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-handler")"/>
         </when>
       </choose>
