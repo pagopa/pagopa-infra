@@ -3,8 +3,9 @@
       <base />
       <rate-limit-by-key calls="10" renewal-period="5" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" remaining-calls-variable-name="remainingCallsPerIp"/>
       <set-variable name="authToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
+      <set-variable name="tokenSecret" value="{{search-transactions-token-secret-value}}" />
       <choose>
-        <when condition="@(((string)context.Variables["authToken"]) != "{{search-transactions-token-secret-value}}")">
+        <when condition="@(((string)context.Variables["authToken"]) != ((string)context.Variables["tokenSecret"]))">
           <return-response>
             <set-status code="401"/>
             <set-header name="Content-Type" exists-action="override">
