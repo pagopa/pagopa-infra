@@ -24,4 +24,13 @@ spec:
     plugin.name: "pgoutput"
     snapshot.max.threads: ${max_threads}
     publication.autocreate.mode: "disabled" # shall be create before
-    # publication.autocreate.mode: "filtered"  # create it
+
+    transforms: "filterArchived"
+    transforms.filterArchived.type: "io.debezium.transforms.Filter"
+    transforms.filterArchived.language: "jsr223.groovy"
+
+    # Groovy filter logic:
+    # 1. If value is null (Tombstone): keep
+    # 2. If it is a DELETE (d): keep ONLY if before.archived is false
+    # 3. If it is INSERT/UPDATE: keep ONLY if after.archived is false
+    transforms.filterArchived.condition: "value == null ? true : (value.op == 'd' ? value.before?.archived != true : value.after?.archived != true)"
