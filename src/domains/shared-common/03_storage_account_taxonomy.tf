@@ -40,13 +40,17 @@ module "taxonomy_sa" {
   tags = module.tag_config.tags
 }
 
+moved {
+  from = azurerm_private_endpoint.taxonomy_blob_private_endpoint[0]
+  to   = azurerm_private_endpoint.taxonomy_blob_private_endpoint
+}
+
 resource "azurerm_private_endpoint" "taxonomy_blob_private_endpoint" {
-  count = var.env_short == "d" ? 0 : 1
 
   name                = "${local.project}-${local.taxonomy_label}-blob-sa-private-endpoint"
   location            = var.location
   resource_group_name = azurerm_resource_group.taxonomy_rg.name
-  subnet_id           = module.taxonomy_storage_snet[0].id
+  subnet_id           = module.taxonomy_storage_snet.id
 
   private_dns_zone_group {
     name                 = "${local.project}-${local.taxonomy_label}-blob-sa-private-dns-zone-group"
