@@ -564,6 +564,8 @@ stages:
               DATABASE_NAME: cfg
               LIQUIBASE_FOLDER: $(liquibase_folder)
               LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              CHANGELOG_LOCK_TABLE: databasechangeloglock
+              CHANGELOG_TABLE: databasechangelog
               JDBC_URL: $(JDBC_URL)
               USERNAME: $(CFG_USERNAME)
               PASSWORD: $(db-cfg-password)
