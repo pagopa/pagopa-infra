@@ -197,7 +197,7 @@ locals {
       listener              = "checkout"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
-      priority              = 60
+      priority              = 40
     }
 
   }
