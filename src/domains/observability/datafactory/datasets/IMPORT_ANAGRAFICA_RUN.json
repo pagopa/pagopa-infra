@@ -1,0 +1,10 @@
+[
+    {
+        "name": "INSERTED_TIMESTAMP",
+        "type": "datetime"
+    },
+    {
+        "name": "UNIQUE_ID",
+        "type": "guid"
+    }
+]

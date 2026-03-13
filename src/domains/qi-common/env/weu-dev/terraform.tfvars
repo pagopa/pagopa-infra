@@ -141,9 +141,9 @@ cosmos_mongo_db_params = {
   enable_free_tier                 = false
 
   additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = false
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled                    = false
   enable_provisioned_throughput_exceeded_alert = false
@@ -158,3 +158,6 @@ cosmos_mongo_db_accounting_reconciliation_params = {
 }
 
 cidr_subnet_cosmosdb_qi = ["10.1.132.0/24"]
+
+is_feature_enabled = {
+}

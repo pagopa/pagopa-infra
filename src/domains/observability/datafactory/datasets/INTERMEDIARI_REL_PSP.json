@@ -1,0 +1,146 @@
+[
+    {
+        "name": "ID_INTERMEDIARIO_PSP",
+        "type": "string"
+    },
+    {
+        "name": "DESCRIZIONE_INTERMEDIARIO",
+        "type": "string"
+    },
+    {
+        "name": "ID_PSP",
+        "type": "string"
+    },
+    {
+        "name": "ABI",
+        "type": "string"
+    },
+    {
+        "name": "BIC",
+        "type": "string"
+    },
+    {
+        "name": "DESCRIZIONE_PSP",
+        "type": "string"
+    },
+    {
+        "name": "RAGIONE_SOCIALE_PSP",
+        "type": "string"
+    },
+    {
+        "name": "CODICE_FISCALE",
+        "type": "string"
+    },
+    {
+        "name": "ID_CANALE",
+        "type": "string"
+    },
+    {
+        "name": "PROTOCOLLO",
+        "type": "string"
+    },
+    {
+        "name": "IP",
+        "type": "string"
+    },
+    {
+        "name": "PORTA",
+        "type": "int"
+    },
+    {
+        "name": "SERVIZIO",
+        "type": "string"
+    },
+    {
+        "name": "PASSWORD",
+        "type": "string"
+    },
+    {
+        "name": "PT_ENABLED",
+        "type": "string"
+    },
+    {
+        "name": "CANALE_ENABLED",
+        "type": "string"
+    },
+    {
+        "name": "PSP_ENABLED",
+        "type": "string"
+    },
+    {
+        "name": "PROXY_ENABLED",
+        "type": "string"
+    },
+    {
+        "name": "PROXY_HOST",
+        "type": "string"
+    },
+    {
+        "name": "PROXY_PORT",
+        "type": "int"
+    },
+    {
+        "name": "PROXY_USERNAME",
+        "type": "string"
+    },
+    {
+        "name": "TIMEOUT",
+        "type": "int"
+    },
+    {
+        "name": "TIMEOUT_A",
+        "type": "int"
+    },
+    {
+        "name": "TIMEOUT_B",
+        "type": "int"
+    },
+    {
+        "name": "TIMEOUT_C",
+        "type": "int"
+    },
+    {
+        "name": "NUM_THREAD",
+        "type": "int"
+    },
+    {
+        "name": "DESCRIZIONE_CANALE",
+        "type": "string"
+    },
+    {
+        "name": "TIPO_VERSAMENTO",
+        "type": "string"
+    },
+    {
+        "name": "TARGET_HOST",
+        "type": "string"
+    },
+    {
+        "name": "TARGET_PORT",
+        "type": "string"
+    },
+    {
+        "name": "SERVIZIO_NMP",
+        "type": "string"
+    },
+    {
+        "name": "TARGET_HOST_NMP",
+        "type": "string"
+    },
+    {
+        "name": "TARGET_PORT_NMP",
+        "type": "int"
+    },
+    {
+        "name": "TARGET_PATH_NMP",
+        "type": "string"
+    },
+    {
+        "name": "CODICE_MYBANK",
+        "type": "string"
+    },
+    {
+        "name": "MARCA_BOLLO_DIGITALE",
+        "type": "int"
+    }
+]
