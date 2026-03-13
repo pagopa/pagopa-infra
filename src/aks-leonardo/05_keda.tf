@@ -33,7 +33,7 @@ resource "helm_release" "keda" {
 }
 
 module "keda_workload_identity_init" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_workload_identity_init?ref=v8.103.0"
+  source = "./.terraform/modules/__v4__//kubernetes_workload_identity_init"
 
 
   workload_identity_name_prefix         = "keda"
@@ -42,7 +42,7 @@ module "keda_workload_identity_init" {
 }
 
 module "keda_workload_identity_configuration" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_workload_identity_configuration?ref=v8.103.0"
+  source = "./.terraform/modules/__v4__//kubernetes_workload_identity_configuration"
 
   workload_identity_name_prefix         = "keda"
   workload_identity_resource_group_name = azurerm_resource_group.rg_aks.name
