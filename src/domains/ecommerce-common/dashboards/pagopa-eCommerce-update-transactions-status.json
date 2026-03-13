@@ -1,0 +1,2272 @@
+{
+  "properties": {
+    "lenses": [
+      {
+        "order": 0,
+        "parts": [
+          {
+            "position": {
+              "x": 0,
+              "y": 0,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/transactions-service/transactions\"\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Availability (5m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/transactions-service/transactions",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "\nlet threshold = 0.99;\nAzureDiagnostics\n| where operationId_s == \"updateTransactionAuthorization\"\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
+                  "PartTitle": "Availability (15m)",
+                  "PartSubTitle": "[transactions-service] - updateTransactionAuthorization",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 0,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet api_url = \"/transactions-service/transactions\";\nAzureDiagnostics\n| where url_s matches regex api_url\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Pie",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Response Codes (5m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/transactions-service/transactions",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "httpStatus_d",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "AzureDiagnostics\n| where operationId_s == \"updateTransactionAuthorization\"\n| extend HTTPStatus = tostring(toint(responseCode_d))\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
+                  "SpecificChart": "StackedArea",
+                  "PartTitle": "Response Codes (15m)",
+                  "PartSubTitle": "[transactions-service] - updateTransactionAuthorization",
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [
+                      {
+                        "name": "HTTPStatus",
+                        "type": "string"
+                      }
+                    ],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 12,
+              "y": 0,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet threshold = 1;\nAzureDiagnostics\n| where url_s matches regex \"/transactions-service/transactions\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 5m)\n\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedColumn",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Percentile Response Time (5m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/transactions-service/transactions",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "duration_percentile_95",
+                        "type": "real"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let threshold = 500;\nAzureDiagnostics\n| where operationId_s == \"updateTransactionAuthorization\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 15m)\n\n",
+                  "SpecificChart": "Line",
+                  "PartTitle": "Percentile Response Time (15m)",
+                  "PartSubTitle": "[transactions-service] - updateTransactionAuthorization",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "duration_percentile_95",
+                        "type": "long"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 4,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/transactions-service/transactions\"\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Availability (5m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/transactions-service/transactions",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let threshold = 0.99;\nAzureDiagnostics\n| where operationId_s == \"CallbackOutcome\"\n  and url_s startswith \"https://api.platform.pagopa.it/ecommerce/redirect/v1/redirections/\"\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
+                  "PartTitle": "Availability (15m)",
+                  "PartSubTitle": "[redirect] - transaction outcome",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 4,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet api_url = \"/transactions-service/transactions\";\nAzureDiagnostics\n| where url_s matches regex api_url\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Pie",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Response Codes (5m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/transactions-service/transactions",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "httpStatus_d",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "AzureDiagnostics\n| where operationId_s == \"CallbackOutcome\"\n  and url_s startswith \"https://api.platform.pagopa.it/ecommerce/redirect/v1/redirections/\"\n| extend HTTPStatus = tostring(toint(responseCode_d))\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+                  "SpecificChart": "StackedArea",
+                  "PartTitle": "Response Codes (15m)",
+                  "PartSubTitle": "[redirect] - transaction outcome",
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [
+                      {
+                        "name": "HTTPStatus",
+                        "type": "string"
+                      }
+                    ],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 12,
+              "y": 4,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet threshold = 1;\nAzureDiagnostics\n| where url_s matches regex \"/transactions-service/transactions\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 5m)\n\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedColumn",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Percentile Response Time (5m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/transactions-service/transactions",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "duration_percentile_95",
+                        "type": "real"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let threshold = 500;\nAzureDiagnostics\n| where operationId_s == \"CallbackOutcome\"\n  and url_s startswith \"https://api.platform.pagopa.it/ecommerce/redirect/v1/redirections/\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 15m)\n\n",
+                  "SpecificChart": "Line",
+                  "PartTitle": "Percentile Response Time (15m)",
+                  "PartSubTitle": "[redirect] - transaction outcome",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "duration_percentile_95",
+                        "type": "long"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 8,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/transactions-service/transactions\"\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Availability (5m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/transactions-service/transactions",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "\nlet threshold = 0.99;\nAzureDiagnostics\n| where operationId_s == \"npgNotify\"\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
+                  "PartTitle": "Availability (15m) - NPG notifications",
+                  "PartSubTitle": "[npg] - transaction outcome",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 8,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet api_url = \"/transactions-service/transactions\";\nAzureDiagnostics\n| where url_s matches regex api_url\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Pie",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Response Codes (5m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/transactions-service/transactions",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "httpStatus_d",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "AzureDiagnostics\n| where operationId_s == \"npgNotify\"\n| extend HTTPStatus = tostring(toint(responseCode_d))\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
+                  "SpecificChart": "StackedArea",
+                  "PartTitle": "Response Codes (15m) - NPG notifications",
+                  "PartSubTitle": "[npg] - transaction outcome",
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [
+                      {
+                        "name": "HTTPStatus",
+                        "type": "string"
+                      }
+                    ],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 12,
+              "y": 8,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet threshold = 1;\nAzureDiagnostics\n| where url_s matches regex \"/transactions-service/transactions\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 5m)\n\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedColumn",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Percentile Response Time (5m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/transactions-service/transactions",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "duration_percentile_95",
+                        "type": "real"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let threshold = 500;\nAzureDiagnostics\n| where operationId_s == \"npgNotify\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 15m)\n\n",
+                  "SpecificChart": "Line",
+                  "PartTitle": "Percentile Response Time (15m)",
+                  "PartSubTitle": "[npg] - transaction outcome",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "duration_percentile_95",
+                        "type": "long"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 12,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/transactions-service/transactions/[^/]+\"\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Availability (5m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/transactions-service/transactions/{transactionId}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "\nlet threshold = 0.99;\nAzureDiagnostics\n| where operationId_s == \"addUserReceipt\" and url_s contains \"clientId=ecomm\"\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
+                  "PartTitle": "Availability (15m)",
+                  "PartSubTitle": "[nodo] - addUserReceipt",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 12,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet api_url = \"/transactions-service/transactions/[^/]+\";\nAzureDiagnostics\n| where url_s matches regex api_url\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Pie",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Response Codes (5m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/transactions-service/transactions/{transactionId}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "httpStatus_d",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": " AzureDiagnostics\n| where operationId_s == \"addUserReceipt\" and url_s contains \"clientId=ecomm\"\n| extend HTTPStatus = tostring(toint(responseCode_d))\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
+                  "SpecificChart": "StackedArea",
+                  "PartTitle": "Response Codes (15m)",
+                  "PartSubTitle": "[nodo] - addUserReceipt",
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [
+                      {
+                        "name": "HTTPStatus",
+                        "type": "string"
+                      }
+                    ],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 12,
+              "y": 12,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet threshold = 1;\nAzureDiagnostics\n| where url_s matches regex \"/transactions-service/transactions/[^/]+\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 5m)\n\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedColumn",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Percentile Response Time (5m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/transactions-service/transactions/{transactionId}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "duration_percentile_95",
+                        "type": "real"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "\nlet threshold = 500;\nAzureDiagnostics\n| where operationId_s == \"addUserReceipt\" and url_s contains \"clientId=ecomm\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 15m)\n\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n",
+                  "SpecificChart": "Line",
+                  "PartTitle": "Percentile Response Time (15m)",
+                  "PartSubTitle": "[nodo] - addUserReceipt",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "watermark",
+                        "type": "long"
+                      },
+                      {
+                        "name": "duration_percentile_95",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 16,
+              "colSpan": 18,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet api_url = \"/transactions-service/transactions/[^/]+\";\nAzureDiagnostics\n| where url_s matches regex api_url\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Pie",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Response Codes (5m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/transactions-service/transactions/{transactionId}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "httpStatus_d",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "GridColumnsWidth": {
+                    "url_s": "913px",
+                    "TimeGenerated": "173px",
+                    "responseCode_d": "320px",
+                    "backendResponseCode_d": "231px",
+                    "base64TransactionId": "218px"
+                  },
+                  "Query": "AzureDiagnostics\n| where ( operationId_s == \"updateTransactionAuthorization\") and responseCode_d != 200\n| project base64TransactionId = split(url_s,\"/\")[7], TimeGenerated, url_s,backendResponseCode_d,responseCode_d\n",
+                  "ControlType": "AnalyticsGrid",
+                  "SpecificChart": "StackedArea",
+                  "PartTitle": "request update error - updateTransactionAuthorization",
+                  "PartSubTitle": "updateTransactionAuthorization",
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [
+                      {
+                        "name": "HTTPStatus",
+                        "type": "string"
+                      }
+                    ],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 21,
+              "colSpan": 18,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet api_url = \"/transactions-service/transactions/[^/]+\";\nAzureDiagnostics\n| where url_s matches regex api_url\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Pie",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Response Codes (5m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/transactions-service/transactions/{transactionId}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "httpStatus_d",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "GridColumnsWidth": {
+                    "url_s": "1023px",
+                    "TimeGenerated": "193px",
+                    "responseCode_d": "322px",
+                    "backendResponseCode_d": "205px",
+                    "txId": "275px"
+                  },
+                  "Query": "AzureDiagnostics\n| where operationId_s == \"addUserReceipt\" and url_s contains \"clientId=ecomm\" and responseCode_d != 200\n| project txId = split(url_s,\"/\")[7], TimeGenerated, url_s,responseCode_d\n",
+                  "ControlType": "AnalyticsGrid",
+                  "SpecificChart": "StackedArea",
+                  "PartTitle": "request update error - addUserReceipt",
+                  "PartSubTitle": "and updateTransactionAuthorization",
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [
+                      {
+                        "name": "HTTPStatus",
+                        "type": "string"
+                      }
+                    ],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 26,
+              "colSpan": 18,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet api_url = \"/transactions-service/transactions/[^/]+\";\nAzureDiagnostics\n| where url_s matches regex api_url\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Pie",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Response Codes (5m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/transactions-service/transactions/{transactionId}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "httpStatus_d",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "GridColumnsWidth": {
+                    "DurationMs": "410px",
+                    "responseCode_d": "548px",
+                    "base64TransactionId": "353px",
+                    "TimeGenerated": "280px"
+                  },
+                  "Query": "AzureDiagnostics\n| where ( operationId_s == \"updateTransactionAuthorization\") and (responseCode_d == 0 or responseCode_d >= 500)\n| project base64TransactionId = split(url_s,\"/\")[7], TimeGenerated,responseCode_d, DurationMs\n",
+                  "ControlType": "AnalyticsGrid",
+                  "PartTitle": "request update error to manually check (timeout & 5xx) - updateTransactionAuthorization",
+                  "PartSubTitle": "updateTransactionAuthorization"
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 31,
+              "colSpan": 19,
+              "rowSpan": 6
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          },
+                          "name": "NormalizedRUConsumption",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Normalized RU Consumption",
+                            "color": null
+                          }
+                        }
+                      ],
+                      "title": "Highest RU Consuming Shard {DatabaseText} {ContainerText} ",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "grouping": {
+                        "dimension": "Region",
+                        "sort": 2,
+                        "top": 10
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          },
+                          "name": "NormalizedRUConsumption",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Normalized RU Consumption",
+                            "color": null
+                          }
+                        }
+                      ],
+                      "title": "Highest RU Consuming Shard {DatabaseText} {ContainerText} ",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": "Region",
+                        "sort": 2,
+                        "top": 10
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "MsPortalFx_TimeRange": {
+                  "model": {
+                    "format": "local",
+                    "granularity": "auto",
+                    "relative": "240m"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "model": {
+        "timeRange": {
+          "value": {
+            "relative": {
+              "duration": 24,
+              "timeUnit": 1
+            }
+          },
+          "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+        },
+        "filterLocale": {
+          "value": "en-us"
+        },
+        "filters": {
+          "value": {
+            "MsPortalFx_TimeRange": {
+              "model": {
+                "format": "local",
+                "granularity": "auto",
+                "relative": "12h"
+              },
+              "displayCache": {
+                "name": "Local Time",
+                "value": "Past 12 hours"
+              },
+              "filteredPartIds": [
+                "StartboardPart-LogsDashboardPart-61c60fdf-ea43-478d-aaf4-1bea04f69341",
+                "StartboardPart-LogsDashboardPart-61c60fdf-ea43-478d-aaf4-1bea04f69343",
+                "StartboardPart-LogsDashboardPart-61c60fdf-ea43-478d-aaf4-1bea04f69345",
+                "StartboardPart-LogsDashboardPart-61c60fdf-ea43-478d-aaf4-1bea04f69347",
+                "StartboardPart-LogsDashboardPart-61c60fdf-ea43-478d-aaf4-1bea04f69349",
+                "StartboardPart-LogsDashboardPart-61c60fdf-ea43-478d-aaf4-1bea04f6934b",
+                "StartboardPart-LogsDashboardPart-61c60fdf-ea43-478d-aaf4-1bea04f6934d",
+                "StartboardPart-LogsDashboardPart-61c60fdf-ea43-478d-aaf4-1bea04f6934f",
+                "StartboardPart-LogsDashboardPart-61c60fdf-ea43-478d-aaf4-1bea04f69351",
+                "StartboardPart-LogsDashboardPart-61c60fdf-ea43-478d-aaf4-1bea04f69353",
+                "StartboardPart-LogsDashboardPart-61c60fdf-ea43-478d-aaf4-1bea04f69355",
+                "StartboardPart-LogsDashboardPart-61c60fdf-ea43-478d-aaf4-1bea04f69357",
+                "StartboardPart-MonitorChartPart-61c60fdf-ea43-478d-aaf4-1bea04f6935b",
+                "StartboardPart-LogsDashboardPart-61c60fdf-ea43-478d-aaf4-1bea04f694b7",
+                "StartboardPart-LogsDashboardPart-61c60fdf-ea43-478d-aaf4-1bea04f6954a",
+                "StartboardPart-LogsDashboardPart-61c60fdf-ea43-478d-aaf4-1bea04f695e4"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "name": "pagopa-eCommerce-update-transactions-status",
+  "type": "Microsoft.Portal/dashboards",
+  "location": "INSERT LOCATION",
+  "tags": {
+    "hidden-title": "pagopa-eCommerce-update-transactions-status"
+  },
+  "apiVersion": "2022-12-01-preview"
+}
