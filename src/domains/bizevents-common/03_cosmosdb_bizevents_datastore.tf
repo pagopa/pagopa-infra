@@ -22,14 +22,14 @@ module "bizevents_datastore_cosmosdb_snet" {
 }
 
 module "bizevents_datastore_cosmosdb_account" {
-  source              = "./.terraform/modules/__v3__/cosmosdb_account"
-  name                = "${local.project}-ds-cosmos-account"
-  location            = var.location
-  domain              = var.domain
-  resource_group_name = azurerm_resource_group.bizevents_rg.name
-  offer_type          = var.bizevents_datastore_cosmos_db_params.offer_type
-  kind                = var.bizevents_datastore_cosmos_db_params.kind
-
+  source                           = "./.terraform/modules/__v3__/cosmosdb_account"
+  name                             = "${local.project}-ds-cosmos-account"
+  location                         = var.location
+  domain                           = var.domain
+  resource_group_name              = azurerm_resource_group.bizevents_rg.name
+  offer_type                       = var.bizevents_datastore_cosmos_db_params.offer_type
+  kind                             = var.bizevents_datastore_cosmos_db_params.kind
+  burst_capacity_enabled           = true
   public_network_access_enabled    = var.bizevents_datastore_cosmos_db_params.public_network_access_enabled
   main_geo_location_zone_redundant = var.bizevents_datastore_cosmos_db_params.main_geo_location_zone_redundant
 
@@ -138,12 +138,15 @@ locals {
     {
       name               = "biz-events-view-cart",
       partition_key_path = "/transactionId",
-      indexes = [
-        {
-          keys   = ["refNumberValue", "payee.taxCode", "debtor.taxCode"]
-          unique = true
-        }
-      ],
+      indexing_policy = {
+        composite_indexes = [
+          [
+            { path : "/refNumberValue" },
+            { path : "/payee/taxCode" },
+            { path : "/debtor/taxCode" }
+          ]
+        ]
+      }
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_view_alt }
     },
