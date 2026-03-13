@@ -22,14 +22,14 @@ module "bizevents_datastore_cosmosdb_snet" {
 }
 
 module "bizevents_datastore_cosmosdb_account" {
-  source              = "./.terraform/modules/__v3__/cosmosdb_account"
-  name                = "${local.project}-ds-cosmos-account"
-  location            = var.location
-  domain              = var.domain
-  resource_group_name = azurerm_resource_group.bizevents_rg.name
-  offer_type          = var.bizevents_datastore_cosmos_db_params.offer_type
-  kind                = var.bizevents_datastore_cosmos_db_params.kind
-
+  source                           = "./.terraform/modules/__v3__/cosmosdb_account"
+  name                             = "${local.project}-ds-cosmos-account"
+  location                         = var.location
+  domain                           = var.domain
+  resource_group_name              = azurerm_resource_group.bizevents_rg.name
+  offer_type                       = var.bizevents_datastore_cosmos_db_params.offer_type
+  kind                             = var.bizevents_datastore_cosmos_db_params.kind
+  burst_capacity_enabled           = true
   public_network_access_enabled    = var.bizevents_datastore_cosmos_db_params.public_network_access_enabled
   main_geo_location_zone_redundant = var.bizevents_datastore_cosmos_db_params.main_geo_location_zone_redundant
 
@@ -138,6 +138,15 @@ locals {
     {
       name               = "biz-events-view-cart",
       partition_key_path = "/transactionId",
+      indexing_policy = {
+        composite_indexes = [
+          [
+            { path : "/refNumberValue" },
+            { path : "/payee/taxCode" },
+            { path : "/debtor/taxCode" }
+          ]
+        ]
+      }
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_view_alt }
     },
@@ -154,18 +163,29 @@ locals {
       name               = "biz-events-view-general",
       partition_key_path = "/transactionId",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
+      indexing_policy    = {}
       autoscale_settings = { max_throughput = 1000 }
     },
     {
       name               = "biz-events-view-cart",
       partition_key_path = "/transactionId",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
+      indexing_policy = {
+        composite_indexes = [
+          [
+            { path : "/refNumberValue" },
+            { path : "/payee/taxCode" },
+            { path : "/debtor/taxCode" }
+          ]
+        ]
+      },
       autoscale_settings = { max_throughput = 1000 }
     },
     {
       name               = "biz-events-view-user",
       partition_key_path = "/taxCode",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
+      indexing_policy    = {}
       autoscale_settings = { max_throughput = 1000 }
   }] : []
 }
@@ -182,12 +202,11 @@ module "bizevents_datastore_cosmosdb_containers" {
   partition_key_path  = each.value.partition_key_path
   throughput          = lookup(each.value, "throughput", null)
   default_ttl         = lookup(each.value, "default_ttl", null)
-
-  autoscale_settings = contains(var.bizevents_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
+  indexing_policy     = lookup(each.value, "indexing_policy", {})
+  autoscale_settings  = contains(var.bizevents_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
 }
 
 module "bizevents_datastore_cosmosdb_containers_dev" {
-
   source   = "./.terraform/modules/__v3__/cosmosdb_sql_container"
   for_each = { for c in local.bizevents_datastore_cosmosdb_containers_dev : c.name => c }
 
@@ -198,8 +217,8 @@ module "bizevents_datastore_cosmosdb_containers_dev" {
   partition_key_path  = each.value.partition_key_path
   throughput          = lookup(each.value, "throughput", null)
   default_ttl         = lookup(each.value, "default_ttl", null)
-
-  autoscale_settings = contains(var.bizevents_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
+  indexing_policy     = lookup(each.value, "indexing_policy", {})
+  autoscale_settings  = contains(var.bizevents_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
 }
 
 resource "azurerm_monitor_metric_alert" "cosmos_biz_db_normalized_ru_exceeded" {
