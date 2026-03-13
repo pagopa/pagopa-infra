@@ -8,7 +8,7 @@ resource "kubernetes_namespace" "monitoring" {
 # Prometheus
 #
 module "aks_prometheus_install" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_install?ref=v8.78.1"
+  source = "./.terraform/modules/__v4__//kubernetes_prometheus_install"
 
   prometheus_namespace = kubernetes_namespace.monitoring.metadata[0].name
   storage_class_name   = "default-zrs"
@@ -25,7 +25,7 @@ moved {
 
 module "elastic_agent" {
   count  = var.enable_elastic_agent ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//elastic_agent?ref=v8.50.0"
+  source = "./.terraform/modules/__v4__//elastic_agent"
 
   es_host = var.env_short == "p" ? "https://weu${var.env}.kibana.internal.platform.pagopa.it:443/elastic" : "https://weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it:443/elastic"
 
@@ -50,7 +50,7 @@ data "azurerm_monitor_workspace" "workspace" {
 }
 
 module "prometheus_managed_addon" {
-  source                 = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_managed?ref=v8.97.0"
+  source                 = "./.terraform/modules/__v4__//kubernetes_prometheus_managed"
   cluster_name           = module.aks_leonardo.name
   resource_group_name    = module.aks_leonardo.aks_resource_group_name
   location               = var.location
