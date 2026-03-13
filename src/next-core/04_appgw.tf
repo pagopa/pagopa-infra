@@ -71,6 +71,22 @@ locals {
       }
     }
 
+    checkout = {
+      protocol           = "Https"
+      host               = format("%s.%s", var.dns_zone_checkout, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.product)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_checkout_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.checkout.secret_id,
+          "/${data.azurerm_key_vault_certificate.checkout.version}",
+          ""
+        )
+      }
+    }
 
   }
   public_listeners_apiprf = {
@@ -177,6 +193,12 @@ locals {
       priority              = 60
     }
 
+    checkout = {
+      listener              = "checkout"
+      backend               = "apim"
+      rewrite_rule_set_name = null
+      priority              = 40
+    }
 
   }
 
@@ -220,6 +242,18 @@ locals {
 
   public_backends = {
     apim = {
+      protocol                    = "Https"
+      host                        = trim(azurerm_dns_a_record.dns_a_api.fqdn, ".")
+      port                        = 443
+      ip_addresses                = module.apim[0].private_ip_addresses
+      fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
+      probe                       = "/status-0123456789abcdef"
+      probe_name                  = "probe-apim"
+      request_timeout             = 120
+      pick_host_name_from_backend = false
+    }
+
+    checkout = {
       protocol                    = "Https"
       host                        = trim(azurerm_dns_a_record.dns_a_api.fqdn, ".")
       port                        = 443
