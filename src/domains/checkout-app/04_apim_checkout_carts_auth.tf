@@ -65,3 +65,31 @@ module "apim_checkout_carts_auth_v1" {
     ecommerce_ingress_hostname = var.ecommerce_ingress_hostname,
   })
 }
+
+module "apim_checkout_carts_auth_v2" {
+  source = "./.terraform/modules/__v4__/api_management_api"
+
+  name                  = "${local.parent_project}-carts-auth-api"
+  api_management_name   = data.azurerm_api_management.apim.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_checkout_carts_auth.product_id] # stesso Product
+  subscription_required = local.apim_checkout_carts_auth.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.checkout_carts_auth_api_v1.id # RIUSO VERSION SET
+  api_version           = "v2"
+  service_url           = local.apim_checkout_carts_auth.service_url
+
+  description  = local.apim_checkout_carts_auth.description
+  display_name = local.apim_checkout_carts_auth.display_name
+  path         = local.apim_checkout_carts_auth.path
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value = templatefile("./api/checkout/checkout_carts_auth/v2/_openapi.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/checkout/checkout_carts_auth/v2/_base_policy.xml.tpl", {
+    ecommerce_ingress_hostname = var.ecommerce_ingress_hostname,
+  })
+}
+
