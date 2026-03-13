@@ -42,10 +42,10 @@ pgres_flex_params = {
   standby_availability_zone              = 2
   pgres_flex_diagnostic_settings_enabled = false
   alerts_enabled                         = false
-  max_connections                        = 5000
+  max_connections                        = 1718
   pgbouncer_min_pool_size                = 10
-  max_worker_process                     = 32
-  wal_level                              = "logical"
+  max_worker_process                     = 8
+  wal_level                              = "replica"
   shared_preoload_libraries              = "pg_failover_slots"
   public_network_access_enabled          = false
 }
