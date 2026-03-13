@@ -32,7 +32,7 @@ module "wisp_converter_storage_account" {
 }
 
 resource "azurerm_private_endpoint" "wispconv_private_endpoint_container" {
-  count = var.env_short == "d" ? 0 : var.create_wisp_converter ? 1 : 0
+  count = var.create_wisp_converter ? 1 : 0
 
   name                = "${local.project}-wisp-converter-private-endpoint-container"
   location            = var.location
@@ -72,7 +72,7 @@ resource "azurerm_storage_table" "wisp_converter_table" {
 }
 
 resource "azurerm_private_endpoint" "wispconv_private_endpoint_table" {
-  count = var.env_short == "d" ? 0 : var.create_wisp_converter ? 1 : 0
+  count = var.create_wisp_converter ? 1 : 0
 
   name                = "${local.project}-wisp-converter-private-endpoint-table"
   location            = var.location
@@ -111,7 +111,7 @@ resource "azurerm_storage_container" "wisp_converter_container" {
 }
 
 resource "azurerm_private_endpoint" "wispconv_private_endpoint_blob" {
-  count = var.env_short == "d" ? 0 : var.create_wisp_converter ? 1 : 0
+  count = var.create_wisp_converter ? 1 : 0
 
   name                = "${local.project}-wisp-converter-private-endpoint-blob"
   location            = var.location
