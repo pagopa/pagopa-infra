@@ -160,3 +160,12 @@ data "azurerm_key_vault_secret" "gpd_db_pwd" {
   name         = "db-apd-user-password"
   key_vault_id = data.azurerm_key_vault.gps_kv.id
 }
+
+data "azurerm_resource_group" "nodo_sec_rg" {
+  name = "${local.product}-nodo-sec-rg"
+}
+
+data "azurerm_key_vault" "nodo_kv" {
+  name                = "${local.product}-nodo-kv"
+  resource_group_name = data.azurerm_resource_group.nodo_sec_rg.name
+}
