@@ -391,7 +391,7 @@
           {
             "name": "orderBy",
             "in": "query",
-            "description": "Sorting logic to be applied to the bundles [default = RANDOM]. random: bundles are sorted randomly. fee: sorted by increasing fee, if fees are equal then by PSP name. pspname : sorted by PSP name.",
+            "description": "Sorting logic to be applied to the bundles [default = RANDOM]. random: bundles are sorted randomly. fee: sorted by increasing fee, if fees are equal then by PSP name. pspname : sorted by PSP name.feerandom: sorted by increasing fee, if fees are equal then randomly. ",
             "required": false,
             "schema": {
               "type": "string",
