@@ -44,9 +44,11 @@
       {
         "name": "Delete_elements_from_online",
         "type": "Script",
+        "state": "Inactive",
+        "onInactiveMarkAs": "Succeeded",
         "dependsOn": [
           {
-            "activity": "Mark_archived_in_online",
+            "activity": "Wait_between_update_delete",
             "dependencyConditions": [
               "Succeeded"
             ]
@@ -296,6 +298,24 @@
             }
           ],
           "scriptBlockExecutionTimeout": "02:00:00"
+        }
+      },
+      {
+        "name": "Wait_between_update_delete",
+        "type": "Wait",
+        "state": "Inactive",
+        "onInactiveMarkAs": "Succeeded",
+        "dependsOn": [
+          {
+            "activity": "Mark_archived_in_online",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "waitTimeInSeconds": 90
         }
       }
     ],
