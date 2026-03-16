@@ -20,7 +20,7 @@
 
     <!-- Override Host header so Front Door routes correctly -->
     <set-header name="Host" exists-action="override">
-      <value>https://${frontdoor_endpoint_hostname}</value>
+      <value>${frontdoor_endpoint_hostname}</value>
     </set-header>
   </inbound>
 
