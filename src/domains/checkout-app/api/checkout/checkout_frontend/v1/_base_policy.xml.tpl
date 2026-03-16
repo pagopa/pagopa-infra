@@ -1,23 +1,7 @@
 <policies>
 
   <inbound>
-    <!-- CORS for NPG SDK font access -->
-    <cors allow-credentials="false">
-      <allowed-origins>
-        <origin>https://${npg_sdk_hostname}</origin>
-      </allowed-origins>
-      <allowed-methods>
-        <method>GET</method>
-        <method>HEAD</method>
-        <method>OPTIONS</method>
-      </allowed-methods>
-      <allowed-headers>
-        <header>*</header>
-      </allowed-headers>
-    </cors>
-
     <base />
-    <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
 
     <!-- URL Rewrites: replicate CDN delivery rules -->
     <choose>
@@ -55,14 +39,14 @@
       <value>SAMEORIGIN</value>
     </set-header>
 
-    <!-- Content-Security-Policy (assembled from CDN delivery rules) -->
+    <!-- Content-Security-Policy -->
     <set-header name="Content-Security-Policy" exists-action="override">
       <value>${csp_value}</value>
     </set-header>
 
-    <!-- CORS: Access-Control-Allow-Origin for NPG SDK origin (font access) -->
+    <!-- CORS: Access-Control-Allow-Origin for NPG SDK font requests only -->
     <choose>
-      <when condition="@(context.Request.Headers.GetValueOrDefault("Origin","") == "https://${npg_sdk_hostname}")">
+      <when condition="@(context.Request.Headers.GetValueOrDefault("Origin","") == "https://${npg_sdk_hostname}" && context.Request.Url.Path.Contains("/fonts/"))">
         <set-header name="Access-Control-Allow-Origin" exists-action="override">
           <value>https://${npg_sdk_hostname}</value>
         </set-header>
