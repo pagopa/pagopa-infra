@@ -50,16 +50,17 @@ data "azurerm_monitor_workspace" "workspace" {
 }
 
 module "prometheus_managed_addon" {
-  source                 = "./.terraform/modules/__v4__//kubernetes_prometheus_managed"
-  cluster_name           = module.aks_leonardo.name
-  resource_group_name    = module.aks_leonardo.aks_resource_group_name
-  location               = var.location
-  custom_gf_location     = "westeurope"
-  location_short         = var.location_short
-  monitor_workspace_name = data.azurerm_monitor_workspace.workspace.name
-  monitor_workspace_rg   = data.azurerm_monitor_workspace.workspace.resource_group_name
-  grafana_name           = "pagopa-${var.env_short}-weu-grafana"    # Integrate with weu grafana
-  grafana_resource_group = "pagopa-${var.env_short}-weu-grafana-rg" # Integrate with weu grafana
+  source                   = "./.terraform/modules/__v4__//kubernetes_prometheus_managed"
+  cluster_name             = module.aks_leonardo.name
+  resource_group_name      = module.aks_leonardo.aks_resource_group_name
+  location                 = var.location
+  custom_gf_location       = "westeurope"
+  location_short           = var.location_short
+  monitor_workspace_name   = data.azurerm_monitor_workspace.workspace.name
+  monitor_workspace_rg     = data.azurerm_monitor_workspace.workspace.resource_group_name
+  grafana_name             = "pagopa-${var.env_short}-weu-grafana"    # Integrate with weu grafana
+  grafana_resource_group   = "pagopa-${var.env_short}-weu-grafana-rg" # Integrate with weu grafana
+  enable_prometheus_alerts = var.env_short != "p" ? false : true
 
   # takes a list and replaces any elements that are lists with a
   # flattened sequence of the list contents.
