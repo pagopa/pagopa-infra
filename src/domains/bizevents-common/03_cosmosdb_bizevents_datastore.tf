@@ -29,7 +29,7 @@ module "bizevents_datastore_cosmosdb_account" {
   resource_group_name              = azurerm_resource_group.bizevents_rg.name
   offer_type                       = var.bizevents_datastore_cosmos_db_params.offer_type
   kind                             = var.bizevents_datastore_cosmos_db_params.kind
-  burst_capacity_enabled           = true
+  burst_capacity_enabled           = var.env_short == "d" ? false : true
   public_network_access_enabled    = var.bizevents_datastore_cosmos_db_params.public_network_access_enabled
   main_geo_location_zone_redundant = var.bizevents_datastore_cosmos_db_params.main_geo_location_zone_redundant
 
