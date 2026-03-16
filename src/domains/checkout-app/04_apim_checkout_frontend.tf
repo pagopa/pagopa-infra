@@ -29,34 +29,10 @@ locals {
   }
 
   # NPG SDK hostname (same as in CDN config)
-  checkout_frontend_npg_sdk_hostname = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
+  checkout_frontend_npg_sdk_hostname = local.cdn_frontdoor_npg_sdk_hostname
 
   # Front Door endpoint hostname (referenced from the CDN module)
   checkout_frontend_fd_hostname = module.checkout_cdn_frontdoor.fqdn
-
-  # Content-Security-Policy from CDN delivery rules
-  # full CSP value, combines all overwrite and append actions from the CDN config
-  checkout_frontend_csp_value = join("", [
-    # Rule 1 - overwrite (base)
-    format(
-      "default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://privacyportalde-cdn.onetrust.com https://privacyportal-de.onetrust.com",
-      var.dns_zone_prefix,
-      var.external_domain
-    ),
-    # rule 1 - append (recaptcha connect-src)
-    " https://recaptcha.net/;",
-    # rule 1 - append (frame-ancestors, object-src, frame-src)
-    "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;",
-    # rule 2 - append (img-src)
-    "img-src 'self' https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it https://privacyportalde-cdn.onetrust.com;",
-    # rule 2 - append (script-src)
-    format(
-      "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://privacyportalde-cdn.onetrust.com https://%s;",
-      local.checkout_frontend_npg_sdk_hostname
-    ),
-    # rule 2 - append (style-src, font-src, worker-src)
-    "style-src 'self'  'unsafe-inline' https://privacyportalde-cdn.onetrust.com; font-src 'self' https://privacyportalde-cdn.onetrust.com; worker-src www.recaptcha.net blob:;"
-  ])
 }
 
 module "apim_checkout_frontend_api" {
@@ -82,6 +58,6 @@ module "apim_checkout_frontend_api" {
   xml_content = templatefile("./api/checkout/checkout_frontend/v1/_base_policy.xml.tpl", {
     frontdoor_endpoint_hostname = local.checkout_frontend_fd_hostname
     npg_sdk_hostname            = local.checkout_frontend_npg_sdk_hostname
-    csp_value                   = local.checkout_frontend_csp_value
+    csp_value                   = local.checkout_csp_value
   })
 }
