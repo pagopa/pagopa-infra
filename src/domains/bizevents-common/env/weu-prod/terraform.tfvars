@@ -57,7 +57,7 @@ bizevents_datastore_cosmos_db_params = {
   max_throughput = 42000
 
   max_throughput_biz          = 44000
-  max_throughput_view_user    = 45000
+  max_throughput_view_user    = 60000
   max_throughput_view_cart    = 45000
   max_throughput_view_general = 45000
 
