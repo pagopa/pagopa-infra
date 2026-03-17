@@ -13,15 +13,21 @@ locals {
   dns_zone_key = "${var.dns_zone_checkout}.${var.external_domain}"
 
   # Custom domains configuration - empty for Phase 1, enable for DNS switch
-  custom_domains = [
-    # Uncomment when ready for DNS switch:
-    # {
-    #   domain_name             = local.dns_zone_key
-    #   dns_name                = data.azurerm_dns_zone.checkout_public[0].name
-    #   dns_resource_group_name = data.azurerm_dns_zone.checkout_public[0].resource_group_name
-    #   ttl                     = var.dns_default_ttl_sec
-    # }
+  # NOTE: custom_domains is empty to avoid Azure conflict with CDN Classic
+  # Azure doesn't allow the same domain on both CDN Classic and Front Door simultaneously
+  # DNS switch will happen by setting custom_domains = local.custom_domains_for_switch
+  custom_domains_for_switch = [
+    {
+      domain_name             = local.dns_zone_key
+      dns_name                = data.azurerm_dns_zone.checkout_public[0].name
+      dns_resource_group_name = data.azurerm_dns_zone.checkout_public[0].resource_group_name
+      ttl                     = var.dns_default_ttl_sec
+      enable_dns_records      = false # DNS managed manually (false avoids App GW conflict), not by terraform
+    }
   ]
+
+  # empty for now, will be set to custom_domains_for_switch when ready
+  custom_domains = []
 
   global_delivery_rules = [
     {
@@ -171,16 +177,14 @@ locals {
 
 /**
  * CDN Front Door
- * NOTE: After switch, rename module to "checkout_cdn" and run:
+ * NOTE: After cleanup, rename module to "checkout_cdn" and run:
  *   terraform state mv module.checkout_cdn_frontdoor module.checkout_cdn
  */
 module "checkout_cdn_frontdoor" {
   source = "./.terraform/modules/__v4__/cdn_frontdoor"
 
-  count = var.checkout_enabled ? 1 : 0
-
   cdn_prefix_name     = local.project
-  resource_group_name = azurerm_resource_group.checkout_fe_rg[0].name // refers to the RG defined in 05_checkout_fe.tf before switch 
+  resource_group_name = azurerm_resource_group.checkout_fe_rg[0].name // refers to the RG defined in 05_checkout_fe.tf before switch
   location            = var.location
 
   https_rewrite_enabled = true
@@ -208,14 +212,14 @@ module "checkout_cdn_frontdoor" {
 
 /**
  * Web Test for CDN
- * NOTE: After switch, rename module to "checkout_fe_web_test" and run:
+ * NOTE: After cleanup, rename module to "checkout_fe_web_test" and run:
  *   terraform state mv module.checkout_fe_frontdoor_web_test module.checkout_fe_web_test
  */
 module "checkout_fe_frontdoor_web_test" {
-  count  = var.checkout_enabled && var.env_short == "p" ? 1 : 0
+  count  = var.env_short == "p" ? 1 : 0
   source = "./.terraform/modules/__v4__/application_insights_standard_web_test"
 
-  https_endpoint                        = "https://${module.checkout_cdn_frontdoor[0].fqdn}"
+  https_endpoint                        = "https://${module.checkout_cdn_frontdoor.fqdn}"
   https_endpoint_path                   = "/index.html"
   alert_name                            = "${local.project}-fe-web-test"
   location                              = var.location
@@ -238,16 +242,16 @@ module "checkout_fe_frontdoor_web_test" {
 # - Verifying storage account name for pipeline configuration
 # After DNS switch, access via custom domain (checkout.pagopa.it) instead and remove these outputs
 output "checkout_cdn_endpoint" {
-  value       = var.checkout_enabled ? module.checkout_cdn_frontdoor[0].hostname : null
+  value       = module.checkout_cdn_frontdoor.hostname
   description = "CDN endpoint hostname"
 }
 
 output "checkout_cdn_fqdn" {
-  value       = var.checkout_enabled ? module.checkout_cdn_frontdoor[0].fqdn : null
+  value       = module.checkout_cdn_frontdoor.fqdn
   description = "CDN FQDN - use this URL to test Front Door before DNS switch"
 }
 
 output "checkout_cdn_storage_account_name" {
-  value       = var.checkout_enabled ? module.checkout_cdn_frontdoor[0].storage_name : null
+  value       = module.checkout_cdn_frontdoor.storage_name
   description = "CDN storage account name - verify this matches pipeline config"
 }
