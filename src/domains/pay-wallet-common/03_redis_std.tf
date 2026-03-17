@@ -19,12 +19,12 @@ module "pagopa_pay_wallet_redis_std" {
   sku_name                      = var.redis_std_pay_wallet_params.sku_name
   enable_authentication         = true
   redis_version                 = var.redis_std_pay_wallet_params.version
-  public_network_access_enabled = var.env_short == "d"
+  public_network_access_enabled = false
 
   custom_zones = var.redis_std_pay_wallet_params.zones
 
   private_endpoint = {
-    enabled              = var.env_short != "d" && !var.is_feature_enabled.redis_hub_spoke_pe_dns
+    enabled              = !var.is_feature_enabled.redis_hub_spoke_pe_dns
     virtual_network_id   = data.azurerm_virtual_network.vnet_italy.id
     subnet_id            = module.redis_pagopa_pay_wallet_snet.id
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
@@ -60,7 +60,7 @@ module "pagopa_pay_wallet_redis_std" {
 
 # hub spoke private endpoint
 resource "azurerm_private_endpoint" "redis_data_pe" {
-  count = var.is_feature_enabled.redis && var.env_short != "d" && var.is_feature_enabled.redis_hub_spoke_pe_dns ? 1 : 0
+  count = var.is_feature_enabled.redis && var.is_feature_enabled.redis_hub_spoke_pe_dns ? 1 : 0
 
   name                = "${local.project}-redis-std-data-pe"
   location            = var.location
