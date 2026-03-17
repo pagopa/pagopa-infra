@@ -1,3 +1,7 @@
+data "azurerm_storage_account" "checkout_sa" {
+  name                = replace(format("%s-checkoutcdnsa", local.product_region), "-", "")
+  resource_group_name = "pagopa-${var.env_short}-checkout-fe-rg"
+}
 
 locals {
 
@@ -195,8 +199,8 @@ locals {
 
     checkout = {
       listener              = "checkout"
-      backend               = "apim"
-      rewrite_rule_set_name = null
+      backend               = "checkout"
+      rewrite_rule_set_name = "rewrite-rule-set-checkout"
       priority              = 40
     }
 
@@ -255,13 +259,13 @@ locals {
 
     checkout = {
       protocol                    = "Https"
-      host                        = trim(azurerm_dns_a_record.dns_a_api.fqdn, ".")
+      host                        = data.azurerm_storage_account.checkout_sa.primary_web_host
       port                        = 443
-      ip_addresses                = module.apim[0].private_ip_addresses
-      fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
-      probe                       = "/status-0123456789abcdef"
-      probe_name                  = "probe-apim"
-      request_timeout             = 120
+      ip_addresses                = null
+      fqdns                       = [data.azurerm_storage_account.checkout_sa.primary_web_host]
+      probe                       = "/index.html"
+      probe_name                  = "probe-checkout"
+      request_timeout             = 30
       pick_host_name_from_backend = false
     }
 
@@ -448,6 +452,28 @@ locals {
           url = {
             components   = "path_only"
             path         = "notfound"
+            query_string = null
+          }
+        },
+      ]
+    },
+    {
+      name = "rewrite-rule-set-checkout"
+      rewrite_rules = [
+        {
+          name          = "termini-di-servizio"
+          rule_sequence = 1
+          conditions = [{
+            variable    = "var_uri_path"
+            pattern     = "/termini-di-servizio"
+            ignore_case = true
+            negate      = false
+          }]
+          request_header_configurations  = []
+          response_header_configurations = []
+          url = {
+            components   = "path_only"
+            path         = "/terms/it.html"
             query_string = null
           }
         },
