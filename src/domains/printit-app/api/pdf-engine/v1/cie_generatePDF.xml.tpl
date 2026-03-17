@@ -1,3 +1,9 @@
+<!--
+    - Policies are applied in the order they appear.
+    - Position <base/> inside a section to inherit policies from the outer scope.
+    - Comments within policies are not preserved.
+-->
+<!-- Add policies as children to the <inbound>, <outbound>, <backend>, and <on-error> elements -->
 <policies>
     <inbound>
         <base />
@@ -30,7 +36,7 @@
             <when condition="@(!context.Variables.ContainsKey("cached_cbill"))">
                 <!-- CACHE MISS -->
                 <send-request mode="new" response-variable-name="apiConfigResponse" timeout="10" ignore-error="true">
-                    <set-url>@($"https://weudev.apiconfig.internal.dev.platform.pagopa.it/apiconfig/auth/api/v1/creditorinstitutions/{context.Variables["ecTaxCode"]}")</set-url>
+                    <set-url>@($"https://${apiconfig_hostname}/apiconfig/auth/api/v1/creditorinstitutions/{context.Variables["ecTaxCode"]}")</set-url>
                     <set-method>GET</set-method>
                 </send-request>
 
@@ -61,7 +67,7 @@
                 <set-variable name="cbillCode" value="@{
                     var response = (IResponse)context.Variables["apiConfigResponse"];
                     var json = JObject.Parse(response.Body.As<string>());
-                    return json["cbill_code"])
+                    return json["cbill_code"];
                 }"/>
 
                 <!-- Validate Api Config response body -->
