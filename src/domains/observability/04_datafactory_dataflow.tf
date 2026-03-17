@@ -3,7 +3,7 @@ resource "azapi_resource" "pdnd_cdc_gec_bundles_dataflow" {
   type = "Microsoft.DataFactory/factories/dataflows@2018-06-01"
   name = "PDND_CDC_GEC_BUNDLES_DataFlow"
   #parent_id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-weu-nodo-df-rg/providers/Microsoft.DataFactory/factories/pagopa-d-weu-nodo-df"
-  parent_id = data.azurerm_data_factory.qi_data_factory.id
+  parent_id = data.azurerm_data_factory.obeserv_data_factory.id
   #body = jsonencode({
   body = {
     properties = {
@@ -145,7 +145,7 @@ resource "azapi_resource" "pdnd_cdc_gec_bundles_dataflow" {
 resource "azapi_resource" "pdnd_cdc_gec_cibundles_dataflow" {
   type      = "Microsoft.DataFactory/factories/dataflows@2018-06-01"
   name      = "PDND_CDC_GEC_CIBUNDLES_DataFlow"
-  parent_id = data.azurerm_data_factory.qi_data_factory.id
+  parent_id = data.azurerm_data_factory.obeserv_data_factory.id
   #body = jsonencode({
   body = {
     properties = {
@@ -301,7 +301,7 @@ resource "azapi_resource" "pdnd_cdc_gec_cibundles_dataflow" {
 resource "azapi_resource" "pdnd_cdc_gec_touchpoints_dataflow" {
   type      = "Microsoft.DataFactory/factories/dataflows@2018-06-01"
   name      = "PDND_CDC_GEC_TOUCHPOINTS_DataFlow"
-  parent_id = data.azurerm_data_factory.qi_data_factory.id
+  parent_id = data.azurerm_data_factory.obeserv_data_factory.id
   #body = jsonencode({
   body = {
     properties = {
@@ -399,7 +399,7 @@ resource "azapi_resource" "pdnd_cdc_gec_touchpoints_dataflow" {
 resource "azapi_resource" "pdnd_cdc_gec_paymenttypes_dataflow" {
   type      = "Microsoft.DataFactory/factories/dataflows@2018-06-01"
   name      = "PDND_CDC_GEC_PAYMENTTYPES_DataFlow"
-  parent_id = data.azurerm_data_factory.qi_data_factory.id
+  parent_id = data.azurerm_data_factory.obeserv_data_factory.id
   #body = jsonencode({
   body = {
     properties = {
