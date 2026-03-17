@@ -43,7 +43,7 @@ resource "azurerm_api_management_subscription" "api_config_subkey" {
 }
 
 // Subkey for CIE PDF Engine
-resource "azurerm_api_management_subscription" "receipt_service_helpdesk_subkey" {
+resource "azurerm_api_management_subscription" "pdf_engine_for_cie_subkey" {
   count = var.is_feature_enabled.pdf_engine ? 1 : 0
 
   api_management_name = data.azurerm_api_management.apim.name
