@@ -177,3 +177,16 @@ module "apim_api_pdf_engine_cie_api_v1" {
     hostname = local.apim_pdf_engine_service_cie_api.service_url
   })
 }
+
+resource "azurerm_api_management_api_operation_policy" "policy_printit_generate_pdf_cie" { #
+
+  api_name            = module.apim_api_pdf_engine_cie_api_v1.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  operation_id        = "post-generate-pdf"
+
+  #tfsec:ignore:GEN005
+  xml_content = templatefile("./api/pdf-engine/v1/cie_generatePDF.xml.tpl", {
+    guard-lock-duration = 60
+  })
+}
