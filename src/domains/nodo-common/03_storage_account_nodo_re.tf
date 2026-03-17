@@ -1,5 +1,5 @@
 data "azurerm_resource_group" "nodo_re_to_datastore_rg" {
-  count = var.enable_nodo_re || var.env_short != "d" ? 1 : 0
+  count = var.enable_nodo_re ? 1 : 0
 
 
   name = format("%s-re-to-datastore-rg", local.project)
@@ -35,7 +35,7 @@ module "nodo_re_storage_account" {
 }
 
 resource "azurerm_private_endpoint" "nodo_re_private_endpoint" {
-  count = var.env_short == "d" ? 0 : var.enable_nodo_re ? 1 : 0
+  count = var.enable_nodo_re ? 1 : 0
 
   name                = "${local.project}-re-private-endpoint"
   location            = var.location

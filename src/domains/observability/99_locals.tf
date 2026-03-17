@@ -6,14 +6,11 @@ locals {
   product_location_itn = "${var.prefix}-${var.env_short}-${var.location_short_itn}"
   product_network      = "${var.prefix}-${var.env_short}-${var.location_short}-network"
 
-  apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
 
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "PagoPA"
 
-  pagopa_apim_name = "${local.product}-apim"
-  pagopa_apim_rg   = "${local.product}-api-rg"
-  pagopa_apim_snet = "${local.product}-apim-snet"
+
 
   vnet_name                = "${local.product}-vnet"
   vnet_resource_group_name = "${local.product}-vnet-rg"

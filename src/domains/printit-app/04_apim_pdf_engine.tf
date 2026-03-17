@@ -177,3 +177,25 @@ module "apim_api_pdf_engine_cie_api_v1" {
     hostname = local.apim_pdf_engine_service_cie_api.service_url
   })
 }
+
+resource "azurerm_api_management_api_operation_policy" "policy_printit_generate_pdf_cie" { #
+
+  api_name            = module.apim_api_pdf_engine_cie_api_v1[0].name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  operation_id        = "post-generate-pdf"
+
+  #tfsec:ignore:GEN005
+  xml_content = templatefile("./api/pdf-engine/v1/cie_generatePDF.xml.tpl", {
+    apiconfig_hostname = var.env == "prod" ? "weuprod.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
+  })
+}
+
+# API policy SHA
+# https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-1314991599
+# https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/2022-04-01-preview/service/policyfragments?pivots=deployment-language-terraform
+resource "terraform_data" "sha256_policy_printit_generate_pdf_cie" {
+  input = sha256(templatefile("./api/pdf-engine/v1/cie_generatePDF.xml.tpl", {
+    apiconfig_hostname = var.env == "prod" ? "weuprod.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
+  }))
+}
