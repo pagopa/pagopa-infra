@@ -52,7 +52,7 @@ module "apim_checkout_frontend_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/checkout/checkout_frontend/v1/_openapi.json.tpl", {
-    host = local.apim_hostname
+    host = local.checkout_fe_apim_hostname
   })
 
   xml_content = templatefile("./api/checkout/checkout_frontend/v1/_base_policy.xml.tpl", {
