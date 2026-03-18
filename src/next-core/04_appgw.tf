@@ -1,7 +1,3 @@
-data "azurerm_storage_account" "checkout_sa" {
-  name                = replace(format("%s-checkoutcdnsa", local.product_region), "-", "")
-  resource_group_name = "pagopa-${var.env_short}-checkout-fe-rg"
-}
 
 locals {
 
@@ -259,11 +255,11 @@ locals {
 
     checkout = {
       protocol                    = "Https"
-      host                        = data.azurerm_storage_account.checkout_sa.primary_web_host
+      host                        = format("%s.%s", var.dns_zone_checkout, var.external_domain)
       port                        = 443
-      ip_addresses                = null
-      fqdns                       = [data.azurerm_storage_account.checkout_sa.primary_web_host]
-      probe                       = "/index.html"
+      ip_addresses                = module.apim[0].private_ip_addresses
+      fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
+      probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-checkout"
       request_timeout             = 30
       pick_host_name_from_backend = false
@@ -464,8 +460,8 @@ locals {
           name          = "termini-di-servizio"
           rule_sequence = 1
           conditions = [{
-            variable    = "var_uri_path"
-            pattern     = "/termini-di-servizio"
+            variable    = "var_host"
+            pattern     = format("%s.%s", var.dns_zone_checkout, var.external_domain)
             ignore_case = true
             negate      = false
           }]
@@ -473,7 +469,7 @@ locals {
           response_header_configurations = []
           url = {
             components   = "path_only"
-            path         = "/terms/it.html"
+            path         = "/checkout-fe{var_uri_path}"
             query_string = null
           }
         },
