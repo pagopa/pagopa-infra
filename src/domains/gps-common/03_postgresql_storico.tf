@@ -8,35 +8,20 @@ data "azurerm_key_vault_secret" "pgres_storico_admin_pwd" {
   key_vault_id = module.key_vault.id
 }
 
-# Postgres Flexible Server subnet
-module "postgres_storico_flexible_snet" {
-  source               = "./.terraform/modules/__v4__/IDH/subnet"
-  name                 = format("%s-storico-pgres-flexible-snet", local.product)
-  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name = data.azurerm_virtual_network.vnet.name
-  service_endpoints    = ["Microsoft.Storage"]
-
-  idh_resource_tier = "postgres_flexible"
-  product_name      = var.prefix
-  env               = var.env
-
-  tags = module.tag_config.tags
-}
-
 # After applying the first time remember to switch cron.database_name to apd in server parameters
 module "postgres_storico_flexible_server_private_db" {
   source = "./.terraform/modules/__v4__/IDH/postgres_flexible_server"
 
-  name                = format("%s-%s-gpd-storico-pgflex", local.product, var.location_short)
-  location            = azurerm_resource_group.flex_data[0].location
-  resource_group_name = azurerm_resource_group.flex_data[0].name
+  name                = format("%s-%s-gpd-storico-pgflex", local.product, var.location_itn_short)
+  location            = azurerm_resource_group.flex_data_storico.location
+  resource_group_name = azurerm_resource_group.flex_data_storico.name
 
   idh_resource_tier = "pgflex2"
   storage_mb        = var.pgflex_storico_params.storage_mb
   product_name      = var.prefix
   env               = var.env
 
-  private_dns_zone_id = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres.id : null
+  private_dns_zone_id = data.azurerm_private_dns_zone.postgres.id
   embedded_subnet = {
     enabled      = true
     vnet_name    = data.azurerm_virtual_network.spoke_data_vnet.name
