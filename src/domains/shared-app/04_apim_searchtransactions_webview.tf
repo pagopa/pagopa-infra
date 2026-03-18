@@ -70,7 +70,9 @@ module "apim_api_search_transactions_webview_api_v1" {
   service_url  = local.apim_searchtransactionswebview_api.service_url
 
   content_format = "openapi"
-  content_value  = file("./api/search-transactions-webview/v1/_openapi.json.tpl")
+  content_value = templatefile("./api/search-transactions-webview/v1/_openapi.json.tpl", {
+    hostname = local.apim_hostname
+  })
 
   xml_content = templatefile("./api/search-transactions-webview/v1/_base_policy.xml", {
     hostname = local.shared_hostname
