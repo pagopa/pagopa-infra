@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "fdr_rg" {
 }
 
 module "fdr_re_sa" {
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                            = replace("${local.project}-re-sa", "-", "")
   account_kind                    = var.fdr_re_storage_account.account_kind
@@ -35,7 +35,7 @@ module "fdr_re_sa" {
 }
 
 module "fdr_conversion_sa" {
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                            = replace("${local.project}-sa", "-", "")
   account_kind                    = var.fdr_storage_account.account_kind

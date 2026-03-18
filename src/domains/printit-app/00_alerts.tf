@@ -275,42 +275,6 @@ AzureDiagnostics
 
 }
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-pdf-engine-pdf-availability" {
-  count               = var.env_short == "p" ? 1 : 0
-  resource_group_name = "dashboards"
-  name                = "${local.project}-availability @ _generate-pdf"
-  location            = var.location
-
-  action {
-    action_group           = can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "Email Header"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for /generate-pdf is less than or equal to 90%"
-  enabled        = true
-  query = (<<-QUERY
-let threshold = 0.90;
-AzureDiagnostics
-| where url_s matches regex "/generate-pdf"
-| summarize
-    Total=count(),
-    Success=count(responseCode_d < 500)
-    by bin(TimeGenerated, 5m)
-| extend availability=toreal(Success) / Total
-| where availability < threshold
-  QUERY
-  )
-  severity    = 1
-  frequency   = 5
-  time_window = 5
-  trigger {
-    operator  = "GreaterThanOrEqual"
-    threshold = 1
-  }
-
-}
-
 ## Print Notice Functions ##
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "print-notice-retry-fn-error-alert" {

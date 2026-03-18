@@ -12,10 +12,12 @@ locals {
   # DNS Zone Key for the main CDN (the one configured in the module)
   dns_zone_key = "${var.dns_zone_checkout}.${var.external_domain}"
 
-  # Custom domains configuration - empty for Phase 1, enable for DNS switch
+  # Custom domains configuration - Front Door CDN creation only (PR #2 / PIDM-1151)
   # NOTE: custom_domains is empty to avoid Azure conflict with CDN Classic
   # Azure doesn't allow the same domain on both CDN Classic and Front Door simultaneously
-  # DNS switch will happen by setting custom_domains = local.custom_domains_for_switch
+  # DNS switch will happen in a separate PR (PR #3 / PIDM-1410) which will (process to be validated):
+  #   1. Remove custom domain from CDN Classic
+  #   2. Add custom domain to Front Door (with enable_dns_records = false for staged DNS switch)
   custom_domains_for_switch = [
     {
       domain_name             = local.dns_zone_key
@@ -184,7 +186,7 @@ module "checkout_cdn_frontdoor" {
   source = "./.terraform/modules/__v4__/cdn_frontdoor"
 
   cdn_prefix_name     = local.project
-  resource_group_name = azurerm_resource_group.checkout_fe_rg[0].name // refers to the RG defined in 05_checkout_fe.tf before switch
+  resource_group_name = azurerm_resource_group.checkout_fe_rg[0].name // refers to resource group in 05_checkout_fe.tf, to be changed after cleanup
   location            = var.location
 
   https_rewrite_enabled = true
@@ -237,10 +239,10 @@ module "checkout_fe_frontdoor_web_test" {
 }
 
 # Outputs for CDN
-# These outputs are useful during Phase 1 (before DNS switch) for:
+# These outputs are useful before DNS switch for:
 # - Testing the Front Door via .azurefd.net URL
 # - Verifying storage account name for pipeline configuration
-# After DNS switch, access via custom domain (checkout.pagopa.it) instead and remove these outputs
+# After DNS switch, access via custom domain (e.g. checkout.pagopa.it) instead and remove these outputs
 output "checkout_cdn_endpoint" {
   value       = module.checkout_cdn_frontdoor.hostname
   description = "CDN endpoint hostname"
