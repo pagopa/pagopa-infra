@@ -17,63 +17,12 @@
         }
     ],
     "paths": {
-        "/": {
-            "get": {
-                "operationId": "checkoutFrontendRoot",
-                "tags": ["checkoutFrontend"],
-                "summary": "Proxy root request to checkout frontend",
-                "description": "Serves the checkout frontend index page via Front Door CDN.",
-                "responses": {
-                    "200": {
-                        "description": "Proxied response from Front Door"
-                    },
-                    "304": {
-                        "description": "Not modified"
-                    },
-                    "404": {
-                        "description": "Not found"
-                    }
-                }
-            }
-        },
-        "/dona": {
-            "get": {
-                "operationId": "checkoutFrontendDonate",
-                "tags": ["checkoutFrontend"],
-                "summary": "Proxy /dona request",
-                "description": "Serves the checkout donation page (rewritten to /dona.html).",
-                "responses": {
-                    "200": {
-                        "description": "Proxied response from Front Door"
-                    },
-                    "404": {
-                        "description": "Not found"
-                    }
-                }
-            }
-        },
-        "/termini-di-servizio": {
-            "get": {
-                "operationId": "checkoutFrontendTerms",
-                "tags": ["checkoutFrontend"],
-                "summary": "Proxy /termini-di-servizio request",
-                "description": "Serves the checkout terms of service page (rewritten to /terms/it.html).",
-                "responses": {
-                    "200": {
-                        "description": "Proxied response from Front Door"
-                    },
-                    "404": {
-                        "description": "Not found"
-                    }
-                }
-            }
-        },
         "/*": {
             "get": {
-                "operationId": "checkoutFrontendCatchAll",
+                "operationId": "checkoutFrontendCatchAllGet",
                 "tags": ["checkoutFrontend"],
-                "summary": "Proxy static asset requests",
-                "description": "Catch-all route for static assets (JS, CSS, images, etc.) served by Front Door CDN. Matches multi-segment paths like /static/js/main.js.",
+                "summary": "Proxy GET requests to checkout frontend",
+                "description": "Catch-all route for all frontend requests (pages and static assets)",
                 "responses": {
                     "200": {
                         "description": "Proxied response from Front Door"
@@ -83,6 +32,51 @@
                     },
                     "404": {
                         "description": "Not found"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "checkoutFrontendCatchAllPost",
+                "tags": ["checkoutFrontend"],
+                "summary": "Proxy POST requests to checkout frontend",
+                "description": "Catch-all route for POST requests",
+                "responses": {
+                    "200": {
+                        "description": "Proxied response from Front Door"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            },
+            "head": {
+                "operationId": "checkoutFrontendCatchAllHead",
+                "tags": ["checkoutFrontend"],
+                "summary": "Proxy HEAD requests to checkout frontend",
+                "description": "Catch-all route for HEAD requests",
+                "responses": {
+                    "200": {
+                        "description": "Proxied response from Front Door"
+                    },
+                    "304": {
+                        "description": "Not modified"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            },
+            "options": {
+                "operationId": "checkoutFrontendCatchAllOptions",
+                "tags": ["checkoutFrontend"],
+                "summary": "CORS preflight requests",
+                "description": "Catch-all route for OPTIONS preflight requests required by CORS.",
+                "responses": {
+                    "200": {
+                        "description": "CORS preflight response"
+                    },
+                    "204": {
+                        "description": "No content"
                     }
                 }
             }
