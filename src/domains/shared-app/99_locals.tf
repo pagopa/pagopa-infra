@@ -40,9 +40,6 @@ locals {
   searchtransactions_hostname = var.env == "prod" ? "weuprod.bizevents.internal.platform.pagopa.it" : "weu${var.env}.bizevents.internal.${var.env}.platform.pagopa.it"
   cie_search_segragation_code = var.env == "dev" ? "" : "399"
 
-  search_transactions_origin = var.env == "prod" ? "www.cartaidentita.interno.gov.it" : "*"
-  search_transactions_header = "*" //TO BE SET
-
   cache_generator_hostname   = "${local.shared_hostname}/authorizer-functions/api"
   cache_generator_hostname_2 = "${local.shared_hostname}/authorizer-functions"
 
