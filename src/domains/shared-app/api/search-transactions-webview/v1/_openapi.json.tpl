@@ -9,7 +9,7 @@
   "tags": [
     {
       "name": "transactionsSearch",
-      "description": "Api's to expose cie-search FE",
+      "description": "Api's to expose cie-search FE"
     }
   ],
   "servers": [
