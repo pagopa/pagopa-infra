@@ -58,6 +58,7 @@ module "prometheus_managed_addon" {
   monitor_workspace_name   = data.azurerm_monitor_workspace.workspace.name
   monitor_workspace_rg     = data.azurerm_monitor_workspace.workspace.resource_group_name
   custom_gf_location       = "westeurope"
+  cross_region             = true
   grafana_name             = "pagopa-${var.env_short}-weu-grafana"    # Integrate with weu grafana
   grafana_resource_group   = "pagopa-${var.env_short}-weu-grafana-rg" # Integrate with weu grafana
   enable_prometheus_alerts = var.env_short != "p" ? false : true
