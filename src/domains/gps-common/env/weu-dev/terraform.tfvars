@@ -52,7 +52,7 @@ gpd_upload_status_ttl = 604800 // 7 days
 # Postgres Flexible
 pgres_flex_params = {
 
-  private_endpoint_enabled = false
+  private_endpoint_enabled = true
   sku_name                 = "GP_Standard_D2ds_v4"
   db_version               = "15"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
@@ -203,7 +203,7 @@ pgflex_storico_params = {
 pgflex_storico_geo_replication = {
   enabled                     = false
   name                        = "pagopa-d-gpd-storico-pgflex-replica"
-  location                    = "westeurope"
+  location                    = "germanywestcentral"
   private_dns_registration_ve = false
 }
 

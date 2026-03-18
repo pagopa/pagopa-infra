@@ -249,8 +249,8 @@ pgflex_storico_params = {
 }
 
 pgflex_storico_geo_replication = {
-  enabled                     = false
+  enabled                     = true
   name                        = "pagopa-p-gpd-storico-pgflex-replica"
-  location                    = "westeurope"
+  location                    = "germanywestcentral"
   private_dns_registration_ve = false
 }
