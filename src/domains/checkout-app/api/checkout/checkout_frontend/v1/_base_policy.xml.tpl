@@ -1,6 +1,17 @@
 <policies>
 
   <inbound>
+    <cors>
+      <allowed-origins>
+        <origin>https://${checkout_fe_hostname}</origin>
+      </allowed-origins>
+      <allowed-methods>
+        <method>*</method>
+      </allowed-methods>
+      <allowed-headers>
+        <header>*</header>
+      </allowed-headers>
+    </cors>
     <base />
 
     <!-- URL Rewrites: replicate CDN delivery rules -->
