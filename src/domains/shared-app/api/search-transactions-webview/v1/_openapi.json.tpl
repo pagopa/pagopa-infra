@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "pagoPA Session Wallet API",
+    "title": "pagoPA CIE search fronted",
     "version": "0.0.1",
-    "description": "API to generate Session wallet token pagoPA for App IO",
+    "description": "API to expose CIE search frontend",
     "termsOfService": "https://pagopa.it/terms/"
   },
   "tags": [
