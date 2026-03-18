@@ -247,10 +247,10 @@ output "checkout_cdn_endpoint" {
 
 output "checkout_cdn_fqdn" {
   value       = module.checkout_cdn_frontdoor.fqdn
-  description = "CDN FQDN - use this URL to test Front Door before DNS switch"
+  description = "CDN FQDN"
 }
 
 output "checkout_cdn_storage_account_name" {
   value       = module.checkout_cdn_frontdoor.storage_name
-  description = "CDN storage account name - verify this matches pipeline config"
+  description = "CDN storage account name"
 }
