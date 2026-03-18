@@ -59,5 +59,6 @@ module "apim_checkout_frontend_api" {
     frontdoor_endpoint_hostname = "pagopadweucheckoutcdnsa.z6.web.core.windows.net"
     npg_sdk_hostname            = local.checkout_frontend_npg_sdk_hostname
     csp_value                   = local.checkout_csp_value
+    checkout_fe_hostname        = local.checkout_fe_apim_hostname
   })
 }
