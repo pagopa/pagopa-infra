@@ -17,11 +17,11 @@
     <!-- URL Rewrites: replicate CDN delivery rules -->
     <choose>
       <!-- /dona or /dona/ -> /dona.html -->
-      <when condition="@(context.Request.Url.Path.TrimEnd('/').EndsWith("/dona"))">
+      <when condition="@(Regex.IsMatch(context.Request.OriginalUrl.Path, @"\/dona\/?$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)))">
         <rewrite-uri template="/dona.html" />
       </when>
-      <!-- /termini-di-servizio -> /terms/it.html -->
-      <when condition="@(context.Request.Url.Path.TrimEnd('/').EndsWith("/termini-di-servizio"))">
+      <!-- /termini-di-servizio or /termini-di-servizio/ -> /terms/it.html -->
+      <when condition="@(Regex.IsMatch(context.Request.OriginalUrl.Path, @"\/termini-di-servizio\/?$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)))">
         <rewrite-uri template="/terms/it.html" />
       </when>
     </choose>
