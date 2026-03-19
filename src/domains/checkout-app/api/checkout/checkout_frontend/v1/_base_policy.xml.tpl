@@ -12,7 +12,6 @@
         <header>*</header>
       </allowed-headers>
     </cors>
-    <base />
 
     <!-- URL Rewrites: replicate CDN delivery rules -->
     <choose>
