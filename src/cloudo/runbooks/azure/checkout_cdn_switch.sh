@@ -22,6 +22,7 @@ GW_IP=$(az network public-ip show --name "pagopa-d-appgateway-pip" --resource-gr
 
 echo "retrieved gateway ip: '$GW_IP'"
 
+
 if [ "$GW_IP" == "" ]; then
   echo "Gateway ip not found, exiting with error"
   exit 1
