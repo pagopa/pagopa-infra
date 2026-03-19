@@ -913,5 +913,59 @@
         "enabled": ${alert_enabled},
         "customActionGroupIds" : ${developers_action_group_ids}
       }
-    }
+  },
+  {
+      "apiName": "checkout",
+      "appName": "fe",
+      "url": "${checkout_cdn_endpoint}",
+      "type": "cdn",
+      "checkCertificate": true,
+      "method": "GET",
+      "expectedCodes": ["200"],
+      "tags": {
+        "description": "pagopa ${env_name} checkout cdn endpoint"
+      },
+      "durationLimit": 10000,
+      "alertConfiguration": {
+        "enabled": ${alert_enabled},
+        "customActionGroupIds" : ${cloudo_action_group_ids},
+        "evaluation_total_count": 3,
+        "evaluation_failure_count": 3
+      }
+  },
+  {
+      "apiName": "checkout",
+      "appName": "fe",
+      "url": "https://${env_name}.checkout.pagopa.it/",
+      "type": "public",
+      "checkCertificate": true,
+      "method": "GET",
+      "expectedCodes": ["200"],
+      "tags": {
+        "description": "pagopa ${env_name} checkout public endpoint"
+      },
+      "durationLimit": 10000,
+      "alertConfiguration": {
+        "enabled": ${alert_enabled}
+      }
+  },
+  {
+      "apiName": "checkout",
+      "appName": "fe",
+      "url": "https://${appgw_public_ip}",
+      "type": "appgw",
+      "checkCertificate": true,
+      "method": "GET",
+      "headers": {
+        "Host": "${env_name}.checkout.pagopa.it"
+      },
+      "expectedCodes": ["200"],
+      "tags": {
+        "description": "pagopa ${env_name} checkout appgw endpoint"
+      },
+      "durationLimit": 10000,
+      "alertConfiguration": {
+        "enabled": ${alert_enabled}
+      }
+  }
 ]
