@@ -21,8 +21,8 @@ module "apim_search_transactions_service" {
   source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "searchtransactions"
-  display_name = local.apim_searchtransactionsservice_api.display_name
-  description  = local.apim_searchtransactionsservice_api.description
+  display_name = "Search payment transactions"
+  description  = "Product search payment transactions"
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
