@@ -163,8 +163,7 @@ resource "azurerm_data_factory_custom_dataset" "gpd_tables_list_datasets" {
   schema_json = file(each.value.dataset_schema_file)
 
   linked_service {
-    name = "gpd-${var.env}-postgres-ls"
-
+    name = "gpd-${var.env}-postgres-lifecycle-ls"
   }
 }
 
@@ -183,7 +182,6 @@ resource "azurerm_data_factory_custom_dataset" "gpd_storico_tables_list_datasets
   schema_json = file(each.value.dataset_schema_file)
 
   linked_service {
-    name = "gpd-${var.env}-postgres-archive-ls"
-
+    name = "gpd-${var.env}-postgres-archive-lifecycle-ls"
   }
 }

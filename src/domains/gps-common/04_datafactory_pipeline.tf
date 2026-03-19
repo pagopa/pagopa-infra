@@ -42,13 +42,58 @@ resource "azapi_resource" "gpd_postgres_linked_service" {
   }
 }
 
-resource "azapi_resource" "gpd_postgres_archive_linked_service" {
+resource "azapi_resource" "gpd_postgres_lifecycle_linked_service" {
   depends_on = [
     azurerm_data_factory_linked_service_key_vault.gps_kv_linked_service
   ]
 
   type                      = "Microsoft.DataFactory/factories/linkedservices@2018-06-01"
-  name                      = "gpd-${var.env}-postgres-archive-ls"
+  name                      = "gpd-${var.env}-postgres-lifecycle-ls"
+  parent_id                 = data.azurerm_data_factory.data_factory.id
+  schema_validation_enabled = false
+
+  body = {
+    properties = {
+      connectVia = {
+        parameters    = {}
+        referenceName = "AutoResolveIntegrationRuntime"
+        type          = "IntegrationRuntimeReference"
+      }
+      version = "2.0"
+      type    = "AzurePostgreSql"
+      typeProperties = {
+        database = var.gpd_db_name
+        password = {
+          type = "AzureKeyVaultSecret",
+          store = {
+            referenceName = azurerm_data_factory_linked_service_key_vault.gps_kv_linked_service.name,
+            type          = "LinkedServiceReference"
+          },
+          secretName = azurerm_key_vault_secret.pgres_adf_pipeline_pwd_secret.name
+        }
+        port     = "5433"                                                  // "8432" // adhoc private endpoint port
+        server   = "gpd-db.${var.env_short}.internal.postgresql.pagopa.it" // "172.205.217.81" // adhoc private endpoint host
+        sslMode  = 3
+        username = {
+          type = "AzureKeyVaultSecret",
+          store = {
+            referenceName = azurerm_data_factory_linked_service_key_vault.gps_kv_linked_service.name,
+            type          = "LinkedServiceReference"
+          },
+          secretName = data.azurerm_key_vault_secret.pgres_adf_login.name
+        }
+      }
+    }
+  }
+}
+
+resource "azapi_resource" "gpd_postgres_archive_lifecycle_linked_service" {
+  depends_on = [
+    azurerm_data_factory_linked_service_key_vault.gps_kv_linked_service
+  ]
+
+  type                      = "Microsoft.DataFactory/factories/linkedservices@2018-06-01"
+  name                      = "gpd-${var.env}-postgres-archive-lifecycle-ls"
   parent_id                 = data.azurerm_data_factory.data_factory.id
   schema_validation_enabled = false
 
@@ -111,8 +156,8 @@ resource "azurerm_data_factory_pipeline" "pipeline_odp_backfill" {
 
 resource "azapi_resource" "pipeline_lifecycle_script_execution" {
   depends_on = [
-    azapi_resource.gpd_postgres_linked_service,
-    azapi_resource.gpd_postgres_archive_linked_service,
+    azapi_resource.gpd_postgres_lifecycle_linked_service,
+    azapi_resource.gpd_postgres_archive_lifecycle_linked_service,
   ]
 
   type      = "Microsoft.DataFactory/factories/pipelines@2018-06-01"
@@ -122,14 +167,14 @@ resource "azapi_resource" "pipeline_lifecycle_script_execution" {
   schema_validation_enabled = false
 
   body = templatefile("datafactory/pipelines/GPD_LIFECYCLE_SCRIPT_EXECUTION.json", {
-    linked_service_gpd         = azapi_resource.gpd_postgres_linked_service.name,
-    linked_service_gpd_archive = azapi_resource.gpd_postgres_archive_linked_service.name,
+    linked_service_gpd         = azapi_resource.gpd_postgres_lifecycle_linked_service.name,
+    linked_service_gpd_archive = azapi_resource.gpd_postgres_archive_lifecycle_linked_service.name,
   })
 }
 
 resource "azapi_resource" "pipeline_lifecycle_management" {
   depends_on = [
-    azapi_resource.gpd_postgres_linked_service,
+    azapi_resource.gpd_postgres_lifecycle_linked_service,
     azapi_resource.pipeline_lifecycle_script_execution,
   ]
 
@@ -138,7 +183,7 @@ resource "azapi_resource" "pipeline_lifecycle_management" {
   parent_id = data.azurerm_data_factory.data_factory.id
 
   body = templatefile("datafactory/pipelines/GPD_LIFECYCLE_MANAGEMENT.json", {
-    linked_service_gpd            = azapi_resource.gpd_postgres_linked_service.name,
+    linked_service_gpd            = azapi_resource.gpd_postgres_lifecycle_linked_service.name,
     ai_instrumentation_key_secret = "https://${data.azurerm_key_vault.nodo_kv.name}.vault.azure.net/secrets/ai-instrumentation-key?api-version=7.0",
   })
 }
