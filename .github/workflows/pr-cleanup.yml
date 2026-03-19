@@ -2,9 +2,9 @@ name: Stale/Close PR Cleaner
 
 on:
   workflow_dispatch:
-  schedule:
-    # At 00:00 every day.
-    - cron: '0 0 * * *'
+#  schedule:
+#    # At 00:00 every day.
+#    - cron: '0 0 * * *'
 
 permissions:
   contents: read
