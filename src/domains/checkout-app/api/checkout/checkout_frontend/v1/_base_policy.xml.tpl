@@ -27,11 +27,6 @@
 
     <!-- Backend: storage static website (bypasses CDN in case of downtime) -->
     <set-backend-service base-url="https://${storage_web_hostname}" />
-
-    <!-- Override Host header so storage resolves correctly -->
-    <set-header name="Host" exists-action="override">
-      <value>${storage_web_hostname}</value>
-    </set-header>
   </inbound>
 
   <outbound>
