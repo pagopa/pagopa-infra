@@ -42,3 +42,9 @@ variable "prefix" {
   type        = string
   default     = "adl-t-itn"
 }
+
+variable "immutable_retention_days" {
+  description = "Number of days for immutable retention policy"
+  type        = number
+  default     = 1
+}

@@ -3,15 +3,12 @@ data "azurerm_virtual_network" "vnet" {
   resource_group_name = local.vnet_resource_group_name
 }
 
-data "azurerm_virtual_network" "vnet_italy" {
-  name                = local.vnet_italy_name
-  resource_group_name = local.vnet_italy_resource_group_name
+
+data "azurerm_virtual_network" "spoke_data_vnet" {
+  name                = local.spoke_data_vnet_name
+  resource_group_name = local.hub_spoke_vnet_rg_name
 }
 
-data "azurerm_virtual_network" "vnet_italy_cstar_integration" {
-  name                = local.vnet_italy_name
-  resource_group_name = local.vnet_italy_resource_group_name
-}
 
 data "azurerm_private_dns_zone" "internal" {
   name                = local.internal_dns_zone_name
@@ -25,13 +22,11 @@ data "azurerm_resource_group" "rg_vnet" {
 
 
 data "azurerm_private_dns_zone" "storage" {
-  count               = var.env_short != "d" ? 1 : 0
   name                = local.storage_dns_zone_name
   resource_group_name = local.storage_dns_zone_resource_group_name
 }
 
 data "azurerm_private_dns_zone" "storage_queue" {
-  count               = var.env_short != "d" ? 1 : 0
   name                = local.storage_queue_dns_zone_name
   resource_group_name = local.storage_dns_zone_resource_group_name
 }
@@ -48,16 +43,10 @@ data "azurerm_subnet" "azdo_snet" {
   resource_group_name  = local.vnet_resource_group_name
 }
 
-data "azurerm_subnet" "aks_subnet" {
-  name                 = local.aks_subnet_name
+data "azurerm_subnet" "vpn_snet" {
+  name                 = "GatewaySubnet"
   virtual_network_name = local.vnet_name
   resource_group_name  = local.vnet_resource_group_name
-}
-
-data "azurerm_subnet" "common_itn_private_endpoint_subnet" {
-  name                 = local.common_private_endpoint_snet
-  virtual_network_name = local.vnet_italy_name
-  resource_group_name  = local.vnet_italy_resource_group_name
 }
 
 data "azurerm_subnet" "common_itn_cstar_integration_private_endpoint_subnet" {
@@ -104,10 +93,6 @@ data "azurerm_monitor_action_group" "infra_opsgenie" {
 data "azurerm_log_analytics_workspace" "log_analytics" {
   name                = var.log_analytics_workspace_name
   resource_group_name = var.log_analytics_workspace_resource_group_name
-}
-
-data "azurerm_resource_group" "monitor_rg" {
-  name = var.monitor_resource_group_name
 }
 
 data "azurerm_application_insights" "application_insights" {

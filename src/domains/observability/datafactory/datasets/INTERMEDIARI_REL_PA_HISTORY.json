@@ -1,0 +1,182 @@
+[
+    {
+        "name": "ID_INTERMEDIARIO_PA",
+        "type": "string"
+    },
+    {
+        "name": "DESCRIZIONE_INTERMEDIARIO",
+        "type": "string"
+    },
+    {
+        "name": "ID_DOMINIO",
+        "type": "string"
+    },
+    {
+        "name": "DESCRIZIONE_DOMINIO",
+        "type": "string"
+    },
+    {
+        "name": "RAGIONE_SOCIALE_DOMINIO",
+        "type": "string"
+    },
+    {
+        "name": "AUX_DIGIT",
+        "type": "int"
+    },
+    {
+        "name": "SEGREGAZIONE",
+        "type": "int"
+    },
+    {
+        "name": "BROADCAST",
+        "type": "string"
+    },
+    {
+        "name": "ACA",
+        "type": "bool"
+    },
+    {
+        "name": "STANDIN",
+        "type": "bool"
+    },
+    {
+        "name": "FLAG_ONLINE",
+        "type": "string"
+    },
+    {
+        "name": "VERSIONE",
+        "type": "int"
+    },
+    {
+        "name": "VERSIONE_PRIMITIVE",
+        "type": "int"
+    },
+    {
+        "name": "ID_STAZIONE",
+        "type": "string"
+    },
+    {
+        "name": "CF_ENABLED",
+        "type": "string"
+    },
+    {
+        "name": "PA_ENABLED",
+        "type": "string"
+    },
+    {
+        "name": "STAZIONE_ENABLED",
+        "type": "string"
+    },
+    {
+        "name": "IP",
+        "type": "string"
+    },
+    {
+        "name": "PORTA",
+        "type": "int"
+    },
+    {
+        "name": "PROTOCOLLO",
+        "type": "string"
+    },
+    {
+        "name": "TARGET_HOST",
+        "type": "string"
+    },
+    {
+        "name": "TARGET_PORT",
+        "type": "string"
+    },
+    {
+        "name": "TARGET_PATH",
+        "type": "string"
+    },
+    {
+        "name": "TARGET_HOST_POF",
+        "type": "string"
+    },
+    {
+        "name": "TARGET_PORT_POF",
+        "type": "int"
+    },
+    {
+        "name": "TARGET_PATH_POF",
+        "type": "string"
+    },
+    {
+        "name": "REDIRECT_PROTOCOLLO",
+        "type": "string"
+    },
+    {
+        "name": "REDIRECT_IP",
+        "type": "string"
+    },
+    {
+        "name": "REDIRECT_PORT",
+        "type": "int"
+    },
+    {
+        "name": "REDIRECT_PATH",
+        "type": "string"
+    },
+    {
+        "name": "PROXY_ENABLED",
+        "type": "string"
+    },
+    {
+        "name": "PROXY_HOST",
+        "type": "string"
+    },
+    {
+        "name": "PROXY_PORT",
+        "type": "int"
+    },
+    {
+        "name": "TIMEOUT",
+        "type": "int"
+    },
+    {
+        "name": "NUM_THREAD",
+        "type": "int"
+    },
+    {
+        "name": "TIMEOUT_A",
+        "type": "int"
+    },
+    {
+        "name": "TIMEOUT_B",
+        "type": "int"
+    },
+    {
+        "name": "TIMEOUT_C",
+        "type": "int"
+    },
+    {
+        "name": "QUARTO_MODELLO",
+        "type": "string"
+    },
+    {
+        "name": "PAGAMENTO_SPONTANEO",
+        "type": "string"
+    },
+    {
+        "name": "PROTOCOLLO_4MOD",
+        "type": "string"
+    },
+    {
+        "name": "IP_4MOD",
+        "type": "string"
+    },
+    {
+        "name": "PORTA_4MOD",
+        "type": "int"
+    },
+    {
+        "name": "INSERTED_TIMESTAMP",
+        "type": "datetime"
+    },
+    {
+        "name": "UNIQUE_ID",
+        "type": "guid"
+    }
+]
