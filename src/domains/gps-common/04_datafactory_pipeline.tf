@@ -71,9 +71,9 @@ resource "azapi_resource" "gpd_postgres_lifecycle_linked_service" {
           },
           secretName = azurerm_key_vault_secret.pgres_adf_pipeline_pwd_secret.name
         }
-        port     = "5433"                                                  // "8432" // adhoc private endpoint port
-        server   = "gpd-db.${var.env_short}.internal.postgresql.pagopa.it" // "172.205.217.81" // adhoc private endpoint host
-        sslMode  = 3
+        port    = "5433"                                                  // "8432" // adhoc private endpoint port
+        server  = "gpd-db.${var.env_short}.internal.postgresql.pagopa.it" // "172.205.217.81" // adhoc private endpoint host
+        sslMode = 3
         username = {
           type = "AzureKeyVaultSecret",
           store = {
