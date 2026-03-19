@@ -4,6 +4,11 @@ data "azurerm_key_vault_secret" "pgres_admin_login" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "pgres_adf_login" {
+  name         = "pgres-adf-user-login"
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_key_vault_secret" "pgres_admin_pwd" {
   name         = "pgres-admin-pwd"
   key_vault_id = module.key_vault.id
@@ -202,4 +207,67 @@ resource "azurerm_portal_dashboard" "debt_position_postgresql_dashboard" {
       }
     )
   )
+}
+
+# Create a secure password
+resource "random_password" "pgres_adf_pipeline_password" {
+  length  = 32
+  special = true
+  # Avoid char that could break the Bash/SQL script
+  override_special = "#%&*()-_=+[]{}<>:?"
+}
+
+# Save pgres_adf_pipeline_pwd
+resource "azurerm_key_vault_secret" "pgres_adf_pipeline_pwd_secret" {
+  name         = "pgres-adf-user-pwd"
+  value        = random_password.pgres_adf_pipeline_password.result
+  key_vault_id = module.key_vault.id
+}
+
+################################
+# Create ROLE for ADF pipeline
+################################
+provider "postgresql" {
+  host      = module.postgres_flexible_server_private_db.fqdn
+  port      = 5432
+  database  = "apd"
+  username  = azurerm_key_vault_secret.pgres_admin_login.value
+  password  = azurerm_key_vault_secret.pgres_admin_pwd.value
+  sslmode   = "require"
+  superuser = false
+}
+
+# Create a user for Data Factory (and update their password if it changes in the future)
+resource "postgresql_role" "pgres_adf_user" {
+  name     = data.azurerm_key_vault_secret.pgres_adf_login.value
+  login    = true
+  password = azurerm_key_vault_secret.pgres_adf_pipeline_pwd_secret.value
+}
+
+# Allows the user to access the schema (USAGE) and create views/tables (CREATE)
+resource "postgresql_grant" "schema_permissions" {
+  database    = "apd"
+  role        = postgresql_role.pgres_adf_user.name
+  schema      = "apd"
+  object_type = "schema"
+  privileges  = ["USAGE", "CREATE"]
+}
+
+# Allows the user to execute EXISTING functions/procedures
+resource "postgresql_grant" "routine_permissions" {
+  database    = "apd"
+  role        = postgresql_role.pgres_adf_user.name
+  schema      = "apd"
+  object_type = "routine"
+  privileges  = ["EXECUTE"]
+}
+
+# Read-only permission on the payment_position table
+resource "postgresql_grant" "select_payment_position" {
+  database    = "apd"
+  role        = postgresql_role.pgres_adf_user.name
+  schema      = "apd"
+  object_type = "table"
+  objects     = ["payment_position", "archiving_selection_buffer"]
+  privileges  = ["SELECT"]
 }
