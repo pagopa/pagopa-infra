@@ -14,6 +14,15 @@
       "url": "https://api.platform.pagopa.it/searchtransactions/v1"
     }
   ],
+  "tags": [
+    {
+      "name": "Transactions REST APIs",
+      "description": "Api to handle paid notice details for a debtor",
+      "externalDocs": {
+        "url": "https://TODO"
+      }
+    }
+  ],
   "paths": {
     "/transactions/organizations/{organization-fiscal-code}/notices/{nav}": {
       "get": {
