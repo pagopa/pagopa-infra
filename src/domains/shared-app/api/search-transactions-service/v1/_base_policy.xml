@@ -26,26 +26,24 @@
         </when>
       </choose>
       <choose>
-        <when condition="@(((string)context.Variables["nav"]).StartsWith("${cie_search_segragation_code}"))">
-          <set-backend-service base-url="https://${hostname}/pagopa-biz-events-service" />
-        </when>
-        <otherwise>
+        <when condition="@(!((string)context.Variables["nav"]).StartsWith("${cie_search_segragation_code}"))">
           <return-response>
-            <set-status code="403"/>
-            <set-header name="Content-Type" exists-action="override">
-              <value>application/json</value>
-            </set-header>
-            <set-body>@{
-              return new JObject(
-              new JProperty("title", "Forbidden"),
-              new JProperty("status", 403),
-              new JProperty("detail", "Invalid NAV matching"))
-              .ToString();
-              }
-            </set-body>
-          </return-response>
-        </otherwise>
+              <set-status code="403"/>
+              <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+              </set-header>
+              <set-body>@{
+                return new JObject(
+                new JProperty("title", "Forbidden"),
+                new JProperty("status", 403),
+                new JProperty("detail", "Invalid NAV matching"))
+                .ToString();
+                }
+              </set-body>
+            </return-response>
+        </when>
       </choose>
+      <set-backend-service base-url="https://${hostname}/pagopa-biz-events-service" />
     </inbound>
     <outbound>
       <base />
