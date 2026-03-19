@@ -25,9 +25,6 @@
       </when>
     </choose>
 
-    <!-- Remove Origin header before forwarding to storage backend to avoid CORS issues -->
-    <set-header name="Origin" exists-action="delete" />
-
     <!-- Backend: Front Door .azurefd.net endpoint -->
     <set-backend-service base-url="https://${frontdoor_endpoint_hostname}" />
 
