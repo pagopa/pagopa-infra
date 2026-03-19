@@ -7,7 +7,7 @@ terraform {
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "~> 3.1.0"
+      version = "~> 3.1"
     }
     null = {
       source  = "hashicorp/null"
@@ -49,6 +49,6 @@ provider "helm" {
 }
 
 module "__v4__" {
-  # v6.3.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=3d63a1346a3df45e88b0795445e1bbaf1563b87c"
+  # v8.5.1
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=77e0c671b8f4c11c6568e4b0cc87e30332b62090"
 }

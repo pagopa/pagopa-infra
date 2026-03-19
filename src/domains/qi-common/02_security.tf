@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "./.terraform/modules/__v3__/key_vault"
+  source = "./.terraform/modules/__v4__/key_vault"
 
 
   name                       = "${local.product}-${var.domain}-kv"
@@ -182,7 +182,7 @@ resource "azurerm_key_vault_secret" "qi_azurewebjobsstorage" {
 # create json letsencrypt inside kv
 # requierd: Docker
 module "letsencrypt_qi" {
-  source = "./.terraform/modules/__v3__/letsencrypt_credential"
+  source = "./.terraform/modules/__v4__/letsencrypt_credential"
 
   prefix            = var.prefix
   env               = var.env_short
