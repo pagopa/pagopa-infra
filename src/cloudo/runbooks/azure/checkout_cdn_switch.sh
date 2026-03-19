@@ -18,7 +18,10 @@ fi
 echo "------------------------------------------------------------------------"
 
 # Get connections associated with the VPN Gateway
-GW_IP=$(az network public-ip show --name "pagopa-d-appgateway-pip" --resource-group  "pagopa-d-vnet-rg" --query "ipAddress")
+GW_IP=$(az network public-ip show --name "pagopa-d-appgateway-pip" --resource-group  "pagopa-d-vnet-rg" --query "ipAddress" -o tsv)
+
+echo "retrieved gateway ip: '$GW_IP'"
+
 
 if [ "$GW_IP" == "" ]; then
   echo "Gateway ip not found, exiting with error"
