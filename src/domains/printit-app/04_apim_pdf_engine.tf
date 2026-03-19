@@ -3,7 +3,7 @@
 ##############
 
 module "apim_pdf_engine_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
   count  = var.is_feature_enabled.pdf_engine ? 1 : 0
 
   product_id   = "pdf-engine-printit"
@@ -58,7 +58,7 @@ resource "azurerm_api_management_api_version_set" "api_pdf_engine_api" {
 }
 
 module "apim_api_pdf_engine_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
   count  = var.is_feature_enabled.pdf_engine ? 1 : 0
 
   name                  = "${local.project}-pdf-engine-service-api"
@@ -100,7 +100,7 @@ resource "azurerm_api_management_api_version_set" "api_pdf_engine_node_api" {
 }
 
 module "apim_api_pdf_engine_node_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
   count  = var.is_feature_enabled.pdf_engine ? 1 : 0
 
   name                  = "${var.env_short}-pdf-engine-node-service-api"
