@@ -10,11 +10,12 @@ instance       = "dev"
 ### 🚩Feautures flags
 
 is_feature_enabled = {
-  cosmosdb_notice      = true
-  storage_institutions = true
-  storage_notice       = true
-  storage_templates    = true
-  eventhub             = true
+  cosmosdb_notice         = true
+  storage_institutions    = true
+  storage_notice          = true
+  storage_templates       = true
+  eventhub                = true
+  cosmos_hub_spoke_pe_dns = false
 }
 
 ### CIRDs
@@ -57,9 +58,9 @@ cosmos_mongo_db_notices_params = {
   enable_free_tier                 = false
 
   additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = false
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = false
 
@@ -77,7 +78,7 @@ notices_storage_account = {
   account_replication_type            = "LRS"
   blob_versioning_enabled             = true
   advanced_threat_protection          = false
-  public_network_access_enabled       = true
+  public_network_access_enabled       = false
   blob_delete_retention_days          = 30
   enable_low_availability_alert       = false
   blob_tier_to_cool_after_last_access = 100
@@ -91,7 +92,7 @@ templates_storage_account = {
   account_replication_type      = "LRS"
   blob_versioning_enabled       = true
   advanced_threat_protection    = false
-  public_network_access_enabled = true
+  public_network_access_enabled = false
   blob_delete_retention_days    = 30
   enable_low_availability_alert = false
 }
@@ -102,7 +103,7 @@ institutions_storage_account = {
   account_replication_type      = "LRS"
   blob_versioning_enabled       = false
   advanced_threat_protection    = false
-  public_network_access_enabled = true
+  public_network_access_enabled = false
   blob_delete_retention_days    = 30
   enable_low_availability_alert = false
 }
@@ -119,8 +120,8 @@ ehns_capacity                 = 1
 ehns_alerts_enabled           = false
 ehns_zone_redundant           = false
 
-ehns_public_network_access       = true
-ehns_private_endpoint_is_present = false
+ehns_public_network_access       = false
+ehns_private_endpoint_is_present = true
 
 ehns_metric_alerts = {
   no_trx = {

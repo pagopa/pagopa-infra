@@ -59,6 +59,17 @@ locals {
       frequency   = 5
       time_window = 5
     },
+    syncDumpingError = {
+      query       = <<-QUERY
+        customEvents
+          | where name == "NODE_CFG_SYNC"
+          | where customDimensions.type == "%s"
+          | order by timestamp desc
+      QUERY
+      severity    = 0
+      frequency   = 5
+      time_window = 5
+    },
   }
 }
 
@@ -156,6 +167,57 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "node_cfg_sync_sync_dumpi
   severity    = local.pagopa_node_cfg_sync.syncDumpingGenericProblem.severity
   frequency   = local.pagopa_node_cfg_sync.syncDumpingGenericProblem.frequency
   time_window = local.pagopa_node_cfg_sync.syncDumpingGenericProblem.time_window
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+}
+
+# Custom event
+# Cache
+resource "azurerm_monitor_scheduled_query_rules_alert" "cache-dumping-error" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = format("%s-%s", local.pagopa_node_cfg_sync.name, "cache-dumping-error")
+  resource_group_name = data.azurerm_resource_group.node_cfg_sync_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "node-cfg-sync-cache-dumping-error"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "Problem to dump cache on DBs"
+  enabled        = true
+  query          = format(local.pagopa_node_cfg_sync.syncDumpingError.query, "Cache not ready to be saved")
+  severity       = local.pagopa_node_cfg_sync.syncDumpingError.severity
+  frequency      = local.pagopa_node_cfg_sync.syncDumpingError.frequency
+  time_window    = local.pagopa_node_cfg_sync.syncDumpingError.time_window
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+}
+
+# Stand-in
+resource "azurerm_monitor_scheduled_query_rules_alert" "stand-in-station-dumping-error" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = format("%s-%s", local.pagopa_node_cfg_sync.name, "stand-in-station-dumping-error")
+  resource_group_name = data.azurerm_resource_group.node_cfg_sync_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "stand-in-station-dumping-error"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "Problem to dump stand-in-stations on DBs"
+  enabled        = true
+  query          = format(local.pagopa_node_cfg_sync.syncDumpingError.query, "Stand-in-Station not updated")
+  severity       = local.pagopa_node_cfg_sync.syncDumpingError.severity
+  frequency      = local.pagopa_node_cfg_sync.syncDumpingError.frequency
+  time_window    = local.pagopa_node_cfg_sync.syncDumpingError.time_window
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1

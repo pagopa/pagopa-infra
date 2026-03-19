@@ -297,6 +297,21 @@ resource "azurerm_key_vault_secret" "sender_evt_tx_event_hub_connection_string_s
   key_vault_id = module.key_vault.id
 }
 
+//connection string to integration test ( only uat)
+data "azurerm_eventhub_authorization_rule" "receiver_evt_rx_event_hub_connection_string_test" {
+  count               = var.env_short == "u" ? 1 : 0
+  name                = "payment-wallet-evt-rx"
+  namespace_name      = "${local.product_italy}-observ-evh"
+  eventhub_name       = "payment-wallet-ingestion-dl"
+  resource_group_name = "${local.product_italy}-observ-evh-rg"
+}
+
+resource "azurerm_key_vault_secret" "receiver_evt_rx_event_hub_connection_string_test" {
+  count        = var.env_short == "u" ? 1 : 0
+  name         = "receiver-evt-rx-event-hub-connection-string-test"
+  value        = data.azurerm_eventhub_authorization_rule.receiver_evt_rx_event_hub_connection_string_test[0].primary_connection_string
+  key_vault_id = module.key_vault.id
+}
 
 //connection string to staging evh instance
 data "azurerm_eventhub_authorization_rule" "sender_evt_tx_event_hub_connection_string_staging" {

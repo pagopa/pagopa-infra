@@ -27,3 +27,18 @@ data "azurerm_monitor_action_group" "opsgenie" {
   resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_opsgenie_name
 }
+
+resource "azurerm_portal_dashboard" "pdf-receipt-general-dashboard" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "pdf-receipt-general-dashboard-${var.env}"
+  resource_group_name = var.monitor_resource_group_name
+  location            = var.location
+  tags = {
+    source = "terraform"
+  }
+  dashboard_properties = templatefile("./dashboard/pdf-receipt-general.json", {
+    subscription_id = data.azurerm_subscription.current.subscription_id,
+    env_short       = var.env_short
+  })
+}

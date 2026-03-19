@@ -223,6 +223,17 @@ resource "azurerm_api_management_api_operation_policy" "get_methods_redirect_v2"
   })
 }
 
+resource "azurerm_api_management_api_operation_policy" "get_all_payment_methods_v2" {
+  api_name            = "${local.project}-ecommerce-io-api-v2"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getAllPaymentMethodsForIO"
+
+  xml_content = templatefile("./api/ecommerce-io/v2/_get_all_payment_methods.xml.tpl", {
+    ecommerce_ingress_hostname = local.ecommerce_hostname
+  })
+}
+
 ###########################
 ###                     ###
 ### ECOMMERCE IO V3     ###

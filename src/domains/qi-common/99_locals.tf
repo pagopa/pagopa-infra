@@ -1,7 +1,8 @@
 locals {
-  project     = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  project_itn = "${var.prefix}-${var.env_short}-${var.location_short_itn}-${var.domain}"
-  product     = "${var.prefix}-${var.env_short}"
+  project       = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_itn   = "${var.prefix}-${var.env_short}-${var.location_short_itn}-${var.domain}"
+  product       = "${var.prefix}-${var.env_short}"
+  product_italy = "${var.prefix}-${var.env_short}-${var.location_short_itn}"
 
   subscription_name = "${var.env}-${var.prefix}"
 
@@ -21,6 +22,9 @@ locals {
   vnet_name                = "${local.product}-vnet"
   vnet_resource_group_name = "${local.product}-vnet-rg"
 
+  vnet_hub_spoke_rg_name    = "${local.product_italy}-network-hub-spoke-rg"
+  vnet_spoke_streaming_name = "${local.product_italy}-spoke-streaming-vnet"
+
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
 
@@ -28,7 +32,11 @@ locals {
   internal_dns_zone_name                = "${var.dns_zone_internal_prefix}.${var.external_domain}"
   internal_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 
+  cosmos_dns_zone_name                = "privatelink.mongo.cosmos.azure.com"
+  cosmos_dns_zone_resource_group_name = "${local.product}-vnet-rg"
+
   aks_subnet_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
+  vpn_subnet_name = "GatewaySubnet"
 
   azdo_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
   azdo_iac_managed_identities   = toset(["azdo-${var.env}-pagopa-iac-deploy", "azdo-${var.env}-pagopa-iac-plan"])

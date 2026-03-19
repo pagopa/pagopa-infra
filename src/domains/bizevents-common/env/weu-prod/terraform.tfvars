@@ -37,7 +37,7 @@ bizevents_datastore_cosmos_db_params = {
   enable_free_tier                 = false
 
   private_endpoint_enabled      = true
-  public_network_access_enabled = true
+  public_network_access_enabled = false
 
   additional_geo_locations = [{
     location          = "northeurope"
@@ -56,7 +56,7 @@ bizevents_datastore_cosmos_db_params = {
 
   max_throughput          = 42000
   max_throughput_view     = 44000
-  max_throughput_view_alt = 80000
+  max_throughput_view_alt = 45000
 }
 
 # CosmosDB Negative Biz Events Datastore

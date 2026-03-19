@@ -1,5 +1,5 @@
 module "nodo_verifyko_storage_account" {
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                            = replace(format("%s-vko-2-data-st", local.project), "-", "")
   account_kind                    = var.nodo_verifyko_storage_account.account_kind
@@ -26,9 +26,11 @@ module "nodo_verifyko_storage_account" {
   tags = module.tag_config.tags
 }
 
+moved {
+  from = azurerm_private_endpoint.nodo_verifyko_private_endpoint_table[0]
+  to   = azurerm_private_endpoint.nodo_verifyko_private_endpoint_table
+}
 resource "azurerm_private_endpoint" "nodo_verifyko_private_endpoint_table" {
-  count = var.env_short == "d" ? 0 : 1
-
   name                = "${local.project}-verifyko-private-endpoint-table"
   location            = var.location
   resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
@@ -53,9 +55,12 @@ resource "azurerm_private_endpoint" "nodo_verifyko_private_endpoint_table" {
   ]
 }
 
-resource "azurerm_private_endpoint" "nodo_verifyko_private_endpoint_blob" {
-  count = var.env_short == "d" ? 0 : 1
+moved {
+  from = azurerm_private_endpoint.nodo_verifyko_private_endpoint_blob[0]
+  to   = azurerm_private_endpoint.nodo_verifyko_private_endpoint_blob
+}
 
+resource "azurerm_private_endpoint" "nodo_verifyko_private_endpoint_blob" {
   name                = "${local.project}-verifyko-private-endpoint-blob"
   location            = var.location
   resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name

@@ -12,7 +12,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | b17f054eeda04d5ec4173d825cc7b6e4e2901bb6 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 1199bc36210d2a2bbae4409117131c2f6118e96f |
 | <a name="module_secret_core"></a> [secret\_core](#module\_secret\_core) | ./.terraform/modules/__v4__/key_vault_secrets_query | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../tag_config | n/a |
 | <a name="module_tf_audit_logic_app"></a> [tf\_audit\_logic\_app](#module\_tf\_audit\_logic\_app) | ./.terraform/modules/__v4__/tf_audit_logic_app | n/a |

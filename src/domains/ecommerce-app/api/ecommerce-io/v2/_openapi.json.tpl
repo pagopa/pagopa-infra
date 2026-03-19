@@ -503,6 +503,28 @@
             "schema": {
               "type": "number"
             }
+          },
+          {
+            "name": "deviceVersion",
+            "in": "query",
+            "description": "The user device version",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devicePlatform",
+            "in": "query",
+            "description": "The user device platform",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "IOS",
+                "ANDROID"
+              ]
+            }
           }
         ],
         "security": [

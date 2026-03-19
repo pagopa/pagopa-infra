@@ -1,9 +1,9 @@
 terraform {
-  required_version = ">= 1.6.0"
+  required_version = ">= 1.9.0"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "<= 3.116.0"
+      version = "~> 4"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -48,8 +48,8 @@ provider "helm" {
   }
 }
 
-module "__v3__" {
-  # v8.98.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=4ac32cd6fb7d56e7be3b1c0dbcbf251f5b0cd199"
+module "__v4__" {
+  # v9.0.1
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=498aa770edfe95264936e9e8f7e209322e4a3820"
 }
 

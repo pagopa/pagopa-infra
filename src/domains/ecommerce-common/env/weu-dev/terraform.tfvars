@@ -38,9 +38,9 @@ cosmos_mongo_db_params = {
   enable_free_tier                 = true
 
   additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = false
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled                    = false
   enable_provisioned_throughput_exceeded_alert = false
@@ -61,7 +61,7 @@ cosmos_mongo_db_ecommerce_params = {
 cosmos_mongo_db_ecommerce_history_params = {
   enable_serverless  = true
   enable_autoscaling = true
-  max_throughput     = 1000
+  max_throughput     = 2000
   throughput         = 1000
 }
 

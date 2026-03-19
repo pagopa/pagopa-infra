@@ -172,3 +172,13 @@ variable "db_vdi_settings" {
     error_message = "db_vdi_settings.host_pool_type must be either \"Personal\" or \"Pooled\"."
   }
 }
+
+variable "route_table_routes" {
+  type = list(object({
+    name                   = string
+    address_prefix         = string
+    next_hop_type          = string
+    next_hop_in_ip_address = string
+  }))
+  default = []
+}

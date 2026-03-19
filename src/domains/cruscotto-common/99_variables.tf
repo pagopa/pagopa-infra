@@ -247,3 +247,16 @@ variable "postgres_dns_registration_enabled" {
   description = "(Optional) If true, adds a CNAME record for the database FQDN in the db private dns"
   default     = true
 }
+
+# Storage Account Cruscotto report
+# IDH 
+# https://github.com/pagopa/terraform-azurerm-v4/blob/main/IDH/storage_account/LIBRARY.md#pagopa
+# https://github.com/pagopa/terraform-azurerm-v4/tree/main/IDH/storage_account#input_embedded_subnet
+variable "crusc8_sa_report" {
+  type = object({
+    idh_resource_tier = string
+  })
+  default = {
+    idh_resource_tier = "basic" # idh_resource_tier is used in the name of the storage account, so it can't be empty
+  }
+}

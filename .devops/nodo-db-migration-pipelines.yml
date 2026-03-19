@@ -19,12 +19,12 @@ parameters:
   - name: dbVersion
     displayName: Database Version
     type: string
-    default: '3.36.2'
+    default: '3.37.0'
   # version of liquibase db.changelog-master-*.xml to run
   - name: dbVersionSt
     displayName: Database Version Storico patch
     type: string
-    default: '1.1.2'
+    default: '1.1.3'
   - name: dbVersionPagoPA
     displayName: Database Version PagoPA patch
     type: string
@@ -458,6 +458,22 @@ stages:
               NODO_DB_PORT: $(NODO_DB_PORT)
               DB_PARTITION_PASSWORD: $(db-partition-password)
               DB_ADMIN_PASSWORD: $(db-administrator-login-password)
+          # admin pagopa status
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: admin-postgres
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(POSTGRES_JDBC_URL)
+              USERNAME: $(ADMIN_USERNAME)
+              PASSWORD: $(db-administrator-login-password)
+              SCHEMA: $(ADMIN_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_SCHEMA_NAME: public
+              CHANGELOG_LOCK_TABLE: DATABASECHANGELOGLOCK_CRON
+              CHANGELOG_TABLE: DATABASECHANGELOG_CRON
           # admin st_nodo_storico status
           - template: ./templates/liquibase-status.yml
             parameters:
@@ -868,7 +884,23 @@ stages:
               NODO_DB_PORT: $(NODO_DB_PORT)
               DB_PARTITION_PASSWORD: $(db-partition-password)
               DB_ADMIN_PASSWORD: $(db-administrator-login-password)
-          # admin st_nodo_storico apply
+          # admin pagopa apply
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: admin-postgres
+              LIQUIBASE_FOLDER: $(liquibase_folder_pagopa)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionPagoPA }}
+              JDBC_URL: $(POSTGRES_JDBC_URL)
+              USERNAME: $(ADMIN_USERNAME)
+              PASSWORD: $(db-administrator-login-password)
+              SCHEMA: $(ADMIN_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_SCHEMA_NAME: public
+              CHANGELOG_LOCK_TABLE: DATABASECHANGELOGLOCK_CRON
+              CHANGELOG_TABLE: DATABASECHANGELOG_CRON
+          # admin st_nodo apply
           - template: ./templates/liquibase-apply.yml
             parameters:
               DATABASE_NAME: admin-postgres

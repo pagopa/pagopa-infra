@@ -45,7 +45,7 @@ module "cosmosdb_account_mongodb" {
   private_endpoint_enabled           = var.cosmos_mongo_db_params.private_endpoint_enabled
   subnet_id                          = module.cosmosdb_ecommerce_snet.id
   is_virtual_network_filter_enabled  = var.cosmos_mongo_db_params.is_virtual_network_filter_enabled
-  allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
+  allowed_virtual_network_subnet_ids = var.env_short == "p" ? [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id, data.azurerm_subnet.vpn_subnet.id]
 
   consistency_policy               = var.cosmos_mongo_db_params.consistency_policy
   main_geo_location_location       = azurerm_resource_group.cosmosdb_ecommerce_rg.location
@@ -135,10 +135,14 @@ locals {
         {
           keys   = ["transactionId", "creationDate"]
           unique = false
+        },
+        {
+          keys   = ["creationDate"]
+          unique = false
         }
       ]
       shard_key           = "transactionId",
-      default_ttl_seconds = null
+      default_ttl_seconds = "315360000" #10 years
     },
     {
       name = "transactions-view"
@@ -148,6 +152,10 @@ locals {
         },
         {
           keys   = ["creationDate", "status", "clientId"]
+          unique = false
+        },
+        {
+          keys   = ["creationDate"]
           unique = false
         },
         {
@@ -168,7 +176,7 @@ locals {
         }
       ]
       shard_key           = "_id",
-      default_ttl_seconds = null
+      default_ttl_seconds = "315360000" #10 years
     },
     {
       name = "dead-letter-events"
@@ -352,6 +360,20 @@ locals {
       shard_key           = "transactionId",
       default_ttl_seconds = null
     },
+    {
+      name = "notes"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["transactionId"]
+          unique = false
+        }
+      ]
+      shard_key           = "transactionId",
+      default_ttl_seconds = null
+    }
   ]
 }
 
@@ -409,6 +431,59 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_provisioned_throughput_ru_exc
     operator               = "GreaterThan"
     threshold              = var.cosmos_mongo_db_ecommerce_params.max_throughput * 0.95
     skip_metric_validation = false
+    dimension {
+      name     = "Region"
+      operator = "Include"
+      values   = [local.location_to_alert_region[azurerm_resource_group.cosmosdb_ecommerce_rg.location]]
+    }
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.ecommerce_opsgenie[0].id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.service_management_opsgenie[0].id
+  }
+
+  tags = module.tag_config.tags
+}
+
+resource "azurerm_monitor_metric_alert" "ecommerce_history_cosmos_db_provisioned_throughput_ru_exceeded_write_region" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${resource.azurerm_cosmosdb_mongo_database.ecommerce_history.name}] Provisioned throughput RU Exceeded"
+  resource_group_name = azurerm_resource_group.cosmosdb_ecommerce_rg.name
+  scopes              = [module.cosmosdb_account_mongodb.id]
+  description         = "Provisioned throughput for ${resource.azurerm_cosmosdb_mongo_database.ecommerce_history.name} database is over 95% of its maximum. Please, consider to increase max RU."
+  severity            = 0
+  window_size         = "PT15M"
+  frequency           = "PT5M"
+  auto_mitigate       = false
+
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
+  criteria {
+    metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
+    metric_name            = "ProvisionedThroughput"
+    aggregation            = "Maximum"
+    operator               = "GreaterThan"
+    threshold              = var.cosmos_mongo_db_ecommerce_history_params.max_throughput * 0.95
+    skip_metric_validation = false
+    dimension {
+      name     = "DatabaseName"
+      operator = "Include"
+      values   = [resource.azurerm_cosmosdb_mongo_database.ecommerce_history.name]
+    }
     dimension {
       name     = "Region"
       operator = "Include"

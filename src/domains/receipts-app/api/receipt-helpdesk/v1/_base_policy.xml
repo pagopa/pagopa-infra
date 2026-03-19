@@ -1,15 +1,43 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="https://${hostname}/pagopa-receipt-pdf-helpdesk" />
+        <set-variable name="backendBaseUrl"
+                      value="${hostname}"/>
+        <!--
+            Redirect Logic
+            - healthCheck and GET Receipts and Cart operations -> pdf-service
+            - Recover operations -> pdf-datastore
+            - RegenerateReceiptPdf -> pdf-generator
+         -->
+        <choose>
+            <when condition="@(context.Operation.Id == "RegenerateReceiptPdf")">
+                <set-variable name="servicePath" value="pagopa-receipt-pdf-generator-helpdesk"/>
+            </when>
+            <when condition="@(new [] {
+                    "healthCheck", "GetReceipt", "GetReceiptByOrganizationFiscalCodeAndIUV",
+                    "GetReceiptMessage", "GetReceiptPdf", "GetReceiptError", "GetCart"
+                    }.Contains(context.Operation.Id))">
+                <set-variable name="servicePath" value="pagopa-receipt-pdf-service-helpdesk"/>
+            </when>
+            <when condition="@(new [] {
+                    "ReceiptToReviewed", "RecoverFailedReceipt", "RecoverFailedReceiptMassive",
+                    "RecoverNotNotifiedReceipt", "RecoverNotNotifiedReceiptMassive"
+                    }.Contains(context.Operation.Id))">
+                <set-variable name="servicePath" value="pagopa-receipt-pdf-datastore-helpdesk"/>
+            </when>
+            <otherwise>
+                <set-variable name="servicePath" value="pagopa-receipt-pdf-helpdesk"/>
+            </otherwise>
+        </choose>
+        <set-backend-service base-url="@((string)context.Variables["backendBaseUrl"] + "/"+ (string)context.Variables["servicePath"])"/>
     </inbound>
     <outbound>
-        <base />
+    <base />
     </outbound>
     <backend>
-        <base />
+    <base />
     </backend>
     <on-error>
-        <base />
+    <base />
     </on-error>
 </policies>

@@ -7,7 +7,8 @@ module "tf_audit_logic_app" {
   source = "./.terraform/modules/__v4__/tf_audit_logic_app"
 
   location            = var.location
-  prefix              = local.project
+  name                = local.project
+  prefix              = "${upper(local.prefix)} 💰"
   resource_group_name = azurerm_resource_group.tf_audit_rg.name
   slack_webhook_url   = module.secret_core.values["tf-audit-slack-webhook-url"].value
   storage_account_settings = {

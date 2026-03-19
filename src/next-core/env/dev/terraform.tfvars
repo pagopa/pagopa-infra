@@ -17,7 +17,6 @@ is_feature_enabled = {
   node_forwarder_ha_enabled = false,
   vpn                       = true,
   dns_forwarder_lb          = true,
-  postgres_private_dns      = true,
   apim_core_import          = true,
   use_new_apim              = false
 }
@@ -140,10 +139,11 @@ apim_v2_subnet_nsg_security_rules = [
   }
 ]
 
-apim_v2_publisher_name = "pagoPA Platform DEV"
-apim_v2_sku            = "Developer_1"
-apim_v2_alerts_enabled = false
-dns_zone_prefix        = "dev.platform"
+apim_v2_publisher_name           = "pagoPA Platform DEV"
+apim_v2_sku                      = "Developer_1"
+apim_v2_alerts_enabled           = false
+apim_enable_nm3_decoupler_switch = true
+dns_zone_prefix                  = "dev.platform"
 
 cidr_subnet_appgateway_integration = ["10.230.8.192/27"]
 integration_appgateway_private_ip  = "10.230.8.200"
