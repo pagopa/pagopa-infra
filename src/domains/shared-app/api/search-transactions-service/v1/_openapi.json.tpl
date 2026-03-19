@@ -231,7 +231,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "the user name"
+            "description": "the user name and surname"
           },
           "taxCode": {
             "type": "string",
