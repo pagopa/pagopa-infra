@@ -25,12 +25,12 @@
       </when>
     </choose>
 
-    <!-- Backend: Front Door .azurefd.net endpoint -->
-    <set-backend-service base-url="https://${frontdoor_endpoint_hostname}" />
+    <!-- Backend: storage static website (bypasses CDN in case of downtime) -->
+    <set-backend-service base-url="https://${storage_web_hostname}" />
 
-    <!-- Override Host header so Front Door routes correctly -->
+    <!-- Override Host header so storage resolves correctly -->
     <set-header name="Host" exists-action="override">
-      <value>${frontdoor_endpoint_hostname}</value>
+      <value>${storage_web_hostname}</value>
     </set-header>
   </inbound>
 

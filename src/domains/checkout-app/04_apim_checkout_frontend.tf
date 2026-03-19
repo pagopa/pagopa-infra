@@ -56,7 +56,7 @@ module "apim_checkout_frontend_api" {
   })
 
   xml_content = templatefile("./api/checkout/checkout_frontend/v1/_base_policy.xml.tpl", {
-    frontdoor_endpoint_hostname = "${local.cdn_storage_account_name}.z6.web.core.windows.net"
+    storage_web_hostname        = module.checkout_cdn_frontdoor.storage_primary_web_host
     npg_sdk_hostname            = local.checkout_frontend_npg_sdk_hostname
     csp_value                   = local.checkout_csp_value
     checkout_fe_hostname        = local.checkout_fe_apim_hostname
