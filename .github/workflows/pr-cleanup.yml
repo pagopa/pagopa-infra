@@ -38,7 +38,7 @@ jobs:
 
           # Behavior
           remove-stale-when-updated: true
-          operations-per-run: 1
+          operations-per-run: 30
           ascending: true
           delete-branch: false
 
