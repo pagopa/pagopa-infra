@@ -2,9 +2,9 @@
     <inbound>
       <base />
       <set-variable name="nav" value="@(context.Request.MatchedParameters["nav"])" />
-      <rate-limit-by-key calls="10" renewal-period="5" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" remaining-calls-variable-name="remainingCallsPerIp"/>
+      <rate-limit-by-key calls="50" renewal-period="5" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" remaining-calls-variable-name="remainingCallsPerIp"/>
       <rate-limit-by-key calls="10" renewal-period="5" counter-key="@((string)context.Variables["nav"])" remaining-calls-variable-name="remainingCallsPerNav"/>
-      <rate-limit-by-key calls="10" renewal-period="5" counter-key="@(context.Request.Headers.GetValueOrDefault("x-fiscal-code"))" remaining-calls-variable-name="remainingCallsPerIp"/>
+      <rate-limit-by-key calls="10" renewal-period="5" counter-key="@(context.Request.Headers.GetValueOrDefault("x-fiscal-code"))" remaining-calls-variable-name="remainingCallsPerFiscalCode"/>
       <set-variable name="authToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
       <set-variable name="tokenSecret" value="{{search-transactions-token-secret-value}}" />
       <choose>
