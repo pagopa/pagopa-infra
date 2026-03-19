@@ -24,7 +24,7 @@ start_time = end_time - timedelta(days=7)
 date_time_format = "%d/%m/%Y %H:%M:%S"
 
 # Set slack report webhook secret name
-slack_webhook_secret_name = "slack-bot-reporter-token"
+slack_webhook_secret_name = "pagopa-platform-reporter-oauth-token"
 
 # Define global variables
 def def_global_vars(input):
