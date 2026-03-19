@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "rg_aks" {
 }
 
 module "aks_leonardo" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.90.0"
+  source = "./.terraform/modules/__v4__//kubernetes_cluster"
 
   name                       = local.aks_cluster_name
   location                   = var.location
@@ -21,10 +21,8 @@ module "aks_leonardo" {
   enable_prometheus_monitor_metrics = true
 
   # ff: Enabled cost analysis on UAT/PROD
-  cost_analysis_enabled = var.env_short != "d" ? true : false
-
+  cost_analysis_enabled     = var.env_short != "d" ? true : false
   automatic_channel_upgrade = null
-  node_os_channel_upgrade   = "None"
   maintenance_windows_node_os = {
     enabled = true
   }
@@ -65,11 +63,12 @@ module "aks_leonardo" {
 
   aad_admin_group_ids = var.env_short == "p" ? [data.azuread_group.adgroup_admin.object_id] : [data.azuread_group.adgroup_admin.object_id, data.azuread_group.adgroup_developers.object_id, data.azuread_group.adgroup_externals.object_id]
 
-  addon_azure_policy_enabled                     = true
-  addon_azure_key_vault_secrets_provider_enabled = true
-  addon_azure_pod_identity_enabled               = true
-  workload_identity_enabled                      = var.aks_enable_workload_identity
-  oidc_issuer_enabled                            = var.aks_enable_workload_identity
+  addon_azure_policy_enabled                           = true
+  addon_azure_key_vault_secrets_provider_enabled       = true
+  workload_identity_enabled                            = var.aks_enable_workload_identity
+  oidc_issuer_enabled                                  = var.aks_enable_workload_identity
+  oms_agent_msi_auth_for_monitoring_enabled            = true
+  oms_agent_monitoring_metrics_role_assignment_enabled = false
 
 
   alerts_enabled = var.aks_alerts_enabled
@@ -110,18 +109,18 @@ resource "azurerm_kubernetes_cluster_node_pool" "user_nodepool_default" {
   ### vm configuration
   vm_size = var.aks_user_node_pool.vm_size
   # https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general
-  os_disk_type           = var.aks_user_node_pool.os_disk_type # Managed or Ephemeral
-  os_disk_size_gb        = var.aks_user_node_pool.os_disk_size_gb
-  zones                  = var.aks_user_node_pool.zones
-  ultra_ssd_enabled      = var.aks_user_node_pool.ultra_ssd_enabled
-  enable_host_encryption = var.aks_user_node_pool.enable_host_encryption
-  os_type                = "Linux"
+  os_disk_type      = var.aks_user_node_pool.os_disk_type # Managed or Ephemeral
+  os_disk_size_gb   = var.aks_user_node_pool.os_disk_size_gb
+  zones             = var.aks_user_node_pool.zones
+  ultra_ssd_enabled = var.aks_user_node_pool.ultra_ssd_enabled
+  os_type           = "Linux"
 
   ### autoscaling
-  enable_auto_scaling = true
-  node_count          = var.aks_user_node_pool.node_count_min
-  min_count           = var.aks_user_node_pool.node_count_min
-  max_count           = var.aks_user_node_pool.node_count_max
+  auto_scaling_enabled    = true
+  host_encryption_enabled = true
+  node_count              = var.aks_user_node_pool.node_count_min
+  min_count               = var.aks_user_node_pool.node_count_min
+  max_count               = var.aks_user_node_pool.node_count_max
 
   ### K8s node configuration
   max_pods    = var.aks_user_node_pool.max_pods
@@ -129,8 +128,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "user_nodepool_default" {
   node_taints = var.aks_user_node_pool.node_taints
 
   ### networking
-  vnet_subnet_id        = azurerm_subnet.user_aks_subnet.id
-  enable_node_public_ip = false
+  vnet_subnet_id = azurerm_subnet.user_aks_subnet.id
 
   upgrade_settings {
     max_surge                = var.aks_user_node_pool.upgrade_settings_max_surge
