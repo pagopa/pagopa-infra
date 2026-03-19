@@ -37,7 +37,7 @@ module "apim_mocker_config_product" {
 }
 
 module "apim_remora_engine_product" {
-  count  = var.env_short != "p" ? 1 : 0
+  count  = var.env_short == "d" ? 1 : 0
   source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = local.remora_engine_api_locals.product_id
