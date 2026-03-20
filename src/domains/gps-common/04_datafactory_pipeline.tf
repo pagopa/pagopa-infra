@@ -107,12 +107,12 @@ resource "azapi_resource" "gpd_postgres_archive_lifecycle_linked_service" {
             referenceName = azurerm_data_factory_linked_service_key_vault.gps_kv_linked_service.name,
             type          = "LinkedServiceReference"
           },
-          secretName = data.azurerm_key_vault_secret.pgres_admin_pwd.name
+          secretName = azurerm_key_vault_secret.pgres_apd_storico_pwd_secret.name
         }
         port     = "5436"                                                          // "8432" // adhoc private endpoint port
         server   = "gpd-storico-db.${var.env_short}.internal.postgresql.pagopa.it" // "172.205.217.81" // adhoc private endpoint host
         sslMode  = 3
-        username = data.azurerm_key_vault_secret.pgres_admin_login.value
+        username = data.azurerm_key_vault_secret.pgres_apd_storico_user_login.value
       }
     }
   }
