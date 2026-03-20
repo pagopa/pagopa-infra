@@ -21,12 +21,12 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
           # Days configuration - use PR-specific parameters
-          days-before-pr-stale: 30
-          days-before-pr-close: 7
+          days-before-pr-stale: 0
+          days-before-pr-close: 0
 
           # Labels
           close-pr-label: 'auto-closed'
-
+          only-pr-labels: 'test-delete'
 
           # Exemptions
           exempt-pr-labels: 'wip,do-not-close'
@@ -40,7 +40,8 @@ jobs:
           remove-stale-when-updated: true
           operations-per-run: 30
           ascending: true
-          delete-branch: false
+          delete-branch: true
+          debug-only: true
 
           # Disable issue processing
           days-before-issue-stale: -1
