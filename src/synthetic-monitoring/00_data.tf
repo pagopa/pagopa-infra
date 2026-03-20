@@ -26,8 +26,8 @@ data "azurerm_monitor_action_group" "opsgenie" {
 }
 
 data "azurerm_monitor_action_group" "cloudo" {
-  resource_group_name = local.monitor_resource_group_name
-  name                = local.monitor_action_group_email_name
+  resource_group_name = local.cloudo_action_group_rg_name
+  name                = local.monitor_action_group_cloudo_name
 }
 
 data "azurerm_resource_group" "rg_vnet_core" {

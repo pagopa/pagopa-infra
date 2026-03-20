@@ -917,7 +917,7 @@
   {
       "apiName": "checkout",
       "appName": "fe",
-      "url": "${checkout_cdn_endpoint}s",
+      "url": "${checkout_cdn_endpoint}",
       "type": "cdn",
       "checkCertificate": true,
       "method": "GET",

@@ -13,6 +13,7 @@ locals {
   monitor_action_group_opsgenie_name       = "Opsgenie"
   monitor_action_group_infra_opsgenie_name = "InfraOpsgenie"
   monitor_resource_group_name              = "${local.product}-monitor-rg"
+  cloudo_action_group_rg_name              = "${local.product}-itn-cloudo-rg"
 
   vnet_core_resource_group_name               = "${local.product}-vnet-rg"
   vnet_core_name                              = "${local.product}-vnet"
