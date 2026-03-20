@@ -8,6 +8,11 @@ data "azurerm_key_vault_secret" "pgres_storico_admin_pwd" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "pgres_apd_storico_user_login" {
+  name         = "pgres-apd-storico-user-login"
+  key_vault_id = module.key_vault.id
+}
+
 # After applying the first time remember to switch cron.database_name to apd in server parameters
 module "postgres_storico_flexible_server_private_db" {
   source = "./.terraform/modules/__v4__/IDH/postgres_flexible_server"
@@ -78,3 +83,81 @@ module "postgres_storico_flexible_server_private_db" {
   additional_preload_libraries = ["pg_partman_bgw"]
 }
 
+# Create a secure password
+resource "random_password" "pgres_apd_storico_user_password" {
+  length  = 32
+  special = true
+  # Avoid char that could break the Bash/SQL script
+  override_special = "#%&*()-_=+[]{}<>:?"
+}
+
+# Save pgres_adf_pipeline_pwd
+resource "azurerm_key_vault_secret" "pgres_apd_storico_pwd_secret" {
+  name         = "pgres-apd-storico-user-pwd"
+  value        = random_password.pgres_adf_pipeline_password.result
+  key_vault_id = module.key_vault.id
+}
+
+provider "postgresql" {
+  alias     = "historical"
+
+  host      = module.postgres_storico_flexible_server_private_db.fqdn
+  port      = 5432
+  database  = "apd"
+  username  = data.azurerm_key_vault_secret.pgres_storico_admin_login.value
+  password  = data.azurerm_key_vault_secret.pgres_storico_admin_pwd.value
+  sslmode   = "require"
+  superuser = false
+}
+
+resource "postgresql_role" "apd_storico_user" {
+  provider = postgresql.historical
+
+  name     = data.azurerm_key_vault_secret.pgres_apd_storico_user_login.value
+  login    = true
+  password = azurerm_key_vault_secret.pgres_apd_storico_pwd_secret.value
+}
+
+# Full permission on the apd schema
+resource "postgresql_grant" "flyway_schema_all" {
+  provider    = postgresql.historical
+
+  database    = "apd"
+  role        = postgresql_role.apd_storico_user.name
+  schema      = "apd"
+  object_type = "schema"
+  privileges  = ["ALL"]
+}
+
+# Full permissions on ALL existing apd TABLES and VIEWS (Read, Write, Truncate)
+resource "postgresql_grant" "flyway_tables_all" {
+  provider    = postgresql.historical
+
+  database    = "apd"
+  role        = postgresql_role.apd_storico_user.name
+  schema      = "apd"
+  object_type = "table"
+  privileges  = ["ALL"]
+}
+
+# Full permissions on apd SEQUENCES
+resource "postgresql_grant" "flyway_sequences_all" {
+  provider    = postgresql.historical
+
+  database    = "apd"
+  role        = postgresql_role.apd_storico_user.name
+  schema      = "apd"
+  object_type = "sequence"
+  privileges  = ["ALL"]
+}
+
+# Full permissions on existing apd functions and procedures
+resource "postgresql_grant" "flyway_routines_all" {
+  provider    = postgresql.historical
+
+  database    = "apd"
+  role        = postgresql_role.apd_storico_user.name
+  schema      = "apd"
+  object_type = "routine"
+  privileges  = ["ALL"]
+}
