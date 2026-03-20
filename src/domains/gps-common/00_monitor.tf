@@ -59,7 +59,7 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_management_single_fa
     dimension {
       name     = "PipelineName"
       operator = "Include"
-      values   = ["GPD_MIGRATION_PIPELINE"]
+      values   = ["GPD_LIFECYCLE_MANAGEMENT"]
     }
   }
 
@@ -94,7 +94,7 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_management_multiple_
     dimension {
       name     = "PipelineName"
       operator = "Include"
-      values   = ["GPD_MIGRATION_PIPELINE"]
+      values   = ["GPD_LIFECYCLE_MANAGEMENT"]
     }
   }
 
@@ -103,6 +103,41 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_management_multiple_
   }
   action {
     action_group_id = data.azurerm_monitor_action_group.opsgenie[0].id
+  }
+}
+
+resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_script_execution_single_failure" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "pipeline-gpd-lifecycle-script-execution-single-failure-alert"
+  resource_group_name = azurerm_resource_group.gps_rg.name
+
+  scopes      = [data.azurerm_data_factory.data_factory.id]
+  description = "Triggers whenever GPD_LIFECYCLE_SCRIPT_EXECUTION pipeline fails."
+
+  severity = 3
+
+  window_size = "PT1H"
+
+  criteria {
+    metric_namespace = "Microsoft.DataFactory/factories"
+    metric_name      = "PipelineFailedRuns"
+    aggregation      = "Total"
+    operator         = "GreaterThanOrEqual"
+    threshold        = 1
+
+    dimension {
+      name     = "PipelineName"
+      operator = "Include"
+      values   = ["GPD_LIFECYCLE_SCRIPT_EXECUTION"]
+    }
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
   }
 }
 
