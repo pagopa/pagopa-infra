@@ -43,6 +43,13 @@ module "cloudo" {
     }
   }
 
+  custom_role_assignments = [
+    {
+      role  = "Contributor"
+      scope = data.azurerm_resource_group.network_rg.id
+    }
+  ]
+
   approval_runbook = {
     ttl_min = "120"
   }
