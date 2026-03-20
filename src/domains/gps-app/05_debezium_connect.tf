@@ -215,7 +215,7 @@ resource "kubectl_manifest" "postgres_connector" {
   lifecycle {
     ignore_changes = [
       # ⚠️ DEBEZIUM-CDC-PWD warning to avoid fake update on database.password ⚠️ remove it to real update
-      yaml_body
+      # yaml_body TODO
     ]
   }
 }
