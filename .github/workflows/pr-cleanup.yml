@@ -23,7 +23,6 @@ jobs:
           # Days configuration - use PR-specific parameters
           days-before-pr-stale: 0
           days-before-pr-close: 0
-
           # Labels
           close-pr-label: 'auto-closed'
           only-pr-labels: 'test-delete'
@@ -39,7 +38,7 @@ jobs:
           # Behavior
           remove-stale-when-updated: true
           operations-per-run: 30
-          ascending: true
+          ascending: false
           delete-branch: true
           debug-only: true
 
