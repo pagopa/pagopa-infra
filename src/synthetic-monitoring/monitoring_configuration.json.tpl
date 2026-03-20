@@ -917,7 +917,7 @@
   {
       "apiName": "checkout",
       "appName": "fe",
-      "url": "${checkout_cdn_endpoint}",
+      "url": "${checkout_cdn_endpoint}s",
       "type": "cdn",
       "checkCertificate": true,
       "method": "GET",
@@ -927,10 +927,10 @@
       },
       "durationLimit": 10000,
       "alertConfiguration": {
-        "enabled": ${alert_enabled},
+        "enabled": "true",
         "customActionGroupIds" : ${cloudo_action_group_ids},
-        "evaluation_total_count": 3,
-        "evaluation_failure_count": 3
+        "evaluation_total_count": 2,
+        "evaluation_failure_count": 2
       }
   },
   {
