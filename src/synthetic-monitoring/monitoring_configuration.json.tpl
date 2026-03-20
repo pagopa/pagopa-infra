@@ -929,14 +929,14 @@
       "alertConfiguration": {
         "enabled": "true",
         "customActionGroupIds" : ${cloudo_action_group_ids},
-        "evaluation_total_count": 2,
-        "evaluation_failure_count": 2
+        "evaluation_total_count": 3,
+        "evaluation_failure_count": 3
       }
   },
   {
       "apiName": "checkout",
       "appName": "fe",
-      "url": "https://${env_name}.checkout.pagopa.it/",
+      "url": "https://${env_dot}checkout.pagopa.it/",
       "type": "public",
       "checkCertificate": true,
       "method": "GET",

@@ -48,6 +48,7 @@ module "monitoring_function" {
     env_name                                 = var.env,
     env_short                                = var.env_short,
     api_dot_env_name                         = var.env == "prod" ? "api" : "api.${var.env}"
+    env_dot                                  = var.env == "prod" ? "" : "${var.env}."
     internal_api_domain_prefix               = "weu${var.env}"
     internal_api_domain_suffix               = var.env == "prod" ? "internal.platform.pagopa.it" : "internal.${var.env}.platform.pagopa.it"
     nodo_subscription_key                    = nonsensitive(module.secret_core.values["synthetic-monitoring-nodo-subscription-key"].value)
