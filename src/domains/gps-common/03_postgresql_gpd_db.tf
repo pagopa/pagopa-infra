@@ -268,6 +268,6 @@ resource "postgresql_grant" "select_payment_position" {
   role        = postgresql_role.pgres_adf_user.name
   schema      = "apd"
   object_type = "table"
-  objects     = ["payment_position", "archiving_selection_buffer"]
-  privileges  = ["SELECT"]
+  objects     = ["payment_position", "payment_option", "transfer", "payment_option_metadata", "transfer_metadata", "archiving_selection_buffer"]
+  privileges  = ["SELECT", "INSERT", "UPDATE", "DELETE", "TRUNCATE"]
 }
