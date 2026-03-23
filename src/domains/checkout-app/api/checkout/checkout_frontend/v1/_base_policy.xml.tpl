@@ -4,6 +4,7 @@
     <cors>
       <allowed-origins>
         <origin>https://${checkout_fe_hostname}</origin>
+        <origin>https://${npg_sdk_hostname}</origin>
       </allowed-origins>
       <allowed-methods>
         <method>*</method>
