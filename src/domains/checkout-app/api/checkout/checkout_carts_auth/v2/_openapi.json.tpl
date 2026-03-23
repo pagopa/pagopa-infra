@@ -149,23 +149,23 @@
               "returnOkUrl": {
                 "type": "string",
                 "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/success.html"
+                "example": "https://www.comune.di.prova.it/pagopa/success.html"
               },
               "returnCancelUrl": {
                 "type": "string",
                 "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/cancel.html"
+                "example": "https://www.comune.di.prova.it/pagopa/cancel.html"
               },
               "returnErrorUrl": {
                 "type": "string",
                 "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/error.html"
+                "example": "https://www.comune.di.prova.it/pagopa/error.html"
               },
               "returnWaitingUrl": {
                 "type": "string",
                 "format": "uri",
                 "description": "URL where the user is redirected while payment is pending",
-                "example": "www.comune.di.prova.it/pagopa/waiting.html"
+                "example": "https://www.comune.di.prova.it/pagopa/waiting.html"
               }
             }
           },
