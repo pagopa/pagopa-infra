@@ -144,7 +144,8 @@
             "required": [
               "returnOkUrl",
               "returnCancelUrl",
-              "returnErrorUrl"
+              "returnErrorUrl",
+              "returnWaitingUrl"
             ],
             "properties": {
               "returnOkUrl": {
