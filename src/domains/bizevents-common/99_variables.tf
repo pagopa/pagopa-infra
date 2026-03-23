@@ -119,9 +119,11 @@ variable "bizevents_datastore_cosmos_db_params" {
     container_default_ttl             = number
     ip_range_filter                   = string
     max_throughput                    = number
-    max_throughput_view               = number
-    max_throughput_view_alt           = number
-    max_throughput_view_user          = number
+
+    max_throughput_biz          = number
+    max_throughput_view_cart    = number
+    max_throughput_view_user    = number
+    max_throughput_view_general = number
   })
 }
 

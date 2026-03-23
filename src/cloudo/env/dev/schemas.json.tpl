@@ -6,16 +6,27 @@
   {
     "partition_key": "infra",
     "entity": [
-    {
-      "id": "pagopa-d-appgw-total-request-info",
-      "name": "total request pagopa-app-gw",
-      "description": "Get Total request from pagopa appgw!",
-      "runbook": "azure/application_gateway_info.sh",
-      "run_args": "pagopa-d-app-gw pagopa-d-vnet-rg",
-      "worker": "generic",
-      "oncall": "false",
-      "tags": "application gateway,azure"
-    }]
+      {
+        "id": "pagopa-d-appgw-total-request-info",
+        "name": "total request pagopa-app-gw",
+        "description": "Get Total request from pagopa appgw!",
+        "runbook": "azure/application_gateway_info.sh",
+        "run_args": "pagopa-d-app-gw pagopa-d-vnet-rg",
+        "worker": "generic",
+        "oncall": "false",
+        "tags": "application gateway,azure"
+      },
+      {
+        "id": "availability-fe-checkout-cdn",
+        "name": "Checkout CDN switch",
+        "description": "Switch checkout provider from CDN to APIM",
+        "runbook": "azure/checkout_cdn_switch.sh",
+        "run_args": "",
+        "worker": "generic",
+        "oncall": "false",
+        "tags": "checkout,azure"
+      }
+    ]
   },
   {
     "partition_key": "alert",
