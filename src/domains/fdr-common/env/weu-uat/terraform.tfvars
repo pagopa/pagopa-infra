@@ -75,7 +75,7 @@ pgres_flex_archive_params = {
   max_worker_process                     = 32
   wal_level                              = "logical"
   shared_preload_libraries               = "pg_cron,pg_failover_slots"
-  azure_extensions                       = "pg_cron"
+  azure_extensions                       = "PG_CRON,POSTGRES_FDW"
   public_network_access_enabled          = false
 }
 
