@@ -160,7 +160,8 @@ variable "pgres_flex_params" {
     pgbouncer_min_pool_size                = number
     max_worker_process                     = number
     wal_level                              = string
-    shared_preoload_libraries              = string
+    shared_preload_libraries               = string
+    azure_extensions                       = string
     public_network_access_enabled          = bool
   })
 
