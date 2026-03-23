@@ -63,13 +63,10 @@ module "aks_leonardo" {
 
   aad_admin_group_ids = var.env_short == "p" ? [data.azuread_group.adgroup_admin.object_id] : [data.azuread_group.adgroup_admin.object_id, data.azuread_group.adgroup_developers.object_id, data.azuread_group.adgroup_externals.object_id]
 
-  addon_azure_policy_enabled                           = true
-  addon_azure_key_vault_secrets_provider_enabled       = true
-  workload_identity_enabled                            = var.aks_enable_workload_identity
-  oidc_issuer_enabled                                  = var.aks_enable_workload_identity
-  oms_agent_msi_auth_for_monitoring_enabled            = true
-  oms_agent_monitoring_metrics_role_assignment_enabled = false
-
+  addon_azure_policy_enabled                     = true
+  addon_azure_key_vault_secrets_provider_enabled = true
+  workload_identity_enabled                      = var.aks_enable_workload_identity
+  oidc_issuer_enabled                            = var.aks_enable_workload_identity
 
   alerts_enabled = var.aks_alerts_enabled
   # custom_metric_alerts = local.aks_metrics_alerts
