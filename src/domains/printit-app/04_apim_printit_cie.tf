@@ -112,7 +112,7 @@ module "apim_api_config_cie_api_v1" {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/api-config-cie/v1/_base_policy.xml", {
+  xml_content = templatefile("./api/api-config-cie/v1/_base_policy.xml.tpl", {
     hostname = var.env == "prod" ? "weuprod.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
   })
 }
