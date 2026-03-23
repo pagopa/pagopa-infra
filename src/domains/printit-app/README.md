@@ -133,6 +133,7 @@ No outputs.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 498aa770edfe95264936e9e8f7e209322e4a3820 |
+| <a name="module_apim_api_config_cie_api_v1"></a> [apim\_api\_config\_cie\_api\_v1](#module\_apim\_api\_config\_cie\_api\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
 | <a name="module_apim_api_pdf_engine_api_v1"></a> [apim\_api\_pdf\_engine\_api\_v1](#module\_apim\_api\_pdf\_engine\_api\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
 | <a name="module_apim_api_pdf_engine_cie_api_v1"></a> [apim\_api\_pdf\_engine\_cie\_api\_v1](#module\_apim\_api\_pdf\_engine\_cie\_api\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
 | <a name="module_apim_api_pdf_engine_node_api_v1"></a> [apim\_api\_pdf\_engine\_node\_api\_v1](#module\_apim\_api\_pdf\_engine\_node\_api\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
@@ -142,6 +143,7 @@ No outputs.
 | <a name="module_apim_notices_service_product_external"></a> [apim\_notices\_service\_product\_external](#module\_apim\_notices\_service\_product\_external) | ./.terraform/modules/__v4__/api_management_product | n/a |
 | <a name="module_apim_notices_service_product_internal"></a> [apim\_notices\_service\_product\_internal](#module\_apim\_notices\_service\_product\_internal) | ./.terraform/modules/__v4__/api_management_product | n/a |
 | <a name="module_apim_pdf_engine_product"></a> [apim\_pdf\_engine\_product](#module\_apim\_pdf\_engine\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_printit_cie_product"></a> [apim\_printit\_cie\_product](#module\_apim\_printit\_cie\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v4__/cert_mounter | n/a |
 | <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v4__/gh_runner_container_app_job_domain_setup | n/a |
 | <a name="module_kubernetes_service_account"></a> [kubernetes\_service\_account](#module\_kubernetes\_service\_account) | ./.terraform/modules/__v4__/kubernetes_service_account | n/a |
@@ -155,7 +157,7 @@ No outputs.
 
 | Name | Type |
 |------|------|
-| [azurerm_api_management_api_operation_policy.policy_printit_generate_pdf_cie](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_version_set.api_config_cie_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_pdf_engine_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_pdf_engine_cie_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_pdf_engine_node_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
@@ -207,7 +209,6 @@ No outputs.
 | [kubernetes_pod_disruption_budget_v1.pay_wallet](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/pod_disruption_budget_v1) | resource |
 | [kubernetes_role_binding.deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding) | resource |
 | [kubernetes_role_binding.system_deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding) | resource |
-| [terraform_data.sha256_policy_printit_generate_pdf_cie](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [azurerm_api_management.apim](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
 | [azurerm_api_management_product.apim_api_config_product](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_application_insights.application_insights_italy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
