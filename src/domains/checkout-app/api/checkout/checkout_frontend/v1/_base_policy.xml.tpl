@@ -50,12 +50,12 @@
       <value>${csp_value}</value>
     </set-header>
 
-    <!-- CORS: Access-Control-Allow-Origin for NPG SDK font requests only -->
+    <!-- CORS: strip Access-Control-Allow-Origin for NPG on non-font paths -->
     <choose>
-      <when condition="@(context.Request.Headers.GetValueOrDefault("Origin","") == "https://${npg_sdk_hostname}" && context.Request.Url.Path.Contains("/fonts/"))">
-        <set-header name="Access-Control-Allow-Origin" exists-action="override">
-          <value>https://${npg_sdk_hostname}</value>
-        </set-header>
+      <when condition="@(context.Request.Headers.GetValueOrDefault("Origin","") == "https://${npg_sdk_hostname}" && !context.Request.Url.Path.Contains("/fonts/"))">
+        <set-header name="Access-Control-Allow-Origin" exists-action="delete" />
+        <set-header name="Access-Control-Allow-Methods" exists-action="delete" />
+        <set-header name="Access-Control-Allow-Headers" exists-action="delete" />
       </when>
     </choose>
   </outbound>
