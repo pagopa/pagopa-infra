@@ -44,8 +44,6 @@
       {
         "name": "Delete_elements_from_online",
         "type": "Script",
-        "state": "Inactive",
-        "onInactiveMarkAs": "Succeeded",
         "dependsOn": [
           {
             "activity": "Wait_between_update_delete",
@@ -306,8 +304,6 @@
       {
         "name": "Wait_between_update_delete",
         "type": "Wait",
-        "state": "Inactive",
-        "onInactiveMarkAs": "Succeeded",
         "dependsOn": [
           {
             "activity": "Mark_archived_in_online",
