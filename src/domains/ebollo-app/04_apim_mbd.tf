@@ -6,7 +6,7 @@ locals {
 }
 
 module "apim_mbd_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "pagopa_ebollo"
   display_name = local.apim_mdb_pagopa_api.display_name

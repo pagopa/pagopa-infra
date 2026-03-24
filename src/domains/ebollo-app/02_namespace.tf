@@ -5,7 +5,7 @@ resource "kubernetes_namespace" "namespace" {
 }
 
 module "workload_identity" {
-  source = "./.terraform/modules/__v3__/kubernetes_workload_identity_configuration"
+  source = "./.terraform/modules/__v4__/kubernetes_workload_identity_configuration"
 
   workload_identity_name_prefix         = var.domain
   workload_identity_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name

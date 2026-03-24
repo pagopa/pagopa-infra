@@ -48,7 +48,7 @@ variable "location_short" {
 #
 variable "enabled_resource" {
   type = object({
-    container_app_tools_cae = optional(bool, false),
+    test_nexi_postgres = optional(bool, false),
   })
 }
 
@@ -124,3 +124,4 @@ variable "nexi_ndp_host_postgres" {
   type        = string
   description = "Nodo Pagamenti Nexi postgres hostname"
 }
+

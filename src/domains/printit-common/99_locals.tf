@@ -18,8 +18,9 @@ locals {
   aks_subnet_name    = "${local.product}-${var.location_short}-${var.env}-user-aks"
   cosmos_subnet_name = "${local.product}-${var.location_short}-${var.env}-user-aks"
 
-  vnet_spoke_data_name   = "${local.product_italy}-spoke-data-vnet"
-  vnet_hub_spoke_rg_name = "${local.product_italy}-network-hub-spoke-rg"
+  vnet_spoke_data_name      = "${local.product_italy}-spoke-data-vnet"
+  vnet_hub_spoke_rg_name    = "${local.product_italy}-network-hub-spoke-rg"
+  vnet_spoke_streaming_name = "${local.product_italy}-spoke-streaming-vnet"
 
   ingress_hostname = "${var.location_short}.${var.domain}"
 

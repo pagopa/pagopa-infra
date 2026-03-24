@@ -1,14 +1,7 @@
 locals {
   product     = "${var.prefix}-${var.env_short}"
-  product_ita = "${var.prefix}-${var.env_short}-${var.location_short_ita}"
-  project     = "${var.prefix}-${var.env_short}-${var.location_short_ita}-${var.domain}"
-
-  monitor_appinsights_name        = "${local.product}-appinsights"
-  monitor_action_group_slack_name = "SlackPagoPA"
-  monitor_action_group_email_name = "PagoPA"
-
-  vnet_name                = "${var.prefix}-${var.env_short}-${var.location_short}-vnet"
-  vnet_resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-vnet-rg"
+  product_ita = "${var.prefix}-${var.env_short}-${var.location_short}"
+  project     = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
 
   # peerings
   vnet_core_name                = "${local.product}-vnet"
