@@ -22,7 +22,11 @@ module "gh_runner_job" {
     {
       name : "pagopa-mocker-config",
       short_name : "mockr-cfg"
-    }
+    },
+    {
+      name : "pagopa-remora-engine",
+      short_name : "remoraeng"
+    },
   ]
   job      = {}
   job_meta = {}
