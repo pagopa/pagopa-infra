@@ -2395,12 +2395,6 @@
                 "type": "string",
                 "format": "uri",
                 "example": "https://www.comune.di.prova.it/pagopa/error.html"
-              },
-              "returnWaitingUrl": {
-                "type": "string",
-                "format": "uri",
-                "example": "https://www.comune.di.prova.it/pagopa/waiting.html"
-              }
             }
           },
           "idCart": {
