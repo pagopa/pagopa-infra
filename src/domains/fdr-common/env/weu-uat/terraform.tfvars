@@ -47,7 +47,7 @@ pgres_flex_params = {
   max_worker_process                     = 8
   wal_level                              = "replica"
   shared_preload_libraries               = "pg_cron,pg_stat_statements"
-  azure_extensions                       = "pg_cron,pg_stat_statements"
+  azure_extensions                       = "PG_CRON,POSTGRES_FDW"
   public_network_access_enabled          = false
 }
 
