@@ -143,5 +143,5 @@ resource "azurerm_postgresql_flexible_server_configuration" "fdr_archive_pg_cron
   count     = var.pgres_flex_archive_params.enabled ? 1 : 0
   name      = "cron.database_name"
   server_id = module.postgres_flexible_server_fdr_archive[0].id
-  value     = azurerm_postgresql_flexible_server_database.fdr3_archive_db[0].name
+  value     = "postgres"
 }
