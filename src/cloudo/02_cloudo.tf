@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "cloudo" {
-  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=3933ac0ff39220953bc6df706cceccb2f2cda771" #0.14.2
+  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=c2bd6d5759f0bf8d04ad65dc8c43e59877587f58" #0.15.2
 
   prefix                    = local.product
   product_name              = var.prefix
@@ -42,6 +42,13 @@ module "cloudo" {
       cluster_id = data.azurerm_kubernetes_cluster.aks_itn.id
     }
   }
+
+  custom_role_assignments = [
+    {
+      role  = "Contributor"
+      scope = data.azurerm_resource_group.network_rg.id
+    }
+  ]
 
   approval_runbook = {
     ttl_min = "120"
