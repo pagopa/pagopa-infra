@@ -15,17 +15,18 @@
         <base />
 
       <choose>
+        <!-- Allow invocation only to getCreditorInstitution API, otherwise return 403-->
         <when condition="@(context.Operation.Id == "getCreditorInstitution")">
 
-        <!-- Recupero ecTaxCode dal path parameter -->
+        <!-- Retrieve EC tax code from path parameter -->
         <set-variable name="ecTaxCode" value="@(context.Request.MatchedParameters["creditorinstitutioncode"])" />
 
           <cache-lookup-value key="@((string) context.Variables["ecTaxCode"])"
-            variable-name="cached_response"
+            variable-name="api_config_creditor_institution_detail_cached_response"
             caching-type="internal" />
 
           <choose>
-            <when condition="@(context.Variables.ContainsKey("cached_response"))">
+            <when condition="@(context.Variables.ContainsKey("api_config_creditor_institution_detail_cached_response"))">
               <!-- CACHE HIT -->
               <return-response>
                 <set-status code="200" reason="Success" />
@@ -33,13 +34,14 @@
                   <value>application/json</value>
                 </set-header>
                 <set-body>
-                  @((string)context.Variables["cached_response"])
+                  @((string)context.Variables["api_config_creditor_institution_detail_cached_response"])
                 </set-body>
               </return-response>
             </when>
           </choose>
 
         <!-- CACHE MISS -->
+        <!-- Call Api Config to get Creditor Institution details-->
         <set-backend-service base-url="https://${hostname}/pagopa-api-config-core-service/p" />
 
         </when>
@@ -69,6 +71,7 @@
     <outbound>
         <base />
         <choose>
+          <!-- Only if is a successful response of getCreditorInstitution API cache the response for 12h-->
           <when condition="@(context.Operation.Id == "getCreditorInstitution"
                             && context.Response.StatusCode == 200
                             && context.Variables.ContainsKey("ecTaxCode"))">
