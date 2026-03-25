@@ -60,6 +60,19 @@ locals {
     pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
   }
 
+  remora_engine_api_locals = {
+    product_id            = "remora-engine"
+    display_name          = "REMORA - Engine"
+    description           = "Generic entrypoint for mocking response for pagoPA platform"
+    subscription_required = false
+    subscription_limit    = 1000
+
+    path        = "remora-engine"
+    service_url = null
+
+    pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
+  }
+
   mocker_config_api_locals = {
     product_id            = "mocker-config"
     display_name          = "Mocker Configurator"
