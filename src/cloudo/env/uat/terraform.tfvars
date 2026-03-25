@@ -29,7 +29,7 @@ cloudo_orchestrator = {
 # ClouDO UI parameters
 cloudo_ui = {
   image_name        = "pagopa/cloudo-ui"
-  image_tag         = "0.7.1"
+  image_tag         = "0.7.2"
   registry_url      = "https://ghcr.io"
   registry_username = "payments-cloud-bot"
 }
