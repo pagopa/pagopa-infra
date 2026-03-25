@@ -50,9 +50,9 @@
       <value>${csp_value}</value>
     </set-header>
 
-    <!-- CORS: strip Access-Control-Allow-Origin for NPG on non-font paths -->
+    <!-- CORS: strip Access-Control-Allow-Origin for NPG on non-font .ttf paths -->
     <choose>
-      <when condition="@(context.Request.Headers.GetValueOrDefault("Origin","") == "https://${npg_sdk_hostname}" && !context.Request.Url.Path.Contains("/fonts/"))">
+      <when condition="@(context.Request.Headers.GetValueOrDefault("Origin","") == "https://${npg_sdk_hostname}" && !(context.Request.Url.Path.Contains("/fonts/") && context.Request.Url.Path.EndsWith(".ttf")))">
         <set-header name="Access-Control-Allow-Origin" exists-action="delete" />
         <set-header name="Access-Control-Allow-Methods" exists-action="delete" />
         <set-header name="Access-Control-Allow-Headers" exists-action="delete" />
