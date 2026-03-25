@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "cloudo" {
-  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=c2bd6d5759f0bf8d04ad65dc8c43e59877587f58" #0.15.2
+  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=a685e8df9e3fe1db4c3f6404bba2b4aa1c90a52b" #0.15.2
 
   prefix                    = local.product
   product_name              = var.prefix
@@ -49,6 +49,13 @@ module "cloudo" {
       scope = data.azurerm_resource_group.network_rg.id
     }
   ]
+
+  key_vaults_integration = {
+    "pagopa-${var.env_short}-gps-kv" = {
+      name           = "pagopa-${var.env_short}-gps-kv"
+      resource_group = "pagopa-${var.env_short}-gps-sec-rg"
+    }
+  }
 
   approval_runbook = {
     ttl_min = "120"
