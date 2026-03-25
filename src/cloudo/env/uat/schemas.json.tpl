@@ -15,8 +15,7 @@
       "worker": "generic",
       "oncall": false,
       "require_approval": false,
-      "tags": "application gateway,azure",
-      "enabled": true
+      "tags": "application gateway,azure"
     }]
   },
   {
