@@ -13,7 +13,7 @@ locals {
 
 #Product that contains api that pagoPA exposes to PSP's for redirect payment flow integration
 module "apim_ecommerce_redirect_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "ecommerce-redirect"
   display_name = "eCommerce for redirect pagoPA"
@@ -40,7 +40,7 @@ resource "azurerm_api_management_api_version_set" "apim_ecommerce_redirect_outco
 }
 
 module "apim_ecommerce_redirect_outcome_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-ecommerce-redirect-outcome-api"
   resource_group_name   = local.pagopa_apim_rg

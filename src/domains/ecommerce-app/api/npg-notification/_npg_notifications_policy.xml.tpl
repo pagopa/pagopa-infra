@@ -92,6 +92,10 @@
                     <set-header name="Content-Type" exists-action="override">
                         <value>application/json</value>
                     </set-header>
+                    <!-- Set payment-methods API Key header -->
+                    <set-header name="x-api-key" exists-action="override">
+                      <value>{{ecommerce-payment-methods-api-key-value}}</value>
+                    </set-header>
                     <set-header name="Authorization" exists-action="override">
                         <value> @{
                                 JObject requestBody = (JObject)context.Variables["npgNotificationRequestBody"];
@@ -120,6 +124,9 @@
         <set-method>PATCH</set-method>
         <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>
+        </set-header>
+        <set-header name="x-api-key" exists-action="override">
+            <value>{{ecommerce-transactions-service-api-key-value}}</value>
         </set-header>
         <set-header name="x-payment-gateway-type" exists-action="override">
             <value>"NPG"</value>
@@ -188,7 +195,7 @@
     </inbound>
     <backend>
         <retry condition="@(context.Response.StatusCode >= 500)"
-              interval="2" count="3" first-fast-retry="true">
+              interval="2" count="3" first-fast-retry="false">
               <forward-request timeout="10" buffer-request-body="true" />
         </retry>
     </backend>

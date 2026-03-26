@@ -1150,7 +1150,7 @@
             "description": "Payment notice amount",
             "type": "integer",
             "minimum": 0,
-            "maximum": 999999999
+            "maximum": 99999999999
           },
           "dueDate": {
             "description": "Payment notice due date",
@@ -1973,6 +1973,28 @@
             "example": {
               "detailType": "apm"
             }
+          },
+          {
+            "type": "object",
+            "description": "Additional payment authorization details for wallet NPG authorization",
+            "properties": {
+              "detailType": {
+                "description": "fixed value 'wallet'",
+                "type": "string"
+              },
+              "walletId": {
+                "type": "string",
+                "description": "The user wallet id"
+              }
+            },
+            "required": [
+              "detailType",
+              "walletId"
+            ],
+            "example": {
+              "detailType": "wallet",
+              "walletId": "walletId"
+            }
           }
         ]
       },
@@ -2081,7 +2103,7 @@
         "description": "Amount for payments, in euro cents",
         "type": "integer",
         "minimum": 0,
-        "maximum": 999999999
+        "maximum": 99999999999
       },
       "AuthorizationResult": {
         "description": "Authorization result",
@@ -2373,6 +2395,11 @@
                 "type": "string",
                 "format": "uri",
                 "example": "https://www.comune.di.prova.it/pagopa/error.html"
+              },
+              "returnWaitingUrl": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://www.comune.di.prova.it/pagopa/waiting.html"
               }
             }
           },

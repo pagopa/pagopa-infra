@@ -32,7 +32,7 @@ pgres_flex_params = {
 
   enabled    = true
   sku_name   = "GP_Standard_D8ds_v4"
-  db_version = "13"
+  db_version = "16"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                                       = 2097152
@@ -311,6 +311,19 @@ nodo_storico_storage_account = {
   backup_enabled                = false
   blob_delete_retention_days    = 0
   backup_retention              = 0
+}
+
+mbd_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "ZRS"
+  blob_versioning_enabled       = true
+  advanced_threat_protection    = false
+  blob_delete_retention_days    = 90
+  public_network_access_enabled = false
+  backup_enabled                = true
+  backup_retention_days         = 7
+  use_legacy_defender_version   = false
 }
 
 redis_ha_enabled = false

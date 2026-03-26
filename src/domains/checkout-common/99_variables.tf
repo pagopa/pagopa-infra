@@ -106,50 +106,6 @@ variable "dns_default_ttl_sec" {
 }
 
 
-# pagopa-proxy Redis
-
-variable "cidr_subnet_pagopa_proxy_redis" {
-  type        = list(string)
-  description = "Address prefixes subnet redis for pagopa proxy"
-  default     = null
-}
-
-variable "pagopa_proxy_redis_capacity" {
-  type    = number
-  default = 1
-}
-
-
-variable "pagopa_proxy_redis_sku_name" {
-  type    = string
-  default = null
-}
-
-
-
-
-variable "pagopa_proxy_redis_family" {
-  type    = string
-  default = "C"
-}
-
-variable "redis_private_endpoint_enabled" {
-  type        = bool
-  description = "Enable private endpoints for redis instances?"
-  default     = true
-}
-
-
-variable "redis_zones" {
-  type        = list(number)
-  description = "(Required) redis deployment zones"
-}
-
-variable "redis_version" {
-  type        = string
-  default     = "6"
-  description = "(Optional) redis version"
-}
 
 variable "enable_iac_pipeline" {
   type        = bool
@@ -163,6 +119,17 @@ variable "ingress_load_balancer_ip" {
 
 
 variable "redis_checkout_params" {
+  type = object({
+    capacity   = number
+    sku_name   = string
+    family     = string
+    version    = string
+    ha_enabled = bool
+    zones      = list(number)
+  })
+}
+
+variable "redis_checkout_params_std" {
   type = object({
     capacity   = number
     sku_name   = string

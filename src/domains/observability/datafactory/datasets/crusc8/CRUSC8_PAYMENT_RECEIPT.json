@@ -1,0 +1,50 @@
+[
+    {
+        "name": "id",
+        "type": "bigint",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "cf_partner",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "station",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "start_date",
+        "type": "timestamp without time zone",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "end_date",
+        "type": "timestamp without time zone",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "tot_res",
+        "type": "bigint",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "res_ok",
+        "type": "bigint",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "res_ko",
+        "type": "bigint",
+        "precision": 0,
+        "scale": 0
+    }
+]

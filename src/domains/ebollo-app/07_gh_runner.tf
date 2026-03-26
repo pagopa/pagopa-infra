@@ -1,10 +1,10 @@
 locals {
-  tools_cae_name = "${local.product}-${var.location_short}-core-tools-cae"
+  tools_cae_name = "${local.project_core_itn}-spoke-tools-cae"
   tools_cae_rg   = "${local.product}-${var.location_short}-core-tools-rg"
 }
 
 module "gh_runner_job" {
-  source = "./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup"
+  source = "./.terraform/modules/__v4__/gh_runner_container_app_job_domain_setup"
 
   domain_name        = var.domain
   env_short          = var.env_short
@@ -23,14 +23,12 @@ module "gh_runner_job" {
       short_name : "gps-mbd-svc"
     }
   ]
-  job = {
-    name = var.domain
-  }
+  job      = {}
   job_meta = {}
   key_vault = {
-    name        = "${local.product}-kv"     # Name of the KeyVault which stores PAT as secret
-    rg          = "${local.product}-sec-rg" # Resource group of the KeyVault which stores PAT as secret
-    secret_name = "gh-runner-job-pat"       # Data of the KeyVault which stores PAT as secret
+    name        = "${local.project}-kv"                      # Name of the KeyVault which stores PAT as secret
+    rg          = "${local.project}-sec-rg"                  # Resource group of the KeyVault which stores PAT as secret
+    secret_name = "pagopa-platform-domain-github-bot-cd-pat" # Data of the KeyVault which stores PAT as secret
   }
   kubernetes_deploy = {
     enabled      = true

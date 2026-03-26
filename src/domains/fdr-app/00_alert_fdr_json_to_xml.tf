@@ -15,16 +15,15 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_jsontoxml_appe
   data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "Last retry to convert an FdR from JSON to XML. Please, verify the error saved on fdr3conversionerror table storage and use /fdr-json-to-xml/service/v1/errors/{blobName}/retry API to perform manually the operation."
   enabled        = true
-  query = format(<<-QUERY
-    exceptions
-    | where cloud_RoleName == "%s"
-    | where innermostMessage contains "AlertAppException"
+  query          = <<-QUERY
+     customEvents
+      | where name == "FDR_JSON_TO_XML_ALERT"
+      | where customDimensions.type == "FDR_JSON_TO_XML_ERROR"
+      | order by timestamp desc
   QUERY
-    , "pagopafdrjsontoxml"
-  )
-  severity    = 1
-  frequency   = 15
-  time_window = 15
+  severity       = 1
+  frequency      = 15
+  time_window    = 15
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1

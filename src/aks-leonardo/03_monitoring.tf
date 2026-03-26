@@ -8,7 +8,7 @@ resource "kubernetes_namespace" "monitoring" {
 # Prometheus
 #
 module "aks_prometheus_install" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_install?ref=v8.78.1"
+  source = "./.terraform/modules/__v4__//kubernetes_prometheus_install"
 
   prometheus_namespace = kubernetes_namespace.monitoring.metadata[0].name
   storage_class_name   = "default-zrs"
@@ -25,7 +25,7 @@ moved {
 
 module "elastic_agent" {
   count  = var.enable_elastic_agent ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//elastic_agent?ref=v8.50.0"
+  source = "./.terraform/modules/__v4__//elastic_agent"
 
   es_host = var.env_short == "p" ? "https://weu${var.env}.kibana.internal.platform.pagopa.it:443/elastic" : "https://weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it:443/elastic"
 
@@ -50,16 +50,18 @@ data "azurerm_monitor_workspace" "workspace" {
 }
 
 module "prometheus_managed_addon" {
-  source                 = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_managed?ref=v8.84.0"
-  cluster_name           = module.aks_leonardo.name
-  resource_group_name    = module.aks_leonardo.aks_resource_group_name
-  location               = var.location
-  custom_gf_location     = "westeurope"
-  location_short         = var.location_short
-  monitor_workspace_name = data.azurerm_monitor_workspace.workspace.name
-  monitor_workspace_rg   = data.azurerm_monitor_workspace.workspace.resource_group_name
-  grafana_name           = "pagopa-${var.env_short}-weu-grafana"    # Integrate with weu grafana
-  grafana_resource_group = "pagopa-${var.env_short}-weu-grafana-rg" # Integrate with weu grafana
+  source                   = "./.terraform/modules/__v4__//kubernetes_prometheus_managed"
+  cluster_name             = module.aks_leonardo.name
+  resource_group_name      = module.aks_leonardo.aks_resource_group_name
+  location                 = var.location
+  location_short           = var.location_short
+  monitor_workspace_name   = data.azurerm_monitor_workspace.workspace.name
+  monitor_workspace_rg     = data.azurerm_monitor_workspace.workspace.resource_group_name
+  custom_gf_location       = "westeurope"
+  cross_region             = true
+  grafana_name             = "pagopa-${var.env_short}-weu-grafana"    # Integrate with weu grafana
+  grafana_resource_group   = "pagopa-${var.env_short}-weu-grafana-rg" # Integrate with weu grafana
+  enable_prometheus_alerts = var.env_short != "p" ? false : true
 
   # takes a list and replaces any elements that are lists with a
   # flattened sequence of the list contents.

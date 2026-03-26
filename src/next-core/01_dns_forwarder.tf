@@ -1,5 +1,5 @@
 module "dns_forwarder_backup_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
+  source = "./.terraform/modules/__v4__/subnet"
   count  = var.is_feature_enabled.dns_forwarder_lb ? 1 : 0
 
   name                 = "${local.project}-dns-forwarder-backup-snet"
@@ -10,7 +10,7 @@ module "dns_forwarder_backup_snet" {
 
 # with default image
 module "dns_forwarder_backup_vmss_li" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//dns_forwarder_scale_set_vm?ref=v7.76.0"
+  source = "./.terraform/modules/__v4__/dns_forwarder_scale_set_vm"
   count  = var.is_feature_enabled.dns_forwarder_lb ? 1 : 0
 
   name                = local.dns_forwarder_backup_name
@@ -20,6 +20,11 @@ module "dns_forwarder_backup_vmss_li" {
   subscription_id     = data.azurerm_subscription.current.subscription_id
   location            = var.location
   source_image_name   = var.dns_forwarder_vm_image_name
+
+  scale_in = {
+    force_deletion_enabled = false
+    rule                   = "Default"
+  }
 
   tags = module.tag_config.tags
 }

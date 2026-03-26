@@ -75,11 +75,31 @@ module "apim_wallet_service_notifications_api_v1" {
     hostname = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/npg-notifications/v1/_base_policy.xml.tpl", {
+  xml_content = file("./api/npg-notifications/v1/_base_policy.xml")
+}
+
+resource "azurerm_api_management_api_operation_policy" "notify_wallet" {
+  api_name            = module.apim_wallet_service_notifications_api_v1.name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "notifyWallet"
+
+  xml_content = templatefile("./api/npg-notifications/v1/_notify_wallet_policy.xml.tpl", {
     hostname = local.payment_wallet_hostname
   })
 }
 
+resource "azurerm_api_management_api_operation_policy" "notify_wallet_auth_request" {
+  api_name            = module.apim_wallet_service_notifications_api_v1.name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "notifyContextualOnboardingWallet"
+
+  xml_content = templatefile("./api/npg-notifications/v1/_notify_wallet_auth_request_policy.xml.tpl", {
+    hostname           = local.payment_wallet_hostname
+    ecommerce_hostname = local.ecommerce_hostname
+  })
+}
 
 #################################################
 ## API wallet service for Webview              ##
@@ -220,3 +240,11 @@ module "apim_payment_wallet_outcomes_api_v1" {
   xml_content = file("./api/payment-wallet-outcomes-for-io/v1/_base_policy.xml.tpl")
 }
 
+resource "azurerm_api_management_named_value" "pagopa_payment_wallet_service_rest_api_key" {
+  name                = "payment-wallet-service-rest-api-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "payment-wallet-service-rest-api-key"
+  value               = var.payment_wallet_service_api_key_use_primary ? data.azurerm_key_vault_secret.pagopa_payment_wallet_service_rest_api_primary_key.value : data.azurerm_key_vault_secret.pagopa_payment_wallet_service_rest_api_secondary_key.value
+  secret              = true
+}

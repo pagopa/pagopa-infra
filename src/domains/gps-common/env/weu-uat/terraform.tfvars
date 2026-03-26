@@ -46,6 +46,7 @@ cosmos_gps_db_params = {
 }
 
 gpd_upload_status_throughput = 10000
+gpd_upload_status_ttl        = 5184000 // 60 days
 
 # Postgres Flexible
 pgres_flex_params = {
@@ -110,7 +111,6 @@ cosmos_gpd_payments_db_params = {
   }
 }
 
-cidr_subnet_gpd_payments_cosmosdb = ["10.1.149.0/24"]
 
 enable_iac_pipeline                   = true
 gpd_payments_sa_delete_retention_days = 0
@@ -139,7 +139,7 @@ eventhubs_rtp = [
     name              = "rtp-events"
     partitions        = 32
     message_retention = 7
-    consumers         = ["rtp-events-processor"]
+    consumers         = ["rtp-events-processor", "gpd-rtp-integration-test-consumer-group"]
     keys = [
       {
         name   = "rtp-events-tx"
@@ -149,6 +149,12 @@ eventhubs_rtp = [
       },
       {
         name   = "rtp-events-rx"
+        listen = true
+        send   = true
+        manage = false
+      },
+      {
+        name   = "rtp-events-integration-test-rx"
         listen = true
         send   = false
         manage = false
@@ -208,7 +214,7 @@ rtp_storage_account = {
   blob_versioning_enabled            = false
   advanced_threat_protection         = false
   advanced_threat_protection_enabled = false
-  public_network_access_enabled      = true
+  public_network_access_enabled      = false
   blob_delete_retention_days         = 90
   enable_low_availability_alert      = false
 }

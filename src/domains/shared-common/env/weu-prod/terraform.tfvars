@@ -75,6 +75,7 @@ cosmos_authorizer_db_params = {
   is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = true
+  burst_capacity_enabled    = true
 }
 
 
@@ -105,4 +106,4 @@ taxonomy_network_rules = {
 }
 
 redis_ha_enabled          = true
-github_runner_ita_enabled = false
+github_runner_ita_enabled = true

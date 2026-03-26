@@ -121,7 +121,7 @@ locals {
     # waitForRender params
     CHECK_SIZE_INTERVAL        = 100
     MIN_STABLE_SIZE_ITERATIONS = 3
-
+    FOLDERS_TO_LOAD            = "receipts"
   }
 
   shared_pdf_engine_app_settings_java = {
@@ -160,13 +160,13 @@ locals {
     MAX_CONNECTIONS_PER_ROUTE = 40
     CONN_TIMEOUT              = 8
 
-    # custom prop
+    # custom prop
     HTML_TEMPLATE_FILE_NAME           = "template"
     WORKING_DIRECTORY_PATH            = "/temp"
     PDF_ENGINE_NODE_INFO_ENDPOINT     = var.env_short != "p" ? "https://api.${var.env}.platform.pagopa.it/shared/pdf-engine-node/v1/info" : "https://api.platform.pagopa.it/shared/pdf-engine-node/v1/info"
     PDF_ENGINE_NODE_GENERATE_ENDPOINT = var.env_short != "p" ? "https://api.${var.env}.platform.pagopa.it/shared/pdf-engine-node/v1/generate-pdf" : "https://api.platform.pagopa.it/shared/pdf-engine-node/v1/generate-pdf"
     ENABLE_ECS_CONSOLE                = "true"
-    CONSOLE_LOG_THRESHOLD             = "DEBUG"
+    CONSOLE_LOG_THRESHOLD             = "INFO"
     CONSOLE_LOG_PATTERN               = "%d{HH:mm:ss.SSS}[%thread]%-5level%logger{36}-%msg%n"
     CONSOLE_LOG_CHARSET               = "UTF-8"
     OTEL_RESOURCE_ATTRIBUTES          = "service.name=pagopapdfengineotl,deployment.environment=uat"

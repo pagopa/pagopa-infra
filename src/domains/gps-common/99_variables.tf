@@ -123,11 +123,6 @@ variable "cidr_subnet_pg_flex_dbms" {
   type        = list(string)
   description = "Postgres Flexible Server network address space."
 }
-variable "cidr_subnet_pg_singleser" {
-  type        = list(string)
-  description = "Postgres Single Server network address space."
-  default     = []
-}
 
 # Postgres Flexible
 variable "pgres_flex_params" {
@@ -232,23 +227,17 @@ variable "pgflex_public_metric_alerts" {
 
 }
 
-variable "postgresql_network_rules" {
-  description = "Network rules restricting access to the postgresql server."
-  type = object({
-    ip_rules                       = list(string)
-    allow_access_to_azure_services = bool
-  })
-  default = {
-    ip_rules                       = []
-    allow_access_to_azure_services = false
-  }
-}
-
 // gpd Database
 variable "gpd_db_name" {
   type        = string
   description = "Name of the DB to connect to"
   default     = "apd"
+}
+
+variable "gpd_upload_status_ttl" {
+  type        = number
+  description = "The default time in seconds to live of SQL container. If present and the value is set to -1, it is equal to infinity, and items don’t expire by default. "
+  default     = -1
 }
 
 variable "cosmos_gps_db_params" {
@@ -322,11 +311,6 @@ variable "cosmos_gpd_payments_db_params" {
   })
 }
 
-variable "cidr_subnet_gpd_payments_cosmosdb" {
-  type        = list(string)
-  description = "Cosmos DB gpd payments address space"
-  default     = null
-}
 
 variable "enable_iac_pipeline" {
   type        = bool
@@ -334,40 +318,6 @@ variable "enable_iac_pipeline" {
   default     = false
 }
 
-variable "storage_account_replication_type" {
-  type        = string
-  default     = "LRS"
-  description = "(Optional) Fn app storage acocunt replication type"
-}
-
-variable "flow_storage_account_replication_type" {
-  type        = string
-  default     = "LRS"
-  description = "(Optional) Reporting storage acocunt replication type"
-}
-
-variable "enable_gpd_archive_backup" {
-  type        = bool
-  default     = false
-  description = "(Optional) Enables nodo sftp storage account backup"
-}
-
-variable "reporting_storage_account" {
-  type = object({
-    advanced_threat_protection = bool
-    blob_delete_retention_days = number
-    blob_versioning_enabled    = bool
-    backup_enabled             = bool
-    backup_retention           = optional(number, 0)
-  })
-  default = {
-    blob_versioning_enabled    = false
-    advanced_threat_protection = false
-    blob_delete_retention_days = 30
-    backup_enabled             = false
-    backup_retention           = 0
-  }
-}
 
 ################
 #GPD-SFTP-START#
@@ -445,16 +395,10 @@ variable "geo_replica_enabled" {
   default     = false
 }
 
-variable "geo_replica_cidr_subnet_postgresql" {
-  type        = list(string)
-  description = "Address prefixes replica subnet postgresql"
-  default     = null
-}
-
 variable "location_replica" {
   type        = string
-  description = "One of westeurope, northeurope"
-  default     = "northeurope"
+  description = "One of westeurope, italynorth"
+  default     = "italynorth"
 }
 
 variable "location_replica_short" {
@@ -465,8 +409,8 @@ variable "location_replica_short" {
     )
     error_message = "Length must be 3 chars."
   }
-  description = "One of wue, neu"
-  default     = "neu"
+  description = "One of wue, itn"
+  default     = "itn"
 }
 
 

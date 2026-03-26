@@ -18,4 +18,6 @@ locals {
 
   aks_name                = "${local.product}-${var.location_short}-${var.instance}-aks"
   aks_resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
+
+  payment_wallet_hostname = "itn${var.env}.pay-wallet.internal.${var.apim_dns_zone_prefix}.${var.external_domain}"
 }

@@ -535,8 +535,8 @@ variable "geo_replica_cidr_subnet_postgresql" {
 
 variable "location_replica" {
   type        = string
-  description = "One of westeurope, northeurope"
-  default     = "northeurope"
+  description = "One of westeurope, italynorth"
+  default     = "italynorth"
 }
 
 variable "location_replica_short" {
@@ -547,8 +547,8 @@ variable "location_replica_short" {
     )
     error_message = "Length must be 3 chars."
   }
-  description = "One of wue, neu"
-  default     = "neu"
+  description = "One of wue, itn"
+  default     = "itn"
 }
 
 variable "nodo_cfg_sync_storage_account" {
@@ -576,6 +576,21 @@ variable "wisp_converter_storage_account" {
     public_network_access_enabled = bool
     backup_enabled                = bool
     backup_retention_days         = number
+  })
+}
+
+variable "mbd_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_delete_retention_days    = number
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    backup_enabled                = bool
+    backup_retention_days         = number
+    use_legacy_defender_version   = bool
   })
 }
 

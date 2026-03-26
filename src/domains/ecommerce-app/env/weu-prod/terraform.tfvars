@@ -17,6 +17,7 @@ log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"
 apim_dns_zone_prefix     = "platform"
+dns_zone_prefix          = "platform"
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
@@ -38,8 +39,11 @@ ecommerce_xpay_psps_list = "CIPBITMM"
 # - BIC36019 (AMEX)
 ecommerce_vpos_psps_list = "BNLIITRR,BCITITMM,UNCRITMM,BPPIITRRXXX,PPAYITR1XXX,BIC36019"
 
-dns_zone_checkout = "checkout"
+dns_zone_checkout  = "checkout"
+dns_zone_ecommerce = "ecommerce"
 
+
+# Ecommerce
 pod_disruption_budgets = {
   "pagopaecommerceeventdispatcherservice" = {
     minAvailable = 3
@@ -83,6 +87,18 @@ pod_disruption_budgets = {
       "app.kubernetes.io/instance" = "pagopaecommerceuserstatsservice"
     }
   },
+  "pagopaecommercetransactionsschedulerservice" = {
+    minAvailable = 3
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopaecommercetransactionsschedulerservice"
+    }
+  },
+  "pagopaecommercecdcservice" = {
+    minAvailable = 3
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopaecommercecdcservice"
+    }
+  },
 }
 
 io_backend_base_path         = "https://disabled"
@@ -102,3 +118,11 @@ pagopa_vpn_dr = {
     "93.63.219.234", # PagoPA on prem VPN DR
   ]
 }
+
+ecommerce_payment_requests_api_key_use_primary         = true
+ecommerce_payment_methods_api_key_use_primary          = true
+ecommerce_transactions_service_api_key_use_primary     = true
+ecommerce_helpdesk_service_api_key_use_primary         = true
+ecommerce_notification_service_api_key_use_primary     = true
+ecommerce_user_stats_service_api_key_use_primary       = true
+ecommerce_helpdesk_command_service_api_key_use_primary = true

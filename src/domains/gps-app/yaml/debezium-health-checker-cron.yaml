@@ -17,8 +17,13 @@ spec:
         spec:
           containers:
           - name: debezium-health-checker
-            image: bitnami/kubectl:latest
-            command: ["/bin/bash", "/scripts/check_kafka_connect.sh"]
+            image: public.ecr.aws/docker/library/alpine:3.23.2@sha256:865b95f46d98cf867a156fe4a135ad3fe50d2056aa3f25ed31662dff6da4eb62
+            command:
+              - /bin/sh
+              - -c
+              - |
+                apk add --no-cache curl bash &&
+                sh /scripts/check_kafka_connect.sh
             volumeMounts:
             - name: script-volume
               mountPath: /scripts
@@ -27,3 +32,12 @@ spec:
           - name: script-volume
             configMap:
               name: debezium-health-checker-script
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: node_type
+                        operator: In
+                        values:
+                          - user

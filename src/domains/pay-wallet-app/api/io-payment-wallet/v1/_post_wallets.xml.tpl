@@ -4,35 +4,46 @@
     </inbound>
     <outbound>
       <base />
-        <!-- Token JWT START-->
-        <set-variable name="walletId" value="@((string)((context.Response.Body.As<JObject>(preserveContent: true))["walletId"]))" />
-        <set-variable name="x-jwt-token" value="@{
-        // Construct the Base64Url-encoded header
-        var header = new { typ = "JWT", alg = "HS512" };
-        var jwtHeaderBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(header))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
-
-        // 2) Construct the Base64Url-encoded payload
-        var jti = Guid.NewGuid().ToString(); //sets the iat claim. Random uuid added to prevent the reuse of this token
-        var date = DateTime.Now;
-        var iat = new DateTimeOffset(date).ToUnixTimeSeconds(); // sets the issued time of the token now
-        var exp = new DateTimeOffset(date.AddMinutes(15)).ToUnixTimeSeconds();  // sets the expiration of the token to be 15 minutes from now
-        var userId = ((string)context.Variables.GetValueOrDefault("xUserId",""));
-        var walletId = ((string)context.Variables.GetValueOrDefault("walletId",""));
-        var payload = new { iat, exp, jti, userId, walletId };
-        var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
-
-        // 3) Construct the Base64Url-encoded signature
-        var signature = new HMACSHA512(Convert.FromBase64String("{{wallet-jwt-signing-key}}")).ComputeHash(Encoding.UTF8.GetBytes($"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}"));
-        var jwtSignatureBase64UrlEncoded = Convert.ToBase64String(signature).Replace("/", "_").Replace("+", "-"). Replace("=", "");
-
-        // 4) Return the HMAC SHA512-signed JWT as the value for the Authorization header
-        return $"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}.{jwtSignatureBase64UrlEncoded}";
-    }" />
+          <!-- pagoPA platform wallet JWT post wallet token : START -->
+          <!-- Token JWT START-->
+          <set-variable name="walletId" value="@((string)((context.Response.Body.As<JObject>(preserveContent: true))["walletId"]))" />
+          <send-request ignore-error="true" timeout="10" response-variable-name="x-jwt-token" mode="new">
+              <set-url>https://${hostname}/pagopa-jwt-issuer-service/tokens</set-url>
+              <set-method>POST</set-method>
+              <!-- Set jwt-issuer-service API Key header -->
+              <set-header name="x-api-key" exists-action="override">
+                <value>{{pay-wallet-jwt-issuer-api-key-value}}</value>
+              </set-header>
+              <set-header name="Content-Type" exists-action="override">
+                  <value>application/json</value>
+              </set-header>
+              <set-body>@{
+                var userId = ((string)context.Variables.GetValueOrDefault("xUserId",""));
+                var walletId = ((string)context.Variables.GetValueOrDefault("walletId",""));
+                return new JObject(
+                        new JProperty("audience", "wallet"),
+                        new JProperty("duration", 900),
+                        new JProperty("privateClaims", new JObject(
+                            new JProperty("walletId", walletId),
+                            new JProperty("userId", userId)
+                        ))
+                    ).ToString();
+              }</set-body>
+          </send-request>
+        <choose>
+            <when condition="@(((IResponse)context.Variables["x-jwt-token"]).StatusCode != 200)">
+                <return-response>
+                    <set-status code="502" reason="Bad Gateway" />
+                </return-response>
+            </when>
+        </choose>
+                <set-variable name="token" value="@( (string) ( ((IResponse)context.Variables["x-jwt-token"] ).Body.As<JObject>(preserveContent: true)) ["token"])" />
         <!-- Token JWT END-->
+        <!-- pagoPA platform wallet JWT session token : END -->
         <set-body>@{
             JObject inBody = context.Response.Body.As<JObject>(preserveContent: true);
             var redirectUrl = inBody["redirectUrl"];
-            inBody["redirectUrl"] = redirectUrl + "&sessionToken=" + ((string)context.Variables.GetValueOrDefault("x-jwt-token",""));
+            inBody["redirectUrl"] = redirectUrl + "&sessionToken=" + ((string)context.Variables["token"]);
             inBody.Remove("walletId");
             return inBody.ToString();
         }</set-body>

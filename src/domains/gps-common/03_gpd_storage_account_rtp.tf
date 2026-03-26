@@ -1,5 +1,5 @@
 module "gpd_rtp_sa" {
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                            = replace("${local.project}-rtp-sa", "-", "")
   account_kind                    = var.rtp_storage_account.account_kind
@@ -28,7 +28,7 @@ module "gpd_rtp_sa" {
 }
 
 resource "azurerm_private_endpoint" "gpd_rtp_blob_private_endpoint" {
-  count = var.env_short == "d" ? 0 : 1
+  count = 1
 
   name                = format("%s-rtp-blob-private-endpoint", local.project)
   location            = var.location
@@ -37,7 +37,7 @@ resource "azurerm_private_endpoint" "gpd_rtp_blob_private_endpoint" {
 
   private_dns_zone_group {
     name                 = "${local.project}-rtp-blob-sa-private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.storage[0].id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.storage.id]
   }
 
   private_service_connection {
@@ -58,4 +58,25 @@ resource "azurerm_private_endpoint" "gpd_rtp_blob_private_endpoint" {
 resource "azurerm_storage_container" "rtp_dead_letter_blob_file" {
   name                 = "rtp-dead-letter"
   storage_account_name = module.gpd_rtp_sa.name
+}
+
+resource "azurerm_storage_management_policy" "time_to_live" {
+  count = var.env_short == "p" ? 0 : 1
+
+  storage_account_id = module.gpd_rtp_sa.id
+
+  rule {
+    name    = "time_to_live"
+    enabled = true
+    filters {
+      blob_types = ["blockBlob"]
+    }
+    actions {
+      base_blob {
+        tier_to_cool_after_days_since_modification_greater_than    = 5
+        tier_to_archive_after_days_since_modification_greater_than = 7
+        delete_after_days_since_modification_greater_than          = 10
+      }
+    }
+  }
 }

@@ -53,5 +53,7 @@ resource "azurerm_api_management_api_policy" "apim_session_wallet_api_mock_polic
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  xml_content = file("./api/session-wallet-mock/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/session-wallet-mock/_base_policy.xml.tpl", {
+    pdv_api_base_path = var.pdv_api_base_path
+  })
 }

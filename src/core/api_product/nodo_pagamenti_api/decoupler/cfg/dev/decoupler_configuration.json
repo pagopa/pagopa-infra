@@ -3,7 +3,7 @@
     "node_id": "NDP002SIT",
     "description": "Nodo OnCloud Nexi",
     "node_uri": "http://10.70.66.200/nodo-sit",
-    "routing": 100,
+    "routing": 0,
     "broker_psps": [],
     "cis": [],
     "list_priority": 3
@@ -14,16 +14,21 @@
     "node_uri": "https://weudev.nodo.internal.dev.platform.pagopa.it/nodo",
     "routing": 0,
     "broker_psps": [],
-    "cis": ["15376371009"],
+    "cis": [
+      "12300020158",
+      "00347000721",
+      "00395920788",
+      "96289850586"
+    ],
     "list_priority": 1
   },
   {
     "node_id": "NDP004IT",
     "description": "Nodo PostgreSQL OnPrem Nexi",
-    "node_uri": "https://10.79.20.32/sit",
-    "routing": 0,
+    "node_uri": "https://10.79.20.63",
+    "routing": 100,
     "broker_psps": [],
-    "cis": ["88888888888"],
+    "cis": [],
     "list_priority": 2
   }
 ]

@@ -10,9 +10,11 @@ instance       = "dev"
 
 ### FEATURES FLAGS
 is_feature_enabled = {
-  cosmos  = true
-  redis   = true
-  storage = true
+  cosmos                  = true
+  redis                   = true
+  storage                 = true
+  redis_hub_spoke_pe_dns  = true
+  cosmos_hub_spoke_pe_dns = true
 }
 
 
@@ -55,12 +57,12 @@ cosmos_mongo_db_params = {
   enable_free_tier                 = false
 
   additional_geo_locations                     = []
-  private_endpoint_enabled                     = false
-  public_network_access_enabled                = true
-  is_virtual_network_filter_enabled            = false
+  private_endpoint_enabled                     = true
+  public_network_access_enabled                = false
+  is_virtual_network_filter_enabled            = true
   enable_provisioned_throughput_exceeded_alert = false
   backup_continuous_enabled                    = false
-  ip_range_filter                              = null
+  ip_range_filter                              = []
 }
 
 cosmos_mongo_db_pay_wallet_params = {
@@ -74,6 +76,14 @@ cosmos_mongo_db_pay_wallet_params = {
 ### Redis
 
 redis_pay_wallet_params = {
+  capacity = 0
+  sku_name = "Basic"
+  family   = "C"
+  version  = 6
+  zones    = []
+}
+
+redis_std_pay_wallet_params = {
   capacity = 0
   sku_name = "Basic"
   family   = "C"
@@ -106,3 +116,6 @@ aks_user_node_pool = {
   node_taints     = ["paymentWalletOnly=true:NoSchedule"],
   node_tags       = { payWallet : "true" },
 }
+payment_wallet_service_api_key_use_primary = true
+
+pay_wallet_jwt_issuer_api_key_use_primary = true

@@ -369,13 +369,17 @@
               },
               {
                 "$ref": "#/components/schemas/WalletVerifyRequestAPMDetails"
+              },
+              {
+                "$ref": "#/components/schemas/WalletVerifyRequestContextualCardDetails"
               }
             ],
             "discriminator": {
               "propertyName": "type",
               "mapping": {
                 "CARDS": "#/components/schemas/WalletVerifyRequestCardDetails",
-                "APM": "#/components/schemas/WalletVerifyRequestAPMDetails"
+                "APM": "#/components/schemas/WalletVerifyRequestAPMDetails",
+                "CARDS_CTX": '#/components/schemas/WalletVerifyRequestContextualCardDetails'
               }
             }
           }
@@ -399,6 +403,19 @@
           "iframeUrl": {
             "type": "string",
             "description": "iframeUrl in order to run gdi check."
+          }
+        }
+      },
+      "WalletVerifyRequestContextualCardDetails": {
+        "type": "object",
+        "description": "Card verify request details for contextual onboarding",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Wallet verify request details discriminator field.",
+            "enum": [
+              "CARDS_CTX"
+            ]
           }
         }
       },

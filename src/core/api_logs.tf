@@ -6,18 +6,12 @@ locals {
     azurerm_api_management_api.apim_node_for_psp_api_v1.name,
     azurerm_api_management_api.apim_nodo_per_psp_api_v1.name,
     azurerm_api_management_api.apim_node_for_io_api_v1.name,
-    #    azurerm_api_management_api.apim_psp_for_node_api_v1.name,
-    azurerm_api_management_api.apim_nodo_per_pa_api_v1.name,
     azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1.name,
     azurerm_api_management_api.apim_node_for_psp_api_v1_auth.name,
     module.apim_nodo_per_pm_api_v1.name,
   ]
 
-  api_info_log = [
-    module.apim_pm_restapicd_internal_api_v1.name,
-    module.apim_pm_restapicd_internal_api_v2.name,
-    module.apim_pm_ptg_api_v1.name,
-  ]
+  api_info_log = []
 
 }
 

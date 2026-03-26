@@ -21,6 +21,9 @@
             <set-header name="x-payment-gateway-type" exists-action="override">
                 <value>REDIRECT</value>
             </set-header>
+            <set-header name="x-api-key" exists-action="override">
+                <value>{{ecommerce-transactions-service-api-key-value}}</value>
+            </set-header>
             <set-body>
                 @{
                 JObject requestBody = (JObject)context.Variables["redirectRequestBody"];

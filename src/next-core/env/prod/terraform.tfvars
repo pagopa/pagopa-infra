@@ -17,9 +17,9 @@ is_feature_enabled = {
   node_forwarder_ha_enabled = true,
   vpn                       = false,
   dns_forwarder_lb          = true,
-  postgres_private_dns      = true,
   apim_core_import          = true
   use_new_apim              = false
+  azdoa_extension           = false
 }
 
 #
@@ -41,6 +41,9 @@ cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
 cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
 cidr_subnet_vpn                   = ["10.1.142.0/24"]
 
+vpn_gw_sku                   = "VpnGw1AZ"
+vpn_gw_pip_sku               = "Standard"
+vpn_gw_pip_allocation_method = "Static"
 # networking
 ddos_protection_plan = {
   id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
@@ -53,15 +56,13 @@ route_table_peering_sia_additional_routes = [
 #
 # Dns
 #
-external_domain                                 = "pagopa.it"
-dns_zone_internal_prefix                        = "internal.platform"
-dns_zone_wfesp                                  = "wfesp"
-private_dns_zone_db_nodo_pagamenti              = "p.db-nodo-pagamenti.com"
-dns_a_reconds_dbnodo_ips                        = ["10.102.175.23", "10.102.175.24"] # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
-dns_a_reconds_dbnodo_ips_dr                     = ["10.101.175.23", "10.101.175.24"] # authdbsep01-vip.carte.local   NAT 10.250.45.145 authdbsep02-vip.carte.local   NAT 10.250.45.146 authdbpep01-vip.carte.local   NAT 10.250.45.147 authdbpep02-vip.carte.local   NAT 10.250.45.148
-dns_a_reconds_dbnodonexipostgres_ips            = ["10.102.1.93"]
-dns_a_reconds_dbnodonexipostgres_balancer_1_ips = ["10.222.214.129"] # db onPrem PostgreSQL
-dns_a_reconds_dbnodonexipostgres_balancer_2_ips = ["10.222.214.134"] # db onPrem PostgreSQL
+external_domain                      = "pagopa.it"
+dns_zone_internal_prefix             = "internal.platform"
+dns_zone_wfesp                       = "wfesp"
+private_dns_zone_db_nodo_pagamenti   = "p.db-nodo-pagamenti.com"
+dns_a_reconds_dbnodo_ips             = ["10.102.175.23", "10.102.175.24"] # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
+dns_a_reconds_dbnodo_ips_dr          = ["10.101.175.23", "10.101.175.24"] # authdbsep01-vip.carte.local   NAT 10.250.45.145 authdbsep02-vip.carte.local   NAT 10.250.45.146 authdbpep01-vip.carte.local   NAT 10.250.45.147 authdbpep02-vip.carte.local   NAT 10.250.45.148
+dns_a_reconds_dbnodonexipostgres_ips = ["10.102.1.93"]
 
 ### External resources
 
@@ -73,19 +74,6 @@ log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 dns_forwarder_vm_image_name = "pagopa-p-dns-forwarder-ubuntu2204-image-v1"
 
 
-#
-# replica settings
-#
-geo_replica_enabled        = true
-geo_replica_location       = "northeurope"
-geo_replica_location_short = "neu"
-geo_replica_cidr_vnet      = ["10.2.0.0/16"]
-geo_replica_ddos_protection_plan = {
-  id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
-  enable = true
-}
-
-postgres_private_dns_enabled = true
 
 enable_logos_backup                              = true
 logos_backup_retention                           = 30
@@ -166,27 +154,27 @@ apim_v2_subnet_nsg_security_rules = [
     destination_address_prefix = "AzureKeyVault"
   }
 ]
-
-apim_v2_publisher_name = "pagoPA Platform UAT"
-apim_v2_sku            = "Premium_3"
-apim_v2_alerts_enabled = true
-dns_zone_prefix        = "platform"
-apim_v2_zones          = ["1", "2", "3"]
-create_redis_multiaz   = true
-redis_zones            = ["1", "2", "3"]
-redis_cache_enabled    = true
+apim_enable_nm3_decoupler_switch = true
+apim_v2_publisher_name           = "pagoPA Platform UAT"
+apim_v2_sku                      = "Premium_3"
+apim_v2_alerts_enabled           = true
+dns_zone_prefix                  = "platform"
+apim_v2_zones                    = ["1", "2", "3"]
+create_redis_multiaz             = true
+redis_zones                      = ["1", "2", "3"]
+redis_cache_enabled              = true
 apim_v2_autoscale = {
   enabled                       = true
   default_instances             = 3
   minimum_instances             = 3
-  maximum_instances             = 5
+  maximum_instances             = 9
   scale_out_capacity_percentage = 45
   scale_out_time_window         = "PT10M"
-  scale_out_value               = "2"
+  scale_out_value               = "3"
   scale_out_cooldown            = "PT45M"
   scale_in_capacity_percentage  = 30
   scale_in_time_window          = "PT30M"
-  scale_in_value                = "1"
+  scale_in_value                = "3"
   scale_in_cooldown             = "PT4H"
 }
 
@@ -198,6 +186,7 @@ redis_cache_params = {
   capacity      = 1
   sku_name      = "Premium"
   family        = "P"
+  zones         = ["1", "2", "3"]
 }
 
 
@@ -205,16 +194,16 @@ integration_app_gateway_sku_name                    = "Standard_v2"
 integration_app_gateway_sku_tier                    = "Standard_v2"
 cidr_subnet_appgateway_integration                  = ["10.230.10.192/26"]
 integration_appgateway_private_ip                   = "10.230.10.200"
-integration_app_gateway_api_certificate_name        = "api-platform-pagopa-it"
-integration_app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
-integration_app_gateway_management_certificate_name = "management-platform-pagopa-it"
+integration_app_gateway_api_certificate_name        = "api-platform-pagopa-it-stable"
+integration_app_gateway_portal_certificate_name     = "portal-platform-pagopa-it-stable"
+integration_app_gateway_management_certificate_name = "management-platform-pagopa-it-stable"
 integration_appgateway_zones                        = [1, 2, 3]
 
 nodo_pagamenti_psp            = "97249640588,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
 nodo_pagamenti_ec             = "00493410583,09633951000,06655971007,00856930102,02478610583,97169170822,01266290996,01248040998,01429910183,80007270376,01142420056,80052310580,83000730297,80082160013,94050080038,01032450072,01013130073,10718570012,01013210073,87007530170,01242340998,80012150274,02508710585,80422850588,94032590278,94055970480,92001600524,80043570482,92000530532,80094780378,80016430045,80011170505,80031650486,00337870406,09227921005,01928010683,00608810057,03299640163,82002730487,02928200241"
 lb_aks                        = "10.70.135.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
-schema_ip_nexi                = "https://10.79.20.34"
-default_node_id               = "NDP003PROD"
+schema_ip_nexi                = "https://10.79.20.25"
+default_node_id               = "NDP004PROD"
 base_path_nodo_ppt_lmi        = "/ppt-lmi-prd-NOT-FOUND"
 base_path_nodo_sync           = "/sync-cron-prd/syncWisp"
 base_path_nodo_wfesp          = "/wfesp-prd"
@@ -227,11 +216,14 @@ base_path_nodo_oncloud        = "/nodo-prd"
 
 
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
-ehns_auto_inflate_enabled     = true
-ehns_maximum_throughput_units = 10
-ehns_capacity                 = 5
-ehns_zone_redundant           = true
-ehns_public_network_access    = true
+ehns_auto_inflate_enabled        = true
+ehns_maximum_throughput_units    = 10
+ehns_03_maximum_throughput_units = 10
+ehns_03_capacity                 = 10
+ehns_04_capacity                 = 7
+ehns_zone_redundant              = true
+ehns_03_zone_redundant           = true
+ehns_public_network_access       = true
 
 ehns03_metric_alerts = {
   no_trx = {
@@ -677,7 +669,7 @@ eventhubs_04 = [
     name              = "nodo-dei-pagamenti-cache"
     partitions        = 32
     message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-cache-sync-rx"]
+    consumers         = ["nodo-dei-pagamenti-cache-sync-rx", "nodo-dei-pagamenti-cache-aca-rx", "nodo-dei-pagamenti-cache-stand-in-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-cache-tx"
@@ -687,6 +679,18 @@ eventhubs_04 = [
       },
       {
         name   = "nodo-dei-pagamenti-cache-sync-rx" # node-cfg-sync
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-cache-aca-rx" # node-cfg for ACA-Payments
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-cache-stand-in-rx" # node-cfg for Stand-In Manager
         listen = true
         send   = false
         manage = false
@@ -717,7 +721,7 @@ eventhubs_04 = [
     name              = "fdr-qi-reported-iuv"
     partitions        = 32
     message_retention = 7
-    consumers         = ["fdr-qi-reported-iuv-rx"]
+    consumers         = ["fdr-qi-reported-iuv-rx", "gpd-reporting-sync"]
     keys = [
       {
         name   = "fdr-qi-reported-iuv-tx"
@@ -727,6 +731,12 @@ eventhubs_04 = [
       },
       {
         name   = "fdr-qi-reported-iuv-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "gpd-reporting-sync"
         listen = true
         send   = false
         manage = false
@@ -757,6 +767,7 @@ eventhubs_04 = [
 
 node_forwarder_zone_balancing_enabled = true
 node_forwarder_sku                    = "P3v3"
+node_forwarder_image_tag              = 256378
 node_fw_ha_snet_cidr                  = ["10.1.157.0/24"]
 node_fw_dbg_snet_cidr                 = ["10.1.195.0/24"]
 devops_agent_zones                    = [1, 2, 3]
@@ -765,17 +776,19 @@ azdo_agent_vm_image_name              = "pagopa-p-azdo-agent-ubuntu2204-image-v4
 integration_app_gateway_min_capacity  = 2
 integration_app_gateway_max_capacity  = 50
 
+app_inisght_daily_data_cap_gb = 200
+
 # public app gateway
 # app_gateway
-app_gateway_api_certificate_name        = "api-platform-pagopa-it"
-app_gateway_upload_certificate_name     = "upload-platform-pagopa-it"
-app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
-app_gateway_management_certificate_name = "management-platform-pagopa-it"
-app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
+app_gateway_api_certificate_name        = "api-platform-pagopa-it-stable"
+app_gateway_upload_certificate_name     = "upload-platform-pagopa-it-stable"
+app_gateway_portal_certificate_name     = "portal-platform-pagopa-it-stable"
+app_gateway_management_certificate_name = "management-platform-pagopa-it-stable"
+app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it-stable"
 app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
 app_gateway_wfespgovit_certificate_name = "wfesp-pagopa-gov-it"
-app_gateway_min_capacity                = 8 # 5 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
-app_gateway_max_capacity                = 50
+app_gateway_min_capacity                = 15 # 5 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
+app_gateway_max_capacity                = 100
 app_gateway_sku_name                    = "WAF_v2"
 app_gateway_sku_tier                    = "WAF_v2"
 app_gateway_waf_enabled                 = true
@@ -877,6 +890,13 @@ route_tools = [
     # dev aks nodo oncloud
     name                   = "tools-outbound-to-nexy-nodo"
     address_prefix         = "10.79.20.34/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    # dev aks nodo oncloud postgres
+    name                   = "tools-outbound-to-nexy-nodo-postgres"
+    address_prefix         = "10.79.20.25/32"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.10.150"
   }

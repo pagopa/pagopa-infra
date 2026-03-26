@@ -9,10 +9,11 @@ resource "azurerm_private_dns_a_record" "ingress" {
 ###
 
 resource "azurerm_subnet" "cosmosdb_italy_snet" {
-  name                 = "${local.project}-cosmosdb-snet"
-  resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
-  address_prefixes     = var.cidr_printit_cosmosdb_italy
+  name                              = "${local.project}-cosmosdb-snet"
+  resource_group_name               = data.azurerm_resource_group.rg_vnet_italy.name
+  virtual_network_name              = data.azurerm_virtual_network.vnet_italy.name
+  address_prefixes                  = var.cidr_printit_cosmosdb_italy
+  private_endpoint_network_policies = "Enabled"
 
   service_endpoints = [
     "Microsoft.Web",
@@ -20,32 +21,22 @@ resource "azurerm_subnet" "cosmosdb_italy_snet" {
   ]
 }
 
-resource "azurerm_subnet" "cidr_storage_italy" {
-  name                 = "${local.project}-storage-snet"
-  resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
-  address_prefixes     = var.cidr_printit_storage_italy
-}
 
 resource "azurerm_subnet" "cidr_redis_italy" {
-  name                 = "${local.project}-redis-snet"
-  resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
-  address_prefixes     = var.cidr_printit_redis_italy
-}
-
-resource "azurerm_subnet" "cidr_postgres_italy" {
-  name                 = "${local.project}-postgresql-snet"
-  resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
-  address_prefixes     = var.cidr_printit_postgresql_italy
+  name                              = "${local.project}-redis-snet"
+  resource_group_name               = data.azurerm_resource_group.rg_vnet_italy.name
+  virtual_network_name              = data.azurerm_virtual_network.vnet_italy.name
+  address_prefixes                  = var.cidr_printit_redis_italy
+  private_endpoint_network_policies = "Enabled"
 }
 
 resource "azurerm_subnet" "pdf_engine_italy_snet" {
-  name                 = "${local.project}-pdf-engine-snet"
-  resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
-  address_prefixes     = var.cidr_printit_pdf_engine_italy
+  name = "${local.project}-pdf-engine-snet"
+
+  resource_group_name               = data.azurerm_resource_group.rg_vnet_italy.name
+  virtual_network_name              = data.azurerm_virtual_network.vnet_italy.name
+  address_prefixes                  = var.cidr_printit_pdf_engine_italy
+  private_endpoint_network_policies = "Enabled"
 
   delegation {
     name = "delegation"
@@ -56,9 +47,78 @@ resource "azurerm_subnet" "pdf_engine_italy_snet" {
   }
 }
 
-resource "azurerm_subnet" "eventhub_italy" {
-  name                 = "${local.project}-eventhub-snet"
-  resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
-  address_prefixes     = var.cidr_printit_eventhub_italy
+
+module "eventhub_spoke_pe_snet" {
+  source            = "./.terraform/modules/__v4__/IDH/subnet"
+  env               = var.env
+  idh_resource_tier = "slash28_privatelink_true"
+  name              = "${local.project}-spoke-streaming-evh-pe-snet"
+  product_name      = var.prefix
+
+  resource_group_name  = local.vnet_hub_spoke_rg_name
+  virtual_network_name = local.vnet_spoke_streaming_name
+
+  custom_nsg_configuration = {
+    target_service               = "eventhub"
+    source_address_prefixes_name = "All"
+    source_address_prefixes      = ["*"]
+  }
+
+  tags = module.tag_config.tags
+}
+
+
+moved {
+  from = module.cosmos_spoke_printit_snet[0]
+  to   = module.cosmos_spoke_printit_snet
+}
+
+module "cosmos_spoke_printit_snet" {
+  source            = "./.terraform/modules/__v4__/IDH/subnet"
+  env               = var.env
+  idh_resource_tier = "slash28_privatelink_true"
+  name              = "${local.project}-spoke-data-cosmos-pe-snet"
+  product_name      = var.prefix
+
+  resource_group_name  = local.vnet_hub_spoke_rg_name
+  virtual_network_name = local.vnet_spoke_data_name
+  tags                 = module.tag_config.tags
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+  ]
+
+  custom_nsg_configuration = {
+    target_service               = "cosmos"
+    source_address_prefixes_name = "Printit"
+    source_address_prefixes      = ["*"]
+  }
+}
+
+moved {
+  from = module.storage_spoke_printit_snet[0]
+  to   = module.storage_spoke_printit_snet
+}
+
+module "storage_spoke_printit_snet" {
+  source            = "./.terraform/modules/__v4__/IDH/subnet"
+  env               = var.env
+  idh_resource_tier = "slash28_privatelink_true"
+  name              = "${local.project}-spoke-data-storage-pe-snet"
+  product_name      = var.prefix
+
+  resource_group_name  = local.vnet_hub_spoke_rg_name
+  virtual_network_name = local.vnet_spoke_data_name
+  tags                 = module.tag_config.tags
+
+  service_endpoints = [
+    "Microsoft.Storage",
+  ]
+
+  custom_nsg_configuration = {
+    target_service               = "storage"
+    source_address_prefixes_name = "All"
+    source_address_prefixes      = ["*"]
+  }
 }

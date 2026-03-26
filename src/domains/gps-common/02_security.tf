@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "./.terraform/modules/__v3__/key_vault"
+  source = "./.terraform/modules/__v4__/key_vault"
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -56,8 +56,8 @@ resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_externals.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions  = ["Get", "List", "Set", "Delete", ]
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy"]
+  secret_permissions  = ["Get", "List", "Set", "Delete", "Recover", "Restore", ]
   storage_permissions = []
   certificate_permissions = [
     "Get", "List", "Update", "Create", "Import",
@@ -84,6 +84,17 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
   storage_permissions = []
 }
 
+# azure data factory access policy
+resource "azurerm_key_vault_access_policy" "azure_data_factory_policy" {
+  key_vault_id            = module.key_vault.id
+  tenant_id               = data.azurerm_data_factory.data_factory.identity.0.tenant_id
+  object_id               = data.azurerm_data_factory.data_factory.identity.0.principal_id
+  key_permissions         = []
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+  storage_permissions     = []
+}
+
 resource "azurerm_key_vault_secret" "cosmos_gps_pkey" {
   name         = format("cosmos-gps-%s-%s-pkey", var.location_short, var.env_short) # cosmos-gps-<REGION>-<ENV>-pkey
   value        = module.gps_cosmosdb_account.primary_key
@@ -100,42 +111,18 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "flows_sa_connection_string" {
-  name         = format("flows-sa-%s-connection-string", var.env_short)
-  value        = module.flows.primary_connection_string
-  content_type = "text/plain"
 
-  key_vault_id = module.key_vault.id
-}
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "storage_reporting_connection_string" {
-  # refers to pagopa<env>flowsa primary key
-  name         = format("gpd-reporting-flow-%s-sa-connection-string", var.env_short)
-  value        = module.flows.primary_connection_string
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-}
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "payments_cosmos_connection_string" {
   name         = format("gpd-payments-%s-cosmos-connection-string", var.env_short)
-  value        = module.gpd_payments_cosmosdb_account.connection_strings[4]
+  value        = module.gpd_payments_cosmosdb_account.legacy_primary_sql_connection_strings
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 
 }
 
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "gpd_reporting_batch_connection_string" {
-  name         = format("gpd-%s-reporting-batch-connection-string", var.env_short)
-  value        = module.flows.primary_connection_string
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-}
 
 ## ########################### ##
 ## TODO put it into gps-secret
@@ -473,7 +460,7 @@ resource "azurerm_key_vault_secret" "gpd_upload_db_key" {
 resource "azurerm_key_vault_secret" "gpd_archive_sa_connection_string" {
   name = "gpd-archive-${var.env_short}-sa-connection-string"
   # value        = module.gpd_archive_sa.primary_connection_string // az sa tables
-  value        = module.gpd_payments_cosmosdb_account.connection_strings[4] // az cosmos tables
+  value        = module.gpd_payments_cosmosdb_account.legacy_primary_sql_connection_strings // az cosmos tables
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -520,8 +507,20 @@ resource "azurerm_key_vault_secret" "azure_web_jobs_storage_kv" {
   key_vault_id = module.key_vault.id
 }
 
+# #############################
+# CONFIG CACHE GDP in EventHub
+# #############################
 
+resource "azurerm_key_vault_secret" "config-cache-eh-connection-for-aca-payments" {
+  name         = "config-cache-event-hub-connection-string-for-aca-payments-rx"
+  value        = data.azurerm_eventhub_authorization_rule.nodo_dei_pagamenti_cache_aca_rx.primary_connection_string
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
+
+# ##########################
 # CDC GDP in eventhub
+# ##########################
 data "azurerm_eventhub_authorization_rule" "cdc-raw-auto_apd_payment_option-rx" {
   name                = "cdc-raw-auto.apd.payment_option-rx"
   namespace_name      = "pagopa-${var.env_short}-itn-observ-gpd-evh"
@@ -610,16 +609,38 @@ resource "azurerm_key_vault_secret" "gpd_ingestion_apd_payment_option_transfer_t
   key_vault_id = module.key_vault.id
 }
 
-data "azurerm_eventhub_authorization_rule" "pagopa-evh-rtp-tx" {
+
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-rtp-integration-tx" {
   name                = "rtp-events-tx"
-  namespace_name      = "${local.project_itn}-rtp-evh"
+  namespace_name      = "${local.project_itn}-rtp-integration-evh"
   eventhub_name       = "rtp-events"
   resource_group_name = azurerm_resource_group.rtp_rg.name
 }
 
 resource "azurerm_key_vault_secret" "ehub_rtp_connection_string" {
   name         = format("ehub-%s-tx-rtp-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-rtp-tx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-rtp-integration-tx.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-rtp-integration-test" {
+  count = var.env_short != "p" ? 1 : 0
+
+  name                = "rtp-events-integration-test-rx"
+  namespace_name      = "${local.project_itn}-rtp-integration-evh"
+  eventhub_name       = "rtp-events"
+  resource_group_name = azurerm_resource_group.rtp_rg.name
+
+  depends_on = [module.eventhub_rtp_namespace_integration]
+}
+
+resource "azurerm_key_vault_secret" "ehub_rtp_integration_test_connection_string" {
+  count = var.env_short != "p" ? 1 : 0
+
+  name         = format("ehub-%s-rtp-integration-test-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-rtp-integration-test[0].primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -676,6 +697,34 @@ resource "azurerm_key_vault_secret" "shared_anonymizer_api_keysubkey_store_kv" {
   ]
   name         = "shared-anonymizer-api-key"
   value        = azurerm_api_management_subscription.shared_anonymizer_api_key_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+# ##############################
+# apiconfig-cache product subkey
+# ##############################
+data "azurerm_api_management_product" "apiconfig_cache_product" {
+  product_id          = "apiconfig-cache"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+resource "azurerm_api_management_subscription" "apiconfig_cache_subkey" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apiconfig_cache_product.id
+  display_name  = "apiconfig-cache-api-key-for-gpd"
+  allow_tracing = false
+  state         = "active"
+}
+resource "azurerm_key_vault_secret" "apiconfig_cache_subkey_store_kv" {
+  depends_on = [
+    azurerm_api_management_subscription.apiconfig_cache_subkey
+  ]
+  name         = "gpd-${var.env_short}-config-cache-subkey"
+  value        = azurerm_api_management_subscription.apiconfig_cache_subkey.primary_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

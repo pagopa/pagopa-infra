@@ -132,14 +132,6 @@ variable "ddos_protection_plan" {
   default = null
 }
 
-# Reporting
-# https://learn.microsoft.com/it-it/azure/azure-functions/functions-bindings-timer?tabs=python-v2%2Cisolated-process%2Cnodejs-v4&pivots=programming-language-java#ncrontab-examples
-variable "gpd_reporting_schedule_batch" {
-  type        = string
-  description = "Cron scheduling (every day 1 o'clock every day UTC-0) {second} {minute} {hour} {day} {month} {day-of-week}"
-  default     = "0 0 1 * * *"
-}
-
 variable "gpd_max_retry_queuing" {
   type        = number
   description = "Max retry queuing when the node calling fails."
@@ -216,34 +208,11 @@ variable "cname_record_name" {
   type = string
 }
 
-variable "reporting_batch_function_always_on" {
-  type        = bool
-  description = "Always on property"
-  default     = false
-}
-
-variable "reporting_service_function_always_on" {
-  type        = bool
-  description = "Always on property"
-  default     = false
-}
 
 variable "reporting_analysis_function_always_on" {
   type        = bool
   description = "Always on property"
   default     = false
-}
-
-variable "reporting_batch_image" {
-  type        = string
-  description = "reporting_batch_function docker image"
-  default     = ""
-}
-
-variable "reporting_service_image" {
-  type        = string
-  description = "reporting_service_function docker image"
-  default     = ""
 }
 
 variable "reporting_analysis_image" {
@@ -286,16 +255,6 @@ variable "reporting_function_autoscale_default" {
 }
 
 # Function app Framework choice
-variable "reporting_batch_dotnet_version" {
-  type    = string
-  default = null
-}
-
-variable "reporting_service_dotnet_version" {
-  type    = string
-  default = null
-}
-
 variable "reporting_analysis_dotnet_version" {
   type    = string
   default = null

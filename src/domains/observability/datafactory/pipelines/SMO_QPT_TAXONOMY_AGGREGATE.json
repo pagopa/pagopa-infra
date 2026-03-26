@@ -1,0 +1,200 @@
+{
+    "name": "Start Date Pipeline",
+    "description": "Configure trigger start date variable  ",
+    "type": "SetVariable",
+    "dependsOn": [],
+    "policy": {
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "variableName": "start_pipeline",
+        "value": {
+            "value": "@pipeline().TriggerTime",
+            "type": "Expression"
+        }
+    }
+},
+{
+    "name": "Run Id",
+    "description": "Retrieve the run id",
+    "type": "SetVariable",
+    "dependsOn": [
+        {
+            "activity": "Start Date Pipeline",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "variableName": "run_id",
+        "value": {
+            "value": "@pipeline().RunId",
+            "type": "Expression"
+        }
+    }
+},
+{
+    "name": "Copy Data on Postgres",
+    "type": "Copy",
+    "dependsOn": [
+        {
+            "activity": "Run Id",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "AzureDataExplorerSource",
+            "query": {
+                "value": "let trigger_start=bin(datetime_utc_to_local(datetime('@{variables('start_pipeline')}'), \"Europe/Rome\"), 6h);\nlet start_date=datetime_add(\"hour\", -12, trigger_start);\nlet end_date=datetime_add(\"hour\", 6, start_date);\nReEvent\n| where insertedTimestamp between (start_date .. end_date)\n| where tipoEvento in (\"paGetPayment\", \"paGetPaymentV2\")\n| where sottoTipoEvento == \"RESP\"\n| project insertedTimestamp, stazione, payload, iuv, uniqueId\n| extend OUTCOME=extract(\"<outcome>([A-Za-z0-9]*)</outcome>\", 1, base64_decode_tostring(payload))\n| where OUTCOME == \"OK\"\n| extend transferList = extract(\"<transferList>(?smR:(.*))</transferList>\", 1, base64_decode_tostring(payload))\n| extend xml_parsed = parse_xml(transferList)\n| extend singleTransferCategory = case(array_length(xml_parsed.transfer) > 1, xml_parsed.transfer, bag_pack(\"transferCategory\", xml_parsed.transfer.transferCategory))\n| mv-expand singleTransferCategory\n| project insertedTimestamp, stazione, transferCategory=singleTransferCategory.transferCategory, uniqueId\n| extend INTERMEDIARIO_PA=tostring(split(stazione, \"_\")[0])\n| project insertedTimestamp, stazione, transferCategory, INTERMEDIARIO_PA, START_DATE=bin(start_date, 1h), END_DATE=bin(end_date, 1h), uniqueId\n| summarize TOTALE=count() by INTERMEDIARIO_PA, STAZIONE=stazione, TRANSFER_CATEGORY=substring(tostring(transferCategory), 0, 30), START_DATE, END_DATE\n| project INTERMEDIARIO_PA, STAZIONE, TRANSFER_CATEGORY, START_DATE, END_DATE, TOTALE\n",
+                "type": "Expression"
+            },
+            "queryTimeout": "01:00:00",
+            "noTruncation": true
+        },
+        "sink": {
+            "type": "AzurePostgreSqlSink",
+            "writeBatchSize": 1000000,
+            "writeBatchTimeout": "00:30:00",
+            "writeMethod": "BulkInsert"
+        },
+        "enableStaging": false,
+        "validateDataConsistency": false,
+        "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+                {
+                    "source": {
+                        "name": "INTERMEDIARIO_PA",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "cf_partner",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "STAZIONE",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "station",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "TRANSFER_CATEGORY",
+                        "type": "String",
+                        "physicalType": "string"
+                    },
+                    "sink": {
+                        "name": "transfer_category",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "START_DATE",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    },
+                    "sink": {
+                        "name": "start_date",
+                        "type": "DateTime",
+                        "physicalType": "timestamp without time zone"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "END_DATE",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    },
+                    "sink": {
+                        "name": "end_date",
+                        "type": "DateTime",
+                        "physicalType": "timestamp without time zone"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "TOTALE",
+                        "type": "Int64",
+                        "physicalType": "long"
+                    },
+                    "sink": {
+                        "name": "total",
+                        "type": "Int64",
+                        "physicalType": "bigint"
+                    }
+                }
+            ],
+            "typeConversion": true,
+            "typeConversionSettings": {
+                "allowDataTruncation": true,
+                "treatBooleanAsNumber": false
+            }
+        }
+    },
+    "inputs": [
+        {
+            "referenceName": "${inputdataset}",
+            "type": "DatasetReference"
+        }
+    ],
+    "outputs": [
+        {
+            "referenceName": "${outputdataset}",
+            "type": "DatasetReference"
+        }
+    ]
+},
+{
+    "name": "Error Copy",
+    "description": "Log error if copy goes in error",
+    "type": "Fail",
+    "dependsOn": [
+        {
+            "activity": "Copy Data on Postgres",
+            "dependencyConditions": [
+                "Failed"
+            ]
+        }
+    ],
+    "userProperties": [],
+    "typeProperties": {
+        "message": {
+            "value": "@concat('Lette :' ,activity('Copy Data on Postgres').output.rowsRead, ' Scritte : ', activity('Copy Data on Postgres').output.rowsCopied)",
+            "type": "Expression"
+        },
+        "errorCode": {
+            "value": "412",
+            "type": "Expression"
+        }
+    }
+}

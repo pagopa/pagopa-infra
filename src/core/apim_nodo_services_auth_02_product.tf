@@ -74,3 +74,11 @@ resource "azurerm_api_management_named_value" "x_forwarded_for_value" {
   display_name        = "xForwardedFor"
   value               = data.azurerm_api_management.apim_migrated[0].private_ip_addresses[0]
 }
+
+resource "azurerm_api_management_named_value" "ndp_disable_activate" {
+  name                = "ndp-disable-activate"
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  display_name        = "ndp-disable-activate"
+  value               = "false"
+}

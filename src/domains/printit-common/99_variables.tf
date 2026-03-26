@@ -2,18 +2,20 @@
 
 variable "is_feature_enabled" {
   type = object({
-    cosmosdb_notice      = bool
-    storage_institutions = bool
-    storage_notice       = bool
-    storage_templates    = bool
-    eventhub             = bool
+    cosmosdb_notice         = bool
+    storage_institutions    = bool
+    storage_notice          = bool
+    storage_templates       = bool
+    eventhub                = bool
+    cosmos_hub_spoke_pe_dns = optional(bool, false),
   })
   default = {
-    cosmosdb_notice      = false
-    storage_institutions = false
-    storage_notice       = false
-    storage_templates    = false
-    eventhub             = false
+    cosmosdb_notice         = false
+    storage_institutions    = false
+    storage_notice          = false
+    storage_templates       = false
+    eventhub                = false
+    cosmos_hub_spoke_pe_dns = false
   }
 }
 
@@ -93,12 +95,6 @@ variable "cidr_printit_redis_italy" {
   type        = list(string)
   description = "Address prefixes for all redis accounts in italy."
 }
-
-variable "cidr_printit_postgresql_italy" {
-  type        = list(string)
-  description = "Address prefixes for all postgresql accounts in italy."
-}
-
 variable "cidr_printit_pdf_engine_italy" {
   type        = list(string)
   description = "Address prefixes for all pdf engine accounts in italy."

@@ -19,9 +19,12 @@ module "receipts_st_snet" {
   ]
 }
 
-resource "azurerm_private_endpoint" "storage_private_endpoint" {
-  count = var.env_short != "d" ? 1 : 0
+moved {
+  from = azurerm_private_endpoint.storage_private_endpoint[0]
+  to   = azurerm_private_endpoint.storage_private_endpoint
+}
 
+resource "azurerm_private_endpoint" "storage_private_endpoint" {
   name                = "${local.project}-storage-private-endpoint"
   location            = var.location
   resource_group_name = azurerm_resource_group.st_receipts_rg.name
@@ -42,8 +45,12 @@ resource "azurerm_private_endpoint" "storage_private_endpoint" {
   tags = module.tag_config.tags
 }
 
+moved {
+  from = azurerm_private_endpoint.queue_private_endpoint[0]
+  to   = azurerm_private_endpoint.queue_private_endpoint
+}
+
 resource "azurerm_private_endpoint" "queue_private_endpoint" {
-  count = var.env_short != "d" ? 1 : 0
 
   name                = "${local.project}-queue-private-endpoint"
   location            = var.location
@@ -104,8 +111,18 @@ resource "azurerm_storage_queue" "queue-receipt-waiting-4-gen" {
   storage_account_name = module.receipts_datastore_fn_sa.name
 }
 
+resource "azurerm_storage_queue" "queue-cart-receipt-waiting-4-gen" {
+  name                 = "${local.project}-queue-cart-receipt-waiting-4-gen"
+  storage_account_name = module.receipts_datastore_fn_sa.name
+}
+
 resource "azurerm_storage_queue" "queue-receipt-io-notifier-error" {
   name                 = "${local.project}-queue-receipt-io-notifier-error"
+  storage_account_name = module.receipts_datastore_fn_sa.name
+}
+
+resource "azurerm_storage_queue" "queue-cart-receipt-io-notifier-error" {
+  name                 = "${local.project}-queue-cart-receipt-io-notifier-error"
   storage_account_name = module.receipts_datastore_fn_sa.name
 }
 

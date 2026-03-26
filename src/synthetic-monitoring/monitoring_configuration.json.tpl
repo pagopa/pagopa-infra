@@ -430,38 +430,6 @@
       "enabled" : ${alert_enabled}
     }
   },
-  {
-    "apiName" : "status",
-    "appName" : "gpdEnrollment",
-    "url" :  "https://${internal_api_domain_prefix}.gps.${internal_api_domain_suffix}/pagopa-gpd-reporting-orgs-enrollment/info",
-    "type" : "aks",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} gpd reports status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : ${alert_enabled}
-    }
-  },
-  {
-    "apiName" : "status",
-    "appName" : "gpdEnrollment",
-    "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=gpdenrollment",
-    "type" : "apim",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} gpd reports status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : ${alert_enabled}
-    }
-  },
 
   {
     "apiName" : "status",
@@ -627,12 +595,6 @@
       "enabled" : ${alert_enabled}
     }
   },
-
-
-
-
-
-
   {
     "apiName" : "status",
     "appName" : "gpdAnalysis",
@@ -649,47 +611,6 @@
       "enabled" : ${alert_enabled}
     }
   },
-
-
-  {
-    "apiName" : "status",
-    "appName" : "gpdBatch",
-    "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=gpdreportingbatch",
-    "type" : "apim",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} gpd-batch status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : ${alert_enabled}
-    }
-  },
-
-
-  {
-    "apiName" : "status",
-    "appName" : "gpdReporting",
-    "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=gpdreportingservice",
-    "type" : "apim",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "tags" : {
-      "description" : "pagopa ${env_name} gpd-reporting status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : ${alert_enabled}
-    }
-  },
-
-
-
-
-
   {
     "apiName" : "checkPosition",
     "appName" : "nodo",
@@ -713,10 +634,11 @@
     }
   },
   {
+    "enabled" : ${nexi_postgres_enabled},
     "apiName" : "checkPosition",
     "appName" : "nodo",
-    "url" : "https://${nexi_node_ip}/checkPosition",
-    "type" : "nexi",
+    "url" : "https://${nexi_node_ip_postgres}/checkPosition",
+    "type" : "nexiPostgres",
     "checkCertificate" : true,
     "method" : "POST",
     "expectedCodes" : ["200"],
@@ -726,7 +648,29 @@
     "headers": {
       "Content-Type": "application/json",
       "ndphost": "nodo-${env_short}.nexigroup.com",
-      "Host": "${nexi_ndp_host}"
+      "Host": "${nexi_ndp_host_postgres}"
+    },
+    "tags" : {
+      "description" : "pagopa nodo ${env_name} check position"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "checkPosition",
+    "appName" : "nodo",
+    "url" : "https://${internal_api_domain_prefix}.nodo.${internal_api_domain_suffix}/nodo/checkPosition",
+    "type" : "pagoPa",
+    "checkCertificate" : true,
+    "method" : "POST",
+    "expectedCodes" : ["200"],
+    "body": {"positionslist": [{"fiscalCode": "${check_position_body.fiscal_code}", "noticeNumber": "${check_position_body.notice_number}"}]},
+    "expectedBody": {"outcome":"OK"},
+    "bodyCompareStrategy": "contains",
+    "headers": {
+      "Content-Type": "application/json"
     },
     "tags" : {
       "description" : "pagopa nodo ${env_name} check position"
@@ -834,10 +778,11 @@
     }
   },
   {
+    "enabled" : ${nexi_postgres_enabled},
     "apiName" : "verifyPaymentNoticeOnGPD",
     "appName" : "nodo",
-    "url" : "https://${nexi_node_ip}/webservices/input",
-    "type" : "nexi",
+    "url" : "https://${nexi_node_ip_postgres}/webservices/input",
+    "type" : "nexiPostgres",
     "checkCertificate" : true,
     "method" : "POST",
     "expectedCodes" : ["200"],
@@ -856,7 +801,7 @@
       "SOAPAction": "verifyPaymentNotice",
       "Content-Type": "application/xml",
       "ndphost": "nodo-${env_short}.nexigroup.com",
-      "Host": "${nexi_ndp_host}"
+      "Host": "${nexi_ndp_host_postgres}"
     },
     "tags" : {
       "description" : "pagopa nodo ${env_name} verify payment notice using GPD service"
@@ -900,10 +845,11 @@
     }
   },
   {
+    "enabled" : ${nexi_postgres_enabled},
     "apiName" : "verifyPaymentNoticeOnPartner",
     "appName" : "nodo",
-    "url" : "https://${nexi_node_ip}/webservices/input",
-    "type" : "nexi",
+    "url" : "https://${nexi_node_ip_postgres}/webservices/input",
+    "type" : "nexiPostgres",
     "checkCertificate" : true,
     "method" : "POST",
     "expectedCodes" : ["200"],
@@ -922,7 +868,7 @@
       "SOAPAction": "verifyPaymentNotice",
       "Content-Type": "application/xml",
       "ndphost": "nodo-${env_short}.nexigroup.com",
-      "Host": "${nexi_ndp_host}"
+      "Host": "${nexi_ndp_host_postgres}"
     },
     "tags" : {
       "description" : "pagopa nodo ${env_name} verify payment notice using partner's service"

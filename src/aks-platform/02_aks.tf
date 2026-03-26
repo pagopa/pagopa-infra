@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "aks_rg" {
 
 
 module "aks" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.90.0"
+  source = "./.terraform/modules/__v4__//kubernetes_cluster"
 
   name                       = local.aks_name
   location                   = var.location
@@ -27,8 +27,7 @@ module "aks" {
   # ffppa: Enabled cost analysis on UAT/PROD
   cost_analysis_enabled = var.env_short != "d" ? true : false
 
-  automatic_channel_upgrade = "node-image"
-  node_os_channel_upgrade   = "NodeImage"
+  automatic_channel_upgrade = null
   maintenance_windows_node_os = {
     enabled = true
   }
@@ -87,7 +86,6 @@ module "aks" {
 
   addon_azure_policy_enabled                     = true
   addon_azure_key_vault_secrets_provider_enabled = true
-  addon_azure_pod_identity_enabled               = true
 
   alerts_enabled     = var.aks_alerts_enabled
   custom_logs_alerts = local.aks_logs_alerts
