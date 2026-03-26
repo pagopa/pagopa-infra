@@ -21,7 +21,7 @@
         <!-- Retrieve EC tax code from path parameter -->
         <set-variable name="ecTaxCode" value="@(context.Request.MatchedParameters["creditorinstitutioncode"])" />
 
-          <cache-lookup-value key="@((string) context.Variables["ecTaxCode"])"
+          <cache-lookup-value key="@("CIE_" + (string) context.Variables["ecTaxCode"])"
             variable-name="api_config_creditor_institution_detail_cached_response"
             caching-type="internal" />
 
@@ -77,7 +77,7 @@
                             && context.Variables.ContainsKey("ecTaxCode"))">
 
             <cache-store-value
-              key="@((string) context.Variables["ecTaxCode"])"
+              key="@("CIE_" + (string) context.Variables["ecTaxCode"])"
               value="@(context.Response.Body.As<string>(preserveContent: true))"
               duration="43200"
               caching-type="internal"/>
