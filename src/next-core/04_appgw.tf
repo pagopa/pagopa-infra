@@ -457,7 +457,7 @@ locals {
       name = "rewrite-rule-set-checkout"
       rewrite_rules = [
         {
-          name          = "termini-di-servizio"
+          name          = "root-base-path-redirect"
           rule_sequence = 1
           conditions = [{
             variable    = "var_host"
