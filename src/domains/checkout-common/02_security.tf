@@ -186,3 +186,15 @@ resource "azurerm_key_vault_secret" "checkout_feature_flags_map" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "one_identity_admin_for_checkout" {
+  name         = "checkout-one-identity-admin-for-checkout"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
