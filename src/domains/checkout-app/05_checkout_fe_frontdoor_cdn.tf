@@ -33,7 +33,7 @@ locals {
 
   global_delivery_rules = [
     {
-      order = 1
+      order = 2
       # HSTS and Content-Security-Policy
       modify_response_header_actions = [
         {
@@ -60,7 +60,7 @@ locals {
       ]
     },
     {
-      order = 2
+      order = 3
       modify_response_header_actions = [
         {
           action = "Append"
@@ -89,7 +89,7 @@ locals {
   delivery_custom_rules = [
     {
       name  = "CorsFontForNPG"
-      order = 5
+      order = 6
 
       // conditions
       url_path_conditions       = []
@@ -124,7 +124,7 @@ locals {
     },
     {
       name  = "RedirectAzureFdEndpoint"
-      order = 6
+      order = 1
 
       host_name_condition = [{
         # condition_type   = "url_path_condition"
@@ -132,22 +132,22 @@ locals {
         match_values     = ["azurefd.net"]
         negate_condition = false
         transforms       = ["Lowercase"]
-    }]
-    url_rewrite_actions  = []
-    url_redirect_actions = [{
+      }]
+      url_rewrite_actions = []
+      url_redirect_actions = [{
         redirect_type = "Found"
         protocol      = "Https"
         hostname      = local.dns_zone_key
-        path         = "/"
+        path          = "/"
         fragment      = ""
         query_string  = ""
-    }]
+      }]
   }]
 
   delivery_rule_rewrites = [
     {
       name  = "RewriteRules"
-      order = 3
+      order = 4
 
       url_path_conditions = [{
         condition_type   = "url_path_condition"
@@ -165,7 +165,7 @@ locals {
     },
     {
       name  = "RewriteRulesTerms"
-      order = 4
+      order = 5
 
       url_path_conditions = [{
         condition_type   = "url_path_condition"
