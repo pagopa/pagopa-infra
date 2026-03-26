@@ -110,6 +110,7 @@ module "apim_api_config_cie_api_v1" {
   content_format = "openapi"
   content_value = templatefile("./api/api-config-cie/v1/_openapi.json.tpl", {
     host = local.apim_hostname
+    service = module.apim_printit_cie_product.product_id
   })
 
   xml_content = templatefile("./api/api-config-cie/v1/_base_policy.xml.tpl", {
