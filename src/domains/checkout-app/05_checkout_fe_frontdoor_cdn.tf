@@ -126,15 +126,15 @@ locals {
       name  = "RedirectAzureFdEndpoint"
       order = 6
 
-      url_path_conditions = [{
+      host_name_condition = [{
         # condition_type   = "url_path_condition"
         operator         = "Contains"
-        match_values     = [".azurefd.net"]
+        match_values     = ["azurefd.net"]
         negate_condition = false
         transforms       = ["Lowercase"]
     }]
     url_rewrite_actions  = []
-    url_redirect_action = [{
+    url_redirect_actions = [{
         redirect_type = "Found"
         protocol      = "Https"
         hostname      = local.dns_zone_key
