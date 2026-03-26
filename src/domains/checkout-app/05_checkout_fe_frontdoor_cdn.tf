@@ -121,8 +121,28 @@ locals {
       }]
       url_redirect_actions = []
       url_rewrite_actions  = []
-    }
-  ]
+    },
+    {
+      name  = "RedirectAzureFdEndpoint"
+      order = 6
+
+      url_path_conditions = [{
+        # condition_type   = "url_path_condition"
+        operator         = "Contains"
+        match_values     = [".azurefd.net"]
+        negate_condition = false
+        transforms       = ["Lowercase"]
+    }]
+    url_rewrite_actions  = []
+    url_redirect_action = [{
+        redirect_type = "Found"
+        protocol      = "Https"
+        hostname      = local.dns_zone_key
+        path         = "/"
+        fragment      = ""
+        query_string  = ""
+    }]
+  }]
 
   delivery_rule_rewrites = [
     {
