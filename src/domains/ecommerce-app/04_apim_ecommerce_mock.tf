@@ -129,6 +129,26 @@ resource "azurerm_api_management_api_policy" "apim_ecommerce_nodo_per_pm_mock_po
   xml_content = file("./api/ecommerce-mock/nodoPerPM/v1/_base_policy.xml.tpl")
 }
 
+resource "azurerm_api_management_api_operation_policy" "nodo_per_pm_check_position_policy" {
+  count               = var.env_short == "u" ? 1 : 0
+  api_name            = azurerm_api_management_api.apim_ecommerce_nodo_per_pm_mock[0].name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "checkPosition"
+
+  xml_content = file("./api/ecommerce-mock/nodoPerPM/v1/check_position_mock.xml.tpl")
+}
+
+resource "azurerm_api_management_api_operation_policy" "nodo_per_pm_close_payment_policy" {
+  count               = var.env_short == "u" ? 1 : 0
+  api_name            = azurerm_api_management_api.apim_ecommerce_nodo_per_pm_mock[0].name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "closePayment"
+
+  xml_content = file("./api/ecommerce-mock/nodoPerPM/v1/close_payment_mock.xml.tpl")
+}
+
 
 ##############################
 ## API Mock PDV             ##
@@ -423,6 +443,16 @@ resource "azurerm_api_management_api_operation_policy" "refund_payment" {
   xml_content = file("./api/ecommerce-mock/npg/v1/refund_payment.xml.tpl")
 }
 
+resource "azurerm_api_management_api_operation_policy" "get_order" {
+  count               = var.env_short == "u" ? 1 : 0
+  api_name            = azurerm_api_management_api.apim_ecommerce_npg_mock[0].name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getOrder"
+
+  xml_content = file("./api/ecommerce-mock/npg/v1/get_order.xml.tpl")
+}
+
 ####################################
 ## API Mock for Node Forwarder    ##
 ####################################
@@ -486,4 +516,87 @@ resource "azurerm_api_management_api_policy" "apim_ecommerce_node_forwarder_mock
   resource_group_name = local.pagopa_apim_rg
 
   xml_content = file("./api/ecommerce-mock/node-forwarder/v1/_base_policy.xml.tpl")
+}
+
+#############################
+## API GMP NPG             ##
+#############################
+locals {
+  apim_ecommerce_gmp_mock_api = {
+    display_name          = "eCommerce pagoPA - GMP mock"
+    description           = "API to support integration testing"
+    path                  = "ecommerce/mock/gmp"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "apim_ecommerce_gmp_mock_api" {
+  count               = var.env_short == "u" ? 1 : 0
+  name                = "${local.project}-gmp-mock"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = local.apim_ecommerce_gmp_mock_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+resource "azurerm_api_management_api" "apim_ecommerce_gmp_mock" {
+  count                 = var.env_short == "u" ? 1 : 0
+  name                  = "${local.project}-gmp-mock"
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  subscription_required = local.apim_ecommerce_gmp_mock_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.apim_ecommerce_gmp_mock_api[0].id
+  version               = "v1"
+  revision              = "1"
+
+  description  = local.apim_ecommerce_gmp_mock_api.description
+  display_name = local.apim_ecommerce_gmp_mock_api.display_name
+  path         = local.apim_ecommerce_gmp_mock_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_ecommerce_gmp_mock_api.service_url
+
+  import {
+    content_format = "openapi"
+    content_value = templatefile("./api/ecommerce-mock/gmp/v1/_openapi.json.tpl", {
+      host = local.apim_hostname
+    })
+  }
+}
+
+resource "azurerm_api_management_product_api" "apim_ecommerce_gmp_mock_product_api" {
+  count               = var.env_short == "u" ? 1 : 0
+  api_name            = azurerm_api_management_api.apim_ecommerce_gmp_mock[0].name
+  product_id          = module.apim_ecommerce_product.product_id
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+}
+
+resource "azurerm_api_management_api_policy" "apim_ecommerce_gmp_mock_policy" {
+  count               = var.env_short == "u" ? 1 : 0
+  api_name            = azurerm_api_management_api.apim_ecommerce_gmp_mock[0].name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  xml_content = file("./api/ecommerce-mock/gmp/v1/_base_policy.xml.tpl")
+}
+
+resource "azurerm_api_management_api_operation_policy" "post_payment_methods_search" {
+  count               = var.env_short == "u" ? 1 : 0
+  api_name            = azurerm_api_management_api.apim_ecommerce_gmp_mock[0].name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "searchPaymentMethods"
+
+  xml_content = file("./api/ecommerce-mock/gmp/v1/post_payment_methods_search.xml")
+}
+
+resource "azurerm_api_management_api_operation_policy" "get_payment_method" {
+  count               = var.env_short == "u" ? 1 : 0
+  api_name            = azurerm_api_management_api.apim_ecommerce_gmp_mock[0].name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getPaymentMethod"
+
+  xml_content = file("./api/ecommerce-mock/gmp/v1/get_payment_method.xml")
 }

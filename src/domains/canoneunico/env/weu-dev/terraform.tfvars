@@ -30,7 +30,6 @@ canoneunico_function_autoscale_maximum = 3
 canoneunico_function_autoscale_default = 1
 
 # storage
-storage_queue_private_endpoint_enabled = true
 storage_account_info = {
   account_kind                      = "StorageV2"
   account_tier                      = "Standard"

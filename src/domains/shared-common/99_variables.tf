@@ -125,11 +125,6 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
-variable "reporting_storage_public_access_enabled" {
-  type        = bool
-  description = "(Optional) Whether the public network access is enabled?"
-  default     = true
-}
 
 variable "cosmos_iuvgenerator_db_params" {
   type = object({
@@ -203,6 +198,7 @@ variable "cosmos_authorizer_db_params" {
     public_network_access_enabled     = bool
     is_virtual_network_filter_enabled = bool
     backup_continuous_enabled         = bool
+    burst_capacity_enabled            = bool
   })
 }
 

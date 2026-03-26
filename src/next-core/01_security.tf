@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.22.0"
+  source              = "./.terraform/modules/__v4__/key_vault"
   name                = format("%s-kv", local.product)
   location            = azurerm_resource_group.sec_rg.location
   resource_group_name = azurerm_resource_group.sec_rg.name
@@ -32,6 +32,16 @@ resource "azurerm_key_vault_access_policy" "app_gateway_public_policy" {
   key_vault_id            = module.key_vault.id
   tenant_id               = data.azurerm_client_config.current.tenant_id
   object_id               = azurerm_user_assigned_identity.appgateway_public.principal_id
+  key_permissions         = ["Get", "List"]
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List", "Purge"]
+  storage_permissions     = []
+}
+
+resource "azurerm_key_vault_access_policy" "app_gateway_integration_policy" {
+  key_vault_id            = module.key_vault.id
+  tenant_id               = data.azurerm_client_config.current.tenant_id
+  object_id               = azurerm_user_assigned_identity.appgateway.principal_id
   key_permissions         = ["Get", "List"]
   secret_permissions      = ["Get", "List"]
   certificate_permissions = ["Get", "List", "Purge"]

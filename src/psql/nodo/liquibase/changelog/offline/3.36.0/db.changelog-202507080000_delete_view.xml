@@ -1,0 +1,51 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+        <changeSet author="liquibase" id="202507081512" >
+        <dropView viewName="V_POSITION_TRANSFER"/>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202507081513" >
+        <dropView viewName="V_RT_VERSAMENTI"/>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202507081514" >
+        <dropView viewName="V_PM_SESSION_DATA"/>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202507081515" >
+        <dropView viewName="V_RT"/>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202507081516" >
+        <dropView viewName="V_RPT_VERSAMENTI"/>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202507081517" >
+        <dropView viewName="V_RPT"/>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202507081518" >
+        <dropView viewName="PM_SESSION_DATA"/>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202507081519" >
+        <dropView viewName="RPT_VERSAMENTI"/>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202507081520" >
+        <dropView viewName="RT"/>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202507081530" >
+        <dropView viewName="RPT"/>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202507081540" >
+        <dropView viewName="RT_VERSAMENTI"/>
+    </changeSet>
+
+
+</databaseChangeLog>

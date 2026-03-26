@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "sftp" {
 }
 
 module "sftp" {
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
   #source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=add-SFTP-to-sa"
 
   name                = replace("${local.project}-sftp", "-", "")
@@ -60,7 +60,7 @@ resource "azurerm_private_endpoint" "sftp_blob" {
 
   private_dns_zone_group {
     name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.storage[0].id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.storage.id]
   }
 
   tags = module.tag_config.tags

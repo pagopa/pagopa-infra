@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.20.1"
+  source = "./.terraform/modules/__v4__/key_vault"
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -94,9 +94,10 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "redis_wallet_password" {
-  name         = "redis-wallet-password"
-  value        = module.pagopa_pay_wallet_redis[0].primary_access_key
+
+resource "azurerm_key_vault_secret" "redis_std_wallet_password" {
+  name         = "redis-std-wallet-password"
+  value        = module.pagopa_pay_wallet_redis_std[0].primary_access_key
   key_vault_id = module.key_vault.id
 }
 
@@ -296,6 +297,21 @@ resource "azurerm_key_vault_secret" "sender_evt_tx_event_hub_connection_string_s
   key_vault_id = module.key_vault.id
 }
 
+//connection string to integration test ( only uat)
+data "azurerm_eventhub_authorization_rule" "receiver_evt_rx_event_hub_connection_string_test" {
+  count               = var.env_short == "u" ? 1 : 0
+  name                = "payment-wallet-evt-rx"
+  namespace_name      = "${local.product_italy}-observ-evh"
+  eventhub_name       = "payment-wallet-ingestion-dl"
+  resource_group_name = "${local.product_italy}-observ-evh-rg"
+}
+
+resource "azurerm_key_vault_secret" "receiver_evt_rx_event_hub_connection_string_test" {
+  count        = var.env_short == "u" ? 1 : 0
+  name         = "receiver-evt-rx-event-hub-connection-string-test"
+  value        = data.azurerm_eventhub_authorization_rule.receiver_evt_rx_event_hub_connection_string_test[0].primary_connection_string
+  key_vault_id = module.key_vault.id
+}
 
 //connection string to staging evh instance
 data "azurerm_eventhub_authorization_rule" "sender_evt_tx_event_hub_connection_string_staging" {
@@ -409,4 +425,104 @@ resource "azurerm_key_vault_certificate" "pay-wallet-jwt-token-issuer-certificat
       validity_in_months = 1
     }
   }
+}
+
+resource "random_password" "pay_wallet_jwt_issuer_service_primary_api_key_pass" {
+  length  = 32
+  special = false
+  #key-value string map used to track resource state: if one key-value change a resource regeneration is triggered
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "random_password" "pay_wallet_jwt_issuer_service_secondary_api_key_pass" {
+  length  = 32
+  special = false
+  #key-value string map used to track resource state: if one key-value change a resource regeneration is triggered
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "azurerm_key_vault_secret" "pay_wallet_jwt_issuer_service_primary_api_key" {
+  name         = "pay-wallet-jwt-issuer-service-primary-api-key"
+  value        = random_password.pay_wallet_jwt_issuer_service_primary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "pay_wallet_jwt_issuer_service_secondary_api_key" {
+  name         = "pay-wallet-jwt-issuer-service-secondary-api-key"
+  value        = random_password.pay_wallet_jwt_issuer_service_secondary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+
+resource "random_password" "payment_wallet_service_primary_api_key_pass" {
+  length  = 32
+  special = false
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "random_password" "payment_wallet_service_secondary_api_key_pass" {
+  length  = 32
+  special = false
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "azurerm_key_vault_secret" "payment_wallet_service_primary_api_key" {
+  name         = "payment-wallet-service-primary-api-key"
+  value        = random_password.payment_wallet_service_primary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "payment_wallet_service_secondary_api_key" {
+  name         = "payment-wallet-service-secondary-api-key"
+  value        = random_password.payment_wallet_service_secondary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+
+
+resource "random_password" "pay_wallet_event_dispatcher_service_primary_api_key_pass" {
+  length  = 32
+  special = false
+  #key-value string map used to track resource state: if one key-value change a resource regeneration is triggered
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "random_password" "pay_wallet_event_dispatcher_service_secondary_api_key_pass" {
+  length  = 32
+  special = false
+  #key-value string map used to track resource state: if one key-value change a resource regeneration is triggered
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "azurerm_key_vault_secret" "pay_wallet_event_dispatcher_service_primary_api_key" {
+  name         = "pay-wallet-event-dispatcher-service-primary-api-key"
+  value        = random_password.pay_wallet_event_dispatcher_service_primary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "pay_wallet_event_dispatcher_service_secondary_api_key" {
+  name         = "pay-wallet-event-dispatcher-service-secondary-api-key"
+  value        = random_password.pay_wallet_event_dispatcher_service_secondary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+resource "azurerm_key_vault_secret" "pay_wallet_jwt_issuer_service_active_api_key" {
+  name         = "pay-wallet-jwt-issuer-service-active-api-key"
+  value        = var.pay_wallet_jwt_issuer_api_key_use_primary ? azurerm_key_vault_secret.pay_wallet_jwt_issuer_service_primary_api_key.value : azurerm_key_vault_secret.payment_wallet_service_secondary_api_key.value
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "payment_wallet_service_active_api_key" {
+  name         = "payment-wallet-service-active-api-key"
+  value        = var.payment_wallet_service_api_key_use_primary ? azurerm_key_vault_secret.payment_wallet_service_primary_api_key.value : azurerm_key_vault_secret.payment_wallet_service_secondary_api_key.value
+  key_vault_id = module.key_vault.id
 }

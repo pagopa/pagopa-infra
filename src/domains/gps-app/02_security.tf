@@ -8,11 +8,6 @@ data "azurerm_key_vault_secret" "gpd_paa_pwd" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-data "azurerm_key_vault_secret" "flows_sa_connection_string" {
-  name         = format("flows-sa-%s-connection-string", var.env_short)
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
-
 data "azurerm_key_vault_secret" "monitor_notification_email" {
   name         = "monitor-notification-email"
   key_vault_id = data.azurerm_key_vault.kv.id
@@ -91,5 +86,20 @@ resource "azurerm_key_vault_secret" "gpd_qa_integration_testing_subscription_key
   value        = azurerm_api_management_subscription.gpd_integration_qa_subkey[count.index].primary_key
   content_type = "text/plain"
 
+  key_vault_id = data.azurerm_key_vault.gps_kv.id
+}
+
+### FDR1-FDR3 secrets
+resource "azurerm_key_vault_secret" "fdr1_subscription_key" {
+  name         = "apikey-fdr1"
+  value        = azurerm_api_management_subscription.fdr1_flow_subkey.primary_key
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.gps_kv.id
+}
+
+resource "azurerm_key_vault_secret" "fdr3_subscription_key" {
+  name         = "apikey-fdr3"
+  value        = azurerm_api_management_subscription.fdr3_flow_subkey.primary_key
+  content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.gps_kv.id
 }

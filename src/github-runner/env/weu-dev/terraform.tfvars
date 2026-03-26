@@ -46,16 +46,7 @@ cidr_vnet_italy = ["10.3.0.0/16"]
 vpn_gw_pip_sku               = "Standard"
 vpn_gw_pip_allocation_method = "Static"
 vpn_random_specials_char     = false
-#
-# Dns
-#
-external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.dev.platform"
-dns_zone_wfesp           = ""
 
-dns_a_reconds_dbnodo_ips             = ["10.70.67.18"]    # db onCloud
-dns_a_reconds_dbnodonexipostgres_ips = ["10.222.214.176"] # db onPrem PostgreSQL
-private_dns_zone_db_nodo_pagamenti   = "d.db-nodo-pagamenti.com"
 ### External resources
 
 monitor_resource_group_name                 = "pagopa-d-monitor-rg"

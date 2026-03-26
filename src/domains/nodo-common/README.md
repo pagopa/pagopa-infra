@@ -5,55 +5,54 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.3.0 |
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.21.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.116.0, < 4.0.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3.1 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.16 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | d2b9a60c74ecfb248506e7573062bdf653ce9f99 |
-| <a name="module_cosmosdb_account_nodo_re"></a> [cosmosdb\_account\_nodo\_re](#module\_cosmosdb\_account\_nodo\_re) | ./.terraform/modules/__v3__/cosmosdb_account | n/a |
-| <a name="module_cosmosdb_account_nodo_re_containers"></a> [cosmosdb\_account\_nodo\_re\_containers](#module\_cosmosdb\_account\_nodo\_re\_containers) | ./.terraform/modules/__v3__/cosmosdb_sql_container | n/a |
-| <a name="module_cosmosdb_account_nodo_re_db"></a> [cosmosdb\_account\_nodo\_re\_db](#module\_cosmosdb\_account\_nodo\_re\_db) | ./.terraform/modules/__v3__/cosmosdb_sql_database | n/a |
-| <a name="module_cosmosdb_account_nodo_verifyko"></a> [cosmosdb\_account\_nodo\_verifyko](#module\_cosmosdb\_account\_nodo\_verifyko) | ./.terraform/modules/__v3__/cosmosdb_account | n/a |
-| <a name="module_cosmosdb_account_nodo_verifyko_containers"></a> [cosmosdb\_account\_nodo\_verifyko\_containers](#module\_cosmosdb\_account\_nodo\_verifyko\_containers) | ./.terraform/modules/__v3__/cosmosdb_sql_container | n/a |
-| <a name="module_cosmosdb_account_nodo_verifyko_db"></a> [cosmosdb\_account\_nodo\_verifyko\_db](#module\_cosmosdb\_account\_nodo\_verifyko\_db) | ./.terraform/modules/__v3__/cosmosdb_sql_database | n/a |
-| <a name="module_cosmosdb_account_standin"></a> [cosmosdb\_account\_standin](#module\_cosmosdb\_account\_standin) | ./.terraform/modules/__v3__/cosmosdb_account | n/a |
-| <a name="module_cosmosdb_account_standin_containers"></a> [cosmosdb\_account\_standin\_containers](#module\_cosmosdb\_account\_standin\_containers) | ./.terraform/modules/__v3__/cosmosdb_sql_container | n/a |
-| <a name="module_cosmosdb_account_standin_db"></a> [cosmosdb\_account\_standin\_db](#module\_cosmosdb\_account\_standin\_db) | ./.terraform/modules/__v3__/cosmosdb_sql_database | n/a |
-| <a name="module_cosmosdb_account_wispconv"></a> [cosmosdb\_account\_wispconv](#module\_cosmosdb\_account\_wispconv) | ./.terraform/modules/__v3__/cosmosdb_account | n/a |
-| <a name="module_cosmosdb_account_wispconv_containers"></a> [cosmosdb\_account\_wispconv\_containers](#module\_cosmosdb\_account\_wispconv\_containers) | ./.terraform/modules/__v3__/cosmosdb_sql_container | n/a |
-| <a name="module_cosmosdb_account_wispconv_db"></a> [cosmosdb\_account\_wispconv\_db](#module\_cosmosdb\_account\_wispconv\_db) | ./.terraform/modules/__v3__/cosmosdb_sql_database | n/a |
-| <a name="module_cosmosdb_nodo_re_snet"></a> [cosmosdb\_nodo\_re\_snet](#module\_cosmosdb\_nodo\_re\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
-| <a name="module_cosmosdb_nodo_verifyko_snet"></a> [cosmosdb\_nodo\_verifyko\_snet](#module\_cosmosdb\_nodo\_verifyko\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
-| <a name="module_cosmosdb_standin_snet"></a> [cosmosdb\_standin\_snet](#module\_cosmosdb\_standin\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
-| <a name="module_cosmosdb_wisp_converter_snet"></a> [cosmosdb\_wisp\_converter\_snet](#module\_cosmosdb\_wisp\_converter\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
-| <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | ./.terraform/modules/__v3__/github_federated_identity | n/a |
-| <a name="module_identity_ci_01"></a> [identity\_ci\_01](#module\_identity\_ci\_01) | ./.terraform/modules/__v3__/github_federated_identity | n/a |
-| <a name="module_mbd_storage_account"></a> [mbd\_storage\_account](#module\_mbd\_storage\_account) | ./.terraform/modules/__v3__/storage_account | n/a |
-| <a name="module_nodo_cfg_sync_re_storage_account"></a> [nodo\_cfg\_sync\_re\_storage\_account](#module\_nodo\_cfg\_sync\_re\_storage\_account) | ./.terraform/modules/__v3__/storage_account | n/a |
-| <a name="module_nodo_re_storage_account"></a> [nodo\_re\_storage\_account](#module\_nodo\_re\_storage\_account) | ./.terraform/modules/__v3__/storage_account | n/a |
-| <a name="module_nodo_storico_storage_account"></a> [nodo\_storico\_storage\_account](#module\_nodo\_storico\_storage\_account) | ./.terraform/modules/__v3__/storage_account | n/a |
-| <a name="module_nodo_verifyko_storage_account"></a> [nodo\_verifyko\_storage\_account](#module\_nodo\_verifyko\_storage\_account) | ./.terraform/modules/__v3__/storage_account | n/a |
-| <a name="module_postgres_flexible_server"></a> [postgres\_flexible\_server](#module\_postgres\_flexible\_server) | ./.terraform/modules/__v3__/postgres_flexible_server | n/a |
-| <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
-| <a name="module_postgres_flexible_snet_replica"></a> [postgres\_flexible\_snet\_replica](#module\_postgres\_flexible\_snet\_replica) | ./.terraform/modules/__v3__/subnet | n/a |
-| <a name="module_postgres_storico_flexible_server"></a> [postgres\_storico\_flexible\_server](#module\_postgres\_storico\_flexible\_server) | ./.terraform/modules/__v3__/postgres_flexible_server | n/a |
-| <a name="module_postgres_storico_flexible_snet"></a> [postgres\_storico\_flexible\_snet](#module\_postgres\_storico\_flexible\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
-| <a name="module_postgresql_nodo_replica_db"></a> [postgresql\_nodo\_replica\_db](#module\_postgresql\_nodo\_replica\_db) | ./.terraform/modules/__v3__/postgres_flexible_server_replica | n/a |
-| <a name="module_sftp"></a> [sftp](#module\_sftp) | ./.terraform/modules/__v3__/storage_account | n/a |
-| <a name="module_storage_account_snet"></a> [storage\_account\_snet](#module\_storage\_account\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 76e8484e401488e4013be5e5033776290b3d503c |
+| <a name="module_cosmosdb_account_nodo_re"></a> [cosmosdb\_account\_nodo\_re](#module\_cosmosdb\_account\_nodo\_re) | ./.terraform/modules/__v4__/cosmosdb_account | n/a |
+| <a name="module_cosmosdb_account_nodo_re_containers"></a> [cosmosdb\_account\_nodo\_re\_containers](#module\_cosmosdb\_account\_nodo\_re\_containers) | ./.terraform/modules/__v4__/cosmosdb_sql_container | n/a |
+| <a name="module_cosmosdb_account_nodo_re_db"></a> [cosmosdb\_account\_nodo\_re\_db](#module\_cosmosdb\_account\_nodo\_re\_db) | ./.terraform/modules/__v4__/cosmosdb_sql_database | n/a |
+| <a name="module_cosmosdb_account_nodo_verifyko"></a> [cosmosdb\_account\_nodo\_verifyko](#module\_cosmosdb\_account\_nodo\_verifyko) | ./.terraform/modules/__v4__/cosmosdb_account | n/a |
+| <a name="module_cosmosdb_account_nodo_verifyko_containers"></a> [cosmosdb\_account\_nodo\_verifyko\_containers](#module\_cosmosdb\_account\_nodo\_verifyko\_containers) | ./.terraform/modules/__v4__/cosmosdb_sql_container | n/a |
+| <a name="module_cosmosdb_account_nodo_verifyko_db"></a> [cosmosdb\_account\_nodo\_verifyko\_db](#module\_cosmosdb\_account\_nodo\_verifyko\_db) | ./.terraform/modules/__v4__/cosmosdb_sql_database | n/a |
+| <a name="module_cosmosdb_account_standin"></a> [cosmosdb\_account\_standin](#module\_cosmosdb\_account\_standin) | ./.terraform/modules/__v4__/cosmosdb_account | n/a |
+| <a name="module_cosmosdb_account_standin_containers"></a> [cosmosdb\_account\_standin\_containers](#module\_cosmosdb\_account\_standin\_containers) | ./.terraform/modules/__v4__/cosmosdb_sql_container | n/a |
+| <a name="module_cosmosdb_account_standin_db"></a> [cosmosdb\_account\_standin\_db](#module\_cosmosdb\_account\_standin\_db) | ./.terraform/modules/__v4__/cosmosdb_sql_database | n/a |
+| <a name="module_cosmosdb_account_wispconv"></a> [cosmosdb\_account\_wispconv](#module\_cosmosdb\_account\_wispconv) | ./.terraform/modules/__v4__/cosmosdb_account | n/a |
+| <a name="module_cosmosdb_account_wispconv_containers"></a> [cosmosdb\_account\_wispconv\_containers](#module\_cosmosdb\_account\_wispconv\_containers) | ./.terraform/modules/__v4__/cosmosdb_sql_container | n/a |
+| <a name="module_cosmosdb_account_wispconv_db"></a> [cosmosdb\_account\_wispconv\_db](#module\_cosmosdb\_account\_wispconv\_db) | ./.terraform/modules/__v4__/cosmosdb_sql_database | n/a |
+| <a name="module_cosmosdb_nodo_re_snet"></a> [cosmosdb\_nodo\_re\_snet](#module\_cosmosdb\_nodo\_re\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_cosmosdb_nodo_verifyko_snet"></a> [cosmosdb\_nodo\_verifyko\_snet](#module\_cosmosdb\_nodo\_verifyko\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_cosmosdb_standin_snet"></a> [cosmosdb\_standin\_snet](#module\_cosmosdb\_standin\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_cosmosdb_wisp_converter_snet"></a> [cosmosdb\_wisp\_converter\_snet](#module\_cosmosdb\_wisp\_converter\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | ./.terraform/modules/__v4__/github_federated_identity | n/a |
+| <a name="module_identity_ci_01"></a> [identity\_ci\_01](#module\_identity\_ci\_01) | ./.terraform/modules/__v4__/github_federated_identity | n/a |
+| <a name="module_mbd_storage_account"></a> [mbd\_storage\_account](#module\_mbd\_storage\_account) | ./.terraform/modules/__v4__/storage_account | n/a |
+| <a name="module_nodo_cfg_sync_re_storage_account"></a> [nodo\_cfg\_sync\_re\_storage\_account](#module\_nodo\_cfg\_sync\_re\_storage\_account) | ./.terraform/modules/__v4__/storage_account | n/a |
+| <a name="module_nodo_re_storage_account"></a> [nodo\_re\_storage\_account](#module\_nodo\_re\_storage\_account) | ./.terraform/modules/__v4__/storage_account | n/a |
+| <a name="module_nodo_storico_storage_account"></a> [nodo\_storico\_storage\_account](#module\_nodo\_storico\_storage\_account) | ./.terraform/modules/__v4__/storage_account | n/a |
+| <a name="module_nodo_verifyko_storage_account"></a> [nodo\_verifyko\_storage\_account](#module\_nodo\_verifyko\_storage\_account) | ./.terraform/modules/__v4__/storage_account | n/a |
+| <a name="module_postgres_flexible_itn_spoke_snet_replica"></a> [postgres\_flexible\_itn\_spoke\_snet\_replica](#module\_postgres\_flexible\_itn\_spoke\_snet\_replica) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
+| <a name="module_postgres_flexible_server"></a> [postgres\_flexible\_server](#module\_postgres\_flexible\_server) | ./.terraform/modules/__v4__/postgres_flexible_server | n/a |
+| <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_postgres_storico_flexible_server"></a> [postgres\_storico\_flexible\_server](#module\_postgres\_storico\_flexible\_server) | ./.terraform/modules/__v4__/postgres_flexible_server | n/a |
+| <a name="module_postgres_storico_flexible_snet"></a> [postgres\_storico\_flexible\_snet](#module\_postgres\_storico\_flexible\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_postgresql_nodo_spoke_replica_itn_db"></a> [postgresql\_nodo\_spoke\_replica\_itn\_db](#module\_postgresql\_nodo\_spoke\_replica\_itn\_db) | ./.terraform/modules/__v4__/postgres_flexible_server_replica | n/a |
+| <a name="module_sftp"></a> [sftp](#module\_sftp) | ./.terraform/modules/__v4__/storage_account | n/a |
+| <a name="module_storage_account_snet"></a> [storage\_account\_snet](#module\_storage\_account\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
-| <a name="module_wisp_converter_storage_account"></a> [wisp\_converter\_storage\_account](#module\_wisp\_converter\_storage\_account) | ./.terraform/modules/__v3__/storage_account | n/a |
-| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
+| <a name="module_wisp_converter_storage_account"></a> [wisp\_converter\_storage\_account](#module\_wisp\_converter\_storage\_account) | ./.terraform/modules/__v4__/storage_account | n/a |
+| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v4__/kubernetes_workload_identity_init | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [azapi_resource.azure_postgresql_ls](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azurerm_api_management_subscription.integration_test_forwarder_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.integration_test_gpd_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.integration_test_nodo_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
@@ -61,17 +60,7 @@
 | [azurerm_api_management_subscription.node_for_ecommerce_api_v1_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.node_for_ecommerce_api_v2_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_data_factory.data_factory](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory) | resource |
-| [azurerm_data_factory_custom_dataset.datasets](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_custom_dataset) | resource |
-| [azurerm_data_factory_data_flow.dataflow_online](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_data_flow) | resource |
-| [azurerm_data_factory_data_flow.dataflow_re](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_data_flow) | resource |
-| [azurerm_data_factory_data_flow.dataflow_wfesp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_data_flow) | resource |
 | [azurerm_data_factory_integration_runtime_azure.autoresolve](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_integration_runtime_azure) | resource |
-| [azurerm_data_factory_pipeline.pipeline_online](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_pipeline) | resource |
-| [azurerm_data_factory_pipeline.pipeline_re](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_pipeline) | resource |
-| [azurerm_data_factory_pipeline.pipeline_wfesp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_pipeline) | resource |
-| [azurerm_data_factory_trigger_schedule.trigger_online](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_trigger_schedule) | resource |
-| [azurerm_data_factory_trigger_schedule.trigger_re](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_trigger_schedule) | resource |
-| [azurerm_data_factory_trigger_schedule.trigger_wfesp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_key_vault_secret.ai_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.cosmos_biz_account_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.cosmos_neg_biz_account_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -79,6 +68,7 @@
 | [azurerm_key_vault_secret.cosmos_verifyko_account_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.ecommerce_hang_timeout_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.evthub_nodo_dei_pagamenti_biz_evt_pagopa_biz_evt_tx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.evthub_nodo_dei_pagamenti_cache_stand_in_rx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.evthub_nodo_dei_pagamenti_cache_sync_rx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.evthub_nodo_dei_pagamenti_negative_biz_evt_pagopa_negative_biz_evt_tx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.evthub_nodo_dei_pagamenti_re_nodo_dei_pagamenti](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -92,6 +82,7 @@
 | [azurerm_key_vault_secret.integration_test_gpd_subscription_key_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.integration_test_nodo_subscription_key_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.integration_test_technical_support_subscription_key_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.mbd_storage_conn_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.mbd_storage_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.mbd_storage_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.node_cfg_sync_re_sa_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -105,6 +96,7 @@
 | [azurerm_key_vault_secret.wisp_payment_timeout_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.wisp_rpt_timeout_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_action_group) | resource |
+| [azurerm_monitor_metric_alert.cosmos_db_provisioned_throughput_exceeded](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.cosmos_wisp_normalized_ru_exceeded](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_postgresql_flexible_server_configuration.nodo_db_flex_default_pool_size](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
 | [azurerm_postgresql_flexible_server_configuration.nodo_db_flex_ignore_startup_parameters](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
@@ -129,6 +121,7 @@
 | [azurerm_private_dns_zone.adf](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.adf_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_private_endpoint.data_factory_pe](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.firmatore_mbd_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.nodo_cfg_sync_re_private_endpoint_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.nodo_re_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.nodo_storico_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
@@ -189,6 +182,7 @@
 | [azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-verify-ko-tablestorage-rx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-verify-ko-tx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-tx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
+| [azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_nodo-dei-pagamenti-cache-stand-in-rx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_nodo-dei-pagamenti-cache-sync-rx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_nodo-dei-pagamenti-stand-in-sync-rx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_nodo-dei-pagamenti-stand-in-tx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
@@ -207,6 +201,7 @@
 | [azurerm_private_dns_zone.internal](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.postgres](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.privatelink_blob_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.privatelink_file_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.privatelink_redis_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.privatelink_table_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.storage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
@@ -222,9 +217,11 @@
 | [azurerm_subnet.aks_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.nodo_re_to_datastore_function_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.private_endpoint_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
+| [azurerm_subnet.vpn_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
+| [azurerm_virtual_network.spoke_data_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
-| [azurerm_virtual_network.vnet_replica](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
+| [azurerm_virtual_network.vnet_italy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 
 ## Inputs
 
@@ -253,8 +250,8 @@
 | <a name="input_ingress_load_balancer_ip"></a> [ingress\_load\_balancer\_ip](#input\_ingress\_load\_balancer\_ip) | n/a | `string` | n/a | yes |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
-| <a name="input_location_replica"></a> [location\_replica](#input\_location\_replica) | One of westeurope, northeurope | `string` | `"northeurope"` | no |
-| <a name="input_location_replica_short"></a> [location\_replica\_short](#input\_location\_replica\_short) | One of wue, neu | `string` | `"neu"` | no |
+| <a name="input_location_replica"></a> [location\_replica](#input\_location\_replica) | One of westeurope, italynorth | `string` | `"italynorth"` | no |
+| <a name="input_location_replica_short"></a> [location\_replica\_short](#input\_location\_replica\_short) | One of wue, itn | `string` | `"itn"` | no |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |

@@ -1014,6 +1014,71 @@
                 }
             }
         },
+        "/psp/api/v1/orders/{orderId}/": {
+            "get": {
+                "operationId": "getOrder",
+                "tags": [
+                    "Payment Services"
+                ],
+                "summary": "Searches for an order and returns its details.",
+                "description": "It provides order details including all operations associated with given orderId.",
+                "parameters": [
+                    {
+                        "name": "Correlation-Id",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "orderId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-API-KEY",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Order not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/fe/build/text/{id}": {
             "post": {
                 "tags": [
@@ -2762,6 +2827,77 @@
                         "type": "string",
                         "example": "2022-09-01T01:20:00.001Z",
                         "description": "Datetime of the operation"
+                    }
+                }
+            },
+            "OrderStatus": {
+                "type": "object",
+                "properties": {
+                    "order": {
+                        "$ref": "#/components/schemas/Order"
+                    },
+                    "authorizedAmount": {
+                        "type": "string",
+                        "description": "Authorized amount",
+                        "example": "3545"
+                    },
+                    "capturedAmount": {
+                        "type": "string",
+                        "description": "Captured amount",
+                        "example": "3545"
+                    },
+                    "lastOperationType": {
+                        "$ref": "#/components/schemas/OperationType"
+                    },
+                    "lastOperationTime": {
+                        "type": "string",
+                        "example": "2022-09-01T01:20:00.001Z",
+                        "description": "Datetime of the operation"
+                    }
+                }
+            },
+            "PaymentLink": {
+                "type": "object",
+                "properties": {
+                    "linkId": {
+                        "type": "string",
+                        "example": "92864835"
+                    },
+                    "amount": {
+                        "type": "string",
+                        "example": "3545"
+                    },
+                    "expirationDate": {
+                        "type": "string",
+                        "example": "2019-02-11T00:00:00.000Z"
+                    },
+                    "link": {
+                        "type": "string",
+                        "example": "https://{gateway_hosted_page}"
+                    },
+                    "paidByOperationId": {
+                        "type": "string",
+                        "example": "3470744"
+                    }
+                }
+            },
+            "OrderResponse": {
+                "type": "object",
+                "properties": {
+                    "orderStatus": {
+                        "$ref": "#/components/schemas/OrderStatus"
+                    },
+                    "operations": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Operation"
+                        }
+                    },
+                    "links": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PaymentLink"
+                        }
                     }
                 }
             }

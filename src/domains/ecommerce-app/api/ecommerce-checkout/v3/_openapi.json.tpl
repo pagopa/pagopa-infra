@@ -186,7 +186,7 @@
           },
           {
             "in": "header",
-            "name": "x-rpt-id",
+            "name": "x-rpt-ids",
             "required": false,
             "description": "Optional RPT ID used to track post transaction attempts to payment notices",
             "schema": {
@@ -285,7 +285,7 @@
           },
           {
             "in": "header",
-            "name": "x-rpt-id",
+            "name": "x-rpt-ids",
             "required": false,
             "description": "Optional RPT ID used to track get payment-methods attempts to payment notices",
             "schema": {
@@ -364,7 +364,7 @@
           },
           {
             "in": "header",
-            "name": "x-rpt-id",
+            "name": "x-rpt-ids",
             "required": false,
             "description": "Optional RPT ID used to track post session attempts to payment notices",
             "schema": {
@@ -535,7 +535,7 @@
             "description": "Payment notice amount",
             "type": "integer",
             "minimum": 0,
-            "maximum": 999999999
+            "maximum": 99999999999
           },
           "dueDate": {
             "description": "Payment notice due date",
@@ -1099,7 +1099,7 @@
         "description": "Amount for payments, in euro cents",
         "type": "integer",
         "minimum": 0,
-        "maximum": 999999999
+        "maximum": 99999999999
       },
       "TransactionStatus": {
         "type": "string",

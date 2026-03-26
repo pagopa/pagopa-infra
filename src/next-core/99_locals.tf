@@ -1,10 +1,9 @@
 locals {
-  product             = "${var.prefix}-${var.env_short}"
-  product_region      = "${var.prefix}-${var.env_short}-${var.location_short}"
-  product_ita         = "${var.prefix}-${var.env_short}-${var.location_short_ita}"
-  project             = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  project_ita         = "${var.prefix}-${var.env_short}-${var.location_short_ita}-${var.domain}"
-  geo_replica_project = "${var.prefix}-${var.env_short}-${var.geo_replica_location_short}-${var.domain}-replica"
+  product        = "${var.prefix}-${var.env_short}"
+  product_region = "${var.prefix}-${var.env_short}-${var.location_short}"
+  product_ita    = "${var.prefix}-${var.env_short}-${var.location_short_ita}"
+  project        = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_ita    = "${var.prefix}-${var.env_short}-${var.location_short_ita}-${var.domain}"
 
   dns_forwarder_backup_name = "${local.product}-dns-forwarder-backup-vmss"
 

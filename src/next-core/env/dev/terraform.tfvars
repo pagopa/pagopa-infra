@@ -17,7 +17,6 @@ is_feature_enabled = {
   node_forwarder_ha_enabled = false,
   vpn                       = true,
   dns_forwarder_lb          = true,
-  postgres_private_dns      = true,
   apim_core_import          = true,
   use_new_apim              = false
 }
@@ -63,10 +62,6 @@ log_analytics_workspace_name                = "pagopa-d-law"
 log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 
 
-#
-# replica settings
-#
-geo_replica_enabled = false
 
 
 #
@@ -144,10 +139,11 @@ apim_v2_subnet_nsg_security_rules = [
   }
 ]
 
-apim_v2_publisher_name = "pagoPA Platform DEV"
-apim_v2_sku            = "Developer_1"
-apim_v2_alerts_enabled = false
-dns_zone_prefix        = "dev.platform"
+apim_v2_publisher_name           = "pagoPA Platform DEV"
+apim_v2_sku                      = "Developer_1"
+apim_v2_alerts_enabled           = false
+apim_enable_nm3_decoupler_switch = true
+dns_zone_prefix                  = "dev.platform"
 
 cidr_subnet_appgateway_integration = ["10.230.8.192/27"]
 integration_appgateway_private_ip  = "10.230.8.200"
@@ -641,7 +637,7 @@ eventhubs_04 = [
     name              = "nodo-dei-pagamenti-cache"
     partitions        = 1
     message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-cache-sync-rx"]
+    consumers         = ["nodo-dei-pagamenti-cache-sync-rx", "nodo-dei-pagamenti-cache-aca-rx", "nodo-dei-pagamenti-cache-stand-in-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-cache-tx"
@@ -651,6 +647,18 @@ eventhubs_04 = [
       },
       {
         name   = "nodo-dei-pagamenti-cache-sync-rx" # node-cfg-sync
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-cache-aca-rx" # node-cfg for ACA-Payments
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-cache-stand-in-rx" # node-cfg for Stand-In Manager
         listen = true
         send   = false
         manage = false
@@ -681,7 +689,7 @@ eventhubs_04 = [
     name              = "fdr-qi-reported-iuv"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["fdr-qi-reported-iuv-rx"]
+    consumers         = ["fdr-qi-reported-iuv-rx", "gpd-reporting-sync"]
     keys = [
       {
         name   = "fdr-qi-reported-iuv-tx"
@@ -691,6 +699,12 @@ eventhubs_04 = [
       },
       {
         name   = "fdr-qi-reported-iuv-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "gpd-reporting-sync"
         listen = true
         send   = false
         manage = false

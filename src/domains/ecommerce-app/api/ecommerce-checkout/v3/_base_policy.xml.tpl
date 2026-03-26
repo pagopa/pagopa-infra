@@ -17,7 +17,7 @@
           <header>lang</header>
           <header>x-correlation-id</header>
           <header>x-client-id-from-client</header>
-          <header>x-rpt-id</header>
+          <header>x-rpt-ids</header>
         </allowed-headers>
       </cors>
       <base />
@@ -42,9 +42,16 @@
       <set-variable name="paymentRequestsOperationId" value="getPaymentRequestInfoV3" />
       <choose>
         <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("transactionsOperationId","").Split(','), operations => operations == context.Operation.Id))">
+          <set-header name="x-api-key" exists-action="override">
+            <value>{{ecommerce-transactions-service-api-key-value}}</value>
+          </set-header>
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2.1")"/>
         </when>
         <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("paymentMethodsOperationId","").Split(','), operations => operations == context.Operation.Id))">
+          <!-- Set payment-methods API Key header -->
+          <set-header name="x-api-key" exists-action="override">
+            <value>{{ecommerce-payment-methods-api-key-value}}</value>
+          </set-header>
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service")"/>
         </when>
         <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("paymentRequestsOperationId","").Split(','), operations => operations == context.Operation.Id))">
@@ -60,8 +67,8 @@
             <set-header name="Authorization" exists-action="override">
                 <value>@("Bearer " + (string)context.Variables["authToken"])</value>
             </set-header>
-            <set-header name="x-rpt-id" exists-action="override">
-              <value>@((string)context.Request.Headers.GetValueOrDefault("x-rpt-id",""))</value>
+            <set-header name="x-rpt-ids" exists-action="override">
+              <value>@((string)context.Request.Headers.GetValueOrDefault("x-rpt-ids",""))</value>
             </set-header>
           </send-request>
           <choose>

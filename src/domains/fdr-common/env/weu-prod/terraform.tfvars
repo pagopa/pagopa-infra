@@ -137,10 +137,12 @@ cosmos_mongo_db_fdr_re_params = {
 
   container_default_ttl = 10368000 # 120 days
 
-  enable_serverless  = false
-  enable_autoscaling = true
-  max_throughput     = 6000
-  throughput         = 1000
+  enable_serverless      = false
+  enable_autoscaling     = true
+  max_throughput         = 20000
+  throughput             = 1000
+  burst_capacity_enabled = true
+  ip_range               = ["109.115.21.25"]
 }
 
 # Storage Account
@@ -194,9 +196,9 @@ fdr_flow_storage_account = {
 # replica settings
 #
 geo_replica_enabled                                = true
-location_replica                                   = "northeurope"
-location_replica_short                             = "neu"
-geo_replica_cidr_subnet_postgresql                 = ["10.2.162.0/24"]
+location_replica                                   = "italynorth"
+location_replica_short                             = "itn"
+geo_replica_cidr_subnet_postgresql                 = ["10.3.7.0/27"]
 postgresql_sku_name                                = "GP_Gen5_2"
 postgres_dns_registration_enabled                  = false
 postgres_dns_registration_virtual_endpoint_enabled = true

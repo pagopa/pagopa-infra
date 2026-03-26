@@ -32,7 +32,6 @@ resource "azurerm_kusto_cluster" "data_explorer_cluster" {
 
   public_network_access_enabled = var.dexp_params.public_network_access_enabled
   double_encryption_enabled     = var.dexp_params.double_encryption_enabled
-  engine                        = "V3"
 
   tags = module.tag_config.tags
 
@@ -167,6 +166,19 @@ resource "azurerm_role_assignment" "fdr_qi_fdr_iuvs_data_evh_data_receiver_role"
   principal_id         = azurerm_kusto_cluster.data_explorer_cluster[count.index].identity[count.index].principal_id # data-exp
 }
 
+// https://registry.terraform.io/providers/hashicorp/azurerm/4.37.0/docs/resources/kusto_script
+resource "azurerm_kusto_script" "create_merge_table" {
+  count = var.dexp_db.enable ? 1 : 0
+
+  name        = "MergeTableRENodo"
+  database_id = azurerm_kusto_database.re_db[count.index].id
+
+  script_content = file("scripts/create_table_re_event.dexp")
+
+  continue_on_errors_enabled         = false
+  force_an_update_when_value_changed = filesha256("scripts/create_table_re_event.dexp")
+}
+
 # resource "azurerm_kusto_script" "create_tables" {
 
 #   count = var.dexp_re_db_linkes_service.enable ? 1 : 0
@@ -178,3 +190,52 @@ resource "azurerm_role_assignment" "fdr_qi_fdr_iuvs_data_evh_data_receiver_role"
 #   continue_on_errors_enabled         = true
 #   force_an_update_when_value_changed = "v6" # change this version to re-execute the script
 # }
+
+
+data "azuread_group" "adgroup_developers" {
+  display_name = "${local.product}-adgroup-developers"
+}
+data "azuread_group" "adgroup_externals" {
+  display_name = "${local.product}-adgroup-externals"
+}
+data "azuread_group" "adgroup_operations" {
+  display_name = "${local.product}-adgroup-operations"
+}
+data "azuread_group" "adgroup_technical_project_managers" {
+  display_name = "${local.product}-adgroup-technical-project-managers"
+}
+
+locals {
+  dataexp_contributor_groups = [
+    data.azuread_group.adgroup_technical_project_managers.object_id,
+    data.azuread_group.adgroup_operations.object_id,
+    data.azuread_group.adgroup_externals.object_id,
+  ]
+
+}
+
+# resource "azurerm_role_assignment" "adgroup_dataexp_contributor" {
+#   for_each = toset(local.dataexp_contributor_groups)
+
+#   scope                = azurerm_kusto_cluster.data_explorer_cluster[0].id
+#   role_definition_name = "Contributor"
+#   principal_id         = each.key
+# }
+
+# https://learn.microsoft.com/it-it/azure/data-explorer/manage-cluster-permissions
+
+# resource "azurerm_role_assignment" "adgroup_dataexp_contributor" {
+#   for_each = toset(local.dataexp_contributor_groups)
+
+#   scope                = azurerm_kusto_cluster.data_explorer_cluster[0].id
+#   role_definition_name = "AllDatabasesViewer"
+#   principal_id         = each.key
+# }
+
+resource "azurerm_role_assignment" "adgroup_dataexp_reader" {
+  for_each             = toset(local.dataexp_contributor_groups)
+  principal_id         = each.key
+  principal_type       = "Group"
+  role_definition_name = "Reader" # https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#general 👀 roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7
+  scope                = azurerm_kusto_cluster.data_explorer_cluster[0].id
+}

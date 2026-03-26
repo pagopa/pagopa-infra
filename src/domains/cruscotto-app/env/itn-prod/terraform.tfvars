@@ -5,7 +5,12 @@ domain          = "crusc8"
 location        = "italynorth"
 location_short  = "itn"
 location_string = "Italy North"
-instance        = "prod"
+
+location_weu        = "westeurope"
+location_short_weu  = "weu"
+location_string_weu = "West Europe"
+
+instance = "prod"
 
 
 ### External resources
@@ -27,10 +32,10 @@ apim_dns_zone_prefix     = "platform"
 ingress_load_balancer_ip = "10.3.2.250"
 
 pod_disruption_budgets = {
-  "mbd-service" = {
+  "cruscotto-backend" = {
     minAvailable = 2
     matchLabels = {
-      "app.kubernetes.io/instance" = "mbd-service"
+      "app.kubernetes.io/instance" = "cruscotto-backend"
     }
   },
 }

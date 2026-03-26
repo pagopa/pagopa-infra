@@ -84,6 +84,24 @@
     </inbound>
     <outbound>
         <base />
+        <choose>
+            <when condition="@(!context.Request.Url.Path.Contains("pdf") && context.Operation.Method.Equals("GET") )">
+                <set-body>@{
+                    var originalResponseBody = context.Response.Body.As<string>(preserveContent: true);
+                    try { 
+                        var body = JObject.Parse(originalResponseBody);
+                        if (body["infoNotice"]?["origin"]?.ToString() == "NDP004PROD") {
+                            body["infoNotice"]["origin"] = "NDP003PROD";
+                        }
+                        return body.ToString();
+                    }
+                    catch(Exception e) {
+                        //cannot parse response body as JSON, returning original body
+                        return originalResponseBody;
+                    }
+                }</set-body>
+            </when>
+        </choose>      
     </outbound>
     <backend>
         <base />

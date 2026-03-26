@@ -49,6 +49,7 @@ cosmos_gps_db_params = {
 }
 
 gpd_upload_status_throughput = 10000
+gpd_upload_status_ttl        = 7776000 // 90 days
 
 # Postgres Flexible
 # https://docs.microsoft.com/it-it/azure/postgresql/flexible-server/concepts-high-availability
@@ -119,30 +120,19 @@ cosmos_gpd_payments_db_params = {
   }
 }
 
-cidr_subnet_gpd_payments_cosmosdb = ["10.1.149.0/24"]
 
 enable_iac_pipeline                   = true
-storage_account_replication_type      = "GZRS"
-flow_storage_account_replication_type = "GZRS"
 gpd_payments_versioning               = true
 enable_gpd_payments_backup            = true
 gpd_payments_sa_delete_retention_days = 31
 gpd_payments_sa_backup_retention_days = 30
 
 
-reporting_storage_account = {
-  blob_versioning_enabled    = true
-  advanced_threat_protection = true
-  blob_delete_retention_days = 31
-  backup_enabled             = true
-  backup_retention           = 30
-}
 
-geo_replica_enabled                = true
-location_replica                   = "northeurope"
-location_replica_short             = "neu"
-geo_replica_cidr_subnet_postgresql = ["10.2.141.0/24"]
-postgresql_sku_name                = "GP_Gen5_2"
+geo_replica_enabled    = true
+location_replica       = "italynorth"
+location_replica_short = "itn"
+postgresql_sku_name    = "GP_Gen5_2"
 
 # GPD Storage Account SFTP
 gpd_sftp_sa_replication_type                                   = "GZRS"
@@ -191,7 +181,7 @@ eventhub_namespace_rtp = {
   auto_inflate_enabled     = true
   sku_name                 = "Standard"
   capacity                 = 5
-  maximum_throughput_units = 5
+  maximum_throughput_units = 20
   public_network_access    = true
   private_endpoint_created = true
   metric_alerts_create     = true

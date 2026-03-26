@@ -12,7 +12,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_internal_avail
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for /fdr-internal/service is less than or equal to 99% - [https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-fdr-internal-apim]"
+  description    = "Availability for /fdr-internal/service is less than or equal to 99% - 📚 Runbook : https://pagopa.atlassian.net/wiki/x/v4A9Kg"
   enabled        = true
   query = (<<-QUERY
       let threshold = 0.99;
@@ -49,7 +49,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_psp_availabili
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for /fdr-psp/service is less than or equal to 99% - [https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-fdr-psp-apim]"
+  description    = "Availability for /fdr-psp/service is less than or equal to 99% - 📚 Runbook : https://pagopa.atlassian.net/wiki/x/v4A9Kg"
   enabled        = true
   query = (<<-QUERY
       let threshold = 0.99;
@@ -86,7 +86,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_org_availabili
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for /fdr-org/service is less than or equal to 99% - [https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-fdr-organization-apim]"
+  description    = "Availability for /fdr-org/service is less than or equal to 99% - 📚 Runbook : https://pagopa.atlassian.net/wiki/x/v4A9Kg"
   enabled        = true
   query = (<<-QUERY
       let threshold = 0.99;

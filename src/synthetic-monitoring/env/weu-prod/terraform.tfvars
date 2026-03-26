@@ -12,7 +12,7 @@ use_private_endpoint             = true
 # Feature Flags
 #
 enabled_resource = {
-  container_app_tools_cae = true
+  test_nexi_postgres = true
 }
 synthetic_alerts_enabled = true
 
@@ -29,5 +29,8 @@ check_position_body = {
 }
 verify_payment_internal_expected_outcome = "OK"
 nexi_node_ip                             = "10.79.20.34"
+nexi_node_ip_postgres                    = "10.79.20.25"
 nexi_ndp_host                            = "nodo-p.npc.sia.eu"
+nexi_ndp_host_postgres                   = "nexi.ndp.pagopa.it"
 nexi_ndp_host_2                          = "nodo-dei-pagamenti.npc.sia.eu"
+

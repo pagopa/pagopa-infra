@@ -2,7 +2,7 @@
 resource "azurerm_data_factory_pipeline" "pipeline_KPI_TPNP" {
 
   name            = "SMO_KPI_TPNP_Pipeline"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   #   parameters = {
   #     daysToKeep = 90
@@ -29,7 +29,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_KPI_TPNP" {
 resource "azurerm_data_factory_trigger_schedule" "Trigger_KPI_TPNP" {
 
   name            = "Trigger_KPI_TPNP"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   interval  = 10
   frequency = "Minute"
@@ -49,7 +49,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_KPI_TPNP" {
 resource "azurerm_data_factory_pipeline" "pipeline_KPI_TPNP_Recupero" {
 
   name            = "SMO_KPI_TPNP_Recupero_Pipeline"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   parameters = {
     run_id     = "09753e8b-7920-453a-b54c-512ec3e39756"
@@ -76,7 +76,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_KPI_TPNP_Recupero" {
 resource "azurerm_data_factory_pipeline" "pipeline_KPI_TNSPO" {
 
   name            = "SMO_KPI_TNSPO_Pipeline"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
   description     = "Last fix: 13/11/2024 14:25:00"
 
   #   parameters = {
@@ -104,7 +104,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_KPI_TNSPO" {
 resource "azurerm_data_factory_trigger_schedule" "Trigger_KPI_TNSPO" {
 
   name            = "Trigger_KPI_TNSPO"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   interval  = 10
   frequency = "Minute"
@@ -123,7 +123,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_KPI_TNSPO" {
 resource "azurerm_data_factory_pipeline" "pipeline_KPI_TPSPO_DASPO" {
 
   name            = "SMO_KPI_KPI_TPSPO_DASPO_Pipeline"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   #   parameters = {
   #     daysToKeep = 90
@@ -150,7 +150,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_KPI_TPSPO_DASPO" {
 resource "azurerm_data_factory_trigger_schedule" "Trigger_KPI_TPSPO_DASPO" {
 
   name            = "Trigger_KPI_TPSPO_DASPO"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   interval  = 30
   frequency = "Minute"
@@ -169,7 +169,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_KPI_TPSPO_DASPO" {
 resource "azurerm_data_factory_pipeline" "pipeline_KPI_FDR_IMPORT_ESITI" {
 
   name            = "SMO_KPI_FDR_IMPORT_ESITI_Pipeline"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   variables = {
     date_trigger = "",
@@ -192,7 +192,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_KPI_FDR_IMPORT_ESITI" {
 resource "azurerm_data_factory_trigger_schedule" "Trigger_KPI_FDR_IMPORT_ESITI" {
 
   name            = "Trigger_KPI_FDR_IMPORT_ESITI"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   interval   = 1
   frequency  = "Hour"
@@ -210,7 +210,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_KPI_FDR_IMPORT_ESITI" 
 resource "azurerm_data_factory_pipeline" "pipeline_KPI_FDR_IMPORT_ESITI_Manuale" {
 
   name            = "SMO_KPI_FDR_IMPORT_ESITI_Manuale_Pipeline"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   #   parameters = {
   #     daysToKeep = 90
@@ -248,7 +248,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_KPI_FDR_IMPORT_ESITI_Manuale"
 resource "azurerm_data_factory_pipeline" "pipeline_KPI_FDR_IMPORT_ESITI_DAILY_Manuale" {
 
   name            = "SMO_KPI_FDR_IMPORT_ESITI_DAILY_Manuale_Pipeline"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   #   parameters = {
   #     daysToKeep = 90
@@ -285,7 +285,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_KPI_FDR_IMPORT_ESITI_DAILY_Ma
 resource "azurerm_data_factory_pipeline" "pipeline_KPI_FDR_RENDICONTAZIONI" {
 
   name            = "SMO_KPI_FDR_RENDICONTAZIONI_Pipeline"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   variables = {
     date_trigger = "",
@@ -308,7 +308,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_KPI_FDR_RENDICONTAZIONI" {
 resource "azurerm_data_factory_trigger_schedule" "Trigger_KPI_FDR_RENDICONTAZIONI" {
 
   name            = "Trigger_KPI_FDR_RENDICONTAZIONI"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   interval  = 1
   frequency = "Day"
@@ -328,7 +328,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_KPI_FDR_RENDICONTAZION
 resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_TPNP" {
 
   name            = "PDND_KPI_TPNP_Pipeline"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   variables = {
     startDate  = "",
@@ -350,15 +350,15 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_TPNP" {
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_TPNP" {
 
   name            = "Trigger_PDND_KPI_TPNP"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   interval  = 1
   frequency = "Month"
   activated = true
   time_zone = "W. Europe Standard Time"
   schedule {
-    days_of_month = [5]
-    hours         = [8]
+    days_of_month = [10]
+    hours         = [6]
     minutes       = [0]
   }
 
@@ -370,7 +370,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_TPNP" {
 resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_DASPO" {
 
   name            = "PDND_KPI_DASPO_Pipeline"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   variables = {
     startDate  = "",
@@ -392,15 +392,15 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_DASPO" {
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_DASPO" {
 
   name            = "Trigger_PDND_KPI_DASPO"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   interval  = 1
   frequency = "Month"
   activated = true
   time_zone = "W. Europe Standard Time"
   schedule {
-    days_of_month = [5]
-    hours         = [8]
+    days_of_month = [10]
+    hours         = [6]
     minutes       = [0]
   }
 
@@ -412,7 +412,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_DASPO" {
 resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_LFDR" {
 
   name            = "PDND_KPI_LFDR_Pipeline"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   variables = {
     startDate  = "",
@@ -434,15 +434,15 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_LFDR" {
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_LFDR" {
 
   name            = "Trigger_PDND_KPI_LFDR"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   interval  = 1
   frequency = "Month"
   activated = true
   time_zone = "W. Europe Standard Time"
   schedule {
-    days_of_month = [5]
-    hours         = [8]
+    days_of_month = [10]
+    hours         = [6]
     minutes       = [0]
   }
 
@@ -454,7 +454,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_LFDR" {
 resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_LSPO" {
 
   name            = "PDND_KPI_LSPO_Pipeline"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   variables = {
     startDate  = "",
@@ -476,15 +476,15 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_LSPO" {
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_LSPO" {
 
   name            = "Trigger_PDND_KPI_LSPO"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   interval  = 1
   frequency = "Month"
   activated = true
   time_zone = "W. Europe Standard Time"
   schedule {
-    days_of_month = [5]
-    hours         = [8]
+    days_of_month = [10]
+    hours         = [6]
     minutes       = [0]
   }
 
@@ -496,7 +496,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_LSPO" {
 resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_NRFDR" {
 
   name            = "PDND_KPI_NRFDR_Pipeline"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   variables = {
     startDate  = "",
@@ -518,15 +518,15 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_NRFDR" {
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_NRFDR" {
 
   name            = "Trigger_PDND_KPI_NRFDR"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   interval  = 1
   frequency = "Month"
   activated = true
   time_zone = "W. Europe Standard Time"
   schedule {
-    days_of_month = [5]
-    hours         = [8]
+    days_of_month = [10]
+    hours         = [6]
     minutes       = [0]
   }
 
@@ -538,7 +538,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_NRFDR" {
 resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_TNSPO" {
 
   name            = "PDND_KPI_TNSPO_Pipeline"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   variables = {
     startDate  = "",
@@ -560,15 +560,15 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_TNSPO" {
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_TNSPO" {
 
   name            = "Trigger_PDND_KPI_TNSPO"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   interval  = 1
   frequency = "Month"
   activated = true
   time_zone = "W. Europe Standard Time"
   schedule {
-    days_of_month = [5]
-    hours         = [8]
+    days_of_month = [10]
+    hours         = [6]
     minutes       = [0]
   }
 
@@ -580,7 +580,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_TNSPO" {
 resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_WAFDR" {
 
   name            = "PDND_KPI_WAFDR_Pipeline"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   variables = {
     startDate  = "",
@@ -602,15 +602,15 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_WAFDR" {
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_WAFDR" {
 
   name            = "Trigger_PDND_KPI_WAFDR"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   interval  = 1
   frequency = "Month"
   activated = true
   time_zone = "W. Europe Standard Time"
   schedule {
-    days_of_month = [5]
-    hours         = [8]
+    days_of_month = [10]
+    hours         = [6]
     minutes       = [0]
   }
 
@@ -622,7 +622,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_WAFDR" {
 resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_WPNFDR" {
 
   name            = "PDND_KPI_WPNFDR_Pipeline"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   variables = {
     startDate  = "",
@@ -644,18 +644,231 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_WPNFDR" {
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_WPNFDR" {
 
   name            = "Trigger_PDND_KPI_WPNFDR"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   interval  = 1
   frequency = "Month"
   activated = true
   time_zone = "W. Europe Standard Time"
   schedule {
-    days_of_month = [5]
-    hours         = [8]
+    days_of_month = [10]
+    hours         = [6]
     minutes       = [0]
   }
 
   description   = "Trigger for PDND_KPI_WPNFDR pipeline"
   pipeline_name = azurerm_data_factory_pipeline.pipeline_PDND_KPI_WPNFDR.name
+}
+
+
+
+########################### KPI QPT TIMEOUT ###########################
+
+resource "azurerm_data_factory_pipeline" "pipeline_SMO_QPT_TIMEOUT" {
+
+  name            = "SMO_QPT_TIMEOUT_Pipeline"
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
+
+  variables = {
+    run_id         = "",
+    start_pipeline = ""
+  }
+
+  activities_json = "[${templatefile("datafactory/pipelines/SMO_QPT_TIMEOUT.json", {
+    inputdataset  = "SMO_ReEvent_DataSet"
+    outputdataset = "CRUSC8_RECORDED_TIMEOUT"
+  })}]"
+
+  depends_on = [
+    azurerm_data_factory_custom_dataset.qi_datasets
+  ]
+}
+
+resource "azurerm_data_factory_trigger_schedule" "Trigger_SMO_QPT_TIMEOUT" {
+
+  name            = "Trigger_SMO_QPT_TIMEOUT"
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
+
+  interval   = 15
+  frequency  = "Minute"
+  activated  = true
+  time_zone  = "W. Europe Standard Time"
+  start_time = "2025-09-30T00:00:00Z"
+
+  description   = "Description of SMO_QPT_TIMEOUT"
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_SMO_QPT_TIMEOUT.name
+
+}
+
+
+########################### KPI QPT TAXONOMY ###########################
+
+resource "azurerm_data_factory_pipeline" "pipeline_SMO_QPT_TAXONOMY_AGGREGATE" {
+
+  name            = "SMO_QPT_TAXONOMY_AGGREGATE_Pipeline"
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
+
+  variables = {
+    run_id         = "",
+    start_pipeline = ""
+  }
+
+  activities_json = "[${templatefile("datafactory/pipelines/SMO_QPT_TAXONOMY_AGGREGATE.json", {
+    inputdataset  = "SMO_ReEvent_DataSet"
+    outputdataset = "CRUSC8_TAXONOMY_AGGREGATE_POSITION"
+  })}]"
+
+  depends_on = [
+    azurerm_data_factory_custom_dataset.qi_datasets
+  ]
+}
+
+resource "azurerm_data_factory_trigger_schedule" "Trigger_SMO_QPT_TAXONOMY_AGGREGATE" {
+
+  name            = "Trigger_SMO_QPT_TAXONOMY_AGGREGATE"
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
+
+  interval   = 6
+  frequency  = "Hour"
+  activated  = true
+  time_zone  = "W. Europe Standard Time"
+  start_time = "2025-09-30T00:00:00Z"
+
+  description   = "Description of SMO_QPT_TAXONOMY_AGGREGATE"
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_SMO_QPT_TAXONOMY_AGGREGATE.name
+
+}
+
+
+########################### KPI QPT RECEIPT ###########################
+
+resource "azurerm_data_factory_pipeline" "pipeline_SMO_QPT_RECEIPT" {
+
+  name            = "SMO_QPT_RECEIPT_Pipeline"
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
+
+  variables = {
+    run_id         = "",
+    start_pipeline = ""
+  }
+
+  activities_json = "[${templatefile("datafactory/pipelines/SMO_QPT_RECEIPT.json", {
+    inputdataset  = "SMO_ReEvent_DataSet"
+    outputdataset = "CRUSC8_PAYMENT_RECEIPT"
+  })}]"
+
+  depends_on = [
+    azurerm_data_factory_custom_dataset.qi_datasets
+  ]
+}
+
+resource "azurerm_data_factory_trigger_schedule" "Trigger_SMO_QPT_RECEIPT" {
+
+  name            = "Trigger_SMO_QPT_RECEIPT"
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
+
+  interval   = 6
+  frequency  = "Hour"
+  activated  = true
+  time_zone  = "W. Europe Standard Time"
+  start_time = "2025-09-30T00:00:00Z"
+
+  description   = "Description of SMO_QPT_RECEIPT"
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_SMO_QPT_RECEIPT.name
+
+}
+
+
+########################### KPI QPT TRANSACTION ###########################
+
+resource "azurerm_data_factory_pipeline" "pipeline_SMO_QPT_TRANSACTION" {
+
+  name            = "SMO_QPT_TRANSACTION_Pipeline"
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
+
+  variables = {
+    run_id         = "",
+    start_pipeline = ""
+  }
+
+  activities_json = "[${templatefile("datafactory/pipelines/SMO_QPT_TRANSACTION.json", {
+    inputdataset  = "SMO_ReEvent_DataSet"
+    outputdataset = "CRUSC8_PAYMENT_RECEIPT"
+  })}]"
+
+  depends_on = [
+    azurerm_data_factory_custom_dataset.qi_datasets
+  ]
+}
+
+resource "azurerm_data_factory_trigger_schedule" "Trigger_SMO_QPT_TRANSACTION" {
+
+  name            = "Trigger_SMO_QPT_TRANSACTION"
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
+
+  interval   = 1
+  frequency  = "Day"
+  activated  = true
+  time_zone  = "W. Europe Standard Time"
+  start_time = "2026-01-01T05:00:00Z"
+
+  description   = "Description of SMO_QPT_TRANSACTION"
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_SMO_QPT_TRANSACTION.name
+
+}
+
+
+########################### IMPORT ANAGRAFICA ###########################
+
+resource "azurerm_data_factory_pipeline" "pipeline_SMO_IMPORT_ANAGRAFICA" {
+
+  name            = "SMO_IMPORT_ANAGRAFICA_Pipeline"
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
+
+  variables = {
+    run_id     = "",
+    start_date = ""
+  }
+
+
+  activities_json = "[${templatefile("datafactory/pipelines/IMPORT_ANAGRAFICA.json", {
+    inputdataset_PT_PA                  = "CFG_INTERMEDIARI_PA"
+    outputdataset_PT_PA                 = "SMO_INTERMEDIARI_PA_DataSet"
+    inputdataset_PT_PSP                 = "CFG_INTERMEDIARI_PSP"
+    outputdataset_PT_PSP                = "SMO_INTERMEDIARI_PSP_DataSet"
+    inputdataset_PA                     = "CFG_PA"
+    outputdataset_PA                    = "SMO_PA_DataSet"
+    inputdataset_PSP                    = "CFG_PSP"
+    outputdataset_PSP                   = "SMO_PSP_DataSet"
+    output_PA_HISTORY                   = "SMO_PA_HISTORY_DataSet"
+    output_PSP_HISTORY                  = "SMO_PSP_HISTORY_DataSet"
+    output_INTERMEDIARI_PSP_HISTORY     = "SMO_INTERMEDIARI_PSP_HISTORY_DataSet"
+    output_INTERMEDIARI_PA_HISTORY      = "SMO_INTERMEDIARI_PA_HISTORY_DataSet"
+    output_INTERMEDIARI_REL_PA          = "SMO_INTERMEDIARI_REL_PA_DataSet"
+    output_INTERMEDIARI_REL_PSP         = "SMO_INTERMEDIARI_REL_PSP_DataSet"
+    output_INTERMEDIARI_REL_PA_HISTORY  = "SMO_INTERMEDIARI_REL_PA_HISTORY_DataSet"
+    output_INTERMEDIARI_REL_PSP_HISTORY = "SMO_INTERMEDIARI_REL_PSP_HISTORY_DataSet"
+    dataexplorerset                     = "AzureDataExplorer${var.env_short}LinkService"
+  })}]"
+
+  depends_on = [
+    azurerm_data_factory_custom_dataset.qi_datasets
+  ]
+}
+
+
+resource "azurerm_data_factory_trigger_schedule" "Trigger_SMO_IMPORT_ANAGRAFICA" {
+
+  name            = "Trigger_SMO_IMPORT_ANAGRAFICA"
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
+
+  interval   = 1
+  frequency  = "Day"
+  activated  = true
+  time_zone  = "W. Europe Standard Time"
+  start_time = "2026-01-01T03:00:00Z"
+
+  description   = "Description of SMO_IMPORT_ANAGRAFICA"
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_SMO_IMPORT_ANAGRAFICA.name
+
 }

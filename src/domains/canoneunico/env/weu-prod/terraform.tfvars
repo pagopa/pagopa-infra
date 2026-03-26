@@ -53,8 +53,6 @@ enable_canoneunico_backup         = true
 canoneunico_enable_versioning     = true
 canoneunico_schedule_batch        = "0 */15 * * * *" # 4 times an hour: every 15 minutes of every hour of each day
 
-# storage
-storage_queue_private_endpoint_enabled = true
 
 # local users
 corporate_cup_users = [

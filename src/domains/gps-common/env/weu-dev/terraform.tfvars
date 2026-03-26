@@ -35,15 +35,17 @@ cosmos_gps_db_params = {
   main_geo_location_zone_redundant = false
   enable_free_tier                 = false
 
-  private_endpoint_enabled      = false
-  public_network_access_enabled = true
+  private_endpoint_enabled      = true
+  public_network_access_enabled = false
 
   additional_geo_locations = []
 
-  is_virtual_network_filter_enabled = false
+  is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = false
 }
+
+gpd_upload_status_ttl = 604800 // 7 days
 
 # Postgres Flexible
 pgres_flex_params = {
@@ -69,20 +71,12 @@ pgres_flex_params = {
   max_worker_process                               = 16
   wal_level                                        = "logical"
   shared_preoload_libraries                        = "pglogical"
-  public_network_access_enabled                    = true
+  public_network_access_enabled                    = false
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]
 cidr_subnet_pg_flex_dbms = ["10.1.141.0/24"]
-#cidr_subnet_pg_singleser = ["10.1.141.0/27"]  # ["10.1.141.0/24"]
 
-postgresql_network_rules = {
-  ip_rules = [
-    "0.0.0.0/0"
-  ]
-  # dblink
-  allow_access_to_azure_services = false
-}
 
 # CosmosDb GPD payments
 cosmos_gpd_payments_db_params = {
@@ -99,9 +93,9 @@ cosmos_gpd_payments_db_params = {
   enable_free_tier                 = false
 
   additional_geo_locations          = []
-  private_endpoint_enabled          = false
+  private_endpoint_enabled          = true
   public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = false
+  is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = false
 
@@ -116,7 +110,6 @@ cosmos_gpd_payments_db_params = {
   }
 }
 
-cidr_subnet_gpd_payments_cosmosdb = ["10.1.149.0/24"]
 
 enable_iac_pipeline                   = true
 gpd_payments_sa_delete_retention_days = 0
@@ -125,7 +118,7 @@ gpd_payments_sa_delete_retention_days = 0
 gpd_sftp_sa_replication_type                                   = "LRS"
 gpd_sftp_sa_access_tier                                        = "Hot"
 gpd_sftp_cidr_subnet_gpd_storage_account                       = ["10.1.152.16/29"]
-gpd_sftp_enable_private_endpoint                               = false
+gpd_sftp_enable_private_endpoint                               = true
 gpd_sftp_disable_network_rules                                 = true
 gpd_sftp_sa_snet_private_link_service_network_policies_enabled = false
 gpd_sftp_sa_public_network_access_enabled                      = true
@@ -145,7 +138,7 @@ eventhubs_rtp = [
     name              = "rtp-events"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["rtp-events-processor"]
+    consumers         = ["rtp-events-processor", "gpd-rtp-integration-test-consumer-group"]
     keys = [
       {
         name   = "rtp-events-tx"
@@ -155,6 +148,12 @@ eventhubs_rtp = [
       },
       {
         name   = "rtp-events-rx"
+        listen = true
+        send   = true
+        manage = false
+      },
+      {
+        name   = "rtp-events-integration-test-rx"
         listen = true
         send   = false
         manage = false
@@ -183,7 +182,7 @@ rtp_storage_account = {
   blob_versioning_enabled            = false
   advanced_threat_protection         = false
   advanced_threat_protection_enabled = false
-  public_network_access_enabled      = true
+  public_network_access_enabled      = false
   blob_delete_retention_days         = 30
   enable_low_availability_alert      = false
 }

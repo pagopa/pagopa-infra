@@ -66,16 +66,6 @@ data "azurerm_function_app" "reporting_analysis" {
   resource_group_name = format("%s-%s-%s-gps-gpd-rg", var.prefix, var.env_short, var.location_short)
 }
 
-data "azurerm_function_app" "reporting_batch" {
-  name                = format("%s-%s-%s-fn-gpd-batch", var.prefix, var.env_short, var.location_short)
-  resource_group_name = format("%s-%s-%s-gps-gpd-rg", var.prefix, var.env_short, var.location_short)
-}
-
-data "azurerm_function_app" "reporting_service" {
-  name                = format("%s-%s-%s-fn-gpd-service", var.prefix, var.env_short, var.location_short)
-  resource_group_name = format("%s-%s-%s-gps-gpd-rg", var.prefix, var.env_short, var.location_short)
-}
-
 data "azurerm_linux_function_app" "mockec" {
   count               = var.env_short != "p" ? 1 : 0
   name                = format("%s-%s-app-mock-ec", var.prefix, var.env_short)
@@ -85,6 +75,11 @@ data "azurerm_linux_function_app" "mockec" {
 data "azurerm_linux_web_app" "pdf_engine" {
   name                = "${var.prefix}-${var.env_short}-${var.location_short}-shared-app-pdf-engine-java"
   resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-shared-pdf-engine-rg"
+}
+
+data "azurerm_linux_web_app" "pdf_engine_printit" {
+  name                = "${var.prefix}-${var.env_short}-itn-printit-app-pdf-engine-java"
+  resource_group_name = "${var.prefix}-${var.env_short}-itn-printit-pdf-engine-rg"
 }
 
 module "apim_api_statuspage_api_v1" {
@@ -139,17 +134,12 @@ module "apim_api_statuspage_api_v1" {
           "backofficeexternalpagopa" = format("%s/backoffice-external", format(local.aks_path, "selfcare"))
           "canoneunico"              = format("%s/", data.azurerm_function_app.canone_unico.default_hostname)
           // FdR - All instances
-          "fdrfase1"                = format("%s/pagopa-fdr-nodo-service", format(local.aks_path, "fdr"))
-          "fdrfase3"                = format("%s/pagopa-fdr-service", format(local.aks_path, "fdr"))
-          "fdrfase3scheduler"       = format("%s/pagopa-fdr-service-scheduler-unused", format(local.aks_path, "fdr"))
-          "fdr2evhfdr1"             = format("%s/fdr1-blobtrigger-notused", format(local.aks_path, "fdr"))
-          "fdr2evhfdr3"             = format("%s/fdr3-blobtrigger-notused", format(local.aks_path, "fdr"))
-          "fdr2evhrecovery"         = format("%s/pagopa-fdr-to-event-hub-recovery-service", format(local.aks_path, "fdr"))
-          "fdrjson2xml"             = format("%s/pagopa-fdr-json-to-xml", format(local.aks_path, "fdr"))
-          "fdrxml2jsonblobtrigger"  = format("%s/pagopa-fdr-xml-to-json/blobtrigger-notuser", format(local.aks_path, "fdr"))
-          "fdrxml2jsonhttptrigger"  = format("%s/pagopa-fdr-xml-to-json", format(local.aks_path, "fdr"))
-          "fdrxml2jsonqueuetrigger" = format("%s/pagopa-fdr-xml-to-json/queuetrigger-notuser", format(local.aks_path, "fdr"))
-          "fdrts"                   = format("%s/pagopa-fdr-technical-support-service", format(local.aks_path, "fdr"))
+          "fdrfase1"    = format("%s/pagopa-fdr-nodo-service", format(local.aks_path, "fdr"))
+          "fdrfase3"    = format("%s/pagopa-fdr-service-core", format(local.aks_path, "fdr"))
+          "fdr2evh"     = format("%s/pagopa-fdr-to-event-hub-recovery-service", format(local.aks_path, "fdr"))
+          "fdrjson2xml" = format("%s/pagopa-fdr-json-to-xml", format(local.aks_path, "fdr"))
+          "fdrxml2json" = format("%s/pagopa-fdr-xml-to-json/blobtrigger-notuser", format(local.aks_path, "fdr"))
+          "fdrts"       = format("%s/pagopa-fdr-technical-support-service", format(local.aks_path, "fdr"))
           // WISP Dismantling
           "wispconverter"               = format("%s/pagopa-wispconverter", format(local.aks_path, "nodo"))
           "wispsoapconverter"           = format("%s/wisp-soapconverter", format(local.aks_path, "nodo"))
@@ -160,8 +150,6 @@ module "apim_api_statuspage_api_v1" {
           "gpdenrollment"               = format("%s/pagopa-gpd-reporting-orgs-enrollment", format(local.aks_path, "gps"))
           "gpdupload"                   = format("%s/pagopa-gpd-upload", format(local.aks_path, "gps"))
           "gpdreportinganalysis"        = format("%s/", data.azurerm_function_app.reporting_analysis.default_hostname)
-          "gpdreportingbatch"           = format("%s/api/", data.azurerm_function_app.reporting_batch.default_hostname)
-          "gpdreportingservice"         = format("%s/api/", data.azurerm_function_app.reporting_service.default_hostname)
           "gpdingestionmanager"         = format("%s/pagopa-gpd-ingestion-manager", format(local.aks_path, "gps"))
           "gps"                         = format("%s/pagopa-spontaneous-payments-service", format(local.aks_path, "gps"))
           "gpsdonation"                 = format("%s/pagopa-gps-donation-service", format(local.aks_path, "gps"))
@@ -169,17 +157,23 @@ module "apim_api_statuspage_api_v1" {
           "mockconfig"                  = var.env_short != "p" ? format("%s/pagopa-mock-config-be", format(local.aks_path, "mock")) : "NA"
           "mocker"                      = var.env_short != "p" ? format("%s/pagopa-mocker/mocker", format(local.aks_path, "mock")) : "NA"
           "pdfengine"                   = format("%s/", data.azurerm_linux_web_app.pdf_engine.default_hostname)
+          "pdfengineprintit"            = format("%s/", data.azurerm_linux_web_app.pdf_engine_printit.default_hostname)
           "receiptpdfdatastore"         = format("%s/pagopa-receipt-pdf-datastore", format(local.aks_path, "receipts"))
+          "receiptpdfdatastorehelpdesk" = format("%s/pagopa-receipt-pdf-datastore-helpdesk", format(local.aks_path, "receipts"))
           "receiptpdfgenerator"         = format("%s/pagopa-receipt-pdf-generator", format(local.aks_path, "receipts"))
+          "receiptpdfgeneratorcart"     = format("%s/pagopa-receipt-pdf-generator-cart", format(local.aks_path, "receipts"))
+          "receiptpdfgeneratorhelpdesk" = format("%s/pagopa-receipt-pdf-generator-helpdesk", format(local.aks_path, "receipts"))
           "receiptpdfnotifier"          = format("%s/pagopa-receipt-pdf-notifier", format(local.aks_path, "receipts"))
           "receiptpdfservice"           = format("%s/pagopa-receipt-pdf-service", format(local.aks_path, "receipts"))
-          "receiptpdfhelpdesk"          = format("%s/pagopa-receipt-pdf-helpdesk", format(local.aks_path, "receipts")),
+          "receiptpdfservicehelpdesk"   = format("%s/pagopa-receipt-pdf-service-helpdesk", format(local.aks_path, "receipts"))
           "printpaymentnoticegenerator" = format("%s/pagopa-print-payment-notice-generator", format(local.aks_ita_path, "printit"))
           "printpaymentnoticefunctions" = format("%s/pagopa-print-payment-notice-functions", format(local.aks_ita_path, "printit"))
           "printpaymentnoticeservice"   = format("%s/pagopa-print-payment-notice-service", format(local.aks_ita_path, "printit"))
           "paymentoptionsservice"       = format("%s/payment-options-service", format(local.aks_ita_path, "payopt"))
           "mbdservice"                  = format("%s/pagopa-mbd-service", format(local.aks_ita_path, "ebollo"))
           "mbdgpsservice"               = format("%s/pagopa-gps-mbd-service", format(local.aks_ita_path, "ebollo"))
+          "gpdrtpservice"               = format("%s/gpd-rtp-service", format(local.aks_path, "gps"))
+          "anonymizer"                  = format("%s/pagopa-anonymizer", format(local.aks_path, "shared"))
         }), "\"", "\\\"")
       })
     }

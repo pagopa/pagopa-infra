@@ -43,7 +43,7 @@ variable "domain" {
 
 variable "location" {
   type        = string
-  description = "One of westeurope, northeurope"
+  description = "One of westeurope, italynorth"
 }
 
 variable "location_short" {
@@ -60,8 +60,8 @@ variable "location_short" {
 
 variable "location_replica" {
   type        = string
-  description = "One of westeurope, northeurope"
-  default     = "northeurope"
+  description = "One of westeurope, italynorth"
+  default     = "italynorth"
 }
 
 variable "location_replica_short" {
@@ -72,8 +72,8 @@ variable "location_replica_short" {
     )
     error_message = "Length must be 3 chars."
   }
-  description = "One of wue, neu"
-  default     = "neu"
+  description = "One of wue, itn"
+  default     = "itn"
 }
 
 variable "instance" {
@@ -282,6 +282,8 @@ variable "cosmos_mongo_db_fdr_re_params" {
     throughput                        = number
     max_throughput                    = number
     container_default_ttl             = number
+    burst_capacity_enabled            = optional(bool, false)
+    ip_range                          = optional(list(string), [])
   })
 }
 # Storage account

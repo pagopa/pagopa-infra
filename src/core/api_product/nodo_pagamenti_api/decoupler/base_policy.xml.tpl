@@ -99,8 +99,6 @@
     <set-variable name="baseNodeId" value="{{default-nodo-id}}" />
     <!-- used for convention in the cache key -->
     <set-variable name="domain" value="nodo" />
-    <!-- trace used to count requests for monitoring -->
-    <trace source="retrieve-node-uri" severity="information">[COUNT] Request</trace>
       <!-- load primitives from the related named valued -->
       <set-variable name="primitives" value="{{node-decoupler-primitives}}" />
       <set-variable name="wispDismantlingPrimitives" value="{{wisp-dismantling-primitives}}" />
@@ -142,6 +140,7 @@
 
 <!-- set backend service url -->
 <set-backend-service base-url="@((string)context.Variables["baseUrl"])" />
+<!--<trace source="decouplerDebug" severity="information">@("decoupler final baseUrl: " + (string)context.Variables["baseUrl"])</trace>-->
 <include-fragment fragment-id="decoupler-activate-inbound" />
 </inbound>
 <backend>

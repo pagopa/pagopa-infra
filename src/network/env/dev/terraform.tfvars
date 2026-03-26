@@ -1,0 +1,21 @@
+env_short      = "d"
+env            = "dev"
+location       = "westeurope"
+location_short = "weu"
+
+
+location_hub_spoke       = "italynorth"
+location_short_hub_spoke = "itn"
+
+nsg_regions = ["westeurope", "italynorth"]
+
+
+enabled_features = {
+  nsg_metabase        = true
+  data_factory_proxy  = false
+  vpn_database_access = true
+  nsg                 = false
+}
+
+
+platform_dns_zone_prefix = "dev.platform"

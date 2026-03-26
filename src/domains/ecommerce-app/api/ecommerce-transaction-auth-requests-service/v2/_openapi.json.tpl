@@ -397,6 +397,10 @@
           "validationServiceId": {
             "description": "Validation service id",
             "type": "string"
+          },
+          "cardId4": {
+            "description": "NPG unique card identifier",
+            "type": "string"
           }
         },
         "required": [

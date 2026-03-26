@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "cosmosdb_pay_wallet_rg" {
 module "cosmosdb_account_mongodb" {
   count = var.is_feature_enabled.cosmos ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.20.1"
+  source = "./.terraform/modules/__v4__/cosmosdb_account"
 
   name                = "${local.project}-cosmos-account"
   location            = var.location
@@ -22,11 +22,11 @@ module "cosmosdb_account_mongodb" {
   enable_free_tier = var.cosmos_mongo_db_params.enable_free_tier
 
   public_network_access_enabled      = var.cosmos_mongo_db_params.public_network_access_enabled
-  private_endpoint_enabled           = var.cosmos_mongo_db_params.private_endpoint_enabled
+  private_endpoint_enabled           = var.cosmos_mongo_db_params.private_endpoint_enabled && !var.is_feature_enabled.cosmos_hub_spoke_pe_dns
   subnet_id                          = module.cosmosdb_pay_wallet_snet.id
   private_dns_zone_mongo_ids         = [data.azurerm_private_dns_zone.cosmos.id]
   is_virtual_network_filter_enabled  = var.cosmos_mongo_db_params.is_virtual_network_filter_enabled
-  allowed_virtual_network_subnet_ids = var.env_short == "d" ? [] : [azurerm_subnet.pay_wallet_user_aks_subnet.id, data.azurerm_subnet.vpn_subnet.id]
+  allowed_virtual_network_subnet_ids = var.env_short == "p" ? [azurerm_subnet.pay_wallet_user_aks_subnet.id] : [azurerm_subnet.pay_wallet_user_aks_subnet.id, data.azurerm_subnet.vpn_subnet.id]
 
   consistency_policy               = var.cosmos_mongo_db_params.consistency_policy
   main_geo_location_location       = azurerm_resource_group.cosmosdb_pay_wallet_rg.location
@@ -37,6 +37,30 @@ module "cosmosdb_account_mongodb" {
   ip_range                  = var.cosmos_mongo_db_params.ip_range_filter
 
   enable_provisioned_throughput_exceeded_alert = var.cosmos_mongo_db_params.enable_provisioned_throughput_exceeded_alert
+
+  tags = module.tag_config.tags
+}
+
+# hub spoke private endpoint
+resource "azurerm_private_endpoint" "cosmos_data_mongo_pe" {
+  count = var.is_feature_enabled.cosmos && var.is_feature_enabled.cosmos_hub_spoke_pe_dns ? 1 : 0
+
+  name                = "${local.project}-cosmos-data-mongo-pe"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.cosmosdb_pay_wallet_rg.name
+  subnet_id           = module.cosmos_spoke_pay_wallet_snet[0].subnet_id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-cosmos-data-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.cosmos.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-cosmos-data-private-service-connection"
+    private_connection_resource_id = module.cosmosdb_account_mongodb[0].id
+    is_manual_connection           = false
+    subresource_names              = ["MongoDB"]
+  }
 
   tags = module.tag_config.tags
 }
@@ -140,7 +164,7 @@ locals {
 
 module "cosmosdb_pay_wallet_collections" {
 
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v8.20.1"
+  source   = "./.terraform/modules/__v4__/cosmosdb_mongodb_collection"
   for_each = var.is_feature_enabled.cosmos ? { for index, coll in local.collections : coll.name => coll } : {}
 
   name                = each.value.name
@@ -158,17 +182,23 @@ module "cosmosdb_pay_wallet_collections" {
 # -----------------------------------------------
 # Alerts
 # -----------------------------------------------
+locals {
+  location_to_alert_region = {
+    italynorth         = "italy north"
+    germanywestcentral = "Germany West Central"
+  }
+}
 
-resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
+resource "azurerm_monitor_metric_alert" "cosmos_db_provisioned_throughput_ru_exceeded_write_region" {
   count = var.is_feature_enabled.cosmos && var.env_short == "p" ? 1 : 0
 
 
-  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmosdb_account_mongodb[0].name}] Normalized RU Exceeded"
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmosdb_account_mongodb[0].name}] Provisioned throughput RU Exceeded"
   resource_group_name = azurerm_resource_group.cosmosdb_pay_wallet_rg.name
   scopes              = [module.cosmosdb_account_mongodb[0].id]
-  description         = "A collection Normalized RU/s exceed provisioned throughput, and it's raising latency. Please, consider to increase RU."
+  description         = "Provisioned throughput for ${local.location_to_alert_region[azurerm_resource_group.cosmosdb_pay_wallet_rg.location]} region is over 95% of it's maximum for the. Please, consider to increase max RU."
   severity            = 0
-  window_size         = "PT5M"
+  window_size         = "PT15M"
   frequency           = "PT5M"
   auto_mitigate       = false
 
@@ -177,25 +207,18 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
   # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
   criteria {
     metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
-    metric_name            = "NormalizedRUConsumption"
+    metric_name            = "ProvisionedThroughput"
     aggregation            = "Maximum"
     operator               = "GreaterThan"
-    threshold              = "80"
+    threshold              = var.cosmos_mongo_db_pay_wallet_params.max_throughput * 0.95
     skip_metric_validation = false
 
 
     dimension {
       name     = "Region"
       operator = "Include"
-      values   = [azurerm_resource_group.cosmosdb_pay_wallet_rg.location]
+      values   = [local.location_to_alert_region[azurerm_resource_group.cosmosdb_pay_wallet_rg.location]]
     }
-
-    dimension {
-      name     = "CollectionName"
-      operator = "Include"
-      values   = ["*"]
-    }
-
   }
 
   action {

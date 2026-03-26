@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "mbd_rg" {
 }
 
 module "mbd_storage_account" {
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                            = replace(format("%s-mbd-st", local.project), "-", "")
   account_kind                    = var.mbd_storage_account.account_kind
@@ -43,6 +43,37 @@ resource "azurerm_storage_share" "firmatore_mbd" {
   storage_account_name = module.mbd_storage_account.name
   quota                = 50
 }
+
+moved {
+  from = azurerm_private_endpoint.firmatore_mbd_private_endpoint[0]
+  to   = azurerm_private_endpoint.firmatore_mbd_private_endpoint
+}
+
+resource "azurerm_private_endpoint" "firmatore_mbd_private_endpoint" {
+  name                = "${local.project}-firmatore-mbd-private-endpoint"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.mbd_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoint_snet.id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-firmatore-mbd-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_file_azure_com.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-firmatore-mbd-private-service-connection"
+    private_connection_resource_id = module.mbd_storage_account.id
+    is_manual_connection           = false
+    subresource_names              = ["file"]
+  }
+
+  tags = module.tag_config.tags
+
+  depends_on = [
+    module.mbd_storage_account
+  ]
+}
+
 
 # SID-Flussi-e-bollo/SID_cartelle/file_da_predisporre/
 

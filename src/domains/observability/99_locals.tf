@@ -1,17 +1,16 @@
 locals {
-  project        = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  project_itn    = "${var.prefix}-${var.env_short}-${var.location_short_itn}-${var.domain}"
-  project_legacy = "${var.prefix}-${var.env_short}"
-  product        = "${var.prefix}-${var.env_short}"
+  project              = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_itn          = "${var.prefix}-${var.env_short}-${var.location_short_itn}-${var.domain}"
+  project_legacy       = "${var.prefix}-${var.env_short}"
+  product              = "${var.prefix}-${var.env_short}"
+  product_location_itn = "${var.prefix}-${var.env_short}-${var.location_short_itn}"
+  product_network      = "${var.prefix}-${var.env_short}-${var.location_short}-network"
 
-  apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
 
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "PagoPA"
 
-  pagopa_apim_name = "${local.product}-apim"
-  pagopa_apim_rg   = "${local.product}-api-rg"
-  pagopa_apim_snet = "${local.product}-apim-snet"
+
 
   vnet_name                = "${local.product}-vnet"
   vnet_resource_group_name = "${local.product}-vnet-rg"
@@ -24,4 +23,70 @@ locals {
 
   vnet_italy_name                = "${local.product}-itn-vnet"
   vnet_italy_resource_group_name = "${local.product}-itn-vnet-rg"
+
+  vnet_hub_spoke_rg_name    = "${local.product_location_itn}-network-hub-spoke-rg"
+  vnet_spoke_streaming_name = "${local.product_location_itn}-spoke-streaming-vnet"
+
+  dataexplorer_ls_name = "AzureDataExplorer${var.env_short}LinkService"
+
+  linked_service_cruscotto_kv_name = "crusc8-${var.env_short}-key-vault"
+  linked_service_nodo_kv_name      = "nodo-${var.env_short}-key-vault"
+
+  kv_name_password_database        = "ls-cruscotto-password"
+  kv_name_password_config_database = "db-cfg-password"
+
+  df_integration_runtime_name = "AutoResolveIntegrationRuntime"
+  crusc8_tables_list_datasets = [
+    {
+      dataset_name        = "CRUSC8_RECORDED_TIMEOUT"
+      dataset_schema_file = "datafactory/datasets/crusc8/CRUSC8_RECORDED_TIMEOUT.json"
+      table_name          = "pagopa_recorded_timeout"
+      schema_name         = "cruscotto"
+    },
+    {
+      dataset_name        = "CRUSC8_PAYMENT_RECEIPT"
+      dataset_schema_file = "datafactory/datasets/crusc8/CRUSC8_PAYMENT_RECEIPT.json"
+      table_name          = "pagopa_payment_receipt"
+      schema_name         = "cruscotto"
+    },
+    {
+      dataset_name        = "CRUSC8_TAXONOMY_AGGREGATE_POSITION"
+      dataset_schema_file = "datafactory/datasets/crusc8/CRUSC8_TAXONOMY_AGGREGATE_POSITION.json"
+      table_name          = "pagopa_taxonomy_aggregate_position"
+      schema_name         = "cruscotto"
+    },
+    {
+      dataset_name        = "CRUSC8_TRANSACTION"
+      dataset_schema_file = "datafactory/datasets/crusc8/CRUSC8_TRANSACTION.json"
+      table_name          = "pagopa_transaction"
+      schema_name         = "cruscotto"
+    }
+  ]
+
+  cfg_tables_list_datasets = [
+    {
+      dataset_name        = "CFG_INTERMEDIARI_PA"
+      dataset_schema_file = "datafactory/datasets/cfg/CFG_INTERMEDIARI_PA.json"
+      table_name          = "intermediari_pa"
+      schema_name         = "cfg"
+    },
+    {
+      dataset_name        = "CFG_INTERMEDIARI_PSP"
+      dataset_schema_file = "datafactory/datasets/cfg/CFG_INTERMEDIARI_PSP.json"
+      table_name          = "intermediari_psp"
+      schema_name         = "cfg"
+    },
+    {
+      dataset_name        = "CFG_PA"
+      dataset_schema_file = "datafactory/datasets/cfg/CFG_PA.json"
+      table_name          = "pa"
+      schema_name         = "cfg"
+    },
+    {
+      dataset_name        = "CFG_PSP"
+      dataset_schema_file = "datafactory/datasets/cfg/CFG_PSP.json"
+      table_name          = "psp"
+      schema_name         = "cfg"
+    },
+  ]
 }

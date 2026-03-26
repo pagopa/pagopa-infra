@@ -24,16 +24,16 @@ data "azurerm_resource_group" "data" {
 
 # Postgres Flexible Server subnet
 module "postgres_flexible_snet" {
-  source = "./.terraform/modules/__v3__/subnet"
+  source = "./.terraform/modules/__v4__/subnet"
 
   count = 1 # forced ( before exits only in UAT and PROD now DEV too)
 
-  name                                      = format("%s-pgres-flexible-snet", local.product)
-  address_prefixes                          = var.cidr_subnet_pg_flex_dbms
-  resource_group_name                       = local.vnet_resource_group_name
-  virtual_network_name                      = local.vnet_name
-  service_endpoints                         = ["Microsoft.Storage"]
-  private_endpoint_network_policies_enabled = false
+  name                              = format("%s-pgres-flexible-snet", local.product)
+  address_prefixes                  = var.cidr_subnet_pg_flex_dbms
+  resource_group_name               = local.vnet_resource_group_name
+  virtual_network_name              = local.vnet_name
+  service_endpoints                 = ["Microsoft.Storage"]
+  private_endpoint_network_policies = "Disabled"
 
   delegation = {
     name = "delegation"
@@ -47,7 +47,6 @@ module "postgres_flexible_snet" {
 }
 
 data "azurerm_private_dns_zone" "postgres" {
-  count               = var.env_short != "d" ? 1 : 0 # forced ( before exits only in UAT and PROD now DEV too)
   name                = "private.postgres.database.azure.com"
   resource_group_name = local.vnet_resource_group_name
 }
@@ -56,7 +55,7 @@ data "azurerm_private_dns_zone" "postgres" {
 ########
 # https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server
 module "postgres_flexible_server_private_db" {
-  source = "./.terraform/modules/__v3__/postgres_flexible_server"
+  source = "./.terraform/modules/__v4__/postgres_flexible_server"
 
   name = format("%s-%s-gpd-pgflex", local.product, var.location_short)
 
@@ -65,7 +64,7 @@ module "postgres_flexible_server_private_db" {
 
   ### Network
   private_endpoint_enabled      = var.pgres_flex_params.private_endpoint_enabled
-  private_dns_zone_id           = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
+  private_dns_zone_id           = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres.id : null
   delegated_subnet_id           = module.postgres_flexible_snet[0].id
   public_network_access_enabled = var.pgres_flex_params.public_network_access_enabled
 

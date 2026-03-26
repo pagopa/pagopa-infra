@@ -1,0 +1,16 @@
+<policies>
+  <inbound>
+    <base />
+    <rate-limit-by-key calls="1" renewal-period="300" counter-key="@(context.Subscription != null ? context.Subscription.Id.ToLower() : "unknown_subscription")" />
+    <set-backend-service base-url="https://${hostname}" />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

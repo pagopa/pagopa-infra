@@ -14,7 +14,6 @@ repos:
         args:
           - --init-args=-lockfile=readonly
           - --hook-config=--retry-once-with-cleanup=true
-          - --init-args=-plugin-dir=/tmp/.terraform.d/plugin-cache
           - --args=-json
           - --args=-no-color
           - --args=-compact-warnings
