@@ -88,6 +88,46 @@ locals {
 
   delivery_custom_rules = [
     {
+      name              = "RedirectAzureFdEndpoint"
+      order             = 1
+      behavior_on_match = "Stop"
+
+      // conditions: match any request NOT arriving on the official custom domain
+      host_name_condition = [{
+        operator         = "Equal"
+        match_values     = [local.dns_zone_key]
+        negate_condition = true
+        transforms       = ["Lowercase"]
+      }]
+
+      url_path_conditions           = []
+      cookies_conditions            = []
+      device_conditions             = []
+      http_version_conditions       = []
+      post_arg_conditions           = []
+      query_string_conditions       = []
+      remote_address_conditions     = []
+      request_body_conditions       = []
+      request_header_conditions     = []
+      request_method_conditions     = []
+      request_scheme_conditions     = []
+      request_uri_conditions        = []
+      url_file_extension_conditions = []
+      url_file_name_conditions      = []
+
+      // actions: redirect to the proper custom domain
+      modify_response_header_actions = []
+      url_rewrite_actions            = []
+      url_redirect_actions = [{
+        redirect_type = "Found"
+        protocol      = "Https"
+        hostname      = local.dns_zone_key
+        path          = "/"
+        fragment      = ""
+        query_string  = ""
+      }]
+    },
+    {
       name  = "CorsFontForNPG"
       order = 6
 
@@ -121,28 +161,8 @@ locals {
       }]
       url_redirect_actions = []
       url_rewrite_actions  = []
-    },
-    {
-      name  = "RedirectAzureFdEndpoint"
-      order = 1
-
-      host_name_condition = [{
-        # condition_type   = "url_path_condition"
-        operator         = "Contains"
-        match_values     = ["azurefd.net"]
-        negate_condition = false
-        transforms       = ["Lowercase"]
-      }]
-      url_rewrite_actions = []
-      url_redirect_actions = [{
-        redirect_type = "Found"
-        protocol      = "Https"
-        hostname      = local.dns_zone_key
-        path          = "/"
-        fragment      = ""
-        query_string  = ""
-      }]
-  }]
+    }
+  ]
 
   delivery_rule_rewrites = [
     {
