@@ -16,7 +16,6 @@
         </allowed-headers>
       </cors>
       <base />
-      <set-backend-service base-url="https://${hostname}/pagopa-afm-marketplace-service" />
       <set-variable name="aud" value="@{
             string aud = "";
       string authHeader = context.Request.Headers.GetValueOrDefault("Authorization", "");
