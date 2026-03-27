@@ -4,7 +4,7 @@
     "title": "PagoPA API Payments",
     "description": "Payments",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.8.0-1-PAGOPA-1140-sviluppo-gpd-payments-gestione-enti-pluri-intermediati"
+    "version": "0.13.0-1-PIDM-1736-range-from-to-provided"
   },
   "servers": [
     {
@@ -155,24 +155,25 @@
           {
             "name": "pageNum",
             "in": "query",
-            "description": "Page number",
-            "required": true,
+            "description": "Page number, starts from 0",
+            "required": false,
             "schema": {
               "minimum": 0,
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "default": 0
             }
           },
           {
             "name": "pageSize",
             "in": "query",
-            "description": "Number of elements per page. Default = 50",
+            "description": "Number of elements per page. Default = 20",
             "required": false,
             "schema": {
               "maximum": 100,
               "type": "integer",
               "format": "int32",
-              "default": 50
+              "default": 20
             }
           },
           {
@@ -196,7 +197,7 @@
           {
             "name": "from",
             "in": "query",
-            "description": "Filter by date, from this date",
+            "description": "Filter by date, from this date. If both from and to are omitted, receipts are returned for the last configured number of months. If only from is provided, the search range is automatically completed using the configured window.",
             "required": false,
             "schema": {
               "type": "string"
@@ -205,7 +206,26 @@
           {
             "name": "to",
             "in": "query",
-            "description": "Filter by date, to this date",
+            "description": "Filter by date, to this date. If only to is provided, the search range is automatically completed using the configured window. If both from and to are provided, the exact requested range is applied.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "segregationCodes",
+            "in": "query",
+            "description": "Segregation codes for which broker is authorized",
+            "required": false,
+            "schema": {
+              "pattern": "\\d{2}(,\\d{2})*",
+              "type": "string"
+            }
+          },
+          {
+            "name": "debtorOrIuv",
+            "in": "query",
+            "description": "Filter start of debtor or IUV",
             "required": false,
             "schema": {
               "type": "string"
@@ -226,7 +246,25 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ReceiptsInfo"
+                  "$ref": "#/components/schemas/PaymentsResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters, including an invalid date range.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -238,6 +276,25 @@
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 403,
+                  "message": "You are not allowed to access this resource."
                 }
               }
             }
@@ -326,6 +383,16 @@
               "type": "string"
             },
             "example": "ABC123"
+          },
+          {
+            "name": "segregationCodes",
+            "in": "query",
+            "description": "Segregation codes for which broker is authorized",
+            "required": false,
+            "schema": {
+              "pattern": "\\d{2}(,\\d{2})*",
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -354,6 +421,25 @@
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 403,
+                  "message": "You are not allowed to access this resource."
                 }
               }
             }
@@ -468,36 +554,25 @@
           }
         }
       },
-      "ReceiptModelResponse": {
+      "PaymentsResult": {
         "type": "object",
         "properties": {
-          "organizationFiscalCode": {
-            "type": "string"
+          "currentPageNumber": {
+            "type": "integer",
+            "format": "int32"
           },
-          "iuv": {
-            "type": "string"
+          "length": {
+            "type": "integer",
+            "format": "int32"
           },
-          "debtor": {
-            "type": "string"
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
           },
-          "paymentDateTime": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string"
-          }
-        }
-      },
-      "ReceiptsInfo": {
-        "required": [
-          "receipts_list"
-        ],
-        "type": "object",
-        "properties": {
-          "receipts_list": {
+          "results": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ReceiptModelResponse"
+              "type": "object"
             }
           }
         }
