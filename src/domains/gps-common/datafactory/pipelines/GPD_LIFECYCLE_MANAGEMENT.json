@@ -1,0 +1,360 @@
+{
+  "properties": {
+    "folder": {
+      "name": "GPD_MIGRATION_PIPELINE"
+    },
+    "concurrency": 1,
+    "activities": [
+      {
+        "name": "Until_fetch_store_delete_items",
+        "type": "Until",
+        "dependsOn": [
+          {
+            "activity": "Compute_to_migrate",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "expression": {
+            "value": "@greaterOrEquals(variables('CurrentOffset'), min(pipeline().parameters.MaxAmountToMigrate, int(activity('Compute_to_migrate').output.resultSets[0].rows[0].count)))",
+            "type": "Expression"
+          },
+          "activities": [
+            {
+              "name": "SetTempOffset",
+              "type": "SetVariable",
+              "dependsOn": [
+                {
+                  "activity": "Increase_debt_position_counter",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "variableName": "TempOffset",
+                "value": {
+                  "value": "@add(variables('CurrentOffset'), min(pipeline().parameters.ChunkSize,int(activity('Execute_GPD_LIFECYCLE_SCRIPT_EXECUTION').output.pipelineReturnValue.pCount)))",
+                  "type": "Expression"
+                }
+              }
+            },
+            {
+              "name": "SetCurrentOffset",
+              "type": "SetVariable",
+              "dependsOn": [
+                {
+                  "activity": "SetTempOffset",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "variableName": "CurrentOffset",
+                "value": {
+                  "value": "@variables('TempOffset')",
+                  "type": "Expression"
+                }
+              }
+            },
+            {
+              "name": "Execute_GPD_LIFECYCLE_SCRIPT_EXECUTION",
+              "type": "ExecutePipeline",
+              "dependsOn": [],
+              "policy": {
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "pipeline": {
+                  "referenceName": "GPD_LIFECYCLE_SCRIPT_EXECUTION",
+                  "type": "PipelineReference"
+                },
+                "waitOnCompletion": true,
+                "parameters": {
+                  "ChunkSize": {
+                    "value": "@pipeline().parameters.ChunkSize",
+                    "type": "Expression"
+                  },
+                  "CurrentOffset": {
+                    "value": "@variables('CurrentOffset')",
+                    "type": "Expression"
+                  }
+                }
+              }
+            },
+            {
+              "name": "Increase_debt_position_counter",
+              "type": "IfCondition",
+              "dependsOn": [
+                {
+                  "activity": "Execute_GPD_LIFECYCLE_SCRIPT_EXECUTION",
+                  "dependencyConditions": [
+                    "Completed"
+                  ]
+                }
+              ],
+              "userProperties": [],
+              "typeProperties": {
+                "expression": {
+                  "value": "@equals(activity('Execute_GPD_LIFECYCLE_SCRIPT_EXECUTION').status, 'Succeeded')",
+                  "type": "Expression"
+                },
+                "ifTrueActivities": [
+                  {
+                    "name": "increase_debt_position_temp_counter",
+                    "type": "SetVariable",
+                    "dependsOn": [],
+                    "policy": {
+                      "secureOutput": false,
+                      "secureInput": false
+                    },
+                    "userProperties": [],
+                    "typeProperties": {
+                      "variableName": "TempDebtPositionCounter",
+                      "value": {
+                        "value": "@add(min(pipeline().parameters.ChunkSize, int(activity('Execute_GPD_LIFECYCLE_SCRIPT_EXECUTION').output.pipelineReturnValue.pCount)), variables('DebtPositionCounter'))",
+                        "type": "Expression"
+                      }
+                    }
+                  },
+                  {
+                    "name": "set_debt_position_counter",
+                    "type": "SetVariable",
+                    "dependsOn": [
+                      {
+                        "activity": "increase_debt_position_temp_counter",
+                        "dependencyConditions": [
+                          "Succeeded"
+                        ]
+                      }
+                    ],
+                    "policy": {
+                      "secureOutput": false,
+                      "secureInput": false
+                    },
+                    "userProperties": [],
+                    "typeProperties": {
+                      "variableName": "DebtPositionCounter",
+                      "value": {
+                        "value": "@variables('TempDebtPositionCounter')",
+                        "type": "Expression"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "timeout": "0.12:00:00"
+        }
+      },
+      {
+        "name": "Refresh_materialized_view_first_step",
+        "description": "Refresh materialized view",
+        "type": "Script",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 3,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "linkedServiceName": {
+          "referenceName": "${linked_service_gpd}",
+          "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "Query",
+              "text": "CALL apd.refresh_archiving_buffer()"
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        }
+      },
+      {
+        "name": "Compute_to_migrate",
+        "type": "Script",
+        "dependsOn": [
+          {
+            "activity": "Refresh_materialized_view_first_step",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 3,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "linkedServiceName": {
+          "referenceName": "${linked_service_gpd}",
+          "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "Query",
+              "text": {
+                "value": "@concat('SELECT COUNT(*) \nFROM (\n    SELECT 1 \n    FROM apd.archiving_selection_buffer \n    LIMIT', string(pipeline().parameters.MaxAmountToMigrate),'\n) AS subquery;')",
+                "type": "Expression"
+              }
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        }
+      },
+      {
+        "name": "Refresh_materialized_view_last_step",
+        "description": "Refresh materialized view",
+        "type": "Script",
+        "dependsOn": [
+          {
+            "activity": "Send_ai_event",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "linkedServiceName": {
+          "referenceName": "${linked_service_gpd}",
+          "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "Query",
+              "text": "CALL apd.refresh_archiving_buffer()"
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        }
+      },
+      {
+        "name": "Get_app_insight_instrumentation_key",
+        "type": "WebActivity",
+        "dependsOn": [
+          {
+            "activity": "Until_fetch_store_delete_items",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": true,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "method": "GET",
+          "url": "${ai_instrumentation_key_secret}",
+          "connectVia": {
+            "referenceName": "AutoResolveIntegrationRuntime",
+            "type": "IntegrationRuntimeReference"
+          },
+          "authentication": {
+            "type": "MSI",
+            "resource": "https://vault.azure.net"
+          }
+        }
+      },
+      {
+        "name": "Send_ai_event",
+        "type": "WebActivity",
+        "dependsOn": [
+          {
+            "activity": "Get_app_insight_instrumentation_key",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": true
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "method": "POST",
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "url": "https://westeurope-3.in.applicationinsights.azure.com/v2.1/track",
+          "connectVia": {
+            "referenceName": "AutoResolveIntegrationRuntime",
+            "type": "IntegrationRuntimeReference"
+          },
+          "body": {
+            "value": "@concat('{\"name\": \"AppEvents\",\"time\": \"', utcNow(), '\",\"iKey\":\"', activity('Get_app_insight_instrumentation_key').output.value, '\",\"data\": {\"baseType\": \"EventData\",\"baseData\": {\"ver\": 2,\"name\": \"ADF_DebtPositionsArchived\",\"properties\": {\"PipelineName\": \"', pipeline().Pipeline, '\",\"RunId\": \"', pipeline().RunId, '\",\"DebtPositionsArchived\":', variables('DebtPositionCounter'), ',\"StartTime\": \"', convertFromUtc(pipeline().TriggerTime,  'W. Europe Standard Time', 'yyyy-MM-dd HH:mm:ss.ffffff'), '\", \"EndTime\": \"', convertFromUtc(utcNow(), 'W. Europe Standard Time', 'yyyy-MM-dd HH:mm:ss.ffffff'),'\"}}}}')",
+            "type": "Expression"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "ChunkSize": {
+        "type": "Int",
+        "defaultValue": 1000
+      },
+      "MaxAmountToMigrate": {
+        "type": "Int",
+        "defaultValue": 50000
+      }
+    },
+    "variables": {
+      "CurrentOffset": {
+        "type": "Integer",
+        "defaultValue": 0
+      },
+      "DebtPositionCounter": {
+        "type": "Integer",
+        "defaultValue": 0
+      },
+      "TempDebtPositionCounter": {
+        "type": "Integer",
+        "defaultValue": 0
+      },
+      "TempOffset": {
+        "type": "Integer",
+        "defaultValue": 0
+      }
+    }
+  }
+}

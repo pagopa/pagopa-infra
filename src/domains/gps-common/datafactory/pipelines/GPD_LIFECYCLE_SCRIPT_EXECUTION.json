@@ -1,0 +1,332 @@
+{
+  "properties": {
+    "folder": {
+      "name": "GPD_MIGRATION_PIPELINE"
+    },
+    "concurrency": 1,
+    "activities": [
+      {
+        "name": "Store_elements_in_offline",
+        "type": "Script",
+        "dependsOn": [
+          {
+            "activity": "SetVariableToReturnOnSuccess",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "linkedServiceName": {
+          "referenceName": "${linked_service_gpd_archive}",
+          "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "Query",
+              "text": {
+                "value": "CALL apd.ingest_payment_positions_bulk_n_rows('@{pipeline().RunId}')",
+                "type": "Expression"
+              }
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        }
+      },
+      {
+        "name": "Delete_elements_from_online",
+        "type": "Script",
+        "dependsOn": [
+          {
+            "activity": "Wait_between_update_delete",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "linkedServiceName": {
+          "referenceName": "${linked_service_gpd}",
+          "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "Query",
+              "text": {
+                "value": "@concat('CALL apd.delete_archived_chunk(',string(min(pipeline().parameters.ChunkSize,int(activity('Retrieve_count').output.resultSets[0].rows[0].count))),', ',string(pipeline().parameters.CurrentOffset),')')",
+                "type": "Expression"
+              }
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        }
+      },
+      {
+        "name": "SetVariableToReturnOnSuccess",
+        "type": "SetVariable",
+        "dependsOn": [
+          {
+            "activity": "Retrieve_count",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "pipelineReturnValue",
+          "value": [
+            {
+              "key": "pCount",
+              "value": {
+                "type": "Expression",
+                "content": "@int(activity('Retrieve_count').output.resultSets[0].rows[0].count)"
+              }
+            }
+          ],
+          "setSystemVariable": true
+        }
+      },
+      {
+        "name": "SetVariableToReturnOnFailRetrieve",
+        "type": "SetVariable",
+        "dependsOn": [
+          {
+            "activity": "Retrieve_count",
+            "dependencyConditions": [
+              "Failed"
+            ]
+          }
+        ],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "pipelineReturnValue",
+          "value": [
+            {
+              "key": "pCount",
+              "value": {
+                "type": "Expression",
+                "content": "@int(pipeline().parameters.ChunkSize)"
+              }
+            }
+          ],
+          "setSystemVariable": true
+        }
+      },
+      {
+        "name": "Move_jsonb_to_archive",
+        "type": "Copy",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "source": {
+            "type": "AzurePostgreSqlSource",
+            "additionalColumns": [
+              {
+                "name": "run_id",
+                "value": {
+                  "value": "@pipeline().RunId",
+                  "type": "Expression"
+                }
+              }
+            ],
+            "query": {
+              "value": "@concat('SELECT apd.get_archiving_chunk_n_rows(', string(pipeline().parameters.ChunkSize),' ,', string(pipeline().parameters.CurrentOffset),') AS p_json_data')",
+              "type": "Expression"
+            },
+            "queryTimeout": "05:00:00"
+          },
+          "sink": {
+            "type": "AzurePostgreSqlSink",
+            "writeBatchSize": {
+              "value": "@div(pipeline().parameters.ChunkSize, 10)",
+              "type": "Expression"
+            },
+            "writeBatchTimeout": "02:30:00",
+            "writeMethod": "CopyCommand"
+          },
+          "enableStaging": false,
+          "translator": {
+            "type": "TabularTranslator",
+            "typeConversion": true,
+            "typeConversionSettings": {
+              "allowDataTruncation": true,
+              "treatBooleanAsNumber": false
+            }
+          }
+        },
+        "inputs": [
+          {
+            "referenceName": "ARCHIVING_SELECTION_BUFFER",
+            "type": "DatasetReference"
+          }
+        ],
+        "outputs": [
+          {
+            "referenceName": "ARCHIVING_STAGING",
+            "type": "DatasetReference"
+          }
+        ]
+      },
+      {
+        "name": "Retrieve_count",
+        "type": "Script",
+        "dependsOn": [
+          {
+            "activity": "Move_jsonb_to_archive",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "linkedServiceName": {
+          "referenceName": "${linked_service_gpd}",
+          "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "Query",
+              "text": {
+                "value": "@concat('SELECT COUNT(*) FROM (SELECT * FROM apd.archiving_selection_buffer LIMIT ', string(pipeline().parameters.ChunkSize), ' OFFSET ', string(pipeline().parameters.CurrentOffset),') AS subquery;')",
+                "type": "Expression"
+              }
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        }
+      },
+      {
+        "name": "SetVariableToReturnOnFailCopy",
+        "type": "SetVariable",
+        "dependsOn": [
+          {
+            "activity": "Move_jsonb_to_archive",
+            "dependencyConditions": [
+              "Failed"
+            ]
+          }
+        ],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "pipelineReturnValue",
+          "value": [
+            {
+              "key": "pCount",
+              "value": {
+                "type": "Expression",
+                "content": "@int(pipeline().parameters.ChunkSize)"
+              }
+            }
+          ],
+          "setSystemVariable": true
+        }
+      },
+      {
+        "name": "Mark_archived_in_online",
+        "type": "Script",
+        "dependsOn": [
+          {
+            "activity": "Store_elements_in_offline",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "linkedServiceName": {
+          "referenceName": "${linked_service_gpd}",
+          "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "Query",
+              "text": {
+                "value": "@concat('CALL apd.mark_archived_chunk(',string(min(pipeline().parameters.ChunkSize,int(activity('Retrieve_count').output.resultSets[0].rows[0].count))),', ',string(pipeline().parameters.CurrentOffset),')')",
+                "type": "Expression"
+              }
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        }
+      },
+      {
+        "name": "Wait_between_update_delete",
+        "type": "Wait",
+        "dependsOn": [
+          {
+            "activity": "Mark_archived_in_online",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "waitTimeInSeconds": 90
+        }
+      }
+    ],
+    "parameters": {
+      "ChunkSize": {
+        "type": "Int",
+        "defaultValue": 10000
+      },
+      "CurrentOffset": {
+        "type": "Int",
+        "defaultValue": 0
+      }
+    }
+  }
+}

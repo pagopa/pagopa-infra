@@ -99,7 +99,7 @@ resource "azurerm_key_vault_secret" "pgres_apd_storico_pwd_secret" {
 }
 
 provider "postgresql" {
-  alias     = "historical"
+  alias = "historical"
 
   host      = module.postgres_storico_flexible_server_private_db.fqdn
   port      = 5432
@@ -120,7 +120,7 @@ resource "postgresql_role" "apd_storico_user" {
 
 # Full permission on the apd schema
 resource "postgresql_grant" "flyway_schema_all" {
-  provider    = postgresql.historical
+  provider = postgresql.historical
 
   database    = "apd"
   role        = postgresql_role.apd_storico_user.name
@@ -131,7 +131,7 @@ resource "postgresql_grant" "flyway_schema_all" {
 
 # Full permissions on ALL existing apd TABLES and VIEWS (Read, Write, Truncate)
 resource "postgresql_grant" "flyway_tables_all" {
-  provider    = postgresql.historical
+  provider = postgresql.historical
 
   database    = "apd"
   role        = postgresql_role.apd_storico_user.name
@@ -142,7 +142,7 @@ resource "postgresql_grant" "flyway_tables_all" {
 
 # Full permissions on apd SEQUENCES
 resource "postgresql_grant" "flyway_sequences_all" {
-  provider    = postgresql.historical
+  provider = postgresql.historical
 
   database    = "apd"
   role        = postgresql_role.apd_storico_user.name
@@ -153,7 +153,7 @@ resource "postgresql_grant" "flyway_sequences_all" {
 
 # Full permissions on existing apd functions and procedures
 resource "postgresql_grant" "flyway_routines_all" {
-  provider    = postgresql.historical
+  provider = postgresql.historical
 
   database    = "apd"
   role        = postgresql_role.apd_storico_user.name
