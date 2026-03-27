@@ -1,6 +1,19 @@
 <policies>
 
   <inbound>
+    <!-- direct APIM access -> redirect to the custom domain -->
+    <choose>
+      <when condition="@(context.Request.OriginalUrl.Host != "${checkout_fe_hostname}")">
+        <return-response>
+          <set-status code="302" reason="Found" />
+          <set-header name="Location" exists-action="override">
+            <value>https://${checkout_fe_hostname}/</value>
+          </set-header>
+        </return-response>
+      </when>
+    </choose>
+
+    <!-- requests from App GW continue with normal logic -->
     <cors>
       <allowed-origins>
         <origin>https://${checkout_fe_hostname}</origin>
