@@ -100,7 +100,7 @@
 | <a name="input_nsg_regions"></a> [nsg\_regions](#input\_nsg\_regions) | (Optional) Regions where NSG must be created | `list(string)` | <pre>[<br/>  "westeurope"<br/>]</pre> | no |
 | <a name="input_platform_dns_zone_prefix"></a> [platform\_dns\_zone\_prefix](#input\_platform\_dns\_zone\_prefix) | platform dns prefix | `string` | n/a | yes |
 | <a name="input_trino_xmx"></a> [trino\_xmx](#input\_trino\_xmx) | n/a | `string` | `"4G"` | no |
-| <a name="input_vmss_size"></a> [vmss\_size](#input\_vmss\_size) | n/a | `string` | `"Standard_D2ds_v5"` | no |
+| <a name="input_vmss_size"></a> [vmss\_size](#input\_vmss\_size) | n/a | `string` | `"Standard_D4ds_v5"` | no |
 | <a name="input_vnet_ita_ddos_protection_plan"></a> [vnet\_ita\_ddos\_protection\_plan](#input\_vnet\_ita\_ddos\_protection\_plan) | n/a | <pre>object({<br/>    id     = string<br/>    enable = bool<br/>  })</pre> | `null` | no |
 | <a name="input_vpn_gateway_address_space"></a> [vpn\_gateway\_address\_space](#input\_vpn\_gateway\_address\_space) | n/a | `string` | `"172.16.1.0/24"` | no |
 
