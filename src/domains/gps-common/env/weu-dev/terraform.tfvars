@@ -1,10 +1,12 @@
-prefix         = "pagopa"
-env_short      = "d"
-env            = "dev"
-domain         = "gps"
-location       = "westeurope"
-location_short = "weu"
-instance       = "dev"
+prefix             = "pagopa"
+env_short          = "d"
+env                = "dev"
+domain             = "gps"
+location           = "westeurope"
+location_short     = "weu"
+location_itn       = "italynorth"
+location_itn_short = "itn"
+instance           = "dev"
 
 
 ### External resources
@@ -50,7 +52,7 @@ gpd_upload_status_ttl = 604800 // 7 days
 # Postgres Flexible
 pgres_flex_params = {
 
-  private_endpoint_enabled = false
+  private_endpoint_enabled = true
   sku_name                 = "GP_Standard_D2ds_v4"
   db_version               = "15"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
@@ -186,3 +188,22 @@ rtp_storage_account = {
   blob_delete_retention_days         = 30
   enable_low_availability_alert      = false
 }
+
+# Postgres Flexible Storico
+pgflex_storico_params = {
+  pgres_flex_pgbouncer_enabled           = false
+  alerts_enabled                         = false
+  pgres_flex_diagnostic_settings_enabled = false
+  max_connections                        = 850
+  enable_private_dns_registration        = true
+  max_worker_processes                   = 16
+  storage_mb                             = 32768
+}
+
+pgflex_storico_geo_replication = {
+  enabled                     = false
+  name                        = "pagopa-d-gpd-storico-pgflex-replica"
+  location                    = "germanywestcentral"
+  private_dns_registration_ve = false
+}
+
