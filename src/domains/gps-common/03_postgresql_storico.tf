@@ -69,14 +69,10 @@ module "postgres_storico_flexible_server_private_db" {
   private_dns_record_cname = "gpd-storico-db"
 
 
-  tags = module.tag_config.tags
+  tags = local.tags_grafana
 
   geo_replication = {
-    enabled                     = var.pgflex_storico_geo_replication.enabled
-    name                        = var.pgflex_storico_geo_replication.name
-    subnet_id                   = module.postgres_flexible_snet[0].id
-    location                    = var.pgflex_storico_geo_replication.location
-    private_dns_registration_ve = var.pgflex_storico_geo_replication.private_dns_registration_ve
+    enabled                     = false
   }
 
   additional_azure_extensions  = ["pg_partman"]
@@ -119,45 +115,45 @@ resource "postgresql_role" "apd_storico_user" {
 }
 
 # Full permission on the apd schema
-resource "postgresql_grant" "flyway_schema_all" {
-  provider = postgresql.historical
-
-  database    = "apd"
-  role        = postgresql_role.apd_storico_user.name
-  schema      = "apd"
-  object_type = "schema"
-  privileges  = ["ALL"]
-}
+# resource "postgresql_grant" "flyway_schema_all" {
+#   provider = postgresql.historical
+#
+#   database    = "apd"
+#   role        = postgresql_role.apd_storico_user.name
+#   schema      = "apd"
+#   object_type = "schema"
+#   privileges  = ["ALL"]
+# }
 
 # Full permissions on ALL existing apd TABLES and VIEWS (Read, Write, Truncate)
-resource "postgresql_grant" "flyway_tables_all" {
-  provider = postgresql.historical
-
-  database    = "apd"
-  role        = postgresql_role.apd_storico_user.name
-  schema      = "apd"
-  object_type = "table"
-  privileges  = ["ALL"]
-}
+# resource "postgresql_grant" "flyway_tables_all" {
+#   provider = postgresql.historical
+#
+#   database    = "apd"
+#   role        = postgresql_role.apd_storico_user.name
+#   schema      = "apd"
+#   object_type = "table"
+#   privileges  = ["ALL"]
+# }
 
 # Full permissions on apd SEQUENCES
-resource "postgresql_grant" "flyway_sequences_all" {
-  provider = postgresql.historical
-
-  database    = "apd"
-  role        = postgresql_role.apd_storico_user.name
-  schema      = "apd"
-  object_type = "sequence"
-  privileges  = ["ALL"]
-}
+# resource "postgresql_grant" "flyway_sequences_all" {
+#   provider = postgresql.historical
+#
+#   database    = "apd"
+#   role        = postgresql_role.apd_storico_user.name
+#   schema      = "apd"
+#   object_type = "sequence"
+#   privileges  = ["ALL"]
+# }
 
 # Full permissions on existing apd functions and procedures
-resource "postgresql_grant" "flyway_routines_all" {
-  provider = postgresql.historical
-
-  database    = "apd"
-  role        = postgresql_role.apd_storico_user.name
-  schema      = "apd"
-  object_type = "routine"
-  privileges  = ["ALL"]
-}
+# resource "postgresql_grant" "flyway_routines_all" {
+#   provider = postgresql.historical
+#
+#   database    = "apd"
+#   role        = postgresql_role.apd_storico_user.name
+#   schema      = "apd"
+#   object_type = "routine"
+#   privileges  = ["ALL"]
+# }
