@@ -72,7 +72,7 @@ module "postgres_storico_flexible_server_private_db" {
   tags = local.tags_grafana
 
   geo_replication = {
-    enabled                     = false
+    enabled = false
   }
 
   additional_azure_extensions  = ["pg_partman"]
