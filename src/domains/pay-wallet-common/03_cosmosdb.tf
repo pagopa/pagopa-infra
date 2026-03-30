@@ -117,7 +117,7 @@ locals {
     },
     {
       name                = "payment-wallets"
-      default_ttl_seconds = "-1" 
+      default_ttl_seconds = "-1"
       indexes = [{
         keys   = ["_id"]
         unique = true
