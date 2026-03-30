@@ -42,3 +42,7 @@ data "azurerm_virtual_network" "network_tools_vnet" {
   name                = "${var.prefix}-${var.env_short}-${var.location_short_ita}-spoke-tools-vnet"
   resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short_ita}-network-hub-spoke-rg"
 }
+
+data "azurerm_resource_group" "network_rg" {
+  name = "pagopa-${var.env_short}-vnet-rg"
+}

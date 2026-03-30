@@ -37,8 +37,12 @@ data "azurerm_private_dns_zone" "storage" {
   resource_group_name = local.storage_dns_zone_resource_group_name
 }
 
+moved {
+  from = module.taxonomy_storage_snet[0]
+  to   = module.taxonomy_storage_snet
+}
+
 module "taxonomy_storage_snet" {
-  count  = var.env_short == "d" ? 0 : 1
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.53.0"
 
   name                 = "${local.project}-${local.taxonomy_label}-storage-snet"
