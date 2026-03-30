@@ -405,7 +405,15 @@ resource "azurerm_key_vault_secret" "flyway_db_url" {
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
+}
 
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "flyway_db_storico_url" {
+  name         = "flyway-db-storico-url"
+  value        = format("jdbc:postgresql://%s:%s/%s?sslmode=require%s", module.postgres_storico_flexible_server_private_db.fqdn, local.flyway_gpd_dbmsport, var.gpd_db_name, "&prepareThreshold=0&lock_timeout=30000")
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
 }
 
 # resource "azurerm_key_vault_secret" "db_url" {
