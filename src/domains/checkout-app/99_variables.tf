@@ -205,3 +205,9 @@ variable "k8s_kube_config_path_prefix" {
   type    = string
   default = "~/.kube"
 }
+
+variable "dns_default_ttl_sec" {
+  type        = number
+  description = "The DNS default TTL in seconds"
+  default     = 3600
+}
