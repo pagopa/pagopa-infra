@@ -27,8 +27,7 @@ apim_logger_resource_id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/r
 
 # Checkout
 
-checkout_enabled               = true
-checkout_apim_frontend_enabled = true
+checkout_enabled = true
 
 # ecommerce ingress hostname
 ecommerce_ingress_hostname             = "weudev.ecommerce.internal.dev.platform.pagopa.it"
