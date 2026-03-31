@@ -57,6 +57,37 @@ module "apim_checkout_frontend_api" {
 
   xml_content = templatefile("./api/checkout/checkout_frontend/v1/_base_policy.xml.tpl", {
     storage_web_hostname = module.checkout_cdn_frontdoor.storage_primary_web_host
+    csp_value            = local.checkout_csp_value
+    checkout_fe_hostname = local.checkout_fe_apim_hostname
+  })
+}
+
+######################
+## Fonts API (NPG) ##
+######################
+
+module "apim_checkout_frontend_fonts_api" {
+  source = "./.terraform/modules/__v4__/api_management_api"
+
+  name                  = "${local.parent_project}-checkout-frontend-fonts-api"
+  api_management_name   = data.azurerm_api_management.apim.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_checkout_frontend_product.product_id]
+  subscription_required = local.apim_checkout_frontend.subscription_required
+  service_url           = local.apim_checkout_frontend.service_url
+
+  description  = "Dedicated API for checkout frontend font assets - exposes fonts to NPG SDK origin via CORS"
+  display_name = "Checkout Frontend Fonts Proxy"
+  path         = "checkout-fe/fonts"
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value = templatefile("./api/checkout/checkout_frontend_fonts/v1/_openapi.json.tpl", {
+    host = local.checkout_fe_apim_hostname
+  })
+
+  xml_content = templatefile("./api/checkout/checkout_frontend_fonts/v1/_base_policy.xml.tpl", {
+    storage_web_hostname = module.checkout_cdn_frontdoor.storage_primary_web_host
     npg_sdk_hostname     = local.checkout_frontend_npg_sdk_hostname
     csp_value            = local.checkout_csp_value
     checkout_fe_hostname = local.checkout_fe_apim_hostname
