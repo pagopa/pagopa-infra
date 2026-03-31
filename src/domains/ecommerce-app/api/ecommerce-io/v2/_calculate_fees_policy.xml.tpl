@@ -29,7 +29,7 @@
                         <cache-store-value
                                     key="@((string)context.Variables["cacheKey"])"
                                     value="@(((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<string>(preserveContent: true))"
-                                    duration="300" />
+                                    duration="60" />
                                 <set-variable name="cachedPaymentMethod"
                                     value="@(((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<string>(preserveContent: true))" />
                     </when>
