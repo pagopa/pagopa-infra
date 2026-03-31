@@ -71,7 +71,7 @@ module "postgres_flexible_server_fdr_archive" {
   private_dns_zone_rg_name = data.azurerm_resource_group.rg_vnet.name
   private_dns_record_cname = "fdr-archive-db"
 
-  tags = module.tag_config.tags
+  tags = local.tags_grafana
 }
 
 # FdR database
