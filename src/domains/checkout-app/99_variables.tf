@@ -61,6 +61,12 @@ variable "checkout_enabled" {
   default = false
 }
 
+variable "checkout_apim_frontend_enabled" {
+  type        = string
+  default     = "true"
+  description = "Feature flag to enable/disable the APIM frontend proxy for checkout. When 'false', APIM redirects all traffic to checkout CDN."
+}
+
 variable "monitor_resource_group_name" {
   type        = string
   description = "Monitor resource group name"
