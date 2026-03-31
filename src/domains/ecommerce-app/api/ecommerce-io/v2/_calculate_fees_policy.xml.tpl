@@ -3,7 +3,7 @@
         <base />
         <set-variable name="paymentMethodId" value="@(context.Request.MatchedParameters["id"])" />
 
-        <set-variable name="cacheKey" value="@($"payment-method-{(string)context.Variables["paymentMethodId"]}")" />
+        <set-variable name="cacheKey" value="@($"ecommerce-payment-method-{(string)context.Variables["paymentMethodId"]}")" />
 
         <cache-lookup-value
             key="@((string)context.Variables["cacheKey"])"
