@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "cloudo" {
-  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=120d66f01ffa83aab0a62e119f6b120259469b9a" #0.15.2
+  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=6615a633c7128b6796511f4eb622d56ead005672" #0.16.0
 
   prefix                    = local.product
   product_name              = var.prefix
