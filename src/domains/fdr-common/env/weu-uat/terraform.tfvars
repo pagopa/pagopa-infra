@@ -21,7 +21,7 @@ external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
 
 ## CIDR fdr per database pgsql
-cidr_subnet_flex_dbms = ["10.1.162.0/24"]]
+cidr_subnet_flex_dbms = ["10.1.162.0/24"]
 
 enable_iac_pipeline = true
 

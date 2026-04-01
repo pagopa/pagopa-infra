@@ -189,6 +189,7 @@ variable "pgres_flex_archive_params" {
     pgres_flex_diagnostic_settings_enabled = bool
     enable_private_dns_registration        = optional(bool, false)
     storage_mb                             = number
+    auto_grow_enabled                      = bool
     db_version                             = number
   })
 }
