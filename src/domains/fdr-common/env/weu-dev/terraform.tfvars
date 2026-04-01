@@ -54,7 +54,7 @@ pgres_flex_archive_params = {
 
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
-  storage_mb                             = 32768  # 32 Gib
+  storage_mb                             = 32768 # 32 Gib
   auto_grow_enabled                      = false
   alerts_enabled                         = false
   pgres_flex_diagnostic_settings_enabled = false

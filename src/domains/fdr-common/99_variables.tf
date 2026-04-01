@@ -156,11 +156,6 @@ variable "cidr_subnet_flex_dbms" {
   description = "Postgresql network address space."
 }
 
-variable "cidr_subnet_flex_dbms_archive" {
-  type        = list(string)
-  description = "Postgresql network address space."
-}
-
 # Postgres Flexible
 variable "pgres_flex_params" {
   type = object({
@@ -470,4 +465,3 @@ variable "geo_replica_cidr_subnet_postgresql" {
   description = "Address prefixes replica subnet postgresql"
   default     = null
 }
-

@@ -22,7 +22,7 @@ external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"
 
 ## CIDR fdr per database pgsql
-cidr_subnet_flex_dbms         = ["10.1.162.0/24"]
+cidr_subnet_flex_dbms = ["10.1.162.0/24"]
 
 enable_iac_pipeline = true
 
@@ -51,8 +51,6 @@ pgres_flex_params = {
   shared_preoload_libraries              = "pg_failover_slots"
   public_network_access_enabled          = false
 }
-
-
 
 pgres_flex_archive_params = {
 
