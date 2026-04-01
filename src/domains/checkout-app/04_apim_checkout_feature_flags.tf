@@ -74,18 +74,12 @@ resource "azurerm_api_management_named_value" "apim_checkout_feature_flags_map_v
   secret              = true
 }
 
-data "azurerm_key_vault_secret" "checkout_apim_frontend_enabled" {
-  name         = "checkout-apim-frontend-enabled"
-  key_vault_id = data.azurerm_key_vault.key_vault_checkout.id
-}
-
 resource "azurerm_api_management_named_value" "apim_checkout_frontend_enabled" {
   name                = "checkout-apim-frontend-enabled"
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
   display_name        = "checkout-apim-frontend-enabled"
-  value               = data.azurerm_key_vault_secret.checkout_apim_frontend_enabled.value
-  secret              = true
+  value               = var.checkout_apim_frontend_enabled
 }
 
 #######################################################################
