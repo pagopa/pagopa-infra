@@ -76,6 +76,24 @@ variable "location_replica_short" {
   default     = "itn"
 }
 
+variable "location_itn" {
+  type        = string
+  description = "italynorth"
+  default     = "italynorth"
+}
+
+variable "location_itn_short" {
+  type = string
+  validation {
+    condition = (
+    length(var.location_itn_short) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "itn"
+  default     = "itn"
+}
+
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
@@ -172,27 +190,11 @@ variable "pgres_flex_params" {
 # Postgres Flexible
 variable "pgres_flex_archive_params" {
   type = object({
-    enabled                                = bool
-    sku_name                               = string
-    db_version                             = string
-    storage_mb                             = string
-    zone                                   = number
-    standby_zone                           = optional(number, 1)
-    backup_retention_days                  = number
-    geo_redundant_backup_enabled           = bool
-    create_mode                            = string
-    pgres_flex_private_endpoint_enabled    = bool
-    pgres_flex_ha_enabled                  = bool
-    pgres_flex_pgbouncer_enabled           = bool
-    pgres_flex_diagnostic_settings_enabled = bool
     alerts_enabled                         = bool
-    max_connections                        = number
-    pgbouncer_min_pool_size                = number
-    max_worker_process                     = number
-    wal_level                              = string
-    shared_preload_libraries               = string
-    azure_extensions                       = string
-    public_network_access_enabled          = bool
+    pgres_flex_diagnostic_settings_enabled = bool
+    enable_private_dns_registration        = optional(bool, false)
+    storage_mb                             = number
+    db_version                             = number
   })
 }
 
