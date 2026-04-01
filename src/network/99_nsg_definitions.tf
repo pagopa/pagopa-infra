@@ -293,8 +293,9 @@ locals {
       name                    = "AllowFdrArchivePostgreSQL"
       priority                = 540
       target_service          = "postgresql"
-      source_subnet_name      = "pagopa-${var.env_short}-weu-fdr-archive-pgres-flexible-snet"
-      source_subnet_vnet_name = "pagopa-${var.env_short}-vnet"
+
+      source_subnet_name      = "pagopa-${var.env_short}-itn-fdr-archive-pgflex-snet"
+      source_subnet_vnet_name = "pagopa-${var.env_short}-itn-spoke-data-vnet"
       description             = "Allow FdR archive to access PostgreSQL"
     }
     allow_all_to_postgres = {
