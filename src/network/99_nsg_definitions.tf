@@ -6,7 +6,7 @@ locals {
       target_subnet_vnet_name = local.vnet_core_name
       watcher_enabled         = var.nsg_network_watcher_enabled
 
-      inbound_rules  = concat(local.weu_postgres_base_inbound_rules,
+      inbound_rules = concat(local.weu_postgres_base_inbound_rules,
         [local.nsg_rule_library.allow_fdr_archive_to_postgres]
       )
       outbound_rules = []
