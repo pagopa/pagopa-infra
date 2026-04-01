@@ -18,7 +18,9 @@ module "postgres_flexible_server_fdr_archive" {
 
   db_version = var.pgres_flex_archive_params.db_version
   databases  = ["fdr3"]
-  storage_mb = var.pgres_flex_archive_params.storage_mb
+
+  storage_mb        = var.pgres_flex_archive_params.storage_mb
+  auto_grow_enabled = var.pgres_flex_archive_params.auto_grow_enabled
 
   private_dns_zone_id = data.azurerm_private_dns_zone.postgres.id
   embedded_subnet = {

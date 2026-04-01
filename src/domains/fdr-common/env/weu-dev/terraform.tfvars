@@ -21,8 +21,7 @@ external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
 
 ## CIDR fdr per database pgsql
-cidr_subnet_flex_dbms         = ["10.1.162.0/24"]
-cidr_subnet_flex_dbms_archive = ["10.1.170.0/24"]
+cidr_subnet_flex_dbms = ["10.1.162.0/24"]
 
 enable_iac_pipeline = true
 
@@ -55,7 +54,8 @@ pgres_flex_archive_params = {
 
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
-  storage_mb                             = 32768
+  storage_mb                             = 32768  # 32 Gib
+  auto_grow_enabled                      = false
   alerts_enabled                         = false
   pgres_flex_diagnostic_settings_enabled = false
   enable_private_dns_registration        = true

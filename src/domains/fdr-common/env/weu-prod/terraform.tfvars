@@ -53,33 +53,18 @@ pgres_flex_params = {
   public_network_access_enabled          = false
 }
 
-pgres_flex_archive_params = {
 
-  enabled    = true
-  sku_name   = "GP_Standard_D4ds_v4"
-  db_version = "17"
+
+pgres_flex_archive_params = {
 
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
-  storage_mb                             = 1048576 # 1Tib
-  zone                                   = 2
-  standby_zone                           = 1
-  backup_retention_days                  = 30
-  geo_redundant_backup_enabled           = true
-  create_mode                            = "Default"
-  pgres_flex_private_endpoint_enabled    = true
-  pgres_flex_ha_enabled                  = true
-  pgres_flex_pgbouncer_enabled           = true
-  standby_availability_zone              = 2
+  storage_mb                             = 262144 # 256 Gib
+  auto_grow_enabled                      = true
+  alerts_enabled                         = false
   pgres_flex_diagnostic_settings_enabled = false
-  alerts_enabled                         = true
-  max_connections                        = 1718
-  pgbouncer_min_pool_size                = 10
-  max_worker_process                     = 32
-  wal_level                              = "logical"
-  shared_preload_libraries               = "pg_cron"
-  azure_extensions                       = "PG_CRON,POSTGRES_FDW"
-  public_network_access_enabled          = false
+  enable_private_dns_registration        = true
+  db_version                             = 17
 }
 
 custom_metric_alerts = {
