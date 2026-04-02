@@ -16,7 +16,7 @@ databases = {
   }
   GPS_STORICO = {
     type                    = "postgresql"
-    host                    = "pagopa-p-itn-gpd-storico-pgflex-ve.reader.postgres.database.azure.com"
+    host                    = "pagopa-p-itn-gpd-storico-pgflex.postgres.database.azure.com"
     db_name                 = "apd"
     username                = "metabase"
     password_required       = true
