@@ -119,6 +119,7 @@ variable "receipts_datastore_cosmos_db_params" {
     container_default_ttl             = number
     max_throughput                    = number
     max_throughput_alt                = number
+    max_throughput_io_messages        = number
   })
 }
 

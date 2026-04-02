@@ -384,3 +384,17 @@ resource "azurerm_key_vault_secret" "shared_anonymizer_api_keysubkey_store_kv" {
 
   key_vault_id = module.key_vault.id
 }
+
+
+#search-transactions
+resource "azurerm_key_vault_secret" "search_transactions_token_secret" {
+  name         = "search-transactions-token-secret"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
