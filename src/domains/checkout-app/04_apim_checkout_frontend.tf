@@ -76,4 +76,6 @@ resource "azurerm_api_management_api_operation_policy" "checkout_frontend_get_fo
     npg_sdk_hostname     = local.checkout_frontend_npg_sdk_hostname
     checkout_fe_hostname = local.checkout_fe_apim_hostname
   })
+
+  depends_on = [module.apim_checkout_frontend_api]
 }
