@@ -1,20 +1,9 @@
 <policies>
     <inbound>
-        <!-- feature flag: if disabled, redirect all traffic to the CDN/custom domain -->
+        <!-- direct APIM access: redirect to custom domain, or serve if FF enabled -->
         <set-variable name="apimFrontendEnabled" value="{{checkout-apim-frontend-enabled}}" />
         <choose>
-            <when condition="@(context.Variables.GetValueOrDefault<string>("apimFrontendEnabled") != "true")">
-                <return-response>
-                    <set-status code="302" reason="Found" />
-                    <set-header name="Location" exists-action="override">
-                        <value>@("https://${checkout_fe_hostname}" + context.Request.OriginalUrl.Path + context.Request.OriginalUrl.QueryString)</value>
-                    </set-header>
-                </return-response>
-            </when>
-        </choose>
-        <!-- direct APIM access -> redirect to the custom domain -->
-        <choose>
-            <when condition="@(context.Request.OriginalUrl.Host != "${checkout_fe_hostname}")">
+            <when condition="@(context.Request.OriginalUrl.Host != "${checkout_fe_hostname}" && context.Variables.GetValueOrDefault<string>("apimFrontendEnabled") != "true")">
                 <return-response>
                     <set-status code="302" reason="Found" />
                     <set-header name="Location" exists-action="override">
