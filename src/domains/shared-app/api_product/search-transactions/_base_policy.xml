@@ -1,7 +1,6 @@
 <policies>
     <inbound>
-        <base />
-        <set-backend-service base-url="https://${hostname}/pagopa-afm-calculator-service" />
+        <base />      
     </inbound>
     <backend>
         <base />

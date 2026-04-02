@@ -41,3 +41,13 @@ resource "azurerm_api_management_subscription" "api_config_subkey" {
   allow_tracing       = false
   state               = "active"
 }
+
+// Subkey for CIE PDF Engine
+resource "azurerm_api_management_subscription" "printit_for_cie_subkey" {
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  product_id          = module.apim_printit_cie_product.id
+  display_name        = "Subscription for CIE Stampa Avvisi"
+  allow_tracing       = false
+  state               = "active"
+}
