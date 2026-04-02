@@ -1,14 +1,5 @@
 <policies>
     <inbound>
-        <base />
-        <!-- block NPG requests for non-.ttf files -->
-        <choose>
-            <when condition="@(context.Request.Headers.GetValueOrDefault("Origin","") == "https://${npg_sdk_hostname}" && !context.Request.OriginalUrl.Path.EndsWith(".ttf"))">
-                <return-response>
-                    <set-status code="403" reason="Forbidden" />
-                </return-response>
-            </when>
-        </choose>
         <!-- CORS: allow NPG SDK origin for font assets -->
         <cors>
             <allowed-origins>
@@ -23,6 +14,15 @@
                 <header>*</header>
             </allowed-headers>
         </cors>
+        <base />
+        <!-- block requests for non-.ttf files -->
+        <choose>
+            <when condition="@(context.Request.Headers.GetValueOrDefault("Origin","") == "https://${npg_sdk_hostname}" && !context.Request.OriginalUrl.Path.EndsWith(".ttf"))">
+                <return-response>
+                    <set-status code="403" reason="Forbidden" />
+                </return-response>
+            </when>
+        </choose>
     </inbound>
     <outbound>
         <base />
