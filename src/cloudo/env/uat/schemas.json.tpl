@@ -13,7 +13,8 @@
       "runbook": "azure/application_gateway_info.sh",
       "run_args": "pagopa-u-app-gw pagopa-u-vnet-rg",
       "worker": "generic",
-      "oncall": "false",
+      "oncall": false,
+      "require_approval": false,
       "tags": "application gateway,azure"
     }]
   },
