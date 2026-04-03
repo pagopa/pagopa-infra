@@ -48,7 +48,7 @@ pgres_flex_params = {
   wal_level                              = "logical"
   shared_preload_libraries               = "pg_cron,pg_stat_statements"
   azure_extensions                       = "PG_CRON,POSTGRES_FDW"
-  public_network_access_enabled          = true
+  public_network_access_enabled          = false
 }
 
 pgres_flex_archive_params = {
