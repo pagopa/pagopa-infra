@@ -40,6 +40,8 @@ locals {
   searchtransactions_hostname = var.env == "prod" ? "weuprod.bizevents.internal.platform.pagopa.it" : "weu${var.env}.bizevents.internal.${var.env}.platform.pagopa.it"
   cie_search_segragation_code = var.env == "dev" ? "" : "399"
 
+  ecommerce_hostname = var.env_short == "p" ? "weu${var.env}.ecommerce.internal.platform.pagopa.it" : "weu${var.env}.ecommerce.internal.${var.env}.platform.pagopa.it"
+
   cache_generator_hostname   = "${local.shared_hostname}/authorizer-functions/api"
   cache_generator_hostname_2 = "${local.shared_hostname}/authorizer-functions"
 
