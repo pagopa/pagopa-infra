@@ -1,9 +1,26 @@
 repos:
-  ## terraform
+  - repo: local
+    hooks:
+      - id: check-variables-tf
+        name: Check Terraform variables.tf conventions
+        entry: scripts/check-variables-tf.sh
+        language: python
+        types: [ python ]
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.96.2
     hooks:
       - id: terraform_fmt
+
+
+#  - repo: https://github.com/mcole18/terraform-check-unused-variables.git
+#    rev: v1.2.1
+#    hooks:
+#      - id: check-unused-vars
+#        args: [ -r, -q, --dir=., --var-file=99_variables.tf ]
+
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.96.2
+    hooks:
       - id: terraform_docs
         args:
           - --hook-config=--path-to-file=README.md        # Valid UNIX path. I.e. ../TFDOC.md or docs/README.md etc.
