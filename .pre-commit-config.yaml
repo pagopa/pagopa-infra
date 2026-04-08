@@ -1,11 +1,14 @@
+fail_fast: true
 repos:
   - repo: local
     hooks:
       - id: check-variables-tf
         name: Check Terraform variables.tf conventions
         entry: scripts/check-variables-tf.sh
+        always_run: true
         language: python
-        types: [ python ]
+        types: [java] # use java as filter to avoid triggering this hook for other file types, since this is a terraform specific check and we don't want to run it for every file change
+
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.96.2
     hooks:

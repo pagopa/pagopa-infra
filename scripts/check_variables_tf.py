@@ -97,7 +97,7 @@ def check_module(module: Path) -> List[str]:
         if VARIABLE_BLOCK_RE.search(content):
             errors.append(
                 f"[{rel}] '{tf_file.name}' must not define 'variable' blocks — "
-                f"all variables must be declared in 99_variables.tf."
+                f"all variables must be declared only in 99_variables.tf."
             )
 
     return errors
