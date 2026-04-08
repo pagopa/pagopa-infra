@@ -1,6 +1,3 @@
-locals {
-  foo = ""
-}
 # general
 variable "prefix" {
   type = string

@@ -15,11 +15,11 @@ repos:
       - id: terraform_fmt
 
 
-#  - repo: https://github.com/mcole18/terraform-check-unused-variables.git
-#    rev: v1.2.1
-#    hooks:
-#      - id: check-unused-vars
-#        args: [ -r, -q, --dir=., --var-file=99_variables.tf ]
+  - repo: https://github.com/mcole18/terraform-check-unused-variables.git
+    rev: v1.2.1
+    hooks:
+      - id: check-unused-vars
+        args: [ -r, -q, --dir=., --var-file=99_variables.tf ]
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.96.2
