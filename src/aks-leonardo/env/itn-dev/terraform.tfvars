@@ -1,10 +1,10 @@
 # general
-prefix              = "pagopa"
-env_short           = "d"
-env                 = "dev"
-domain              = "dev"
-location            = "italynorth"
-location_short      = "itn"
+prefix         = "pagopa"
+env_short      = "d"
+env            = "dev"
+domain         = "dev"
+location       = "italynorth"
+location_short = "itn"
 
 
 ### Network

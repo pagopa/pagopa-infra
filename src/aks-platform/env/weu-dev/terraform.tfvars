@@ -108,11 +108,6 @@ kube_prometheus_stack_helm = {
   chart_version = "44.2.1"
   values_file   = "./env/weu-dev/kube-prometheus-stack-helm/values.yaml"
 }
-
-tls_checker_keyvault = {
-  name        = "pagopa-d-kv"
-  secret_name = "pagopa-d-application-insight-connection-string"
-}
 tls_checker_https_endpoints_to_check = [
   {
     https_endpoint = "api.dev.platform.pagopa.it",

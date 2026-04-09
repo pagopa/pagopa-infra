@@ -8,12 +8,6 @@ repos:
         language: python
         types: [java] # use java as filter to avoid triggering this hook for other file types, since this is a terraform specific check and we don't want to run it for every file change
 
-  - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.96.2
-    hooks:
-      - id: terraform_fmt
-
-
   - repo: https://github.com/mcole18/terraform-check-unused-variables.git
     rev: v1.2.1
     hooks:
@@ -32,6 +26,7 @@ repos:
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.96.2
     hooks:
+      - id: terraform_fmt
       - id: terraform_docs
         args:
           - --hook-config=--path-to-file=README.md        # Valid UNIX path. I.e. ../TFDOC.md or docs/README.md etc.

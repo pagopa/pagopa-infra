@@ -1,19 +1,5 @@
-prefix          = "pagopa"
-env_short       = "u"
-env             = "uat"
-domain          = "bizevents"
-location        = "westeurope"
-location_short  = "weu"
-location_string = "West Europe"
-instance        = "uat"
-
-
-### External resources
-
+prefix     = "pagopa"
+env_short  = "u"
+env        = "uat"
+domain     = "bizevents"
 input_file = "./secret/weu-uat/configs.json"
-
-enable_iac_pipeline = true
-
-ecommerce_domain = "ecommerce"
-
-pay_wallet_domain = "pay-wallet"
