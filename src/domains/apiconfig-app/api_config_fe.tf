@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "api_config_fe_rg" {
  * CDN
  */
 module "api_config_fe_cdn" {
-  source = "./.terraform/modules/__v3__/cdn"
+  source = "./.terraform/modules/__v4__/cdn"
 
   count               = var.api_config_fe_enabled ? 1 : 0
   name                = "api-config-fe"
