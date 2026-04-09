@@ -1,6 +1,6 @@
 locals {
   # Front Door CDN specific locals
-  # NOTE: After switch, rename these to match ecommerce pattern:
+  # NOTE: After switch, optionally rename these to match ecommerce pattern:
   #   cdn_frontdoor_npg_sdk_hostname → npg_sdk_hostname
   #   cdn_frontdoor_csp_header_name → content_security_policy_header_name
   cdn_frontdoor_npg_sdk_hostname = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
@@ -12,12 +12,13 @@ locals {
   # DNS Zone Key for the main CDN (the one configured in the module)
   dns_zone_key = "${var.dns_zone_checkout}.${var.external_domain}"
 
-  # Custom domains configuration - Front Door CDN creation only (PR #2 / PIDM-1151)
+  # Custom domains configuration - Front Door CDN creation only
   # NOTE: custom_domains is empty to avoid Azure conflict with CDN Classic
   # Azure doesn't allow the same domain on both CDN Classic and Front Door simultaneously
-  # DNS switch will happen in a separate PR (PR #3 / PIDM-1410) which will (process to be validated):
+  # DNS switch will happen in a separate PR which will:
   #   1. Remove custom domain from CDN Classic
-  #   2. Add custom domain to Front Door (with enable_dns_records = false for staged DNS switch)
+  #   2. Add custom domain to Front Door
+  #   3. Change DNS from the temporary App Gateway to the new Front Door ones (enable_dns_records = true)
   custom_domains_for_switch = [
     {
       domain_name             = local.dns_zone_key
@@ -28,12 +29,12 @@ locals {
     }
   ]
 
-  # empty for now, will be set to custom_domains_for_switch in PR #3
+  # empty for now, will be set to custom_domains_for_switch values in a separate PR for DNS switch
   custom_domains = []
 
   global_delivery_rules = [
     {
-      order = 1
+      order = 2
       # HSTS and Content-Security-Policy
       modify_response_header_actions = [
         {
@@ -60,7 +61,7 @@ locals {
       ]
     },
     {
-      order = 2
+      order = 3
       modify_response_header_actions = [
         {
           action = "Append"
@@ -88,8 +89,48 @@ locals {
 
   delivery_custom_rules = [
     {
+      name              = "RedirectAzureFdEndpoint"
+      order             = 1
+      behavior_on_match = "Stop"
+
+      // conditions: match any request NOT arriving on the official custom domain
+      host_name_condition = [{
+        operator         = "Equal"
+        match_values     = [local.dns_zone_key]
+        negate_condition = true
+        transforms       = ["Lowercase"]
+      }]
+
+      url_path_conditions           = []
+      cookies_conditions            = []
+      device_conditions             = []
+      http_version_conditions       = []
+      post_arg_conditions           = []
+      query_string_conditions       = []
+      remote_address_conditions     = []
+      request_body_conditions       = []
+      request_header_conditions     = []
+      request_method_conditions     = []
+      request_scheme_conditions     = []
+      request_uri_conditions        = []
+      url_file_extension_conditions = []
+      url_file_name_conditions      = []
+
+      // actions: redirect to the proper custom domain
+      modify_response_header_actions = []
+      url_rewrite_actions            = []
+      url_redirect_actions = [{
+        redirect_type = "Found"
+        protocol      = "Https"
+        hostname      = local.dns_zone_key
+        path          = "/"
+        fragment      = ""
+        query_string  = ""
+      }]
+    },
+    {
       name  = "CorsFontForNPG"
-      order = 5
+      order = 6
 
       // conditions
       url_path_conditions       = []
@@ -127,7 +168,7 @@ locals {
   delivery_rule_rewrites = [
     {
       name  = "RewriteRules"
-      order = 3
+      order = 4
 
       url_path_conditions = [{
         condition_type   = "url_path_condition"
@@ -145,7 +186,7 @@ locals {
     },
     {
       name  = "RewriteRulesTerms"
-      order = 4
+      order = 5
 
       url_path_conditions = [{
         condition_type   = "url_path_condition"
