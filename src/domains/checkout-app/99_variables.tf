@@ -62,7 +62,7 @@ variable "checkout_enabled" {
 }
 
 variable "checkout_apim_frontend_enabled" {
-  type        = string
+  type        = bool
   default     = false
   description = "Feature flag to enable/disable the APIM frontend proxy for checkout. When 'false', APIM redirects all traffic to checkout CDN."
 }
