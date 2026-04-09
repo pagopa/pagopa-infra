@@ -917,7 +917,7 @@
   {
       "apiName": "checkout",
       "appName": "fe",
-      "url": "https://pagopa-u-checkout-cdn-endpoint.azureedge.net",
+      "url": "${checkout_cdn_endpoint}",
       "type": "cdn",
       "checkCertificate": true,
       "method": "GET",

@@ -77,8 +77,8 @@ data "azurerm_key_vault_secret" "grafana_key" {
 }
 
 
-# data "azurerm_cdn_frontdoor_endpoint" "checkout_cdn_endpoint" {
-#   name                = var.env_short == "d" ? "pagopa-checkout-testing-cdn-endpoint" : "${var.prefix}-${var.env_short}-checkout-cdn-endpoint"
-#   profile_name        = var.env_short == "d" ? "pagopa-checkout-testing-cdn-profile" : "${var.prefix}-${var.env_short}-checkout-cdn-profile"
-#   resource_group_name = "${var.prefix}-${var.env_short}-checkout-fe-rg"
-# }
+data "azurerm_cdn_frontdoor_endpoint" "checkout_cdn_endpoint" {
+  name                = "${var.prefix}-${var.env_short}-weu-checkout-cdn-endpoint"
+  profile_name        = "${var.prefix}-${var.env_short}-weu-checkout-cdn-profile"
+  resource_group_name = "${var.prefix}-${var.env_short}-checkout-fe-rg"
+}
