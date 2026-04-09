@@ -571,7 +571,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_checkout_get_c
   #TO DO: tuning alert thresholds based 503 status code
   query = (<<-QUERY
 AzureDiagnostics
-| where url_s startswith "https://api.dev.platform.pagopa.it/ecommerce/checkout/v1/carts" and method_s == "GET"
+| where url_s startswith "https://api.platform.pagopa.it/ecommerce/checkout/v1/carts" and method_s == "GET"
 | summarize
     Total=count(),
     Success=countif(responseCode_d < 500 or responseCode_d == 502 or responseCode_d == 504 or responseCode_d == 503)
