@@ -19,6 +19,7 @@ For example:
 
 import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 from typing import List, Set, Tuple
@@ -173,6 +174,22 @@ def parse_tfvars_structured(content: str) -> dict:
     return assignments
 
 
+def count_brackets_and_braces_excluding_comments(line: str) -> Tuple[int, int]:
+    """
+    Count brackets and braces in a line, excluding those in comments.
+    Returns (brace_net, bracket_net) where net = opens - closes.
+    """
+    # Find the comment start
+    comment_idx = line.find('#')
+    if comment_idx >= 0:
+        # Only count brackets/braces before the comment
+        line = line[:comment_idx]
+    
+    brace_net = line.count('{') - line.count('}')
+    bracket_net = line.count('[') - line.count(']')
+    return brace_net, bracket_net
+
+
 def remove_variables_from_tfvars(tfvars_file: Path, vars_to_remove: Set[str]) -> bool:
     """
     Remove specified top-level variables from terraform.tfvars file.
@@ -205,16 +222,34 @@ def remove_variables_from_tfvars(tfvars_file: Path, vars_to_remove: Set[str]) ->
 
                 if var_name in vars_to_remove:
                     # Skip this variable and all its continuation lines
-                    brace_depth = line.count('{') - line.count('}')
-                    bracket_depth = line.count('[') - line.count(']')
+                    # Count opening braces/brackets to know when the value is complete
+                    brace_depth, bracket_depth = count_brackets_and_braces_excluding_comments(line)
                     i += 1
-
-                    # Skip all continuation lines of this assignment
-                    while i < len(lines) and (brace_depth > 0 or bracket_depth > 0):
+                    
+                    # Keep consuming lines until braces/brackets are balanced AND
+                    # the next line would start a new top-level statement
+                    while i < len(lines):
                         next_line = lines[i]
-                        brace_depth += next_line.count('{') - next_line.count('}')
-                        bracket_depth += next_line.count('[') - next_line.count(']')
+                        
+                        # Update depth counts, excluding comments
+                        brace_delta, bracket_delta = count_brackets_and_braces_excluding_comments(next_line)
+                        brace_depth += brace_delta
+                        bracket_depth += bracket_delta
+                        
+                        # Always consume this line
                         i += 1
+                        
+                        # If we've closed all braces and brackets, check if we should stop
+                        if brace_depth <= 0 and bracket_depth <= 0:
+                            # Peek at the next line (if exists)
+                            if i < len(lines):
+                                peek_line = lines[i]
+                                # If next line is unindented and not empty/comment, stop
+                                if peek_line and peek_line[0] not in (' ', '\t', '#', '\n'):
+                                    break
+                            else:
+                                # EOF
+                                break
 
                     # Remove trailing blank lines before this removed variable
                     while result_lines and not result_lines[-1].strip():
@@ -238,6 +273,19 @@ def remove_variables_from_tfvars(tfvars_file: Path, vars_to_remove: Set[str]) ->
     # Write back only if changed
     if new_content != original_content.rstrip() + '\n':
         tfvars_file.write_text(new_content, encoding="utf-8")
+        
+        # Run terraform fmt to normalize formatting after variable removal
+        try:
+            subprocess.run(
+                ['terraform', 'fmt', str(tfvars_file)],
+                capture_output=True,
+                timeout=10,
+                check=False
+            )
+        except (FileNotFoundError, subprocess.TimeoutExpired):
+            # Gracefully handle if terraform not installed or timeout
+            pass
+        
         return True
 
     return False
