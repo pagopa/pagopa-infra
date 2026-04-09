@@ -36,15 +36,9 @@ cidr_subnet_tools_cae = ["10.3.252.0/23"]
 # Dns
 #
 platform_dns_zone_prefix = "uat.platform"
-dns_zone_internal_prefix = "internal.uat.platform"
 external_domain          = "pagopa.it"
-dns_default_ttl_sec      = 3600
 
-### External resources
 
-monitor_resource_group_name                 = "pagopa-u-monitor-rg"
-log_analytics_workspace_name                = "pagopa-u-law"
-log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
 ehns_auto_inflate_enabled        = true

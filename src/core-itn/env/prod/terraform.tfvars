@@ -36,15 +36,8 @@ cidr_subnet_tools_cae = ["10.3.252.0/23"]
 # Dns
 #
 platform_dns_zone_prefix = "platform"
-dns_zone_internal_prefix = "internal.platform"
 external_domain          = "pagopa.it"
-dns_default_ttl_sec      = 3600
 
-### External resources
-
-monitor_resource_group_name                 = "pagopa-p-monitor-rg"
-log_analytics_workspace_name                = "pagopa-p-law"
-log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 
 #
 # Container registry ACR

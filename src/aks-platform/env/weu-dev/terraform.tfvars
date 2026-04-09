@@ -51,8 +51,6 @@ aks_cidr_subnet = ["10.1.0.0/17"]
 
 aks_kubernetes_version = "1.34.1"
 
-# Subnet aks
-subnet_private_endpoint_network_policies_enabled = true
 
 ingress_min_replica_count = "1"
 ingress_max_replica_count = "3"
