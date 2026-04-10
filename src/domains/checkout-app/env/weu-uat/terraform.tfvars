@@ -18,7 +18,7 @@ apim_dns_zone_prefix = "uat.platform"
 dns_zone_checkout    = "uat.checkout"
 
 # Networking
-checkout_enabled = true
+checkout_enabled               = true
 checkout_apim_frontend_enabled = false
 
 # ecommerce ingress hostname
