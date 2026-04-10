@@ -36,7 +36,7 @@ az network dns record-set a delete -g "pagopa-${CLOUDO_ENVIRONMENT_SHORT}-vnet-r
 echo "[INFO] deleted old DNS record"
 az network dns record-set a create -g "pagopa-${CLOUDO_ENVIRONMENT_SHORT}-vnet-rg" --zone-name "${DNS_ZONE_NAME}" -n "@" --ttl 10
 echo "[INFO] created new DNS record"
-az network dns record-set a add-record -g "pagopa-${CLOUDO_ENVIRONMENT_SHORT}-vnet-rg" --zone-name "${DNS_ZONE_NAME}" -a "$GW_IP" --record-set-name "@"
+az network dns record-set a add-record -g "pagopa-${CLOUDO_ENVIRONMENT_SHORT}-vnet-rg" --zone-name "${DNS_ZONE_NAME}" -a "$GW_IP" --record-set-name "@"  --ttl 10
 echo "[INFO] added record set to DNS"
 echo "[INFO] runbook completed"
 
