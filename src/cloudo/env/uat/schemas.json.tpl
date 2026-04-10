@@ -16,9 +16,21 @@
       "oncall": false,
       "require_approval": false,
       "tags": "application gateway,azure"
-    }]
+    },
+    {
+        "id": "availability-fe-checkout-cdn",
+        "name": "Checkout CDN switch",
+        "description": "Switch checkout provider from CDN to APIM",
+        "runbook": "azure/checkout_cdn_switch.sh",
+        "require_approval": "true",
+        "run_args": "",
+        "worker": "generic",
+        "oncall": false,
+        "require_approval": true,
+        "tags": "checkout,azure"
+  }]
   },
-  {
+    {
     "partition_key": "elastic",
     "entity": []
   }
