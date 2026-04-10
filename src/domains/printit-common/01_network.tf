@@ -68,9 +68,13 @@ module "eventhub_spoke_pe_snet" {
 }
 
 
+moved {
+  from = module.cosmos_spoke_printit_snet[0]
+  to   = module.cosmos_spoke_printit_snet
+}
+
 module "cosmos_spoke_printit_snet" {
   source            = "./.terraform/modules/__v4__/IDH/subnet"
-  count             = var.env_short == "d" ? 0 : 1
   env               = var.env
   idh_resource_tier = "slash28_privatelink_true"
   name              = "${local.project}-spoke-data-cosmos-pe-snet"
@@ -92,9 +96,13 @@ module "cosmos_spoke_printit_snet" {
   }
 }
 
+moved {
+  from = module.storage_spoke_printit_snet[0]
+  to   = module.storage_spoke_printit_snet
+}
+
 module "storage_spoke_printit_snet" {
   source            = "./.terraform/modules/__v4__/IDH/subnet"
-  count             = var.env_short == "d" ? 0 : 1
   env               = var.env
   idh_resource_tier = "slash28_privatelink_true"
   name              = "${local.project}-spoke-data-storage-pe-snet"
