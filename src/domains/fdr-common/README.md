@@ -15,7 +15,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | d72285dd7a5f032fdbe8f572f796b75d76865004 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 84274ba6f123ea491169c3d1929f66bb421dff92 |
 | <a name="module_cosmosdb_account_mongodb_fdr_re"></a> [cosmosdb\_account\_mongodb\_fdr\_re](#module\_cosmosdb\_account\_mongodb\_fdr\_re) | ./.terraform/modules/__v4__/cosmosdb_account | n/a |
 | <a name="module_cosmosdb_fdr_re_collections"></a> [cosmosdb\_fdr\_re\_collections](#module\_cosmosdb\_fdr\_re\_collections) | ./.terraform/modules/__v4__/cosmosdb_mongodb_collection | n/a |
 | <a name="module_cosmosdb_fdr_snet"></a> [cosmosdb\_fdr\_snet](#module\_cosmosdb\_fdr\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
@@ -28,6 +28,7 @@
 | <a name="module_identity_oidc_01"></a> [identity\_oidc\_01](#module\_identity\_oidc\_01) | ./.terraform/modules/__v4__/github_federated_identity | n/a |
 | <a name="module_postgres_flexible_itn_spoke_snet_replica"></a> [postgres\_flexible\_itn\_spoke\_snet\_replica](#module\_postgres\_flexible\_itn\_spoke\_snet\_replica) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_postgres_flexible_server_fdr"></a> [postgres\_flexible\_server\_fdr](#module\_postgres\_flexible\_server\_fdr) | ./.terraform/modules/__v4__/postgres_flexible_server | n/a |
+| <a name="module_postgres_flexible_server_fdr_archive"></a> [postgres\_flexible\_server\_fdr\_archive](#module\_postgres\_flexible\_server\_fdr\_archive) | ./.terraform/modules/__v4__/IDH/postgres_flexible_server | n/a |
 | <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_postgresql_fdr_spoke_replica_itn_db"></a> [postgresql\_fdr\_spoke\_replica\_itn\_db](#module\_postgresql\_fdr\_spoke\_replica\_itn\_db) | ./.terraform/modules/__v4__/postgres_flexible_server_replica | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
@@ -58,11 +59,13 @@
 | [azurerm_key_vault_secret.test_org_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.test_psp_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.fdr_parsing_0_flows_alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_postgresql_flexible_server_configuration.fdr_archive_pg_cron_database](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
 | [azurerm_postgresql_flexible_server_configuration.fdr_db_flex_extensions](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
 | [azurerm_postgresql_flexible_server_configuration.fdr_db_flex_ignore_startup_parameters](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
 | [azurerm_postgresql_flexible_server_configuration.fdr_db_flex_max_connection](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
 | [azurerm_postgresql_flexible_server_configuration.fdr_db_flex_max_worker_process](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
 | [azurerm_postgresql_flexible_server_configuration.fdr_db_flex_min_pool_size](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
+| [azurerm_postgresql_flexible_server_configuration.fdr_db_flex_shared_preload_libraries](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
 | [azurerm_postgresql_flexible_server_configuration.fdr_db_flex_wal_level](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
 | [azurerm_postgresql_flexible_server_configuration.pg_cron_database](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
 | [azurerm_postgresql_flexible_server_database.fdr3_db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_database) | resource |
@@ -78,6 +81,7 @@
 | [azurerm_resource_group.data](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.db_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.fdr_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.flex_data_archive](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_role_assignment.data_contributor_role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.fdrconversionsa_data_contributor_role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_security_center_storage_defender.fdr_re_storage_defender](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/security_center_storage_defender) | resource |
@@ -122,6 +126,7 @@
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.reporting_fdr_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.rg_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_resource_group.rg_spoke_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.rg_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_subnet.aks_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.vpn_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
@@ -160,14 +165,17 @@
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
 | <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | n/a | `string` | `"~/.kube"` | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, italynorth | `string` | n/a | yes |
+| <a name="input_location_itn"></a> [location\_itn](#input\_location\_itn) | italynorth | `string` | `"italynorth"` | no |
+| <a name="input_location_itn_short"></a> [location\_itn\_short](#input\_location\_itn\_short) | itn | `string` | `"itn"` | no |
 | <a name="input_location_replica"></a> [location\_replica](#input\_location\_replica) | One of westeurope, italynorth | `string` | `"italynorth"` | no |
 | <a name="input_location_replica_short"></a> [location\_replica\_short](#input\_location\_replica\_short) | One of wue, itn | `string` | `"itn"` | no |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
+| <a name="input_pgres_flex_archive_params"></a> [pgres\_flex\_archive\_params](#input\_pgres\_flex\_archive\_params) | Postgres Flexible | <pre>object({<br/>    alerts_enabled                         = bool<br/>    pgres_flex_diagnostic_settings_enabled = bool<br/>    enable_private_dns_registration        = optional(bool, false)<br/>    storage_mb                             = number<br/>    auto_grow_enabled                      = bool<br/>    db_version                             = number<br/>  })</pre> | n/a | yes |
 | <a name="input_pgres_flex_fdr_db_name"></a> [pgres\_flex\_fdr\_db\_name](#input\_pgres\_flex\_fdr\_db\_name) | FdR DB name | `string` | `"fdr"` | no |
-| <a name="input_pgres_flex_params"></a> [pgres\_flex\_params](#input\_pgres\_flex\_params) | Postgres Flexible | <pre>object({<br/>    sku_name                               = string<br/>    db_version                             = string<br/>    storage_mb                             = string<br/>    zone                                   = number<br/>    standby_zone                           = optional(number, 1)<br/>    backup_retention_days                  = number<br/>    geo_redundant_backup_enabled           = bool<br/>    create_mode                            = string<br/>    pgres_flex_private_endpoint_enabled    = bool<br/>    pgres_flex_ha_enabled                  = bool<br/>    pgres_flex_pgbouncer_enabled           = bool<br/>    pgres_flex_diagnostic_settings_enabled = bool<br/>    alerts_enabled                         = bool<br/>    max_connections                        = number<br/>    pgbouncer_min_pool_size                = number<br/>    max_worker_process                     = number<br/>    wal_level                              = string<br/>    shared_preload_libraries               = string<br/>    public_network_access_enabled          = bool<br/>  })</pre> | n/a | yes |
+| <a name="input_pgres_flex_params"></a> [pgres\_flex\_params](#input\_pgres\_flex\_params) | Postgres Flexible | <pre>object({<br/>    sku_name                               = string<br/>    db_version                             = string<br/>    storage_mb                             = string<br/>    zone                                   = number<br/>    standby_zone                           = optional(number, 1)<br/>    backup_retention_days                  = number<br/>    geo_redundant_backup_enabled           = bool<br/>    create_mode                            = string<br/>    pgres_flex_private_endpoint_enabled    = bool<br/>    pgres_flex_ha_enabled                  = bool<br/>    pgres_flex_pgbouncer_enabled           = bool<br/>    pgres_flex_diagnostic_settings_enabled = bool<br/>    alerts_enabled                         = bool<br/>    max_connections                        = number<br/>    pgbouncer_min_pool_size                = number<br/>    max_worker_process                     = number<br/>    wal_level                              = string<br/>    shared_preload_libraries               = string<br/>    azure_extensions                       = string<br/>    public_network_access_enabled          = bool<br/>  })</pre> | n/a | yes |
 | <a name="input_postgres_dns_registration_enabled"></a> [postgres\_dns\_registration\_enabled](#input\_postgres\_dns\_registration\_enabled) | (Optional) If true, adds a CNAME record for the database FQDN in the db private dns | `bool` | `false` | no |
 | <a name="input_postgres_dns_registration_virtual_endpoint_enabled"></a> [postgres\_dns\_registration\_virtual\_endpoint\_enabled](#input\_postgres\_dns\_registration\_virtual\_endpoint\_enabled) | (Optional) If true, adds a CNAME record for the database VE in the db private dns | `bool` | `false` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |

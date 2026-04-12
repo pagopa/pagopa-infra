@@ -48,7 +48,19 @@ pgres_flex_params = {
   wal_level                              = "logical"
   shared_preload_libraries               = "pg_cron,pg_stat_statements"
   azure_extensions                       = "PG_CRON,POSTGRES_FDW"
-  public_network_access_enabled          = true
+  public_network_access_enabled          = false
+}
+
+pgres_flex_archive_params = {
+
+  # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
+  # 2097152, 4194304, 8388608, 16777216, and 33554432.
+  storage_mb                             = 32768 # 32 Gib
+  auto_grow_enabled                      = false
+  alerts_enabled                         = false
+  pgres_flex_diagnostic_settings_enabled = false
+  enable_private_dns_registration        = true
+  db_version                             = 17
 }
 
 custom_metric_alerts = {

@@ -8,6 +8,10 @@ data "azurerm_resource_group" "rg_api" {
   name = "${local.product}-api-rg"
 }
 
+data "azurerm_resource_group" "rg_spoke_vnet" {
+  name = local.hub_spoke_vnet_rg_name
+}
+
 data "azurerm_api_management_product" "fdr_psp_product" {
   product_id          = "fdr-psp"
   api_management_name = data.azurerm_api_management.apim.name

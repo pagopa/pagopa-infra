@@ -51,6 +51,18 @@ pgres_flex_params = {
   public_network_access_enabled          = false
 }
 
+pgres_flex_archive_params = {
+
+  # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
+  # 2097152, 4194304, 8388608, 16777216, and 33554432.
+  storage_mb                             = 65536 # 64 Gib
+  auto_grow_enabled                      = true
+  alerts_enabled                         = false
+  pgres_flex_diagnostic_settings_enabled = false
+  enable_private_dns_registration        = true
+  db_version                             = 17
+}
+
 custom_metric_alerts = {
 
   cpu_percent = {

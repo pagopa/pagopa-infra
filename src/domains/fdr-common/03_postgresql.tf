@@ -34,7 +34,7 @@ module "postgres_flexible_server_fdr" {
   resource_group_name = azurerm_resource_group.db_rg.name
 
   private_endpoint_enabled      = var.pgres_flex_params.pgres_flex_private_endpoint_enabled
-  private_dns_zone_id           = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres.id : null
+  private_dns_zone_id           = data.azurerm_private_dns_zone.postgres.id
   delegated_subnet_id           = module.postgres_flexible_snet.id
   public_network_access_enabled = var.pgres_flex_params.public_network_access_enabled
 
@@ -150,7 +150,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_wal_lev
   value     = var.pgres_flex_params.wal_level # "logical", ...
 }
 
-resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_shared_preoload_libraries" {
+resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_shared_preload_libraries" {
   count = var.pgres_flex_params.wal_level != null ? 1 : 0
 
   name      = "shared_preload_libraries"
