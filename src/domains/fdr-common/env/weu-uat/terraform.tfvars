@@ -27,7 +27,7 @@ enable_iac_pipeline = true
 
 pgres_flex_params = {
 
-  sku_name   = "GP_Standard_D8ds_v4"
+  sku_name   = "GP_Standard_D4ds_v4"
   db_version = "17"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
@@ -42,7 +42,7 @@ pgres_flex_params = {
   standby_availability_zone              = 2
   pgres_flex_diagnostic_settings_enabled = false
   alerts_enabled                         = false
-  max_connections                        = 3437
+  max_connections                        = 1718
   pgbouncer_min_pool_size                = 10
   max_worker_process                     = 8
   wal_level                              = "replica"
