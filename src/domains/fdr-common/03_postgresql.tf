@@ -160,13 +160,13 @@ resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_wal_lev
   value     = var.pgres_flex_params.wal_level # "logical", ...
 }
 
-resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_shared_preoload_libraries" {
-  count = var.pgres_flex_params.wal_level != null ? 1 : 0
-
-  name      = "shared_preload_libraries"
-  server_id = module.postgres_flexible_server_fdr.id
-  value     = var.pgres_flex_params.shared_preoload_libraries # "pg_failover_slots"
-}
+# resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_shared_preoload_libraries" {
+#   count = var.pgres_flex_params.wal_level != null ? 1 : 0
+#
+#   name      = "shared_preload_libraries"
+#   server_id = module.postgres_flexible_server_fdr.id
+#   value     = var.pgres_flex_params.shared_preoload_libraries # "pg_failover_slots"
+# }
 
 
 resource "azurerm_postgresql_flexible_server_database" "fdr_replica_db" {
