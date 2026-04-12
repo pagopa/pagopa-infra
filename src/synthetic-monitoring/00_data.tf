@@ -25,6 +25,11 @@ data "azurerm_monitor_action_group" "opsgenie" {
   name                = local.monitor_action_group_opsgenie_name
 }
 
+data "azurerm_monitor_action_group" "cloudo" {
+  resource_group_name = local.cloudo_action_group_rg_name
+  name                = local.monitor_action_group_cloudo_name
+}
+
 data "azurerm_resource_group" "rg_vnet_core" {
   name = local.vnet_core_resource_group_name
 }
@@ -69,4 +74,11 @@ data "azurerm_key_vault" "key_vault" {
 data "azurerm_key_vault_secret" "grafana_key" {
   name         = "grafana-api-key"
   key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+
+data "azurerm_cdn_frontdoor_endpoint" "checkout_cdn_endpoint" {
+  name                = "${var.prefix}-${var.env_short}-weu-checkout-cdn-endpoint"
+  profile_name        = "${var.prefix}-${var.env_short}-weu-checkout-cdn-profile"
+  resource_group_name = "${var.prefix}-${var.env_short}-checkout-fe-rg"
 }

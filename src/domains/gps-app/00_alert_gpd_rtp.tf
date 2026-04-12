@@ -5,7 +5,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-opt-in-refresh-e
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.opsgenie[0].id]
     email_subject          = "gpd-rtp-opt-in-refresh-error"
     custom_webhook_payload = "{}"
   }
@@ -35,7 +35,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-generic" {
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.opsgenie[0].id]
     email_subject          = "gpd-rtp-error-generic"
     custom_webhook_payload = "{}"
   }
@@ -65,7 +65,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-rtp-messag
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.opsgenie[0].id]
     email_subject          = "gpd-rtp-error-rtp-message-not-sent"
     custom_webhook_payload = "{}"
   }
@@ -95,7 +95,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-redis-cach
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.opsgenie[0].id]
     email_subject          = "gpd-rtp-error-redis-cache-not-updated"
     custom_webhook_payload = "{}"
   }
@@ -125,7 +125,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-message-se
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.opsgenie[0].id]
     email_subject          = "gpd-rtp-error-message-sent-to-dead-letter"
     custom_webhook_payload = "{}"
   }
@@ -136,6 +136,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-message-se
   customEvents
     | where name == "RTP_ALERT"
     | where customDimensions.type == "DEAD_LETTER"
+    | where customDimensions["cause"] != 'The payment option is not present on the DB'
+    | where customDimensions["cause"] != 'The transfer\'s combined total amount is not matching with the payment option amount'
     | order by timestamp desc
   QUERY
   )
