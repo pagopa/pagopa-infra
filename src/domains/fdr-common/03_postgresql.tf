@@ -150,7 +150,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_wal_lev
   value     = var.pgres_flex_params.wal_level # "logical", ...
 }
 
-resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_shared_preoload_libraries" {
+resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_shared_preload_libraries" {
   count = var.pgres_flex_params.wal_level != null ? 1 : 0
 
   name      = "shared_preload_libraries"
