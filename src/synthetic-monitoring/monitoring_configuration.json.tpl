@@ -928,9 +928,7 @@
       "durationLimit": 10000,
       "alertConfiguration": {
         "enabled": "true",
-        "customActionGroupIds" : ${cloudo_action_group_ids},
-        "evaluation_total_count": 3,
-        "evaluation_failure_count": 3
+        "customActionGroupIds" : ${cloudo_action_group_ids}
       }
   },
   {
