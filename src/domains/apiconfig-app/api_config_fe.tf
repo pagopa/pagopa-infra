@@ -9,9 +9,9 @@ resource "azurerm_resource_group" "api_config_fe_rg" {
   tags = module.tag_config.tags
 }
 
-/**
- * CDN
- */
+# /**
+#  * CDN
+#  */
 # module "api_config_fe_cdn" {
 #   source = "./.terraform/modules/__v4__/cdn"
 #
