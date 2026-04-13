@@ -74,8 +74,8 @@ moved {
 }
 
 import {
-  to = module.api_config_fe_cdn_frontdoor[0].azurerm_cdn_frontdoor_custom_domain.this["config.prod.platform.pagopa.it"]
-  id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-config-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-p-api-config-fe-cdn-profile/customDomains/config-uat-platform-pagopa-it"
+  to = module.api_config_fe_cdn_frontdoor[0].azurerm_cdn_frontdoor_custom_domain.this["config.platform.pagopa.it"]
+  id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-config-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-p-api-config-fe-cdn-profile/customDomains/config-platform-pagopa-it"
 }
 
 import {
@@ -90,7 +90,7 @@ import {
 
 import {
   to = module.api_config_fe_cdn_frontdoor[0].azurerm_cdn_frontdoor_route.default_route
-  id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-config-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-p-api-config-fe-cdn-profile/afdEndpoints/pagopa-p-api-config-fe-cdn-endpoint/routes/pagopauapiconfigfecdnendpoint"
+  id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-config-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-p-api-config-fe-cdn-profile/afdEndpoints/pagopa-p-api-config-fe-cdn-endpoint/routes/pagopapapiconfigfecdnendpoint"
 }
 
 import {
@@ -107,8 +107,8 @@ import {
 }
 
 import {
-  to = module.api_config_fe_cdn_frontdoor[0].azurerm_dns_cname_record.subdomain["config.prod.platform.pagopa.it"]
-  id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/dnsZones/uat.platform.pagopa.it/CNAME/config"
+  to = module.api_config_fe_cdn_frontdoor[0].azurerm_dns_cname_record.subdomain["config.platform.pagopa.it"]
+  id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/dnsZones/platform.pagopa.it/CNAME/config"
 }
 
 import {
