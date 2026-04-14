@@ -13,7 +13,8 @@
         "runbook": "azure/application_gateway_info.sh",
         "run_args": "pagopa-d-app-gw pagopa-d-vnet-rg",
         "worker": "generic",
-        "oncall": "false",
+        "oncall": false,
+        "require_approval": false,
         "tags": "application gateway,azure"
       },
       {
@@ -21,9 +22,11 @@
         "name": "Checkout CDN switch",
         "description": "Switch checkout provider from CDN to APIM",
         "runbook": "azure/checkout_cdn_switch.sh",
+        "require_approval": "true",
         "run_args": "",
         "worker": "generic",
-        "oncall": "false",
+        "oncall": false,
+        "require_approval": true,
         "tags": "checkout,azure"
       }
     ]
@@ -38,7 +41,9 @@
       "runbook": "test.py",
       "run_args": "-n 1000 --repeats 1000",
       "worker": "generic",
-      "oncall": "false"
+      "oncall": false,
+      "require_approval": false,
+      "tags": ""
     }]
   },
   {

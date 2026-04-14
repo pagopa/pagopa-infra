@@ -61,6 +61,13 @@ variable "checkout_enabled" {
   default = false
 }
 
+variable "checkout_apim_frontend_enabled" {
+  type        = bool
+  default     = false
+  description = "Feature flag to enable/disable the APIM frontend proxy for checkout. When 'false', APIM redirects all traffic to checkout CDN."
+}
+
+
 variable "monitor_resource_group_name" {
   type        = string
   description = "Monitor resource group name"
@@ -204,4 +211,10 @@ variable "instance" {
 variable "k8s_kube_config_path_prefix" {
   type    = string
   default = "~/.kube"
+}
+
+variable "dns_default_ttl_sec" {
+  type        = number
+  description = "The DNS default TTL in seconds"
+  default     = 3600
 }
