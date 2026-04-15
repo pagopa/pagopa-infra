@@ -50,5 +50,5 @@ provider "helm" {
 
 module "__v4__" {
   # v8.5.1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=77e0c671b8f4c11c6568e4b0cc87e30332b62090"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=fix/cdn-frontdoor-v2"
 }
