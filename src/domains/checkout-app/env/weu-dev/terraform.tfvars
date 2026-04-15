@@ -18,25 +18,12 @@ apim_dns_zone_prefix = "dev.platform"
 dns_zone_checkout    = "dev.checkout"
 
 # Networking
-
-cidr_subnet_checkout_be = ["10.1.133.0/24"]
-
-# APIM
-
-apim_logger_resource_id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/loggers/pagopa-d-apim-logger"
-
-# Checkout
-
 checkout_enabled               = true
 checkout_apim_frontend_enabled = false
 
 # ecommerce ingress hostname
-ecommerce_ingress_hostname             = "weudev.ecommerce.internal.dev.platform.pagopa.it"
-checkout_ingress_hostname              = "weudev.checkout.internal.dev.platform.pagopa.it"
-checkout_ip_restriction_default_action = "Allow"
-
-# chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
-# image tags: https://github.com/pagopa/infra-ssl-check/releases
+ecommerce_ingress_hostname = "weudev.ecommerce.internal.dev.platform.pagopa.it"
+checkout_ingress_hostname  = "weudev.checkout.internal.dev.platform.pagopa.it"
 tls_cert_check_helm = {
   chart_version = "2.0.0"
   image_name    = "ghcr.io/pagopa/infra-ssl-check"

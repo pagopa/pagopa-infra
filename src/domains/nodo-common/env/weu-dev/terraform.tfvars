@@ -324,13 +324,6 @@ mbd_storage_account = {
 }
 
 redis_ha_enabled = false
-
-
-enabled_features = {
-  eventhub_ha_tx = true
-  eventhub_ha_rx = true
-}
-
 /*****************
 Service Bus
 *****************/
@@ -395,4 +388,3 @@ service_bus_wisp_queues = [
     ]
   }
 ]
-
