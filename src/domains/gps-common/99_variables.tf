@@ -161,6 +161,8 @@ variable "pgres_flex_params" {
     wal_level                                        = string
     shared_preoload_libraries                        = string
     public_network_access_enabled                    = bool
+    log_min_duration_statement                       = optional(number)
+    log_lock_waits                                   = optional(string)
   })
 
   default = null
