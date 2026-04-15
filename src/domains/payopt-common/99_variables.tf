@@ -72,26 +72,11 @@ variable "instance" {
 # CIRDs
 #
 
-variable "cidr_paymentoptions_eventhub_italy" {
-  type        = list(string)
-  description = "Address prefixes for all evh accounts in italy."
-}
-
 ### External resources
 
 variable "monitor_resource_group_name" {
   type        = string
   description = "Monitor resource group name"
-}
-
-variable "log_analytics_workspace_name" {
-  type        = string
-  description = "Specifies the name of the Log Analytics Workspace."
-}
-
-variable "log_analytics_workspace_resource_group_name" {
-  type        = string
-  description = "The name of the resource group in which the Log Analytics workspace is located in."
 }
 
 variable "monitor_italy_resource_group_name" {
@@ -111,22 +96,10 @@ variable "log_analytics_italy_workspace_resource_group_name" {
 
 # DNS
 
-variable "dns_zone_prefix" {
-  type        = string
-  default     = null
-  description = "The wallet dns subdomain."
-}
-
 variable "external_domain" {
   type        = string
   default     = null
   description = "Domain for delegation"
-}
-
-variable "dns_zone_platform" {
-  type        = string
-  default     = null
-  description = "The platform dns subdomain."
 }
 
 variable "dns_zone_internal_prefix" {
@@ -171,11 +144,6 @@ variable "ehns_maximum_throughput_units" {
 variable "ehns_auto_inflate_enabled" {
   type        = bool
   description = "Is Auto Inflate enabled for the EventHub Namespace?"
-}
-
-variable "ehns_zone_redundant" {
-  type        = bool
-  description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
 }
 
 variable "ehns_alerts_enabled" {

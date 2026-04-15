@@ -13,13 +13,8 @@ monitor_italy_resource_group_name                 = "pagopa-p-itn-core-monitor-r
 log_analytics_italy_workspace_name                = "pagopa-p-itn-core-law"
 log_analytics_italy_workspace_resource_group_name = "pagopa-p-itn-core-monitor-rg"
 
-monitor_resource_group_name                 = "pagopa-p-monitor-rg"
-log_analytics_workspace_name                = "pagopa-p-law"
-log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
-
-### Aks
-
-ingress_load_balancer_ip = "10.3.100.250"
+monitor_resource_group_name = "pagopa-p-monitor-rg"
+ingress_load_balancer_ip    = "10.3.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"

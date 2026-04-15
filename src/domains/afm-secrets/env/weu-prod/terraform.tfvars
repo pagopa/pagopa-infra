@@ -1,15 +1,5 @@
-prefix          = "pagopa"
-env_short       = "p"
-env             = "prod"
-domain          = "afm"
-location        = "westeurope"
-location_short  = "weu"
-location_string = "West Europe"
-instance        = "prod"
-
-
-### External resources
-
+prefix     = "pagopa"
+env_short  = "p"
+env        = "prod"
+domain     = "afm"
 input_file = "./secret/weu-prod/configs.json"
-
-enable_iac_pipeline = true

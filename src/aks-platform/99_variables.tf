@@ -55,19 +55,6 @@ variable "location_string" {
   description = "One of West Europe, North Europe"
 }
 
-variable "lock_enable" {
-  type        = bool
-  default     = false
-  description = "Apply locks to block accedentaly deletions."
-}
-
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
-
 ### External resources
 
 variable "monitor_resource_group_name" {
@@ -151,12 +138,6 @@ variable "aks_cidr_subnet" {
   description = "Aks network address space."
 }
 
-variable "subnet_private_endpoint_network_policies_enabled" {
-  type        = bool
-  default     = false
-  description = "(Optional) Enable or Disable network policies for the private endpoint on the subnet. Setting this to true will Enable the policy and setting this to false will Disable the policy. Defaults to false."
-}
-
 variable "aks_num_outbound_ips" {
   type        = number
   default     = 1
@@ -223,40 +204,6 @@ variable "reloader_helm" {
   description = "reloader helm chart configuration"
 }
 /*
-variable "prometheus_helm" {
-  type = object({
-    chart_version = string,
-    alertmanager = object({
-      image_name = string,
-      image_tag  = string,
-    }),
-    configmap_reload_prometheus = object({
-      image_name = string,
-      image_tag  = string,
-    }),
-    configmap_reload_alertmanager = object({
-      image_name = string,
-      image_tag  = string,
-    }),
-    configmap_reload_prometheus = object({
-      image_name = string,
-      image_tag  = string,
-    }),
-    node_exporter = object({
-      image_name = string,
-      image_tag  = string,
-    }),
-    server = object({
-      image_name = string,
-      image_tag  = string,
-    }),
-    pushgateway = object({
-      image_name = string,
-      image_tag  = string,
-    }),
-  })
-  description = "prometheus helm chart configuration"
-}
 */
 
 variable "prometheus_basic_auth_file" {
@@ -287,8 +234,3 @@ variable "aks_enable_workload_identity" {
   default = false
 }
 
-variable "skip_metric_validation" {
-  type        = bool
-  description = "(Optional) Skip the metric validation to allow creating an alert rule on a custom metric that isn't yet emitted? Defaults to false."
-  default     = false
-}
