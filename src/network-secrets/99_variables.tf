@@ -51,11 +51,6 @@ variable "location_short" {
   description = "Default weu"
 }
 
-variable "instance" {
-  type        = string
-  description = "One of beta, prod01, prod02"
-}
-
 
 ###
 
@@ -71,26 +66,3 @@ variable "enable_iac_pipeline" {
 }
 
 
-variable "kv-key-permissions-read" {
-  type        = list(string)
-  description = "List of read key permissions"
-  default     = ["Get", "List"]
-}
-
-variable "kv-secret-permissions-read" {
-  type        = list(string)
-  description = "List of read secret permissions"
-  default     = ["Get", "List"]
-}
-
-variable "kv-certificate-permissions-read" {
-  type        = list(string)
-  description = "List of read certificate permissions"
-  default     = ["Get", "GetIssuers", "List", "ListIssuers"]
-}
-
-variable "kv-storage-permissions-read" {
-  type        = list(string)
-  description = "List of read storage permissions"
-  default     = ["Get", "GetSAS", "List", "ListSAS"]
-}

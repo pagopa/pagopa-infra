@@ -49,10 +49,8 @@ aks_user_node_pool = {
 
 aks_cidr_subnet = ["10.1.0.0/17"]
 
-aks_kubernetes_version = "1.32.4"
+aks_kubernetes_version = "1.34.1"
 
-# Subnet aks
-subnet_private_endpoint_network_policies_enabled = true
 
 ingress_min_replica_count = "1"
 ingress_max_replica_count = "3"
@@ -60,7 +58,7 @@ ingress_load_balancer_ip  = "10.1.100.250"
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
 # Pinned versions from "4.7.2" release: https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.7.2/charts/ingress-nginx/values.yaml
 nginx_helm = {
-  version = "4.12.1"
+  version = "4.14.2"
   controller = {
     image = {
       registry     = "k8s.gcr.io"
@@ -84,7 +82,7 @@ nginx_helm = {
 # keda image tags: https://github.com/kedacore/keda/pkgs/container/keda/versions
 # keda-metrics-apiserver image tags: https://github.com/kedacore/keda/pkgs/container/keda-metrics-apiserver/versions
 keda_helm = {
-  chart_version = "2.17.1"
+  chart_version = "2.17.2"
   keda = {
     image_name = "ghcr.io/kedacore/keda"
     image_tag  = "2.11.2@sha256:d8d3ef2937e22da29daa7cd9485626a577f1166bab47c582c43ff776d47d764b"
@@ -109,11 +107,6 @@ prometheus_basic_auth_file = "./env/weu-dev/kube-prometheus-stack-helm/prometheu
 kube_prometheus_stack_helm = {
   chart_version = "44.2.1"
   values_file   = "./env/weu-dev/kube-prometheus-stack-helm/values.yaml"
-}
-
-tls_checker_keyvault = {
-  name        = "pagopa-d-kv"
-  secret_name = "pagopa-d-application-insight-connection-string"
 }
 tls_checker_https_endpoints_to_check = [
   {

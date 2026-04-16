@@ -41,14 +41,14 @@ pgres_flex_params = {
   backup_retention_days                            = 7
   geo_redundant_backup_enabled                     = false
   create_mode                                      = "Default"
-  pgres_flex_private_endpoint_enabled              = false
+  pgres_flex_private_endpoint_enabled              = true
   pgres_flex_ha_enabled                            = false
   pgres_flex_pgbouncer_enabled                     = true
   pgres_flex_diagnostic_settings_enabled           = false
   max_connections                                  = 1700
   enable_private_dns_registration                  = true
   enable_private_dns_registration_virtual_endpoint = false
-  public_network_access_enabled                    = true
+  public_network_access_enabled                    = false
 }
 
 pgres_flex_storico_params = {
@@ -64,14 +64,14 @@ pgres_flex_storico_params = {
   backup_retention_days                  = 7
   geo_redundant_backup_enabled           = false
   create_mode                            = "Default"
-  pgres_flex_private_endpoint_enabled    = false
+  pgres_flex_private_endpoint_enabled    = true
   pgres_flex_ha_enabled                  = false
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = false
   max_connections                        = 850
   enable_private_dns_registration        = true
   max_worker_processes                   = 16
-  public_network_access_enabled          = true
+  public_network_access_enabled          = false
 }
 
 sftp_account_replication_type = "LRS"
@@ -146,9 +146,9 @@ cosmos_nosql_db_params = {
   main_geo_location_zone_redundant  = false
   enable_free_tier                  = false
   additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = false
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = false
 
@@ -170,9 +170,9 @@ verifyko_cosmos_nosql_db_params = {
   main_geo_location_zone_redundant  = false
   enable_free_tier                  = false
   additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = false
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = false
 
@@ -194,9 +194,9 @@ standin_cosmos_nosql_db_params = {
   main_geo_location_zone_redundant  = false
   enable_free_tier                  = false
   additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = false
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = false
 
@@ -220,9 +220,9 @@ wisp_converter_cosmos_nosql_db_params = {
   main_geo_location_zone_redundant  = false
   enable_free_tier                  = false
   additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = false
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = true
   burst_capacity_enabled            = false
   backup_continuous_enabled         = false
 
@@ -269,7 +269,7 @@ nodo_verifyko_storage_account = {
   blob_versioning_enabled       = false
   advanced_threat_protection    = true
   blob_delete_retention_days    = 0
-  public_network_access_enabled = true
+  public_network_access_enabled = false
   backup_enabled                = false
   backup_retention_days         = 0
 }
@@ -281,7 +281,7 @@ nodo_cfg_sync_storage_account = {
   blob_versioning_enabled       = false
   advanced_threat_protection    = true
   blob_delete_retention_days    = 0
-  public_network_access_enabled = true
+  public_network_access_enabled = false
   backup_enabled                = false
   backup_retention_days         = 0
 }
@@ -293,7 +293,7 @@ wisp_converter_storage_account = {
   blob_versioning_enabled       = false
   advanced_threat_protection    = false
   blob_delete_retention_days    = 0
-  public_network_access_enabled = true
+  public_network_access_enabled = false
   backup_enabled                = false
   backup_retention_days         = 0
 }
@@ -317,20 +317,13 @@ mbd_storage_account = {
   blob_versioning_enabled       = false
   advanced_threat_protection    = false
   blob_delete_retention_days    = 0
-  public_network_access_enabled = true
+  public_network_access_enabled = false
   backup_enabled                = false
   backup_retention_days         = 0
   use_legacy_defender_version   = false
 }
 
 redis_ha_enabled = false
-
-
-enabled_features = {
-  eventhub_ha_tx = true
-  eventhub_ha_rx = true
-}
-
 /*****************
 Service Bus
 *****************/
@@ -395,4 +388,3 @@ service_bus_wisp_queues = [
     ]
   }
 ]
-

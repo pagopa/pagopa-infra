@@ -25,7 +25,7 @@
 | <a name="module_pay_wallet_storage"></a> [pay\_wallet\_storage](#module\_pay\_wallet\_storage) | ./.terraform/modules/__v4__/storage_account | n/a |
 | <a name="module_redis_pagopa_pay_wallet_snet"></a> [redis\_pagopa\_pay\_wallet\_snet](#module\_redis\_pagopa\_pay\_wallet\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_redis_spoke_pay_wallet_snet"></a> [redis\_spoke\_pay\_wallet\_snet](#module\_redis\_spoke\_pay\_wallet\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
-| <a name="module_storage_pay_wallet_snet"></a> [storage\_pay\_wallet\_snet](#module\_storage\_pay\_wallet\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_storage_spoke_pay_wallet_snet"></a> [storage\_spoke\_pay\_wallet\_snet](#module\_storage\_spoke\_pay\_wallet\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_wallet_fe_cdn"></a> [wallet\_fe\_cdn](#module\_wallet\_fe\_cdn) | ./.terraform/modules/__v4__/cdn | n/a |
 | <a name="module_wallet_fe_web_test"></a> [wallet\_fe\_web\_test](#module\_wallet\_fe\_web\_test) | ./.terraform/modules/__v4__/application_insights_standard_web_test | n/a |
@@ -94,7 +94,6 @@
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_endpoint.cosmos_data_mongo_pe](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.redis_data_pe](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_private_endpoint.storage_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.cosmosdb_pay_wallet_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.redis_std_pay_wallet_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_payment_wallet_alerts](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
@@ -154,12 +153,10 @@
 | <a name="input_cidr_subnet_cosmosdb_pay_wallet"></a> [cidr\_subnet\_cosmosdb\_pay\_wallet](#input\_cidr\_subnet\_cosmosdb\_pay\_wallet) | Cosmos DB address space for wallet. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_pay_wallet_user_aks"></a> [cidr\_subnet\_pay\_wallet\_user\_aks](#input\_cidr\_subnet\_pay\_wallet\_user\_aks) | AKS user address space for pagoPA pay-wallet. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_redis_pay_wallet"></a> [cidr\_subnet\_redis\_pay\_wallet](#input\_cidr\_subnet\_redis\_pay\_wallet) | Redis DB address space for wallet. | `list(string)` | n/a | yes |
-| <a name="input_cidr_subnet_storage_pay_wallet"></a> [cidr\_subnet\_storage\_pay\_wallet](#input\_cidr\_subnet\_storage\_pay\_wallet) | Azure storage DB address space for pagoPA wallet. | `list(string)` | n/a | yes |
 | <a name="input_cosmos_mongo_db_params"></a> [cosmos\_mongo\_db\_params](#input\_cosmos\_mongo\_db\_params) | n/a | <pre>object({<br/>    capabilities   = list(string)<br/>    offer_type     = string<br/>    server_version = string<br/>    kind           = string<br/>    consistency_policy = object({<br/>      consistency_level       = string<br/>      max_interval_in_seconds = number<br/>      max_staleness_prefix    = number<br/>    })<br/>    enable_free_tier                 = bool<br/>    main_geo_location_zone_redundant = bool<br/>    additional_geo_locations = list(object({<br/>      location          = string<br/>      failover_priority = number<br/>      zone_redundant    = bool<br/>    }))<br/>    private_endpoint_enabled                     = bool<br/>    public_network_access_enabled                = bool<br/>    is_virtual_network_filter_enabled            = bool<br/>    backup_continuous_enabled                    = bool<br/>    ip_range_filter                              = list(string)<br/>    enable_provisioned_throughput_exceeded_alert = bool<br/>  })</pre> | n/a | yes |
 | <a name="input_cosmos_mongo_db_pay_wallet_params"></a> [cosmos\_mongo\_db\_pay\_wallet\_params](#input\_cosmos\_mongo\_db\_pay\_wallet\_params) | n/a | <pre>object({<br/>    enable_serverless  = bool<br/>    enable_autoscaling = bool<br/>    throughput         = number<br/>    max_throughput     = number<br/>  })</pre> | n/a | yes |
 | <a name="input_dns_default_ttl_sec"></a> [dns\_default\_ttl\_sec](#input\_dns\_default\_ttl\_sec) | The DNS default TTL in seconds | `number` | `3600` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
-| <a name="input_dns_zone_platform"></a> [dns\_zone\_platform](#input\_dns\_zone\_platform) | The platform dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The wallet dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_enable_iac_pipeline"></a> [enable\_iac\_pipeline](#input\_enable\_iac\_pipeline) | If true create the key vault policy to allow used by azure devops iac pipelines. | `bool` | `false` | no |
@@ -168,7 +165,7 @@
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
 | <a name="input_ingress_load_balancer_ip"></a> [ingress\_load\_balancer\_ip](#input\_ingress\_load\_balancer\_ip) | n/a | `string` | n/a | yes |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
-| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | Features enabled in this domain | <pre>object({<br/>    cosmos                  = optional(bool, false),<br/>    redis                   = optional(bool, false),<br/>    storage                 = optional(bool, false),<br/>    redis_hub_spoke_pe_dns  = optional(bool, false),<br/>    cosmos_hub_spoke_pe_dns = optional(bool, false),<br/><br/>  })</pre> | n/a | yes |
+| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | Features enabled in this domain | <pre>object({<br/>    cosmos                  = optional(bool, false),<br/>    redis                   = optional(bool, false),<br/>    storage                 = optional(bool, false),<br/>    redis_hub_spoke_pe_dns  = optional(bool, false),<br/>    cosmos_hub_spoke_pe_dns = optional(bool, false),<br/>  })</pre> | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |
 | <a name="input_log_analytics_italy_workspace_name"></a> [log\_analytics\_italy\_workspace\_name](#input\_log\_analytics\_italy\_workspace\_name) | Specifies the name of the Log Analytics Workspace Italy. | `string` | n/a | yes |
@@ -178,7 +175,6 @@
 | <a name="input_pay_wallet_storage_params"></a> [pay\_wallet\_storage\_params](#input\_pay\_wallet\_storage\_params) | Azure storage DB params for pagoPA wallet resources. | <pre>object({<br/>    kind                          = string,<br/>    tier                          = string,<br/>    account_replication_type      = string,<br/>    advanced_threat_protection    = bool,<br/>    retention_days                = number,<br/>    public_network_access_enabled = bool,<br/>  })</pre> | n/a | yes |
 | <a name="input_payment_wallet_service_api_key_use_primary"></a> [payment\_wallet\_service\_api\_key\_use\_primary](#input\_payment\_wallet\_service\_api\_key\_use\_primary) | If true the current active API key used for wallet service requests will be the primary one. | `bool` | `true` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_redis_pay_wallet_params"></a> [redis\_pay\_wallet\_params](#input\_redis\_pay\_wallet\_params) | n/a | <pre>object({<br/>    capacity = number<br/>    sku_name = string<br/>    family   = string<br/>    version  = string<br/>    zones    = list(number)<br/>  })</pre> | n/a | yes |
 | <a name="input_redis_std_pay_wallet_params"></a> [redis\_std\_pay\_wallet\_params](#input\_redis\_std\_pay\_wallet\_params) | n/a | <pre>object({<br/>    capacity = number<br/>    sku_name = string<br/>    family   = string<br/>    version  = string<br/>    zones    = list(number)<br/>  })</pre> | n/a | yes |
 
 ## Outputs

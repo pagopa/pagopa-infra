@@ -50,17 +50,6 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-variable "instance" {
-  type        = string
-  description = "One of beta, prod01, prod02"
-}
-
-
-variable "external_domain" {
-  type        = string
-  default     = null
-  description = "Domain for delegation"
-}
 
 variable "dns_zone_prefix" {
   type        = string

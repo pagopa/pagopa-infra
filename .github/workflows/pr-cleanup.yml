@@ -1,0 +1,47 @@
+name: Stale/Close PR Cleaner
+
+on:
+  workflow_dispatch:
+  schedule:
+    # At 00:00 every day.
+    - cron: '0 0 * * *'
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  stale-prs:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Run stale/close routine
+        uses: actions/stale@v10
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+          # Days configuration - use PR-specific parameters
+          days-before-pr-stale: 30
+          days-before-pr-close: 7
+
+          # Labels
+          close-pr-label: 'auto-closed'
+
+
+          # Exemptions
+          exempt-pr-labels: 'wip,do-not-close'
+          exempt-draft-pr: true
+
+          # Messages
+          stale-pr-message: 'This PR has been marked as stale because it has not had recent activity. It will be closed and the branch deleted if no further activity occurs within the next 7 days.'
+          close-pr-message: 'This PR has been closed due to inactivity. If you believe this was done in error, please feel free to reopen the PR or contact the maintainers.'
+
+          # Behavior
+          remove-stale-when-updated: true
+          operations-per-run: 60
+          ascending: true
+          delete-branch: true
+
+          # Disable issue processing
+          days-before-issue-stale: -1
+          days-before-issue-close: -1

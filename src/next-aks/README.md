@@ -5,7 +5,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.21.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.114.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.31.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | <= 2.2.3 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
@@ -14,11 +14,12 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_aks_namespace_backup"></a> [aks\_namespace\_backup](#module\_aks\_namespace\_backup) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_velero_backup | v8.53.0 |
-| <a name="module_aks_single_namespace_backup"></a> [aks\_single\_namespace\_backup](#module\_aks\_single\_namespace\_backup) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_velero_backup | v8.53.0 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 2aacf6a67baf3e9618b9b58d70ab5692d316aa94 |
+| <a name="module_aks_namespace_backup"></a> [aks\_namespace\_backup](#module\_aks\_namespace\_backup) | ./.terraform/modules/__v4__/kubernetes_velero_backup | n/a |
+| <a name="module_aks_single_namespace_backup"></a> [aks\_single\_namespace\_backup](#module\_aks\_single\_namespace\_backup) | ./.terraform/modules/__v4__/kubernetes_velero_backup | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../tag_config | n/a |
-| <a name="module_velero"></a> [velero](#module\_velero) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster_velero | v8.56.0 |
-| <a name="module_velero_workload_identity_init"></a> [velero\_workload\_identity\_init](#module\_velero\_workload\_identity\_init) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_workload_identity_init | v8.53.0 |
+| <a name="module_velero"></a> [velero](#module\_velero) | ./.terraform/modules/__v4__/kubernetes_cluster_velero | n/a |
+| <a name="module_velero_workload_identity_init"></a> [velero\_workload\_identity\_init](#module\_velero\_workload\_identity\_init) | ./.terraform/modules/__v4__/kubernetes_workload_identity_init | n/a |
 
 ## Resources
 

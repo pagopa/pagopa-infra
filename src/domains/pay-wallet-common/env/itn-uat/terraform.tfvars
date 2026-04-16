@@ -15,7 +15,6 @@ is_feature_enabled = {
   storage                 = true
   redis_hub_spoke_pe_dns  = true
   cosmos_hub_spoke_pe_dns = true
-
 }
 
 ### External resources
@@ -28,21 +27,13 @@ log_analytics_italy_workspace_resource_group_name = "pagopa-u-itn-core-monitor-r
 
 cidr_subnet_cosmosdb_pay_wallet = ["10.3.5.0/27"]
 cidr_subnet_redis_pay_wallet    = ["10.3.5.64/27"]
-cidr_subnet_storage_pay_wallet  = ["10.3.5.96/27"]
-cidr_subnet_pay_wallet_user_aks = ["10.3.6.0/24"]
-
-### AKS
-ingress_load_balancer_ip = "10.3.2.250"
+ingress_load_balancer_ip        = "10.3.2.250"
 
 ### DNS
 
 external_domain          = "pagopa.it"
 dns_zone_prefix          = "uat.payment-wallet"
 dns_zone_internal_prefix = "internal.uat.platform"
-dns_zone_platform        = "uat.platform"
-
-### Cosmos
-
 cosmos_mongo_db_params = {
   kind         = "MongoDB"
   capabilities = ["EnableMongo"]
@@ -75,15 +66,6 @@ cosmos_mongo_db_pay_wallet_params = {
 
 
 ### Redis
-
-redis_pay_wallet_params = {
-  capacity = 0
-  sku_name = "Basic"
-  family   = "C"
-  version  = 6
-  zones    = []
-}
-
 redis_std_pay_wallet_params = {
   capacity = 0
   sku_name = "Basic"

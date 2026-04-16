@@ -1,12 +1,10 @@
 # general
-prefix              = "pagopa"
-env_short           = "d"
-env                 = "dev"
-domain              = "dev"
-location            = "italynorth"
-location_string     = "Italy North"
-location_short      = "itn"
-location_westeurope = "westeurope"
+prefix         = "pagopa"
+env_short      = "d"
+env            = "dev"
+domain         = "dev"
+location       = "italynorth"
+location_short = "itn"
 
 
 ### Network
@@ -33,7 +31,7 @@ monitor_appinsights_name                    = "pagopa-d-appinsights"
 #
 aks_private_cluster_enabled  = false
 aks_alerts_enabled           = false
-aks_kubernetes_version       = "1.32.4"
+aks_kubernetes_version       = "1.34.1"
 aks_enable_workload_identity = true
 
 aks_system_node_pool = {
@@ -59,16 +57,11 @@ aks_user_node_pool = {
   node_tags       = {},
 }
 
-aks_addons = {
-  azure_policy                     = true,
-  azure_key_vault_secrets_provider = true,
-  pod_identity_enabled             = true,
-}
 
 # This is the k8s ingress controller ip. It must be in the aks subnet range.
 ingress_load_balancer_ip = "10.3.2.250"
 ingress_replica_count    = "2"
-nginx_helm_version       = "4.12.1"
+nginx_helm_version       = "4.14.2"
 
-keda_helm_version    = "2.17.1"
+keda_helm_version    = "2.17.2"
 enable_elastic_agent = false

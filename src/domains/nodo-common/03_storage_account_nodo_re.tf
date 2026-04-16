@@ -1,5 +1,5 @@
 data "azurerm_resource_group" "nodo_re_to_datastore_rg" {
-  count = var.enable_nodo_re || var.env_short != "d" ? 1 : 0
+  count = var.enable_nodo_re ? 1 : 0
 
 
   name = format("%s-re-to-datastore-rg", local.project)
@@ -7,7 +7,7 @@ data "azurerm_resource_group" "nodo_re_to_datastore_rg" {
 
 module "nodo_re_storage_account" {
   count  = var.enable_nodo_re ? 1 : 0
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                            = replace(format("%s-re-2-data-st", local.project), "-", "")
   account_kind                    = var.nodo_re_storage_account.account_kind
@@ -35,7 +35,7 @@ module "nodo_re_storage_account" {
 }
 
 resource "azurerm_private_endpoint" "nodo_re_private_endpoint" {
-  count = var.env_short == "d" ? 0 : var.enable_nodo_re ? 1 : 0
+  count = var.enable_nodo_re ? 1 : 0
 
   name                = "${local.project}-re-private-endpoint"
   location            = var.location

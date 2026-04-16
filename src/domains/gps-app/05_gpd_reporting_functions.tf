@@ -19,9 +19,8 @@ resource "azurerm_app_service_plan" "gpd_reporting_service_plan" {
   reserved = var.reporting_functions_app_sku.kind == "Linux" ? true : false
 
   sku {
-    tier     = var.reporting_functions_app_sku.sku_tier
-    size     = var.reporting_functions_app_sku.sku_size
-    capacity = 1
+    tier = var.reporting_functions_app_sku.sku_tier
+    size = var.reporting_functions_app_sku.sku_size
   }
 
   tags = module.tag_config.tags
@@ -43,11 +42,11 @@ locals {
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
     # FDR1-FDR3 Integration
-    FDR3_APIM_SUBSCRIPTION_KEY  = azurerm_key_vault_secret.fdr3_subscription_key.value
-    FDR1_APIM_SUBSCRIPTION_KEY  = azurerm_key_vault_secret.fdr1_subscription_key.value
+    FDR3_APIM_SUBSCRIPTION_KEY  = azurerm_key_vault_secret.fdr_internal_subscription_key.value
+    FDR1_APIM_SUBSCRIPTION_KEY  = azurerm_key_vault_secret.fdr_internal_subscription_key.value
     FDR1_BASE_URL               = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "fdr-nodo/service-internal", "v1")
-    FDR3_BASE_URL               = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "fdr-org/service", "v1")
-    FDR3_FLOW_LIST_DEPTH        = "2"
+    FDR3_BASE_URL               = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "fdr-internal/service", "v1")
+    FDR3_FLOW_LIST_DEPTH        = "1"
     FDR3_LIST_ELEMENTS_FOR_PAGE = "30000"
 
     GPD_BASE_PATH            = "https://${local.apim_hostname}/gpd/api/v2"

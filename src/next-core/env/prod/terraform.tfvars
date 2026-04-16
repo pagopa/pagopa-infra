@@ -4,13 +4,7 @@ env                = "prod"
 domain             = "core"
 location           = "westeurope"
 location_short     = "weu"
-location_string    = "West Europe"
-location_ita       = "italynorth"
 location_short_ita = "itn"
-instance           = "prod"
-
-
-### Feature Flag
 is_feature_enabled = {
   vnet_ita                  = false,
   container_app_tools_cae   = true,
@@ -19,6 +13,7 @@ is_feature_enabled = {
   dns_forwarder_lb          = true,
   apim_core_import          = true
   use_new_apim              = false
+  azdoa_extension           = false
 }
 
 #
@@ -28,10 +23,7 @@ is_feature_enabled = {
 cidr_vnet = ["10.1.0.0/16"]
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
-cidr_vnet_integration = ["10.230.10.0/24"] # ask to SIA
-
-cidr_vnet_italy                   = ["10.3.0.0/16"]
-cidr_subnet_appgateway            = ["10.1.128.0/24"]
+cidr_vnet_integration             = ["10.230.10.0/24"] # ask to SIA
 cidr_subnet_dns_forwarder_backup  = ["10.1.251.0/29"]
 cidr_subnet_tools_cae             = ["10.1.248.0/23"]
 cidr_subnet_azdoa                 = ["10.1.130.0/24"]
@@ -40,6 +32,9 @@ cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
 cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
 cidr_subnet_vpn                   = ["10.1.142.0/24"]
 
+vpn_gw_sku                   = "VpnGw1AZ"
+vpn_gw_pip_sku               = "Standard"
+vpn_gw_pip_allocation_method = "Static"
 # networking
 ddos_protection_plan = {
   id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
@@ -53,20 +48,12 @@ route_table_peering_sia_additional_routes = [
 # Dns
 #
 external_domain                      = "pagopa.it"
-dns_zone_internal_prefix             = "internal.platform"
-dns_zone_wfesp                       = "wfesp"
 private_dns_zone_db_nodo_pagamenti   = "p.db-nodo-pagamenti.com"
 dns_a_reconds_dbnodo_ips             = ["10.102.175.23", "10.102.175.24"] # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
 dns_a_reconds_dbnodo_ips_dr          = ["10.101.175.23", "10.101.175.24"] # authdbsep01-vip.carte.local   NAT 10.250.45.145 authdbsep02-vip.carte.local   NAT 10.250.45.146 authdbpep01-vip.carte.local   NAT 10.250.45.147 authdbpep02-vip.carte.local   NAT 10.250.45.148
 dns_a_reconds_dbnodonexipostgres_ips = ["10.102.1.93"]
 
 ### External resources
-
-monitor_resource_group_name                 = "pagopa-p-monitor-rg"
-log_analytics_workspace_name                = "pagopa-p-law"
-log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
-
-### VPN
 dns_forwarder_vm_image_name = "pagopa-p-dns-forwarder-ubuntu2204-image-v1"
 
 
@@ -150,15 +137,13 @@ apim_v2_subnet_nsg_security_rules = [
     destination_address_prefix = "AzureKeyVault"
   }
 ]
-
-apim_v2_publisher_name = "pagoPA Platform UAT"
-apim_v2_sku            = "Premium_3"
-apim_v2_alerts_enabled = true
-dns_zone_prefix        = "platform"
-apim_v2_zones          = ["1", "2", "3"]
-create_redis_multiaz   = true
-redis_zones            = ["1", "2", "3"]
-redis_cache_enabled    = true
+apim_enable_nm3_decoupler_switch = true
+apim_v2_publisher_name           = "pagoPA Platform UAT"
+apim_v2_sku                      = "Premium_3"
+apim_v2_alerts_enabled           = true
+dns_zone_prefix                  = "platform"
+apim_v2_zones                    = ["1", "2", "3"]
+create_redis_multiaz             = true
 apim_v2_autoscale = {
   enabled                       = true
   default_instances             = 3
@@ -182,6 +167,7 @@ redis_cache_params = {
   capacity      = 1
   sku_name      = "Premium"
   family        = "P"
+  zones         = ["1", "2", "3"]
 }
 
 
@@ -197,8 +183,8 @@ integration_appgateway_zones                        = [1, 2, 3]
 nodo_pagamenti_psp            = "97249640588,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
 nodo_pagamenti_ec             = "00493410583,09633951000,06655971007,00856930102,02478610583,97169170822,01266290996,01248040998,01429910183,80007270376,01142420056,80052310580,83000730297,80082160013,94050080038,01032450072,01013130073,10718570012,01013210073,87007530170,01242340998,80012150274,02508710585,80422850588,94032590278,94055970480,92001600524,80043570482,92000530532,80094780378,80016430045,80011170505,80031650486,00337870406,09227921005,01928010683,00608810057,03299640163,82002730487,02928200241"
 lb_aks                        = "10.70.135.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
-schema_ip_nexi                = "https://10.79.20.34"
-default_node_id               = "NDP003PROD"
+schema_ip_nexi                = "https://10.79.20.25"
+default_node_id               = "NDP004PROD"
 base_path_nodo_ppt_lmi        = "/ppt-lmi-prd-NOT-FOUND"
 base_path_nodo_sync           = "/sync-cron-prd/syncWisp"
 base_path_nodo_wfesp          = "/wfesp-prd"
@@ -211,11 +197,12 @@ base_path_nodo_oncloud        = "/nodo-prd"
 
 
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
-ehns_auto_inflate_enabled     = true
-ehns_maximum_throughput_units = 10
-ehns_capacity                 = 5
-ehns_zone_redundant           = true
-ehns_public_network_access    = true
+ehns_auto_inflate_enabled        = true
+ehns_maximum_throughput_units    = 10
+ehns_03_maximum_throughput_units = 10
+ehns_03_capacity                 = 10
+ehns_04_capacity                 = 7
+ehns_public_network_access       = true
 
 ehns03_metric_alerts = {
   no_trx = {
@@ -759,6 +746,7 @@ eventhubs_04 = [
 
 node_forwarder_zone_balancing_enabled = true
 node_forwarder_sku                    = "P3v3"
+node_forwarder_image_tag              = 256378
 node_fw_ha_snet_cidr                  = ["10.1.157.0/24"]
 node_fw_dbg_snet_cidr                 = ["10.1.195.0/24"]
 devops_agent_zones                    = [1, 2, 3]
@@ -766,6 +754,8 @@ devops_agent_balance_zones            = false
 azdo_agent_vm_image_name              = "pagopa-p-azdo-agent-ubuntu2204-image-v4"
 integration_app_gateway_min_capacity  = 2
 integration_app_gateway_max_capacity  = 50
+
+app_inisght_daily_data_cap_gb = 200
 
 # public app gateway
 # app_gateway

@@ -12,7 +12,6 @@ location_string = "West Europe"
 monitor_resource_group_name                 = "pagopa-p-monitor-rg"
 log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
-skip_metric_validation                      = true
 
 ### Aks
 # https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/482967553/AKS#sku-(dimensionamento)
@@ -51,7 +50,7 @@ aks_user_node_pool = {
 
 aks_cidr_subnet = ["10.1.0.0/17"]
 
-aks_kubernetes_version = "1.32.4"
+aks_kubernetes_version = "1.34.2"
 
 ingress_min_replica_count = "2"
 ingress_max_replica_count = "30"
@@ -59,7 +58,7 @@ ingress_load_balancer_ip  = "10.1.100.250"
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
 # Pinned versions from "4.1.0" release: https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.1.0/charts/ingress-nginx/values.yaml
 nginx_helm = {
-  version = "4.12.1"
+  version = "4.14.2"
   controller = {
     image = {
       registry     = "k8s.gcr.io"
@@ -83,7 +82,7 @@ nginx_helm = {
 # keda image tags: https://github.com/kedacore/keda/pkgs/container/keda/versions
 # keda-metrics-apiserver image tags: https://github.com/kedacore/keda/pkgs/container/keda-metrics-apiserver/versions
 keda_helm = {
-  chart_version = "2.17.1"
+  chart_version = "2.17.2"
   keda = {
     image_name = "ghcr.io/kedacore/keda"
     image_tag  = "2.8.0@sha256:cce502ff17fd2984af70b4e470b403a82067929f6e4d1888875a52fcb33fa9fd"
@@ -102,40 +101,7 @@ reloader_helm = {
   image_tag     = "v0.0.118@sha256:2d423cab8d0e83d1428ebc70c5c5cafc44bd92a597bff94007f93cddaa607b02"
 }
 
-# chart releases: https://github.com/prometheus-community/helm-charts/releases?q=tag%3Aprometheus-15&expanded=true
-# quay.io/prometheus/alertmanager image tags: https://quay.io/repository/prometheus/alertmanager?tab=tags
-# jimmidyson/configmap-reload image tags: https://hub.docker.com/r/jimmidyson/configmap-reload/tags
-# quay.io/prometheus/node-exporter image tags: https://quay.io/repository/prometheus/node-exporter?tab=tags
-# quay.io/prometheus/prometheus image tags: https://quay.io/repository/prometheus/prometheus?tab=tags
-# prom/pushgateway image tags:https://hub.docker.com/r/prom/pushgateway/tags
 
-# prometheus_helm = {
-#   chart_version = "15.12.0"
-#   alertmanager = {
-#     image_name = "quay.io/prometheus/alertmanager"
-#     image_tag  = "v0.24.0@sha256:088464f949de8065b9da7dfce7302a633d700e9d598e2bebc03310712f083b31"
-#   }
-#   configmap_reload_prometheus = {
-#     image_name = "jimmidyson/configmap-reload"
-#     image_tag  = "v0.5.0@sha256:91467ba755a0c41199a63fe80a2c321c06edc4d3affb4f0ab6b3d20a49ed88d1"
-#   }
-#   configmap_reload_alertmanager = {
-#     image_name = "jimmidyson/configmap-reload"
-#     image_tag  = "v0.5.0@sha256:91467ba755a0c41199a63fe80a2c321c06edc4d3affb4f0ab6b3d20a49ed88d1"
-#   }
-#   node_exporter = {
-#     image_name = "quay.io/prometheus/node-exporter"
-#     image_tag  = "v1.3.1@sha256:f2269e73124dd0f60a7d19a2ce1264d33d08a985aed0ee6b0b89d0be470592cd"
-#   }
-#   server = {
-#     image_name = "quay.io/prometheus/prometheus"
-#     image_tag  = "v2.36.2@sha256:df0cd5887887ec393c1934c36c1977b69ef3693611932c3ddeae8b7a412059b9"
-#   }
-#   pushgateway = {
-#     image_name = "prom/pushgateway"
-#     image_tag  = "v1.4.3@sha256:9e4e2396009751f1dc66ebb2b59e07d5abb009eb26d637eb0cf89b9a3738f146"
-#   }
-# }
 
 # https://github.com/prometheus-community/helm-charts/issues/1754#issuecomment-1199125703
 prometheus_basic_auth_file = "./env/weu-prod/kube-prometheus-stack-helm/prometheus-basic-auth"
