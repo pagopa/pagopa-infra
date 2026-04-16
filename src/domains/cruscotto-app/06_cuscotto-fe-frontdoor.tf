@@ -1,3 +1,45 @@
+/**
+ * crusc8 resource group
+ **/
+resource "azurerm_resource_group" "crusc8_fe_rg" {
+  name     = "${local.project_weu}-fe-rg" #-${var.domain}
+  location = var.location_weu
+
+  tags = module.tag_config.tags
+}
+
+locals {
+  spa = [
+    for i, spa in var.spa :
+    {
+      name  = replace("SPA-${spa}", "-", "")
+      order = i + 3
+      // +3 required because the order start from 1: 1 is reserved for default application redirect; 2 is reserved for the https rewrite;
+      url_path_conditions = [{
+        operator         = "BeginsWith"
+        match_values     = ["/${spa}/"]
+        negate_condition = false
+        transforms       = null
+      }]
+      url_file_extension_conditions = [{
+        operator         = "LessThanOrEqual"
+        match_values     = ["0"]
+        negate_condition = false
+        transforms       = null
+      }]
+
+      url_rewrite_actions = [{
+        source_pattern          = "/${spa}/"
+        destination             = "/${spa}/index.html"
+        preserve_unmatched_path = false
+      }]
+    }
+  ]
+  cors = {
+    paths = ["/assets/"]
+  }
+}
+
 module "crusc8_cdn_frontdoor" {
   source = "./.terraform/modules/__v4__/cdn_frontdoor"
 
@@ -253,95 +295,51 @@ module "crusc8_cdn_frontdoor" {
   tags = module.tag_config.tags
 }
 
-moved {
-  from = module.crusc8_cdn.module.cdn_storage_account
-  to   = module.crusc8_cdn_frontdoor.module.cdn_storage_account
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry
+resource "azurerm_key_vault_secret" "crusc8_web_storage_access_key" {
+  name         = "web-storage-access-key"
+  value        = module.crusc8_cdn_frontdoor.storage_primary_access_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-moved {
-  from = azurerm_dns_cname_record.hostname_cruscotto
-  to   = module.crusc8_cdn_frontdoor.azurerm_dns_cname_record.subdomain["crusc8.dev.platform.pagopa.it"]
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry
+resource "azurerm_key_vault_secret" "crusc8_web_storage_connection_string" {
+  name         = "web-storage-connection-string"
+  value        = module.crusc8_cdn_frontdoor.storage_primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-import {
-  to = module.crusc8_cdn_frontdoor.azurerm_cdn_frontdoor_custom_domain.this["crusc8.dev.platform.pagopa.it"]
-  id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-weu-crusc8-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-d-crusc8-cdn-profile/customDomains/crusc8-dev-platform-pagopa-it"
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry
+resource "azurerm_key_vault_secret" "crusc8_web_storage_blob_connection_string" {
+  name         = "web-storage-blob-connection-string"
+  value        = module.crusc8_cdn_frontdoor.storage_primary_blob_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-import {
-  to = module.crusc8_cdn_frontdoor.azurerm_cdn_frontdoor_profile.this
-  id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-weu-crusc8-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-d-crusc8-cdn-profile"
+
+resource "azurerm_static_web_app" "crusc8_static_web_app" {
+  count = var.env_short == "d" ? 1 : 0
+
+  name                = "${var.prefix}-${var.env_short}-${var.domain}-fe"
+  resource_group_name = azurerm_resource_group.crusc8_fe_rg.name
+  location            = var.location_weu
+
+  sku_tier = "Standard"
+  sku_size = "Standard"
 }
 
-import {
-  to = module.crusc8_cdn_frontdoor.azurerm_cdn_frontdoor_rule_set.this[0]
-  id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-weu-crusc8-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-d-crusc8-cdn-profile/ruleSets/Migratedpagopadcrusc8cdnendpoint"
-}
+resource "azurerm_key_vault_secret" "crusc8_static_app_key" {
+  count = var.env_short == "d" ? 1 : 0
 
-import {
-  to = module.crusc8_cdn_frontdoor.azurerm_cdn_frontdoor_route.default_route
-  id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-weu-crusc8-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-d-crusc8-cdn-profile/afdEndpoints/pagopa-d-crusc8-cdn-endpoint/routes/pagopadcrusc8cdnendpoint"
-}
+  name         = "crusc8-static-app-key"
+  value        = azurerm_static_web_app.crusc8_static_web_app[0].api_key
+  content_type = "text/plain"
 
-import {
-  to = module.crusc8_cdn_frontdoor.azurerm_cdn_frontdoor_endpoint.this
-  id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-weu-crusc8-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-d-crusc8-cdn-profile/afdEndpoints/pagopa-d-crusc8-cdn-endpoint"
-}
-import {
-  to = module.crusc8_cdn_frontdoor.azurerm_cdn_frontdoor_origin.storage_web_host
-  id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourcegroups/pagopa-d-weu-crusc8-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-d-crusc8-cdn-profile/originGroups/pagopa-d-crusc8-cdn-endpoint-Default/origins/primary"
-}
-import {
-  to = module.crusc8_cdn_frontdoor.azurerm_cdn_frontdoor_origin_group.this
-  id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourcegroups/pagopa-d-weu-crusc8-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-d-crusc8-cdn-profile/originGroups/pagopa-d-crusc8-cdn-endpoint-Default"
-}
-
-# import {
-#   to = module.crusc8_cdn_frontdoor.azurerm_dns_cname_record.subdomain["crusc8.dev.platform.pagopa.it"]
-#   id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-vnet-rg/providers/Microsoft.Network/dnsZones/dev.platform.pagopa.it/CNAME/crusc8"
-# }
-
-import {
-  to = module.crusc8_cdn_frontdoor.azurerm_cdn_frontdoor_rule.rule_url_path_cache["0"]
-  id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-weu-crusc8-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-d-crusc8-cdn-profile/ruleSets/Migratedpagopadcrusc8cdnendpoint/rules/BypassCachingforQueryStringMigrated"
-}
-
-import {
-  to = module.crusc8_cdn_frontdoor.azurerm_cdn_frontdoor_rule.rule_global["1"]
-  id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-weu-crusc8-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-d-crusc8-cdn-profile/ruleSets/Migratedpagopadcrusc8cdnendpoint/rules/Global"
-}
-
-import {
-  to = module.crusc8_cdn_frontdoor.azurerm_cdn_frontdoor_rule.rewrite_only["2"]
-  id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-weu-crusc8-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-d-crusc8-cdn-profile/ruleSets/Migratedpagopadcrusc8cdnendpoint/rules/RewriteRules"
-}
-
-import {
-  to = module.crusc8_cdn_frontdoor.azurerm_cdn_frontdoor_rule.rewrite_only["3"]
-  id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-weu-crusc8-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-d-crusc8-cdn-profile/ruleSets/Migratedpagopadcrusc8cdnendpoint/rules/SPAui"
-}
-
-import {
-  to = module.crusc8_cdn_frontdoor.azurerm_cdn_frontdoor_rule.custom_rules["robotsNoIndex"]
-  id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-weu-crusc8-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-d-crusc8-cdn-profile/ruleSets/Migratedpagopadcrusc8cdnendpoint/rules/robotsNoIndex"
-}
-
-import {
-  to = module.crusc8_cdn_frontdoor.azurerm_cdn_frontdoor_rule.custom_rules["microcomponentsNoCache"]
-  id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-weu-crusc8-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-d-crusc8-cdn-profile/ruleSets/Migratedpagopadcrusc8cdnendpoint/rules/microcomponentsNoCache"
-}
-
-import {
-  to = module.crusc8_cdn_frontdoor.azurerm_cdn_frontdoor_rule.custom_rules["cors"]
-  id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-weu-crusc8-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-d-crusc8-cdn-profile/ruleSets/Migratedpagopadcrusc8cdnendpoint/rules/cors"
-}
-
-import {
-  to = module.crusc8_cdn_frontdoor.azurerm_monitor_diagnostic_setting.diagnostic_settings_cdn_profile
-  id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-weu-crusc8-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-d-crusc8-cdn-profile|pagopa-d-crusc8-cdn-profile-diagnostic-settings"
-}
-
-import {
-  to = module.crusc8_cdn_frontdoor.azurerm_dns_txt_record.validation["crusc8.dev.platform.pagopa.it"]
-  id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-vnet-rg/providers/Microsoft.Network/dnsZones/dev.platform.pagopa.it/TXT/_dnsauth.crusc8"
+  key_vault_id = data.azurerm_key_vault.kv.id
 }
