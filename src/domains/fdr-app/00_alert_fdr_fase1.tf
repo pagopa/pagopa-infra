@@ -50,33 +50,21 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-fdr-nodo-rest-ava
   data_source_id = data.azurerm_api_management.apim.id
   description    = "Availability of pagopa-fdr-nodo Internal REST APIs is less than or equal to 99%"
   enabled        = true
-
-  query = <<-QUERY
+  query = (<<-QUERY
 let threshold = 0.99;
 AzureDiagnostics
 | where url_s matches regex "/fdr-nodo/"
 | summarize
-    Total = count(),
-    Success = countif(responseCode_d < 500)
-    by TimeBin = bin(TimeGenerated, 5m)
-| extend availability = todouble(Success) / Total
-// Mark each 5-minute bin as degraded when availability falls below the threshold.
-| extend belowThreshold = availability < threshold
-| order by TimeBin asc
-// Serialize the result set so prev() can inspect the immediately previous bin.
-| serialize
-// Fire only when both the current bin and the previous one are below threshold.
-| extend previousBelowThreshold = prev(belowThreshold, 1, false)
-| where belowThreshold == true and previousBelowThreshold == true
-QUERY
-
+    Total=count(),
+    Success=count(responseCode_d < 500)
+    by bin(TimeGenerated, 5m)
+| extend availability=toreal(Success) / Total
+| where availability < threshold
+  QUERY
+  )
   severity    = 1
   frequency   = 5
-
-  # Use a 10-minute evaluation window so the query can inspect
-  # two consecutive 5-minute bins instead of a single bin.
-  time_window = 10
-
+  time_window = 5
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1
