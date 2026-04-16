@@ -495,24 +495,6 @@ variable "nodo_storico_allowed_ips" {
 }
 
 
-variable "enable_sftp_backup" {
-  type        = bool
-  default     = false
-  description = "(Optional) Enables nodo sftp storage account backup"
-}
-
-variable "sftp_sa_delete_retention_days" {
-  type        = number
-  default     = 0
-  description = "(Optional) nodo sftp storage delete retention"
-}
-
-variable "sftp_sa_backup_retention_days" {
-  type        = number
-  default     = 0
-  description = "(Optional) nodo sftp storage backup retention"
-}
-
 variable "enable_nodo_re" {
   type        = bool
   default     = false
@@ -526,12 +508,6 @@ variable "geo_replica_enabled" {
   default     = false
 }
 
-
-variable "geo_replica_cidr_subnet_postgresql" {
-  type        = list(string)
-  description = "Address prefixes replica subnet postgresql"
-  default     = null
-}
 
 variable "location_replica" {
   type        = string
@@ -592,14 +568,6 @@ variable "mbd_storage_account" {
     backup_retention_days         = number
     use_legacy_defender_version   = bool
   })
-}
-
-variable "enabled_features" {
-  type = object({
-  })
-  default = {
-  }
-  description = "Features enabled in this domain"
 }
 
 /*****************

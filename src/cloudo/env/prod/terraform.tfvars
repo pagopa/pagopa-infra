@@ -1,21 +1,11 @@
-prefix             = "pagopa"
-env_short          = "p"
-env                = "prod"
-domain             = "core"
-location           = "westeurope"
-location_short     = "weu"
-location_string    = "West Europe"
-location_ita       = "italynorth"
-location_short_ita = "itn"
-instance           = "prod"
-
+prefix               = "pagopa"
+env_short            = "p"
+env                  = "prod"
+location_short_ita   = "itn"
 cloudo_function_tier = "basic"
 cloudo_ui_tier       = "basic"
 
 ### External resources
-
-monitor_resource_group_name              = "pagopa-p-monitor-rg"
-application_insisght_name                = "pagopa-p-appinsights"
 application_insisght_resource_group_name = "pagopa-p-monitor-rg"
 
 # ClouDO orchestrator parameters
