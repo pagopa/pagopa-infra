@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Run stale/close routine
+        id: stale_action
         uses: actions/stale@v10
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
@@ -45,3 +46,13 @@ jobs:
           # Disable issue processing
           days-before-issue-stale: -1
           days-before-issue-close: -1
+
+      - name: Parse and log stale PRs count
+        run: |
+          # Extract the number of new stale PRs from the action output
+          STALE_PRS_COUNT=$(echo "${{ steps.stale_action.outputs.stale-pr-prs }}" | grep -oP '(?<=New stale PRs:\s)\d+' || echo "999")
+
+          echo "=== Stale PR Cleanup Report ==="
+          echo "New PRs marked as stale: **$STALE_PRS_COUNT**"
+
+
