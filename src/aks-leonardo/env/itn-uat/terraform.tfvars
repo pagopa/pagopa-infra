@@ -1,12 +1,10 @@
 # general
-prefix              = "pagopa"
-env_short           = "u"
-env                 = "uat"
-domain              = "uat"
-location            = "italynorth"
-location_string     = "Italy North"
-location_short      = "itn"
-location_westeurope = "westeurope"
+prefix         = "pagopa"
+env_short      = "u"
+env            = "uat"
+domain         = "uat"
+location       = "italynorth"
+location_short = "itn"
 
 
 ### Network
@@ -60,11 +58,6 @@ aks_user_node_pool = {
   node_tags       = { node_tag_2 : "2" },
 }
 
-aks_addons = {
-  azure_policy                     = true,
-  azure_key_vault_secrets_provider = true,
-  pod_identity_enabled             = true,
-}
 
 # This is the k8s ingress controller ip. It must be in the aks subnet range.
 ingress_load_balancer_ip = "10.3.2.250"

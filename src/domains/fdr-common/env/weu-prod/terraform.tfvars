@@ -12,20 +12,13 @@ instance       = "prod"
 monitor_resource_group_name                 = "pagopa-p-monitor-rg"
 log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
-application_insights_name                   = "pagopa-p-appinsights"
-
-### Aks
-
-ingress_load_balancer_ip = "10.1.100.250"
+ingress_load_balancer_ip                    = "10.1.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"
 
 ## CIDR fdr per database pgsql
 cidr_subnet_flex_dbms = ["10.1.162.0/24"]
-
-enable_iac_pipeline = true
-
 pgres_flex_params = {
 
   sku_name   = "GP_Standard_D4ds_v4"
@@ -192,27 +185,9 @@ fdr_re_storage_account = {
   storage_defender_malware_scanning_on_upload_cap_gb_per_month = -1
   blob_file_retention_days                                     = 180 # 6 months
 }
-
-fdr_flow_storage_account = {
-  account_kind                       = "StorageV2"
-  account_tier                       = "Standard"
-  account_replication_type           = "GZRS"
-  blob_versioning_enabled            = false
-  advanced_threat_protection         = true
-  advanced_threat_protection_enabled = false
-  public_network_access_enabled      = false
-  blob_delete_retention_days         = 90
-  enable_low_availability_alert      = true
-}
-
-#
-# replica settings
-#
 geo_replica_enabled                                = true
 location_replica                                   = "italynorth"
 location_replica_short                             = "itn"
-geo_replica_cidr_subnet_postgresql                 = ["10.3.7.0/27"]
-postgresql_sku_name                                = "GP_Gen5_2"
 postgres_dns_registration_enabled                  = false
 postgres_dns_registration_virtual_endpoint_enabled = true
 

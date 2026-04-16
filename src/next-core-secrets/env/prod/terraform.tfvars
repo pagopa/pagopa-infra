@@ -1,17 +1,5 @@
-prefix         = "pagopa"
-env_short      = "p"
-env            = "prod"
-domain         = "core"
-location       = "westeurope"
-location_short = "weu"
-instance       = "prod"
-
-
+prefix     = "pagopa"
+env_short  = "p"
+env        = "prod"
+domain     = "core"
 input_file = "./secret/prod/configs.json"
-
-enable_iac_pipeline = true
-
-
-
-
-
