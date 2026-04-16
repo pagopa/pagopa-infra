@@ -76,6 +76,24 @@ variable "location_replica_short" {
   default     = "itn"
 }
 
+variable "location_itn" {
+  type        = string
+  description = "italynorth"
+  default     = "italynorth"
+}
+
+variable "location_itn_short" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_itn_short) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "itn"
+  default     = "itn"
+}
+
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
@@ -133,8 +151,6 @@ variable "enable_iac_pipeline" {
   default     = false
 }
 
-
-
 variable "cidr_subnet_flex_dbms" {
   type        = list(string)
   description = "Postgresql network address space."
@@ -160,10 +176,23 @@ variable "pgres_flex_params" {
     pgbouncer_min_pool_size                = number
     max_worker_process                     = number
     wal_level                              = string
-    shared_preoload_libraries              = string
+    shared_preload_libraries               = string
+    azure_extensions                       = string
     public_network_access_enabled          = bool
   })
 
+}
+
+# Postgres Flexible
+variable "pgres_flex_archive_params" {
+  type = object({
+    alerts_enabled                         = bool
+    pgres_flex_diagnostic_settings_enabled = bool
+    enable_private_dns_registration        = optional(bool, false)
+    storage_mb                             = number
+    auto_grow_enabled                      = bool
+    db_version                             = number
+  })
 }
 
 variable "pgres_flex_fdr_db_name" {
