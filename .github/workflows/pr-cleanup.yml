@@ -49,10 +49,11 @@ jobs:
 
       - name: Parse and log stale PRs count
         run: |
-          # Extract the number of new stale PRs from the action output
-          STALE_PRS_COUNT=$(echo "${{ steps.stale_action.outputs.stale-pr-prs }}" | grep -oP '(?<=Fetched items:\s)\s+' || echo "999")
+          STALED_PRS=steps.stale_action.outputs.staled-issues-prs
+          CLOSED_PRS=steps.stale_action.outputs.closed-issues-prs
 
           echo "=== Stale PR Cleanup Report ==="
-          echo "New PRs marked as stale: **$STALE_PRS_COUNT**"
+          echo "New PRs staled: $STALED_PRS"
+          echo "New PRs closed: $CLOSED_PRS"
 
 
