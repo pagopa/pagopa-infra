@@ -49,8 +49,8 @@ jobs:
 
       - name: Parse and log stale PRs count
         run: |
-          STALED_PRS=steps.stale_action.outputs.staled-issues-prs
-          CLOSED_PRS=steps.stale_action.outputs.closed-issues-prs
+          STALED_PRS=${{steps.stale_action.outputs.staled-issues-prs}}
+          CLOSED_PRS=${{steps.stale_action.outputs.closed-issues-prs}}
 
           echo "=== Stale PR Cleanup Report ==="
           echo "New PRs staled: $STALED_PRS"
