@@ -131,6 +131,7 @@ apim_v2_alerts_enabled           = false
 apim_enable_nm3_decoupler_switch = true
 dns_zone_prefix                  = "uat.platform"
 
+cidr_subnet_appgateway                              = ["10.1.128.0/24"]
 cidr_subnet_appgateway_integration                  = ["10.230.9.192/27"]
 integration_appgateway_private_ip                   = "10.230.9.200"
 integration_app_gateway_sku_name                    = "Standard_v2"

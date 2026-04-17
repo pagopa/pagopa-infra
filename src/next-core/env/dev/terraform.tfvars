@@ -33,6 +33,8 @@ cidr_subnet_eventhub              = ["10.230.8.64/26"]
 cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
 cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
 
+dns_zone_wfesp = ""
+
 ### Network Italy
 vpn_gw_pip_sku               = "Standard"
 vpn_gw_pip_allocation_method = "Static"

@@ -201,6 +201,7 @@ eventhub_namespace_rtp = {
 }
 
 redis_ha_enabled = false
+gpd_cdc_enabled  = true
 
 rtp_storage_account = {
   account_kind                       = "StorageV2"
