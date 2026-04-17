@@ -39,7 +39,7 @@ jobs:
 
           # Behavior
           remove-stale-when-updated: true
-          operations-per-run: 10
+          operations-per-run: 60
           ascending: true
           delete-branch: true
 
@@ -47,20 +47,11 @@ jobs:
           days-before-issue-stale: -1
           days-before-issue-close: -1
 
-      - name: Parse and log stale PRs count
-        run: |
-          STALED_PRS=${{steps.stale_action.outputs.staled-issues-prs}}
-          CLOSED_PRS=${{steps.stale_action.outputs.closed-issues-prs}}
-
-          echo "=== Stale PR Cleanup Report ==="
-          echo "New PRs staled: $STALED_PRS"
-          echo "New PRs closed: $CLOSED_PRS"
-
       - name: Notify PR updates
         uses: slackapi/slack-github-action@v3.0.1
-        if: ${{ steps.stale_action.outputs.staled-issues-prs == '[]' || steps.stale_action.outputs.closed-issues-prs == '[]' }}
+        if: ${{ steps.stale_action.outputs.staled-issues-prs != '[]' || steps.stale_action.outputs.closed-issues-prs != '[]' }}
         with:
-          webhook: ${{ secrets.TEST_SLACK_WEBHOOK_URL }}
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
           payload: |
             text: "PR cleaner report: "
