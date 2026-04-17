@@ -11,7 +11,8 @@ data "azurerm_kubernetes_cluster" "aks" {
 locals {
   repos_01 = [
     "pagopa-mocker",
-    "pagopa-mocker-config"
+    "pagopa-mocker-config",
+    "pagopa-mock-ec"
   ]
 
   federations_01 = [

@@ -22,6 +22,10 @@ module "gh_runner_job" {
     {
       name : "pagopa-mocker-config",
       short_name : "mockr-cfg"
+    },
+    {
+      name : "pagopa-mock-ec",
+      short_name : "mock-ec"
     }
   ]
   job      = {}
