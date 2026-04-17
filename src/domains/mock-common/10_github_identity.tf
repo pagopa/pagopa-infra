@@ -36,6 +36,23 @@ locals {
       ]
     }
   }
+
+  environment_ci_roles = {
+    subscription = [
+      "Contributor",
+    ]
+    resource_groups = {
+      "${local.product}-${var.domain}-sec-rg" = [
+        "Key Vault Reader",
+      ],
+      "${local.product}-${var.location_short}-${var.env}-aks-rg" = [
+        "Contributor"
+      ],
+      "${local.product}-${var.location_short}-shared-tst-dt-rg" = [
+        "Storage Blob Data Contributor",
+      ],
+    }
+  }
 }
 
 # create a module for each 20 repos
@@ -53,6 +70,31 @@ module "identity_cd_01" {
   cd_rbac_roles = {
     subscription_roles = local.environment_cd_roles.subscription
     resource_groups    = local.environment_cd_roles.resource_groups
+  }
+
+  tags = module.tag_config.tags
+
+  depends_on = [
+    data.azurerm_resource_group.identity_rg
+  ]
+}
+
+# create a module for each 20 repos
+module "identity_ci_01" {
+  count  = var.env_short == "p" ? 0 : 1
+  source = "./.terraform/modules/__v3__/github_federated_identity"
+  # pagopa-<ENV><DOMAIN>-<COUNTER>-github-<PERMS>-identity
+  prefix    = var.prefix
+  env_short = var.env_short
+  domain    = "${var.domain}-01"
+
+  identity_role = "ci"
+
+  github_federations = local.federations_01
+
+  ci_rbac_roles = {
+    subscription_roles = local.environment_ci_roles.subscription
+    resource_groups    = local.environment_ci_roles.resource_groups
   }
 
   tags = module.tag_config.tags
