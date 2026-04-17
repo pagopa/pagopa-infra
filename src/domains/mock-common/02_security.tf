@@ -1,9 +1,3 @@
-data "azurerm_redis_cache" "redis_cache" {
-  name                = var.redis_ha_enabled ? "${var.prefix}-${var.env_short}-${var.location_short}-redis" : "${var.prefix}-${var.env_short}-redis"
-  resource_group_name = "${var.prefix}-${var.env_short}-data-rg"
-}
-
-
 resource "azurerm_resource_group" "sec_rg" {
   name     = "${local.product}-${var.domain}-sec-rg"
   location = var.location
@@ -53,11 +47,6 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
 }
 
 # azure devops policy
-data "azuread_service_principal" "iac_principal" {
-  count        = var.enable_iac_pipeline ? 1 : 0
-  display_name = "pagopaspa-pagoPA-iac-${data.azurerm_subscription.current.subscription_id}"
-}
-
 resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
   count        = var.enable_iac_pipeline ? 1 : 0
   key_vault_id = module.key_vault.id
@@ -96,10 +85,39 @@ resource "azurerm_key_vault_secret" "redis_password" {
   key_vault_id = module.key_vault.id
 }
 
-
 resource "azurerm_key_vault_secret" "redis_hostname" {
   name  = "redis-hostname"
   value = data.azurerm_redis_cache.redis_cache.hostname
+
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "pagopa_platform_shared_github_bot_cd_pat" {
+  count = var.env_short == "p" ? 0 : 1
+  name  = "pagopa-platform-domain-github-bot-cd-pat"
+  value = data.azurerm_key_vault_secret.pagopa_platform_shared_github_bot_cd_pat.value
+
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "pagopa_pagamenti_integration_test_slack_webhook" {
+  count = var.env_short == "p" ? 0 : 1
+  name  = "pagopa-pagamenti-integration-test-slack-webhook"
+  value = data.azurerm_key_vault_secret.pagopa_pagamenti_integration_test_slack_webhook.value
+
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "pagopa_pagamenti_deploy_slack_webhook" {
+  count = var.env_short == "p" ? 0 : 1
+  name  = "pagopa-pagamenti-deploy-slack-webhook"
+  value = data.azurerm_key_vault_secret.pagopa_pagamenti_deploy_slack_webhook.value
 
   content_type = "text/plain"
 
