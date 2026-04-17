@@ -56,4 +56,16 @@ jobs:
           echo "New PRs staled: $STALED_PRS"
           echo "New PRs closed: $CLOSED_PRS"
 
-
+      - name: Notify PR updates
+        uses: slackapi/slack-github-action/cli@v3.0.0
+        if: steps.stale_action.outputs.staled-issues-prs != [] || steps.stale_action.outputs.closed-issues-prs != []
+        with:
+          webhook: ${{ secrets.TEST_SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: "PR cleaner report: "
+            blocks:
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: "- New PR staled: ${{steps.stale_action.outputs.staled-issues-prs}} \n - New PR closed: ${{steps.stale_action.outputs.closed-issues-prs}}"
