@@ -42,6 +42,8 @@ nodo_user_node_pool = {
   nodo_pool_max_pods = "250",
 }
 cidr_subnet_vmss               = ["10.230.8.144/28"]
+nodo_re_to_datastore_function_subnet          = ["10.1.178.0/24"]
+nodo_verifyko_to_datastore_function_subnet          = ["10.1.188.0/24"]
 lb_frontend_private_ip_address = "10.230.8.150"
 
 route_aks = [

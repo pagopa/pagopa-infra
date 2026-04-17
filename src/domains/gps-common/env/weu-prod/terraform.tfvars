@@ -142,6 +142,7 @@ gpd_sftp_sa_delete                                             = 60
 
 # GPD Archive account
 gpd_cdc_enabled = true
+gpd_sftp_ip_rules            = ["37.179.98.148"]
 
 ### EventHub
 

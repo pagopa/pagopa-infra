@@ -28,6 +28,7 @@ log_analytics_italy_workspace_resource_group_name = "pagopa-d-itn-core-monitor-r
 
 cidr_subnet_cosmosdb_pay_wallet = ["10.3.5.0/27"]
 cidr_subnet_redis_pay_wallet    = ["10.3.5.64/27"]
+cidr_subnet_pay_wallet_user_aks = ["10.3.6.0/24"]
 ingress_load_balancer_ip        = "10.3.2.250"
 
 ### DNS
