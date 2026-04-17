@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Run stale/close routine
+        id: stale_action
         uses: actions/stale@v10
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
@@ -45,3 +46,17 @@ jobs:
           # Disable issue processing
           days-before-issue-stale: -1
           days-before-issue-close: -1
+
+      - name: Notify PR updates
+        uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 #v3.0.1
+        if: ${{ steps.stale_action.outputs.staled-issues-prs != '[]' || steps.stale_action.outputs.closed-issues-prs != '[]' }}
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: "PR cleaner report: "
+            blocks:
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: "- New PR staled: ${{steps.stale_action.outputs.staled-issues-prs}} \n - New PR closed: ${{steps.stale_action.outputs.closed-issues-prs}}"
