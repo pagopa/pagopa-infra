@@ -86,3 +86,14 @@ taxonomy_storage_account = {
 redis_ha_enabled = false
 
 github_runner_ita_enabled = true
+
+test_data_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = false
+  public_network_access_enabled = true
+  blob_delete_retention_days    = 7
+  enable_low_availability_alert = false
+}

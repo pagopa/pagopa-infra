@@ -22,6 +22,7 @@ is_feature_enabled = {
 
 cidr_printit_cosmosdb_italy                       = ["10.3.12.0/27"]
 cidr_printit_pdf_engine_italy                     = ["10.3.12.128/27"]
+cidr_printit_redis_italy                          = ["10.3.12.64/27"]
 monitor_italy_resource_group_name                 = "pagopa-u-itn-core-monitor-rg"
 log_analytics_italy_workspace_name                = "pagopa-u-itn-core-law"
 log_analytics_italy_workspace_resource_group_name = "pagopa-u-itn-core-monitor-rg"

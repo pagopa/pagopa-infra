@@ -4,6 +4,7 @@ env             = "dev"
 domain          = "pay-wallet"
 location_string = "Italy North"
 instance        = "dev"
+location_short  = "itn"
 
 
 ### External resources

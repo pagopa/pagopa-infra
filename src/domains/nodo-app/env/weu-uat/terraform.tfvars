@@ -26,6 +26,9 @@ tls_cert_check_helm = {
   image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
 }
 
+nodo_re_to_datastore_function_subnet       = ["10.1.178.0/24"]
+nodo_verifyko_to_datastore_function_subnet = ["10.1.188.0/24"]
+
 nodo_user_node_pool = {
   enabled         = true
   name            = "nodo01"
