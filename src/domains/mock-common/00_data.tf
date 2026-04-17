@@ -14,6 +14,20 @@ data "azurerm_key_vault" "kv" {
   resource_group_name = "${local.product}-sec-rg"
 }
 
+data "azurerm_key_vault" "domain_key_vault" {
+  name                = "${local.product}-${var.domain}-kv"
+  resource_group_name = "${local.product}-${var.domain}-sec-rg"
+}
+
+data "azurerm_resource_group" "identity_rg" {
+  name = "${local.product}-identity-rg"
+}
+
+data "azurerm_kubernetes_cluster" "aks" {
+  name                = "${local.product}-${var.location_short}-${var.instance}-aks"
+  resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
+}
+
 data "azurerm_redis_cache" "redis_cache" {
   name                = var.redis_ha_enabled ? "${var.prefix}-${var.env_short}-${var.location_short}-redis" : "${var.prefix}-${var.env_short}-redis"
   resource_group_name = "${var.prefix}-${var.env_short}-data-rg"

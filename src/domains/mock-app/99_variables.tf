@@ -216,3 +216,9 @@ variable "mock_enabled" {
   description = "mock enabled on this environment"
   default     = false
 }
+
+variable "gh_runner_job_location" {
+  type        = string
+  description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
+  default     = "westeurope"
+}

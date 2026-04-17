@@ -31,9 +31,9 @@ module "gh_runner_job" {
   job      = {}
   job_meta = {}
   key_vault = {
-    name        = "${local.product}-kv"     # Name of the KeyVault which stores PAT as secret
-    rg          = "${local.product}-sec-rg" # Resource group of the KeyVault which stores PAT as secret
-    secret_name = "gh-runner-job-pat"       # Data of the KeyVault which stores PAT as secret
+    name        = "${local.product}-${var.domain}-kv"     # Name of the KeyVault which stores PAT as secret
+    rg          = "${local.product}-${var.domain}-sec-rg" # Resource group of the KeyVault which stores PAT as secret
+    secret_name = "pagopa-platform-domain-github-bot-cd-pat"       # Data of the KeyVault which stores PAT as secret
   }
   kubernetes_deploy = {
     enabled      = true
@@ -42,7 +42,7 @@ module "gh_runner_job" {
     rg           = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
   }
 
-  location                = var.location
+  location                = var.gh_runner_job_location
   prefix                  = var.prefix
   resource_group_name     = data.azurerm_resource_group.identity_rg.name
   domain_security_rg_name = "${local.product}-${var.domain}-sec-rg"
