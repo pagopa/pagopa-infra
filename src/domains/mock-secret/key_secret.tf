@@ -1,17 +1,20 @@
 #mock security resource group
 data "azurerm_resource_group" "sec_rg" {
-  name = "${local.product}-${var.domain}-sec-rg"
+  count = var.env_short == "p" ? 0 : 1
+  name  = "${local.product}-${var.domain}-sec-rg"
 }
 
 # mock KV
 data "azurerm_key_vault" "mock_kv" {
+  count               = var.env_short == "p" ? 0 : 1
   name                = "${local.product}-${var.domain}-kv"
-  resource_group_name = data.azurerm_resource_group.sec_rg.name
+  resource_group_name = data.azurerm_resource_group.sec_rg[0].name
 }
 
 resource "azurerm_key_vault_key" "generated" {
+  count        = var.env_short == "p" ? 0 : 1
   name         = "${local.product}-${var.domain}-sops-key"
-  key_vault_id = data.azurerm_key_vault.mock_kv.id
+  key_vault_id = data.azurerm_key_vault.mock_kv[0].id
   key_type     = "RSA"
   key_size     = 2048
 
@@ -56,12 +59,12 @@ locals {
 resource "azurerm_key_vault_secret" "secret" {
   for_each = { for i, v in local.all_secrets_value : local.all_secrets_value[i].chiave => i }
 
-  key_vault_id = data.azurerm_key_vault.mock_kv.id
+  key_vault_id = data.azurerm_key_vault.mock_kv[0].id
   name         = local.all_secrets_value[each.value].chiave
   value        = local.all_secrets_value[each.value].valore
 
   depends_on = [
-    azurerm_key_vault_key.generated,
+    azurerm_key_vault_key.generated[0],
     data.external.external
   ]
 }
