@@ -58,7 +58,7 @@ jobs:
 
       - name: Notify PR updates
         uses: slackapi/slack-github-action/cli@v3.0.0
-        if: steps.stale_action.outputs.staled-issues-prs != "[]" || steps.stale_action.outputs.closed-issues-prs != "[]"
+        if: ${{ steps.stale_action.outputs.staled-issues-prs != '[]' || steps.stale_action.outputs.closed-issues-prs != '[]' }}
         with:
           webhook: ${{ secrets.TEST_SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
