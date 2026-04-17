@@ -194,7 +194,7 @@ base_path_nodo_web_bo_history = "/web-bo-history-prd"
 dns_zone_wisp2                = "wisp2"
 base_path_nodo_oncloud        = "/nodo-prd"
 
-redis_cache_enabled              = true
+redis_cache_enabled = true
 
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
 ehns_auto_inflate_enabled        = true

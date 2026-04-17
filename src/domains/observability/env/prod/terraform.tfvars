@@ -4,7 +4,7 @@ env                         = "prod"
 domain                      = "observ"
 location_itn                = "italynorth" # itn
 location_short_itn          = "itn"        # itn
-location_short     = "weu"        # weu
+location_short              = "weu"        # weu
 monitor_resource_group_name = "pagopa-p-monitor-rg"
 
 # Data Explorer
