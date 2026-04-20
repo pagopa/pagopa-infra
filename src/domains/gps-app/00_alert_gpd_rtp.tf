@@ -50,11 +50,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-generic" {
   QUERY
   )
   severity    = 2 // Sev 2	Warning
-  frequency   = 15
-  time_window = 15
+  frequency   = 10
+  time_window = 10
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 5
+    threshold = 10
   }
 }
 
