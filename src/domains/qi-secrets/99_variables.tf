@@ -34,11 +34,6 @@ variable "domain" {
   }
 }
 
-variable "location" {
-  type        = string
-  description = "One of westeurope, northeurope"
-}
-
 variable "location_short" {
   type = string
   validation {
@@ -48,16 +43,6 @@ variable "location_short" {
     error_message = "Length must be 3 chars."
   }
   description = "One of weu, neu"
-}
-
-variable "location_string" {
-  type        = string
-  description = "One of West Europe, North Europe"
-}
-
-variable "instance" {
-  type        = string
-  description = "One of beta, prod01, prod02"
 }
 
 
@@ -73,8 +58,3 @@ variable "input_file" {
   description = "secret json file"
 }
 
-variable "enable_iac_pipeline" {
-  type        = bool
-  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
-  default     = false
-}

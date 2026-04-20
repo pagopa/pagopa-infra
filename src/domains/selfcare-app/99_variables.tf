@@ -103,15 +103,6 @@ variable "apim_dns_zone_prefix" {
   description = "The dns subdomain for apim."
 }
 
-variable "tls_cert_check_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "tls cert helm chart configuration"
-}
-
 # selfcare_fe
 variable "selfcare_fe_enabled" {
   type        = bool
@@ -153,4 +144,11 @@ variable "gh_runner_job_location" {
   type        = string
   description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
   default     = "westeurope"
+}
+
+
+variable "backoffice_external_for_rtp_sub_key_user" {
+  type        = string
+  description = "(Mandatory) The user name to which associate backoffice external service subscription key to"
+  default     = null
 }

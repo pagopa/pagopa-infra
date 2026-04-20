@@ -24,13 +24,6 @@ variable "env_short" {
   }
 }
 
-variable "github" {
-  type = object({
-    org = string
-  })
-  default = { org = "pagopa" }
-}
-
 variable "domain" {
   type = string
   validation {
@@ -76,6 +69,24 @@ variable "location_replica_short" {
   default     = "itn"
 }
 
+variable "location_itn" {
+  type        = string
+  description = "italynorth"
+  default     = "italynorth"
+}
+
+variable "location_itn_short" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_itn_short) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "itn"
+  default     = "itn"
+}
+
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
@@ -105,10 +116,6 @@ variable "ingress_load_balancer_ip" {
 
 ### Aks
 
-variable "k8s_kube_config_path_prefix" {
-  type    = string
-  default = "~/.kube"
-}
 variable "external_domain" {
   type        = string
   default     = null
@@ -119,18 +126,6 @@ variable "dns_zone_internal_prefix" {
   type        = string
   default     = null
   description = "The dns subdomain."
-}
-
-variable "apim_dns_zone_prefix" {
-  type        = string
-  default     = null
-  description = "The dns subdomain for apim."
-}
-
-variable "enable_iac_pipeline" {
-  type        = bool
-  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
-  default     = false
 }
 
 
@@ -160,10 +155,23 @@ variable "pgres_flex_params" {
     pgbouncer_min_pool_size                = number
     max_worker_process                     = number
     wal_level                              = string
-    shared_preoload_libraries              = string
+    shared_preload_libraries               = string
+    azure_extensions                       = string
     public_network_access_enabled          = bool
   })
 
+}
+
+# Postgres Flexible
+variable "pgres_flex_archive_params" {
+  type = object({
+    alerts_enabled                         = bool
+    pgres_flex_diagnostic_settings_enabled = bool
+    enable_private_dns_registration        = optional(bool, false)
+    storage_mb                             = number
+    auto_grow_enabled                      = bool
+    db_version                             = number
+  })
 }
 
 variable "pgres_flex_fdr_db_name" {
@@ -287,13 +295,6 @@ variable "cosmos_mongo_db_fdr_re_params" {
   })
 }
 # Storage account
-variable "fdr_convertion_delete_retention_days" {
-  type        = number
-  description = "Number of days to retain deleted."
-  default     = 30
-}
-
-# Storage account
 variable "cidr_subnet_storage_account" {
   type        = list(string)
   description = "Storage account network address space."
@@ -305,28 +306,6 @@ variable "reporting_fdr_blobs_retention_days" {
   default     = 30
 }
 
-
-variable "fdr1_cached_response_blob_file_retention_days" {
-  type        = number
-  description = "The number of day for storage_management_policy"
-  default     = 1
-}
-
-variable "fdr_re_versioning" {
-  type        = bool
-  description = "Enable sa versioning"
-  default     = false
-}
-variable "fdr_re_advanced_threat_protection" {
-  type        = bool
-  description = "Enable contract threat advanced protection"
-  default     = false
-}
-variable "fdr_re_delete_retention_days" {
-  type        = number
-  description = "Number of days to retain deleted."
-  default     = 30
-}
 
 variable "fdr_storage_account" {
   type = object({
@@ -433,8 +412,3 @@ variable "postgres_dns_registration_virtual_endpoint_enabled" {
 }
 
 
-variable "geo_replica_cidr_subnet_postgresql" {
-  type        = list(string)
-  description = "Address prefixes replica subnet postgresql"
-  default     = null
-}

@@ -10,7 +10,7 @@ data "azurerm_key_vault_secret" "pgres_storico_flex_admin_pwd" {
 
 # Postgres Flexible Server subnet
 module "postgres_storico_flexible_snet" {
-  source                                        = "./.terraform/modules/__v3__/subnet"
+  source                                        = "./.terraform/modules/__v4__/subnet"
   name                                          = format("%s-storico-pgres-flexible-snet", local.project)
   address_prefixes                              = var.cidr_subnet_flex_storico_dbms
   resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
@@ -30,14 +30,14 @@ module "postgres_storico_flexible_snet" {
 }
 
 module "postgres_storico_flexible_server" {
-  source              = "./.terraform/modules/__v3__/postgres_flexible_server"
+  source              = "./.terraform/modules/__v4__/postgres_flexible_server"
   name                = format("%s-storico-flexible-postgresql", local.project)
   location            = azurerm_resource_group.db_rg.location
   resource_group_name = azurerm_resource_group.db_rg.name
 
   private_endpoint_enabled    = var.pgres_flex_storico_params.pgres_flex_private_endpoint_enabled
-  private_dns_zone_id         = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres.id : null
-  delegated_subnet_id         = var.env_short != "d" ? module.postgres_storico_flexible_snet.id : null
+  private_dns_zone_id         = data.azurerm_private_dns_zone.postgres.id
+  delegated_subnet_id         = module.postgres_storico_flexible_snet.id
   high_availability_enabled   = var.pgres_flex_storico_params.pgres_flex_ha_enabled
   standby_availability_zone   = var.env_short != "d" ? var.pgres_flex_storico_params.standby_ha_zone : null
   pgbouncer_enabled           = var.pgres_flex_storico_params.pgres_flex_pgbouncer_enabled

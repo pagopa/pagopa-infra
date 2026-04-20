@@ -20,9 +20,6 @@ ingress_load_balancer_ip = "10.1.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"
-apim_dns_zone_prefix     = "platform"
-
-# CosmosDB Biz Events Datastore
 bizevents_datastore_cosmos_db_params = {
   kind         = "GlobalDocumentDB"
   capabilities = []
@@ -37,7 +34,7 @@ bizevents_datastore_cosmos_db_params = {
   enable_free_tier                 = false
 
   private_endpoint_enabled      = true
-  public_network_access_enabled = true
+  public_network_access_enabled = false
 
   additional_geo_locations = [{
     location          = "northeurope"
@@ -54,9 +51,13 @@ bizevents_datastore_cosmos_db_params = {
 
   container_default_ttl = 315576000 # 10 year in second
 
-  max_throughput          = 42000
-  max_throughput_view     = 44000
-  max_throughput_view_alt = 45000
+  max_throughput = 42000
+
+  max_throughput_biz          = 45000
+  max_throughput_view_user    = 60000
+  max_throughput_view_cart    = 45000
+  max_throughput_view_general = 45000
+
 }
 
 # CosmosDB Negative Biz Events Datastore
@@ -96,4 +97,3 @@ cidr_subnet_bizevents_datastore_cosmosdb = ["10.1.156.0/24"]
 enable_iac_pipeline              = true
 storage_account_replication_type = "GZRS"
 redis_ha_enabled                 = true
-

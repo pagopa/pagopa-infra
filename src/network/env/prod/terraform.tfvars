@@ -19,7 +19,7 @@ enabled_features = {
 }
 
 trino_xmx = "8G"
-vmss_size = "Standard_D4ds_v5"
+vmss_size = "Standard_D8ds_v5"
 
 external_database_connection = {
   nexi = {
@@ -35,6 +35,36 @@ external_database_connection = {
   nexi_re = {
     connector_name       = "postgresql"
     url                  = "jdbc:postgresql://10.102.1.93:6433/ndparehp_ro?ssl=false"
+    user_secret_name     = "nexi-db-user"
+    password_secret_name = "nexi-db-password"
+    params = {
+      case-insensitive-name-matching = true
+      unsupported-type-handling      = "CONVERT_TO_VARCHAR"
+    }
+  }
+  nexi_re_storico = {
+    connector_name       = "postgresql"
+    url                  = "jdbc:postgresql://10.102.1.93:5445/ndparehphist?ssl=false"
+    user_secret_name     = "nexi-db-user"
+    password_secret_name = "nexi-db-password"
+    params = {
+      case-insensitive-name-matching = true
+      unsupported-type-handling      = "CONVERT_TO_VARCHAR"
+    }
+  }
+  nexi_online_storico = {
+    connector_name       = "postgresql"
+    url                  = "jdbc:postgresql://10.102.1.93:5445/ndpspcphist?ssl=false"
+    user_secret_name     = "nexi-db-user"
+    password_secret_name = "nexi-db-password"
+    params = {
+      case-insensitive-name-matching = true
+      unsupported-type-handling      = "CONVERT_TO_VARCHAR"
+    }
+  }
+  nexi_offline_storico = {
+    connector_name       = "postgresql"
+    url                  = "jdbc:postgresql://10.102.1.93:5445/ndpspcphist?ssl=false"
     user_secret_name     = "nexi-db-user"
     password_secret_name = "nexi-db-password"
     params = {

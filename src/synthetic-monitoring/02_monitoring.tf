@@ -1,11 +1,16 @@
+
 module "monitoring_function" {
   depends_on = [azurerm_application_insights.application_insights]
-  source     = "./.terraform/modules/__v3__/monitoring_function"
-  legacy     = false
+  source     = "./.terraform/modules/__v4__/monitoring_function"
 
-  location            = var.location
-  prefix              = "${local.product}-${var.location_short}"
-  resource_group_name = azurerm_resource_group.synthetic_rg.name
+  providers = {
+    grafana = grafana.cloudinternal
+  }
+
+  location              = var.location
+  location_display_name = var.location
+  prefix                = "${local.product}-${var.location_short}"
+  resource_group_name   = azurerm_resource_group.synthetic_rg.name
 
   application_insight_name              = azurerm_application_insights.application_insights.name
   application_insight_rg_name           = azurerm_application_insights.application_insights.resource_group_name
@@ -19,6 +24,7 @@ module "monitoring_function" {
     cron_scheduling              = "*/5 * * * *"
     container_app_environment_id = data.azurerm_container_app_environment.tools_cae.id
     http_client_timeout          = 30000
+    workload_profile             = "None"
   }
 
   storage_account_settings = {
@@ -27,9 +33,13 @@ module "monitoring_function" {
     replication_type          = var.storage_account_replication_type
   }
 
-  private_endpoint_subnet_id = var.use_private_endpoint ? data.azurerm_subnet.private_endpoint_subnet[0].id : null
+  storage_private_endpoint_subnet_id = var.use_private_endpoint ? data.azurerm_subnet.private_endpoint_subnet[0].id : null
 
   tags = module.tag_config.tags
+
+  enabled_sythetic_dashboard = false
+  subscription_id            = data.azurerm_client_config.current.subscription_id
+
 
   self_alert_configuration = {
     enabled = var.self_alert_enabled
@@ -38,6 +48,7 @@ module "monitoring_function" {
     env_name                                 = var.env,
     env_short                                = var.env_short,
     api_dot_env_name                         = var.env == "prod" ? "api" : "api.${var.env}"
+    env_dot                                  = var.env == "prod" ? "" : "${var.env}."
     internal_api_domain_prefix               = "weu${var.env}"
     internal_api_domain_suffix               = var.env == "prod" ? "internal.platform.pagopa.it" : "internal.${var.env}.platform.pagopa.it"
     nodo_subscription_key                    = nonsensitive(module.secret_core.values["synthetic-monitoring-nodo-subscription-key"].value)
@@ -51,7 +62,8 @@ module "monitoring_function" {
     nexi_ndp_host                            = var.nexi_ndp_host
     nexi_ndp_host_postgres                   = var.nexi_ndp_host_postgres
     developers_action_group_ids              = jsonencode((can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]))
-    nexi_postgres_enabled                    = var.env == "prod" ? true : false
-
+    nexi_postgres_enabled                    = var.enabled_resource.test_nexi_postgres
+    checkout_cdn_endpoint                    = "https://${data.azurerm_cdn_frontdoor_endpoint.checkout_cdn_endpoint.host_name}"
+    cloudo_action_group_ids                  = jsonencode([data.azurerm_monitor_action_group.cloudo.id])
   })
 }
