@@ -26,6 +26,8 @@
 | <a name="module_apim_api_pdf_engine_api_v1"></a> [apim\_api\_pdf\_engine\_api\_v1](#module\_apim\_api\_pdf\_engine\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_pdf_engine_node_api_v1"></a> [apim\_api\_pdf\_engine\_node\_api\_v1](#module\_apim\_api\_pdf\_engine\_node\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_poc_api_v1"></a> [apim\_api\_poc\_api\_v1](#module\_apim\_api\_poc\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_search_transactions_api_v1"></a> [apim\_api\_search\_transactions\_api\_v1](#module\_apim\_api\_search\_transactions\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_search_transactions_webview_api_v1"></a> [apim\_api\_search\_transactions\_webview\_api\_v1](#module\_apim\_api\_search\_transactions\_webview\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_statuspage_api_v1"></a> [apim\_api\_statuspage\_api\_v1](#module\_apim\_api\_statuspage\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_statuspage_nodopagamenti_api_v1"></a> [apim\_api\_statuspage\_nodopagamenti\_api\_v1](#module\_apim\_api\_statuspage\_nodopagamenti\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_taxonomy_api_v1"></a> [apim\_api\_taxonomy\_api\_v1](#module\_apim\_api\_taxonomy\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
@@ -36,6 +38,8 @@
 | <a name="module_apim_pagopa_platform_statuspage_product"></a> [apim\_pagopa\_platform\_statuspage\_product](#module\_apim\_pagopa\_platform\_statuspage\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_pdf_engine_product"></a> [apim\_pdf\_engine\_product](#module\_apim\_pdf\_engine\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_poc_product"></a> [apim\_poc\_product](#module\_apim\_poc\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_search_transactions_service"></a> [apim\_search\_transactions\_service](#module\_apim\_search\_transactions\_service) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_search_transactions_webview"></a> [apim\_search\_transactions\_webview](#module\_apim\_search\_transactions\_webview) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_session_wallet_api_v1"></a> [apim\_session\_wallet\_api\_v1](#module\_apim\_session\_wallet\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_session_wallet_product"></a> [apim\_session\_wallet\_product](#module\_apim\_session\_wallet\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_statuspage_nodo_pagamenti"></a> [apim\_statuspage\_nodo\_pagamenti](#module\_apim\_statuspage\_nodo\_pagamenti) | ./.terraform/modules/__v3__/api_management_product | n/a |
@@ -77,10 +81,13 @@
 | [azurerm_api_management_api_version_set.api_statuspage_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_statuspage_nodopagamenti_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_taxonomy_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.searchtransactions_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.searchtransactions_webview_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.session_wallet_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.session_wallet_api_mock](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_group.technical_support_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
 | [azurerm_api_management_named_value.pagopa-wallet-jwt-signing-key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_named_value.search_transactions_token_secret_value](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.wallet-jwt-signing-key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.wallet_personal_data_vault_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_product_group.technical_support_group_association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_product_group) | resource |
@@ -140,6 +147,7 @@
 | [azurerm_key_vault_secret.elastic_otel_token_header](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.pdf_engine_node_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.personal_data_vault_api_key_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.search_transactions_token_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.wallet_jwt_signing_key_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/kubernetes_cluster) | data source |
 | [azurerm_linux_function_app.mockec](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/linux_function_app) | data source |
@@ -169,12 +177,7 @@
 | <a name="input_app_service_pdf_engine_autoscale_enabled"></a> [app\_service\_pdf\_engine\_autoscale\_enabled](#input\_app\_service\_pdf\_engine\_autoscale\_enabled) | n/a | `bool` | `true` | no |
 | <a name="input_app_service_pdf_engine_sku_name"></a> [app\_service\_pdf\_engine\_sku\_name](#input\_app\_service\_pdf\_engine\_sku\_name) | app service plan size | `string` | `"S1"` | no |
 | <a name="input_app_service_pdf_engine_sku_name_java"></a> [app\_service\_pdf\_engine\_sku\_name\_java](#input\_app\_service\_pdf\_engine\_sku\_name\_java) | app service plan size | `string` | `"S1"` | no |
-| <a name="input_authorizer_function_always_on"></a> [authorizer\_function\_always\_on](#input\_authorizer\_function\_always\_on) | Should authorizer-functions app be always on? | `bool` | n/a | yes |
-| <a name="input_authorizer_functions_app_image_tag"></a> [authorizer\_functions\_app\_image\_tag](#input\_authorizer\_functions\_app\_image\_tag) | Authorizer functions app docker image tag. Defaults to 'latest' | `string` | `"latest"` | no |
-| <a name="input_authorizer_functions_app_sku"></a> [authorizer\_functions\_app\_sku](#input\_authorizer\_functions\_app\_sku) | Authorizer functions app plan SKU | <pre>object({<br/>    kind     = string<br/>    sku_size = string<br/>  })</pre> | n/a | yes |
-| <a name="input_authorizer_functions_autoscale"></a> [authorizer\_functions\_autoscale](#input\_authorizer\_functions\_autoscale) | Authorizer functions autoscaling parameters | <pre>object({<br/>    default = number<br/>    minimum = number<br/>    maximum = number<br/>  })</pre> | n/a | yes |
 | <a name="input_cdn_storage_account_replication_type"></a> [cdn\_storage\_account\_replication\_type](#input\_cdn\_storage\_account\_replication\_type) | (Optional) Cdn storage account replication type | `string` | `"GRS"` | no |
-| <a name="input_cidr_subnet_authorizer_functions"></a> [cidr\_subnet\_authorizer\_functions](#input\_cidr\_subnet\_authorizer\_functions) | CIDR subnet for Authorizer functions | `string` | n/a | yes |
 | <a name="input_cidr_subnet_pdf_engine_app_service"></a> [cidr\_subnet\_pdf\_engine\_app\_service](#input\_cidr\_subnet\_pdf\_engine\_app\_service) | CIDR subnet for App Service | `list(string)` | `null` | no |
 | <a name="input_cname_record_name"></a> [cname\_record\_name](#input\_cname\_record\_name) | n/a | `string` | `"shared"` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
@@ -184,7 +187,6 @@
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
 | <a name="input_function_app_ip_restriction_default_action"></a> [function\_app\_ip\_restriction\_default\_action](#input\_function\_app\_ip\_restriction\_default\_action) | (Optional) The Default action for traffic that does not match any ip\_restriction rule. possible values include Allow and Deny. Defaults to Allow. | `string` | `"Allow"` | no |
 | <a name="input_function_app_storage_account_replication_type"></a> [function\_app\_storage\_account\_replication\_type](#input\_function\_app\_storage\_account\_replication\_type) | (Optional) Storage account replication type used for function apps | `string` | `"ZRS"` | no |
-| <a name="input_gh_runner_job_location"></a> [gh\_runner\_job\_location](#input\_gh\_runner\_job\_location) | (Optional) The GH runner container app job location. Consistent with the container app environment location | `string` | `"westeurope"` | no |
 | <a name="input_influxdb2_helm"></a> [influxdb2\_helm](#input\_influxdb2\_helm) | influxdb2 helm chart configuration | <pre>object({<br/>    chart_version = string,<br/>    image = object({<br/>      name = string,<br/>      tag  = string<br/>    })<br/>  })</pre> | <pre>{<br/>  "chart_version": "2.1.0",<br/>  "image": {<br/>    "name": "influxdb",<br/>    "tag": "2.2.0-alpine@sha256:f3b54d91cae591fc3fde20299bd0b262f6f6d9a1f73b98d623b501e82c49d5fb"<br/>  }<br/>}</pre> | no |
 | <a name="input_influxdb_helm"></a> [influxdb\_helm](#input\_influxdb\_helm) | influxdb helm chart configuration | <pre>object({<br/>    chart_version = string,<br/>    image = object({<br/>      name = string,<br/>      tag  = string<br/>    })<br/>  })</pre> | <pre>{<br/>  "chart_version": "4.12.0",<br/>  "image": {<br/>    "name": "influxdb",<br/>    "tag": "1.8.10-alpine@sha256:c436689dc135f204734d63b82fd03044fa3a5205127cb2d1fa7398ff224936b1"<br/>  }<br/>}</pre> | no |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
@@ -207,7 +209,6 @@
 | <a name="input_taxonomy_function_autoscale"></a> [taxonomy\_function\_autoscale](#input\_taxonomy\_function\_autoscale) | Taxonomy function autoscaling parameters | <pre>object({<br/>    default = number<br/>    minimum = number<br/>    maximum = number<br/>  })</pre> | n/a | yes |
 | <a name="input_taxonomy_function_network_policies_enabled"></a> [taxonomy\_function\_network\_policies\_enabled](#input\_taxonomy\_function\_network\_policies\_enabled) | Network policies enabled | `bool` | `false` | no |
 | <a name="input_taxonomy_function_subnet"></a> [taxonomy\_function\_subnet](#input\_taxonomy\_function\_subnet) | Address prefixes subnet | `list(string)` | `null` | no |
-| <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br/>    chart_version = string,<br/>    image_name    = string,<br/>    image_tag     = string<br/>  })</pre> | n/a | yes |
 
 ## Outputs
 

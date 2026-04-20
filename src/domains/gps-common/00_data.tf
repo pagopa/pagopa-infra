@@ -19,7 +19,9 @@ data "azurerm_resource_group" "rg_vnet" {
   name = local.vnet_resource_group_name
 }
 
-
+data "azurerm_resource_group" "rg_spoke_vnet" {
+  name = local.hub_spoke_vnet_rg_name
+}
 
 data "azurerm_private_dns_zone" "storage" {
   name                = local.storage_dns_zone_name

@@ -28,13 +28,6 @@ tls_cert_check_helm = {
 
 
 # API Config BE
-apiconfig_logging_level = "DEBUG"
-
-# Configuration
 cidr_subnet_api_config = ["10.230.8.128/29"]
-db_service_name        = "NDPSPCT_PP_NODO4_CFG"
-db_port                = 1522
-
-# API Config FE
-api_config_fe_enabled = true
-cname_record_name     = "config"
+api_config_fe_enabled  = true
+cname_record_name      = "config"
