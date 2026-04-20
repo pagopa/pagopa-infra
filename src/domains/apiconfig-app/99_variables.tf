@@ -141,48 +141,6 @@ variable "cidr_subnet_api_config" {
   default     = null
 }
 
-variable "api_config_always_on" {
-  type        = bool
-  description = "Api Config always on property"
-  default     = true
-}
-
-variable "db_port" {
-  type        = number
-  description = "Port number of the DB"
-  default     = 1521
-}
-
-variable "db_service_name" {
-  type        = string
-  description = "Service Name of DB"
-  default     = null
-}
-
-variable "apiconfig_logging_level" {
-  type        = string
-  description = "Logging level of Api Config"
-  default     = "INFO"
-}
-
-variable "xsd_ica" {
-  type        = string
-  description = "XML Schema of Informatica Conto Accredito"
-  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/InformativaContoAccredito_1_2_1.xsd"
-}
-
-variable "xsd_counterpart" {
-  type        = string
-  description = "XML Schema of Tabelle delle Controparti"
-  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/TabellaDelleControparti_1_0_8.xsd"
-}
-
-variable "xsd_cdi" {
-  type        = string
-  description = "XML Schema of Catalogo Dati Informativi"
-  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/CatalogoDatiInformativiPSP.xsd"
-}
-
 # DNS
 variable "dns_default_ttl_sec" {
   type        = number
@@ -192,23 +150,6 @@ variable "dns_default_ttl_sec" {
 
 variable "private_dns_zone_db_nodo_pagamenti" {
   type = string
-}
-
-variable "sku_name" {
-  type    = string
-  default = "S1"
-}
-
-variable "ica_cron_job_enable" {
-  type        = bool
-  description = "ICA cron job enable"
-  default     = false
-}
-
-variable "ica_cron_schedule" {
-  type        = string
-  description = "ICA cron scheduling (NCRON example '*/35 * * * * *')"
-  default     = "0 0 0 * * *"
 }
 
 variable "cdn_storage_account_replication_type" {
@@ -227,8 +168,3 @@ variable "pod_disruption_budgets" {
   default     = {}
 }
 
-variable "gh_runner_job_location" {
-  type        = string
-  description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
-  default     = "westeurope"
-}

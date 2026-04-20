@@ -50,6 +50,22 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+variable "location_itn" {
+  type        = string
+  description = "italynorth"
+}
+
+variable "location_itn_short" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_itn_short) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "itn"
+}
+
 ### Italy location
 variable "location_ita" {
   type        = string
@@ -68,17 +84,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-
-variable "gpd_archive_advanced_threat_protection" {
-  type        = bool
-  description = "Enable contract threat advanced protection"
-  default     = false
-}
-
-variable "gpd_archive_replication_type" {
-  type        = string
-  description = "Archive storage account replication type"
-}
 
 
 ### External resources
@@ -145,6 +150,8 @@ variable "pgres_flex_params" {
     wal_level                                        = string
     shared_preoload_libraries                        = string
     public_network_access_enabled                    = bool
+    log_min_duration_statement                       = optional(number)
+    log_lock_waits                                   = optional(string)
   })
 
   default = null
@@ -483,3 +490,28 @@ variable "rtp_storage_account" {
     backup_retention              = 0
   }
 }
+
+######################
+#GPD-PG-STORICO-START#
+######################
+variable "pgflex_storico_params" {
+  type = object({
+    pgres_flex_pgbouncer_enabled           = bool
+    alerts_enabled                         = bool
+    pgres_flex_diagnostic_settings_enabled = bool
+    max_connections                        = number
+    enable_private_dns_registration        = optional(bool, false)
+    max_worker_processes                   = number
+    storage_mb                             = number
+  })
+}
+
+variable "gpd_db_storico_name" {
+  type        = string
+  description = "GPD Storico DB name"
+  default     = "apd"
+}
+
+####################
+#GPD-PG-STORICO-END#
+####################

@@ -2,9 +2,9 @@ name: Stale/Close PR Cleaner
 
 on:
   workflow_dispatch:
-#  schedule:
-#    # At 00:00 every day.
-#    - cron: '0 0 * * *'
+  schedule:
+    # At 00:00 every day.
+    - cron: '0 0 * * *'
 
 permissions:
   contents: read
@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Run stale/close routine
+        id: stale_action
         uses: actions/stale@v10
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
@@ -33,15 +34,29 @@ jobs:
           exempt-draft-pr: true
 
           # Messages
-          stale-pr-message: 'This PR has been marked as stale because it has not had recent activity. It will be closed if no further activity occurs within the next 7 days.'
+          stale-pr-message: 'This PR has been marked as stale because it has not had recent activity. It will be closed and the branch deleted if no further activity occurs within the next 7 days.'
           close-pr-message: 'This PR has been closed due to inactivity. If you believe this was done in error, please feel free to reopen the PR or contact the maintainers.'
 
           # Behavior
           remove-stale-when-updated: true
-          operations-per-run: 1
+          operations-per-run: 60
           ascending: true
-          delete-branch: false
+          delete-branch: true
 
           # Disable issue processing
           days-before-issue-stale: -1
           days-before-issue-close: -1
+
+      - name: Notify PR updates
+        uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 #v3.0.1
+        if: ${{ steps.stale_action.outputs.staled-issues-prs != '[]' || steps.stale_action.outputs.closed-issues-prs != '[]' }}
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: "PR cleaner report: "
+            blocks:
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: "- New PR staled: ${{steps.stale_action.outputs.staled-issues-prs}} \n - New PR closed: ${{steps.stale_action.outputs.closed-issues-prs}}"

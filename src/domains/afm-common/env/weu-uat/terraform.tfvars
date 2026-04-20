@@ -9,10 +9,8 @@ instance       = "uat"
 
 ### External resources
 
-monitor_resource_group_name                 = "pagopa-u-monitor-rg"
-log_analytics_workspace_name                = "pagopa-u-law"
-log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
-application_insights_name                   = "pagopa-u-appinsights"
+monitor_resource_group_name = "pagopa-u-monitor-rg"
+application_insights_name   = "pagopa-u-appinsights"
 
 ### Aks
 
@@ -48,8 +46,6 @@ afm_marketplace_cosmos_db_params = {
 }
 
 cidr_subnet_afm_marketplace_cosmosdb = ["10.1.151.0/24"]
-cidr_subnet_afm_storage              = ["10.1.155.0/24"]
-
 afm_storage_params = {
   enabled                       = true
   tier                          = "Standard"
@@ -60,7 +56,3 @@ afm_storage_params = {
   public_network_access_enabled = true,
 
 }
-
-storage_private_endpoint_enabled = false
-
-enable_iac_pipeline = true
