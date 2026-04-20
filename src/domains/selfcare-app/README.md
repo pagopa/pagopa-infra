@@ -124,7 +124,6 @@
 | <a name="input_selfcare_fe_enabled"></a> [selfcare\_fe\_enabled](#input\_selfcare\_fe\_enabled) | selfcare FE enabled | `bool` | `false` | no |
 | <a name="input_selfcare_storage_replication_type"></a> [selfcare\_storage\_replication\_type](#input\_selfcare\_storage\_replication\_type) | (Optional) Selfcare cdn storage account replication type | `string` | `"GRS"` | no |
 | <a name="input_spa"></a> [spa](#input\_spa) | spa root dirs | `list(string)` | <pre>[<br/>  "ui"<br/>]</pre> | no |
-| <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br/>    chart_version = string,<br/>    image_name    = string,<br/>    image_tag     = string<br/>  })</pre> | n/a | yes |
 
 ## Outputs
 

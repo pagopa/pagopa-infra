@@ -37,16 +37,12 @@ qi_storage_params = {
 }
 
 ### EVH
-cidr_subnet_qi_evh = ["10.3.3.0/27"]
-
 ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
 ehns_capacity                 = 5
 ehns_alerts_enabled           = true
-ehns_zone_redundant           = true
-
-ehns_public_network_access = true
-ehns_sku_name              = "Standard"
+ehns_public_network_access    = true
+ehns_sku_name                 = "Standard"
 
 # evh to add to namespace
 eventhubs_bdi = [
@@ -178,6 +174,3 @@ cosmos_mongo_db_accounting_reconciliation_params = {
 }
 
 cidr_subnet_cosmosdb_qi = ["10.1.132.0/24"]
-
-is_feature_enabled = {
-}

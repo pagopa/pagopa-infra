@@ -50,16 +50,6 @@ variable "location_short" {
   description = "One of weu, neu"
 }
 
-variable "location_string" {
-  type        = string
-  description = "One of West Europe, North Europe"
-}
-
-variable "instance" {
-  type        = string
-  description = "One of beta, prod01, prod02"
-}
-
 
 
 variable "k8s_kube_config_path_prefix" {
@@ -68,21 +58,6 @@ variable "k8s_kube_config_path_prefix" {
 }
 
 ### External resources
-
-variable "monitor_resource_group_name" {
-  type        = string
-  description = "Monitor resource group name"
-}
-
-variable "log_analytics_workspace_name" {
-  type        = string
-  description = "Specifies the name of the Log Analytics Workspace."
-}
-
-variable "log_analytics_workspace_resource_group_name" {
-  type        = string
-  description = "The name of the resource group in which the Log Analytics workspace is located in."
-}
 
 variable "input_file" {
   type        = string
@@ -95,30 +70,6 @@ variable "enable_iac_pipeline" {
   default     = false
 }
 
-
-variable "kv-key-permissions-read" {
-  type        = list(string)
-  description = "List of read key permissions"
-  default     = ["Get", "List"]
-}
-
-variable "kv-secret-permissions-read" {
-  type        = list(string)
-  description = "List of read secret permissions"
-  default     = ["Get", "List"]
-}
-
-variable "kv-certificate-permissions-read" {
-  type        = list(string)
-  description = "List of read certificate permissions"
-  default     = ["Get", "GetIssuers", "List", "ListIssuers"]
-}
-
-variable "kv-storage-permissions-read" {
-  type        = list(string)
-  description = "List of read storage permissions"
-  default     = ["Get", "GetSAS", "List", "ListSAS"]
-}
 
 variable "cacerts_path" {
   type        = string

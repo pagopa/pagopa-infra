@@ -9,10 +9,8 @@ instance       = "prod"
 
 ### External resources
 
-monitor_resource_group_name                 = "pagopa-p-monitor-rg"
-log_analytics_workspace_name                = "pagopa-p-law"
-log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
-application_insights_name                   = "pagopa-p-appinsights"
+monitor_resource_group_name = "pagopa-p-monitor-rg"
+application_insights_name   = "pagopa-p-appinsights"
 
 ### Aks
 
@@ -20,9 +18,6 @@ ingress_load_balancer_ip = "10.1.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"
-apim_dns_zone_prefix     = "platform"
-
-# CosmosDb AFM Marketplace
 afm_marketplace_cosmos_db_params = {
   kind         = "GlobalDocumentDB"
   capabilities = []
@@ -53,8 +48,6 @@ afm_marketplace_cosmos_db_params = {
 }
 
 cidr_subnet_afm_marketplace_cosmosdb = ["10.1.151.0/24"]
-cidr_subnet_afm_storage              = ["10.1.155.0/24"]
-
 afm_storage_params = {
   enable_backup                 = true
   enabled                       = true
@@ -66,7 +59,3 @@ afm_storage_params = {
   public_network_access_enabled = true,
   backup_retention_days         = 30
 }
-
-storage_private_endpoint_enabled = false
-
-enable_iac_pipeline = true
