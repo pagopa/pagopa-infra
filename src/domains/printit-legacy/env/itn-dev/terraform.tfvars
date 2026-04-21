@@ -1,2 +1,4 @@
-prefix    = "pagopa"
-env_short = "d"
+prefix         = "pagopa"
+env_short      = "d"
+domain         = "printit"
+location_short = "itn"

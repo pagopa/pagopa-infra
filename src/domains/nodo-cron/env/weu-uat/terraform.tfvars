@@ -7,6 +7,7 @@ location_short                              = "weu"
 monitor_resource_group_name                 = "pagopa-u-monitor-rg"
 log_analytics_workspace_name                = "pagopa-u-law"
 log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
+instance                                    = "uat"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"

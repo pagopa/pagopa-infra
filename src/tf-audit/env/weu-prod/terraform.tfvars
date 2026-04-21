@@ -1,4 +1,5 @@
 env            = "prod"
+env_short      = "p"
 location       = "westeurope"
 location_short = "weu"
 

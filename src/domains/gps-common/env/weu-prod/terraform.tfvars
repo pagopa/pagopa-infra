@@ -81,8 +81,8 @@ pgres_flex_params = {
   wal_level                                        = "logical"                     # gpd_cdc_enabled
   shared_preoload_libraries                        = "pg_failover_slots,pglogical" # gpd_cdc_enabled 👀 https://pagopa.atlassian.net/browse/PAGOPA-3078
   public_network_access_enabled                    = false
-  log_min_duration_statement                       = 2500
-  log_lock_waits                                   = "ON"
+  log_min_duration_statement                       = -1
+  log_lock_waits                                   = "OFF"
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]
@@ -141,7 +141,8 @@ gpd_sftp_sa_tier_to_archive                                    = -1 # disabled b
 gpd_sftp_sa_delete                                             = 60
 
 # GPD Archive account
-gpd_cdc_enabled = true
+gpd_cdc_enabled   = true
+gpd_sftp_ip_rules = ["37.179.98.148"]
 
 ### EventHub
 
