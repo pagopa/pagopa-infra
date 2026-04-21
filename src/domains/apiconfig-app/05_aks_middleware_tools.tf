@@ -39,7 +39,6 @@ module "cert_mounter" {
   kv_name          = data.azurerm_key_vault.kv.name
   tenant_id        = data.azurerm_subscription.current.tenant_id
 
-  #workload_identity_enabled              = true
   workload_identity_service_account_name = module.workload_identity_configuration.workload_identity_service_account_name
   workload_identity_client_id            = module.workload_identity_configuration.workload_identity_client_id
 

@@ -178,19 +178,6 @@ module "crusc8_cdn_frontdoor" {
           transforms       = null
         }
       ]
-      cookies_conditions            = []
-      device_conditions             = []
-      http_version_conditions       = []
-      post_arg_conditions           = []
-      query_string_conditions       = []
-      remote_address_conditions     = []
-      request_body_conditions       = []
-      request_header_conditions     = []
-      request_method_conditions     = []
-      request_scheme_conditions     = []
-      request_uri_conditions        = []
-      url_file_extension_conditions = []
-      url_file_name_conditions      = []
 
       // actions
       modify_response_header_actions = [
@@ -200,30 +187,10 @@ module "crusc8_cdn_frontdoor" {
           value  = "noindex, nofollow"
         }
       ]
-      cache_expiration_actions       = []
-      cache_key_query_string_actions = []
-      modify_request_header_actions  = []
-      url_redirect_actions           = []
-      url_rewrite_actions            = []
     },
     {
       name  = "microcomponentsNoCache"
       order = 4 + length(local.spa)
-
-      // conditions
-      url_path_conditions           = []
-      cookies_conditions            = []
-      device_conditions             = []
-      http_version_conditions       = []
-      post_arg_conditions           = []
-      query_string_conditions       = []
-      remote_address_conditions     = []
-      request_body_conditions       = []
-      request_header_conditions     = []
-      request_method_conditions     = []
-      request_scheme_conditions     = []
-      request_uri_conditions        = []
-      url_file_extension_conditions = []
 
       url_file_name_conditions = [
         {
@@ -242,11 +209,6 @@ module "crusc8_cdn_frontdoor" {
           value  = "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
         }
       ]
-      cache_expiration_actions       = []
-      cache_key_query_string_actions = []
-      modify_request_header_actions  = []
-      url_redirect_actions           = []
-      url_rewrite_actions            = []
     },
     {
       name  = "cors"
@@ -261,19 +223,6 @@ module "crusc8_cdn_frontdoor" {
           transforms       = null
         }
       ]
-      request_header_conditions     = []
-      cookies_conditions            = []
-      device_conditions             = []
-      http_version_conditions       = []
-      post_arg_conditions           = []
-      query_string_conditions       = []
-      remote_address_conditions     = []
-      request_body_conditions       = []
-      request_method_conditions     = []
-      request_scheme_conditions     = []
-      request_uri_conditions        = []
-      url_file_extension_conditions = []
-      url_file_name_conditions      = []
 
       // actions
       modify_response_header_actions = [
