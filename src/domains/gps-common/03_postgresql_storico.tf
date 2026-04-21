@@ -114,6 +114,12 @@ resource "postgresql_role" "apd_storico_user" {
   password = azurerm_key_vault_secret.pgres_apd_storico_pwd_secret.value
 }
 
+resource "azurerm_postgresql_flexible_server_configuration" "pg_cron_database" {
+  name      = "cron.database_name"
+  server_id = module.postgres_storico_flexible_server_private_db.id
+  value     = "apd"
+}
+
 # Full permission on the apd schema
 # resource "postgresql_grant" "flyway_schema_all" {
 #   provider = postgresql.historical

@@ -37,6 +37,7 @@ __TMP
 __azurite_*
 /.idea
 
+__pycache__
 __*.sh
 
 #sops decrypted files

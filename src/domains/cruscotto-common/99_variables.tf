@@ -63,16 +63,6 @@ variable "monitor_resource_group_name" {
   description = "Monitor resource group name"
 }
 
-variable "log_analytics_workspace_name" {
-  type        = string
-  description = "Specifies the name of the Log Analytics Workspace."
-}
-
-variable "log_analytics_workspace_resource_group_name" {
-  type        = string
-  description = "The name of the resource group in which the Log Analytics workspace is located in."
-}
-
 variable "monitor_italy_resource_group_name" {
   type        = string
   description = "Monitor Italy resource group name"
@@ -90,22 +80,10 @@ variable "log_analytics_italy_workspace_resource_group_name" {
 
 # DNS
 
-variable "dns_zone_prefix" {
-  type        = string
-  default     = null
-  description = "The wallet dns subdomain."
-}
-
 variable "external_domain" {
   type        = string
   default     = null
   description = "Domain for delegation"
-}
-
-variable "dns_zone_platform" {
-  type        = string
-  default     = null
-  description = "The platform dns subdomain."
 }
 
 variable "dns_zone_internal_prefix" {
@@ -116,12 +94,6 @@ variable "dns_zone_internal_prefix" {
 
 variable "ingress_load_balancer_ip" {
   type = string
-}
-
-# Postgres Flexible
-variable "cidr_subnet_flex_dbms" {
-  type        = list(string)
-  description = "Postgresql network address space."
 }
 
 variable "pgres_flex_params" {
@@ -148,12 +120,6 @@ variable "pgres_flex_params" {
     public_network_access_enabled          = bool
   })
 
-}
-
-variable "pgres_flex_crus8_db_name" {
-  type        = string
-  description = "Cruscotto DB name"
-  default     = "Cruscotto"
 }
 
 variable "pgres_flex_db_names" {
@@ -248,15 +214,3 @@ variable "postgres_dns_registration_enabled" {
   default     = true
 }
 
-# Storage Account Cruscotto report
-# IDH 
-# https://github.com/pagopa/terraform-azurerm-v4/blob/main/IDH/storage_account/LIBRARY.md#pagopa
-# https://github.com/pagopa/terraform-azurerm-v4/tree/main/IDH/storage_account#input_embedded_subnet
-variable "crusc8_sa_report" {
-  type = object({
-    idh_resource_tier = string
-  })
-  default = {
-    idh_resource_tier = "basic" # idh_resource_tier is used in the name of the storage account, so it can't be empty
-  }
-}
