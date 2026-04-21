@@ -19,7 +19,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 449bbc3cca4e52febcef3015e1e76a02a370aa84 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 9e205a1f0d0cb36b5677ee1b48a83cb321a54cb8 |
 | <a name="module_api_config_fe_cdn_frontdoor"></a> [api\_config\_fe\_cdn\_frontdoor](#module\_api\_config\_fe\_cdn\_frontdoor) | ./.terraform/modules/__v4__/cdn_frontdoor | n/a |
 | <a name="module_api_config_snet"></a> [api\_config\_snet](#module\_api\_config\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_apim_api_apiconfig_cache_external_v1"></a> [apim\_api\_apiconfig\_cache\_external\_v1](#module\_apim\_api\_apiconfig\_cache\_external\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
@@ -60,6 +60,7 @@
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.db_nodo_pwd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.db_nodo_usr](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.storage_account_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_monitor_action_group.opsgenie](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_action_group) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.apiconfig_cache_generation](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.apiconfig_cache_jdbc_connection](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |

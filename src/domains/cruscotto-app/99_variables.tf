@@ -34,11 +34,6 @@ variable "domain" {
   }
 }
 
-variable "location" {
-  type        = string
-  description = "One of .."
-}
-
 variable "location_short" {
   type = string
   validation {

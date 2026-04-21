@@ -1,10 +1,7 @@
-prefix    = "pagopa"
-env_short = "d"
-env       = "dev"
-domain    = "crusc8"
-
-location        = "italynorth"
-location_short  = "itn"
+prefix          = "pagopa"
+env_short       = "d"
+env             = "dev"
+domain          = "crusc8"
 location_string = "Italy North"
 
 location_weu       = "westeurope"

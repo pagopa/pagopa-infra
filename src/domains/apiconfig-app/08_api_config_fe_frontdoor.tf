@@ -1,11 +1,18 @@
+resource "azurerm_resource_group" "api_config_fe_rg" {
+  count    = var.api_config_fe_enabled ? 1 : 0
+  name     = format("%s-api-config-fe-rg", local.product)
+  location = var.location
+
+  tags = module.tag_config.tags
+}
+
 module "api_config_fe_cdn_frontdoor" {
   source = "./.terraform/modules/__v4__/cdn_frontdoor"
   count  = var.api_config_fe_enabled ? 1 : 0
 
-  cdn_prefix_name          = "${local.product}-api-config-fe"
-  resource_group_name      = azurerm_resource_group.api_config_fe_rg[0].name
-  location                 = var.location
-  response_timeout_seconds = 30
+  cdn_prefix_name     = "${local.product}-api-config-fe"
+  resource_group_name = azurerm_resource_group.api_config_fe_rg[0].name
+  location            = var.location
 
   custom_domains = [
     {
@@ -21,6 +28,24 @@ module "api_config_fe_cdn_frontdoor" {
   storage_account_error_404_document = "not_found.html"
 
   querystring_caching_behaviour = "UseQueryString"
+
+  delivery_rule_url_path_condition_cache_expiration_action = [
+    {
+      name  = "BypassCacheOnQueryString"
+      order = 0
+
+      query_string_conditions = [{
+        operator         = "GreaterThan"
+        match_values     = ["0"]
+        negate_condition = false
+        transforms       = []
+      }]
+
+      route_configuration_override = {
+        cache_behavior = "DisableCache"
+      }
+    }
+  ]
 
   delivery_rule_rewrites = [{
     name  = "RewriteRules"
@@ -68,6 +93,16 @@ module "api_config_fe_cdn_frontdoor" {
   tags = module.tag_config.tags
 }
 
+resource "azurerm_key_vault_secret" "storage_account_key" {
+  name         = "api-config-fe-storage-account-key"
+  value        = module.api_config_fe_cdn_frontdoor[0].storage_primary_access_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
+
+  tags = module.tag_config.tags
+}
+
 moved {
   from = module.api_config_fe_cdn[0].module.cdn_storage_account
   to   = module.api_config_fe_cdn_frontdoor[0].module.cdn_storage_account
@@ -75,7 +110,8 @@ moved {
 
 import {
   to = module.api_config_fe_cdn_frontdoor[0].azurerm_cdn_frontdoor_custom_domain.this["config.platform.pagopa.it"]
-  id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-config-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-p-api-config-fe-cdn-profile/customDomains/config-platform-pagopa-it"
+  id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/${local.product}-api-config-fe-rg/providers/Microsoft.Cdn/profiles/${local.product}-api-config-fe-cdn-profile/customDomains/config-platform-pagopa-it"
+
 }
 
 import {
@@ -125,4 +161,14 @@ import {
 import {
   to = module.api_config_fe_cdn_frontdoor[0].azurerm_monitor_diagnostic_setting.diagnostic_settings_cdn_profile
   id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-config-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-p-api-config-fe-cdn-profile|pagopa-p-api-config-fe-cdn-profile-diagnostic-settings"
+}
+
+import {
+  to = module.api_config_fe_cdn_frontdoor[0].azurerm_dns_txt_record.validation["config.platform.pagopa.it"]
+  id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/${local.product}-vnet-rg/providers/Microsoft.Network/dnsZones/platform.pagopa.it/TXT/_dnsauth.config"
+}
+
+import {
+  to = module.api_config_fe_cdn_frontdoor[0].azurerm_cdn_frontdoor_rule.rule_url_path_cache["0"]
+  id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/pagopa-p-api-config-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-p-api-config-fe-cdn-profile/ruleSets/Migratedpagopapapiconfigfecdnendpoint/rules/BypassCachingforQueryStringMigrated"
 }
