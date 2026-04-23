@@ -23,7 +23,7 @@ module "bizevents_datastore_fn_sa" {
 module "bizevents_datastore_fn_sa_bizview" {
   source = "./.terraform/modules/__v3__/storage_account"
 
-  name                       = replace(format("%s-v-fn-sa", local.project), "-", "") # -v- aka biz view storate for azure-webjobs-eventhub
+  name                       = replace(format("%s-v-fn-sa", local.project), "-", "") # -v- aka biz view storage for azure-webjobs-eventhub
   account_kind               = "StorageV2"
   account_tier               = "Standard"
   account_replication_type   = var.storage_account_replication_type
@@ -38,4 +38,9 @@ module "bizevents_datastore_fn_sa_bizview" {
 
   blob_delete_retention_days = var.bizevents_datastore_fn_sa_delete_retention_days
   tags                       = module.tag_config.tags
+}
+
+resource "azurerm_storage_queue" "queue-massive-biz-event-to-view-generation" {
+  name                 = "${local.project}-queue-massive-biz-to-view-regen"
+  storage_account_name = module.bizevents_datastore_fn_sa_bizview.name
 }
