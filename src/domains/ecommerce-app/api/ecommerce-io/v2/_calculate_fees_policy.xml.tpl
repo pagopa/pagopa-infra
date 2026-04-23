@@ -2,52 +2,72 @@
     <inbound>
         <base />
         <set-variable name="paymentMethodId" value="@(context.Request.MatchedParameters["id"])" />
-        <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
-            <set-url>@($"https://${ecommerce-basepath}/pagopa-ecommerce-payment-methods-service/payment-methods/{(string)context.Variables["paymentMethodId"]}")</set-url>
-            <set-method>GET</set-method>
-            <set-header name="X-Client-Id" exists-action="override">
-                <value>IO</value>
-            </set-header>
-            <!-- Set payment-methods API Key header -->
-            <set-header name="x-api-key" exists-action="override">
-              <value>{{ecommerce-payment-methods-api-key-value}}</value>
-            </set-header>
-        </send-request>
-        <choose>
-            <when condition="@(((int)((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode) == 200)">
-                <set-variable name="paymentMethod" value="@((JObject)((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>())" />
-                <set-variable name="paymentTypeCode" value="@((string)((JObject)context.Variables["paymentMethod"])["paymentTypeCode"])" />
-                <set-variable name="isPayPal" value="@(((string)context.Variables["paymentTypeCode"]).Equals("PPAL"))" />
-                <set-variable name="isBancomatPay" value="@(((string)context.Variables["paymentTypeCode"]).Equals("BPAY"))" />
-                <set-variable name="isCard" value="@(((string)context.Variables["paymentTypeCode"]).Equals("CP"))" />
-            </when>
-            <when condition="@(((int)((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode) == 404)">
-                <return-response>
-                    <set-status code="404" reason="Not found" />
-                    <set-header name="Content-Type" exists-action="override">
-                        <value>application/json</value>
+
+        <set-variable name="cacheKey" value="@($"ecommerce-payment-method-{(string)context.Variables["paymentMethodId"]}")" />
+
+        <cache-lookup-value
+            key="@((string)context.Variables["cacheKey"])"
+            variable-name="cachedPaymentMethod"
+            default-value="" />
+
+         <choose>
+            <when condition="@(string.IsNullOrEmpty((string)context.Variables.GetValueOrDefault("cachedPaymentMethod","")))">
+      
+                <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
+                    <set-url>@($"https://${ecommerce-basepath}/pagopa-ecommerce-payment-methods-handler/payment-methods/{(string)context.Variables["paymentMethodId"]}")</set-url>
+                    <set-method>GET</set-method>
+                    <set-header name="X-Client-Id" exists-action="override">
+                        <value>IO</value>
                     </set-header>
-                    <set-body>{
-                        "title": "Unable to get payment method",
-                        "status": 404,
-                        "detail": "Payment method not found",
-                    }</set-body>
-                </return-response>
-            </when>
-            <otherwise>
-                <return-response>
-                    <set-status code="502" reason="Bad Request" />
-                    <set-header name="Content-Type" exists-action="override">
-                        <value>application/json</value>
+                    <!-- Set payment-methods API Key header -->
+                    <set-header name="x-api-key" exists-action="override">
+                    <value>{{ecommerce-payment-methods-api-key-value}}</value>
                     </set-header>
-                    <set-body>{
-                        "title": "Bad gateway",
-                        "status": 502,
-                        "detail": "Payment method not available",
-                    }</set-body>
-                </return-response>
-            </otherwise>
+                </send-request>
+                <choose>
+                    <when condition="@(((int)((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode) == 200)">
+                        <cache-store-value
+                                    key="@((string)context.Variables["cacheKey"])"
+                                    value="@(((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<string>(preserveContent: true))"
+                                    duration="60" />
+                                <set-variable name="cachedPaymentMethod"
+                                    value="@(((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<string>(preserveContent: true))" />
+                    </when>
+                
+                    <when condition="@(((int)((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode) == 404)">
+                        <return-response>
+                            <set-status code="404" reason="Not found" />
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
+                            <set-body>{
+                                "title": "Unable to get payment method",
+                                "status": 404,
+                                "detail": "Payment method not found",
+                            }</set-body>
+                        </return-response>
+                    </when>
+                    <otherwise>
+                        <return-response>
+                            <set-status code="502" reason="Bad Request" />
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
+                            <set-body>{
+                                "title": "Bad gateway",
+                                "status": 502,
+                                "detail": "Payment method not available",
+                            }</set-body>
+                        </return-response>
+                    </otherwise>
+                </choose>
+            </when>
         </choose>
+
+        <set-variable name="paymentMethod" value="@(JObject.Parse((string)context.Variables["cachedPaymentMethod"]))" />
+        <set-variable name="paymentTypeCode" value="@((string)((JObject)context.Variables["paymentMethod"])["paymentTypeCode"])" />
+        <set-variable name="isCard" value="@(((string)context.Variables["paymentTypeCode"]).Equals("CP"))" />
+
         <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
         <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["walletId"])" />
         <!-- valued for payment without onboarded card -->
@@ -112,7 +132,7 @@
                         <set-variable name="paymentMethodSessionResponseBody" value="@((JObject)((IResponse)context.Variables["paymentMethodSessionResponse"]).Body.As<JObject>())" />
                         <set-variable name="bin" value="@((string)((JObject)context.Variables["paymentMethodSessionResponseBody"])["bin"])" />
                     </when>
-                    <when condition="@(((int)((IResponse)context.Variables["paymentMethodSessionResponseBody"]).StatusCode) == 404)">
+                    <when condition="@(((int)((IResponse)context.Variables["paymentMethodSessionResponse"]).StatusCode) == 404)">
                         <return-response>
                             <set-status code="404" reason="Not found" />
                             <set-header name="Content-Type" exists-action="override">
