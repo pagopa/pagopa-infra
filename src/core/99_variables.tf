@@ -1,10 +1,3 @@
-### Main location
-variable "location" {
-  type        = string
-  description = "Main location"
-  default     = "westeurope"
-}
-
 variable "location_short" {
   type = string
   validation {
@@ -15,25 +8,6 @@ variable "location_short" {
   }
   description = "One of wue, neu"
   default     = "weu"
-}
-
-### Italy location
-variable "location_ita" {
-  type        = string
-  description = "Main location"
-  default     = "italynorth"
-}
-
-variable "location_short_ita" {
-  type = string
-  validation {
-    condition = (
-      length(var.location_short_ita) == 3
-    )
-    error_message = "Length must be 3 chars."
-  }
-  description = "Location short for italy: itn"
-  default     = "itn"
 }
 
 variable "prefix" {
@@ -126,12 +100,6 @@ variable "dns_zone_prefix_prf" {
   description = "The dns subdomain."
 }
 
-variable "dns_zone_checkout" {
-  type        = string
-  default     = null
-  description = "The checkout dns subdomain."
-}
-
 
 
 # apim
@@ -198,48 +166,6 @@ variable "ecommerce_ingress_hostname" {
   default     = null
 }
 
-variable "io_bpd_hostname" {
-  type        = string
-  description = "IO BPD hostname"
-  default     = ""
-}
-
-variable "xpay_hostname" {
-  type        = string
-  description = "Nexi xpay hostname"
-  default     = ""
-}
-
-variable "paytipper_hostname" {
-  type        = string
-  description = "Paytipper hostname"
-  default     = ""
-}
-
-variable "bpd_hostname" {
-  type        = string
-  description = "BPD hostname"
-  default     = ""
-}
-
-variable "cobadge_hostname" {
-  type        = string
-  description = "Cobadge hostname"
-  default     = ""
-}
-
-variable "satispay_hostname" {
-  type        = string
-  description = "Satispay hostname"
-  default     = ""
-}
-
-variable "fesp_hostname" {
-  type        = string
-  description = "Fesp hostname"
-  default     = ""
-}
-
 variable "cstar_outbound_ip_1" {
   type        = string
   description = "CSTAR ip 1"
@@ -259,31 +185,7 @@ variable "node_decoupler_primitives" {
   default     = "nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"
 }
 
-variable "apim_fdr_nodo_pagopa_enable" {
-  type        = bool
-  default     = false
-  description = "Enable Fdr Service Nodo pagoPA side"
-}
 
-
-
-variable "function_app_storage_account_info" {
-  type = object({
-    account_kind                      = optional(string, "StorageV2")
-    account_tier                      = optional(string, "Standard")
-    account_replication_type          = optional(string, "LRS")
-    access_tier                       = optional(string, "Hot")
-    advanced_threat_protection_enable = optional(bool, true)
-  })
-
-  default = {
-    account_kind                      = "StorageV2"
-    account_tier                      = "Standard"
-    account_replication_type          = "LRS"
-    access_tier                       = "Hot"
-    advanced_threat_protection_enable = true
-  }
-}
 
 variable "apim_logger_resource_id" {
   type        = string

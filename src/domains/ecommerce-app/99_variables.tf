@@ -152,28 +152,10 @@ variable "pod_disruption_budgets" {
   default     = {}
 }
 
-variable "io_backend_base_path" {
-  type        = string
-  default     = null
-  description = "io backend api base path"
-}
-
-variable "ecommerce_io_with_pm_enabled" {
-  type        = bool
-  default     = false
-  description = "ecommerce for IO using Payment Manager enabled"
-}
-
 variable "pdv_api_base_path" {
   type        = string
   default     = null
   description = "Personal data vault api base path"
-}
-
-variable "enabled_payment_wallet_method_ids_pm" {
-  type        = string
-  default     = ""
-  description = "Comma separated list of eCommerce payment method ids that are enabled with PM APIs"
 }
 
 variable "pagopa_vpn" {

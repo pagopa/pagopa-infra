@@ -51,8 +51,6 @@ aks_cidr_subnet = ["10.1.0.0/17"]
 
 aks_kubernetes_version = "1.34.1"
 
-# Subnet aks
-subnet_private_endpoint_network_policies_enabled = true
 
 ingress_min_replica_count = "1"
 ingress_max_replica_count = "3"
@@ -109,11 +107,6 @@ prometheus_basic_auth_file = "./env/weu-dev/kube-prometheus-stack-helm/prometheu
 kube_prometheus_stack_helm = {
   chart_version = "44.2.1"
   values_file   = "./env/weu-dev/kube-prometheus-stack-helm/values.yaml"
-}
-
-tls_checker_keyvault = {
-  name        = "pagopa-d-kv"
-  secret_name = "pagopa-d-application-insight-connection-string"
 }
 tls_checker_https_endpoints_to_check = [
   {
