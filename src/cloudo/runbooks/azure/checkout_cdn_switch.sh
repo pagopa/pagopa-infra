@@ -15,12 +15,16 @@ else
 fi
 
 
+DNS_ZONE_NAME="${CLOUDO_ENVIRONMENT}.checkout.pagopa.it"
+if [ "${CLOUDO_ENVIRONMENT}" == "prod" ]; then
+  DNS_ZONE_NAME="checkout.pagopa.it"
+fi
+
 echo "------------------------------------------------------------------------"
 
 # Get connections associated with the VPN Gateway
-GW_IP=$(az network public-ip show --name "pagopa-d-appgateway-pip" --resource-group  "pagopa-d-vnet-rg" --query "ipAddress" -o tsv)
-
-echo "retrieved gateway ip: '$GW_IP'"
+GW_IP=$(az network public-ip show --name "pagopa-${CLOUDO_ENVIRONMENT_SHORT}-appgateway-pip" --resource-group  "pagopa-${CLOUDO_ENVIRONMENT_SHORT}-vnet-rg" --query "ipAddress" -o tsv)
+echo "[INFO] retrieved gateway ip: '$GW_IP'"
 
 
 if [ "$GW_IP" == "" ]; then
@@ -28,8 +32,11 @@ if [ "$GW_IP" == "" ]; then
   exit 1
 fi
 
-az network dns record-set a delete -g "pagopa-d-vnet-rg" --zone-name "dev.checkout.pagopa.it" -n "@" -y
-az network dns record-set a create -g "pagopa-d-vnet-rg" --zone-name "dev.checkout.pagopa.it" -n "@"
-az network dns record-set a add-record -g "pagopa-d-vnet-rg" --zone-name "dev.checkout.pagopa.it" -a "$GW_IP" --record-set-name "@"
-
+az network dns record-set a delete -g "pagopa-${CLOUDO_ENVIRONMENT_SHORT}-vnet-rg" --zone-name "${DNS_ZONE_NAME}" -n "@" -y
+echo "[INFO] deleted old DNS record"
+az network dns record-set a create -g "pagopa-${CLOUDO_ENVIRONMENT_SHORT}-vnet-rg" --zone-name "${DNS_ZONE_NAME}" -n "@" --ttl 10
+echo "[INFO] created new DNS record"
+az network dns record-set a add-record -g "pagopa-${CLOUDO_ENVIRONMENT_SHORT}-vnet-rg" --zone-name "${DNS_ZONE_NAME}" -a "$GW_IP" --record-set-name "@"  --ttl 10
+echo "[INFO] added record set to DNS"
+echo "[INFO] runbook completed"
 

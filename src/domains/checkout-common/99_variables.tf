@@ -51,26 +51,11 @@ variable "location_short" {
 }
 
 
-variable "checkout_enabled" {
-  type    = bool
-  default = false
-}
-
 ### External resources
 
 variable "monitor_resource_group_name" {
   type        = string
   description = "Monitor resource group name"
-}
-
-variable "log_analytics_workspace_name" {
-  type        = string
-  description = "Specifies the name of the Log Analytics Workspace."
-}
-
-variable "log_analytics_workspace_resource_group_name" {
-  type        = string
-  description = "The name of the resource group in which the Log Analytics workspace is located in."
 }
 
 # DNS
@@ -85,12 +70,6 @@ variable "dns_zone_internal_prefix" {
   type        = string
   default     = null
   description = "The dns subdomain."
-}
-
-variable "apim_dns_zone_prefix" {
-  type        = string
-  default     = null
-  description = "The dns subdomain for apim."
 }
 
 variable "dns_zone_checkout" {
@@ -117,17 +96,6 @@ variable "ingress_load_balancer_ip" {
   type = string
 }
 
-
-variable "redis_checkout_params" {
-  type = object({
-    capacity   = number
-    sku_name   = string
-    family     = string
-    version    = string
-    ha_enabled = bool
-    zones      = list(number)
-  })
-}
 
 variable "redis_checkout_params_std" {
   type = object({

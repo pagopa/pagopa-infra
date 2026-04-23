@@ -108,12 +108,6 @@ variable "external_domain" {
   description = "Domain for delegation"
 }
 
-variable "dns_zone_platform" {
-  type        = string
-  default     = null
-  description = "The platform dns subdomain."
-}
-
 variable "dns_zone_internal_prefix" {
   type        = string
   default     = null
@@ -135,11 +129,6 @@ variable "cidr_subnet_cosmosdb_pay_wallet" {
 variable "cidr_subnet_redis_pay_wallet" {
   type        = list(string)
   description = "Redis DB address space for wallet."
-}
-
-variable "cidr_subnet_storage_pay_wallet" {
-  type        = list(string)
-  description = "Azure storage DB address space for pagoPA wallet."
 }
 
 variable "cidr_subnet_pay_wallet_user_aks" {
@@ -186,16 +175,6 @@ variable "cosmos_mongo_db_pay_wallet_params" {
 }
 
 ### Redis
-
-variable "redis_pay_wallet_params" {
-  type = object({
-    capacity = number
-    sku_name = string
-    family   = string
-    version  = string
-    zones    = list(number)
-  })
-}
 
 variable "redis_std_pay_wallet_params" {
   type = object({
