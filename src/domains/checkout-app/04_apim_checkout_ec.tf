@@ -26,7 +26,7 @@ locals {
     display_name          = "Checkout - EC API"
     description           = "Checkout API for EC"
     path                  = "checkout/ec"
-    subscription_required = false
+    subscription_required = var.env_short == "p" ? true : false
     service_url           = null
   }
 }
