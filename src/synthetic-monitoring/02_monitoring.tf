@@ -17,11 +17,13 @@ module "monitoring_function" {
   application_insights_action_group_ids = var.env_short == "p" ? [data.azurerm_monitor_action_group.infra_opsgenie[0].id] : [data.azurerm_monitor_action_group.slack.id]
 
   docker_settings = {
-    image_tag = "v1.10.0@sha256:1686c4a719dc1a3c270f98f527ebc34179764ddf53ee3089febcb26df7a2d71d"
+    image_tag = "beta-on-demand-synthetic@sha256:05c9798ee78882ac0c1cedb5dc0ad22c3e68cce4ac0028c5b7d72fc8c8d169cd"
   }
 
+  enable_synthetic_on_demand = true
+
   job_settings = {
-    cron_scheduling              = "*/5 * * * *"
+    cron_scheduling              = var.synthetic_scheduling
     container_app_environment_id = data.azurerm_container_app_environment.tools_cae.id
     http_client_timeout          = 30000
     workload_profile             = "None"
@@ -30,7 +32,13 @@ module "monitoring_function" {
   storage_account_settings = {
     private_endpoint_enabled  = var.use_private_endpoint
     table_private_dns_zone_id = var.use_private_endpoint ? data.azurerm_private_dns_zone.storage_account_table.id : null
+    queue_private_dns_zone_id = var.use_private_endpoint ? data.azurerm_private_dns_zone.storage_account_queue.id : null
     replication_type          = var.storage_account_replication_type
+  }
+
+  queue_job_settings = {
+    polling_interval_in_seconds = 30
+    queue_batch_size            = 10
   }
 
   storage_private_endpoint_subnet_id = var.use_private_endpoint ? data.azurerm_subnet.private_endpoint_subnet[0].id : null
