@@ -17,7 +17,7 @@ module "monitoring_function" {
   application_insights_action_group_ids = var.env_short == "p" ? [data.azurerm_monitor_action_group.infra_opsgenie[0].id] : [data.azurerm_monitor_action_group.slack.id]
 
   docker_settings = {
-    image_tag = "beta-on-demand-synthetic@sha256:05c9798ee78882ac0c1cedb5dc0ad22c3e68cce4ac0028c5b7d72fc8c8d169cd"
+    image_tag = "beta-on-demand-synthetic@sha256:cd1fc77eedf0db8a679120dc4e7fff9b921e6082efff4dc6cc7834c4309a8608"
   }
 
   enable_synthetic_on_demand = true
@@ -37,7 +37,7 @@ module "monitoring_function" {
   }
 
   queue_job_settings = {
-    polling_interval_in_seconds = 30
+    polling_interval_in_seconds = 3000
     queue_batch_size            = 10
   }
 
