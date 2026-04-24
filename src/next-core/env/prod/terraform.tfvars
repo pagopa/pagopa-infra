@@ -27,6 +27,7 @@ cidr_vnet_integration             = ["10.230.10.0/24"] # ask to SIA
 cidr_subnet_dns_forwarder_backup  = ["10.1.251.0/29"]
 cidr_subnet_tools_cae             = ["10.1.248.0/23"]
 cidr_subnet_azdoa                 = ["10.1.130.0/24"]
+cidr_subnet_appgateway            = ["10.1.128.0/24"]
 cidr_subnet_eventhub              = ["10.230.10.64/26"]
 cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
 cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
