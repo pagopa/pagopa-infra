@@ -29,18 +29,18 @@ locals {
   #   1. Remove custom domain from CDN Classic
   #   2. Add custom domain to Front Door
   #   3. Change DNS from the temporary App Gateway to the new Front Door ones (enable_dns_records = true)
-  custom_domains_for_switch = [
+  custom_domains = [
     {
       domain_name             = local.dns_zone_key
       dns_name                = data.azurerm_dns_zone.checkout_public[0].name
       dns_resource_group_name = data.azurerm_dns_zone.checkout_public[0].resource_group_name
       ttl                     = var.dns_default_ttl_sec
-      enable_dns_records      = false
+      enable_dns_records      = true
     }
   ]
 
   # empty for now, will be set to custom_domains_for_switch values in a separate PR for DNS switch
-  custom_domains = []
+  custom_domains_for_switch = []
 
   global_delivery_rules = [
     {
