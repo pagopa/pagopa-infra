@@ -138,6 +138,20 @@ resource "azurerm_postgresql_flexible_server_configuration" "pg_max_connections"
   value     = var.pgres_flex_params.max_connections
 }
 
+resource "azurerm_postgresql_flexible_server_configuration" "pg_log_min_duration_statement" {
+  count     = var.pgres_flex_params.log_min_duration_statement != null ? 1 : 0
+  name      = "log_min_duration_statement"
+  server_id = module.postgres_flexible_server_private_db.id
+  value     = var.pgres_flex_params.log_min_duration_statement
+}
+
+resource "azurerm_postgresql_flexible_server_configuration" "pg_log_lock_waits" {
+  count     = var.pgres_flex_params.log_lock_waits != null ? 1 : 0
+  name      = "log_lock_waits"
+  server_id = module.postgres_flexible_server_private_db.id
+  value     = var.pgres_flex_params.log_lock_waits
+}
+
 # Message    : FATAL: unsupported startup parameter: extra_float_digits
 resource "azurerm_postgresql_flexible_server_configuration" "pd_pgbouncer_ignore_startup_parameters" {
   name      = "pgbouncer.ignore_startup_parameters"

@@ -119,11 +119,6 @@ variable "tls_cert_check_helm" {
   description = "tls cert helm chart configuration"
 }
 
-variable "cname_record_name" {
-  type    = string
-  default = "config"
-}
-
 # reporting
 variable "cidr_subnet_reporting_fdr" {
   type        = list(string)
@@ -140,24 +135,6 @@ variable "reporting_fdr_function_always_on" {
   type        = bool
   description = "Always on property"
   default     = false
-}
-
-variable "reporting_fdr_function_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "reporting_fdr_function_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "reporting_fdr_function_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
 }
 
 variable "image_name" {
@@ -206,29 +183,6 @@ variable "reporting_fdr_function_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
-}
-
-# Storage account
-variable "storage_account_info" {
-  type = object({
-    account_kind                      = string
-    account_tier                      = string
-    account_replication_type          = string
-    access_tier                       = string
-    advanced_threat_protection_enable = bool
-    use_legacy_defender_version       = bool
-    public_network_access_enabled     = bool
-  })
-
-  default = {
-    account_kind                      = "StorageV2"
-    account_tier                      = "Standard"
-    account_replication_type          = "LRS"
-    access_tier                       = "Hot"
-    advanced_threat_protection_enable = true
-    use_legacy_defender_version       = false
-    public_network_access_enabled     = false
-  }
 }
 
 # Storage account
@@ -304,45 +258,6 @@ variable "fdr_xml_to_json_function_network_policies_enabled" {
   description = "Network policies enabled"
   default     = false
 }
-variable "fdr_xml_to_json_function" {
-  type = object({
-    always_on                    = bool
-    kind                         = string
-    sku_size                     = string
-    sku_tier                     = string
-    maximum_elastic_worker_count = number
-  })
-  description = "FdR XML to JSON function"
-  default = {
-    always_on                    = true
-    kind                         = "Linux"
-    sku_size                     = "B1"
-    sku_tier                     = "Basic"
-    maximum_elastic_worker_count = 1
-  }
-}
-
-variable "fdr_xml_to_json_function_app_image_tag" {
-  type        = string
-  default     = "latest"
-  description = "FdR XML to JSON function app docker image tag. Defaults to 'latest'"
-}
-
-variable "fdr_xml_to_json_function_autoscale" {
-  type = object({
-    default = number
-    minimum = number
-    maximum = number
-  })
-  description = "FdR function autoscaling parameters"
-}
-
-
-variable "function_app_storage_account_replication_type" {
-  type        = string
-  default     = "ZRS"
-  description = "(Optional) Storage account replication type used for function apps"
-}
 
 variable "ftp_organization" {
   type        = string
@@ -358,14 +273,6 @@ variable "pod_disruption_budgets" {
   }))
   description = "Pod disruption budget for domain namespace"
   default     = {}
-}
-
-variable "enabled_features" {
-  type = object({
-  })
-  default = {
-  }
-  description = "Features enabled in this domain"
 }
 
 variable "gh_runner_job_location" {

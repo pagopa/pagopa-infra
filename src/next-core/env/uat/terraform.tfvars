@@ -4,13 +4,7 @@ env                = "uat"
 domain             = "core"
 location           = "westeurope"
 location_short     = "weu"
-location_string    = "West Europe"
-location_ita       = "italynorth"
 location_short_ita = "itn"
-instance           = "uat"
-
-
-### Feature Flag
 is_feature_enabled = {
   vnet_ita                  = false,
   container_app_tools_cae   = true,
@@ -29,10 +23,7 @@ is_feature_enabled = {
 cidr_vnet = ["10.1.0.0/16"]
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
-cidr_vnet_integration = ["10.230.9.0/24"] # ask to SIA
-
-cidr_vnet_italy                   = ["10.3.0.0/16"]
-cidr_subnet_appgateway            = ["10.1.128.0/24"]
+cidr_vnet_integration             = ["10.230.9.0/24"] # ask to SIA
 cidr_subnet_dns_forwarder_backup  = ["10.1.251.0/29"]
 cidr_subnet_tools_cae             = ["10.1.248.0/23"]
 cidr_subnet_azdoa                 = ["10.1.130.0/24"]
@@ -46,10 +37,8 @@ cidr_subnet_vpn                   = ["10.1.142.0/24"]
 #
 # Dns
 #
-external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.uat.platform"
-dns_zone_prefix_prf      = "prf.platform"
-dns_zone_wfesp           = "wfesp.test"
+external_domain = "pagopa.it"
+dns_zone_wfesp  = "wfesp.test"
 
 private_dns_zone_db_nodo_pagamenti       = "u.db-nodo-pagamenti.com"
 dns_a_reconds_dbnodo_ips                 = ["10.70.73.10"] # db onCloud
@@ -57,12 +46,6 @@ dns_a_reconds_dbnodo_prf_ips             = ["10.70.73.20"] # db onCloud prf
 dns_a_reconds_dbnodonexipostgres_ips     = ["10.6.52.94"]  # db onPrem PostgreSQL
 dns_a_reconds_dbnodonexipostgres_prf_ips = ["10.6.52.93"]  # db onPrem PRF balancer PostgreSQL
 ### External resources
-
-monitor_resource_group_name                 = "pagopa-u-monitor-rg"
-log_analytics_workspace_name                = "pagopa-u-law"
-log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
-
-### VPN
 dns_forwarder_vm_image_name  = "pagopa-u-dns-forwarder-ubuntu2204-image-v4"
 vpn_gw_pip_sku               = "Standard"
 vpn_gw_pip_allocation_method = "Static"
@@ -148,6 +131,7 @@ apim_v2_alerts_enabled           = false
 apim_enable_nm3_decoupler_switch = true
 dns_zone_prefix                  = "uat.platform"
 
+cidr_subnet_appgateway                              = ["10.1.128.0/24"]
 cidr_subnet_appgateway_integration                  = ["10.230.9.192/27"]
 integration_appgateway_private_ip                   = "10.230.9.200"
 integration_app_gateway_sku_name                    = "Standard_v2"
@@ -181,8 +165,6 @@ ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
 ehns_03_capacity              = 14
 ehns_04_capacity              = 5
-ehns_03_zone_redundant        = true
-ehns_prf_zone_redundant       = true
 ehns_public_network_access    = true
 
 ehns03_metric_alerts = {

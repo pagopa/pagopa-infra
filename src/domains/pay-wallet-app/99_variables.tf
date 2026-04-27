@@ -34,11 +34,6 @@ variable "domain" {
   }
 }
 
-variable "location" {
-  type        = string
-  description = "One of westeurope, northeurope"
-}
-
 variable "location_short" {
   type = string
   validation {
@@ -110,24 +105,6 @@ variable "tls_cert_check_helm" {
     image_tag     = string
   })
   description = "tls cert helm chart configuration"
-}
-
-variable "payment_wallet_with_pm_enabled" {
-  type        = bool
-  default     = false
-  description = "payment wallet using Payment Manager"
-}
-
-variable "pdv_api_base_path" {
-  type        = string
-  default     = null
-  description = "Personal data vault api base path"
-}
-
-variable "io_backend_base_path" {
-  type        = string
-  default     = null
-  description = "io backend api base path"
 }
 
 # DNS

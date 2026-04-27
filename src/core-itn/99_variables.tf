@@ -95,21 +95,6 @@ variable "cidr_common_private_endpoint_snet" {
 
 ### External resources
 
-variable "monitor_resource_group_name" {
-  type        = string
-  description = "Monitor resource group name"
-}
-
-variable "log_analytics_workspace_name" {
-  type        = string
-  description = "Specifies the name of the Log Analytics Workspace."
-}
-
-variable "log_analytics_workspace_resource_group_name" {
-  type        = string
-  description = "The name of the resource group in which the Log Analytics workspace is located in."
-}
-
 variable "law_sku" {
   type        = string
   description = "Sku of the Log Analytics Workspace"
@@ -137,19 +122,9 @@ variable "external_domain" {
   description = "Domain for delegation"
 }
 
-variable "dns_zone_internal_prefix" {
-  type        = string
-  description = "The dns subdomain."
-}
-
 variable "platform_dns_zone_prefix" {
   type        = string
   description = "platform dns prefix"
-}
-
-variable "dns_default_ttl_sec" {
-  type        = number
-  description = "Dns default ttl secs"
 }
 
 #
@@ -165,9 +140,3 @@ variable "container_registry_zone_redundancy_enabled" {
   description = "Enabled AZ for container registry"
 }
 
-# pdf-engine
-variable "cidr_subnet_pdf_engine_app_service" {
-  type        = list(string)
-  description = "CIDR subnet for App Service"
-  default     = null
-}

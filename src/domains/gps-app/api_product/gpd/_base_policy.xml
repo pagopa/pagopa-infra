@@ -13,10 +13,12 @@
 <policies>
     <inbound>
         <base />
+        %{ if env != "d" }
         <ip-filter action="forbid">
-            <!-- appgateway-snet  -->
-            <address-range from="10.1.128.0" to="10.1.128.255" />
-        </ip-filter>        
+          <!-- appgateway-snet  -->
+          <address-range from="10.1.128.0" to="10.1.128.255" />
+        </ip-filter>
+        %{ endif }
     </inbound>
     <backend>
         <base />

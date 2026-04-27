@@ -24,13 +24,6 @@ variable "env_short" {
   }
 }
 
-variable "github" {
-  type = object({
-    org = string
-  })
-  default = { org = "pagopa" }
-}
-
 variable "domain" {
   type = string
   validation {
@@ -95,11 +88,6 @@ variable "ingress_load_balancer_ip" {
 
 ### Aks
 
-variable "k8s_kube_config_path_prefix" {
-  type    = string
-  default = "~/.kube"
-}
-
 variable "external_domain" {
   type        = string
   default     = null
@@ -110,12 +98,6 @@ variable "dns_zone_internal_prefix" {
   type        = string
   default     = null
   description = "The dns subdomain."
-}
-
-variable "apim_dns_zone_prefix" {
-  type        = string
-  default     = null
-  description = "The dns subdomain for apim."
 }
 
 variable "enable_iac_pipeline" {

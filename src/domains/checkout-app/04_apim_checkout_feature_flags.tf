@@ -74,6 +74,14 @@ resource "azurerm_api_management_named_value" "apim_checkout_feature_flags_map_v
   secret              = true
 }
 
+resource "azurerm_api_management_named_value" "apim_checkout_frontend_enabled" {
+  name                = "checkout-apim-frontend-enabled"
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  display_name        = "checkout-apim-frontend-enabled"
+  value               = var.checkout_apim_frontend_enabled
+}
+
 #######################################################################
 ## Fragment policy to filter feature flags based on different rules  ##
 #######################################################################

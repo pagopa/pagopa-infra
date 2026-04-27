@@ -50,11 +50,6 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-variable "location_string" {
-  type        = string
-  description = "One of West Europe, North Europe"
-}
-
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
@@ -79,36 +74,4 @@ variable "log_analytics_workspace_resource_group_name" {
 }
 
 ### Aks
-
-variable "k8s_kube_config_path_prefix" {
-  type    = string
-  default = "~/.kube"
-}
-
-variable "external_domain" {
-  type        = string
-  default     = null
-  description = "Domain for delegation"
-}
-
-variable "dns_zone_internal_prefix" {
-  type        = string
-  default     = null
-  description = "The dns subdomain."
-}
-
-variable "apim_dns_zone_prefix" {
-  type        = string
-  default     = null
-  description = "The dns subdomain for apim."
-}
-
-variable "tls_cert_check_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "tls cert helm chart configuration"
-}
 

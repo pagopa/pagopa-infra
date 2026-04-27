@@ -22,7 +22,7 @@ locals {
 
 
 module "apim_selfcare_backoffice_external_psp_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "selfcare-bo-external-psp"
   display_name = local.apim_selfcare_backoffice_external_api_psp.display_name
@@ -40,7 +40,7 @@ module "apim_selfcare_backoffice_external_psp_product" {
 }
 
 module "apim_selfcare_backoffice_external_ec_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "selfcare-bo-external-ec"
   display_name = local.apim_selfcare_backoffice_external_api_ec.display_name
@@ -58,7 +58,7 @@ module "apim_selfcare_backoffice_external_ec_product" {
 }
 
 module "apim_selfcare_backoffice_helpdesk_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "selfcare-bo-helpdesk"
   display_name = local.apim_selfcare_backoffice_helpdesk_api.display_name
@@ -100,7 +100,7 @@ resource "azurerm_api_management_subscription" "status_page_improvement_api_key_
 
 #Backoffice institutions services consents product
 module "apim_selfcare_backoffice_external_institution_services_consents_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "selfcare-bo-external-institution-services-consents"
   display_name = local.apim_selfcare_backoffice_external_institutions_services_consent_api.display_name

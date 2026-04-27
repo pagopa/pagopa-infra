@@ -51,13 +51,6 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-### Italy location
-variable "location_ita" {
-  type        = string
-  description = "Main location"
-  default     = "italynorth"
-}
-
 variable "location_short_ita" {
   type = string
   validation {
@@ -70,31 +63,7 @@ variable "location_short_ita" {
   default     = "itn"
 }
 
-variable "vnet_ita_ddos_protection_plan" {
-  type = object({
-    id     = string
-    enable = bool
-  })
-  default = null
-}
-
-variable "instance" {
-  type        = string
-  description = "One of beta, prod01, prod02"
-}
-
-variable "lock_enable" {
-  type        = bool
-  default     = false
-  description = "Apply locks to block accedentaly deletions."
-}
-
 ### Network
-
-variable "cidr_vnet_italy" {
-  type        = list(string)
-  description = "Address prefixes for vnet in italy."
-}
 
 variable "cidr_subnet_dns_forwarder_backup" {
   type        = list(string)
@@ -127,32 +96,11 @@ variable "cidr_subnet_appgateway_integration" {
 
 ### External resources
 
-variable "monitor_resource_group_name" {
-  type        = string
-  description = "Monitor resource group name"
-}
-
-variable "log_analytics_workspace_name" {
-  type        = string
-  description = "Specifies the name of the Log Analytics Workspace."
-}
-
-variable "log_analytics_workspace_resource_group_name" {
-  type        = string
-  description = "The name of the resource group in which the Log Analytics workspace is located in."
-}
-
 # DNS
 variable "external_domain" {
   type        = string
   default     = "pagopa.it"
   description = "Domain for delegation"
-}
-
-variable "dns_zone_internal_prefix" {
-  type        = string
-  default     = null
-  description = "The dns subdomain."
 }
 
 variable "dns_default_ttl_sec" {
@@ -340,12 +288,6 @@ variable "redis_version" {
   type        = string
   description = "The version of Redis to use: 4 (deprecated) or 6"
   default     = "6"
-}
-
-variable "storage_queue_private_endpoint_enabled" {
-  type        = bool
-  description = "Whether private endpoint for Azure Storage Queues is enabled"
-  default     = true
 }
 
 variable "platform_private_dns_zone_records" {
@@ -668,24 +610,6 @@ variable "ehns_prf_maximum_throughput_units" {
   default     = 15
 }
 
-variable "ehns_zone_redundant" {
-  type        = bool
-  description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
-  default     = false
-}
-
-variable "ehns_03_zone_redundant" {
-  type        = bool
-  description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
-  default     = false
-}
-
-variable "ehns_prf_zone_redundant" {
-  type        = bool
-  description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
-  default     = false
-}
-
 variable "eventhubs_03" {
   description = "A list of event hubs to add to namespace."
   type = list(object({
@@ -919,11 +843,6 @@ variable "nat_gateway_public_ips" {
   type        = number
   default     = 1
   description = "Number of public outbound ips"
-}
-
-variable "ingress_elk_load_balancer_ip" {
-  type    = string
-  default = "10.1.100.251"
 }
 
 variable "cidr_subnet_appgateway" {

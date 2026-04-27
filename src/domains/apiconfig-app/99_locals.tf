@@ -44,8 +44,8 @@ locals {
     service_url = null
 
     pagopa_tenant_id       = data.azurerm_client_config.current.tenant_id
-    apiconfig_be_client_id = data.azuread_application.apiconfig-be.application_id
-    apiconfig_fe_client_id = data.azuread_application.apiconfig-fe.application_id
+    apiconfig_be_client_id = data.azuread_application.apiconfig-be.client_id
+    apiconfig_fe_client_id = data.azuread_application.apiconfig-fe.client_id
   }
 
   apiconfig_cache_locals = {

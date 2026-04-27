@@ -33,6 +33,12 @@ data "azurerm_subnet" "aks_subnet" {
   resource_group_name  = local.vnet_resource_group_name
 }
 
+data "azurerm_subnet" "vpn_subnet" {
+  name                 = local.vpn_subnet_name
+  virtual_network_name = local.vnet_name
+  resource_group_name  = local.vnet_resource_group_name
+}
+
 data "azurerm_private_dns_zone" "postgres" {
   name                = "private.postgres.database.azure.com"
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
