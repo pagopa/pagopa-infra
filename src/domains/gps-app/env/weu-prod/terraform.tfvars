@@ -33,6 +33,7 @@ reporting_functions_app_sku = {
   sku_tier = "PremiumV3"
   sku_size = "P1v3"
 }
+reporting_function_autoscale_minimum = 3
 
 cname_record_name = "config"
 

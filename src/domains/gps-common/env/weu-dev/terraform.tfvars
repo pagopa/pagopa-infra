@@ -48,7 +48,7 @@ cosmos_gps_db_params = {
 }
 
 gpd_upload_status_ttl = 604800 // 7 days
-
+gpd_cdc_enabled       = true
 # Postgres Flexible
 pgres_flex_params = {
 
@@ -74,8 +74,8 @@ pgres_flex_params = {
   wal_level                                        = "logical"
   shared_preoload_libraries                        = "pglogical"
   public_network_access_enabled                    = false
-  log_min_duration_statement                       = null
-  log_lock_waits                                   = null
+  log_min_duration_statement                       = -1
+  log_lock_waits                                   = "OFF"
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]

@@ -14,14 +14,14 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 2aacf6a67baf3e9618b9b58d70ab5692d316aa94 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 7daabc5d931b095b03e12a3f911fa89d4bf6d1c0 |
 | <a name="module_apim"></a> [apim](#module\_apim) | ./.terraform/modules/__v4__/api_management | n/a |
 | <a name="module_apim_monitor"></a> [apim\_monitor](#module\_apim\_monitor) | ./.terraform/modules/__v4__/api_management_api | n/a |
 | <a name="module_apim_snet"></a> [apim\_snet](#module\_apim\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_app_gw"></a> [app\_gw](#module\_app\_gw) | ./.terraform/modules/__v4__/app_gateway | n/a |
 | <a name="module_app_gw_integration"></a> [app\_gw\_integration](#module\_app\_gw\_integration) | ./.terraform/modules/__v4__/app_gateway | n/a |
 | <a name="module_appgateway_snet"></a> [appgateway\_snet](#module\_appgateway\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
-| <a name="module_assets_cdn_platform"></a> [assets\_cdn\_platform](#module\_assets\_cdn\_platform) | ./.terraform/modules/__v4__/cdn | n/a |
+| <a name="module_assets_cdn_platform_frontdoor"></a> [assets\_cdn\_platform\_frontdoor](#module\_assets\_cdn\_platform\_frontdoor) | ./.terraform/modules/__v4__/cdn_frontdoor | n/a |
 | <a name="module_azdoa_li_app"></a> [azdoa\_li\_app](#module\_azdoa\_li\_app) | ./.terraform/modules/__v4__/azure_devops_agent | n/a |
 | <a name="module_azdoa_li_infra"></a> [azdoa\_li\_infra](#module\_azdoa\_li\_infra) | ./.terraform/modules/__v4__/azure_devops_agent | n/a |
 | <a name="module_azdoa_loadtest_li"></a> [azdoa\_loadtest\_li](#module\_azdoa\_loadtest\_li) | ./.terraform/modules/__v4__/azure_devops_agent | n/a |

@@ -27,6 +27,7 @@ cidr_vnet_integration             = ["10.230.10.0/24"] # ask to SIA
 cidr_subnet_dns_forwarder_backup  = ["10.1.251.0/29"]
 cidr_subnet_tools_cae             = ["10.1.248.0/23"]
 cidr_subnet_azdoa                 = ["10.1.130.0/24"]
+cidr_subnet_appgateway            = ["10.1.128.0/24"]
 cidr_subnet_eventhub              = ["10.230.10.64/26"]
 cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
 cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
@@ -52,7 +53,7 @@ private_dns_zone_db_nodo_pagamenti   = "p.db-nodo-pagamenti.com"
 dns_a_reconds_dbnodo_ips             = ["10.102.175.23", "10.102.175.24"] # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
 dns_a_reconds_dbnodo_ips_dr          = ["10.101.175.23", "10.101.175.24"] # authdbsep01-vip.carte.local   NAT 10.250.45.145 authdbsep02-vip.carte.local   NAT 10.250.45.146 authdbpep01-vip.carte.local   NAT 10.250.45.147 authdbpep02-vip.carte.local   NAT 10.250.45.148
 dns_a_reconds_dbnodonexipostgres_ips = ["10.102.1.93"]
-
+dns_zone_wfesp                       = "wfesp"
 ### External resources
 dns_forwarder_vm_image_name = "pagopa-p-dns-forwarder-ubuntu2204-image-v1"
 
@@ -194,7 +195,7 @@ base_path_nodo_web_bo_history = "/web-bo-history-prd"
 dns_zone_wisp2                = "wisp2"
 base_path_nodo_oncloud        = "/nodo-prd"
 
-
+redis_cache_enabled = true
 
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
 ehns_auto_inflate_enabled        = true

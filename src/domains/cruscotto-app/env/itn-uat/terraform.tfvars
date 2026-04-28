@@ -2,8 +2,6 @@ prefix          = "pagopa"
 env_short       = "u"
 env             = "uat"
 domain          = "crusc8"
-location        = "italynorth"
-location_short  = "itn"
 location_string = "Italy North"
 
 location_weu       = "westeurope"

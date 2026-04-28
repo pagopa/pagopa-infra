@@ -15,13 +15,15 @@ ingress_load_balancer_ip                    = "10.1.100.250"
 
 cidr_subnet_mock_ec              = ["10.1.137.0/29"]
 cidr_subnet_mock_payment_gateway = ["10.1.137.8/29"]
+cidr_subnet_mocker_cosmosdb      = ["10.1.192.0/24"]
 external_domain                  = "pagopa.it"
 dns_zone_prefix                  = "uat.platform"
 dns_zone_internal_prefix         = "internal.uat.platform"
 
-mock_ec_enabled     = true
-mock_ec_always_on   = true
-enable_iac_pipeline = false
+mock_ec_enabled              = true
+mock_payment_gateway_enabled = true
+mock_ec_always_on            = true
+enable_iac_pipeline          = false
 
 # CosmosDB for Mocker
 mocker_cosmosdb_params = {

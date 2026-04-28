@@ -4,6 +4,7 @@ env                         = "uat"
 domain                      = "observ"
 location_itn                = "italynorth" # itn
 location_short_itn          = "itn"        # itn
+location_short              = "weu"        # weu
 monitor_resource_group_name = "pagopa-u-monitor-rg"
 
 # Data Explorer

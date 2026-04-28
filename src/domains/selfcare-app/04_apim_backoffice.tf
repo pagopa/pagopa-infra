@@ -10,7 +10,7 @@ locals {
 
 
 module "apim_selfcare_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "selfcare-be"
   display_name = local.apim_selfcare_pagopa_api.display_name

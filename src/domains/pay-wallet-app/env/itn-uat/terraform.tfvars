@@ -4,6 +4,7 @@ env             = "uat"
 domain          = "pay-wallet"
 location_string = "Italy North"
 instance        = "uat"
+location_short  = "itn"
 
 
 ### External resources

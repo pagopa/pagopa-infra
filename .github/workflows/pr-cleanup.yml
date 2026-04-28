@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Run stale/close routine
+        id: stale_action
         uses: actions/stale@v10
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
@@ -45,3 +46,41 @@ jobs:
           # Disable issue processing
           days-before-issue-stale: -1
           days-before-issue-close: -1
+
+      - name: Extract PR numbers
+        if: ${{ steps.stale_action.outputs.staled-issues-prs != '[]' || steps.stale_action.outputs.closed-issues-prs != '[]' }}
+        id: extract_numbers
+        env:
+          STALED: ${{steps.stale_action.outputs.staled-issues-prs}}
+          CLOSED: ${{steps.stale_action.outputs.closed-issues-prs}}
+        run: |
+          STALED_LINKS=$(echo "$STALED" | jq -r '.[] | "[#\(.number)](\(.pull_request.html_url))"' 2>/dev/null | paste -sd ',' - | sed 's/,/, /g')
+          CLOSED_LINKS=$(echo "$CLOSED" | jq -r '.[] | "[#\(.number)](\(.pull_request.html_url))"' 2>/dev/null | paste -sd ',' - | sed 's/,/, /g')
+          echo "staled_pr_links=$STALED_LINKS" >> $GITHUB_OUTPUT
+          echo "closed_pr_links=$CLOSED_LINKS" >> $GITHUB_OUTPUT
+          echo "Staled PR links: $STALED_LINKS"
+          echo "Closed PR links: $CLOSED_LINKS"
+
+      - name: Log PR cleaner report
+        if: ${{ steps.stale_action.outputs.staled-issues-prs != '[]' || steps.stale_action.outputs.closed-issues-prs != '[]' }}
+        env:
+          STALED: ${{steps.extract_numbers.outputs.staled_pr_links}}
+          CLOSED: ${{steps.extract_numbers.outputs.closed_pr_links}}
+        run: |
+          echo "PR cleaner report:"
+          echo "- New PR staled: $STALED"
+          echo "- New PR closed: $CLOSED"
+
+      - name: Notify PR updates
+        uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 #v3.0.1
+        if: ${{ steps.stale_action.outputs.staled-issues-prs != '[]' || steps.stale_action.outputs.closed-issues-prs != '[]' }}
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: "PR cleaner report: "
+            blocks:
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: "- New PR staled: ${{steps.extract_numbers.outputs.staled_pr_links}} \n - New PR closed: ${{steps.extract_numbers.outputs.closed_pr_links}}"

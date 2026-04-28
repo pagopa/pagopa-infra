@@ -75,8 +75,8 @@ pgres_flex_params = {
   wal_level                                        = "logical"   # gpd_cdc_enabled
   shared_preoload_libraries                        = "pglogical" # gpd_cdc_enabled
   public_network_access_enabled                    = false
-  log_min_duration_statement                       = 2500
-  log_lock_waits                                   = "ON"
+  log_min_duration_statement                       = -1
+  log_lock_waits                                   = "OFF"
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]
@@ -201,6 +201,7 @@ eventhub_namespace_rtp = {
 }
 
 redis_ha_enabled = false
+gpd_cdc_enabled  = true
 
 rtp_storage_account = {
   account_kind                       = "StorageV2"
