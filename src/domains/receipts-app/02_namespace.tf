@@ -5,7 +5,7 @@ resource "kubernetes_namespace" "namespace" {
 }
 
 module "pod_identity" {
-  source = "./.terraform/modules/__v3__/kubernetes_pod_identity"
+  source = "./.terraform/modules/__v4__/kubernetes_pod_identity"
 
   resource_group_name = local.aks_resource_group_name
   location            = var.location
@@ -38,7 +38,7 @@ resource "kubernetes_pod_disruption_budget_v1" "receipts" {
 # WL-IDENTITY
 # https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/1227751458/Migrazione+pod+Identity+vs+workload+Identity#Init-workload-identity
 module "workload_identity" {
-  source = "./.terraform/modules/__v3__/kubernetes_workload_identity_configuration"
+  source = "./.terraform/modules/__v4__/kubernetes_workload_identity_configuration"
 
   workload_identity_name_prefix         = var.domain
   workload_identity_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name

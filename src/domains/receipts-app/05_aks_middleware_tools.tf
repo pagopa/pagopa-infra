@@ -1,7 +1,7 @@
 # WL-IDENTITY
 # https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/1227751458/Migrazione+pod+Identity+vs+workload+Identity#%F0%9F%94%AE-tls-cheker
 module "tls_checker" {
-  source = "./.terraform/modules/__v3__/tls_checker"
+  source = "./.terraform/modules/__v4__/tls_checker"
 
   https_endpoint                                            = local.receipts_hostname
   alert_name                                                = local.receipts_hostname
@@ -33,7 +33,7 @@ module "tls_checker" {
 # WL-IDENTITY
 # https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/1227751458/Migrazione+pod+Identity+vs+workload+Identity#%3Acertificate%3A-cert-mounter
 module "cert_mounter" {
-  source = "./.terraform/modules/__v3__/cert_mounter"
+  source = "./.terraform/modules/__v4__/cert_mounter"
 
   namespace        = var.domain
   certificate_name = replace(local.receipts_hostname, ".", "-")
