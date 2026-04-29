@@ -8,7 +8,7 @@ module "apim_mock_pagopa_product" {
 
   product_id   = "mock_pagopa"
   display_name = "Mock for PagoPA"
-  description  = "Mock for PagoPA"
+  description  = "Mock used by PagoPA developers for testing purposes"
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
