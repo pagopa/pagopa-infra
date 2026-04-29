@@ -1,0 +1,808 @@
+{
+  "properties": {
+    "lenses": [
+      {
+        "order": 0,
+        "parts": [
+          {
+            "position": {
+              "x": 0,
+              "y": 0,
+              "colSpan": 16,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "filterCollection": {
+                        "filters": [
+                          {
+                            "key": "CollectionName",
+                            "operator": 0,
+                            "values": [
+                              "transactions-view"
+                            ]
+                          },
+                          {
+                            "key": "CommandName",
+                            "operator": 0,
+                            "values": [
+                              "update"
+                            ]
+                          }
+                        ]
+                      },
+                      "grouping": {
+                        "dimension": "CommandName",
+                        "sort": 2,
+                        "top": 10
+                      },
+                      "metrics": [
+                        {
+                          "aggregationType": 7,
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
+                          },
+                          "name": "MongoRequests",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-itn-pay-wallet-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-itn-pay-wallet-cosmos-account"
+                          }
+                        }
+                      ],
+                      "timespan": {
+                        "grain": 1,
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false
+                      },
+                      "title": "[payment-wallet] - Mongo Requests for pagopa-p-itn-pay-wallet-cosmos-account for update operation - all commands per region performed on all collections",
+                      "titleKind": 1,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
+                      }
+                    }
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-itn-pay-wallet-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-itn-pay-wallet-cosmos-account"
+                          },
+                          "name": "MongoRequests",
+                          "aggregationType": 7,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests",
+                            "resourceDisplayName": "pagopa-p-itn-pay-wallet-cosmos-account"
+                          }
+                        }
+                      ],
+                      "title": "[payment-wallet] - Mongo Requests for pagopa-p-itn-pay-wallet-cosmos-account for update operation - all commands per region performed on all collections",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": [
+                          "CollectionName",
+                          "CommandName",
+                          "Region"
+                        ],
+                        "sort": 2,
+                        "top": 10
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "DatabaseName": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "payment-wallet"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 5,
+              "colSpan": 16,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "filterCollection": {
+                        "filters": [
+                          {
+                            "key": "CollectionName",
+                            "operator": 0,
+                            "values": [
+                              "transactions-view"
+                            ]
+                          },
+                          {
+                            "key": "CommandName",
+                            "operator": 0,
+                            "values": [
+                              "update"
+                            ]
+                          }
+                        ]
+                      },
+                      "grouping": {
+                        "dimension": "CommandName",
+                        "sort": 2,
+                        "top": 10
+                      },
+                      "metrics": [
+                        {
+                          "aggregationType": 7,
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
+                          },
+                          "name": "MongoRequests",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-itn-pay-wallet-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-itn-pay-wallet-cosmos-account"
+                          }
+                        }
+                      ],
+                      "timespan": {
+                        "grain": 1,
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false
+                      },
+                      "title": "[payment-wallet] - Mongo Provisioned throughput for pagopa-p-itn-pay-wallet-cosmos-account per region",
+                      "titleKind": 1,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
+                      }
+                    }
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-itn-pay-wallet-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-itn-pay-wallet-cosmos-account"
+                          },
+                          "name": "ProvisionedThroughput",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Provisioned Throughput",
+                            "resourceDisplayName": "pagopa-p-itn-pay-wallet-cosmos-account"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-itn-pay-wallet-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-itn-pay-wallet-cosmos-account"
+                          },
+                          "name": "AutoscaleMaxThroughput",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Autoscale Max Throughput",
+                            "resourceDisplayName": "pagopa-p-itn-pay-wallet-cosmos-account"
+                          }
+                        }
+                      ],
+                      "title": "[payment-wallet] - Mongo Provisioned throughput for pagopa-p-itn-pay-wallet-cosmos-account per region",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "DatabaseName": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "payment-wallet"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 10,
+              "colSpan": 16,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "filterCollection": {
+                        "filters": [
+                          {
+                            "key": "CollectionName",
+                            "operator": 0,
+                            "values": [
+                              "transactions-view"
+                            ]
+                          },
+                          {
+                            "key": "CommandName",
+                            "operator": 0,
+                            "values": [
+                              "update"
+                            ]
+                          }
+                        ]
+                      },
+                      "grouping": {
+                        "dimension": "CommandName",
+                        "sort": 2,
+                        "top": 10
+                      },
+                      "metrics": [
+                        {
+                          "aggregationType": 7,
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
+                          },
+                          "name": "MongoRequests",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-itn-pay-wallet-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-itn-pay-wallet-cosmos-account"
+                          }
+                        }
+                      ],
+                      "timespan": {
+                        "grain": 1,
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false
+                      },
+                      "title": "[payment-wallet] - Mongo max Normalized consumption for pagopa-p-itn-pay-wallet-cosmos-account per region",
+                      "titleKind": 1,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
+                      }
+                    }
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-itn-pay-wallet-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-itn-pay-wallet-cosmos-account"
+                          },
+                          "name": "NormalizedRUConsumption",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Normalized RU Consumption",
+                            "resourceDisplayName": "pagopa-p-itn-pay-wallet-cosmos-account"
+                          }
+                        }
+                      ],
+                      "title": "[payment-wallet] - Mongo max Normalized consumption for pagopa-p-itn-pay-wallet-cosmos-account per region",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": "Region",
+                        "sort": 2,
+                        "top": 10
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "DatabaseName": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "payment-wallet"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 15,
+              "colSpan": 16,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "filterCollection": {
+                        "filters": [
+                          {
+                            "key": "CollectionName",
+                            "operator": 0,
+                            "values": [
+                              "transactions-view"
+                            ]
+                          },
+                          {
+                            "key": "CommandName",
+                            "operator": 0,
+                            "values": [
+                              "update"
+                            ]
+                          }
+                        ]
+                      },
+                      "grouping": {
+                        "dimension": "CommandName",
+                        "sort": 2,
+                        "top": 10
+                      },
+                      "metrics": [
+                        {
+                          "aggregationType": 7,
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
+                          },
+                          "name": "MongoRequests",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-itn-pay-wallet-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-itn-pay-wallet-cosmos-account"
+                          }
+                        }
+                      ],
+                      "timespan": {
+                        "grain": 1,
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false
+                      },
+                      "title": "[payment-wallet] - Mongo max Normalized consumption for pagopa-p-itn-pay-wallet-cosmos-account per physical partition",
+                      "titleKind": 1,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
+                      }
+                    }
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-itn-pay-wallet-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-itn-pay-wallet-cosmos-account"
+                          },
+                          "name": "NormalizedRUConsumption",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Normalized RU Consumption",
+                            "resourceDisplayName": "pagopa-p-itn-pay-wallet-cosmos-account"
+                          }
+                        }
+                      ],
+                      "title": "[payment-wallet] - Mongo max Normalized consumption for pagopa-p-itn-pay-wallet-cosmos-account per physical partition",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": "PhysicalPartitionId",
+                        "sort": 2,
+                        "top": 10
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "DatabaseName": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "payment-wallet"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 20,
+              "colSpan": 8,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-itn-pay-wallet-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-itn-pay-wallet-cosmos-account"
+                          },
+                          "name": "DataUsage",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Data Usage",
+                            "resourceDisplayName": "pagopa-p-itn-pay-wallet-cosmos-account"
+                          }
+                        }
+                      ],
+                      "title": "Data Usage split by collection, database and region",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": [
+                          "CollectionName",
+                          "DatabaseName",
+                          "Region"
+                        ],
+                        "sort": 2,
+                        "top": 10
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 8,
+              "y": 20,
+              "colSpan": 8,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-itn-pay-wallet-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-itn-pay-wallet-cosmos-account"
+                          },
+                          "name": "DocumentCount",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Document Count",
+                            "resourceDisplayName": "pagopa-p-itn-pay-wallet-cosmos-account"
+                          }
+                        }
+                      ],
+                      "title": "Document Count split by collection, database and region",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": [
+                          "CollectionName",
+                          "DatabaseName",
+                          "Region"
+                        ],
+                        "sort": 2,
+                        "top": 10
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "model": {
+        "timeRange": {
+          "value": {
+            "relative": {
+              "duration": 4,
+              "timeUnit": 1
+            }
+          },
+          "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+        },
+        "filterLocale": {
+          "value": "en-us"
+        },
+        "filters": {
+          "value": {
+            "MsPortalFx_TimeRange": {
+              "model": {
+                "format": "local",
+                "granularity": "auto",
+                "relative": "4h"
+              },
+              "displayCache": {
+                "name": "Local Time",
+                "value": "Past 4 hours"
+              },
+              "filteredPartIds": [
+                "StartboardPart-MonitorChartPart-18997715-c09f-40ea-9f12-55436220f112",
+                "StartboardPart-MonitorChartPart-18997715-c09f-40ea-9f12-55436220f114",
+                "StartboardPart-MonitorChartPart-18997715-c09f-40ea-9f12-55436220f10a",
+                "StartboardPart-MonitorChartPart-18997715-c09f-40ea-9f12-55436220f10c",
+                "StartboardPart-MonitorChartPart-18997715-c09f-40ea-9f12-55436220f10e",
+                "StartboardPart-MonitorChartPart-18997715-c09f-40ea-9f12-55436220f110"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "name": "pay-wallet-cosmosdb-dashboard",
+  "type": "Microsoft.Portal/dashboards",
+  "location": "INSERT LOCATION",
+  "tags": {
+    "hidden-title": "pay-wallet-cosmosdb-dashboard"
+  },
+  "apiVersion": "2022-12-01-preview"
+}
