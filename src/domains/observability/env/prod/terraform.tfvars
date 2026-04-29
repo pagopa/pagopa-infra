@@ -1,16 +1,10 @@
-prefix             = "pagopa"
-env_short          = "p"
-env                = "prod"
-domain             = "observ"
-location           = "westeurope" # weu
-location_short     = "weu"        # weu
-location_itn       = "italynorth" # itn
-location_short_itn = "itn"        # itn
-instance           = "prod"
-
-
-### External resources
-
+prefix                      = "pagopa"
+env_short                   = "p"
+env                         = "prod"
+domain                      = "observ"
+location_itn                = "italynorth" # itn
+location_short_itn          = "itn"        # itn
+location_short              = "weu"        # weu
 monitor_resource_group_name = "pagopa-p-monitor-rg"
 
 # Data Explorer
@@ -42,37 +36,15 @@ dexp_pm_db = {
   hot_cache_period   = "P5D"
   soft_delete_period = "P10Y"
 }
-
-dexp_re_db_linkes_service = {
-  enable = true
-}
-
-external_domain      = "NOT_USED"
-apim_dns_zone_prefix = "NOT_USED"
-
-# observability Ingestion cfg
-# observability_storage_account_replication_type = "GZRS" # Standard_GZRS, Kind: StorageV2 is not available in zone.
 enable_sa_backup                  = true
 cidr_subnet_observability_storage = ["10.3.14.0/27"]
-cidr_subnet_observability_evh     = ["10.3.14.32/27"]
-cidr_subnet_observability_gpd_evh = ["10.3.14.64/27"]
-# <free>= ["10.3.14.96/27"]
-# <free>= ["10.3.14.128/27"]
-# <free>= ["10.3.14.160/27"]
-
-
-#
-# EventHub
-#
-ehns_sku_name = "Standard"
+ehns_sku_name                     = "Standard"
 
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
-ehns_auto_inflate_enabled     = true
-ehns_maximum_throughput_units = 30
-ehns_capacity                 = 20
-ehns_alerts_enabled           = true
-ehns_zone_redundant           = true
-
+ehns_auto_inflate_enabled        = true
+ehns_maximum_throughput_units    = 30
+ehns_capacity                    = 20
+ehns_alerts_enabled              = true
 ehns_public_network_access       = true
 ehns_private_endpoint_is_present = true
 
@@ -360,58 +332,3 @@ eventhubs_gpd = [
     ]
   },
 ]
-
-app_forwarder_ip_restriction_default_action = "Deny"
-# alert evh ⚠️ TODO
-# ehns_metric_alerts_gpd = {
-#   no_trx = {
-#     aggregation = "Total"
-#     metric_name = "IncomingMessages"
-#     description = "No transactions received from acquirer in the last 24h"
-#     operator    = "LessThanOrEqual"
-#     threshold   = 1000
-#     frequency   = "PT1H"
-#     window_size = "P1D"
-#     dimension = [
-#       {
-#         name     = "EntityName"
-#         operator = "Include"
-#         values   = ["gec-ingestion-bundles-evt-tx", "gec-ingestion-cibundles-evt-tx", "gec-ingestion-paymenttypes-evt-tx", "gec-ingestion-touchpoints-evt-tx"]
-#       }
-#     ],
-#   },
-#   active_connections = {
-#     aggregation = "Average"
-#     metric_name = "ActiveConnections"
-#     description = null
-#     operator    = "LessThanOrEqual"
-#     threshold   = 0
-#     frequency   = "PT5M"
-#     window_size = "PT15M"
-#     dimension   = [],
-#   },
-#   error_trx = {
-#     aggregation = "Total"
-#     metric_name = "IncomingMessages"
-#     description = "Transactions rejected from one acquirer file received. trx write on eventhub. check immediately"
-#     operator    = "GreaterThan"
-#     threshold   = 0
-#     frequency   = "PT5M"
-#     window_size = "PT30M"
-#     dimension = [
-#       {
-#         name     = "EntityName"
-#         operator = "Include"
-#         values = [
-#           "gec-ingestion-bundles-evt-rx-pdnd",
-#           "gec-ingestion-cibundles-evt-rx-pdnd",
-#           "gec-ingestion-paymenttypes-evt-rx-pdnd",
-#           "gec-ingestion-touchpoints-evt-rx-pdnd"
-#         ]
-#       }
-#     ],
-#   },
-# }
-
-is_feature_enabled = {
-}

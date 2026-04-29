@@ -928,7 +928,10 @@
       "durationLimit": 10000,
       "alertConfiguration": {
         "enabled": "true",
-        "customActionGroupIds" : ${cloudo_action_group_ids}
+        "customActionGroupIds" : ${cloudo_action_group_ids},
+        "window_size": "PT15M",
+        "threshold": 0,
+        "operator": "LessThanOrEqual"
       }
   },
   {

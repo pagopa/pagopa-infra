@@ -22,17 +22,6 @@ app_service_plan_info = {
   zone_balancing_enabled       = false
 }
 fn_app_runtime_version = "~3"
-
-storage_account_info = {
-  account_kind                      = "StorageV2"
-  account_tier                      = "Standard"
-  account_replication_type          = "GZRS"
-  access_tier                       = "Hot"
-  advanced_threat_protection_enable = true
-  use_legacy_defender_version       = true
-  public_network_access_enabled     = false
-}
-
 reporting_fdr_storage_account_info = {
   account_kind                      = "StorageV2"
   account_tier                      = "Standard"
@@ -83,17 +72,3 @@ ftp_organization = "80078750587,00488410010,97532760580"
 # fdr xml to json
 fdr_xml_to_json_function_subnet                   = ["10.1.182.0/24"]
 fdr_xml_to_json_function_network_policies_enabled = true
-fdr_xml_to_json_function = {
-  always_on                    = true
-  kind                         = "Linux"
-  sku_size                     = "B1"
-  sku_tier                     = "Basic"
-  maximum_elastic_worker_count = 0
-}
-
-fdr_xml_to_json_function_autoscale = {
-  default = 1
-  minimum = 1
-  maximum = 10
-}
-

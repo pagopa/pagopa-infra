@@ -4,13 +4,7 @@ env                = "dev"
 domain             = "core"
 location           = "westeurope"
 location_short     = "weu"
-location_string    = "West Europe"
-location_ita       = "italynorth"
 location_short_ita = "itn"
-instance           = "dev"
-
-
-### Feature Flag
 is_feature_enabled = {
   vnet_ita                  = true,
   container_app_tools_cae   = true,
@@ -39,34 +33,20 @@ cidr_subnet_eventhub              = ["10.230.8.64/26"]
 cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
 cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
 
-### Network Italy
-cidr_vnet_italy = ["10.3.0.0/16"]
+dns_zone_wfesp = ""
 
+### Network Italy
 vpn_gw_pip_sku               = "Standard"
 vpn_gw_pip_allocation_method = "Static"
 vpn_random_specials_char     = false
 #
 # Dns
 #
-external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.dev.platform"
-dns_zone_wfesp           = ""
-
+external_domain                      = "pagopa.it"
 dns_a_reconds_dbnodo_ips             = ["10.70.67.18"]    # db onCloud
 dns_a_reconds_dbnodonexipostgres_ips = ["10.222.214.176"] # db onPrem PostgreSQL
 private_dns_zone_db_nodo_pagamenti   = "d.db-nodo-pagamenti.com"
 ### External resources
-
-monitor_resource_group_name                 = "pagopa-d-monitor-rg"
-log_analytics_workspace_name                = "pagopa-d-law"
-log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
-
-
-
-
-#
-# apim v2
-#
 redis_cache_enabled = true
 cidr_subnet_apim    = ["10.230.8.0/26"]
 apim_v2_zones       = ["1"]
@@ -168,7 +148,7 @@ base_path_nodo_web_bo         = "/web-bo-sit"
 base_path_nodo_web_bo_history = "/web-bo-history-sit"
 dns_zone_wisp2                = "dev.wisp2"
 base_path_nodo_oncloud        = "/nodo-sit"
-
+dns_zone_checkout             = "dev.checkout"
 
 
 ehns_public_network_access = true
@@ -749,6 +729,7 @@ upload_endpoint_enabled                 = true
 app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it-stable"
 app_gateway_management_certificate_name = "management-dev-platform-pagopa-it-stable"
 app_gateway_wisp2_certificate_name      = "dev-wisp2-pagopa-it-stable"
+app_gateway_checkout_certificate_name   = "dev-checkout-pagopa-it"
 app_gateway_wisp2govit_certificate_name = ""
 app_gateway_wfespgovit_certificate_name = ""
 app_gateway_sku_name                    = "Standard_v2"

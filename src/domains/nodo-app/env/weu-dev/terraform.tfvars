@@ -41,11 +41,10 @@ nodo_user_node_pool = {
   node_tags          = { node_tag_1 : "1" },
   nodo_pool_max_pods = "250",
 }
-
-aks_cidr_subnet = ["10.1.0.0/17"]
-
-cidr_subnet_vmss               = ["10.230.8.144/28"]
-lb_frontend_private_ip_address = "10.230.8.150"
+cidr_subnet_vmss                           = ["10.230.8.144/28"]
+nodo_re_to_datastore_function_subnet       = ["10.1.178.0/24"]
+nodo_verifyko_to_datastore_function_subnet = ["10.1.188.0/24"]
+lb_frontend_private_ip_address             = "10.230.8.150"
 
 route_aks = [
   {
@@ -102,8 +101,6 @@ nodo_re_to_datastore_function = {
   sku_tier                     = "Basic"
   maximum_elastic_worker_count = null
 }
-nodo_re_to_datastore_function_always_on       = true
-nodo_re_to_datastore_function_subnet          = ["10.1.178.0/24"]
 nodo_re_to_datastore_network_policies_enabled = false
 nodo_re_to_datastore_function_autoscale = {
   default = 1
@@ -134,8 +131,6 @@ nodo_verifyko_to_datastore_function = {
   zone_balancing_enabled       = false
 
 }
-nodo_verifyko_to_datastore_function_always_on       = true
-nodo_verifyko_to_datastore_function_subnet          = ["10.1.188.0/24"]
 nodo_verifyko_to_datastore_network_policies_enabled = false
 nodo_verifyko_to_datastore_function_autoscale = {
   default = 1
@@ -158,30 +153,6 @@ nodo_verifyko_to_tablestorage_function_autoscale = {
   minimum = 1
   maximum = 3
 }
-
-app_gateway_allowed_paths_pagopa_onprem_only = {
-  paths = [
-    "/allowed/*",
-  ]
-  ips = [
-    "0.0.0.0",
-    "0.0.0.0",
-    "0.0.0.0",
-    "0.0.0.0",
-    "0.0.0.0",
-    "0.0.0.0",
-    "0.0.0.0",
-    "0.0.0.0",
-    "0.0.0.0",
-    "0.0.0.0",
-  ]
-}
-
-
-# node forwarder
-nodo_pagamenti_x_forwarded_for = "10.230.8.5"
-
-
 storage_account_info = {
   account_kind                      = "StorageV2"
   account_tier                      = "Standard"

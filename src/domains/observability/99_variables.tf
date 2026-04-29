@@ -34,11 +34,6 @@ variable "domain" {
   }
 }
 
-variable "location" {
-  type        = string
-  description = "One of westeurope, northeurope"
-}
-
 variable "location_short" {
   type = string
   validation {
@@ -63,11 +58,6 @@ variable "location_short_itn" {
     error_message = "Length must be 3 chars."
   }
   description = "itn"
-}
-
-variable "instance" {
-  type        = string
-  description = "One of beta, prod01, prod02"
 }
 
 
@@ -121,30 +111,6 @@ variable "dexp_pm_db" {
   }
 }
 
-variable "dexp_re_db_linkes_service" {
-  type = object({
-    enable = bool
-  })
-}
-
-variable "app_forwarder_enabled" {
-  type        = bool
-  description = "Enable app_forwarder"
-  default     = false
-}
-
-variable "external_domain" {
-  type        = string
-  default     = null
-  description = "Domain for delegation"
-}
-
-variable "apim_dns_zone_prefix" {
-  type        = string
-  default     = null
-  description = "The dns subdomain for apim."
-}
-
 // observability
 variable "observability_storage_account_replication_type" {
   type        = string
@@ -174,24 +140,6 @@ variable "observability_sa_backup_retention_days" {
   type        = number
   description = "Number of days to retain backups."
   default     = 0
-}
-
-variable "observability_sa_tier_to_cool_after_last_access" {
-  type        = number
-  description = "Number of days since last access to blob before moving to cool tier"
-  default     = 183
-}
-
-variable "observability_tier_to_archive_after_days_since_last_access_time_greater_than" {
-  type        = number
-  description = "Number of days since last access to blob before moving to archive tier"
-  default     = 730
-}
-
-variable "observability_sa_delete_after_last_access" {
-  type        = number
-  description = "Number of days since modification to blob before deleting"
-  default     = 3650
 }
 
 variable "cidr_subnet_observability_storage" {
@@ -233,11 +181,6 @@ variable "ehns_maximum_throughput_units" {
 variable "ehns_auto_inflate_enabled" {
   type        = bool
   description = "Is Auto Inflate enabled for the EventHub Namespace?"
-}
-
-variable "ehns_zone_redundant" {
-  type        = bool
-  description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
 }
 
 variable "ehns_alerts_enabled" {
@@ -327,11 +270,6 @@ variable "eventhubs" {
   default = []
 }
 
-variable "cidr_subnet_observability_evh" {
-  type        = list(string)
-  description = "Address prefixes evh"
-}
-
 # evh subnet + topics GPD & Debezium
 
 variable "eventhubs_gpd" {
@@ -349,11 +287,6 @@ variable "eventhubs_gpd" {
     }))
   }))
   default = []
-}
-
-variable "cidr_subnet_observability_gpd_evh" {
-  type        = list(string)
-  description = "Address prefixes evh"
 }
 
 # GPD ingestion sa
@@ -380,12 +313,3 @@ variable "gpd_ingestion_storage_account" {
   }
 }
 
-variable "is_feature_enabled" {
-  type = object({
-
-  })
-
-  default = {
-  }
-
-}
