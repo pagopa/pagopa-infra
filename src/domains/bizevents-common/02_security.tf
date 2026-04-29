@@ -273,21 +273,6 @@ resource "azurerm_key_vault_secret" "biz_view_azurewebjobsstorage" {
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "payment_manager_subscription_key" {
-  name         = "payment-manager-subscription-key"
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "elastic_otl_secret_token" {
   name         = "elastic-otl-secret-token"
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
@@ -321,21 +306,6 @@ resource "azurerm_key_vault_secret" "redis_hostname" {
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
-}
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "tokenizer_api_key" {
-  name         = "tokenizer-api-key"
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
