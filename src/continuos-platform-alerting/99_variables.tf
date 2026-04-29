@@ -197,3 +197,29 @@ variable "redis_metric_alerts" {
     }
   }
 }
+
+
+variable "custom_action_group" {
+
+  description = <<EOD
+  Map of name = criteria objects
+  EOD
+
+  type = map(list(object({
+    action_group_name  = string
+  })))
+
+  default = {
+    continuos-action-default = [
+      {
+        action_group_name  = "test"
+      },
+      {
+        action_group_name  = "test"
+      },
+      {
+        action_group_name  = "test"
+      }
+    ]
+  }
+}

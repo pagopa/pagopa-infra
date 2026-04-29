@@ -24,25 +24,13 @@ locals {
 
   network_watcher_rg_name = "NetworkWatcherRG"
 
-  alerting_domains = ["gps", "fdr", "nodo", "crusc8", "pay-wallet", "core"]
+  alerting_domains = ["gps", "fdr", "nodo", "crusc8", "paywallet", "core"]
 
   azure_postgresql_resource_type = "Microsoft.DBforPostgreSQL/flexibleServers"
   azure_redis_resource_type = "Microsoft.Cache/Redis"
 
-  # custom_action_group = [
-  #   {
-  #     action_group_id    = data.azurerm_monitor_action_group.email.id
-  #     webhook_properties = null
-  #   },
-  #   {
-  #     action_group_id    = data.azurerm_monitor_action_group.slack.id
-  #     webhook_properties = null
-  #   },
-  #   {
-  #     action_group_id    = data.azurerm_monitor_action_group.opsgenie[0].id
-  #     webhook_properties = null
-  #   }
-  #   ]
+  monitor_resource_group_name = "${local.product}-monitor-rg"
+
 }
 
   

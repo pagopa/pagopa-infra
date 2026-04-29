@@ -37,11 +37,34 @@ locals {
             frequency = m.frequency
             window_size = m.window_size
             severity = m.severity
+            action_group = try(var.custom_action_group["${rp.redis_name}-${m.metric_name}"], try(var.custom_action_group[rp.redis_name], var.custom_action_group["default"]))
         }
     ]
   ])
+
+  redis_action_group_map = flatten([
+    for rp in local.redis_resource_metric_map : [
+        for ag in rp.action_group : {
+            redis_name = rp.redis_name
+            metric_name = rp.metric_name
+            action_group_name = ag.action_group_name
+        }
+    ]
+  ])
+
+  
 }
 
+data "azurerm_monitor_action_group" "all_action_groups" {
+  for_each = { for idx, val in local.redis_action_group_map : "${val.redis_name}-${val.metric_name}-${val.action_group_name}" => val }
+
+  resource_group_name = local.monitor_resource_group_name
+  name                = each.value.action_group_name
+}
+
+output "test" {
+  value = data.azurerm_monitor_action_group.all_action_groups
+}
 resource "azurerm_monitor_metric_alert" "redis_alerts" {
   for_each = { for idx, val in local.redis_resource_metric_map : "${val.redis_name}-${val.metric_name}" => val }
 
@@ -53,15 +76,15 @@ resource "azurerm_monitor_metric_alert" "redis_alerts" {
   window_size         = each.value.window_size
   severity            = each.value.severity
 
-#   dynamic "action" {
-#     for_each = var.alert_action
-#     content {
-#       # action_group_id - (required) is a type of string
-#       action_group_id = action.value["action_group_id"]
-#       # webhook_properties - (optional) is a type of map of string
-#       webhook_properties = action.value["webhook_properties"]
-#     }
-#   }
+  dynamic "action" {
+    for_each = data.azurerm_monitor_action_group.all_action_groups
+    content {
+      # action_group_id - (required) is a type of string
+      action_group_id = action.value["id"]
+      # webhook_properties - (optional) is a type of map of string
+      webhook_properties = null
+    }
+  }
 
   criteria {
     aggregation      = each.value.aggregation
