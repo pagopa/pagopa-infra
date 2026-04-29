@@ -589,7 +589,7 @@
                       "grouping": {
                         "dimension": "PhysicalPartitionId",
                         "sort": 2,
-                        "top": 10
+                        "top": 50
                       }
                     }
                   }
@@ -785,12 +785,12 @@
                 "value": "Past 4 hours"
               },
               "filteredPartIds": [
-                "StartboardPart-MonitorChartPart-18997715-c09f-40ea-9f12-55436220f112",
-                "StartboardPart-MonitorChartPart-18997715-c09f-40ea-9f12-55436220f114",
-                "StartboardPart-MonitorChartPart-18997715-c09f-40ea-9f12-55436220f10a",
-                "StartboardPart-MonitorChartPart-18997715-c09f-40ea-9f12-55436220f10c",
-                "StartboardPart-MonitorChartPart-18997715-c09f-40ea-9f12-55436220f10e",
-                "StartboardPart-MonitorChartPart-18997715-c09f-40ea-9f12-55436220f110"
+                "StartboardPart-MonitorChartPart-0543dab1-16c3-4d28-9d54-d699375cf367",
+                "StartboardPart-MonitorChartPart-0543dab1-16c3-4d28-9d54-d699375cf369",
+                "StartboardPart-MonitorChartPart-0543dab1-16c3-4d28-9d54-d699375cf36b",
+                "StartboardPart-MonitorChartPart-0543dab1-16c3-4d28-9d54-d699375cf36d",
+                "StartboardPart-MonitorChartPart-0543dab1-16c3-4d28-9d54-d699375cf36f",
+                "StartboardPart-MonitorChartPart-0543dab1-16c3-4d28-9d54-d699375cf371"
               ]
             }
           }
