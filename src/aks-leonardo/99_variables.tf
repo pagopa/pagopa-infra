@@ -200,3 +200,12 @@ variable "enable_elastic_agent" {
   type    = bool
   default = true
 }
+
+variable "non_critical_nodepool" {
+  type = object({
+    idh_tier = string
+    min_size = number
+    max_size = number
+  })
+  description = "The non critical nodepool configuration"
+}

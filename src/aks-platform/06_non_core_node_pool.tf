@@ -7,15 +7,10 @@ module "non_critical_node_pool" {
   idh_resource_tier = var.non_critical_nodepool.idh_tier
 
   name                  = "noncrit"
-  kubernetes_cluster_id = module.aks_leonardo.id
+  kubernetes_cluster_id = module.aks.id
 
-  embedded_subnet = {
-    enabled      = true
-    vnet_name    = data.azurerm_virtual_network.vnet_ita.name
-    vnet_rg_name = data.azurerm_virtual_network.vnet_ita.resource_group_name
-    subnet_name  = "${local.project}-non-critical"
-    natgw_id     = null
-  }
+  vnet_subnet_id = module.aks_snet.id
+
 
   node_count_min = var.non_critical_nodepool.min_size
   node_count_max = var.non_critical_nodepool.max_size

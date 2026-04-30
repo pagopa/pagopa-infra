@@ -131,3 +131,8 @@ tls_checker_https_endpoints_to_check = [
     helm_present   = true,
   },
 ]
+non_critical_nodepool = {
+  idh_tier = "Standard_D4ds_noncore",
+  min_size = 3,
+  max_size = 3,
+}
