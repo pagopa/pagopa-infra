@@ -1,0 +1,58 @@
+<policies>
+    <inbound>
+      <base />
+      <check-header name="x-fiscal-code" failed-check-httpcode="400" failed-check-error-message="Bad Request" ignore-case="true" />
+      <set-variable name="nav" value="@(context.Request.MatchedParameters["nav"])" />
+      <rate-limit-by-key calls="50" renewal-period="5" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For",""))" remaining-calls-variable-name="remainingCallsPerIp"/>
+      <rate-limit-by-key calls="10" renewal-period="5" counter-key="@((string)context.Variables["nav"])" remaining-calls-variable-name="remainingCallsPerNav"/>
+      <rate-limit-by-key calls="10" renewal-period="5" counter-key="@(context.Request.Headers.GetValueOrDefault("x-fiscal-code",""))" remaining-calls-variable-name="remainingCallsPerFiscalCode"/>
+      <set-variable name="authToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
+      <set-variable name="tokenSecret" value="{{search-transactions-token-secret-value}}" />
+      <choose>
+        <when condition="@(((string)context.Variables["authToken"]) != ((string)context.Variables["tokenSecret"]))">
+          <return-response>
+            <set-status code="401"/>
+            <set-header name="Content-Type" exists-action="override">
+              <value>application/json</value>
+            </set-header>
+            <set-body>@{
+              return new JObject(
+              new JProperty("title", "Unauthorized"),
+              new JProperty("status", 401),
+              new JProperty("detail", "Invalid Token"))
+              .ToString();
+              }
+            </set-body>
+          </return-response>
+        </when>
+      </choose>
+      <choose>
+        <when condition="@(!((string)context.Variables["nav"]).StartsWith("${cie_search_segragation_code}"))">
+          <return-response>
+              <set-status code="403"/>
+              <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+              </set-header>
+              <set-body>@{
+                return new JObject(
+                new JProperty("title", "Forbidden"),
+                new JProperty("status", 403),
+                new JProperty("detail", "Invalid NAV matching"))
+                .ToString();
+                }
+              </set-body>
+            </return-response>
+        </when>
+      </choose>
+      <set-backend-service base-url="https://${hostname}/pagopa-biz-events-service" />
+    </inbound>
+    <outbound>
+      <base />
+    </outbound>
+    <backend>
+        <base />
+    </backend>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

@@ -3,7 +3,7 @@
 ##############
 
 module "apim_api_config_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "product-api-config"
   display_name = "ApiConfig JWT"
@@ -38,12 +38,12 @@ locals {
   hostname = var.env == "prod" ? "weuprod.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
 
   pagopa_tenant_id       = data.azurerm_client_config.current.tenant_id
-  apiconfig_be_client_id = data.azuread_application.apiconfig-be.application_id
-  apiconfig_fe_client_id = data.azuread_application.apiconfig-fe.application_id
+  apiconfig_be_client_id = data.azuread_application.apiconfig-be.client_id
+  apiconfig_fe_client_id = data.azuread_application.apiconfig-fe.client_id
 }
 
 module "apim_api_config_api" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-api-config-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
@@ -90,7 +90,7 @@ resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
   resource_group_name          = local.pagopa_apim_rg
   display_name                 = "apiconfig-oauth2"
   authorization_endpoint       = "https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize"
-  client_id                    = data.azuread_application.apiconfig-fe.application_id
+  client_id                    = data.azuread_application.apiconfig-fe.client_id
   client_registration_endpoint = "http://localhost"
 
   grant_types           = ["authorizationCode"]
@@ -115,7 +115,7 @@ resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
 ########################
 
 module "apim_api_config_auth_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "product-api-config-auth"
   display_name = "ApiConfig SubKey"
@@ -157,7 +157,7 @@ resource "azurerm_api_management_api_version_set" "api_config_auth_api" {
 }
 
 module "apim_api_config_auth_api" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-api-config-auth-api", var.env_short)
   api_management_name   = local.pagopa_apim_name

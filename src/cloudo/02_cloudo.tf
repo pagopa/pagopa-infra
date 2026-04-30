@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "cloudo" {
-  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=f8ab4885996f4114dd255797d2b47dee09ed13af" #0.15.2
+  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=6615a633c7128b6796511f4eb622d56ead005672" #0.16.0
 
   prefix                    = local.product
   product_name              = var.prefix
@@ -20,8 +20,9 @@ module "cloudo" {
   vnet_name                 = data.azurerm_virtual_network.network_tools_vnet.name
   vnet_rg                   = data.azurerm_virtual_network.network_tools_vnet.resource_group_name
 
-  cloudo_function_tier = var.cloudo_function_tier
-  cloudo_ui_tier       = var.cloudo_ui_tier
+  cloudo_function_tier   = var.cloudo_function_tier
+  cloudo_ui_tier         = var.cloudo_ui_tier
+  autoscale_max_capacity = var.env == "p" ? 3 : 1
 
   vpn_subnet_id                  = data.azurerm_subnet.vpn_subnet.id
   private_endpoint_dns_zone_name = data.azurerm_private_dns_zone.private_endpoint_dns_zone.name

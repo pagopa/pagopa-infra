@@ -19,7 +19,7 @@ enabled_features = {
 }
 
 trino_xmx = "8G"
-vmss_size = "Standard_D4ds_v5"
+vmss_size = "Standard_D8ds_v5"
 
 external_database_connection = {
   nexi = {

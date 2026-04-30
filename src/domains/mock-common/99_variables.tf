@@ -73,20 +73,9 @@ variable "log_analytics_workspace_resource_group_name" {
   description = "The name of the resource group in which the Log Analytics workspace is located in."
 }
 
-variable "application_insights_name" {
-  type        = string
-  description = "Specifies the name of the Application Insights."
-}
-
 variable "mock_ec_enabled" {
   type        = bool
   description = "Mock EC enabled"
-  default     = false
-}
-
-variable "mock_ec_secondary_enabled" {
-  type        = bool
-  description = "Mock Secondary EC enabled"
   default     = false
 }
 
@@ -100,12 +89,6 @@ variable "mock_ec_always_on" {
   type        = bool
   description = "Mock EC always on property"
   default     = false
-}
-
-variable "mock_ec_tier" {
-  type        = string
-  description = "Mock EC Plan tier"
-  default     = "Standard"
 }
 
 variable "mock_ec_size" {
@@ -124,12 +107,6 @@ variable "mock_payment_gateway_always_on" {
   type        = bool
   description = "Mock payment gateway always on property"
   default     = false
-}
-
-variable "mock_payment_gateway_tier" {
-  type        = string
-  description = "Mock payment gateway Plan tier"
-  default     = "Standard"
 }
 
 variable "mock_payment_gateway_size" {

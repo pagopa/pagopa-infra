@@ -136,12 +136,6 @@ variable "cidr_subnet_receipts_datastore_storage" {
 }
 
 
-variable "receipts_datastore_fn_sa_enable_versioning" {
-  type        = bool
-  description = "Enable sa versioning"
-  default     = false
-}
-
 variable "receipts_datastore_fn_sa_advanced_threat_protection" {
   type        = bool
   description = "Enable contract threat advanced protection"
@@ -176,42 +170,6 @@ variable "receipts_datastore_fn_sa_delete_after_last_access" {
   type        = number
   description = "Number of days since modification to blob before deleting"
   default     = 3650
-}
-
-variable "receipts_datastore_queue_fn_sa_advanced_threat_protection" {
-  type        = bool
-  description = "Enable contract threat advanced protection"
-  default     = false
-}
-
-variable "receipts_datastore_queue_fn_sa_delete_retention_days" {
-  type        = number
-  description = "Number of days to retain deleted."
-  default     = 30
-}
-
-variable "enable_iac_pipeline" {
-  type        = bool
-  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
-  default     = false
-}
-
-variable "receipts_max_retry_queuing" {
-  type        = number
-  description = "Max retry queuing when the node calling fails."
-  default     = 5
-}
-
-variable "receipts_queue_retention_sec" {
-  type        = number
-  description = "The maximum time to allow the message to be in the queue."
-  default     = 86400
-}
-
-variable "receipts_queue_delay_sec" {
-  type        = number
-  description = "The length of time during which the message will be invisible, starting when it is added to the queue."
-  default     = 3600
 }
 
 

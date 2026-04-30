@@ -7,7 +7,7 @@ IFS="," read -ra  all_mongodb_item <<< "${mongodb_map}"
 for mongodb_item in "$${all_mongodb_item[@]}"
 do
     IFS="|" read -ra mongodb <<< "$mongodb_item"
-    echo "connector.name=mongodb" >> trino-server-477/etc/catalog/$${mongodb[0]}.properties
+    echo "connector.name=mongodb" > trino-server-477/etc/catalog/$${mongodb[0]}.properties
     echo "mongodb.connection-url=$${mongodb[1]}&readPreference=secondary" >> trino-server-477/etc/catalog/$${mongodb[0]}.properties
 done
 EOF

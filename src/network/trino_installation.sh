@@ -16,4 +16,5 @@ sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk-24.0.2/
 sudo update-alternatives --install /usr/bin/jar jar /usr/lib/jvm/jdk-24.0.2/bin/jar 1
 
 tar -zxvf trino-server-477.tar.gz
+
 pwd

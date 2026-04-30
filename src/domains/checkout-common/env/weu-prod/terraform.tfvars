@@ -8,16 +8,9 @@ location_short = "weu"
 
 ### External resources
 
-monitor_resource_group_name                 = "pagopa-p-monitor-rg"
-log_analytics_workspace_name                = "pagopa-p-law"
-log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
-
-# DNS
-
-external_domain          = "pagopa.it"
-dns_zone_prefix          = "platform"
-dns_zone_checkout        = "checkout"
-dns_zone_internal_prefix = "internal.platform"
+monitor_resource_group_name = "pagopa-p-monitor-rg"
+external_domain             = "pagopa.it"
+dns_zone_internal_prefix    = "internal.platform"
 
 # Networking
 
@@ -25,16 +18,6 @@ ingress_load_balancer_ip = "10.1.100.250"
 
 
 # Checkout Redis parameters: Premium
-redis_checkout_params = {
-  capacity   = 1
-  sku_name   = "Premium"
-  family     = "P"
-  version    = 6
-  ha_enabled = true
-  zones      = [1, 2, 3],
-}
-
-# Checkout Redis parameters: Standard
 redis_checkout_params_std = {
   capacity   = 1
   sku_name   = "Standard"

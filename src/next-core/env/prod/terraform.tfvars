@@ -4,13 +4,7 @@ env                = "prod"
 domain             = "core"
 location           = "westeurope"
 location_short     = "weu"
-location_string    = "West Europe"
-location_ita       = "italynorth"
 location_short_ita = "itn"
-instance           = "prod"
-
-
-### Feature Flag
 is_feature_enabled = {
   vnet_ita                  = false,
   container_app_tools_cae   = true,
@@ -29,13 +23,11 @@ is_feature_enabled = {
 cidr_vnet = ["10.1.0.0/16"]
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
-cidr_vnet_integration = ["10.230.10.0/24"] # ask to SIA
-
-cidr_vnet_italy                   = ["10.3.0.0/16"]
-cidr_subnet_appgateway            = ["10.1.128.0/24"]
+cidr_vnet_integration             = ["10.230.10.0/24"] # ask to SIA
 cidr_subnet_dns_forwarder_backup  = ["10.1.251.0/29"]
 cidr_subnet_tools_cae             = ["10.1.248.0/23"]
 cidr_subnet_azdoa                 = ["10.1.130.0/24"]
+cidr_subnet_appgateway            = ["10.1.128.0/24"]
 cidr_subnet_eventhub              = ["10.230.10.64/26"]
 cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
 cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
@@ -57,20 +49,12 @@ route_table_peering_sia_additional_routes = [
 # Dns
 #
 external_domain                      = "pagopa.it"
-dns_zone_internal_prefix             = "internal.platform"
-dns_zone_wfesp                       = "wfesp"
 private_dns_zone_db_nodo_pagamenti   = "p.db-nodo-pagamenti.com"
 dns_a_reconds_dbnodo_ips             = ["10.102.175.23", "10.102.175.24"] # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
 dns_a_reconds_dbnodo_ips_dr          = ["10.101.175.23", "10.101.175.24"] # authdbsep01-vip.carte.local   NAT 10.250.45.145 authdbsep02-vip.carte.local   NAT 10.250.45.146 authdbpep01-vip.carte.local   NAT 10.250.45.147 authdbpep02-vip.carte.local   NAT 10.250.45.148
 dns_a_reconds_dbnodonexipostgres_ips = ["10.102.1.93"]
-
+dns_zone_wfesp                       = "wfesp"
 ### External resources
-
-monitor_resource_group_name                 = "pagopa-p-monitor-rg"
-log_analytics_workspace_name                = "pagopa-p-law"
-log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
-
-### VPN
 dns_forwarder_vm_image_name = "pagopa-p-dns-forwarder-ubuntu2204-image-v1"
 
 
@@ -161,8 +145,6 @@ apim_v2_alerts_enabled           = true
 dns_zone_prefix                  = "platform"
 apim_v2_zones                    = ["1", "2", "3"]
 create_redis_multiaz             = true
-redis_zones                      = ["1", "2", "3"]
-redis_cache_enabled              = true
 apim_v2_autoscale = {
   enabled                       = true
   default_instances             = 3
@@ -211,9 +193,10 @@ base_path_nodo_fatturazione   = "/fatturazione-prd"
 base_path_nodo_web_bo         = "/web-bo-prd"
 base_path_nodo_web_bo_history = "/web-bo-history-prd"
 dns_zone_wisp2                = "wisp2"
+dns_zone_checkout             = "checkout"
 base_path_nodo_oncloud        = "/nodo-prd"
 
-
+redis_cache_enabled = true
 
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
 ehns_auto_inflate_enabled        = true
@@ -221,8 +204,6 @@ ehns_maximum_throughput_units    = 10
 ehns_03_maximum_throughput_units = 10
 ehns_03_capacity                 = 10
 ehns_04_capacity                 = 7
-ehns_zone_redundant              = true
-ehns_03_zone_redundant           = true
 ehns_public_network_access       = true
 
 ehns03_metric_alerts = {
@@ -787,6 +768,7 @@ app_gateway_management_certificate_name = "management-platform-pagopa-it-stable"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it-stable"
 app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
 app_gateway_wfespgovit_certificate_name = "wfesp-pagopa-gov-it"
+app_gateway_checkout_certificate_name   = "checkout-pagopa-it"
 app_gateway_min_capacity                = 15 # 5 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
 app_gateway_max_capacity                = 100
 app_gateway_sku_name                    = "WAF_v2"

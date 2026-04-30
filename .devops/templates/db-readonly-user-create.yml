@@ -42,6 +42,7 @@ steps:
           USER=$1
           PASS=$2
           az config set extension.use_dynamic_install=yes_without_prompt
+          az extension add --name rdbms-connect
           az postgres flexible-server execute --name ${{ parameters.DB_HOST }} --admin-user $(${{parameters.ADMIN_LOGIN_KEY}}) \
           --admin-password '$(${{parameters.ADMIN_PWD_KEY}})' --database-name "${{ parameters.DATABASE_NAME }}" \
           --querytext "

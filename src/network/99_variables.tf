@@ -89,7 +89,7 @@ variable "trino_xmx" {
 }
 variable "vmss_size" {
   type    = string
-  default = "Standard_D2ds_v5"
+  default = "Standard_D4ds_v5"
 }
 
 variable "external_database_connection" {

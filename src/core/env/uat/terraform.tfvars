@@ -1,15 +1,6 @@
 # general
-env_short          = "u"
-env                = "uat"
-location           = "westeurope"
-location_short     = "weu"
-location_ita       = "italynorth"
-location_short_ita = "itn"
-
-
-#
-# Feature flag
-#
+env_short = "u"
+env       = "uat"
 enabled_features = {
   vnet_ita          = false
   node_forwarder_ha = false
@@ -20,26 +11,10 @@ enabled_features = {
 # networking
 
 # common
-cidr_subnet_postgresql           = ["10.1.129.0/24"]
-cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"] #placeholder
-
-
-
-# specific
-
-cidr_subnet_api_config = ["10.230.9.128/29"]
-
-# dns
-external_domain     = "pagopa.it"
-dns_zone_prefix     = "uat.platform"
-dns_zone_prefix_prf = "prf.platform"
-dns_zone_checkout   = "uat.checkout"
-dns_zone_selc       = "selfcare.uat.platform"
-
-
-
-
-# app_gateway
+cidr_subnet_postgresql = ["10.1.129.0/24"]
+external_domain        = "pagopa.it"
+dns_zone_prefix        = "uat.platform"
+dns_zone_prefix_prf    = "prf.platform"
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
     "/web-bo/.*",
@@ -77,14 +52,7 @@ postgres_private_endpoint_enabled = false
 # apim x nodo pagamenti
 apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
-
-
-apim_fdr_nodo_pagopa_enable = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
-# https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
-
-
-
-nodo_auth_subscription_limit = 10000
+nodo_auth_subscription_limit    = 10000
 
 
 # ecommerce ingress hostname
@@ -97,14 +65,6 @@ ecommerce_ingress_hostname = "weuuat.ecommerce.internal.uat.platform.pagopa.it"
 
 
 # payment-manager clients
-io_bpd_hostname    = "portal.test.pagopa.gov.it" #TO UPDATE with uat hostname
-xpay_hostname      = "int-ecommerce.nexi.it"
-paytipper_hostname = "st.paytipper.com"
-bpd_hostname       = "api.uat.cstar.pagopa.it"
-cobadge_hostname   = "portal.test.pagopa.gov.it"
-fesp_hostname      = "portal.test.pagopa.gov.it"
-satispay_hostname  = "mock-ppt-lmi-npa-sit.ocp-tst-npaspc.sia.eu/satispay/v1/consumers"
-
 cstar_outbound_ip_1 = "20.93.160.60"
 cstar_outbound_ip_2 = "20.76.182.7"
 

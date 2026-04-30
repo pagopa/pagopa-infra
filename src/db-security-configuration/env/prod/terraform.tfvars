@@ -14,6 +14,16 @@ databases = {
     password_secret_kv_rg   = "pagopa-p-itn-core-sec-rg"
     password_secret_key     = "metabase-reader-password"
   }
+  GPS_STORICO = {
+    type                    = "postgresql"
+    host                    = "pagopa-p-itn-gpd-storico-pgflex.postgres.database.azure.com"
+    db_name                 = "apd"
+    username                = "metabase"
+    password_required       = true
+    password_secret_kv_name = "pagopa-p-itn-core-kv"
+    password_secret_kv_rg   = "pagopa-p-itn-core-sec-rg"
+    password_secret_key     = "metabase-reader-password"
+  }
   Cruscotto = {
     type                    = "postgresql"
     host                    = "pagopa-p-itn-crusc8-flexible-postgresql.postgres.database.azure.com"

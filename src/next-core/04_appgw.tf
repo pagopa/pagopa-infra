@@ -71,6 +71,22 @@ locals {
       }
     }
 
+    checkout = {
+      protocol           = "Https"
+      host               = format("%s.%s", var.dns_zone_checkout, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.product)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_checkout_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.checkout.secret_id,
+          "/${data.azurerm_key_vault_certificate.checkout.version}",
+          ""
+        )
+      }
+    }
 
   }
   public_listeners_apiprf = {
@@ -177,6 +193,12 @@ locals {
       priority              = 60
     }
 
+    checkout = {
+      listener              = "checkout"
+      backend               = "checkout"
+      rewrite_rule_set_name = "rewrite-rule-set-checkout"
+      priority              = 40
+    }
 
   }
 
@@ -228,6 +250,18 @@ locals {
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
       request_timeout             = 120
+      pick_host_name_from_backend = false
+    }
+
+    checkout = {
+      protocol                    = "Https"
+      host                        = format("%s.%s", var.dns_zone_checkout, var.external_domain)
+      port                        = 443
+      ip_addresses                = module.apim[0].private_ip_addresses
+      fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
+      probe                       = "/status-0123456789abcdef"
+      probe_name                  = "probe-checkout"
+      request_timeout             = 30
       pick_host_name_from_backend = false
     }
 
@@ -414,6 +448,28 @@ locals {
           url = {
             components   = "path_only"
             path         = "notfound"
+            query_string = null
+          }
+        },
+      ]
+    },
+    {
+      name = "rewrite-rule-set-checkout"
+      rewrite_rules = [
+        {
+          name          = "root-base-path-redirect"
+          rule_sequence = 1
+          conditions = [{
+            variable    = "var_host"
+            pattern     = format("%s.%s", var.dns_zone_checkout, var.external_domain)
+            ignore_case = true
+            negate      = false
+          }]
+          request_header_configurations  = []
+          response_header_configurations = []
+          url = {
+            components   = "path_only"
+            path         = "/checkout-fe{var_uri_path}"
             query_string = null
           }
         },
