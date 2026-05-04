@@ -279,23 +279,3 @@ module "checkout_fe_frontdoor_web_test" {
   metric_window_size                    = "PT1H"
   retry_enabled                         = true
 }
-
-# Outputs for CDN
-# These outputs are useful before DNS switch for:
-# - Testing the Front Door via .azurefd.net URL
-# - Verifying storage account name for pipeline configuration
-# After DNS switch, access via custom domain (e.g. checkout.pagopa.it) instead and remove these outputs
-output "checkout_cdn_endpoint" {
-  value       = module.checkout_cdn_frontdoor.hostname
-  description = "CDN endpoint hostname"
-}
-
-output "checkout_cdn_fqdn" {
-  value       = module.checkout_cdn_frontdoor.fqdn
-  description = "CDN FQDN"
-}
-
-output "checkout_cdn_storage_account_name" {
-  value       = module.checkout_cdn_frontdoor.storage_name
-  description = "CDN storage account name"
-}
