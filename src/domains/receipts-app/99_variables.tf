@@ -122,8 +122,3 @@ variable "pod_disruption_budgets" {
   default     = {}
 }
 
-variable "gh_runner_job_location" {
-  type        = string
-  description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
-  default     = "westeurope"
-}
