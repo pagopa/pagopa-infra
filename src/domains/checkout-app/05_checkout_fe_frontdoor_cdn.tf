@@ -210,16 +210,14 @@ locals {
 
 /**
  * Checkout resource group
- * NOTE: Currently defined in 05_checkout_fe.tf
- * After switch: uncomment this block and delete 05_checkout_fe.tf
  */
-# resource "azurerm_resource_group" "checkout_fe_rg" {
-#   count    = var.checkout_enabled ? 1 : 0
-#   name     = format("%s-checkout-fe-rg", local.parent_project)
-#   location = var.location
-#
-#   tags = module.tag_config.tags
-# }
+resource "azurerm_resource_group" "checkout_fe_rg" {
+  count    = var.checkout_enabled ? 1 : 0
+  name     = format("%s-checkout-fe-rg", local.parent_project)
+  location = var.location
+
+  tags = module.tag_config.tags
+}
 
 /**
  * CDN Front Door
