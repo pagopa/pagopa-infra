@@ -302,6 +302,7 @@
 | [azurerm_key_vault_certificate.app_gw_platform](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_certificate) | data source |
 | [azurerm_key_vault_certificate.app_gw_platform_prf](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_certificate) | data source |
 | [azurerm_key_vault_certificate.app_gw_platform_upload](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_certificate) | data source |
+| [azurerm_key_vault_certificate.checkout](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_certificate) | data source |
 | [azurerm_key_vault_certificate.management_platform](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_certificate) | data source |
 | [azurerm_key_vault_certificate.portal_platform](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_certificate) | data source |
 | [azurerm_key_vault_certificate.wfespgovit](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_certificate) | data source |
@@ -360,6 +361,7 @@
 | <a name="input_app_gateway_allowed_paths_pagopa_onprem_only"></a> [app\_gateway\_allowed\_paths\_pagopa\_onprem\_only](#input\_app\_gateway\_allowed\_paths\_pagopa\_onprem\_only) | Allowed paths from pagopa onprem only | <pre>object({<br/>    paths = list(string)<br/>    ips   = list(string)<br/>  })</pre> | n/a | yes |
 | <a name="input_app_gateway_allowed_paths_upload"></a> [app\_gateway\_allowed\_paths\_upload](#input\_app\_gateway\_allowed\_paths\_upload) | Allowed paths from pagopa for upload platform fqdn | `list(string)` | <pre>[<br/>  "/upload/gpd/.*",<br/>  "/nodo-auth/node-for-psp/.*",<br/>  "/nodo-auth/nodo-per-psp/.*",<br/>  "/nodo/nodo-per-psp/.*",<br/>  "/nodo/nodo-per-pa/.*",<br/>  "/nodo-auth/nodo-per-pa/.*",<br/>  "/nodo-auth/node-for-pa/.*",<br/>  "/nodo/node-for-psp/.*"<br/>]</pre> | no |
 | <a name="input_app_gateway_api_certificate_name"></a> [app\_gateway\_api\_certificate\_name](#input\_app\_gateway\_api\_certificate\_name) | Application gateway api certificate name on Key Vault | `string` | n/a | yes |
+| <a name="input_app_gateway_checkout_certificate_name"></a> [app\_gateway\_checkout\_certificate\_name](#input\_app\_gateway\_checkout\_certificate\_name) | Application gateway checkout certificate name on Key Vault | `string` | n/a | yes |
 | <a name="input_app_gateway_deny_paths"></a> [app\_gateway\_deny\_paths](#input\_app\_gateway\_deny\_paths) | Deny paths on app gateway | `list(string)` | `[]` | no |
 | <a name="input_app_gateway_deny_paths_2"></a> [app\_gateway\_deny\_paths\_2](#input\_app\_gateway\_deny\_paths\_2) | Deny paths on app gateway | `list(string)` | `[]` | no |
 | <a name="input_app_gateway_management_certificate_name"></a> [app\_gateway\_management\_certificate\_name](#input\_app\_gateway\_management\_certificate\_name) | Application gateway api management certificate name on Key Vault | `string` | n/a | yes |
@@ -419,6 +421,7 @@
 | <a name="input_dns_a_reconds_dbnodonexipostgres_prf_ips"></a> [dns\_a\_reconds\_dbnodonexipostgres\_prf\_ips](#input\_dns\_a\_reconds\_dbnodonexipostgres\_prf\_ips) | IPs address of DB Nodo PostgreSQL Nexi | `list(string)` | `[]` | no |
 | <a name="input_dns_default_ttl_sec"></a> [dns\_default\_ttl\_sec](#input\_dns\_default\_ttl\_sec) | value | `number` | `3600` | no |
 | <a name="input_dns_forwarder_vm_image_name"></a> [dns\_forwarder\_vm\_image\_name](#input\_dns\_forwarder\_vm\_image\_name) | Image name for dns forwarder | `string` | `null` | no |
+| <a name="input_dns_zone_checkout"></a> [dns\_zone\_checkout](#input\_dns\_zone\_checkout) | The checkout dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_prefix_prf"></a> [dns\_zone\_prefix\_prf](#input\_dns\_zone\_prefix\_prf) | The dns subdomain. | `string` | `""` | no |
 | <a name="input_dns_zone_wfesp"></a> [dns\_zone\_wfesp](#input\_dns\_zone\_wfesp) | The wfesp dns subdomain. | `string` | `null` | no |
