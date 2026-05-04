@@ -78,6 +78,11 @@ data "azurerm_key_vault_certificate" "wisp2" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_certificate" "checkout" {
+  name         = var.app_gateway_checkout_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_key_vault_certificate" "wisp2govit" {
   count = (var.app_gateway_wisp2govit_certificate_name == "") ? 0 : 1
 
