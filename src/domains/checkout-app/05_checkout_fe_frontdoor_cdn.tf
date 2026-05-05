@@ -228,7 +228,7 @@ module "checkout_cdn_frontdoor" {
   source = "./.terraform/modules/__v4__/cdn_frontdoor"
 
   cdn_prefix_name     = local.project
-  resource_group_name = azurerm_resource_group.checkout_fe_rg[0].name // refers to resource group in 05_checkout_fe.tf, to be changed after cleanup
+  resource_group_name = azurerm_resource_group.checkout_fe_rg[0].name
   location            = var.location
 
   https_rewrite_enabled = true
