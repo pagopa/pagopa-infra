@@ -29,7 +29,7 @@ locals {
   }
 
   # NPG SDK hostname (same as in CDN config)
-  checkout_frontend_npg_sdk_hostname = local.cdn_frontdoor_npg_sdk_hostname
+  checkout_frontend_npg_sdk_hostname = local.npg_sdk_hostname
 
   # Front Door endpoint hostname (referenced from the CDN module)
   checkout_frontend_fd_hostname = module.checkout_cdn_frontdoor.fqdn
