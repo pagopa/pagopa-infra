@@ -102,6 +102,23 @@ resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
   ]
 }
 
+resource "azurerm_key_vault_access_policy" "adgroup_external_dev_policy" {
+  count = var.env_short != "p" ? 1 : 0
+
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azuread_group.adgroup_developer_externals.object_id
+
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions  = ["Get", "List", "Set", "Delete", ]
+  storage_permissions = []
+  certificate_permissions = [
+    "Get", "List", "Update", "Create", "Import",
+    "Delete", "Restore", "Purge", "Recover"
+  ]
+}
+
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "adgroup_security_policy" {
   count = var.env_short == "d" ? 1 : 0
