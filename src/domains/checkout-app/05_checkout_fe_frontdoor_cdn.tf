@@ -1,10 +1,6 @@
 locals {
-  # Front Door CDN specific locals
-  # NOTE: After switching from Standard to Front Door, optionally rename these to match ecommerce pattern:
-  #   cdn_frontdoor_npg_sdk_hostname → npg_sdk_hostname
-  #   cdn_frontdoor_csp_header_name → content_security_policy_header_name
-  cdn_frontdoor_npg_sdk_hostname = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
-  cdn_frontdoor_csp_header_name  = "Content-Security-Policy"
+  npg_sdk_hostname = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
+  content_security_policy_header_name  = "Content-Security-Policy"
   cdn_storage_account_name       = "${local.project}cdnsa"
   cdn_index_document             = "index.html"
   cdn_error_document             = "index.html"
@@ -15,7 +11,7 @@ locals {
     " https://recaptcha.net/;",
     "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;",
     "img-src 'self' https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it https://privacyportalde-cdn.onetrust.com;",
-    "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://privacyportalde-cdn.onetrust.com https://${local.cdn_frontdoor_npg_sdk_hostname};",
+    "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://privacyportalde-cdn.onetrust.com https://${local.npg_sdk_hostname};",
     "style-src 'self'  'unsafe-inline' https://privacyportalde-cdn.onetrust.com; font-src 'self' https://privacyportalde-cdn.onetrust.com; worker-src www.recaptcha.net blob:;"
   ])
 
@@ -48,17 +44,17 @@ locals {
         # Content-Security-Policy
         {
           action = "Overwrite"
-          name   = local.cdn_frontdoor_csp_header_name
+          name   = local.content_security_policy_header_name
           value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://privacyportalde-cdn.onetrust.com https://privacyportal-de.onetrust.com", var.dns_zone_prefix, var.external_domain)
         },
         {
           action = "Append"
-          name   = local.cdn_frontdoor_csp_header_name
+          name   = local.content_security_policy_header_name
           value  = " https://recaptcha.net/;"
         },
         {
           action = "Append"
-          name   = local.cdn_frontdoor_csp_header_name
+          name   = local.content_security_policy_header_name
           value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;"
         }
       ]
@@ -68,17 +64,17 @@ locals {
       modify_response_header_actions = [
         {
           action = "Append"
-          name   = local.cdn_frontdoor_csp_header_name
+          name   = local.content_security_policy_header_name
           value  = "img-src 'self' https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it https://privacyportalde-cdn.onetrust.com;"
         },
         {
           action = "Append"
-          name   = local.cdn_frontdoor_csp_header_name
-          value  = "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://privacyportalde-cdn.onetrust.com https://${local.cdn_frontdoor_npg_sdk_hostname};"
+          name   = local.content_security_policy_header_name
+          value  = "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://privacyportalde-cdn.onetrust.com https://${local.npg_sdk_hostname};"
         },
         {
           action = "Append"
-          name   = local.cdn_frontdoor_csp_header_name
+          name   = local.content_security_policy_header_name
           value  = "style-src 'self'  'unsafe-inline' https://privacyportalde-cdn.onetrust.com; font-src 'self' https://privacyportalde-cdn.onetrust.com; worker-src www.recaptcha.net blob:;"
         },
         {
@@ -147,7 +143,7 @@ locals {
       request_header_conditions = [{
         selector         = "Origin"
         operator         = "Equal"
-        match_values     = ["https://${local.cdn_frontdoor_npg_sdk_hostname}"]
+        match_values     = ["https://${local.npg_sdk_hostname}"]
         transforms       = []
         negate_condition = false
       }]
@@ -161,7 +157,7 @@ locals {
       modify_response_header_actions = [{
         action = "Overwrite"
         name   = "Access-Control-Allow-Origin"
-        value  = "https://${local.cdn_frontdoor_npg_sdk_hostname}"
+        value  = "https://${local.npg_sdk_hostname}"
       }]
       url_redirect_actions = []
       url_rewrite_actions  = []
