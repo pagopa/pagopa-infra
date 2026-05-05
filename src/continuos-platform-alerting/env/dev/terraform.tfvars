@@ -12,9 +12,9 @@ custom_action_group = {
         action_group_name    = "SlackPagoPA"
       }
     ],
-    pagopa-d-redis = [
+    pagopa-d-redis-active_connections = [
       {
-        action_group_name    = "SlackPagoPA"
+        action_group_name    = "SlackPagoPANODO"
       },
       {
         action_group_name    = "PagoPA"
