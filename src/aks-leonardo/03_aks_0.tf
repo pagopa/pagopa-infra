@@ -93,6 +93,7 @@ module "aks_leonardo" {
 
   microsoft_defender_log_analytics_workspace_id        = var.env == "prod" ? data.azurerm_log_analytics_workspace.log_analytics_italy.id : null
   oms_agent_monitoring_metrics_role_assignment_enabled = false
+  # aligned prod configuration
   oms_agent_msi_auth_for_monitoring_enabled            = var.env_short == "p" ? false : true
   tags                                                 = module.tag_config.tags
 }
