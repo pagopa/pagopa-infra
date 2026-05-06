@@ -31,6 +31,22 @@ locals {
 
   monitor_resource_group_name = "${local.product}-monitor-rg"
 
+  global_custom_action_group = [
+    {
+      key              = "default"
+      action_groups    = [
+        { action_group_name = "PagoPA", resource_group_name = local.monitor_resource_group_name },
+        { action_group_name = "SlackPagoPA", resource_group_name = local.monitor_resource_group_name }
+      ]
+    },
+    {
+      key              = "${local.product}-redis-active_connections"
+      action_groups    = [
+        { action_group_name = "pagopa-d-cloudo-trigger", resource_group_name = "${local.product}-itn-cloudo-rg" },
+        { action_group_name = "PagoPA", resource_group_name = local.monitor_resource_group_name }
+      ]
+    }
+  ]
 }
 
   
