@@ -11,6 +11,11 @@ data "azuread_group" "adgroup_externals" {
   display_name = "${local.product}-adgroup-externals"
 }
 
+data "azuread_group" "adgroup_dev_externals" {
+  count        = var.env_short == "d" ? 1 : 0
+  display_name = "${local.product}-adgroup-developer-externals"
+}
+
 data "azuread_group" "adgroup_security" {
   display_name = "${local.product}-adgroup-security"
 }

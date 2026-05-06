@@ -66,3 +66,8 @@ nginx_helm_version       = "4.14.2"
 
 keda_helm_version    = "2.17.2"
 enable_elastic_agent = false
+non_critical_nodepool = {
+  idh_tier = "Standard_B4ms_noncore",
+  min_size = 1,
+  max_size = 3,
+}

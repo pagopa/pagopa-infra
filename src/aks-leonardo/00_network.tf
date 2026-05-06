@@ -37,3 +37,8 @@ data "azurerm_virtual_network" "vnet_hub_spoke" {
   name                = each.key
   resource_group_name = local.hub_spoke_vnet_rg_name
 }
+
+data "azurerm_nat_gateway" "pagopa_nat" {
+  name                = "${local.product}-natgw"
+  resource_group_name = local.vnet_core_resource_group_name
+}

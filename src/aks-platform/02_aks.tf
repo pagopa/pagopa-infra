@@ -5,6 +5,10 @@ resource "azurerm_resource_group" "aks_rg" {
   tags = module.tag_config.tags
 }
 
+locals {
+  non_prod_aks_admin_groups = var.env_short == "d" ? [data.azuread_group.adgroup_admin.object_id, data.azuread_group.adgroup_developers.object_id, data.azuread_group.adgroup_externals.object_id, data.azuread_group.adgroup_dev_externals[0].object_id] : [data.azuread_group.adgroup_admin.object_id, data.azuread_group.adgroup_developers.object_id, data.azuread_group.adgroup_externals.object_id]
+}
+
 
 module "aks" {
   source = "./.terraform/modules/__v4__//kubernetes_cluster"
@@ -82,7 +86,7 @@ module "aks" {
   }
   # end network
 
-  aad_admin_group_ids = var.env_short == "p" ? [data.azuread_group.adgroup_admin.object_id] : [data.azuread_group.adgroup_admin.object_id, data.azuread_group.adgroup_developers.object_id, data.azuread_group.adgroup_externals.object_id]
+  aad_admin_group_ids = var.env_short == "p" ? [data.azuread_group.adgroup_admin.object_id] : local.non_prod_aks_admin_groups
 
   addon_azure_policy_enabled                     = true
   addon_azure_key_vault_secrets_provider_enabled = true
