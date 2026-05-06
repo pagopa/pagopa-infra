@@ -27,21 +27,30 @@ locals {
   alerting_domains = ["gps", "fdr", "nodo", "crusc8", "paywallet", "core"]
 
   azure_postgresql_resource_type = "Microsoft.DBforPostgreSQL/flexibleServers"
-  azure_redis_resource_type = "Microsoft.Cache/Redis"
+  azure_redis_resource_type      = "Microsoft.Cache/Redis"
 
   monitor_resource_group_name = "${local.product}-monitor-rg"
 
+
+
+  # Action group aggiuntivi per ambiente — vuoto se non prod
+  env_action_groups = var.env_short == "p" ? [
+    { action_group_name = "Opsgenie", resource_group_name = local.monitor_resource_group_name },
+  ] : []
+
+
+
   global_custom_action_group = [
     {
-      key              = "default"
-      action_groups    = [
+      key = "default"
+      action_groups = concat(local.env_action_groups, [
         { action_group_name = "PagoPA", resource_group_name = local.monitor_resource_group_name },
         { action_group_name = "SlackPagoPA", resource_group_name = local.monitor_resource_group_name }
-      ]
+      ])
     },
     {
-      key              = "${local.product}-redis-active_connections"
-      action_groups    = [
+      key = "${local.product}-weu-nodo-storico-flexible-postgresql-active_connections"
+      action_groups = [
         { action_group_name = "pagopa-d-cloudo-trigger", resource_group_name = "${local.product}-itn-cloudo-rg" },
         { action_group_name = "PagoPA", resource_group_name = local.monitor_resource_group_name }
       ]

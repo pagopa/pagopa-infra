@@ -3,21 +3,5 @@ location_short = "itn"
 
 
 
-custom_action_group = {
-    default = [
-      {
-        action_group_name    = "PagoPA"
-      },
-      {
-        action_group_name    = "SlackPagoPA"
-      }
-    ],
-    pagopa-d-redis-active_connections = [
-      {
-        action_group_name    = "SlackPagoPANODO"
-      },
-      {
-        action_group_name    = "PagoPA"
-      }
-    ]
-}
+postgresql_alerts_enabled = false
+redis_alerts_enabled      = false

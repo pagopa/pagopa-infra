@@ -19,15 +19,6 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-variable "tags" {
-  type        = map(string)
-  description = "Audit Log Solution"
-  default = {
-    CreatedBy   = "Terraform"
-    Description = "Test with object replication"
-  }
-}
-
 
 ## PostgreSQL alerting variables
 
@@ -199,27 +190,3 @@ variable "redis_metric_alerts" {
 }
 
 
-variable "custom_action_group" {
-
-  description = <<EOD
-  Map of name = criteria objects
-  EOD
-
-  type = map(list(object({
-    action_group_name  = string
-  })))
-
-  default = {
-    continuos-action-default = [
-      {
-        action_group_name  = "test"
-      },
-      {
-        action_group_name  = "test"
-      },
-      {
-        action_group_name  = "test"
-      }
-    ]
-  }
-}
