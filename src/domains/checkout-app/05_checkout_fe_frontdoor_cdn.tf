@@ -1,10 +1,6 @@
 locals {
-  # Front Door CDN specific locals
-  # NOTE: After switching from Standard to Front Door, optionally rename these to match ecommerce pattern:
-  #   cdn_frontdoor_npg_sdk_hostname → npg_sdk_hostname
-  #   cdn_frontdoor_csp_header_name → content_security_policy_header_name
-  cdn_frontdoor_npg_sdk_hostname = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
-  cdn_frontdoor_csp_header_name  = "Content-Security-Policy"
+  npg_sdk_hostname = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
+  content_security_policy_header_name  = "Content-Security-Policy"
   cdn_storage_account_name       = "${local.project}cdnsa"
   cdn_index_document             = "index.html"
   cdn_error_document             = "index.html"
@@ -15,7 +11,7 @@ locals {
     " https://recaptcha.net/;",
     "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;",
     "img-src 'self' https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it https://privacyportalde-cdn.onetrust.com;",
-    "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://privacyportalde-cdn.onetrust.com https://${local.cdn_frontdoor_npg_sdk_hostname};",
+    "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://privacyportalde-cdn.onetrust.com https://${local.npg_sdk_hostname};",
     "style-src 'self'  'unsafe-inline' https://privacyportalde-cdn.onetrust.com; font-src 'self' https://privacyportalde-cdn.onetrust.com; worker-src www.recaptcha.net blob:;"
   ])
 
@@ -48,17 +44,17 @@ locals {
         # Content-Security-Policy
         {
           action = "Overwrite"
-          name   = local.cdn_frontdoor_csp_header_name
+          name   = local.content_security_policy_header_name
           value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://privacyportalde-cdn.onetrust.com https://privacyportal-de.onetrust.com", var.dns_zone_prefix, var.external_domain)
         },
         {
           action = "Append"
-          name   = local.cdn_frontdoor_csp_header_name
+          name   = local.content_security_policy_header_name
           value  = " https://recaptcha.net/;"
         },
         {
           action = "Append"
-          name   = local.cdn_frontdoor_csp_header_name
+          name   = local.content_security_policy_header_name
           value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;"
         }
       ]
@@ -68,17 +64,17 @@ locals {
       modify_response_header_actions = [
         {
           action = "Append"
-          name   = local.cdn_frontdoor_csp_header_name
+          name   = local.content_security_policy_header_name
           value  = "img-src 'self' https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it https://privacyportalde-cdn.onetrust.com;"
         },
         {
           action = "Append"
-          name   = local.cdn_frontdoor_csp_header_name
-          value  = "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://privacyportalde-cdn.onetrust.com https://${local.cdn_frontdoor_npg_sdk_hostname};"
+          name   = local.content_security_policy_header_name
+          value  = "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://privacyportalde-cdn.onetrust.com https://${local.npg_sdk_hostname};"
         },
         {
           action = "Append"
-          name   = local.cdn_frontdoor_csp_header_name
+          name   = local.content_security_policy_header_name
           value  = "style-src 'self'  'unsafe-inline' https://privacyportalde-cdn.onetrust.com; font-src 'self' https://privacyportalde-cdn.onetrust.com; worker-src www.recaptcha.net blob:;"
         },
         {
@@ -147,7 +143,7 @@ locals {
       request_header_conditions = [{
         selector         = "Origin"
         operator         = "Equal"
-        match_values     = ["https://${local.cdn_frontdoor_npg_sdk_hostname}"]
+        match_values     = ["https://${local.npg_sdk_hostname}"]
         transforms       = []
         negate_condition = false
       }]
@@ -161,7 +157,7 @@ locals {
       modify_response_header_actions = [{
         action = "Overwrite"
         name   = "Access-Control-Allow-Origin"
-        value  = "https://${local.cdn_frontdoor_npg_sdk_hostname}"
+        value  = "https://${local.npg_sdk_hostname}"
       }]
       url_redirect_actions = []
       url_rewrite_actions  = []
@@ -210,27 +206,23 @@ locals {
 
 /**
  * Checkout resource group
- * NOTE: Currently defined in 05_checkout_fe.tf
- * After switch: uncomment this block and delete 05_checkout_fe.tf
  */
-# resource "azurerm_resource_group" "checkout_fe_rg" {
-#   count    = var.checkout_enabled ? 1 : 0
-#   name     = format("%s-checkout-fe-rg", local.parent_project)
-#   location = var.location
-#
-#   tags = module.tag_config.tags
-# }
+resource "azurerm_resource_group" "checkout_fe_rg" {
+  count    = var.checkout_enabled ? 1 : 0
+  name     = format("%s-checkout-fe-rg", local.parent_project)
+  location = var.location
+
+  tags = module.tag_config.tags
+}
 
 /**
  * CDN Front Door
- * NOTE: After cleanup, rename module to "checkout_cdn" and run:
- *   terraform state mv module.checkout_cdn_frontdoor module.checkout_cdn
  */
 module "checkout_cdn_frontdoor" {
   source = "./.terraform/modules/__v4__/cdn_frontdoor"
 
   cdn_prefix_name     = local.project
-  resource_group_name = azurerm_resource_group.checkout_fe_rg[0].name // refers to resource group in 05_checkout_fe.tf, to be changed after cleanup
+  resource_group_name = azurerm_resource_group.checkout_fe_rg[0].name
   location            = var.location
 
   https_rewrite_enabled = true
@@ -258,8 +250,6 @@ module "checkout_cdn_frontdoor" {
 
 /**
  * Web Test for CDN
- * NOTE: After cleanup, rename module to "checkout_fe_web_test" and run:
- *   terraform state mv module.checkout_fe_frontdoor_web_test module.checkout_fe_web_test
  */
 module "checkout_fe_frontdoor_web_test" {
   count  = var.env_short == "p" ? 1 : 0
@@ -280,24 +270,4 @@ module "checkout_fe_frontdoor_web_test" {
   metric_frequency                      = "PT5M"
   metric_window_size                    = "PT1H"
   retry_enabled                         = true
-}
-
-# Outputs for CDN
-# These outputs are useful before DNS switch for:
-# - Testing the Front Door via .azurefd.net URL
-# - Verifying storage account name for pipeline configuration
-# After DNS switch, access via custom domain (e.g. checkout.pagopa.it) instead and remove these outputs
-output "checkout_cdn_endpoint" {
-  value       = module.checkout_cdn_frontdoor.hostname
-  description = "CDN endpoint hostname"
-}
-
-output "checkout_cdn_fqdn" {
-  value       = module.checkout_cdn_frontdoor.fqdn
-  description = "CDN FQDN"
-}
-
-output "checkout_cdn_storage_account_name" {
-  value       = module.checkout_cdn_frontdoor.storage_name
-  description = "CDN storage account name"
 }
