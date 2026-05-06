@@ -217,8 +217,6 @@ resource "azurerm_resource_group" "checkout_fe_rg" {
 
 /**
  * CDN Front Door
- * NOTE: After cleanup, rename module to "checkout_cdn" and run:
- *   terraform state mv module.checkout_cdn_frontdoor module.checkout_cdn
  */
 module "checkout_cdn_frontdoor" {
   source = "./.terraform/modules/__v4__/cdn_frontdoor"
@@ -252,8 +250,6 @@ module "checkout_cdn_frontdoor" {
 
 /**
  * Web Test for CDN
- * NOTE: After cleanup, rename module to "checkout_fe_web_test" and run:
- *   terraform state mv module.checkout_fe_frontdoor_web_test module.checkout_fe_web_test
  */
 module "checkout_fe_frontdoor_web_test" {
   count  = var.env_short == "p" ? 1 : 0
