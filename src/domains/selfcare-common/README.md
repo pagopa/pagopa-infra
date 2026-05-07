@@ -34,7 +34,7 @@
 | [azuread_application_password.selfcare](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_password) | resource |
 | [azuread_service_principal.selfcare](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal) | resource |
 | [azurerm_app_configuration.selfcare_appconf](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/app_configuration) | resource |
-| [azurerm_app_configuration_feature.cie_receipts_flags](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/app_configuration_feature) | resource |
+| [azurerm_app_configuration_feature.cie_receipts_flag](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/app_configuration_feature) | resource |
 | [azurerm_app_configuration_feature.commission_bundles_flag](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/app_configuration_feature) | resource |
 | [azurerm_app_configuration_feature.commission_bundles_private_flag](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/app_configuration_feature) | resource |
 | [azurerm_app_configuration_feature.commission_bundles_public_flag](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/app_configuration_feature) | resource |

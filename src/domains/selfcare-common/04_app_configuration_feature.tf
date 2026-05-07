@@ -151,7 +151,7 @@ resource "azurerm_app_configuration_feature" "payments_receipts_flag" {
   }
 }
 
-resource "azurerm_app_configuration_feature" "cie_receipts_flags" {
+resource "azurerm_app_configuration_feature" "cie_receipts_flag" {
   configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
   description            = "It enables the CIE receipts' page"
   name                   = "cie-receipts"
