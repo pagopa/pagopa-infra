@@ -2,10 +2,12 @@ prefix               = "pagopa"
 env_short            = "p"
 env                  = "prod"
 location_short_ita   = "itn"
+location_short       = "weu"
 cloudo_function_tier = "basic"
 cloudo_ui_tier       = "basic"
 
 ### External resources
+application_insisght_name                = "pagopa-p-appinsights"
 application_insisght_resource_group_name = "pagopa-p-monitor-rg"
 
 # ClouDO orchestrator parameters
