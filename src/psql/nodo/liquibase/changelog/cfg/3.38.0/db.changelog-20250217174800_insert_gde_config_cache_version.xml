@@ -21,7 +21,7 @@
             <column name="EVENT_HUB" valueNumeric="0"/>
             <column name="EVENT_HUB_PAYLOAD" valueNumeric="0"/>
         </insert>
-        <rollback>
+        <!--<rollback>
             <delete tableName="GDE_CONFIG">
                 <where>PRIMITIVA = 'cacheVersion' AND TYPE = 'REQ'</where>
             </delete>
@@ -29,6 +29,7 @@
                 <where>PRIMITIVA = 'cacheVersion' AND TYPE = 'RESP'</where>
             </delete>
         </rollback>
+        -->
     </changeSet>
 
 </databaseChangeLog>
