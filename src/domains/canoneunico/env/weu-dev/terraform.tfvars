@@ -9,18 +9,9 @@ dns_zone_prefix                           = "dev.platform"
 cidr_subnet_canoneunico_common            = ["10.1.140.0/24"]
 private_endpoint_network_policies_enabled = false
 public_network_access_enabled             = true
-lock_enable                               = false
-
-# acr
-acr_enabled = true
-
-# docker image
-image_name = "canone-unico"
-image_tag  = "latest"
-
-# canone unico
-canoneunico_plan_sku_tier = "Standard"
-canoneunico_plan_sku_size = "S1"
+image_name                                = "canone-unico"
+canoneunico_plan_sku_tier                 = "Standard"
+canoneunico_plan_sku_size                 = "S1"
 
 # each 15 minutes
 canoneunico_schedule_batch = "0 */15 * * * *"
