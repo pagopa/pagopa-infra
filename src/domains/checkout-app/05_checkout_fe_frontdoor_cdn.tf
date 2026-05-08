@@ -1,6 +1,6 @@
 locals {
   # Front Door CDN specific locals
-  # NOTE: After switch, optionally rename these to match ecommerce pattern:
+  # NOTE: After switching from Standard to Front Door, optionally rename these to match ecommerce pattern:
   #   cdn_frontdoor_npg_sdk_hostname → npg_sdk_hostname
   #   cdn_frontdoor_csp_header_name → content_security_policy_header_name
   cdn_frontdoor_npg_sdk_hostname = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
@@ -22,25 +22,18 @@ locals {
   # DNS Zone Key for the main CDN (the one configured in the module)
   dns_zone_key = "${var.dns_zone_checkout}.${var.external_domain}"
 
-  # Custom domains configuration - Front Door CDN creation only
-  # NOTE: custom_domains is empty to avoid Azure conflict with CDN Classic
-  # Azure doesn't allow the same domain on both CDN Classic and Front Door simultaneously
-  # DNS switch will happen in a separate PR which will:
-  #   1. Remove custom domain from CDN Classic
-  #   2. Add custom domain to Front Door
-  #   3. Change DNS from the temporary App Gateway to the new Front Door ones (enable_dns_records = true)
-  custom_domains_for_switch = [
+  # Note for App GW/APIM <-> CDN switches:
+  # when DNS is pointing to App GW, setting enable_dns_records to true and applying will change the A record IP to Front Door's one,
+  # while setting it to false and applying will destroy the A record (not managed by terraform anymore)
+  custom_domains = [
     {
       domain_name             = local.dns_zone_key
       dns_name                = data.azurerm_dns_zone.checkout_public[0].name
       dns_resource_group_name = data.azurerm_dns_zone.checkout_public[0].resource_group_name
       ttl                     = var.dns_default_ttl_sec
-      enable_dns_records      = false
+      enable_dns_records      = true # false destroys azurerm_dns_a_record, true changes IP from App GW one to Front Door one
     }
   ]
-
-  # empty for now, will be set to custom_domains_for_switch values in a separate PR for DNS switch
-  custom_domains = []
 
   global_delivery_rules = [
     {
