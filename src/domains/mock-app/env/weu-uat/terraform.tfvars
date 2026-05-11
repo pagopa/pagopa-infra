@@ -24,5 +24,6 @@ mock_psp_secondary_service_enabled = true
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
-mock_enabled    = false
+mock_enabled    = true
+
 dns_zone_prefix = "uat.platform"
