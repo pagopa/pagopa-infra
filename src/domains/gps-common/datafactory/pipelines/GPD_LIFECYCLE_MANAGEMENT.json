@@ -218,7 +218,7 @@
             {
               "type": "Query",
               "text": {
-                "value": "@concat('SELECT COUNT(*) \nFROM (\n    SELECT 1 \n    FROM apd.archiving_selection_buffer \n    LIMIT', string(pipeline().parameters.MaxAmountToMigrate),'\n) AS subquery;')",
+                "value": "@concat('SELECT COUNT(*) \nFROM (\n    SELECT 1 \n    FROM apd.archiving_selection_buffer \n    LIMIT ', string(pipeline().parameters.MaxAmountToMigrate),'\n) AS subquery;')",
                 "type": "Expression"
               }
             }
