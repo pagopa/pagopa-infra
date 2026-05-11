@@ -22,14 +22,14 @@ module "bizevents_datastore_cosmosdb_snet" {
 }
 
 module "bizevents_datastore_cosmosdb_account" {
-  source              = "./.terraform/modules/__v3__/cosmosdb_account"
-  name                = "${local.project}-ds-cosmos-account"
-  location            = var.location
-  domain              = var.domain
-  resource_group_name = azurerm_resource_group.bizevents_rg.name
-  offer_type          = var.bizevents_datastore_cosmos_db_params.offer_type
-  kind                = var.bizevents_datastore_cosmos_db_params.kind
-
+  source                           = "./.terraform/modules/__v3__/cosmosdb_account"
+  name                             = "${local.project}-ds-cosmos-account"
+  location                         = var.location
+  domain                           = var.domain
+  resource_group_name              = azurerm_resource_group.bizevents_rg.name
+  offer_type                       = var.bizevents_datastore_cosmos_db_params.offer_type
+  kind                             = var.bizevents_datastore_cosmos_db_params.kind
+  burst_capacity_enabled           = var.env_short == "d" ? false : true
   public_network_access_enabled    = var.bizevents_datastore_cosmos_db_params.public_network_access_enabled
   main_geo_location_zone_redundant = var.bizevents_datastore_cosmos_db_params.main_geo_location_zone_redundant
 
@@ -94,8 +94,8 @@ module "bizevents_datastore_cosmosdb_account_dev" {
   allowed_virtual_network_subnet_ids = []
 
   # private endpoint
-  private_endpoint_sql_name           = "${local.project}-ds-cosmos-sql-endpoint" # forced after update module vers
-  private_service_connection_sql_name = "${local.project}-ds-cosmos-sql-endpoint" # forced after update module vers
+  private_endpoint_sql_name           = "${local.project}-ds-cosmos-sql-endpoint-dev" # forced after update module vers
+  private_service_connection_sql_name = "${local.project}-ds-cosmos-sql-endpoint-dev" # forced after update module vers
   private_endpoint_enabled            = var.bizevents_datastore_cosmos_db_params.private_endpoint_enabled
   subnet_id                           = module.bizevents_datastore_cosmosdb_snet.id
   private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos.id]
@@ -127,25 +127,34 @@ locals {
       partition_key_path = "/id",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
       # autoscale_settings = { max_throughput = sum(toset([var.bizevents_datastore_cosmos_db_params.max_throughput, var.env_short == "p" ? 2000 : 0])) }
-      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_view_alt }
+      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_biz }
     },
     {
       name               = "biz-events-view-general",
       partition_key_path = "/transactionId",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_view_alt }
+      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_view_general }
     },
     {
       name               = "biz-events-view-cart",
       partition_key_path = "/transactionId",
+      indexing_policy = {
+        composite_indexes = [
+          [
+            { path : "/refNumberValue" },
+            { path : "/payee/taxCode" },
+            { path : "/debtor/taxCode" }
+          ]
+        ]
+      }
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_view_alt }
+      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_view_cart }
     },
     {
       name               = "biz-events-view-user",
       partition_key_path = "/taxCode",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_view_alt }
+      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_view_user }
     }
   ]
 
@@ -154,18 +163,29 @@ locals {
       name               = "biz-events-view-general",
       partition_key_path = "/transactionId",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
+      indexing_policy    = {}
       autoscale_settings = { max_throughput = 1000 }
     },
     {
       name               = "biz-events-view-cart",
       partition_key_path = "/transactionId",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
+      indexing_policy = {
+        composite_indexes = [
+          [
+            { path : "/refNumberValue" },
+            { path : "/payee/taxCode" },
+            { path : "/debtor/taxCode" }
+          ]
+        ]
+      },
       autoscale_settings = { max_throughput = 1000 }
     },
     {
       name               = "biz-events-view-user",
       partition_key_path = "/taxCode",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
+      indexing_policy    = {}
       autoscale_settings = { max_throughput = 1000 }
   }] : []
 }
@@ -182,12 +202,11 @@ module "bizevents_datastore_cosmosdb_containers" {
   partition_key_path  = each.value.partition_key_path
   throughput          = lookup(each.value, "throughput", null)
   default_ttl         = lookup(each.value, "default_ttl", null)
-
-  autoscale_settings = contains(var.bizevents_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
+  indexing_policy     = lookup(each.value, "indexing_policy", {})
+  autoscale_settings  = contains(var.bizevents_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
 }
 
 module "bizevents_datastore_cosmosdb_containers_dev" {
-
   source   = "./.terraform/modules/__v3__/cosmosdb_sql_container"
   for_each = { for c in local.bizevents_datastore_cosmosdb_containers_dev : c.name => c }
 
@@ -198,8 +217,8 @@ module "bizevents_datastore_cosmosdb_containers_dev" {
   partition_key_path  = each.value.partition_key_path
   throughput          = lookup(each.value, "throughput", null)
   default_ttl         = lookup(each.value, "default_ttl", null)
-
-  autoscale_settings = contains(var.bizevents_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
+  indexing_policy     = lookup(each.value, "indexing_policy", {})
+  autoscale_settings  = contains(var.bizevents_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
 }
 
 resource "azurerm_monitor_metric_alert" "cosmos_biz_db_normalized_ru_exceeded" {
@@ -249,10 +268,10 @@ resource "azurerm_monitor_metric_alert" "cosmos_biz_db_normalized_ru_exceeded" {
 }
 
 
-# In general, for a production workload, if you see between 1-5% of requests with 429s, 
-# and your end-to-end latency is acceptable, this is a healthy sign that the RU/s are being fully utilized. 
-# In this case, the normalized RU consumption metric reaching 100% only means that in a given second, 
-# at least one partition key range used all its provisioned throughput. 
+# In general, for a production workload, if you see between 1-5% of requests with 429s,
+# and your end-to-end latency is acceptable, this is a healthy sign that the RU/s are being fully utilized.
+# In this case, the normalized RU consumption metric reaching 100% only means that in a given second,
+# at least one partition key range used all its provisioned throughput.
 # This is acceptable because the overall rate of 429s is still low. No further action is required.
 resource "azurerm_monitor_metric_alert" "cosmos_biz_db_provisioned_throughput_exceeded" { # https://github.com/pagopa/terraform-azurerm-v3/blob/58f14dc120e10bd3515bcc34e0685e74d1d11047/cosmosdb_account/main.tf#L205
   count = var.env_short == "p" ? 1 : 0

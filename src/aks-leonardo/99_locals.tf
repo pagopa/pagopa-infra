@@ -16,6 +16,10 @@ locals {
 
   public_ip_aks_leonardo_outbound_name = "pagopa-${var.env_short}-itn-${var.env}-aksoutbound-pip"
 
+  hub_spoke_vnet_name = ["${local.product_location}-hub-vnet", "${local.product_location}-spoke-data-vnet", "${local.product_location}-spoke-security-vnet",
+  "${local.product_location}-spoke-streaming-vnet", "${local.product_location}-spoke-tools-vnet"]
+  hub_spoke_vnet_rg_name = "${local.product_location}-network-hub-spoke-rg"
+
   # ACR DOCKER
   acr_name_ita                = replace("${local.product}itncoreacr", "-", "")
   acr_resource_group_name_ita = "${local.product}-itn-acr-rg"

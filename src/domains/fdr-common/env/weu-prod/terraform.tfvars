@@ -12,24 +12,17 @@ instance       = "prod"
 monitor_resource_group_name                 = "pagopa-p-monitor-rg"
 log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
-application_insights_name                   = "pagopa-p-appinsights"
-
-### Aks
-
-ingress_load_balancer_ip = "10.1.100.250"
+ingress_load_balancer_ip                    = "10.1.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"
 
 ## CIDR fdr per database pgsql
 cidr_subnet_flex_dbms = ["10.1.162.0/24"]
-
-enable_iac_pipeline = true
-
 pgres_flex_params = {
 
   sku_name   = "GP_Standard_D4ds_v4"
-  db_version = "15"
+  db_version = "17"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                             = 1048576 # 1Tib
@@ -44,12 +37,25 @@ pgres_flex_params = {
   standby_availability_zone              = 2
   pgres_flex_diagnostic_settings_enabled = false
   alerts_enabled                         = true
-  max_connections                        = 5000
+  max_connections                        = 1718
   pgbouncer_min_pool_size                = 10
-  max_worker_process                     = 32
+  max_worker_process                     = 8
   wal_level                              = "logical"
-  shared_preoload_libraries              = "pg_failover_slots"
+  shared_preload_libraries               = "pg_cron,pg_stat_statements"
+  azure_extensions                       = "PG_CRON,POSTGRES_FDW"
   public_network_access_enabled          = false
+}
+
+pgres_flex_archive_params = {
+
+  # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
+  # 2097152, 4194304, 8388608, 16777216, and 33554432.
+  storage_mb                             = 262144 # 256 Gib
+  auto_grow_enabled                      = true
+  alerts_enabled                         = false
+  pgres_flex_diagnostic_settings_enabled = false
+  enable_private_dns_registration        = true
+  db_version                             = 17
 }
 
 custom_metric_alerts = {
@@ -179,27 +185,9 @@ fdr_re_storage_account = {
   storage_defender_malware_scanning_on_upload_cap_gb_per_month = -1
   blob_file_retention_days                                     = 180 # 6 months
 }
-
-fdr_flow_storage_account = {
-  account_kind                       = "StorageV2"
-  account_tier                       = "Standard"
-  account_replication_type           = "GZRS"
-  blob_versioning_enabled            = false
-  advanced_threat_protection         = true
-  advanced_threat_protection_enabled = false
-  public_network_access_enabled      = false
-  blob_delete_retention_days         = 90
-  enable_low_availability_alert      = true
-}
-
-#
-# replica settings
-#
 geo_replica_enabled                                = true
 location_replica                                   = "italynorth"
 location_replica_short                             = "itn"
-geo_replica_cidr_subnet_postgresql                 = ["10.3.7.0/27"]
-postgresql_sku_name                                = "GP_Gen5_2"
 postgres_dns_registration_enabled                  = false
 postgres_dns_registration_virtual_endpoint_enabled = true
 

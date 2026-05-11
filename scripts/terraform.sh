@@ -349,7 +349,7 @@ function opa_check_policy() {
 
         cat $file_name.jq | jq -r '..|.deny? | select(. != null) '| jq -r ' ( .[])| @tsv' | awk -v FS="|" 'BEGIN{print ""}{printf "%s\t%s\n","\033[33m"$1,"\033[31m"$2}' | tee $file_name.opa
         awk 'NF {exit 1}' $file_name.opa && opa_global_exitcode=0 || opa_global_exitcode=1
-        
+
         rm -rf "$root_folder/$opa_policy_clone_folder" 2>/dev/null
         check_conftest_output "$opa_global_exitcode"
 

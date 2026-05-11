@@ -5,14 +5,14 @@ resource "azurerm_resource_group" "st_observability_rg" {
 }
 
 module "observability_st_snet" {
-  source = "./.terraform/modules/__v3__/subnet"
+  source = "./.terraform/modules/__v4__/subnet"
 
   name                 = "${local.project_itn}-observability-st-net"
   address_prefixes     = var.cidr_subnet_observability_storage
   resource_group_name  = local.vnet_italy_resource_group_name
   virtual_network_name = local.vnet_italy_name
 
-  private_endpoint_network_policies_enabled = true
+  private_endpoint_network_policies = "Enabled"
 
   service_endpoints = [
     "Microsoft.Storage",
@@ -45,7 +45,7 @@ resource "azurerm_private_endpoint" "observability_storage_private_endpoint" {
 
 
 module "observability_sa" {
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                       = replace(format("%s-sa", local.project_itn), "-", "")
   account_kind               = "StorageV2"

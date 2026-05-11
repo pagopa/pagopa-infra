@@ -4,17 +4,29 @@ data "azurerm_key_vault_secret" "pgres_admin_login" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "pgres_adf_login" {
+  name         = "pgres-adf-user-login"
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_key_vault_secret" "pgres_admin_pwd" {
   name         = "pgres-admin-pwd"
   key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_resource_group" "flex_data" {
-  count = 1 # forced ( before exits only in UAT and PROD now DEV too)
+  count = 1 # forced ( before exits only in UAT and PROD now DEV too)
 
   name = format("%s-pgres-flex-rg", local.product)
 
   location = var.location
+  tags     = module.tag_config.tags
+}
+
+resource "azurerm_resource_group" "flex_data_storico" {
+  name = format("%s-pgres-flex-storico-rg", local.product)
+
+  location = var.location_itn
   tags     = module.tag_config.tags
 }
 
@@ -64,7 +76,7 @@ module "postgres_flexible_server_private_db" {
 
   ### Network
   private_endpoint_enabled      = var.pgres_flex_params.private_endpoint_enabled
-  private_dns_zone_id           = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres.id : null
+  private_dns_zone_id           = data.azurerm_private_dns_zone.postgres.id
   delegated_subnet_id           = module.postgres_flexible_snet[0].id
   public_network_access_enabled = var.pgres_flex_params.public_network_access_enabled
 
@@ -124,6 +136,20 @@ resource "azurerm_postgresql_flexible_server_configuration" "pg_max_connections"
   name      = "max_connections"
   server_id = module.postgres_flexible_server_private_db.id
   value     = var.pgres_flex_params.max_connections
+}
+
+resource "azurerm_postgresql_flexible_server_configuration" "pg_log_min_duration_statement" {
+  count     = var.pgres_flex_params.log_min_duration_statement != null ? 1 : 0
+  name      = "log_min_duration_statement"
+  server_id = module.postgres_flexible_server_private_db.id
+  value     = var.pgres_flex_params.log_min_duration_statement
+}
+
+resource "azurerm_postgresql_flexible_server_configuration" "pg_log_lock_waits" {
+  count     = var.pgres_flex_params.log_lock_waits != null ? 1 : 0
+  name      = "log_lock_waits"
+  server_id = module.postgres_flexible_server_private_db.id
+  value     = var.pgres_flex_params.log_lock_waits
 }
 
 # Message    : FATAL: unsupported startup parameter: extra_float_digits
@@ -195,4 +221,67 @@ resource "azurerm_portal_dashboard" "debt_position_postgresql_dashboard" {
       }
     )
   )
+}
+
+# Create a secure password
+resource "random_password" "pgres_adf_pipeline_password" {
+  length  = 32
+  special = true
+  # Avoid char that could break the Bash/SQL script
+  override_special = "#%&*()-_=+[]{}<>:?"
+}
+
+# Save pgres_adf_pipeline_pwd
+resource "azurerm_key_vault_secret" "pgres_adf_pipeline_pwd_secret" {
+  name         = "pgres-adf-user-pwd"
+  value        = random_password.pgres_adf_pipeline_password.result
+  key_vault_id = module.key_vault.id
+}
+
+################################
+# Create ROLE for ADF pipeline
+################################
+provider "postgresql" {
+  host      = module.postgres_flexible_server_private_db.fqdn
+  port      = 5432
+  database  = "apd"
+  username  = azurerm_key_vault_secret.pgres_admin_login.value
+  password  = azurerm_key_vault_secret.pgres_admin_pwd.value
+  sslmode   = "require"
+  superuser = false
+}
+
+# Create a user for Data Factory (and update their password if it changes in the future)
+resource "postgresql_role" "pgres_adf_user" {
+  name     = data.azurerm_key_vault_secret.pgres_adf_login.value
+  login    = true
+  password = azurerm_key_vault_secret.pgres_adf_pipeline_pwd_secret.value
+}
+
+# Allows the user to access the schema (USAGE) and create views/tables (CREATE)
+resource "postgresql_grant" "schema_permissions" {
+  database    = "apd"
+  role        = postgresql_role.pgres_adf_user.name
+  schema      = "apd"
+  object_type = "schema"
+  privileges  = ["USAGE", "CREATE"]
+}
+
+# Allows the user to execute EXISTING functions/procedures
+resource "postgresql_grant" "routine_permissions" {
+  database    = "apd"
+  role        = postgresql_role.pgres_adf_user.name
+  schema      = "apd"
+  object_type = "routine"
+  privileges  = ["EXECUTE"]
+}
+
+# Read-only permission on the payment_position table
+resource "postgresql_grant" "select_payment_position" {
+  database    = "apd"
+  role        = postgresql_role.pgres_adf_user.name
+  schema      = "apd"
+  object_type = "table"
+  objects     = ["payment_position", "payment_option", "transfer", "payment_option_metadata", "transfer_metadata"] //, "archiving_selection_buffer"]
+  privileges  = ["SELECT", "INSERT", "UPDATE", "DELETE", "TRUNCATE"]
 }

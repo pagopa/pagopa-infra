@@ -26,7 +26,10 @@ module "gh_runner_job" {
     {
       name : "pagopa-mock-ec",
       short_name : "mock-ec"
-    }
+    },
+      name : "pagopa-remora-engine",
+      short_name : "remoraeng"
+    },
   ]
   job      = {}
   job_meta = {}

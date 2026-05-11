@@ -1,7 +1,14 @@
 {
     "name": "Delete content table INTERMEDIARI_PA",
     "type": "AzureDataExplorerCommand",
-    "dependsOn": [],
+    "dependsOn": [
+        {
+            "activity": "Configura Run ID",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
     "policy": {
         "timeout": "0.12:00:00",
         "retry": 0,
@@ -41,7 +48,6 @@
     "typeProperties": {
         "source": {
             "type": "AzurePostgreSqlSource",
-            "partitionOption": "None",
             "queryTimeout": "02:00:00"
         },
         "sink": {
@@ -136,6 +142,18 @@
             "dependencyConditions": [
                 "Failed"
             ]
+        },
+        {
+            "activity": "Delete content table INTERMEDIARI_REL_PA",
+            "dependencyConditions": [
+                "Failed"
+            ]
+        },
+        {
+            "activity": "Delete content table INTERMEDIARI_REL_PSP",
+            "dependencyConditions": [
+                "Failed"
+            ]
         }
     ],
     "userProperties": [],
@@ -153,7 +171,14 @@
 {
     "name": "Delete content table INTERMEDIARI_PSP",
     "type": "AzureDataExplorerCommand",
-    "dependsOn": [],
+    "dependsOn": [
+        {
+            "activity": "Configura Run ID",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
     "policy": {
         "timeout": "0.12:00:00",
         "retry": 0,
@@ -193,7 +218,6 @@
     "typeProperties": {
         "source": {
             "type": "AzurePostgreSqlSource",
-            "partitionOption": "None",
             "queryTimeout": "02:00:00"
         },
         "sink": {
@@ -263,7 +287,14 @@
 {
     "name": "Delete content table PSP",
     "type": "AzureDataExplorerCommand",
-    "dependsOn": [],
+    "dependsOn": [
+        {
+            "activity": "Configura Run ID",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
     "policy": {
         "timeout": "0.12:00:00",
         "retry": 0,
@@ -284,7 +315,14 @@
 {
     "name": "Delete content table PA",
     "type": "AzureDataExplorerCommand",
-    "dependsOn": [],
+    "dependsOn": [
+        {
+            "activity": "Configura Run ID",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
     "policy": {
         "timeout": "0.12:00:00",
         "retry": 0,
@@ -324,7 +362,6 @@
     "typeProperties": {
         "source": {
             "type": "AzurePostgreSqlSource",
-            "partitionOption": "None",
             "queryTimeout": "02:00:00"
         },
         "sink": {
@@ -425,7 +462,6 @@
     "typeProperties": {
         "source": {
             "type": "AzurePostgreSqlSource",
-            "partitionOption": "None",
             "queryTimeout": "02:00:00"
         },
         "sink": {
@@ -527,4 +563,2958 @@
             "type": "DatasetReference"
         }
     ]
+},
+{
+    "name": "Configura Start Date",
+    "type": "SetVariable",
+    "dependsOn": [],
+    "policy": {
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "variableName": "start_date",
+        "value": {
+            "value": "@startOfDay(convertTimeZone(pipeline().TriggerTime,'UTC','W. Europe Standard Time'))",
+            "type": "Expression"
+        }
+    }
+},
+{
+    "name": "Configura Run ID",
+    "type": "SetVariable",
+    "dependsOn": [
+        {
+            "activity": "Configura Start Date",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "variableName": "run_id",
+        "value": {
+            "value": "@pipeline().RunId",
+            "type": "Expression"
+        }
+    }
+},
+{
+    "name": "Import Data Intermediari PSP_HISTORY",
+    "type": "Copy",
+    "dependsOn": [
+        {
+            "activity": "Import Data Intermediari PSP",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "AzurePostgreSqlSource",
+            "additionalColumns": [
+                {
+                    "name": "RUN_ID",
+                    "value": {
+                        "value": "@variables('run_id')",
+                        "type": "Expression"
+                    }
+                },
+                {
+                    "name": "INSERTED_TIMESTAMP",
+                    "value": {
+                        "value": "@startOfDay(variables('start_date'))",
+                        "type": "Expression"
+                    }
+                }
+            ],
+            "queryTimeout": "02:00:00"
+        },
+        "sink": {
+            "type": "AzureDataExplorerSink"
+        },
+        "enableStaging": false,
+        "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+                {
+                    "source": {
+                        "name": "id_intermediario_psp",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "CF_INTERMEDIARIO_PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "codice_intermediario",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "RAGIONE_SOCIALE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "INSERTED_TIMESTAMP",
+                        "type": "String"
+                    },
+                    "sink": {
+                        "name": "INSERTED_TIMESTAMP",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "RUN_ID",
+                        "type": "String"
+                    },
+                    "sink": {
+                        "name": "UNIQUE_ID",
+                        "type": "Guid",
+                        "physicalType": "guid"
+                    }
+                }
+            ],
+            "typeConversion": true,
+            "typeConversionSettings": {
+                "allowDataTruncation": true,
+                "treatBooleanAsNumber": false,
+                "dateFormat": "yyyy-MM-dd"
+            }
+        }
+    },
+    "inputs": [
+        {
+            "referenceName": "${inputdataset_PT_PSP}",
+            "type": "DatasetReference"
+        }
+    ],
+    "outputs": [
+        {
+            "referenceName": "${output_INTERMEDIARI_PSP_HISTORY}",
+            "type": "DatasetReference"
+        }
+    ]
+},
+{
+    "name": "Import Data PA_HISTORY",
+    "type": "Copy",
+    "dependsOn": [
+        {
+            "activity": "Import Data PA",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "AzurePostgreSqlSource",
+            "additionalColumns": [
+                {
+                    "name": "RUN_ID",
+                    "value": {
+                        "value": "@variables('run_id')",
+                        "type": "Expression"
+                    }
+                },
+                {
+                    "name": "INSERTED_TIMESTAMP",
+                    "value": {
+                        "value": "@startOfDay(variables('start_date'))",
+                        "type": "Expression"
+                    }
+                }
+            ],
+            "queryTimeout": "02:00:00"
+        },
+        "sink": {
+            "type": "AzureDataExplorerSink"
+        },
+        "enableStaging": false,
+        "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+                {
+                    "source": {
+                        "name": "id_dominio",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ID_DOMINIO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "descrizione",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "DESCRIZIONE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ragione_sociale",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "RAGIONE_SOCIALE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "rendicontazione_ftp",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "RENDICONTAZIONE_FTP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "rendicontazione_zip",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "RENDICONTAZIONE_ZIP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "INSERTED_TIMESTAMP",
+                        "type": "String"
+                    },
+                    "sink": {
+                        "name": "INSERTED_TIMESTAMP",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "RUN_ID",
+                        "type": "String"
+                    },
+                    "sink": {
+                        "name": "UNIQUE_ID",
+                        "type": "Guid",
+                        "physicalType": "guid"
+                    }
+                }
+            ],
+            "typeConversion": true,
+            "typeConversionSettings": {
+                "allowDataTruncation": true,
+                "treatBooleanAsNumber": false,
+                "dateFormat": "yyyy-MM-dd"
+            }
+        }
+    },
+    "inputs": [
+        {
+            "referenceName": "${inputdataset_PA}",
+            "type": "DatasetReference"
+        }
+    ],
+    "outputs": [
+        {
+            "referenceName": "${output_PA_HISTORY}",
+            "type": "DatasetReference"
+        }
+    ]
+},
+{
+    "name": "Import Data Intermediari PA_HISTORY",
+    "type": "Copy",
+    "dependsOn": [
+        {
+            "activity": "Import Data Intermediari PA",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "AzurePostgreSqlSource",
+            "additionalColumns": [
+                {
+                    "name": "RUN_ID",
+                    "value": {
+                        "value": "@variables('run_id')",
+                        "type": "Expression"
+                    }
+                },
+                {
+                    "name": "INSERTED_TIMESTAMP",
+                    "value": {
+                        "value": "@startOfDay(variables('start_date'))",
+                        "type": "Expression"
+                    }
+                }
+            ],
+            "queryTimeout": "02:00:00"
+        },
+        "sink": {
+            "type": "AzureDataExplorerSink"
+        },
+        "enableStaging": false,
+        "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+                {
+                    "source": {
+                        "name": "id_intermediario_pa",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "CF_INTERMEDIARIO_PA",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "codice_intermediario",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "RAGIONE_SOCIALE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "INSERTED_TIMESTAMP",
+                        "type": "String"
+                    },
+                    "sink": {
+                        "name": "INSERTED_TIMESTAMP",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "RUN_ID",
+                        "type": "String"
+                    },
+                    "sink": {
+                        "name": "UNIQUE_ID",
+                        "type": "Guid",
+                        "physicalType": "guid"
+                    }
+                }
+            ],
+            "typeConversion": true,
+            "typeConversionSettings": {
+                "allowDataTruncation": true,
+                "treatBooleanAsNumber": false
+            }
+        }
+    },
+    "inputs": [
+        {
+            "referenceName": "${inputdataset_PT_PA}",
+            "type": "DatasetReference"
+        }
+    ],
+    "outputs": [
+        {
+            "referenceName": "${output_INTERMEDIARI_PA_HISTORY}",
+            "type": "DatasetReference"
+        }
+    ]
+},
+{
+    "name": "Import Data PSP_HISTORY",
+    "type": "Copy",
+    "dependsOn": [
+        {
+            "activity": "Import Data PSP",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "AzurePostgreSqlSource",
+            "additionalColumns": [
+                {
+                    "name": "RUN_ID",
+                    "value": {
+                        "value": "@variables('run_id')",
+                        "type": "Expression"
+                    }
+                },
+                {
+                    "name": "INSERTED_TIMESTAMP",
+                    "value": {
+                        "value": "@startOfDay(variables('start_date'))",
+                        "type": "Expression"
+                    }
+                }
+            ],
+            "queryTimeout": "02:00:00"
+        },
+        "sink": {
+            "type": "AzureDataExplorerSink"
+        },
+        "enableStaging": false,
+        "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+                {
+                    "source": {
+                        "name": "id_psp",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ID_PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "descrizione",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "DESCRIZIONE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ragione_sociale",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "RAGIONE_SOCIALE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "abi",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ABI",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "bic",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "BIC",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "codice_mybank",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "CODICE_MYBANK",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "marca_bollo_digitale",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "MARCA_BOLLO_DIGITALE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "codice_fiscale",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "CODICE_FISCALE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "INSERTED_TIMESTAMP",
+                        "type": "String"
+                    },
+                    "sink": {
+                        "name": "INSERTED_TIMESTAMP",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "RUN_ID",
+                        "type": "String"
+                    },
+                    "sink": {
+                        "name": "UNIQUE_ID",
+                        "type": "Guid",
+                        "physicalType": "guid"
+                    }
+                }
+            ],
+            "typeConversion": true,
+            "typeConversionSettings": {
+                "allowDataTruncation": true,
+                "treatBooleanAsNumber": false
+            }
+        }
+    },
+    "inputs": [
+        {
+            "referenceName": "${inputdataset_PSP}",
+            "type": "DatasetReference"
+        }
+    ],
+    "outputs": [
+        {
+            "referenceName": "${output_PSP_HISTORY}",
+            "type": "DatasetReference"
+        }
+    ]
+},
+{
+    "name": "Delete content table INTERMEDIARI_REL_PA",
+    "type": "AzureDataExplorerCommand",
+    "dependsOn": [
+        {
+            "activity": "Configura Run ID",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "command": ".clear table INTERMEDIARI_REL_PA data",
+        "commandTimeout": "01:00:00"
+    },
+    "linkedServiceName": {
+        "referenceName": "${dataexplorerset}",
+        "type": "LinkedServiceReference"
+    }
+},
+{
+    "name": "Import Relation PT EC",
+    "type": "Copy",
+    "dependsOn": [
+        {
+            "activity": "Delete content table INTERMEDIARI_REL_PA",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "AzurePostgreSqlSource",
+            "query": {
+                "value": "select pt.id_intermediario_pa , pt.codice_intermediario,\npa.id_dominio, pa.descrizione, pa.ragione_sociale,\nszpa.aux_digit, szpa.segregazione, szpa.broadcast, szpa.aca, szpa.standin,\nsz.flag_online, sz.versione, sz.versione_primitive,\nsz.id_stazione, pt.enabled as CF_ENABLED, pa.enabled as PA_ENABLED, sz.enabled as STAZIONE_ENABLED,\nsz.ip , sz.password, sz.porta, sz.protocollo, sz.target_host, sz.target_port , sz.target_path, sz.target_host_pof, sz.target_port_pof, sz.target_path_pof,\nsz.redirect_protocollo, sz.redirect_ip, sz.redirect_porta, sz.redirect_path,\nsz.proxy_enabled, sz.proxy_host, sz.proxy_port, sz.timeout, sz.num_thread, sz.timeout_a, sz.timeout_b, sz.timeout_c,\nszpa.quarto_modello , szpa.pagamento_spontaneo, sz.protocollo_4mod, sz.ip_4mod, porta_4mod, servizio_4mod\nfrom cfg.intermediari_pa pt\ninner join cfg.stazioni sz on pt.obj_id = sz.fk_intermediario_pa \ninner join cfg.pa_stazione_pa szpa on sz.obj_id = szpa.fk_stazione\ninner join cfg.pa pa on szpa.fk_pa = pa.obj_id \nwhere 1=1",
+                "type": "Expression"
+            },
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00"
+        },
+        "sink": {
+            "type": "AzureDataExplorerSink"
+        },
+        "enableStaging": false,
+        "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+                {
+                    "source": {
+                        "name": "id_intermediario_pa",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ID_INTERMEDIARIO_PA",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "codice_intermediario",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "DESCRIZIONE_INTERMEDIARIO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "id_dominio",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ID_DOMINIO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "descrizione",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "DESCRIZIONE_DOMINIO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ragione_sociale",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "RAGIONE_SOCIALE_DOMINIO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "aux_digit",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "AUX_DIGIT",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "segregazione",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "SEGREGAZIONE",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "broadcast",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "BROADCAST",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "aca",
+                        "type": "Boolean",
+                        "physicalType": "boolean"
+                    },
+                    "sink": {
+                        "name": "ACA",
+                        "type": "Boolean",
+                        "physicalType": "bool"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "standin",
+                        "type": "Boolean",
+                        "physicalType": "boolean"
+                    },
+                    "sink": {
+                        "name": "STANDIN",
+                        "type": "Boolean",
+                        "physicalType": "bool"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "flag_online",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "FLAG_ONLINE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "versione",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "VERSIONE",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "versione_primitive",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "VERSIONE_PRIMITIVE",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "id_stazione",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ID_STAZIONE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "cf_enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "CF_ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "pa_enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "PA_ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "stazione_enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "STAZIONE_ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ip",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "IP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "porta",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "PORTA",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "protocollo",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "PROTOCOLLO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_host",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "TARGET_HOST",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_port",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TARGET_PORT",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_path",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "TARGET_PATH",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_host_pof",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "TARGET_HOST_POF",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_port_pof",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TARGET_PORT_POF",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_path_pof",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "TARGET_PATH_POF",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "redirect_protocollo",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "REDIRECT_PROTOCOLLO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "redirect_ip",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "REDIRECT_IP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "redirect_porta",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "REDIRECT_PORT",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "redirect_path",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "REDIRECT_PATH",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "proxy_enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "PROXY_ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "proxy_host",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "PROXY_HOST",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "proxy_port",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "PROXY_PORT",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "timeout",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TIMEOUT",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "num_thread",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "NUM_THREAD",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "timeout_a",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TIMEOUT_A",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "timeout_b",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TIMEOUT_B",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "timeout_c",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TIMEOUT_C",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "quarto_modello",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "QUARTO_MODELLO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "pagamento_spontaneo",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "PAGAMENTO_SPONTANEO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "protocollo_4mod",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "PROTOCOLLO_4MOD",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ip_4mod",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "IP_4MOD",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "porta_4mod",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "PORTA_4MOD",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "servizio_4mod",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "SERVIZIO_4MOD",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                }
+            ],
+            "typeConversion": true,
+            "typeConversionSettings": {
+                "allowDataTruncation": true,
+                "treatBooleanAsNumber": false
+            }
+        }
+    },
+    "inputs": [
+        {
+            "referenceName": "${inputdataset_PT_PA}",
+            "type": "DatasetReference"
+        }
+    ],
+    "outputs": [
+        {
+            "referenceName": "${output_INTERMEDIARI_REL_PA}",
+            "type": "DatasetReference"
+        }
+    ]
+},
+{
+    "name": "Delete content table INTERMEDIARI_REL_PSP",
+    "type": "AzureDataExplorerCommand",
+    "dependsOn": [
+        {
+            "activity": "Configura Run ID",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "command": ".clear table INTERMEDIARI_REL_PSP data",
+        "commandTimeout": "01:00:00"
+    },
+    "linkedServiceName": {
+        "referenceName": "${dataexplorerset}",
+        "type": "LinkedServiceReference"
+    }
+},
+{
+    "name": "Import Relation PT PSP",
+    "type": "Copy",
+    "dependsOn": [
+        {
+            "activity": "Delete content table INTERMEDIARI_REL_PSP",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "AzurePostgreSqlSource",
+            "query": {
+                "value": "select \npt.id_intermediario_psp as ID_INTERMEDIARIO_PSP, pt.codice_intermediario as DESCRIZIONE_INTERMEDIARIO,\np.id_psp, p.abi, p.bic, p.descrizione as DESCRIZIONE_PSP, p.ragione_sociale as RAGIONE_SOCIALE_PSP, p.codice_fiscale,\ncn.id_canale, cn.protocollo, cn.ip, cn.porta, cn. servizio, cn.password,\npt.enabled as PT_ENABLED, cn.enabled as CANALE_ENABLED, p.enabled as PSP_ENABLED,\ncn.proxy_enabled, cn.proxy_host, cn.proxy_port, cn.proxy_username,cn.proxy_password,\ncn.timeout, cn.timeout_a, cn.timeout_b, cn.timeout_c, cn.num_thread,\ntv.descrizione as DESCRIZIONE_CANALE , tv.tipo_versamento,\ncn.target_host, cn.target_port, cn.servizio_nmp, cn.target_host_nmp, cn.target_port_nmp , cn.target_path_nmp, p.codice_mybank , p.marca_bollo_digitale \nfrom cfg.intermediari_psp pt\ninner join cfg.canali cn on pt.obj_id = cn.fk_intermediario_psp \ninner join cfg.canale_tipo_versamento ctv on ctv.fk_canale = cn.obj_id \ninner join cfg.tipi_versamento tv on ctv.fk_tipo_versamento = tv.obj_id\ninner join cfg.psp_canale_tipo_versamento pctv on pctv.fk_canale_tipo_versamento = ctv.obj_id \ninner join cfg.psp p on pctv.fk_psp = p.obj_id \nwhere 1=1",
+                "type": "Expression"
+            },
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00"
+        },
+        "sink": {
+            "type": "AzureDataExplorerSink"
+        },
+        "enableStaging": false,
+        "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+                {
+                    "source": {
+                        "name": "id_intermediario_psp",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ID_INTERMEDIARIO_PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "descrizione_intermediario",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "DESCRIZIONE_INTERMEDIARIO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "id_psp",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ID_PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "abi",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ABI",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "bic",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "BIC",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "descrizione_psp",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "DESCRIZIONE_PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ragione_sociale_psp",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "RAGIONE_SOCIALE_PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "codice_fiscale",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "CODICE_FISCALE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "id_canale",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ID_CANALE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "protocollo",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "PROTOCOLLO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ip",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "IP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "porta",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "PORTA",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "servizio",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "SERVIZIO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "password",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "PASSWORD",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "pt_enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "PT_ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "canale_enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "CANALE_ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "psp_enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "PSP_ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "proxy_enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "PROXY_ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "proxy_host",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "PROXY_HOST",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "proxy_port",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "PROXY_PORT",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "proxy_username",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "PROXY_USERNAME",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "timeout",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TIMEOUT",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "timeout_a",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TIMEOUT_A",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "timeout_b",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TIMEOUT_B",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "timeout_c",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TIMEOUT_C",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "num_thread",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "NUM_THREAD",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "descrizione_canale",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "DESCRIZIONE_CANALE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "tipo_versamento",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "TIPO_VERSAMENTO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_host",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "TARGET_HOST",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_port",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TARGET_PORT",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "servizio_nmp",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "SERVIZIO_NMP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_host_nmp",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "TARGET_HOST_NMP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_port_nmp",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TARGET_PORT_NMP",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_path_nmp",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "TARGET_PATH_NMP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "codice_mybank",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "CODICE_MYBANK",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "marca_bollo_digitale",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "MARCA_BOLLO_DIGITALE",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                }
+            ],
+            "typeConversion": true,
+            "typeConversionSettings": {
+                "allowDataTruncation": true,
+                "treatBooleanAsNumber": false
+            }
+        }
+    },
+    "inputs": [
+        {
+            "referenceName": "${inputdataset_PT_PSP}",
+            "type": "DatasetReference"
+        }
+    ],
+    "outputs": [
+        {
+            "referenceName": "${output_INTERMEDIARI_REL_PSP}",
+            "type": "DatasetReference"
+        }
+    ]
+},
+{
+    "name": "Import Relation PT EC HISTORY",
+    "type": "Copy",
+    "dependsOn": [
+        {
+            "activity": "Import Relation PT EC",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "AzurePostgreSqlSource",
+            "additionalColumns": [
+                {
+                    "name": "RUN_ID",
+                    "value": {
+                        "value": "@variables('run_id')",
+                        "type": "Expression"
+                    }
+                },
+                {
+                    "name": "INSERTED_TIMESTAMP",
+                    "value": {
+                        "value": "@startOfDay(variables('start_date'))",
+                        "type": "Expression"
+                    }
+                }
+            ],
+            "query": {
+                "value": "select pt.id_intermediario_pa , pt.codice_intermediario,\npa.id_dominio, pa.descrizione, pa.ragione_sociale,\nszpa.aux_digit, szpa.segregazione, szpa.broadcast, szpa.aca, szpa.standin,\nsz.flag_online, sz.versione, sz.versione_primitive,\nsz.id_stazione, pt.enabled as CF_ENABLED, pa.enabled as PA_ENABLED, sz.enabled as STAZIONE_ENABLED,\nsz.ip , sz.password, sz.porta, sz.protocollo, sz.target_host, sz.target_port , sz.target_path, sz.target_host_pof, sz.target_port_pof, sz.target_path_pof,\nsz.redirect_protocollo, sz.redirect_ip, sz.redirect_porta, sz.redirect_path,\nsz.proxy_enabled, sz.proxy_host, sz.proxy_port, sz.timeout, sz.num_thread, sz.timeout_a, sz.timeout_b, sz.timeout_c,\nszpa.quarto_modello , szpa.pagamento_spontaneo, sz.protocollo_4mod, sz.ip_4mod, porta_4mod, servizio_4mod\nfrom cfg.intermediari_pa pt\ninner join cfg.stazioni sz on pt.obj_id = sz.fk_intermediario_pa \ninner join cfg.pa_stazione_pa szpa on sz.obj_id = szpa.fk_stazione\ninner join cfg.pa pa on szpa.fk_pa = pa.obj_id \nwhere 1=1",
+                "type": "Expression"
+            },
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00"
+        },
+        "sink": {
+            "type": "AzureDataExplorerSink"
+        },
+        "enableStaging": false,
+        "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+                {
+                    "source": {
+                        "name": "id_intermediario_pa",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ID_INTERMEDIARIO_PA",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "codice_intermediario",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "DESCRIZIONE_INTERMEDIARIO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "id_dominio",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ID_DOMINIO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "descrizione",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "DESCRIZIONE_DOMINIO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ragione_sociale",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "RAGIONE_SOCIALE_DOMINIO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "aux_digit",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "AUX_DIGIT",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "segregazione",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "SEGREGAZIONE",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "broadcast",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "BROADCAST",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "aca",
+                        "type": "Boolean",
+                        "physicalType": "boolean"
+                    },
+                    "sink": {
+                        "name": "ACA",
+                        "type": "Boolean",
+                        "physicalType": "bool"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "standin",
+                        "type": "Boolean",
+                        "physicalType": "boolean"
+                    },
+                    "sink": {
+                        "name": "STANDIN",
+                        "type": "Boolean",
+                        "physicalType": "bool"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "flag_online",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "FLAG_ONLINE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "versione",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "VERSIONE",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "versione_primitive",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "VERSIONE_PRIMITIVE",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "id_stazione",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ID_STAZIONE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "cf_enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "CF_ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "pa_enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "PA_ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "stazione_enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "STAZIONE_ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ip",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "IP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "porta",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "PORTA",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "protocollo",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "PROTOCOLLO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_host",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "TARGET_HOST",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_port",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TARGET_PORT",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_path",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "TARGET_PATH",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_host_pof",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "TARGET_HOST_POF",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_port_pof",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TARGET_PORT_POF",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_path_pof",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "TARGET_PATH_POF",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "redirect_protocollo",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "REDIRECT_PROTOCOLLO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "redirect_ip",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "REDIRECT_IP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "redirect_porta",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "REDIRECT_PORT",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "redirect_path",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "REDIRECT_PATH",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "proxy_enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "PROXY_ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "proxy_host",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "PROXY_HOST",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "proxy_port",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "PROXY_PORT",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "timeout",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TIMEOUT",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "num_thread",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "NUM_THREAD",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "timeout_a",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TIMEOUT_A",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "timeout_b",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TIMEOUT_B",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "timeout_c",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TIMEOUT_C",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "quarto_modello",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "QUARTO_MODELLO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "pagamento_spontaneo",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "PAGAMENTO_SPONTANEO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "protocollo_4mod",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "PROTOCOLLO_4MOD",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ip_4mod",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "IP_4MOD",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "porta_4mod",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "PORTA_4MOD",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "INSERTED_TIMESTAMP",
+                        "type": "String"
+                    },
+                    "sink": {
+                        "name": "INSERTED_TIMESTAMP",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "RUN_ID",
+                        "type": "String"
+                    },
+                    "sink": {
+                        "name": "UNIQUE_ID",
+                        "type": "Guid",
+                        "physicalType": "guid"
+                    }
+                }
+            ],
+            "typeConversion": true,
+            "typeConversionSettings": {
+                "allowDataTruncation": true,
+                "treatBooleanAsNumber": false
+            }
+        }
+    },
+    "inputs": [
+        {
+            "referenceName": "${inputdataset_PT_PA}",
+            "type": "DatasetReference"
+        }
+    ],
+    "outputs": [
+        {
+            "referenceName": "${output_INTERMEDIARI_REL_PA_HISTORY}",
+            "type": "DatasetReference"
+        }
+    ]
+},
+{
+    "name": "Import Relation PT PSP HISTORY",
+    "type": "Copy",
+    "dependsOn": [
+        {
+            "activity": "Import Relation PT PSP",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "AzurePostgreSqlSource",
+            "additionalColumns": [
+                {
+                    "name": "RUN_ID",
+                    "value": {
+                        "value": "@variables('run_id')",
+                        "type": "Expression"
+                    }
+                },
+                {
+                    "name": "INSERTED_TIMESTAMP",
+                    "value": {
+                        "value": "@startOfDay(variables('start_date'))",
+                        "type": "Expression"
+                    }
+                }
+            ],
+            "query": {
+                "value": "select \npt.id_intermediario_psp as ID_INTERMEDIARIO_PSP, pt.codice_intermediario as DESCRIZIONE_INTERMEDIARIO,\np.id_psp, p.abi, p.bic, p.descrizione as DESCRIZIONE_PSP, p.ragione_sociale as RAGIONE_SOCIALE_PSP, p.codice_fiscale,\ncn.id_canale, cn.protocollo, cn.ip, cn.porta, cn. servizio, cn.password,\npt.enabled as PT_ENABLED, cn.enabled as CANALE_ENABLED, p.enabled as PSP_ENABLED,\ncn.proxy_enabled, cn.proxy_host, cn.proxy_port, cn.proxy_username,cn.proxy_password,\ncn.timeout, cn.timeout_a, cn.timeout_b, cn.timeout_c, cn.num_thread,\ntv.descrizione as DESCRIZIONE_CANALE , tv.tipo_versamento,\ncn.target_host, cn.target_port, cn.servizio_nmp, cn.target_host_nmp, cn.target_port_nmp , cn.target_path_nmp, p.codice_mybank , p.marca_bollo_digitale \nfrom cfg.intermediari_psp pt\ninner join cfg.canali cn on pt.obj_id = cn.fk_intermediario_psp \ninner join cfg.canale_tipo_versamento ctv on ctv.fk_canale = cn.obj_id \ninner join cfg.tipi_versamento tv on ctv.fk_tipo_versamento = tv.obj_id\ninner join cfg.psp_canale_tipo_versamento pctv on pctv.fk_canale_tipo_versamento = ctv.obj_id \ninner join cfg.psp p on pctv.fk_psp = p.obj_id \nwhere 1=1",
+                "type": "Expression"
+            },
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00"
+        },
+        "sink": {
+            "type": "AzureDataExplorerSink"
+        },
+        "enableStaging": false,
+        "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+                {
+                    "source": {
+                        "name": "id_intermediario_psp",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ID_INTERMEDIARIO_PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "descrizione_intermediario",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "DESCRIZIONE_INTERMEDIARIO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "id_psp",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ID_PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "abi",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ABI",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "bic",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "BIC",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "descrizione_psp",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "DESCRIZIONE_PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ragione_sociale_psp",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "RAGIONE_SOCIALE_PSP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "codice_fiscale",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "CODICE_FISCALE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "id_canale",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "ID_CANALE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "protocollo",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "PROTOCOLLO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "ip",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "IP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "porta",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "PORTA",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "servizio",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "SERVIZIO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "password",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "PASSWORD",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "pt_enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "PT_ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "canale_enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "CANALE_ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "psp_enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "PSP_ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "proxy_enabled",
+                        "type": "String",
+                        "physicalType": "character"
+                    },
+                    "sink": {
+                        "name": "PROXY_ENABLED",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "proxy_host",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "PROXY_HOST",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "proxy_port",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "PROXY_PORT",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "proxy_username",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "PROXY_USERNAME",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "timeout",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TIMEOUT",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "timeout_a",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TIMEOUT_A",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "timeout_b",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TIMEOUT_B",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "timeout_c",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TIMEOUT_C",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "num_thread",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "NUM_THREAD",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "descrizione_canale",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "DESCRIZIONE_CANALE",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "tipo_versamento",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "TIPO_VERSAMENTO",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_host",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "TARGET_HOST",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_port",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TARGET_PORT",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "servizio_nmp",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "SERVIZIO_NMP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_host_nmp",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "TARGET_HOST_NMP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_port_nmp",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "TARGET_PORT_NMP",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "target_path_nmp",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "TARGET_PATH_NMP",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "codice_mybank",
+                        "type": "String",
+                        "physicalType": "character varying"
+                    },
+                    "sink": {
+                        "name": "CODICE_MYBANK",
+                        "type": "String",
+                        "physicalType": "string"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "marca_bollo_digitale",
+                        "type": "Decimal",
+                        "physicalType": "numeric"
+                    },
+                    "sink": {
+                        "name": "MARCA_BOLLO_DIGITALE",
+                        "type": "Int32",
+                        "physicalType": "int"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "INSERTED_TIMESTAMP",
+                        "type": "String"
+                    },
+                    "sink": {
+                        "name": "INSERTED_TIMESTAMP",
+                        "type": "DateTime",
+                        "physicalType": "datetime"
+                    }
+                },
+                {
+                    "source": {
+                        "name": "RUN_ID",
+                        "type": "String"
+                    },
+                    "sink": {
+                        "name": "UNIQUE_ID",
+                        "type": "Guid",
+                        "physicalType": "guid"
+                    }
+                }
+            ],
+            "typeConversion": true,
+            "typeConversionSettings": {
+                "allowDataTruncation": true,
+                "treatBooleanAsNumber": false
+            }
+        }
+    },
+    "inputs": [
+        {
+            "referenceName": "${inputdataset_PT_PSP}",
+            "type": "DatasetReference"
+        }
+    ],
+    "outputs": [
+        {
+            "referenceName": "${output_INTERMEDIARI_REL_PSP_HISTORY}",
+            "type": "DatasetReference"
+        }
+    ]
+},
+{
+    "name": "Import Anagrafica Run",
+    "type": "AzureDataExplorerCommand",
+    "dependsOn": [
+        {
+            "activity": "Configura Run ID",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "command": {
+            "value": "@concat(\n    '.ingest inline into table IMPORT_ANAGRAFICA_RUN <| ',\n    pipeline().TriggerTime, ',',\n    variables('run_id')\n)",
+            "type": "Expression"
+        },
+        "commandTimeout": "00:20:00"
+    },
+    "linkedServiceName": {
+        "referenceName": "${dataexplorerset}",
+        "type": "LinkedServiceReference"
+    }
 }

@@ -9,12 +9,10 @@ spec:
   class: io.debezium.connector.postgresql.PostgresConnector
   tasksMax: ${tasks_max}
   config:
-    connector.class: "io.debezium.connector.postgresql.PostgresConnector"
     key.converter: "org.apache.kafka.connect.json.JsonConverter"
     key.converter.schemas.enable: false
     value.converter: "org.apache.kafka.connect.json.JsonConverter"
     value.converter.schemas.enable: false
-    tasks.max: ${tasks_max}
     database.hostname: ${postgres_hostname}
     database.port:  ${postgres_port}
     database.user: ${postgres_username}

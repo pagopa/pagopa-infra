@@ -38,12 +38,12 @@ module "cosmosdb_account_mongodb" {
 
 # hub spoke private endpoint
 resource "azurerm_private_endpoint" "cosmos_data_mongo_pe" {
-  count = var.is_feature_enabled.cosmosdb_notice && var.cosmos_mongo_db_notices_params.private_endpoint_enabled && var.is_feature_enabled.cosmos_hub_spoke_pe_dns && var.env_short != "d" ? 1 : 0
+  count = var.is_feature_enabled.cosmosdb_notice && var.cosmos_mongo_db_notices_params.private_endpoint_enabled && var.is_feature_enabled.cosmos_hub_spoke_pe_dns ? 1 : 0
 
   name                = "${local.project}-cosmos-data-mongo-pe"
   location            = var.location
   resource_group_name = azurerm_resource_group.db_rg.name
-  subnet_id           = module.cosmos_spoke_printit_snet[0].subnet_id
+  subnet_id           = module.cosmos_spoke_printit_snet.subnet_id
 
   private_dns_zone_group {
     name                 = "${local.project}-cosmos-data-private-dns-zone-group"

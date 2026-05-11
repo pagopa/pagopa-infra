@@ -96,58 +96,10 @@ variable "mock_ec_secondary_enabled" {
   default     = false
 }
 
-variable "cidr_subnet_mock_ec" {
-  type        = list(string)
-  description = "Address prefixes subnet mock ec"
-  default     = null
-}
-
-variable "mock_ec_always_on" {
-  type        = bool
-  description = "Mock EC always on property"
-  default     = false
-}
-
-variable "mock_ec_tier" {
-  type        = string
-  description = "Mock EC Plan tier"
-  default     = "Standard"
-}
-
-variable "mock_ec_size" {
-  type        = string
-  description = "Mock EC Plan size"
-  default     = "S1"
-}
-
 variable "mock_payment_gateway_enabled" {
   type        = bool
   description = "Mock payment gateway enabled"
   default     = false
-}
-
-variable "mock_payment_gateway_always_on" {
-  type        = bool
-  description = "Mock payment gateway always on property"
-  default     = false
-}
-
-variable "mock_payment_gateway_tier" {
-  type        = string
-  description = "Mock payment gateway Plan tier"
-  default     = "Standard"
-}
-
-variable "mock_payment_gateway_size" {
-  type        = string
-  description = "Mock payment gateway Plan size"
-  default     = "S1"
-}
-
-variable "cidr_subnet_mock_payment_gateway" {
-  type        = list(string)
-  description = "Address prefixes subnet mock payment_gateway"
-  default     = null
 }
 
 variable "external_domain" {
@@ -166,30 +118,6 @@ variable "dns_zone_prefix" {
   type        = string
   default     = null
   description = "The dns subdomain."
-}
-
-variable "apim_dns_zone_prefix" {
-  type        = string
-  default     = null
-  description = "The dns subdomain for apim."
-}
-
-variable "tls_cert_check_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "tls cert helm chart configuration"
-}
-
-# Network
-variable "ddos_protection_plan" {
-  type = object({
-    id     = string
-    enable = bool
-  })
-  default = null
 }
 
 # mock_psp_service NEXI

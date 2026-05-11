@@ -4,16 +4,13 @@ locals {
   folder = "PDND_CDC_GEC_DATASETS"
 }
 
-data "azurerm_data_factory" "qi_data_factory" {
-  name                = "pagopa-${var.env_short}-weu-nodo-df"
-  resource_group_name = "pagopa-${var.env_short}-weu-nodo-df-rg"
-}
+
 
 resource "azurerm_data_factory_custom_dataset" "qi_datasets" {
   depends_on      = [azurerm_data_factory_linked_service_kusto.dataexp_ls[0]]
   for_each        = local.datasets
   name            = "SMO_${each.key}_DataSet"
-  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
   type            = "AzureDataExplorerTable"
 
   type_properties_json = file("datafactory/datasets/type_properties/${each.key}.json")
@@ -119,7 +116,7 @@ resource "azurerm_data_factory_custom_dataset" "crusc8_tables_datasets" {
   data_factory_id      = data.azurerm_data_factory.obeserv_data_factory.id
   type                 = "AzurePostgreSqlTable"
   type_properties_json = <<JSON
-      { 
+      {
       "schema" : "${each.value.schema_name}",
       "table"  : "${each.value.table_name}"
     }
@@ -138,7 +135,7 @@ resource "azurerm_data_factory_custom_dataset" "cfg_tables_list_datasets" {
   data_factory_id      = data.azurerm_data_factory.obeserv_data_factory.id
   type                 = "AzurePostgreSqlTable"
   type_properties_json = <<JSON
-      { 
+      {
       "schema" : "${each.value.schema_name}",
       "table"  : "${each.value.table_name}"
     }

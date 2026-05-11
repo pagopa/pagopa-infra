@@ -77,6 +77,11 @@ data "azurerm_linux_web_app" "pdf_engine" {
   resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-shared-pdf-engine-rg"
 }
 
+data "azurerm_linux_web_app" "pdf_engine_printit" {
+  name                = "${var.prefix}-${var.env_short}-itn-printit-app-pdf-engine-java"
+  resource_group_name = "${var.prefix}-${var.env_short}-itn-printit-pdf-engine-rg"
+}
+
 module "apim_api_statuspage_api_v1" {
   source = "./.terraform/modules/__v3__/api_management_api"
 
@@ -152,6 +157,7 @@ module "apim_api_statuspage_api_v1" {
           "mockconfig"                  = var.env_short != "p" ? format("%s/pagopa-mock-config-be", format(local.aks_path, "mock")) : "NA"
           "mocker"                      = var.env_short != "p" ? format("%s/pagopa-mocker/mocker", format(local.aks_path, "mock")) : "NA"
           "pdfengine"                   = format("%s/", data.azurerm_linux_web_app.pdf_engine.default_hostname)
+          "pdfengineprintit"            = format("%s/", data.azurerm_linux_web_app.pdf_engine_printit.default_hostname)
           "receiptpdfdatastore"         = format("%s/pagopa-receipt-pdf-datastore", format(local.aks_path, "receipts"))
           "receiptpdfdatastorehelpdesk" = format("%s/pagopa-receipt-pdf-datastore-helpdesk", format(local.aks_path, "receipts"))
           "receiptpdfgenerator"         = format("%s/pagopa-receipt-pdf-generator", format(local.aks_path, "receipts"))

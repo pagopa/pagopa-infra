@@ -74,4 +74,15 @@ resource "azurerm_key_vault_secret" "apim_standin_4_crusc8_subscription_key_kv" 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "crusc8_sa_report_conn_string_key_kv" {
+  depends_on   = [module.crusc8_sa_report]
+  name         = "crusc8besa-conn-string"
+  value        = module.crusc8_sa_report.primary_blob_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+
+
 

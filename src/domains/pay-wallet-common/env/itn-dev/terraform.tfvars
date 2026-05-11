@@ -13,8 +13,8 @@ is_feature_enabled = {
   cosmos                  = true
   redis                   = true
   storage                 = true
-  redis_hub_spoke_pe_dns  = false
-  cosmos_hub_spoke_pe_dns = false
+  redis_hub_spoke_pe_dns  = true
+  cosmos_hub_spoke_pe_dns = true
 }
 
 
@@ -28,21 +28,14 @@ log_analytics_italy_workspace_resource_group_name = "pagopa-d-itn-core-monitor-r
 
 cidr_subnet_cosmosdb_pay_wallet = ["10.3.5.0/27"]
 cidr_subnet_redis_pay_wallet    = ["10.3.5.64/27"]
-cidr_subnet_storage_pay_wallet  = ["10.3.5.96/27"]
 cidr_subnet_pay_wallet_user_aks = ["10.3.6.0/24"]
-
-### AKS
-ingress_load_balancer_ip = "10.3.2.250"
+ingress_load_balancer_ip        = "10.3.2.250"
 
 ### DNS
 
 external_domain          = "pagopa.it"
 dns_zone_prefix          = "dev.payment-wallet"
 dns_zone_internal_prefix = "internal.dev.platform"
-dns_zone_platform        = "dev.platform"
-
-### Cosmos
-
 cosmos_mongo_db_params = {
   kind         = "MongoDB"
   capabilities = ["EnableMongo", "EnableServerless"]
@@ -57,9 +50,9 @@ cosmos_mongo_db_params = {
   enable_free_tier                 = false
 
   additional_geo_locations                     = []
-  private_endpoint_enabled                     = false
-  public_network_access_enabled                = true
-  is_virtual_network_filter_enabled            = false
+  private_endpoint_enabled                     = true
+  public_network_access_enabled                = false
+  is_virtual_network_filter_enabled            = true
   enable_provisioned_throughput_exceeded_alert = false
   backup_continuous_enabled                    = false
   ip_range_filter                              = []
@@ -74,15 +67,6 @@ cosmos_mongo_db_pay_wallet_params = {
 
 
 ### Redis
-
-redis_pay_wallet_params = {
-  capacity = 0
-  sku_name = "Basic"
-  family   = "C"
-  version  = 6
-  zones    = []
-}
-
 redis_std_pay_wallet_params = {
   capacity = 0
   sku_name = "Basic"

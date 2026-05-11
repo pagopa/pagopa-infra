@@ -27,6 +27,11 @@ data "azurerm_subnet" "aks_subnet" {
   resource_group_name  = local.vnet_italy_resource_group_name
 }
 
+data "azurerm_virtual_network" "spoke_data_vnet" {
+  name                = local.spoke_data_vnet_name
+  resource_group_name = local.hub_spoke_vnet_rg_name
+}
+
 #
 # Private DNS Zones
 #
@@ -42,4 +47,19 @@ data "azurerm_resource_group" "rg_event_private_dns_zone" {
 data "azurerm_private_dns_zone" "postgres" {
   name                = "private.postgres.database.azure.com"
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
+}
+
+data "azurerm_private_dns_zone" "privatelink_blob_azure_com" {
+  name                = "privatelink.blob.core.windows.net"
+  resource_group_name = local.vnet_resource_group_name
+}
+
+data "azurerm_private_dns_zone" "privatelink_table_azure_com" {
+  name                = "privatelink.table.core.windows.net"
+  resource_group_name = local.vnet_resource_group_name
+}
+
+data "azurerm_private_dns_zone" "privatelink_queue_azure_com" {
+  name                = "privatelink.queue.core.windows.net"
+  resource_group_name = local.vnet_resource_group_name
 }

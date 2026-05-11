@@ -56,7 +56,7 @@ module "bopagopa_cosmosdb_mongo_account" {
   ip_range = ""
 
   # add data.azurerm_subnet.<my_service>.id
-  allowed_virtual_network_subnet_ids = var.bopagopa_datastore_cosmos_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
+  allowed_virtual_network_subnet_ids = var.env_short == "p" ? [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id, data.azurerm_subnet.vpn_subnet.id]
 
 
   private_endpoint_enabled              = var.bopagopa_datastore_cosmos_db_params.private_endpoint_enabled
@@ -197,13 +197,42 @@ module "mongdb_collection_institutions_services_rtp_consent" {
       unique = true
     },
     {
-      keys   = ["consent"]
-      unique = false
-    },
-    {
-      keys   = ["consentDate"]
+      keys   = ["consentDate", "consent"]
       unique = false
     }
   ]
   lock_enable = true
+}
+
+module "mongdb_collection_iban_deletion_requests" {
+  source = "./.terraform/modules/__v3__/cosmosdb_mongodb_collection"
+
+  name                = "ibanDeletionRequests"
+  resource_group_name = azurerm_resource_group.bopagopa_rg.name
+
+  cosmosdb_mongo_account_name  = module.bopagopa_cosmosdb_mongo_account.name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.pagopa_backoffice.name
+
+  shard_key = "_id"
+
+  indexes = [
+    {
+      keys   = ["_id"]
+      unique = true
+    },
+    {
+      keys   = ["creditorInstitutionCode", "status"]
+      unique = false
+    },
+    {
+      keys   = ["status", "scheduledExecutionDate"]
+      unique = false
+    },
+    {
+      keys   = ["creditorInstitutionCode", "status", "ibanValue"]
+      unique = false
+    },
+  ]
+
+  lock_enable = var.env_short != "d"
 }

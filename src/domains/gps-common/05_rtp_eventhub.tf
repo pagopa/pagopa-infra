@@ -56,26 +56,3 @@ module "eventhub_rtp_namespace_integration" {
 }
 
 
-# resource "azurerm_private_endpoint" "rtp_integration_eventhub_private_endpoint" {
-#   location            = var.location_ita
-#   name                = "${local.project_itn}-rtp-integration-evh-private-endpoint"
-#   resource_group_name = azurerm_resource_group.rtp_rg.name
-#   subnet_id           = data.azurerm_subnet.common_itn_private_endpoint_subnet.id
-#
-#   private_service_connection {
-#     name                           = "rtpintegrationeventhuv"
-#     private_connection_resource_id = module.eventhub_rtp_namespace_integration.namespace_id
-#     is_manual_connection           = false
-#     subresource_names              = ["namespace"]
-#   }
-#
-#   private_dns_zone_group {
-#     name                 = "${var.prefix}-eventhub-zone-group"
-#     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
-#   }
-#
-#
-#
-#   tags = module.tag_config.tags
-#
-# }

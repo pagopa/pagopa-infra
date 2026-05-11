@@ -72,3 +72,8 @@ data "azurerm_private_dns_zone" "privatelink_postgres_azure_com" {
   name                = "private.postgres.database.azure.com"
   resource_group_name = "pagopa-${var.env_short}-vnet-rg"
 }
+
+data "azurerm_private_dns_zone" "privatelink_azurewebsite_azure_com" {
+  name                = "privatelink.azurewebsites.net"
+  resource_group_name = "pagopa-${var.env_short}-vnet-rg"
+}

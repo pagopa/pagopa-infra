@@ -36,12 +36,6 @@ variable "image_name" {
   description = "The image name to use with a function app"
 }
 
-variable "image_tag" {
-  type        = string
-  default     = "latest"
-  description = "The image tag to use with a function app"
-}
-
 variable "private_endpoint_network_policies_enabled" {
   type        = bool
   default     = false
@@ -105,30 +99,6 @@ variable "canoneunico_runtime_version" {
   type        = string
   description = "Version for the Azure function runtime"
   default     = "~4"
-}
-
-variable "canoneunico_enable_versioning" {
-  type        = bool
-  description = "Enable sa versioning"
-  default     = false
-}
-
-variable "canoneunico_advanced_threat_protection" {
-  type        = bool
-  description = "Enable contract threat advanced protection"
-  default     = false
-}
-
-variable "canoneunico_delete_retention_days" {
-  type        = number
-  description = "Number of days to retain deleted."
-  default     = 30
-}
-
-variable "canoneunico_backup_retention_days" {
-  type        = number
-  description = "Number of days to retain backup."
-  default     = 0
 }
 
 variable "canoneunico_schedule_batch" {
@@ -198,12 +168,6 @@ variable "function_storage_account_info" {
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
   }
-}
-
-variable "enable_canoneunico_backup" {
-  type        = bool
-  default     = false
-  description = "(Optional) Enables canoneunico storage account backup"
 }
 
 variable "corporate_cup_users" {

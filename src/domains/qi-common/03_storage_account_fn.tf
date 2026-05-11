@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "qi_rg" {
 }
 
 module "qi_fn_sa" {
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                       = replace(format("%s-fn-sa", local.project), "-", "")
   account_kind               = var.qi_storage_params.kind

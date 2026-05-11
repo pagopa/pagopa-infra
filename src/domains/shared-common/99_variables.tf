@@ -74,22 +74,10 @@ variable "instance" {
 
 ### POC reporting enrollment variables
 
-variable "poc_versioning" {
-  type        = bool
-  description = "Enable sa versioning"
-  default     = false
-}
-
 variable "poc_advanced_threat_protection" {
   type        = bool
   description = "Enable contract threat advanced protection"
   default     = false
-}
-
-variable "poc_delete_retention_days" {
-  type        = number
-  description = "Number of days to retain deleted."
-  default     = 30
 }
 
 ### External resources
@@ -125,11 +113,6 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
-variable "reporting_storage_public_access_enabled" {
-  type        = bool
-  description = "(Optional) Whether the public network access is enabled?"
-  default     = true
-}
 
 variable "cosmos_iuvgenerator_db_params" {
   type = object({
@@ -163,17 +146,6 @@ variable "cidr_subnet_iuvgenerator_cosmosdb" {
 }
 
 ### Aks
-
-variable "k8s_kube_config_path_prefix" {
-  type    = string
-  default = "~/.kube"
-}
-
-variable "cidr_subnet_loadtest_agent" {
-  type        = list(string)
-  description = "LoadTest Agent Pool address space"
-  default     = null
-}
 
 variable "cidr_subnet_authorizer_cosmosdb" {
   type        = list(string)
@@ -277,28 +249,9 @@ variable "test_data_storage_account" {
   default = null
 }
 
-variable "cidr_subnet_test_data_storage_account" {
-  type        = list(string)
-  description = "Storage account network address space."
-  default     = null
-}
-
 variable "redis_ha_enabled" {
   type        = bool
   description = "(Required) If true, enables the usage of HA redis instance"
 }
 
 
-variable "github_repository_environment" {
-  type = object({
-    protected_branches     = bool
-    custom_branch_policies = bool
-    reviewers_teams        = list(string)
-  })
-  description = "GitHub Continuous Integration roles"
-  default = {
-    protected_branches     = false
-    custom_branch_policies = true
-    reviewers_teams        = ["pagopa-team-core"]
-  }
-}

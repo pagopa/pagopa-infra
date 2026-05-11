@@ -196,6 +196,9 @@ resource "azurerm_dns_a_record" "dns_a_management_prf" {
   tags                = module.tag_config.tags
 }
 
+# ⚠️TMP DIGICERT requires both accounting-reconciliation and www.accounting-reconciliation records for validation, even if they have the same value
+# https://pagopa.atlassian.net/wiki/pages/resumedraft.action?draftId=2645983363
+
 # accounting reconciliation DCV TXT record
 resource "azurerm_dns_txt_record" "dns-txt-acc-recon-platform-pagopa-it-digicert" {
   count               = var.env_short == "p" ? 1 : 0
@@ -222,7 +225,10 @@ resource "azurerm_dns_txt_record" "dns-txt-www-acc-recon-platform-pagopa-it-digi
   tags = module.tag_config.tags
 }
 
-# Node Forwarder DCV TXT record
+# ⚠️TMP DIGIGCERT requires both forwarder and www.forwarder records for validation, even if they have the same value
+# https://pagopa.atlassian.net/wiki/pages/resumedraft.action?draftId=2645983363
+
+# Node Forwarder DCV TXT record 
 resource "azurerm_dns_txt_record" "dns-txt-forwarder-platform-pagopa-it-digicert" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "forwarder"

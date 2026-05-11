@@ -1,0 +1,16 @@
+<policies>
+    <inbound>
+      <base />
+      <rate-limit-by-key calls="50" renewal-period="5" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" remaining-calls-variable-name="remainingCallsPerIp"/>
+      <set-backend-service base-url="https://${hostname}/pagopa-search-transactions-fe/" />
+    </inbound>
+    <outbound>
+      <base />
+    </outbound>
+    <backend>
+      <base />
+    </backend>
+    <on-error>
+      <base />
+    </on-error>
+  </policies>

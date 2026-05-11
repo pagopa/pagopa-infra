@@ -38,7 +38,7 @@ resource "azurerm_private_endpoint" "gpd_blob" {
 
   private_dns_zone_group {
     name                 = "${local.project}-storage-private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.storage[0].id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.storage.id]
   }
 
   private_service_connection {
@@ -65,7 +65,7 @@ resource "azurerm_private_endpoint" "gpd_queue" {
 
   private_dns_zone_group {
     name                 = "${local.project}-storage-private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.storage_queue[0].id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.storage_queue.id]
   }
 
   private_service_connection {

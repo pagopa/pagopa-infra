@@ -36,19 +36,18 @@ receipts_datastore_cosmos_db_params = {
   enable_free_tier                 = false
 
   additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = false
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = false
 
   container_default_ttl = 2629800 # 1 month in second
 
-  max_throughput     = 1000
-  max_throughput_alt = 1000
+  max_throughput             = 1000
+  max_throughput_alt         = 1000
+  max_throughput_io_messages = 1000
 }
 
 cidr_subnet_receipts_datastore_cosmosdb = ["10.1.171.0/24"]
 cidr_subnet_receipts_datastore_storage  = ["10.1.172.0/24"]
-
-enable_iac_pipeline = true

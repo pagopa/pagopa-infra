@@ -2,7 +2,7 @@
 # 👤 TLS Checker workload identity #
 ####################################
 module "tls_checker_workload_identity_init" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_workload_identity_init?ref=v8.54.0"
+  source = "./.terraform/modules/__v4__//kubernetes_workload_identity_init"
 
 
   workload_identity_name_prefix         = "tls"
@@ -11,7 +11,7 @@ module "tls_checker_workload_identity_init" {
 }
 
 module "tls_checker_workload_identity_configuration" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_workload_identity_configuration?ref=v8.54.0"
+  source = "./.terraform/modules/__v4__//kubernetes_workload_identity_configuration"
 
   workload_identity_name_prefix         = "tls"
   workload_identity_resource_group_name = azurerm_resource_group.aks_rg.name
@@ -32,7 +32,7 @@ module "tls_checker_workload_identity_configuration" {
 # 📦 TLS Checker helm release #
 ###############################
 module "tls_checker" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v8.54.0"
+  source = "./.terraform/modules/__v4__//tls_checker"
 
   for_each = { for chkr in var.tls_checker_https_endpoints_to_check : chkr.alert_name => chkr }
 
@@ -64,5 +64,5 @@ module "tls_checker" {
   workload_identity_service_account_name = module.tls_checker_workload_identity_configuration.workload_identity_service_account_name
   workload_identity_client_id            = module.tls_checker_workload_identity_configuration.workload_identity_client_id
 
-  depends_on = [module.monitoring_pod_identity, module.tls_checker_workload_identity_configuration]
+  depends_on = [module.tls_checker_workload_identity_configuration]
 }
