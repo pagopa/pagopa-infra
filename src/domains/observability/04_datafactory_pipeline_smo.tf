@@ -793,7 +793,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_SMO_QPT_TRANSACTION" {
 
   activities_json = "[${templatefile("datafactory/pipelines/SMO_QPT_TRANSACTION.json", {
     inputdataset  = "SMO_ReEvent_DataSet"
-    outputdataset = "CRUSC8_PAYMENT_RECEIPT"
+    outputdataset = "CRUSC8_TRANSACTION"
   })}]"
 
   depends_on = [

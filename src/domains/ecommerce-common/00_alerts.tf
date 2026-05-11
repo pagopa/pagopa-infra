@@ -185,7 +185,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_payment_method
 AzureDiagnostics
 | where url_s == "https://api.platform.pagopa.it/ecommerce/checkout/v2/payment-methods"
 | where method_s == "POST"
-| where responseCode_d != 200 or DurationMs > 250
+| where responseCode_d != 200 or DurationMs > 1000
 | project TimeGenerated, responseCode_d, DurationMs
   QUERY
   )

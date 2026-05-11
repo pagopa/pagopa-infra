@@ -1,10 +1,5 @@
 # general
 
-locals {
-  product                       = "${var.prefix}-${var.env_short}"
-  vnet_core_name                = "${local.product}-vnet"
-  vnet_core_resource_group_name = "${local.product}-vnet-rg"
-}
 
 variable "prefix" {
   type    = string
@@ -14,16 +9,6 @@ variable "prefix" {
       length(var.prefix) <= 6
     )
     error_message = "Max length is 6 chars."
-  }
-}
-
-variable "env" {
-  type = string
-  validation {
-    condition = (
-      length(var.env) <= 4
-    )
-    error_message = "Max length is 3 chars."
   }
 }
 
@@ -40,11 +25,6 @@ variable "env_short" {
 variable "location" {
   type    = string
   default = "westeurope"
-}
-
-variable "location_short" {
-  type        = string
-  description = "Location short like eg: neu, weu.."
 }
 
 

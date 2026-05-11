@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "cloudo" {
-  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=3933ac0ff39220953bc6df706cceccb2f2cda771" #0.14.2
+  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=8c5d22a2f4a90fc87553964bca72ba2aea3c2fc2" #0.19.0
 
   prefix                    = local.product
   product_name              = var.prefix
@@ -20,8 +20,9 @@ module "cloudo" {
   vnet_name                 = data.azurerm_virtual_network.network_tools_vnet.name
   vnet_rg                   = data.azurerm_virtual_network.network_tools_vnet.resource_group_name
 
-  cloudo_function_tier = var.cloudo_function_tier
-  cloudo_ui_tier       = var.cloudo_ui_tier
+  cloudo_function_tier   = var.cloudo_function_tier
+  cloudo_ui_tier         = var.cloudo_ui_tier
+  autoscale_max_capacity = var.env == "p" ? 3 : 1
 
   vpn_subnet_id                  = data.azurerm_subnet.vpn_subnet.id
   private_endpoint_dns_zone_name = data.azurerm_private_dns_zone.private_endpoint_dns_zone.name
@@ -43,12 +44,24 @@ module "cloudo" {
     }
   }
 
+  custom_roles_subscription = [
+    "Storage Blob Data Contributor",
+    "Storage Account Key Operator Service Role"
+  ]
+
   custom_role_assignments = [
     {
       role  = "Contributor"
       scope = data.azurerm_resource_group.network_rg.id
-    }
+    },
   ]
+
+  key_vaults_integration = {
+    "pagopa-${var.env_short}-gps-kv" = {
+      name           = "pagopa-${var.env_short}-gps-kv"
+      resource_group = "pagopa-${var.env_short}-gps-sec-rg"
+    }
+  }
 
   approval_runbook = {
     ttl_min = "120"
