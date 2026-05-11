@@ -3,7 +3,7 @@
 ##############
 
 module "apim_receipts_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "receipts"
   display_name = "Receipts Service PDF"
@@ -21,7 +21,7 @@ module "apim_receipts_product" {
 }
 
 module "apim_receipts_internal_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "receipts-internal"
   display_name = "Receipts Service PDF Internal"
@@ -64,7 +64,7 @@ resource "azurerm_api_management_api_version_set" "api_receipts_helpdesk_api" {
  @Deprecated
  */
 module "apim_api_receipts_helpdesk_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-receipts-helpdesk-api", local.project)
   api_management_name   = local.pagopa_apim_name

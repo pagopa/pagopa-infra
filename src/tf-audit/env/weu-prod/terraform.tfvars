@@ -1,6 +1,5 @@
-prefix         = "pagopa"
-env_short      = "p"
 env            = "prod"
+env_short      = "p"
 location       = "westeurope"
 location_short = "weu"
 

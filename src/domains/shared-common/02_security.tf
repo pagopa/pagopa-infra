@@ -272,18 +272,6 @@ resource "azurerm_key_vault_secret" "pdf_engine_node_perf_test_subkey" {
   }
 }
 
-resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
-  name         = "elastic-otel-token-header"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
 #
 # IaC
 #
@@ -395,4 +383,18 @@ resource "azurerm_key_vault_secret" "shared_anonymizer_api_keysubkey_store_kv" {
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
+}
+
+
+#search-transactions
+resource "azurerm_key_vault_secret" "search_transactions_token_secret" {
+  name         = "search-transactions-token-secret"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }

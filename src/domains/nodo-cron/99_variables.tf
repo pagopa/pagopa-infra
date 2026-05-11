@@ -50,11 +50,6 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-variable "location_string" {
-  type        = string
-  description = "One of West Europe, North Europe"
-}
-
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
@@ -103,14 +98,6 @@ variable "apim_dns_zone_prefix" {
   description = "The dns subdomain for apim."
 }
 
-variable "tls_cert_check_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "tls cert helm chart configuration"
-}
 variable "nodo_user_node_pool" {
   type = object({
     enabled            = bool,
@@ -128,7 +115,3 @@ variable "nodo_user_node_pool" {
   description = "AKS node pool user configuration"
 }
 
-variable "aks_cidr_subnet" {
-  type        = list(string)
-  description = "Aks network address space."
-}

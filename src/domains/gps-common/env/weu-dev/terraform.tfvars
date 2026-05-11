@@ -1,10 +1,12 @@
-prefix         = "pagopa"
-env_short      = "d"
-env            = "dev"
-domain         = "gps"
-location       = "westeurope"
-location_short = "weu"
-instance       = "dev"
+prefix             = "pagopa"
+env_short          = "d"
+env                = "dev"
+domain             = "gps"
+location           = "westeurope"
+location_short     = "weu"
+location_itn       = "italynorth"
+location_itn_short = "itn"
+instance           = "dev"
 
 
 ### External resources
@@ -46,11 +48,11 @@ cosmos_gps_db_params = {
 }
 
 gpd_upload_status_ttl = 604800 // 7 days
-
+gpd_cdc_enabled       = true
 # Postgres Flexible
 pgres_flex_params = {
 
-  private_endpoint_enabled = false
+  private_endpoint_enabled = true
   sku_name                 = "GP_Standard_D2ds_v4"
   db_version               = "15"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
@@ -72,6 +74,8 @@ pgres_flex_params = {
   wal_level                                        = "logical"
   shared_preoload_libraries                        = "pglogical"
   public_network_access_enabled                    = false
+  log_min_duration_statement                       = -1
+  log_lock_waits                                   = "OFF"
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]
@@ -111,10 +115,7 @@ cosmos_gpd_payments_db_params = {
 }
 
 
-enable_iac_pipeline                   = true
-gpd_payments_sa_delete_retention_days = 0
-
-# GPD Storage Account SFTP
+enable_iac_pipeline                                            = true
 gpd_sftp_sa_replication_type                                   = "LRS"
 gpd_sftp_sa_access_tier                                        = "Hot"
 gpd_sftp_cidr_subnet_gpd_storage_account                       = ["10.1.152.16/29"]
@@ -127,12 +128,6 @@ gpd_sftp_sa_tier_to_archive                                    = 1
 gpd_sftp_sa_delete                                             = 2
 
 # GPD Archive account
-gpd_archive_replication_type = "LRS"
-gpd_cdc_enabled              = true
-
-### EventHub
-
-# RTP EventHub
 eventhubs_rtp = [
   {
     name              = "rtp-events"
@@ -185,4 +180,15 @@ rtp_storage_account = {
   public_network_access_enabled      = false
   blob_delete_retention_days         = 30
   enable_low_availability_alert      = false
+}
+
+# Postgres Flexible Storico
+pgflex_storico_params = {
+  pgres_flex_pgbouncer_enabled           = false
+  alerts_enabled                         = false
+  pgres_flex_diagnostic_settings_enabled = false
+  max_connections                        = 850
+  enable_private_dns_registration        = true
+  max_worker_processes                   = 16
+  storage_mb                             = 32768
 }
