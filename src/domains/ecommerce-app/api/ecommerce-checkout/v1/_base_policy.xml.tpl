@@ -3,7 +3,7 @@
   <inbound>
       <cors>
         <allowed-origins>
-          <origin>${checkout_origin}</origin>
+          ${origins}
         </allowed-origins>
         <allowed-methods>
           <method>POST</method>

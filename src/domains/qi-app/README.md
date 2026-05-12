@@ -16,7 +16,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 4ac32cd6fb7d56e7be3b1c0dbcbf251f5b0cd199 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | d0a0b3a81963169bdc974f79eba31e41e918e63d |
 | <a name="module_apim_pagopa_qi_fdr_kpi_service_api"></a> [apim\_pagopa\_qi\_fdr\_kpi\_service\_api](#module\_apim\_pagopa\_qi\_fdr\_kpi\_service\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_pagopa_qi_observability_perf_kpi_api"></a> [apim\_pagopa\_qi\_observability\_perf\_kpi\_api](#module\_apim\_pagopa\_qi\_observability\_perf\_kpi\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_pagopa_qi_smo_jira_tickets_service_api"></a> [apim\_pagopa\_qi\_smo\_jira\_tickets\_service\_api](#module\_apim\_pagopa\_qi\_smo\_jira\_tickets\_service\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
@@ -97,7 +97,6 @@
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
 | <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br/>    name         = optional(string, null)<br/>    minAvailable = optional(number, null)<br/>    matchLabels  = optional(map(any), {})<br/>  }))</pre> | `{}` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br/>    chart_version = string,<br/>    image_name    = string,<br/>    image_tag     = string<br/>  })</pre> | n/a | yes |
 
 ## Outputs
 

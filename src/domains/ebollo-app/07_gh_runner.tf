@@ -1,10 +1,10 @@
 locals {
-  tools_cae_name = "${local.product}-${var.location_short}-core-tools-cae"
+  tools_cae_name = "${local.project_core_itn}-spoke-tools-cae"
   tools_cae_rg   = "${local.product}-${var.location_short}-core-tools-rg"
 }
 
 module "gh_runner_job" {
-  source = "./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup"
+  source = "./.terraform/modules/__v4__/gh_runner_container_app_job_domain_setup"
 
   domain_name        = var.domain
   env_short          = var.env_short
@@ -23,9 +23,7 @@ module "gh_runner_job" {
       short_name : "gps-mbd-svc"
     }
   ]
-  job = {
-    name = var.domain
-  }
+  job      = {}
   job_meta = {}
   key_vault = {
     name        = "${local.project}-kv"                      # Name of the KeyVault which stores PAT as secret

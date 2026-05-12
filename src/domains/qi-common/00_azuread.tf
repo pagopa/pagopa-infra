@@ -19,7 +19,7 @@ data "azuread_group" "adgroup_operations" {
   display_name = "${local.product}-adgroup-operations"
 }
 
-# Acccording to 
+# Acccording to
 # Application Insights API Keys are deprecated and will be retired in March 2026. Please consider using API Accesss with Azure AD. Learn more about API Access with Azure AD
 # https://learn.microsoft.com/en-us/azure/azure-monitor/app/azure-ad-authentication?tabs=aspnetcore
 
@@ -34,7 +34,7 @@ resource "azuread_application" "qi_app" {
 }
 
 resource "azuread_service_principal" "qi_sp" {
-  application_id = azuread_application.qi_app.application_id
+  client_id = azuread_application.qi_app.client_id
 }
 
 # https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#role-based-access-control-administrator
@@ -50,9 +50,9 @@ resource "time_rotating" "qi_application_time" {
 }
 
 resource "azuread_application_password" "qi_app_pwd" {
-  application_object_id = azuread_application.qi_app.object_id
-  display_name          = "managed by terraform"
-  end_date_relative     = "8640h" # 360 days
+  application_id    = azuread_application.qi_app.id
+  display_name      = "managed by terraform"
+  end_date_relative = "8640h" # 360 days
   rotate_when_changed = {
     rotation = time_rotating.qi_application_time.id
   }
@@ -60,7 +60,7 @@ resource "azuread_application_password" "qi_app_pwd" {
 
 resource "azurerm_key_vault_secret" "qi_service_principal_client_id" {
   name         = "${local.product}-qi-client-id"
-  value        = azuread_service_principal.qi_sp.application_id
+  value        = azuread_service_principal.qi_sp.client_id
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

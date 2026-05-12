@@ -7,7 +7,7 @@
       <set-variable name="rptId" value="@(context.Request.Url.Query.GetValueOrDefault("rpt_id", ""))" />
       <set-variable name="amount" value="@(context.Request.Url.Query.GetValueOrDefault("amount", ""))" />
       <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
-          <set-url>@($"https://${ecommerce_ingress_hostname}/pagopa-ecommerce-payment-methods-service/payment-methods/{(string)context.Variables["paymentMethodId"]}")</set-url>
+          <set-url>@($"https://${ecommerce_ingress_hostname}/pagopa-ecommerce-payment-methods-handler/payment-methods/{(string)context.Variables["paymentMethodId"]}")</set-url>
           <set-method>GET</set-method>
           <set-header name="X-Client-Id" exists-action="override">
               <value>IO</value>
@@ -72,7 +72,7 @@
                     new JProperty("privateClaims", new JObject(
                         new JProperty("userId", userId),
                         new JProperty("email", email),
-                        new JProperty("rptId", rptId), 
+                        new JProperty("rptId", rptId),
                         new JProperty("amount", amount)
                     ))
                 ).ToString();

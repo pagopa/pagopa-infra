@@ -245,6 +245,8 @@ AzureDiagnostics
     threshold = 1
   }
 }
+
+// Query explanation: https://pagopa.atlassian.net/wiki/spaces/I/pages/574751186/Razionalizzazione+Alert
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculator-v2-availability-fees" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
@@ -261,23 +263,41 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   description    = "Availability for V2 version of /fees is less than or equal to 99% - ${local.afm-calculator-dash.calculator-v2}"
   enabled        = true
   query = (<<-QUERY
-let threshold = 0.99;
-AzureDiagnostics
-| where url_s matches regex "/v2/fees"
-| summarize
-    Total=count(),
-    Success=count(responseCode_d < 500)
-    by bin(TimeGenerated, 5m)
-| extend availability=toreal(Success) / Total
-| where availability < threshold
-  QUERY
+  let lowTrafficThreshold = 70; // the lower threshold used if traffic is low
+  let highTrafficThreshold = 95; // the upper threshold if traffic is high
+  let trafficMin = 100; // below this, we tolerate lower availability
+  let trafficLinear = 500; // above this, high availability is expected
+  let thresholdDelta = trafficLinear - trafficMin;
+  let availabilityDelta = highTrafficThreshold - lowTrafficThreshold;
+  // -----------------------------------------
+  AzureDiagnostics
+  | where url_s matches regex "/v2/fees"
+  | summarize
+	    total = count(),
+	    success = count(responseCode_d < 500)
+	    by timeslot = bin(TimeGenerated, 5m)
+  | extend trafficUp = total - trafficMin
+  | extend deltaRatio = todouble(trafficUp) / todouble(thresholdDelta)
+  | extend expectedAvailability = iff(
+	    total >= trafficLinear,
+	    toreal(highTrafficThreshold),
+	    iff(
+	        total <= trafficMin,
+	        toreal(lowTrafficThreshold),
+	        (deltaRatio * availabilityDelta) + lowTrafficThreshold
+	    )
+	)
+   | extend availability = ((success * 1.0) / total) * 100
+   | project timeslot, availability, threshold = expectedAvailability
+   | where availability < threshold
+   QUERY
   )
   severity    = 1
   frequency   = 5
-  time_window = 5
+  time_window = 10
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 2
   }
 }
 

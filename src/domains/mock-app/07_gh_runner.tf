@@ -22,11 +22,13 @@ module "gh_runner_job" {
     {
       name : "pagopa-mocker-config",
       short_name : "mockr-cfg"
-    }
+    },
+    {
+      name : "pagopa-remora-engine",
+      short_name : "remoraeng"
+    },
   ]
-  job = {
-    name = var.domain
-  }
+  job      = {}
   job_meta = {}
   key_vault = {
     name        = "${local.product}-kv"     # Name of the KeyVault which stores PAT as secret

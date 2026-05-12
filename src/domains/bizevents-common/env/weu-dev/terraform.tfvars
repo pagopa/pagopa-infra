@@ -36,8 +36,8 @@ bizevents_datastore_cosmos_db_params = {
   enable_free_tier                 = false
 
   additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
   is_virtual_network_filter_enabled = false
 
   ip_range_filter = ""
@@ -46,9 +46,12 @@ bizevents_datastore_cosmos_db_params = {
 
   container_default_ttl = 2629800 # 1 month in second
 
-  max_throughput          = 1000
-  max_throughput_view     = 1000
-  max_throughput_view_alt = 1000
+  max_throughput = 1000
+
+  max_throughput_biz          = 1000
+  max_throughput_view_user    = 1000
+  max_throughput_view_cart    = 1000
+  max_throughput_view_general = 1000
 }
 
 # CosmosDB Negative Biz Events Datastore
@@ -66,8 +69,8 @@ negative_bizevents_datastore_cosmos_db_params = {
   enable_free_tier                 = false
 
   additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
   is_virtual_network_filter_enabled = false
 
   backup_continuous_enabled = false

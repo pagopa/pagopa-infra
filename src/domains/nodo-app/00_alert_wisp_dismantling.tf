@@ -5,7 +5,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-wisp-convert
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack_pagopa_pagamenti_alert.id, data.azurerm_monitor_action_group.opsgenie[0].id]
     email_subject          = "Alert pagopa-wisp-converter-availability"
     custom_webhook_payload = "{}"
   }
@@ -42,7 +42,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-wisp-convert
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack_pagopa_pagamenti_alert.id, data.azurerm_monitor_action_group.opsgenie[0].id]
     email_subject          = "Alert pagopa-wisp-converter-redirect-availability"
     custom_webhook_payload = "{}"
   }

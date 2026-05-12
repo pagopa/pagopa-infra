@@ -9,7 +9,7 @@ locals {
 }
 
 module "apim_checkout_authentication" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "checkout-authentication"
   display_name = "Checkout Authentication"
@@ -34,7 +34,7 @@ resource "azurerm_api_management_api_version_set" "checkout_auth_service_api_v1"
 }
 
 module "apim_checkout_auth_service_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project_short}-auth-service-api"
   api_management_name   = data.azurerm_api_management.apim.name

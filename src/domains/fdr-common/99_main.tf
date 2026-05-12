@@ -6,11 +6,11 @@ terraform {
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 3.116.0, < 4.0.0"
+      version = "~> 4.16"
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "<= 2.47.0"
+      version = "~> 3.1"
     }
     null = {
       source  = "hashicorp/null"
@@ -33,6 +33,7 @@ data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
 
-module "__v3__" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=ce3200bf6673671bd6e641722e6c9d7500043fda"
+module "__v4__" {
+  # 9.10.1
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=84274ba6f123ea491169c3d1929f66bb421dff92"
 }

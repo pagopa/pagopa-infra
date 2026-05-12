@@ -37,16 +37,12 @@ qi_storage_params = {
 }
 
 ### EVH
-cidr_subnet_qi_evh = ["10.3.3.0/27"]
-
 ehns_auto_inflate_enabled     = false
 ehns_maximum_throughput_units = 5
 ehns_capacity                 = 1
 ehns_alerts_enabled           = false
-ehns_zone_redundant           = false
-
-ehns_public_network_access = true
-ehns_sku_name              = "Standard"
+ehns_public_network_access    = true
+ehns_sku_name                 = "Standard"
 
 # evh to add to namespace
 eventhubs_bdi = [
@@ -123,3 +119,38 @@ ehns_metric_alerts_qi = {
   #   ],
   # },
 }
+
+### Cosmos
+
+cosmos_mongo_db_params = {
+  enabled      = true
+  kind         = "MongoDB"
+  capabilities = ["EnableMongo", "EnableServerless"]
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 5
+    max_staleness_prefix    = 100000
+  }
+  server_version                   = "6.0"
+  main_geo_location_zone_redundant = false
+  enable_free_tier                 = false
+
+  additional_geo_locations          = []
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = true
+
+  backup_continuous_enabled                    = false
+  enable_provisioned_throughput_exceeded_alert = false
+
+}
+
+cosmos_mongo_db_accounting_reconciliation_params = {
+  enable_serverless  = true
+  enable_autoscaling = true
+  max_throughput     = 1000
+  throughput         = 1000
+}
+
+cidr_subnet_cosmosdb_qi = ["10.1.132.0/24"]

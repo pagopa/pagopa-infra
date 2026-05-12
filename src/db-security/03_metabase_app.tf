@@ -11,6 +11,8 @@ module "app_service_snet" {
 
   service_endpoints = ["Microsoft.Web"]
 
+  tags = module.tag_config.tags
+
 }
 
 module "metabase_app_service" {

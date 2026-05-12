@@ -3,13 +3,17 @@ locals {
   domain  = "synthetic"
   project = "${local.product}-${var.location_short}-${local.domain}"
 
+  grafana_rg_name = "${local.product}-${var.location_short}-grafana-rg"
+  grafana_name    = "${local.product}-${var.location_short}-grafana"
 
   monitor_appinsights_name                 = "${local.product}-appinsights"
   monitor_action_group_slack_name          = "SlackPagoPA"
   monitor_action_group_email_name          = "PagoPA"
+  monitor_action_group_cloudo_name         = "pagopa-${var.env_short}-cloudo-trigger"
   monitor_action_group_opsgenie_name       = "Opsgenie"
   monitor_action_group_infra_opsgenie_name = "InfraOpsgenie"
   monitor_resource_group_name              = "${local.product}-monitor-rg"
+  cloudo_action_group_rg_name              = "${local.product}-itn-cloudo-rg"
 
   vnet_core_resource_group_name               = "${local.product}-vnet-rg"
   vnet_core_name                              = "${local.product}-vnet"

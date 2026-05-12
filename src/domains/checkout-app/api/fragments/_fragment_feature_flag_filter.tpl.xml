@@ -25,7 +25,8 @@
             isPspPickerPageEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enablePspPickerPageIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
             isPaymentMethodsHandlerEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enablePaymentMethodsHandlerWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
             isMaintenancePageEnabled = false,
-            isScheduledMaintenanceBannerEnabled = false
+            isScheduledMaintenanceBannerEnabled = false,
+            isPaymentWalletEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enablePaymentWalletWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", ""))
         };
 
         return JsonConvert.SerializeObject(response);

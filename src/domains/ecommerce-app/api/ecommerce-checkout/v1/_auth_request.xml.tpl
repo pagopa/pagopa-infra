@@ -95,7 +95,7 @@
                 }
 
             // cards or apm -> ecommerce with NPG request
-            } else if ( detailType == "cards" || detailType == "apm"){
+            } else if ( detailType == "cards" || detailType == "apm" || detailType == "wallet"){
 
                 pgsId = "NPG";
 

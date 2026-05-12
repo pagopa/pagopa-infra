@@ -5,7 +5,7 @@
     <!-- rate limit by subscription key -->
     <rate-limit calls="10" renewal-period="1" remaining-calls-variable-name="remainingCallsPerSubscription"/>
     <!-- Calling Authorizer's fragment -->
-    <set-variable name="application_domain" value="gpd" />
+    <set-variable name="application_domain" value="${service_domain_value}" />
 
     <!-- Add query parameter serviceType to request -->
     <set-variable name="service_type_value" value="${service_type_value}" />

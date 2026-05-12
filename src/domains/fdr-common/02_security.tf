@@ -45,7 +45,7 @@ resource "azurerm_key_vault_secret" "evthub_fdr-qi-reported-iuv_rx" {
 ############
 resource "azurerm_key_vault_secret" "fdr_re_mongodb_connection_string" {
   name         = "mongodb-re-connection-string"
-  value        = module.cosmosdb_account_mongodb_fdr_re.connection_strings[0]
+  value        = module.cosmosdb_account_mongodb_fdr_re.primary_connection_strings
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
   depends_on = [

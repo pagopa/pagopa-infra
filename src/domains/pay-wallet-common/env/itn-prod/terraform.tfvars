@@ -10,9 +10,11 @@ instance       = "prod"
 
 ### FEATURES FLAGS
 is_feature_enabled = {
-  cosmos  = true
-  redis   = true
-  storage = true
+  cosmos                  = true
+  redis                   = true
+  storage                 = true
+  redis_hub_spoke_pe_dns  = true
+  cosmos_hub_spoke_pe_dns = true
 }
 
 ### External resources
@@ -25,20 +27,14 @@ log_analytics_italy_workspace_resource_group_name = "pagopa-p-itn-core-monitor-r
 
 cidr_subnet_cosmosdb_pay_wallet = ["10.3.5.0/27"]
 cidr_subnet_redis_pay_wallet    = ["10.3.5.64/27"]
-cidr_subnet_storage_pay_wallet  = ["10.3.5.96/27"]
 cidr_subnet_pay_wallet_user_aks = ["10.3.6.0/24"]
-
-ingress_load_balancer_ip = "10.3.2.250"
+ingress_load_balancer_ip        = "10.3.2.250"
 
 ### dns
 
 external_domain          = "pagopa.it"
 dns_zone_prefix          = "payment-wallet"
 dns_zone_internal_prefix = "internal.platform"
-dns_zone_platform        = "prod.platform"
-
-### Cosmos
-
 cosmos_mongo_db_params = {
   kind         = "MongoDB"
   capabilities = ["EnableMongo", "DisableRateLimitingResponses"]
@@ -69,24 +65,14 @@ cosmos_mongo_db_params = {
 cosmos_mongo_db_pay_wallet_params = {
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 10000
-  throughput         = 1000
+  max_throughput     = 20000
+  throughput         = 2000
 }
 
 
 ### Redis
-
-redis_pay_wallet_params = {
-  capacity   = 1
-  sku_name   = "Premium"
-  family     = "P"
-  version    = 6
-  ha_enabled = true
-  zones      = [1, 2, 3]
-}
-
 redis_std_pay_wallet_params = {
-  capacity   = 0
+  capacity   = 1
   sku_name   = "Standard"
   family     = "C"
   version    = 6

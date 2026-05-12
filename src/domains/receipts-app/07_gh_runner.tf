@@ -5,7 +5,7 @@ locals {
 }
 
 module "gh_runner_job" {
-  source = "./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup"
+  source = "./.terraform/modules/__v4__/gh_runner_container_app_job_domain_setup"
 
   domain_name        = var.domain
   env_short          = var.env_short
@@ -36,9 +36,7 @@ module "gh_runner_job" {
       short_name : "rcpt-pdf-svc"
     }
   ]
-  job = {
-    name = var.domain
-  }
+  job      = {}
   job_meta = {}
   key_vault = {
     name        = "${local.product}-${var.domain}-kv"        # Name of the KeyVault which stores PAT as secret
@@ -52,7 +50,6 @@ module "gh_runner_job" {
     rg           = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
   }
 
-  location                = var.gh_runner_job_location
   prefix                  = var.prefix
   resource_group_name     = data.azurerm_resource_group.identity_rg.name
   domain_security_rg_name = "${local.product}-${var.domain}-sec-rg"

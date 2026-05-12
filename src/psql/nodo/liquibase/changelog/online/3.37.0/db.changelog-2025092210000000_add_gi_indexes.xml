@@ -1,0 +1,43 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+	<changeSet author="liquibase" id="20250922100000" runInTransaction="false">
+		<sql splitStatements="true" stripComments="true">
+			CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_position_service_gi_inserted_timestamp ON ${schema}.position_service_gi (inserted_timestamp);
+		</sql>
+	</changeSet>
+
+	<changeSet author="liquibase" id="20250922100010" runInTransaction="false">
+		<sql splitStatements="true" stripComments="true">
+			CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_retry_pa_invia_rt_gi_inserted_timestamp ON ${schema}.retry_pa_invia_rt_gi (inserted_timestamp);
+		</sql>
+	</changeSet>
+
+	<changeSet author="liquibase" id="20250922100020" runInTransaction="false">
+		<sql splitStatements="true" stripComments="true">
+			CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_rpt_gi_inserted_timestamp ON ${schema}.rpt_gi (inserted_timestamp);
+		</sql>
+	</changeSet>
+
+	<changeSet author="liquibase" id="20250922100030" runInTransaction="false">
+		<sql splitStatements="true" stripComments="true">
+			CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_rt_gi_inserted_timestamp ON ${schema}.rt_gi (inserted_timestamp);
+		</sql>
+	</changeSet>
+
+	<changeSet author="liquibase" id="20250922100040" runInTransaction="false">
+		<sql splitStatements="true" stripComments="true">
+			CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_stati_carrello_snapshot_gi_inserted_timestamp ON ${schema}.stati_carrello_snapshot_gi (inserted_timestamp);
+		</sql>
+	</changeSet>
+
+	<changeSet author="liquibase" id="20250922100050" runInTransaction="false">
+		<sql splitStatements="true" stripComments="true">
+			CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_stati_rpt_snapshot_gi_inserted_timestamp ON ${schema}.stati_rpt_snapshot_gi (inserted_timestamp);
+		</sql>
+	</changeSet>
+
+</databaseChangeLog>

@@ -119,8 +119,11 @@ variable "bizevents_datastore_cosmos_db_params" {
     container_default_ttl             = number
     ip_range_filter                   = string
     max_throughput                    = number
-    max_throughput_view               = number
-    max_throughput_view_alt           = number
+
+    max_throughput_biz          = number
+    max_throughput_view_cart    = number
+    max_throughput_view_user    = number
+    max_throughput_view_general = number
   })
 }
 
@@ -157,12 +160,6 @@ variable "cidr_subnet_bizevents_datastore_cosmosdb" {
   default     = null
 }
 
-variable "bizevents_datastore_fn_sa_enable_versioning" {
-  type        = bool
-  description = "Enable sa versioning"
-  default     = false
-}
-
 variable "bizevents_datastore_fn_sa_advanced_threat_protection" {
   type        = bool
   description = "Enable contract threat advanced protection"
@@ -192,10 +189,3 @@ variable "redis_ha_enabled" {
   description = "(Required) enables usage of HA deployed redis instance"
 }
 
-variable "enabled_features" {
-  type = object({
-  })
-  default = {
-  }
-  description = "Features enabled in this domain"
-}

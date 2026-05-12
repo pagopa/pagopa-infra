@@ -89,7 +89,7 @@ resource "azurerm_resource_group" "rg_vnet" {
 
 # vnet
 module "vnet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v7.62.0"
+  source               = "./.terraform/modules/__v4__/virtual_network"
   name                 = "${local.product}-vnet"
   location             = azurerm_resource_group.rg_vnet.location
   resource_group_name  = azurerm_resource_group.rg_vnet.name
@@ -101,7 +101,7 @@ module "vnet" {
 
 # vnet integration
 module "vnet_integration" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v7.62.0"
+  source               = "./.terraform/modules/__v4__/virtual_network"
   name                 = "${local.product}-vnet-integration"
   location             = azurerm_resource_group.rg_vnet.location
   resource_group_name  = azurerm_resource_group.rg_vnet.name
@@ -116,7 +116,7 @@ module "vnet_integration" {
 #
 ## Peering between the vnet(main) and integration vnet
 module "vnet_core_peering" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v8.32.0"
+  source = "./.terraform/modules/__v4__/virtual_network_peering"
 
 
   source_resource_group_name       = azurerm_resource_group.rg_vnet.name
@@ -138,12 +138,12 @@ data "azurerm_subnet" "eventhub_snet" {
 }
 
 module "route_table_peering_sia" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//route_table?ref=v7.62.0"
+  source = "./.terraform/modules/__v4__/route_table"
 
   name                          = "${local.product}-sia-rt"
   location                      = azurerm_resource_group.rg_vnet.location
   resource_group_name           = azurerm_resource_group.rg_vnet.name
-  disable_bgp_route_propagation = false
+  bgp_route_propagation_enabled = true
 
   subnet_ids = [module.apim_snet.id, module.eventhub_snet.id]
 
@@ -154,7 +154,7 @@ module "route_table_peering_sia" {
 
 # subnet acr
 module "common_private_endpoint_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.62.0"
+  source               = "./.terraform/modules/__v4__/subnet"
   name                 = "${local.product}-common-private-endpoint-snet"
   address_prefixes     = var.cidr_common_private_endpoint_snet
   resource_group_name  = azurerm_resource_group.rg_vnet.name

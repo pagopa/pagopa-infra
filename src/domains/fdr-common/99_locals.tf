@@ -25,6 +25,10 @@ locals {
   vnet_italy_name    = "${local.product}-${var.location_replica_short}-vnet"
   vnet_italy_rg_name = "${local.product}-${var.location_replica_short}-vnet-rg"
 
+
+  spoke_data_vnet_name   = "${local.product}-${var.location_replica_short}-spoke-data-vnet"
+  hub_spoke_vnet_rg_name = "${local.product}-${var.location_replica_short}-network-hub-spoke-rg"
+
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
 
@@ -33,6 +37,7 @@ locals {
   internal_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 
   aks_subnet_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
+  vpn_subnet_name = "GatewaySubnet"
 
   cosmos_dns_zone_name                = "privatelink.mongo.cosmos.azure.com"
   cosmos_dns_zone_resource_group_name = "${local.product}-vnet-rg"

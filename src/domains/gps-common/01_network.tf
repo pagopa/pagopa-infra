@@ -1,6 +1,6 @@
 # Azure Storage subnet
 module "storage_account_snet" {
-  source                                        = "./.terraform/modules/__v3__/subnet"
+  source                                        = "./.terraform/modules/__v4__/subnet"
   name                                          = "${local.project}-storage-account-snet"
   address_prefixes                              = var.gpd_sftp_cidr_subnet_gpd_storage_account
   resource_group_name                           = local.vnet_resource_group_name

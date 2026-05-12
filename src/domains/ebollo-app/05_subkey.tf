@@ -39,7 +39,7 @@ resource "azurerm_api_management_subscription" "mbd_service_integration_test_sub
   count               = var.env_short != "p" ? 1 : 0
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
-  product_id          = module.apim_mdb_product.id
+  product_id          = module.apim_mbd_product.id
   display_name        = "Subscription MBD Service for Integration Test"
   allow_tracing       = false
   state               = "active"

@@ -1,5 +1,5 @@
 module "gpd_rtp_sa" {
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                            = replace("${local.project}-rtp-sa", "-", "")
   account_kind                    = var.rtp_storage_account.account_kind
@@ -28,7 +28,7 @@ module "gpd_rtp_sa" {
 }
 
 resource "azurerm_private_endpoint" "gpd_rtp_blob_private_endpoint" {
-  count = var.env_short == "d" ? 0 : 1
+  count = 1
 
   name                = format("%s-rtp-blob-private-endpoint", local.project)
   location            = var.location
@@ -37,7 +37,7 @@ resource "azurerm_private_endpoint" "gpd_rtp_blob_private_endpoint" {
 
   private_dns_zone_group {
     name                 = "${local.project}-rtp-blob-sa-private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.storage[0].id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.storage.id]
   }
 
   private_service_connection {

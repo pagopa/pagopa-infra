@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "nodo_storico_rg" {
 }
 
 module "nodo_storico_storage_account" {
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
   count  = var.env_short == "d" ? 0 : 1
 
   enable_low_availability_alert = false

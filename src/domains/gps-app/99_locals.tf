@@ -42,13 +42,6 @@ locals {
   gps_kv    = "${local.product}-${var.domain}-kv"
 
   ## APIM GPD ##
-  apim_debt_positions_service_api = {
-    display_name          = "GPD pagoPA - Debt Positions service API for organizations"
-    description           = "API to support Debt Positions service for organizations"
-    path                  = "gpd/debt-positions-service"
-    subscription_required = true
-    service_url           = var.env == "prod" ? "https://weu${var.env}.gps.internal.platform.pagopa.it/pagopa-gpd-core" : "https://weu${var.env}.gps.internal.${var.env}.platform.pagopa.it/pagopa-gpd-core"
-  }
   gpd_core_service_url = var.env == "prod" ? "https://weu${var.env}.gps.internal.platform.pagopa.it/pagopa-gpd-core" : "https://weu${var.env}.gps.internal.${var.env}.platform.pagopa.it/pagopa-gpd-core"
 
   # Product APIM for Node

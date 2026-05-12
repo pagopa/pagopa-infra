@@ -135,14 +135,6 @@ variable "qi_storage_params" {
   description = "Azure storage DB params for qi function."
 }
 
-#
-# EVH
-#
-variable "cidr_subnet_qi_evh" {
-  type        = list(string)
-  description = "Address prefixes evh"
-}
-
 variable "ehns_private_endpoint_is_present" {
   type        = bool
   description = "(Required) create private endpoint to the event hubs"
@@ -171,11 +163,6 @@ variable "ehns_maximum_throughput_units" {
 variable "ehns_auto_inflate_enabled" {
   type        = bool
   description = "Is Auto Inflate enabled for the EventHub Namespace?"
-}
-
-variable "ehns_zone_redundant" {
-  type        = bool
-  description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
 }
 
 variable "ehns_alerts_enabled" {
@@ -230,3 +217,47 @@ variable "eventhubs_bdi" {
   }))
   default = []
 }
+
+# CosmosDb
+
+variable "cosmos_mongo_db_params" {
+  type = object({
+    enabled        = bool
+    capabilities   = list(string)
+    offer_type     = string
+    server_version = string
+    kind           = string
+    consistency_policy = object({
+      consistency_level       = string
+      max_interval_in_seconds = number
+      max_staleness_prefix    = number
+    })
+    enable_free_tier                 = bool
+    main_geo_location_zone_redundant = bool
+    additional_geo_locations = list(object({
+      location          = string
+      failover_priority = number
+      zone_redundant    = bool
+    }))
+    private_endpoint_enabled                     = bool
+    public_network_access_enabled                = bool
+    is_virtual_network_filter_enabled            = bool
+    backup_continuous_enabled                    = bool
+    enable_provisioned_throughput_exceeded_alert = bool
+  })
+}
+
+variable "cosmos_mongo_db_accounting_reconciliation_params" {
+  type = object({
+    enable_serverless  = bool
+    enable_autoscaling = bool
+    throughput         = number
+    max_throughput     = number
+  })
+}
+
+variable "cidr_subnet_cosmosdb_qi" {
+  type        = list(string)
+  description = "Cosmos DB address space for qi."
+}
+

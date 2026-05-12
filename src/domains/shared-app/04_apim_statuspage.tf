@@ -77,6 +77,11 @@ data "azurerm_linux_web_app" "pdf_engine" {
   resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-shared-pdf-engine-rg"
 }
 
+data "azurerm_linux_web_app" "pdf_engine_printit" {
+  name                = "${var.prefix}-${var.env_short}-itn-printit-app-pdf-engine-java"
+  resource_group_name = "${var.prefix}-${var.env_short}-itn-printit-pdf-engine-rg"
+}
+
 module "apim_api_statuspage_api_v1" {
   source = "./.terraform/modules/__v3__/api_management_api"
 
@@ -129,17 +134,12 @@ module "apim_api_statuspage_api_v1" {
           "backofficeexternalpagopa" = format("%s/backoffice-external", format(local.aks_path, "selfcare"))
           "canoneunico"              = format("%s/", data.azurerm_function_app.canone_unico.default_hostname)
           // FdR - All instances
-          "fdrfase1"                = format("%s/pagopa-fdr-nodo-service", format(local.aks_path, "fdr"))
-          "fdrfase3"                = format("%s/pagopa-fdr-service", format(local.aks_path, "fdr"))
-          "fdrfase3scheduler"       = format("%s/pagopa-fdr-service-scheduler-unused", format(local.aks_path, "fdr"))
-          "fdr2evhfdr1"             = format("%s/fdr1-blobtrigger-notused", format(local.aks_path, "fdr"))
-          "fdr2evhfdr3"             = format("%s/fdr3-blobtrigger-notused", format(local.aks_path, "fdr"))
-          "fdr2evhrecovery"         = format("%s/pagopa-fdr-to-event-hub-recovery-service", format(local.aks_path, "fdr"))
-          "fdrjson2xml"             = format("%s/pagopa-fdr-json-to-xml", format(local.aks_path, "fdr"))
-          "fdrxml2jsonblobtrigger"  = format("%s/pagopa-fdr-xml-to-json/blobtrigger-notuser", format(local.aks_path, "fdr"))
-          "fdrxml2jsonhttptrigger"  = format("%s/pagopa-fdr-xml-to-json", format(local.aks_path, "fdr"))
-          "fdrxml2jsonqueuetrigger" = format("%s/pagopa-fdr-xml-to-json/queuetrigger-notuser", format(local.aks_path, "fdr"))
-          "fdrts"                   = format("%s/pagopa-fdr-technical-support-service", format(local.aks_path, "fdr"))
+          "fdrfase1"    = format("%s/pagopa-fdr-nodo-service", format(local.aks_path, "fdr"))
+          "fdrfase3"    = format("%s/pagopa-fdr-service-core", format(local.aks_path, "fdr"))
+          "fdr2evh"     = format("%s/pagopa-fdr-to-event-hub-recovery-service", format(local.aks_path, "fdr"))
+          "fdrjson2xml" = format("%s/pagopa-fdr-json-to-xml", format(local.aks_path, "fdr"))
+          "fdrxml2json" = format("%s/pagopa-fdr-xml-to-json/blobtrigger-notuser", format(local.aks_path, "fdr"))
+          "fdrts"       = format("%s/pagopa-fdr-technical-support-service", format(local.aks_path, "fdr"))
           // WISP Dismantling
           "wispconverter"               = format("%s/pagopa-wispconverter", format(local.aks_path, "nodo"))
           "wispsoapconverter"           = format("%s/wisp-soapconverter", format(local.aks_path, "nodo"))
@@ -157,11 +157,15 @@ module "apim_api_statuspage_api_v1" {
           "mockconfig"                  = var.env_short != "p" ? format("%s/pagopa-mock-config-be", format(local.aks_path, "mock")) : "NA"
           "mocker"                      = var.env_short != "p" ? format("%s/pagopa-mocker/mocker", format(local.aks_path, "mock")) : "NA"
           "pdfengine"                   = format("%s/", data.azurerm_linux_web_app.pdf_engine.default_hostname)
+          "pdfengineprintit"            = format("%s/", data.azurerm_linux_web_app.pdf_engine_printit.default_hostname)
           "receiptpdfdatastore"         = format("%s/pagopa-receipt-pdf-datastore", format(local.aks_path, "receipts"))
+          "receiptpdfdatastorehelpdesk" = format("%s/pagopa-receipt-pdf-datastore-helpdesk", format(local.aks_path, "receipts"))
           "receiptpdfgenerator"         = format("%s/pagopa-receipt-pdf-generator", format(local.aks_path, "receipts"))
+          "receiptpdfgeneratorcart"     = format("%s/pagopa-receipt-pdf-generator-cart", format(local.aks_path, "receipts"))
+          "receiptpdfgeneratorhelpdesk" = format("%s/pagopa-receipt-pdf-generator-helpdesk", format(local.aks_path, "receipts"))
           "receiptpdfnotifier"          = format("%s/pagopa-receipt-pdf-notifier", format(local.aks_path, "receipts"))
           "receiptpdfservice"           = format("%s/pagopa-receipt-pdf-service", format(local.aks_path, "receipts"))
-          "receiptpdfhelpdesk"          = format("%s/pagopa-receipt-pdf-helpdesk", format(local.aks_path, "receipts")),
+          "receiptpdfservicehelpdesk"   = format("%s/pagopa-receipt-pdf-service-helpdesk", format(local.aks_path, "receipts"))
           "printpaymentnoticegenerator" = format("%s/pagopa-print-payment-notice-generator", format(local.aks_ita_path, "printit"))
           "printpaymentnoticefunctions" = format("%s/pagopa-print-payment-notice-functions", format(local.aks_ita_path, "printit"))
           "printpaymentnoticeservice"   = format("%s/pagopa-print-payment-notice-service", format(local.aks_ita_path, "printit"))

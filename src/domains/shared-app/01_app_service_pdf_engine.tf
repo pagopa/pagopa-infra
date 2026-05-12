@@ -130,7 +130,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 2000
+        threshold                = 1500
         divide_by_instance_count = false
       }
 
@@ -333,6 +333,8 @@ module "shared_pdf_engine_java_slot_staging" {
   tags = module.tag_config.tags
 }
 
+
+
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_engine_java_autoscale" {
   count = var.env_short != "d" ? 1 : 0
 
@@ -362,7 +364,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 2000
+        threshold                = 1500
         divide_by_instance_count = false
       }
 

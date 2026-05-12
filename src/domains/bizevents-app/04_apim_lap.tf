@@ -141,3 +141,37 @@ module "apim_api_bizevents_lap_api_jwt_v1" {
 }
 
 
+resource "azurerm_api_management_api_operation_policy" "policy_lap_generatePDF" { #
+
+  api_name            = module.apim_api_bizevents_lap_api_v1.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  operation_id        = "generatePDF"
+
+  #tfsec:ignore:GEN005
+  xml_content = templatefile("./api/lap-service/v1/lap_generatePDF.xml.tpl", {
+    guard-lock-duration = 60
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "policy_lap_generatePDF_jwt" { #
+
+  api_name            = module.apim_api_bizevents_lap_api_jwt_v1.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  operation_id        = "generatePDF"
+
+  #tfsec:ignore:GEN005
+  xml_content = templatefile("./api/lap-service/v1/lap_generatePDF.xml.tpl", {
+    guard-lock-duration = 60
+  })
+}
+
+# API policy SHA
+# https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-1314991599
+# https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/2022-04-01-preview/service/policyfragments?pivots=deployment-language-terraform
+resource "terraform_data" "sha256_policy_lap_generatePDF" {
+  input = sha256(templatefile("./api/lap-service/v1/lap_generatePDF.xml.tpl", {
+    guard-lock-duration = 60
+  }))
+}

@@ -29,3 +29,16 @@ data "azurerm_public_ip" "pip_aks_outboud" {
   name                = local.public_ip_aks_leonardo_outbound_name
   resource_group_name = data.azurerm_resource_group.vnet_ita_rg.name
 }
+
+# VNET HUB-SPOKE
+data "azurerm_virtual_network" "vnet_hub_spoke" {
+  for_each = toset(local.hub_spoke_vnet_name)
+
+  name                = each.key
+  resource_group_name = local.hub_spoke_vnet_rg_name
+}
+
+data "azurerm_nat_gateway" "pagopa_nat" {
+  name                = "${local.product}-natgw"
+  resource_group_name = local.vnet_core_resource_group_name
+}

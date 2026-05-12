@@ -3,7 +3,7 @@
 #
 resource "azurerm_resource_group" "rg_ita_vnet" {
   name     = "${local.product_ita}-vnet-rg"
-  location = var.location_ita
+  location = var.location
 
   tags = module.tag_config.tags
 }
@@ -12,7 +12,7 @@ module "vnet_italy" {
   source              = "./.terraform/modules/__v4__/virtual_network"
   count               = 1
   name                = "${local.product_ita}-vnet"
-  location            = var.location_ita
+  location            = var.location
   resource_group_name = azurerm_resource_group.rg_ita_vnet.name
 
   address_space        = var.cidr_vnet_italy
@@ -25,7 +25,7 @@ module "vnet_italy" {
 module "vnet_integration_cstar" {
   source              = "./.terraform/modules/__v4__/virtual_network"
   name                = "${local.product_ita}-cstar-integration-vnet"
-  location            = var.location_ita
+  location            = var.location
   resource_group_name = azurerm_resource_group.rg_ita_vnet.name
 
   address_space        = var.cidr_vnet_italy_cstar_integration
@@ -169,4 +169,19 @@ module "cstar_integration_private_endpoint_snet" {
   name                 = "${local.product_ita}-private-endpoint-snet"
   resource_group_name  = azurerm_resource_group.rg_ita_vnet.name
   virtual_network_name = module.vnet_integration_cstar.name
+
+  tags = module.tag_config.tags
+}
+
+module "spoke_subnet_container_app" {
+  source = "./.terraform/modules/__v4__/IDH/subnet"
+
+  env                  = var.env
+  idh_resource_tier    = "container_app_environment"
+  name                 = "${local.project}-spoke-tools-cae-subnet"
+  product_name         = var.prefix
+  resource_group_name  = data.azurerm_virtual_network.spoke_tools.resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.spoke_tools.name
+
+  tags = module.tag_config.tags
 }

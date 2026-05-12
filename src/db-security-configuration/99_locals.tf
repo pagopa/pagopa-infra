@@ -11,7 +11,7 @@ locals {
   database_properties = {
     postgresql = {
       driver    = "postgres"
-      full_sync = true
+      full_sync = false
       ssl       = true
     }
     nexi = {

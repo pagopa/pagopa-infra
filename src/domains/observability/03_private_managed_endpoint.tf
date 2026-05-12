@@ -1,14 +1,3 @@
-
-data "azurerm_private_link_service" "vmss_pls" {
-  name                = "${local.product_network}-privatelink"
-  resource_group_name = "${local.product_network}-vmss-rg"
-}
-
-data "azurerm_key_vault_secret" "database_proxy_fqdn" {
-  name         = "${var.prefix}-${var.env_short}-${var.location_short}-network-database-map"
-  key_vault_id = data.azurerm_key_vault.network_kv.id
-}
-
 ###
 ### FQDN:  Changing this forces a new resource to be created.
 resource "azurerm_data_factory_managed_private_endpoint" "private_endpoint" {

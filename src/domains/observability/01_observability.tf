@@ -32,7 +32,6 @@ resource "azurerm_kusto_cluster" "data_explorer_cluster" {
 
   public_network_access_enabled = var.dexp_params.public_network_access_enabled
   double_encryption_enabled     = var.dexp_params.double_encryption_enabled
-  engine                        = "V3"
 
   tags = module.tag_config.tags
 
@@ -208,9 +207,9 @@ data "azuread_group" "adgroup_technical_project_managers" {
 
 locals {
   dataexp_contributor_groups = [
-    data.azuread_group.adgroup_technical_project_managers.id,
-    data.azuread_group.adgroup_operations.id,
-    data.azuread_group.adgroup_externals.id,
+    data.azuread_group.adgroup_technical_project_managers.object_id,
+    data.azuread_group.adgroup_operations.object_id,
+    data.azuread_group.adgroup_externals.object_id,
   ]
 
 }

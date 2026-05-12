@@ -32,7 +32,7 @@ pgres_flex_params = {
 
   enabled    = true
   sku_name   = "GP_Standard_D8ds_v4"
-  db_version = "13"
+  db_version = "16"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                                       = 2097152
@@ -327,13 +327,6 @@ mbd_storage_account = {
 }
 
 redis_ha_enabled = false
-
-
-enabled_features = {
-  eventhub_ha_tx = true
-  eventhub_ha_rx = true
-}
-
 /*****************
 Service Bus
 *****************/

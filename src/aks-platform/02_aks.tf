@@ -5,9 +5,13 @@ resource "azurerm_resource_group" "aks_rg" {
   tags = module.tag_config.tags
 }
 
+locals {
+  non_prod_aks_admin_groups = var.env_short == "d" ? [data.azuread_group.adgroup_admin.object_id, data.azuread_group.adgroup_developers.object_id, data.azuread_group.adgroup_externals.object_id, data.azuread_group.adgroup_dev_externals[0].object_id] : [data.azuread_group.adgroup_admin.object_id, data.azuread_group.adgroup_developers.object_id, data.azuread_group.adgroup_externals.object_id]
+}
+
 
 module "aks" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.90.0"
+  source = "./.terraform/modules/__v4__//kubernetes_cluster"
 
   name                       = local.aks_name
   location                   = var.location
@@ -28,7 +32,6 @@ module "aks" {
   cost_analysis_enabled = var.env_short != "d" ? true : false
 
   automatic_channel_upgrade = null
-  node_os_channel_upgrade   = "None"
   maintenance_windows_node_os = {
     enabled = true
   }
@@ -83,11 +86,10 @@ module "aks" {
   }
   # end network
 
-  aad_admin_group_ids = var.env_short == "p" ? [data.azuread_group.adgroup_admin.object_id] : [data.azuread_group.adgroup_admin.object_id, data.azuread_group.adgroup_developers.object_id, data.azuread_group.adgroup_externals.object_id]
+  aad_admin_group_ids = var.env_short == "p" ? [data.azuread_group.adgroup_admin.object_id] : local.non_prod_aks_admin_groups
 
   addon_azure_policy_enabled                     = true
   addon_azure_key_vault_secrets_provider_enabled = true
-  addon_azure_pod_identity_enabled               = true
 
   alerts_enabled     = var.aks_alerts_enabled
   custom_logs_alerts = local.aks_logs_alerts

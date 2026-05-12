@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "./.terraform/modules/__v3__/key_vault"
+  source = "./.terraform/modules/__v4__/key_vault"
 
   name                       = "${local.product}-${var.location_short}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -92,7 +92,7 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
 # create json letsencrypt inside kv
 # requierd: Docker
 module "letsencrypt_ebollo" {
-  source = "./.terraform/modules/__v3__/letsencrypt_credential"
+  source = "./.terraform/modules/__v4__/letsencrypt_credential"
 
   prefix            = var.prefix
   env               = var.env_short

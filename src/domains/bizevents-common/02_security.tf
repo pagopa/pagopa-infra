@@ -354,34 +354,6 @@ resource "azurerm_key_vault_secret" "webhook-slack-token" {
   }
 }
 
-// apikey list-trx-4-io-api-key and save keys on KV
-data "azurerm_api_management_product" "apim_biz_lst_trx_product" {
-  product_id          = "bizevent-transactions"
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-}
-
-resource "azurerm_api_management_subscription" "list_trx_4_io_api_key_subkey" {
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-
-  product_id    = data.azurerm_api_management_product.apim_biz_lst_trx_product.id
-  display_name  = "Biz Events list-trx-4-io-api-key"
-  allow_tracing = false
-  state         = "active"
-}
-
-resource "azurerm_key_vault_secret" "list_trx_4_io_api_keysubkey_store_kv" {
-  depends_on = [
-    azurerm_api_management_subscription.list_trx_4_io_api_key_subkey
-  ]
-  name         = "list-trx-4-io-api-key"
-  value        = azurerm_api_management_subscription.list_trx_4_io_api_key_subkey.primary_key
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-}
-
 // appIO - apikey list-lap-4-io-api-key and save keys on KV
 data "azurerm_api_management_product" "apim_biz_lst_lap_product" {
   product_id          = "bizevent-lap"
@@ -585,15 +557,14 @@ resource "azurerm_api_management_subscription" "ecommerce_helpdesk_subkey" {
   state         = "active"
 }
 
-# MOVE to biz-secrets
 #######
-# resource "azurerm_key_vault_secret" "ecommerce_helpdesk_subscription_key_kv" {
-#   depends_on = [
-#     azurerm_api_management_subscription.ecommerce_helpdesk_subkey
-#   ]
-#   name         = "ecommerce-helpdesk-subscription-key"
-#   value        = azurerm_api_management_subscription.ecommerce_helpdesk_subkey.primary_key
-#   content_type = "text/plain"
+# Copy secret from nodo-kv
+#######
+resource "azurerm_key_vault_secret" "db_nexi_biz_pagopa_sv_password" {
+  count        = var.env_short != "d" ? 1 : 0
+  name         = "db-nexi-biz-pagopa-sv-password"
+  value        = data.azurerm_key_vault_secret.db_nexi_biz_pagopa_sv_password[0].value
+  content_type = "text/plain"
 
-#   key_vault_id = data.azurerm_key_vault.key_vault.id
-# }
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}

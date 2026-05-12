@@ -1,7 +1,8 @@
 locals {
-  product       = "${var.prefix}-${var.env_short}"
-  project_short = "${var.prefix}-${var.env_short}-${var.domain}"
-  project       = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  product          = "${var.prefix}-${var.env_short}"
+  project_short    = "${var.prefix}-${var.env_short}-${var.domain}"
+  project          = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  product_location = "${var.prefix}-${var.env_short}-${var.location_short}"
 
   project_core_itn = "${var.prefix}-${var.env_short}-${var.location_short}-core"
 
@@ -13,6 +14,9 @@ locals {
   vnet_italy_name                = "${local.product}-itn-vnet"
   vnet_italy_resource_group_name = "${local.product}-itn-vnet-rg"
   vnet_core_resource_group_name  = "${local.product}-vnet-rg"
+
+  vnet_hub_spoke_rg_name    = "${local.product_location}-network-hub-spoke-rg"
+  vnet_spoke_streaming_name = "${local.product_location}-spoke-streaming-vnet"
 
   aks_subnet_name = "${local.product}-${var.location_short}-${var.env}-user-aks"
 

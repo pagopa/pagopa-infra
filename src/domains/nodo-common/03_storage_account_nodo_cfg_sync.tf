@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "nodo_cfg_sync_rg" {
 }
 
 module "nodo_cfg_sync_re_storage_account" {
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                            = replace(format("%s-cfg-syn-re-st", local.project), "-", "")
   account_kind                    = var.nodo_cfg_sync_storage_account.account_kind
@@ -33,9 +33,12 @@ module "nodo_cfg_sync_re_storage_account" {
   tags = module.tag_config.tags
 }
 
-resource "azurerm_private_endpoint" "nodo_cfg_sync_re_private_endpoint_container" {
-  count = var.env_short == "d" ? 0 : 1
+moved {
+  from = azurerm_private_endpoint.nodo_cfg_sync_re_private_endpoint_container[0]
+  to   = azurerm_private_endpoint.nodo_cfg_sync_re_private_endpoint_container
+}
 
+resource "azurerm_private_endpoint" "nodo_cfg_sync_re_private_endpoint_container" {
   name                = "${local.project}-cfg-sync-re-private-endpoint-container"
   location            = var.location
   resource_group_name = azurerm_resource_group.nodo_cfg_sync_rg.name
