@@ -47,7 +47,7 @@
     </backend>
     <outbound>
         <base />
-        <cache-store duration="10" />
+        <cache-store duration="300" />
     </outbound>
     <on-error>
         <base />
