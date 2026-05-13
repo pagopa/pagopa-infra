@@ -20,7 +20,7 @@
                         {
                             "title": "Internal Server Error",
                             "status": 500,
-                            "detail": "Error processing the request",
+                            "detail": "Error processing the request"
                         }
                     </set-body>
                 </return-response>
