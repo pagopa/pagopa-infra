@@ -15,7 +15,7 @@ dns_zone_internal_prefix    = "internal.platform"
 # Networking
 
 ingress_load_balancer_ip = "10.1.100.250"
-
+dns_zone_checkout        = "checkout"
 
 # Checkout Redis parameters: Premium
 redis_checkout_params_std = {
