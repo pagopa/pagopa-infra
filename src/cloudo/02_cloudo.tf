@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "cloudo" {
-  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=6615a633c7128b6796511f4eb622d56ead005672" #0.16.0
+  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=8c5d22a2f4a90fc87553964bca72ba2aea3c2fc2" #0.19.0
 
   prefix                    = local.product
   product_name              = var.prefix
@@ -44,11 +44,16 @@ module "cloudo" {
     }
   }
 
+  custom_roles_subscription = [
+    "Storage Blob Data Contributor",
+    "Storage Account Key Operator Service Role"
+  ]
+
   custom_role_assignments = [
     {
       role  = "Contributor"
       scope = data.azurerm_resource_group.network_rg.id
-    }
+    },
   ]
 
   key_vaults_integration = {

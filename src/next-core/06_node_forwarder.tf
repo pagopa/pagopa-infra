@@ -154,13 +154,9 @@ module "node_forwarder_slot_staging" {
   source = "./.terraform/modules/__v4__/app_service_slot"
 
   # App service plan
-  app_service_id   = module.node_forwarder_app_service[0].id
-  app_service_name = module.node_forwarder_app_service[0].name
-
+  app_service_id = module.node_forwarder_app_service[0].id
   # App service
-  name                = "staging"
-  resource_group_name = local.node_forwarder_rg_name
-  location            = var.location
+  name = "staging"
 
   always_on                    = true
   health_check_path            = "/actuator/info"

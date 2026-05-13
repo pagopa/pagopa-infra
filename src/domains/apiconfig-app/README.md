@@ -8,8 +8,8 @@
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.3.0 |
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.3.0 |
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 2.53 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 3.116 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.0 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | <= 5.12.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.12.1 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 2.36.0 |
@@ -19,27 +19,26 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | d0a0b3a81963169bdc974f79eba31e41e918e63d |
-| <a name="module_api_config_fe_cdn"></a> [api\_config\_fe\_cdn](#module\_api\_config\_fe\_cdn) | ./.terraform/modules/__v3__/cdn | n/a |
-| <a name="module_api_config_snet"></a> [api\_config\_snet](#module\_api\_config\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
-| <a name="module_apim_api_apiconfig_cache_external_v1"></a> [apim\_api\_apiconfig\_cache\_external\_v1](#module\_apim\_api\_apiconfig\_cache\_external\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_api_apiconfig_cache_node_api_v1_p"></a> [apim\_api\_apiconfig\_cache\_node\_api\_v1\_p](#module\_apim\_api\_apiconfig\_cache\_node\_api\_v1\_p) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_api_apiconfig_cache_node_nexi_api_dev_v1"></a> [apim\_api\_apiconfig\_cache\_node\_nexi\_api\_dev\_v1](#module\_apim\_api\_apiconfig\_cache\_node\_nexi\_api\_dev\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_api_apiconfig_cache_replica_node_api_v1_p"></a> [apim\_api\_apiconfig\_cache\_replica\_node\_api\_v1\_p](#module\_apim\_api\_apiconfig\_cache\_replica\_node\_api\_v1\_p) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_api_config_api"></a> [apim\_api\_config\_api](#module\_apim\_api\_config\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_api_config_auth_api"></a> [apim\_api\_config\_auth\_api](#module\_apim\_api\_config\_auth\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_api_config_auth_product"></a> [apim\_api\_config\_auth\_product](#module\_apim\_api\_config\_auth\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_api_config_product"></a> [apim\_api\_config\_product](#module\_apim\_api\_config\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_apiconfig_cache_export_product"></a> [apim\_apiconfig\_cache\_export\_product](#module\_apim\_apiconfig\_cache\_export\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_apiconfig_cache_external_product"></a> [apim\_apiconfig\_cache\_external\_product](#module\_apim\_apiconfig\_cache\_external\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_apiconfig_cache_product"></a> [apim\_apiconfig\_cache\_product](#module\_apim\_apiconfig\_cache\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_apiconfig_selfcare_integration_product"></a> [apim\_apiconfig\_selfcare\_integration\_product](#module\_apim\_apiconfig\_selfcare\_integration\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v3__/cert_mounter | n/a |
-| <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup | n/a |
-| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | ./.terraform/modules/__v3__/kubernetes_pod_identity | n/a |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 9e205a1f0d0cb36b5677ee1b48a83cb321a54cb8 |
+| <a name="module_api_config_fe_cdn_frontdoor"></a> [api\_config\_fe\_cdn\_frontdoor](#module\_api\_config\_fe\_cdn\_frontdoor) | ./.terraform/modules/__v4__/cdn_frontdoor | n/a |
+| <a name="module_api_config_snet"></a> [api\_config\_snet](#module\_api\_config\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_apim_api_apiconfig_cache_external_v1"></a> [apim\_api\_apiconfig\_cache\_external\_v1](#module\_apim\_api\_apiconfig\_cache\_external\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
+| <a name="module_apim_api_apiconfig_cache_node_api_v1_p"></a> [apim\_api\_apiconfig\_cache\_node\_api\_v1\_p](#module\_apim\_api\_apiconfig\_cache\_node\_api\_v1\_p) | ./.terraform/modules/__v4__/api_management_api | n/a |
+| <a name="module_apim_api_apiconfig_cache_node_nexi_api_dev_v1"></a> [apim\_api\_apiconfig\_cache\_node\_nexi\_api\_dev\_v1](#module\_apim\_api\_apiconfig\_cache\_node\_nexi\_api\_dev\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
+| <a name="module_apim_api_apiconfig_cache_replica_node_api_v1_p"></a> [apim\_api\_apiconfig\_cache\_replica\_node\_api\_v1\_p](#module\_apim\_api\_apiconfig\_cache\_replica\_node\_api\_v1\_p) | ./.terraform/modules/__v4__/api_management_api | n/a |
+| <a name="module_apim_api_config_api"></a> [apim\_api\_config\_api](#module\_apim\_api\_config\_api) | ./.terraform/modules/__v4__/api_management_api | n/a |
+| <a name="module_apim_api_config_auth_api"></a> [apim\_api\_config\_auth\_api](#module\_apim\_api\_config\_auth\_api) | ./.terraform/modules/__v4__/api_management_api | n/a |
+| <a name="module_apim_api_config_auth_product"></a> [apim\_api\_config\_auth\_product](#module\_apim\_api\_config\_auth\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_api_config_product"></a> [apim\_api\_config\_product](#module\_apim\_api\_config\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_apiconfig_cache_export_product"></a> [apim\_apiconfig\_cache\_export\_product](#module\_apim\_apiconfig\_cache\_export\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_apiconfig_cache_external_product"></a> [apim\_apiconfig\_cache\_external\_product](#module\_apim\_apiconfig\_cache\_external\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_apiconfig_cache_product"></a> [apim\_apiconfig\_cache\_product](#module\_apim\_apiconfig\_cache\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_apiconfig_selfcare_integration_product"></a> [apim\_apiconfig\_selfcare\_integration\_product](#module\_apim\_apiconfig\_selfcare\_integration\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v4__/cert_mounter | n/a |
+| <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v4__/gh_runner_container_app_job_domain_setup | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
-| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
-| <a name="module_workload_identity_configuration"></a> [workload\_identity\_configuration](#module\_workload\_identity\_configuration) | ./.terraform/modules/__v3__/kubernetes_workload_identity_configuration | n/a |
+| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v4__/tls_checker | n/a |
+| <a name="module_workload_identity_configuration"></a> [workload\_identity\_configuration](#module\_workload\_identity\_configuration) | ./.terraform/modules/__v4__/kubernetes_workload_identity_configuration | n/a |
 
 ## Resources
 
