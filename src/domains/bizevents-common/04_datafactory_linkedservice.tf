@@ -47,7 +47,7 @@ resource "azapi_resource" "tokenizer_rest_service" {
         "authHeaders" : {
           "x-api-key" : {
             "type" : "SecureString",
-            "value" : "${data.azurerm_key_vault_secret.tokenizer_api_key.value}"
+            "value" : "${data.azurerm_key_vault_secret.tokenizer_api_key[0].value}"
           }
         }
       },
