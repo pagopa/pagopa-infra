@@ -136,55 +136,49 @@ variable "redis_metric_alerts" {
   }))
 
   default = {
-    cpu_percent = {
+cpu = {
       frequency        = "PT5M"
       window_size      = "PT30M"
-      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
-      aggregation      = "Average"
-      metric_name      = "cpu_percent"
-      operator         = "GreaterThan"
-      threshold        = 80
-      severity         = 2
+      metric_namespace = "Microsoft.Cache/Redis"
+      display_name = "High CPU Usage"
+      metric_name  = "percentProcessorTime"
+      aggregation  = "Average"
+      operator     = "GreaterThan"
+      threshold    = 80
+      severity     = 2
     },
-    memory_percent = {
+    memory = {
       frequency        = "PT5M"
       window_size      = "PT30M"
-      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
-      aggregation      = "Average"
-      metric_name      = "memory_percent"
-      operator         = "GreaterThan"
-      threshold        = 80
-      severity         = 2
+      metric_namespace = "Microsoft.Cache/Redis"
+      display_name = "High Memory Usage"
+      metric_name  = "usedmemorypercentage"
+      aggregation  = "Average"
+      operator     = "GreaterThan"
+      threshold    = 80
+      severity     = 2
     },
-    storage_percent = {
+    eviction = {
       frequency        = "PT5M"
       window_size      = "PT30M"
-      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
-      aggregation      = "Average"
-      metric_name      = "storage_percent"
-      operator         = "GreaterThan"
-      threshold        = 80
-      severity         = 2
+      metric_namespace = "Microsoft.Cache/Redis"
+      display_name = "Eviction Events"
+      metric_name  = "evictedkeys"
+      aggregation  = "Total"
+      operator     = "GreaterThan"
+      threshold    = 80
+      severity     = 2
     },
-    active_connections = {
+    connection = {
       frequency        = "PT5M"
       window_size      = "PT30M"
-      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
-      aggregation      = "Average"
-      metric_name      = "active_connections"
-      operator         = "GreaterThan"
-      threshold        = 80
-      severity         = 2
-    },
-    connections_failed = {
-      frequency        = "PT5M"
-      window_size      = "PT30M"
-      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
-      aggregation      = "Total"
-      metric_name      = "connections_failed"
-      operator         = "GreaterThan"
-      threshold        = 80
-      severity         = 2
+      metric_namespace = "Microsoft.Cache/Redis"
+      display_name = "High Connection Count"
+      metric_name  = "connectedclients"
+      aggregation  = "Maximum"
+      operator     = "GreaterThan"
+      threshold    = 80
+      severity     = 3
     }
   }
 }
