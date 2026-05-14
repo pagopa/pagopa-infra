@@ -1,9 +1,14 @@
 locals {
-  npg_sdk_hostname = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
-  content_security_policy_header_name  = "Content-Security-Policy"
-  cdn_storage_account_name       = "${local.project}cdnsa"
-  cdn_index_document             = "index.html"
-  cdn_error_document             = "index.html"
+  npg_sdk_hostname                    = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
+  content_security_policy_header_name = "Content-Security-Policy"
+  cdn_storage_account_name            = "${local.project}cdnsa"
+  cdn_index_document                  = "index.html"
+  cdn_error_document                  = "index.html"
+
+  # custom domain id constructed because the cdn_frontdoor module does not expose custom_domain_ids as output
+  npg_sdk_cdn_custom_domain_ids = [
+    "${module.checkout_cdn_frontdoor.profile_id}/customDomains/${replace(local.dns_zone_key, ".", "-")}"
+  ]
 
   # shared CSP value -> single source of truth for both CDN delivery rules and APIM policy
   checkout_csp_value = join("", [
@@ -246,6 +251,110 @@ module "checkout_cdn_frontdoor" {
   delivery_rule_rewrites = local.delivery_rule_rewrites
 
   tags = module.tag_config.tags
+}
+
+/**
+ * NPG SDK Origin Group
+ * Proxies the NPG SDK through Front Door so the browser loads it from the
+ * same origin as the page, enabling SRI without triggering CORS.
+ */
+resource "azurerm_cdn_frontdoor_origin_group" "npg_sdk" {
+  name                     = "npg-sdk-origin-group"
+  cdn_frontdoor_profile_id = module.checkout_cdn_frontdoor.profile_id
+
+  session_affinity_enabled = false
+
+  health_probe {
+    path                = "/"
+    protocol            = "Https"
+    request_type        = "HEAD"
+    interval_in_seconds = 120
+  }
+
+  load_balancing {
+    additional_latency_in_milliseconds = 0
+    sample_size                        = 4
+    successful_samples_required        = 2
+  }
+}
+
+resource "azurerm_cdn_frontdoor_origin" "npg_sdk" {
+  name                          = "npg-sdk-origin"
+  cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.npg_sdk.id
+
+  enabled                        = true
+  host_name                      = local.npg_sdk_hostname
+  http_port                      = 80
+  https_port                     = 443
+  origin_host_header             = local.npg_sdk_hostname
+  certificate_name_check_enabled = true
+  priority                       = 1
+  weight                         = 1000
+}
+
+resource "azurerm_cdn_frontdoor_rule_set" "npg_sdk" {
+  name                     = "npgsdkruleset"
+  cdn_frontdoor_profile_id = module.checkout_cdn_frontdoor.profile_id
+}
+
+resource "azurerm_cdn_frontdoor_rule" "npg_sdk_rewrite" {
+  name                      = "StripNpgSdkPrefix"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.npg_sdk.id
+  order                     = 1
+  behavior_on_match         = "Continue"
+
+  actions {
+    url_rewrite_action {
+      source_pattern          = "/npg-sdk/"
+      destination             = "/"
+      preserve_unmatched_path = true
+    }
+  }
+
+  depends_on = [
+    azurerm_cdn_frontdoor_origin.npg_sdk,
+    azurerm_cdn_frontdoor_origin_group.npg_sdk
+  ]
+}
+
+resource "azurerm_cdn_frontdoor_rule" "npg_sdk_cache" {
+  name                      = "NpgSdkCacheOverride"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.npg_sdk.id
+  order                     = 2
+  behavior_on_match         = "Continue"
+
+  actions {
+    route_configuration_override_action {
+      cache_behavior = "OverrideAlways"
+      cache_duration = "00:05:00"
+    }
+  }
+
+  depends_on = [
+    azurerm_cdn_frontdoor_origin.npg_sdk,
+    azurerm_cdn_frontdoor_origin_group.npg_sdk
+  ]
+}
+
+resource "azurerm_cdn_frontdoor_route" "npg_sdk" {
+  name                          = "route-npg-sdk"
+  cdn_frontdoor_endpoint_id     = module.checkout_cdn_frontdoor.endpoint_id
+  cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.npg_sdk.id
+
+  patterns_to_match      = ["/npg-sdk/*"]
+  supported_protocols    = ["Http", "Https"]
+  https_redirect_enabled = true
+  forwarding_protocol    = "HttpsOnly"
+  link_to_default_domain = true
+  enabled                = true
+
+  cdn_frontdoor_rule_set_ids      = [azurerm_cdn_frontdoor_rule_set.npg_sdk.id]
+  cdn_frontdoor_origin_ids        = [azurerm_cdn_frontdoor_origin.npg_sdk.id]
+  cdn_frontdoor_custom_domain_ids = local.npg_sdk_cdn_custom_domain_ids
+
+  cache {
+    query_string_caching_behavior = "IgnoreQueryString"
+  }
 }
 
 /**
