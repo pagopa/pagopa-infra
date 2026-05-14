@@ -21,7 +21,7 @@
     }
   ],
   "paths": {
-    "/npg/resources/sdk/sri": {
+    "/resources/sri": {
       "get": {
         "tags": [
           "npgSDK"
