@@ -15,13 +15,13 @@ locals {
 # Subnet to host the api config
 module "api_config_snet" {
   count  = var.cidr_subnet_api_config != null ? 1 : 0
-  source = "./.terraform/modules/__v3__/subnet"
+  source = "./.terraform/modules/__v4__/subnet"
 
-  name                                      = format("%s-api-config-snet", local.product)
-  address_prefixes                          = var.cidr_subnet_api_config
-  resource_group_name                       = data.azurerm_virtual_network.vnet.resource_group_name
-  virtual_network_name                      = format("%s-vnet-integration", local.product)
-  private_endpoint_network_policies_enabled = true
+  name                              = format("%s-api-config-snet", local.product)
+  address_prefixes                  = var.cidr_subnet_api_config
+  resource_group_name               = data.azurerm_virtual_network.vnet.resource_group_name
+  virtual_network_name              = format("%s-vnet-integration", local.product)
+  private_endpoint_network_policies = "Enabled"
 
   service_endpoints = [
     "Microsoft.Web",

@@ -27,6 +27,7 @@ cidr_vnet_integration             = ["10.230.10.0/24"] # ask to SIA
 cidr_subnet_dns_forwarder_backup  = ["10.1.251.0/29"]
 cidr_subnet_tools_cae             = ["10.1.248.0/23"]
 cidr_subnet_azdoa                 = ["10.1.130.0/24"]
+cidr_subnet_appgateway            = ["10.1.128.0/24"]
 cidr_subnet_eventhub              = ["10.230.10.64/26"]
 cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
 cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
@@ -192,6 +193,7 @@ base_path_nodo_fatturazione   = "/fatturazione-prd"
 base_path_nodo_web_bo         = "/web-bo-prd"
 base_path_nodo_web_bo_history = "/web-bo-history-prd"
 dns_zone_wisp2                = "wisp2"
+dns_zone_checkout             = "checkout"
 base_path_nodo_oncloud        = "/nodo-prd"
 
 redis_cache_enabled = true
@@ -766,6 +768,7 @@ app_gateway_management_certificate_name = "management-platform-pagopa-it-stable"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it-stable"
 app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
 app_gateway_wfespgovit_certificate_name = "wfesp-pagopa-gov-it"
+app_gateway_checkout_certificate_name   = "checkout-pagopa-it"
 app_gateway_min_capacity                = 15 # 5 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
 app_gateway_max_capacity                = 100
 app_gateway_sku_name                    = "WAF_v2"

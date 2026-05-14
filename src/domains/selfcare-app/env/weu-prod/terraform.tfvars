@@ -1,16 +1,11 @@
-prefix                 = "pagopa"
-env_short              = "p"
-env                    = "prod"
-domain                 = "selfcare"
-location               = "westeurope"
-location_short         = "weu"
-location_string        = "West Europe"
-instance               = "prod"
-gh_runner_job_location = "italynorth"
-
-
-### External resources
-
+prefix                                      = "pagopa"
+env_short                                   = "p"
+env                                         = "prod"
+domain                                      = "selfcare"
+location                                    = "westeurope"
+location_short                              = "weu"
+location_string                             = "West Europe"
+instance                                    = "prod"
 monitor_resource_group_name                 = "pagopa-p-monitor-rg"
 log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"

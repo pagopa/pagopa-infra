@@ -234,3 +234,11 @@ variable "aks_enable_workload_identity" {
   default = false
 }
 
+variable "non_critical_nodepool" {
+  type = object({
+    idh_tier = string
+    min_size = number
+    max_size = number
+  })
+  description = "The non critical nodepool configuration"
+}

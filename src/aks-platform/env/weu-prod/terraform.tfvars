@@ -41,8 +41,8 @@ aks_user_node_pool = {
   vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Ephemeral"
   os_disk_size_gb = "300"
-  node_count_min  = "10"
-  node_count_max  = "12"
+  node_count_min  = "11"
+  node_count_max  = "14"
   node_labels     = { node_name : "aks-user-01", node_type : "user" },
   node_taints     = [],
   node_tags       = { node_tag_1 : "1" },
@@ -131,3 +131,8 @@ tls_checker_https_endpoints_to_check = [
     helm_present   = true,
   },
 ]
+non_critical_nodepool = {
+  idh_tier = "Standard_D4ds_noncore",
+  min_size = 3,
+  max_size = 3,
+}
