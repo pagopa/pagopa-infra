@@ -13,11 +13,7 @@
   "tags": [
     {
       "name": "npgSDK",
-      "description": "NPG SDK api's",
-      "externalDocs": {
-        "url": "https://TODO",
-        "description": "Technical specifications"
-      }
+      "description": "NPG SDK api's"
     }
   ],
   "paths": {
