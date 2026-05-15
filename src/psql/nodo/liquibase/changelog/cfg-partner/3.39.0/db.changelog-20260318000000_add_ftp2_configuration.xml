@@ -10,7 +10,7 @@
         <insert tableName="CONFIGURATION_KEYS">
             <column name="CONFIG_CATEGORY"    value="GLOBAL"/>
             <column name="CONFIG_KEY"         value="creditorInstitutions.FTP2"/>
-            <column name="CONFIG_VALUE"       value="00488410010,97532760580"/>
+            <column name="CONFIG_VALUE"       value=""/>
             <column name="CONFIG_DESCRIPTION" value="Enti creditori i cui flussi passano dal servizio FTP2. I domini delle PA che passano dalla modalità SFG. Per esempio: 00488410010,97532760580"/>
         </insert>
 
