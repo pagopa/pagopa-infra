@@ -9,7 +9,7 @@ locals {
 }
 
 module "apim_checkout_npg_sdk" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "checkout-npg-sdk"
   display_name = "Checkout NPG SDK wrapper api"
@@ -34,7 +34,7 @@ resource "azurerm_api_management_api_version_set" "checkout_npg_sdk_api_v1" {
 }
 
 module "apim_checkout_npg_sdk_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project_short}-npg-sdk-resource-api"
   api_management_name   = data.azurerm_api_management.apim.name
