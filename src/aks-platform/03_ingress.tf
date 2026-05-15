@@ -88,7 +88,7 @@ module "nginx_ingress" {
 }
 
 ###############################################################################
-# HAProxy Ingress module - production configuration
+# HAProxy Ingress module - configuration
 ###############################################################################
 
 module "haproxy_ingress" {
