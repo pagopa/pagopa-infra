@@ -3,7 +3,7 @@
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.47.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 4.26.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.12.1 |
@@ -14,10 +14,11 @@
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | e5f5d152b9dc360e0b9753e4fa9dfb0e14137b62 |
+| ---- | ------ | ------- |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | c474c98742d71e8829292e38e2a5b9f73e23163f |
 | <a name="module_aks"></a> [aks](#module\_aks) | ./.terraform/modules/__v4__//kubernetes_cluster | n/a |
 | <a name="module_aks_snet"></a> [aks\_snet](#module\_aks\_snet) | ./.terraform/modules/__v4__//subnet | n/a |
+| <a name="module_haproxy_ingress"></a> [haproxy\_ingress](#module\_haproxy\_ingress) | ./.terraform/modules/__v4__/kubernetes_haproxy_ingress_controller | n/a |
 | <a name="module_nginx_ingress"></a> [nginx\_ingress](#module\_nginx\_ingress) | terraform-module/release/helm | 2.8.0 |
 | <a name="module_non_critical_node_pool"></a> [non\_critical\_node\_pool](#module\_non\_critical\_node\_pool) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
 | <a name="module_prometheus_managed_addon"></a> [prometheus\_managed\_addon](#module\_prometheus\_managed\_addon) | ./.terraform/modules/__v4__/kubernetes_prometheus_managed | n/a |
@@ -29,7 +30,7 @@
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [azurerm_public_ip.aks_outbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
 | [azurerm_resource_group.aks_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_role_assignment.aks_to_acr](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
@@ -75,7 +76,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_aks_alerts_enabled"></a> [aks\_alerts\_enabled](#input\_aks\_alerts\_enabled) | AKS alerts enabled? | `bool` | `false` | no |
 | <a name="input_aks_cidr_subnet"></a> [aks\_cidr\_subnet](#input\_aks\_cidr\_subnet) | Aks network address space. | `list(string)` | n/a | yes |
 | <a name="input_aks_enable_workload_identity"></a> [aks\_enable\_workload\_identity](#input\_aks\_enable\_workload\_identity) | n/a | `bool` | `false` | no |
@@ -88,6 +89,7 @@
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
+| <a name="input_haproxy_ingress_load_balancer_ip"></a> [haproxy\_ingress\_load\_balancer\_ip](#input\_haproxy\_ingress\_load\_balancer\_ip) | n/a | `string` | n/a | yes |
 | <a name="input_ingress_load_balancer_ip"></a> [ingress\_load\_balancer\_ip](#input\_ingress\_load\_balancer\_ip) | n/a | `string` | n/a | yes |
 | <a name="input_ingress_max_replica_count"></a> [ingress\_max\_replica\_count](#input\_ingress\_max\_replica\_count) | n/a | `string` | n/a | yes |
 | <a name="input_ingress_min_replica_count"></a> [ingress\_min\_replica\_count](#input\_ingress\_min\_replica\_count) | n/a | `string` | n/a | yes |
