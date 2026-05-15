@@ -927,3 +927,18 @@ resource "azurerm_api_management_named_value" "ecommerce_jwt_issuer_api_key_valu
   value               = var.ecommerce_jwt_issuer_api_key_use_primary ? data.azurerm_key_vault_secret.ecommerce_jwt_issuer_service_primary_api_key.value : data.azurerm_key_vault_secret.ecommerce_jwt_issuer_service_secondary_api_key.value
   secret              = true
 }
+
+data "azurerm_key_vault_secret" "npg_api_key" {
+  name         = "npg-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "npg_pagopa_api_key" {
+  name                = "npg-pagopa-api-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "npg-pagopa-api-key"
+  value               = data.azurerm_key_vault_secret.npg_api_key.value
+  secret              = true
+}
+
