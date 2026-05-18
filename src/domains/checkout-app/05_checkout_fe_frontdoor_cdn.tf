@@ -205,24 +205,6 @@ locals {
         destination             = "/terms/it.html"
         preserve_unmatched_path = false
       }]
-    },
-    {
-      name  = "RewriteNpgSdk"
-      order = 7
-
-      url_path_conditions = [{
-        condition_type   = "url_path_condition"
-        operator         = "BeginsWith"
-        match_values     = ["/npg-sdk/"]
-        transforms       = []
-        negate_condition = false
-      }]
-
-      url_rewrite_actions = [{
-        source_pattern          = "/npg-sdk/"
-        destination             = "/"
-        preserve_unmatched_path = true
-      }]
     }
   ]
 }
@@ -283,7 +265,7 @@ resource "azurerm_cdn_frontdoor_origin_group" "npg_sdk" {
   session_affinity_enabled = false
 
   health_probe {
-    path                = "/"
+    path                = "/monetaweb/resources/hfsdk.js"
     protocol            = "Https"
     request_type        = "HEAD"
     interval_in_seconds = 120
@@ -315,7 +297,7 @@ resource "azurerm_cdn_frontdoor_route" "npg_sdk" {
   cdn_frontdoor_endpoint_id     = module.checkout_cdn_frontdoor.endpoint_id
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.npg_sdk.id
 
-  patterns_to_match      = ["/npg-sdk/*"]
+  patterns_to_match      = ["/monetaweb/*"]
   supported_protocols    = ["Http", "Https"]
   https_redirect_enabled = true
   forwarding_protocol    = "HttpsOnly"
