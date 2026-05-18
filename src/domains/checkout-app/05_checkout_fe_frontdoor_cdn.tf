@@ -205,6 +205,24 @@ locals {
         destination             = "/terms/it.html"
         preserve_unmatched_path = false
       }]
+    },
+    {
+      name  = "RewriteNpgSdk"
+      order = 7
+
+      url_path_conditions = [{
+        condition_type   = "url_path_condition"
+        operator         = "BeginsWith"
+        match_values     = ["/npg-sdk/"]
+        transforms       = []
+        negate_condition = false
+      }]
+
+      url_rewrite_actions = [{
+        source_pattern          = "/npg-sdk/"
+        destination             = "/"
+        preserve_unmatched_path = true
+      }]
     }
   ]
 }
@@ -292,51 +310,6 @@ resource "azurerm_cdn_frontdoor_origin" "npg_sdk" {
   weight                         = 1000
 }
 
-resource "azurerm_cdn_frontdoor_rule_set" "npg_sdk" {
-  name                     = "npgsdkruleset"
-  cdn_frontdoor_profile_id = module.checkout_cdn_frontdoor.profile_id
-}
-
-resource "azurerm_cdn_frontdoor_rule" "npg_sdk_rewrite" {
-  name                      = "StripNpgSdkPrefix"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.npg_sdk.id
-  order                     = 1
-  behavior_on_match         = "Continue"
-
-  actions {
-    url_rewrite_action {
-      source_pattern          = "/npg-sdk/"
-      destination             = "/"
-      preserve_unmatched_path = true
-    }
-  }
-
-  depends_on = [
-    azurerm_cdn_frontdoor_origin.npg_sdk,
-    azurerm_cdn_frontdoor_origin_group.npg_sdk
-  ]
-}
-
-resource "azurerm_cdn_frontdoor_rule" "npg_sdk_cache" {
-  name                      = "NpgSdkCacheOverride"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.npg_sdk.id
-  order                     = 2
-  behavior_on_match         = "Continue"
-
-  actions {
-    route_configuration_override_action {
-      cache_behavior                = "OverrideAlways"
-      cache_duration                = "00:05:00"
-      query_string_caching_behavior = "IgnoreQueryString"
-    }
-  }
-
-  depends_on = [
-    azurerm_cdn_frontdoor_origin.npg_sdk,
-    azurerm_cdn_frontdoor_origin_group.npg_sdk
-  ]
-}
-
 resource "azurerm_cdn_frontdoor_route" "npg_sdk" {
   name                          = "route-npg-sdk"
   cdn_frontdoor_endpoint_id     = module.checkout_cdn_frontdoor.endpoint_id
@@ -349,7 +322,7 @@ resource "azurerm_cdn_frontdoor_route" "npg_sdk" {
   link_to_default_domain = true
   enabled                = true
 
-  cdn_frontdoor_rule_set_ids      = [azurerm_cdn_frontdoor_rule_set.npg_sdk.id]
+  cdn_frontdoor_rule_set_ids      = ["${module.checkout_cdn_frontdoor.profile_id}/ruleSets/rulesetglobal"]
   cdn_frontdoor_origin_ids        = [azurerm_cdn_frontdoor_origin.npg_sdk.id]
   cdn_frontdoor_custom_domain_ids = local.npg_sdk_cdn_custom_domain_ids
 
