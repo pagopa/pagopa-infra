@@ -1,7 +1,7 @@
 locals {
   apim_checkout_npg_sdk = {
-    display_name          = "Checkout pagoPA NPG SDK resource apis"
-    description           = "Api used to retrieve NPG sdk object and SRI informations"
+    display_name          = "Checkout pagoPA - NPG SDK resource APIs"
+    description           = "API used to retrieve NPG SDK object and SRI info"
     path                  = "checkout/npg/sdk"
     subscription_required = false
     service_url           = null
@@ -12,8 +12,8 @@ module "apim_checkout_npg_sdk" {
   source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "checkout-npg-sdk"
-  display_name = "Checkout NPG SDK wrapper api"
-  description  = "Collection of APIs related to NPG sdk."
+  display_name = "Checkout NPG SDK wrapper API"
+  description  = "Collection of APIs related to NPG SDK."
 
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
