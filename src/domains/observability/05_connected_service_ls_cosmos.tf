@@ -8,7 +8,7 @@ resource "azurerm_data_factory_linked_custom_service" "df_connection_linked_serv
   data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
   type            = "CosmosDb"
   type_properties_json = jsonencode({
-    connectionString       = each.value.connection_string
+    connectionString       = "${each.value.connection_string};Database=${each.value.database}"
     account                = each.value.account_name
     database               = each.value.database
     isServerVersionAbove32 = true
