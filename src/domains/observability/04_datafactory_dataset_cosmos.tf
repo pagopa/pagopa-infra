@@ -19,6 +19,7 @@ resource "azurerm_data_factory_custom_dataset" "qi_datasets_cosmos" {
   JSON
 
   linked_service {
-    name = azurerm_data_factory_linked_service_cosmosdb.cosmos_biz.name
+    #name = azurerm_data_factory_linked_service_cosmosdb.cosmos_biz.name
+    name = "BizEventsPositivi-cosmosdb-${var.env_short}-ls"
   }
 }
