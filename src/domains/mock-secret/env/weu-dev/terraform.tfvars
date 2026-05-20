@@ -1,15 +1,10 @@
-prefix          = "pagopa"
-env_short       = "d"
-env             = "dev"
-domain          = "mock"
-location        = "westeurope"
-location_short  = "weu"
-location_string = "West Europe"
-instance        = "dev"
+prefix         = "pagopa"
+env_short      = "d"
+env            = "dev"
+domain         = "mock"
+location_short = "weu"
 
 
 ### External resources
 
 input_file = "./secret/weu-dev/configs.json"
-
-enable_iac_pipeline = true

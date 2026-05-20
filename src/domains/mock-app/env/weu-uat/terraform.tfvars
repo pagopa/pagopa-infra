@@ -2,7 +2,6 @@ prefix          = "pagopa"
 env_short       = "u"
 env             = "uat"
 domain          = "mock"
-location        = "westeurope"
 location_short  = "weu"
 location_string = "West Europe"
 instance        = "uat"
@@ -24,7 +23,7 @@ mock_psp_secondary_service_enabled = true
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
-mock_enabled    = true
+mock_enabled = true
 
 mock_psp_service_enabled = true
 
