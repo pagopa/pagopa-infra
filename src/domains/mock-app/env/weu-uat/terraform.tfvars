@@ -26,4 +26,6 @@ mock_psp_secondary_service_enabled = true
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
 mock_enabled    = true
 
+mock_psp_service_enabled = true
+
 dns_zone_prefix = "uat.platform"
