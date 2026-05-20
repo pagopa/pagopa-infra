@@ -5,6 +5,23 @@ resource "kubernetes_namespace" "namespace_system" {
   }
 }
 
+resource "kubernetes_secret" "azure_devops_secret" {
+  count = var.mock_enabled ? 1 : 0
+
+  metadata {
+    name      = "azure-devops-sa-token"
+    namespace = kubernetes_namespace.namespace_system[0].metadata[0].name
+    annotations = {
+      "kubernetes.io/service-account.name" = kubernetes_service_account.azure_devops[0].metadata[0].name
+    }
+  }
+
+  type = "kubernetes.io/service-account-token"
+
+  wait_for_service_account_token = true
+}
+
+
 resource "kubernetes_service_account" "azure_devops" {
   count = var.mock_enabled ? 1 : 0
 
@@ -15,24 +32,25 @@ resource "kubernetes_service_account" "azure_devops" {
   automount_service_account_token = false
 }
 
-data "kubernetes_secret" "azure_devops_secret" {
-  count = var.mock_enabled ? 1 : 0
-  metadata {
-    name      = kubernetes_service_account.azure_devops[0].default_secret_name
-    namespace = kubernetes_namespace.namespace_system[0].metadata[0].name
-  }
-  binary_data = {
-    "ca.crt" = ""
-    "token"  = ""
-  }
-}
+# data "kubernetes_secret" "azure_devops_secret" {
+#   count = var.mock_enabled ? 1 : 0
+#   metadata {
+#     name      = kubernetes_service_account.azure_devops[0].default_secret_name
+#     namespace = kubernetes_namespace.namespace_system[0].metadata[0].name
+#   }
+#   binary_data = {
+#     "ca.crt" = ""
+#     "token"  = ""
+#   }
+# }
 
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "azure_devops_sa_token" {
   count        = var.mock_enabled ? 1 : 0
   depends_on   = [kubernetes_service_account.azure_devops]
   name         = "${local.aks_name}-azure-devops-sa-token"
-  value        = data.kubernetes_secret.azure_devops_secret[0].binary_data["token"] # base64 value
+  # value        = data.kubernetes_secret.azure_devops_secret[0].binary_data["token"] # base64 value
+  value        = kubernetes_secret.azure_devops_secret[0].data["token"]
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv.id
@@ -43,7 +61,8 @@ resource "azurerm_key_vault_secret" "azure_devops_sa_cacrt" {
   count        = var.mock_enabled ? 1 : 0
   depends_on   = [kubernetes_service_account.azure_devops]
   name         = "${local.aks_name}-azure-devops-sa-cacrt"
-  value        = data.kubernetes_secret.azure_devops_secret[0].binary_data["ca.crt"] # base64 value
+  # value        = data.kubernetes_secret.azure_devops_secret[0].binary_data["ca.crt"] # base64 value
+  value        = base64encode(kubernetes_secret.azure_devops_secret[0].data["ca.crt"])
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv.id
