@@ -63,7 +63,11 @@ locals {
   #      database         = "TablesDb"
   #    }
   data_factory_linked_services_cosmosdb = {
-
+    BizEventsPositivi = {
+        connection_string = data.azurerm_cosmosdb_account.bizevent_cosmos_account.primary_sql_connection_string
+        account_name      = data.azurerm_cosmosdb_account.bizevent_cosmos_account.name
+        database         = "db"
+    }
   }
 
   # Configurazione dei Linked Services per Azure Blob Storage in Azure Data Factory.
