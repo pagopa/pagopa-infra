@@ -252,7 +252,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_authorization_
 AzureDiagnostics
 | where url_s matches regex "https://api.platform.pagopa.it/ecommerce/npg/notifications/v1/sessions/.*/outcomes"
 | where method_s == "POST"
-| where responseCode_d != 200
+| where responseCode_d == 401 or responseCode_d >= 500 
 | project TimeGenerated, responseCode_d
   QUERY
   )
