@@ -928,17 +928,5 @@ resource "azurerm_api_management_named_value" "ecommerce_jwt_issuer_api_key_valu
   secret              = true
 }
 
-data "azurerm_key_vault_secret" "npg_api_key" {
-  name         = "npg-api-key"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
 
-resource "azurerm_api_management_named_value" "npg_pagopa_api_key" {
-  name                = "npg-pagopa-api-key"
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-  display_name        = "npg-pagopa-api-key"
-  value               = data.azurerm_key_vault_secret.npg_api_key.value
-  secret              = true
-}
 

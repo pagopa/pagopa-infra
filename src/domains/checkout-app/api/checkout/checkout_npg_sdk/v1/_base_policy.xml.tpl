@@ -21,6 +21,10 @@
         </allowed-headers>
       </cors>
       <base />
+      <set-backend-service base-url="https://${ecommerce_ingress_hostname}/pagopa-ecommerce-payment-methods-handler/npg/sdk"/>
+      <set-header name="x-api-key" exists-action="override">
+        <value>{{ecommerce-payment-methods-api-key-value}}</value>
+      </set-header>
   </inbound>
   <outbound>
       <base />

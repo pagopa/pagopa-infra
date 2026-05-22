@@ -17,14 +17,14 @@
     }
   ],
   "paths": {
-    "/resources/sri": {
+    "/integrity": {
       "get": {
         "tags": [
           "npgSDK"
         ],
-        "operationId": "getSdkSriInfo",
-        "summary": "Retrieve NPG SDK S(ub)R(esource)I(ntegrity) informations",
-        "description": "GET NPG SDK resource",
+        "operationId": "getNpgSdkIntegrity",
+        "summary": "Retrieve NPG SDK integrity hash for SRI check",
+        "description": "Returns the SHA-384 integrity hash for the NPG SDK script",
         "responses": {
           "200": {
             "description": "NPG SDK SRI informations",
