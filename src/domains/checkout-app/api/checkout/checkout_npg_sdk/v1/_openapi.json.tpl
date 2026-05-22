@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "Pagopa api used to handle NPG SDK resources",
-    "description": "Api used to retrieve and validate (sub resource integrity) NPG SDK"
+    "title": "Checkout pagoPA - NPG SDK integrity API",
+    "description": "API to retrieve NPG SDK integrity hash for SRI validation"
   },
   "servers": [
     {

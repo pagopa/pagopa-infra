@@ -1,7 +1,7 @@
 locals {
   apim_checkout_npg_sdk = {
-    display_name          = "Checkout pagoPA - NPG SDK resource APIs"
-    description           = "API used to retrieve NPG SDK object and SRI info"
+    display_name          = "Checkout pagoPA - NPG SDK integrity API"
+    description           = "API to retrieve NPG SDK integrity hash for SRI validation"
     path                  = "checkout/npg/sdk"
     subscription_required = false
     service_url           = null
