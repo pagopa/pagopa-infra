@@ -115,7 +115,7 @@ cosmos_gpd_payments_db_params = {
 
   payments_receipts_table = {
     autoscale  = true
-    throughput = 2000
+    throughput = 6000
   }
 
   payments_pp_table = {
