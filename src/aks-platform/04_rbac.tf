@@ -313,6 +313,12 @@ resource "kubernetes_cluster_role" "kube_system_reader" {
   ]
 }
 
+# Bind the cluster_deployer role to adgroup_admin_dev
+# Grants the admin-dev team permissions to:
+# - Manage KEDA scaled objects and trigger authentications
+# - Create, update, patch, and delete deployments, services, configmaps, secrets
+# - Manage ingresses, jobs, cronjobs, and monitoring resources
+# - Full cluster deployment capabilities across all namespaces
 resource "kubernetes_cluster_role_binding" "cluster_deployer_admin_dev_binding" {
   metadata {
     name = "cluster-deployer-admin-dev-binding"
