@@ -27,3 +27,7 @@ data "azuread_group" "adgroup_operations" {
 data "azuread_group" "adgroup_technical_project_managers" {
   display_name = "${local.product}-adgroup-technical-project-managers"
 }
+
+data "azuread_group" "adgroup_admin_dev" {
+  display_name = "${local.product}-adgroup-admin-dev"
+}
