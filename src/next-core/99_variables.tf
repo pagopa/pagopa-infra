@@ -392,6 +392,11 @@ variable "app_gateway_wisp2_certificate_name" {
   description = "Application gateway wisp2 certificate name on Key Vault"
 }
 
+variable "app_gateway_checkout_certificate_name" {
+  type        = string
+  description = "Application gateway checkout certificate name on Key Vault"
+}
+
 variable "app_gateway_wisp2govit_certificate_name" {
   type        = string
   description = "Application gateway wisp2govit certificate name on Key Vault"
@@ -548,7 +553,11 @@ variable "dns_zone_wfesp" {
   description = "The wfesp dns subdomain."
 }
 
-
+variable "dns_zone_checkout" {
+  type        = string
+  default     = null
+  description = "The checkout dns subdomain."
+}
 
 #
 # Event hub

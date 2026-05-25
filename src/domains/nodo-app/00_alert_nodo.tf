@@ -9,9 +9,12 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
   enabled             = true
   severity            = 1
   frequency           = 5
-  # the time window was updated from 5 to 7 because the delay between the call and log
-  # sometimes can be 2 minutes, this can affect the alert query
-  time_window = 7
+
+  # Keep the original 7-minute window for all Nodo API availability alerts.
+  # Use a 14-minute window only for nodo_for_pa_auth so the query can evaluate
+  # two consecutive 7-minute bins before firing the alert.
+  time_window = each.key == "nodo_for_pa_auth" ? 14 : 7
+
   action {
     action_group           = local.action_groups
     email_subject          = "Nodo PagoPA ${upper(each.key)} API Availability Alert"
@@ -30,22 +33,53 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
     let highTrafficAvailability = 98;
     let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
+    // Enable the two-consecutive-bin rule only for nodo_for_pa_auth.
+    // Other API availability alerts keep the existing single-bin behavior.
+    let requireTwoConsecutiveBins = "${each.key}" == "nodo_for_pa_auth";
     AzureDiagnostics
-    | where TimeGenerated > ago(7m)
+    // Match the query lookback window with the Terraform alert evaluation window.
+    // nodo_for_pa_auth needs 14 minutes to inspect two 7-minute bins.
+    | where TimeGenerated > ago(${each.key == "nodo_for_pa_auth" ? "14m" : "7m"})
     | where url_s matches regex "${each.value.sub_service}"
     | where operationId_s in (operationIds)
     | summarize
         Total = count(),
         Success = countif(todouble(responseCode_d) < 500)
-        by bin(TimeGenerated, 7m), operationId_s
+        by TimeBin = bin(TimeGenerated, 7m), operationId_s
     | where Total > 5
-    | extend trafficUp = Total-thresholdTrafficMin
-    | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
-    | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
-    | extend availability=((Success * 1.0) / Total) * 100
-    | where availability < expectedAvailability
+    | extend trafficUp = Total - thresholdTrafficMin
+    | extend deltaRatio = todouble(todouble(trafficUp) / todouble(thresholdDelta))
+    | extend expectedAvailability = iff(
+        Total >= thresholdTrafficLinear,
+        toreal(highTrafficAvailability),
+        iff(
+          Total <= thresholdTrafficMin,
+          toreal(lowTrafficAvailability),
+          (deltaRatio * availabilityDelta) + lowTrafficAvailability
+        )
+      )
+    | extend availability = ((Success * 1.0) / Total) * 100
+    // Mark each 7-minute bin as degraded without filtering it immediately.
+    // This is required to compare the current bin with the previous one.
+    | extend belowThreshold = availability < expectedAvailability
+    // Order and serialize rows so prev() can safely compare each bin
+    // with the previous bin of the same operation.
+    // For nodo_for_pa_auth, this allows firing only after two consecutive degraded bins.
+    | order by operationId_s asc, TimeBin asc
+    | serialize
+    // Read the previous bin status only when it belongs to the same operation.
+    // This prevents comparing degraded bins from different API operations.
+    | extend previousBelowThreshold = iff(
+        operationId_s == prev(operationId_s, 1, ""),
+        prev(belowThreshold, 1, false),
+        false
+      )
+    // For nodo_for_pa_auth, fire only when both the current and previous bins are degraded.
+    // For all other alerts, preserve the previous behavior and fire on a single degraded bin.
+    | where belowThreshold == true
+    | where requireTwoConsecutiveBins == false or previousBelowThreshold == true
     | join kind=inner (operationMap) on operationId_s
-    | project TimeGenerated, apiName, operationId_s, availability, Total, Success
+    | project TimeGenerated = TimeBin, apiName, operationId_s, availability, Total, Success
   EOT
 
   trigger {

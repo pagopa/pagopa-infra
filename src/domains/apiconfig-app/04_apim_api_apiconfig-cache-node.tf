@@ -10,7 +10,7 @@ resource "azurerm_api_management_api_version_set" "api_apiconfig_cache_node_api_
 }
 
 module "apim_api_apiconfig_cache_node_api_v1_p" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-apiconfig-cache-node-%s-api", local.project, local.postgres)
   api_management_name   = local.pagopa_apim_name
@@ -53,7 +53,7 @@ module "apim_api_apiconfig_cache_node_api_v1_p" {
 #
 #
 # module "apim_api_apiconfig_cache_node_api_v1_o" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                  = format("%s-apiconfig-cache-node-%s-api", local.project, local.oracle)
 #   api_management_name   = local.pagopa_apim_name

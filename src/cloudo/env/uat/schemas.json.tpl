@@ -22,7 +22,6 @@
         "name": "Checkout CDN switch",
         "description": "Switch checkout provider from CDN to APIM",
         "runbook": "azure/checkout_cdn_switch.sh",
-        "require_approval": "true",
         "run_args": "",
         "worker": "generic",
         "oncall": false,

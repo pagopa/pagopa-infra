@@ -1,7 +1,7 @@
 ###
 ### IT SHOULD BE DEPRECATED, PLEASE USE cfg-for-node PRODUCT
 module "apim_apiconfig_cache_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = local.apiconfig_cache_locals.product_id
   display_name = local.apiconfig_cache_locals.display_name
@@ -28,7 +28,7 @@ resource "azurerm_api_management_product_group" "access_control_developers_for_c
 
 
 module "apim_apiconfig_cache_external_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "apiconfig-cache-external"
   display_name = "API Config Cache External"
