@@ -13,20 +13,13 @@ monitor_italy_resource_group_name                 = "pagopa-p-itn-core-monitor-r
 log_analytics_italy_workspace_name                = "pagopa-p-itn-core-law"
 log_analytics_italy_workspace_resource_group_name = "pagopa-p-itn-core-monitor-rg"
 
-monitor_resource_group_name                 = "pagopa-p-monitor-rg"
-log_analytics_workspace_name                = "pagopa-p-law"
-log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
-
-### Aks
-
-ingress_load_balancer_ip = "10.3.100.250"
+monitor_resource_group_name = "pagopa-p-monitor-rg"
+ingress_load_balancer_ip    = "10.3.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"
 
 ## CIDR cruscotto per database pgsql
-cidr_subnet_flex_dbms = ["10.3.7.0/27"]
-
 pgres_flex_params = {
   idh_resource = "pgflex4" # https://github.com/pagopa/terraform-azurerm-v4/blob/44df8cdf0615a2d1c39efd05996edc4bf28e0dec/IDH/postgres_flexible_server/LIBRARY.md
   sku_name     = "GP_Standard_D4ds_v5"
@@ -110,7 +103,4 @@ custom_metric_alerts = {
   }
 }
 
-# Storage Account Crusc8  Report 
-crusc8_sa_report = {
-  idh_resource_tier = "backup30"
-}
+# Storage Account Crusc8  Report
