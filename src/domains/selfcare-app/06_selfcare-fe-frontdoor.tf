@@ -88,7 +88,7 @@ module "selfcare_cdn_frontdoor" {
         {
           action = "Append"
           name   = "Content-Security-Policy-Report-Only"
-          value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare.pagopa.it/assets/font/; "
+          value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare.pagopa.it/assets/font/selfhostedfonts.css; connect-src 'self' https://selfcare.pagopa.it; worker-src 'none'; font-src 'self' https://selfcare.pagopa.it/assets/font/;"
         },
         # {
         #   action = "Append"
