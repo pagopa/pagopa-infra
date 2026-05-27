@@ -140,6 +140,10 @@ variable "ingress_load_balancer_ip" {
   type = string
 }
 
+variable "haproxy_ingress_load_balancer_ip" {
+  type = string
+}
+
 variable "nginx_helm_version" {
   type        = string
   description = "NGINX helm verison"

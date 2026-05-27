@@ -530,13 +530,14 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forward
       azurerm_monitor_action_group.slack.id,
       azurerm_monitor_action_group.mo_email.id,
       azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id,
-    azurerm_monitor_action_group.smo_opsgenie.0.id]
+      azurerm_monitor_action_group.smo_opsgenie.0.id
+    ]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
   data_source_id          = module.apim[0].id
   description             = "Availability for /forward is less than or equal to 99% - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
-  enabled                 = true
+  enabled                 = false
   auto_mitigation_enabled = true
   query = (<<-QUERY
 let threshold = 0.96;

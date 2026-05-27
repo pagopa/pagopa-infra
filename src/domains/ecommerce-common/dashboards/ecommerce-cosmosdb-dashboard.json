@@ -157,7 +157,8 @@
                   "model": {
                     "operator": "equals",
                     "values": [
-                      "update"
+                      "Update",
+                      "Insert"
                     ]
                   }
                 },
@@ -1558,42 +1559,6 @@
                 "content": {
                   "options": {
                     "chart": {
-                      "metrics": [
-                        {
-                          "resourceMetadata": {
-                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
-                          },
-                          "name": "DataUsage",
-                          "aggregationType": 1,
-                          "namespace": "microsoft.documentdb/databaseaccounts",
-                          "metricVisualization": {
-                            "displayName": "Data Usage",
-                            "resourceDisplayName": "pagopa-p-weu-ecommerce-cosmos-account"
-                          }
-                        }
-                      ],
-                      "title": "Data Usage split by collection, database and region",
-                      "titleKind": 2,
-                      "visualization": {
-                        "chartType": 2,
-                        "legendVisualization": {
-                          "isVisible": true,
-                          "position": 2,
-                          "hideHoverCard": false,
-                          "hideLabelNames": true
-                        },
-                        "axisVisualization": {
-                          "x": {
-                            "isVisible": true,
-                            "axisType": 2
-                          },
-                          "y": {
-                            "isVisible": true,
-                            "axisType": 1
-                          }
-                        },
-                        "disablePinning": true
-                      },
                       "grouping": {
                         "dimension": [
                           "CollectionName",
@@ -1602,6 +1567,42 @@
                         ],
                         "sort": 2,
                         "top": 10
+                      },
+                      "metrics": [
+                        {
+                          "aggregationType": 1,
+                          "metricVisualization": {
+                            "displayName": "Data Usage",
+                            "resourceDisplayName": "pagopa-p-weu-ecommerce-cosmos-account"
+                          },
+                          "name": "DataUsage",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          }
+                        }
+                      ],
+                      "title": "Data Usage split by collection, database and region",
+                      "titleKind": 2,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "disablePinning": true,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
                       }
                     }
                   }
@@ -1632,42 +1633,6 @@
                 "content": {
                   "options": {
                     "chart": {
-                      "metrics": [
-                        {
-                          "resourceMetadata": {
-                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
-                          },
-                          "name": "DocumentCount",
-                          "aggregationType": 1,
-                          "namespace": "microsoft.documentdb/databaseaccounts",
-                          "metricVisualization": {
-                            "displayName": "Document Count",
-                            "resourceDisplayName": "pagopa-p-weu-ecommerce-cosmos-account"
-                          }
-                        }
-                      ],
-                      "title": "Document Count split by collection, database and region",
-                      "titleKind": 2,
-                      "visualization": {
-                        "chartType": 2,
-                        "legendVisualization": {
-                          "isVisible": true,
-                          "position": 2,
-                          "hideHoverCard": false,
-                          "hideLabelNames": true
-                        },
-                        "axisVisualization": {
-                          "x": {
-                            "isVisible": true,
-                            "axisType": 2
-                          },
-                          "y": {
-                            "isVisible": true,
-                            "axisType": 1
-                          }
-                        },
-                        "disablePinning": true
-                      },
                       "grouping": {
                         "dimension": [
                           "CollectionName",
@@ -1676,6 +1641,42 @@
                         ],
                         "sort": 2,
                         "top": 10
+                      },
+                      "metrics": [
+                        {
+                          "aggregationType": 1,
+                          "metricVisualization": {
+                            "displayName": "Document Count",
+                            "resourceDisplayName": "pagopa-p-weu-ecommerce-cosmos-account"
+                          },
+                          "name": "DocumentCount",
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          }
+                        }
+                      ],
+                      "title": "Document Count split by collection, database and region",
+                      "titleKind": 2,
+                      "visualization": {
+                        "axisVisualization": {
+                          "x": {
+                            "axisType": 2,
+                            "isVisible": true
+                          },
+                          "y": {
+                            "axisType": 1,
+                            "isVisible": true
+                          }
+                        },
+                        "chartType": 2,
+                        "disablePinning": true,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        }
                       }
                     }
                   }
@@ -1713,18 +1714,18 @@
                 "value": "Past 4 hours"
               },
               "filteredPartIds": [
-                "StartboardPart-MonitorChartPart-d887e46d-4daa-473f-9b84-ba68504e233b",
-                "StartboardPart-MonitorChartPart-d887e46d-4daa-473f-9b84-ba68504e233d",
-                "StartboardPart-MonitorChartPart-d887e46d-4daa-473f-9b84-ba68504e233f",
-                "StartboardPart-MonitorChartPart-d887e46d-4daa-473f-9b84-ba68504e2341",
-                "StartboardPart-MonitorChartPart-d887e46d-4daa-473f-9b84-ba68504e2343",
-                "StartboardPart-MonitorChartPart-d887e46d-4daa-473f-9b84-ba68504e2345",
-                "StartboardPart-MonitorChartPart-d887e46d-4daa-473f-9b84-ba68504e2347",
-                "StartboardPart-MonitorChartPart-d887e46d-4daa-473f-9b84-ba68504e2349",
-                "StartboardPart-MonitorChartPart-d887e46d-4daa-473f-9b84-ba68504e234b",
-                "StartboardPart-MonitorChartPart-d887e46d-4daa-473f-9b84-ba68504e234d",
-                "StartboardPart-MonitorChartPart-d887e46d-4daa-473f-9b84-ba68504e23bc",
-                "StartboardPart-MonitorChartPart-d887e46d-4daa-473f-9b84-ba68504e23c8"
+                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a118",
+                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a11a",
+                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a120",
+                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a122",
+                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a124",
+                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a126",
+                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a128",
+                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a12a",
+                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a12c",
+                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a12e",
+                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a11c",
+                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a11e"
               ]
             }
           }
