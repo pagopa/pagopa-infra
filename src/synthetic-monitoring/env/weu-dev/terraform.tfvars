@@ -12,8 +12,8 @@ use_private_endpoint             = false
 # Feature Flags
 #
 enabled_resource = {
-  test_nexi_postgres = true
-  synthetic_on_demand   = true
+  test_nexi_postgres  = true
+  synthetic_on_demand = true
 }
 
 

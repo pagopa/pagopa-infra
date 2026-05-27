@@ -48,8 +48,8 @@ variable "location_short" {
 #
 variable "enabled_resource" {
   type = object({
-    test_nexi_postgres = optional(bool, false),
-    synthetic_on_demand   = optional(bool, false)
+    test_nexi_postgres  = optional(bool, false),
+    synthetic_on_demand = optional(bool, false)
   })
 }
 
