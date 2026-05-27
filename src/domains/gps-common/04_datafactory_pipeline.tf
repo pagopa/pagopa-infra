@@ -182,7 +182,7 @@ resource "azapi_resource" "pipeline_lifecycle_management" {
 }
 
 resource "azurerm_data_factory_trigger_schedule" "pipeline_lifecycle_management_schedule" {
-  count = 0   # var.env_short == "p" ? 1 : 0
+  count = 0 # var.env_short == "p" ? 1 : 0
 
   name            = "GPD_LIFECYCLE_MANAGEMENT_SCHEDULE"
   data_factory_id = data.azurerm_data_factory.data_factory.id
