@@ -160,7 +160,7 @@
               }
             }
           ],
-          "timeout": "0.12:00:00"
+          "timeout": "0.23:59:59"
         }
       },
       {
@@ -221,40 +221,6 @@
                 "value": "@concat('SELECT COUNT(*) \nFROM (\n    SELECT 1 \n    FROM apd.archiving_selection_buffer \n    LIMIT ', string(pipeline().parameters.MaxAmountToMigrate),'\n) AS subquery;')",
                 "type": "Expression"
               }
-            }
-          ],
-          "scriptBlockExecutionTimeout": "02:00:00"
-        }
-      },
-      {
-        "name": "Refresh_materialized_view_last_step",
-        "description": "Refresh materialized view",
-        "type": "Script",
-        "dependsOn": [
-          {
-            "activity": "Send_ai_event",
-            "dependencyConditions": [
-              "Succeeded"
-            ]
-          }
-        ],
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureOutput": false,
-          "secureInput": false
-        },
-        "userProperties": [],
-        "linkedServiceName": {
-          "referenceName": "${linked_service_gpd}",
-          "type": "LinkedServiceReference"
-        },
-        "typeProperties": {
-          "scripts": [
-            {
-              "type": "Query",
-              "text": "CALL apd.refresh_archiving_buffer()"
             }
           ],
           "scriptBlockExecutionTimeout": "02:00:00"
