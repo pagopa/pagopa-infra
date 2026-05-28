@@ -26,7 +26,7 @@ locals {
     display_name          = "Checkout - EC API"
     description           = "Checkout API for EC"
     path                  = "checkout/ec"
-    subscription_required = var.env_short == "p" ? true : false
+    subscription_required = false
     service_url           = null
   }
 }
@@ -89,7 +89,7 @@ module "apim_checkout_ec_api_v2" {
   })
 
   xml_content = templatefile("./api/checkout/checkout_ec/v2/_base_policy.xml.tpl", {
-    ecommerce_ingress_hostname = var.ecommerce_ingress_hostname,
+    ecommerce_ingress_hostname = var.env_short == "p" ? "disabled" : var.ecommerce_ingress_hostname,
   })
 }
 
