@@ -170,7 +170,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_carts_v1" {
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.checkout_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[Checkout] POST Carts V1 API availability alert"
     custom_webhook_payload = "{}"
   }
@@ -206,7 +206,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_carts_v1" 
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.checkout_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[Checkout] POST Carts auth V1 API availability alert"
     custom_webhook_payload = "{}"
   }
@@ -242,7 +242,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_carts_v2" {
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.checkout_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[Checkout] POST Carts V2 API availability alert"
     custom_webhook_payload = "{}"
   }
@@ -278,7 +278,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_carts_v2" 
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.checkout_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[Checkout] POST Carts auth V2 API availability alert"
     custom_webhook_payload = "{}"
   }
