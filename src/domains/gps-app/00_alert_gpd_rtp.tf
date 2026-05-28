@@ -41,7 +41,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-generic" {
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "gpd-rtp error INTERNAL_SERVER_ERROR"
-  enabled        = true
+  enabled        = false
   query = format(<<-QUERY
      customEvents
       | where name == "RTP_ALERT"
