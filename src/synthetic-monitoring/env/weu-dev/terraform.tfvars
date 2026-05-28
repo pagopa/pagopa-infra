@@ -12,7 +12,8 @@ use_private_endpoint             = false
 # Feature Flags
 #
 enabled_resource = {
-  test_nexi_postgres = false
+  test_nexi_postgres  = true
+  synthetic_on_demand = true
 }
 
 
@@ -21,12 +22,6 @@ law_sku               = "PerGB2018"
 law_retention_in_days = 30
 law_daily_quota_gb    = 10
 self_alert_enabled    = false
-
-force = "v1"
-
-#
-# monitoring template variables
-#
 check_position_body = {
   fiscal_code   = "66666666666"
   notice_number = "310115803416020234"

@@ -24,13 +24,6 @@ variable "env_short" {
   }
 }
 
-variable "github" {
-  type = object({
-    org = string
-  })
-  default = { org = "pagopa" }
-}
-
 variable "domain" {
   type = string
   validation {
@@ -123,10 +116,6 @@ variable "ingress_load_balancer_ip" {
 
 ### Aks
 
-variable "k8s_kube_config_path_prefix" {
-  type    = string
-  default = "~/.kube"
-}
 variable "external_domain" {
   type        = string
   default     = null
@@ -139,17 +128,7 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
-variable "apim_dns_zone_prefix" {
-  type        = string
-  default     = null
-  description = "The dns subdomain for apim."
-}
 
-variable "enable_iac_pipeline" {
-  type        = bool
-  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
-  default     = false
-}
 
 variable "cidr_subnet_flex_dbms" {
   type        = list(string)
@@ -316,13 +295,6 @@ variable "cosmos_mongo_db_fdr_re_params" {
   })
 }
 # Storage account
-variable "fdr_convertion_delete_retention_days" {
-  type        = number
-  description = "Number of days to retain deleted."
-  default     = 30
-}
-
-# Storage account
 variable "cidr_subnet_storage_account" {
   type        = list(string)
   description = "Storage account network address space."
@@ -334,28 +306,6 @@ variable "reporting_fdr_blobs_retention_days" {
   default     = 30
 }
 
-
-variable "fdr1_cached_response_blob_file_retention_days" {
-  type        = number
-  description = "The number of day for storage_management_policy"
-  default     = 1
-}
-
-variable "fdr_re_versioning" {
-  type        = bool
-  description = "Enable sa versioning"
-  default     = false
-}
-variable "fdr_re_advanced_threat_protection" {
-  type        = bool
-  description = "Enable contract threat advanced protection"
-  default     = false
-}
-variable "fdr_re_delete_retention_days" {
-  type        = number
-  description = "Number of days to retain deleted."
-  default     = 30
-}
 
 variable "fdr_storage_account" {
   type = object({
@@ -462,8 +412,3 @@ variable "postgres_dns_registration_virtual_endpoint_enabled" {
 }
 
 
-variable "geo_replica_cidr_subnet_postgresql" {
-  type        = list(string)
-  description = "Address prefixes replica subnet postgresql"
-  default     = null
-}

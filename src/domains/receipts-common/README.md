@@ -75,7 +75,6 @@
 | <a name="input_cidr_subnet_receipts_datastore_storage"></a> [cidr\_subnet\_receipts\_datastore\_storage](#input\_cidr\_subnet\_receipts\_datastore\_storage) | Storage address space | `list(string)` | `null` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
-| <a name="input_enable_iac_pipeline"></a> [enable\_iac\_pipeline](#input\_enable\_iac\_pipeline) | If true create the key vault policy to allow used by azure devops iac pipelines. | `bool` | `false` | no |
 | <a name="input_enable_sa_backup"></a> [enable\_sa\_backup](#input\_enable\_sa\_backup) | (Optional) Enables storage account backup PIT restore | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
@@ -93,13 +92,7 @@
 | <a name="input_receipts_datastore_fn_sa_backup_retention_days"></a> [receipts\_datastore\_fn\_sa\_backup\_retention\_days](#input\_receipts\_datastore\_fn\_sa\_backup\_retention\_days) | Number of days to retain backups. | `number` | `0` | no |
 | <a name="input_receipts_datastore_fn_sa_delete_after_last_access"></a> [receipts\_datastore\_fn\_sa\_delete\_after\_last\_access](#input\_receipts\_datastore\_fn\_sa\_delete\_after\_last\_access) | Number of days since modification to blob before deleting | `number` | `3650` | no |
 | <a name="input_receipts_datastore_fn_sa_delete_retention_days"></a> [receipts\_datastore\_fn\_sa\_delete\_retention\_days](#input\_receipts\_datastore\_fn\_sa\_delete\_retention\_days) | Number of days to retain deleted. | `number` | `0` | no |
-| <a name="input_receipts_datastore_fn_sa_enable_versioning"></a> [receipts\_datastore\_fn\_sa\_enable\_versioning](#input\_receipts\_datastore\_fn\_sa\_enable\_versioning) | Enable sa versioning | `bool` | `false` | no |
 | <a name="input_receipts_datastore_fn_sa_tier_to_cool_after_last_access"></a> [receipts\_datastore\_fn\_sa\_tier\_to\_cool\_after\_last\_access](#input\_receipts\_datastore\_fn\_sa\_tier\_to\_cool\_after\_last\_access) | Number of days since last access to blob before moving to cool tier | `number` | `183` | no |
-| <a name="input_receipts_datastore_queue_fn_sa_advanced_threat_protection"></a> [receipts\_datastore\_queue\_fn\_sa\_advanced\_threat\_protection](#input\_receipts\_datastore\_queue\_fn\_sa\_advanced\_threat\_protection) | Enable contract threat advanced protection | `bool` | `false` | no |
-| <a name="input_receipts_datastore_queue_fn_sa_delete_retention_days"></a> [receipts\_datastore\_queue\_fn\_sa\_delete\_retention\_days](#input\_receipts\_datastore\_queue\_fn\_sa\_delete\_retention\_days) | Number of days to retain deleted. | `number` | `30` | no |
-| <a name="input_receipts_max_retry_queuing"></a> [receipts\_max\_retry\_queuing](#input\_receipts\_max\_retry\_queuing) | Max retry queuing when the node calling fails. | `number` | `5` | no |
-| <a name="input_receipts_queue_delay_sec"></a> [receipts\_queue\_delay\_sec](#input\_receipts\_queue\_delay\_sec) | The length of time during which the message will be invisible, starting when it is added to the queue. | `number` | `3600` | no |
-| <a name="input_receipts_queue_retention_sec"></a> [receipts\_queue\_retention\_sec](#input\_receipts\_queue\_retention\_sec) | The maximum time to allow the message to be in the queue. | `number` | `86400` | no |
 | <a name="input_receipts_storage_account_replication_type"></a> [receipts\_storage\_account\_replication\_type](#input\_receipts\_storage\_account\_replication\_type) | (Optional) Receipts datastore storage account replication type | `string` | `"LRS"` | no |
 | <a name="input_receipts_tier_to_archive_after_days_since_last_access_time_greater_than"></a> [receipts\_tier\_to\_archive\_after\_days\_since\_last\_access\_time\_greater\_than](#input\_receipts\_tier\_to\_archive\_after\_days\_since\_last\_access\_time\_greater\_than) | Number of days since last access to blob before moving to archive tier | `number` | `730` | no |
 

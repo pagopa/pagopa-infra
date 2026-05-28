@@ -22,9 +22,6 @@ dns_zone_internal_prefix = "internal.dev.platform"
 
 ## CIDR fdr per database pgsql
 cidr_subnet_flex_dbms = ["10.1.162.0/24"]
-
-enable_iac_pipeline = true
-
 pgres_flex_params = {
 
   sku_name   = "GP_Standard_D2ds_v4"
@@ -184,4 +181,3 @@ fdr_re_storage_account = {
 #
 geo_replica_enabled               = false
 postgres_dns_registration_enabled = true
-

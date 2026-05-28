@@ -681,6 +681,29 @@
     }
   },
   {
+    "apiName" : "checkPosition",
+    "appName" : "nodo",
+    "url" : "https://${appgw_public_ip}/nodo/nodo-per-pm/v1/checkPosition",
+    "type" : "appgw",
+    "checkCertificate" : true,
+    "method" : "POST",
+    "expectedCodes" : ["200"],
+    "body": {"positionslist": [{"fiscalCode": "${check_position_body.fiscal_code}", "noticeNumber": "${check_position_body.notice_number}"}]},
+    "expectedBody": {"outcome":"OK"},
+    "bodyCompareStrategy": "contains",
+    "headers": {
+      "Content-Type": "application/json",
+      "Host": "${api_dot_env_name}.platform.pagopa.it"
+    },
+    "tags" : {
+      "description" : "pagopa nodo ${env_name} check position"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
     "apiName" : "verifyPaymentNoticeOnPartner",
     "appName" : "nodo",
     "url" : "https://${api_dot_env_name}.platform.pagopa.it/nodo-auth/node-for-psp/v1",
@@ -928,7 +951,10 @@
       "durationLimit": 10000,
       "alertConfiguration": {
         "enabled": "true",
-        "customActionGroupIds" : ${cloudo_action_group_ids}
+        "customActionGroupIds" : ${cloudo_action_group_ids},
+        "window_size": "PT15M",
+        "threshold": 0,
+        "operator": "LessThanOrEqual"
       }
   },
   {
