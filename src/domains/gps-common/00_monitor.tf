@@ -47,6 +47,7 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_management_single_fa
 
   severity = 3
 
+  frequency = "PT30M"
   window_size = "PT1H"
 
   criteria {
@@ -57,7 +58,7 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_management_single_fa
     threshold        = 1
 
     dimension {
-      name     = "PipelineName"
+      name     = "Name"
       operator = "Include"
       values   = ["GPD_LIFECYCLE_MANAGEMENT"]
     }
@@ -82,6 +83,7 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_management_multiple_
 
   severity = 3
 
+  frequency = "PT1H"
   window_size = "PT6H"
 
   criteria {
@@ -92,7 +94,7 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_management_multiple_
     threshold        = 5
 
     dimension {
-      name     = "PipelineName"
+      name     = "Name"
       operator = "Include"
       values   = ["GPD_LIFECYCLE_MANAGEMENT"]
     }
@@ -127,7 +129,7 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_script_execution_sin
     threshold        = 1
 
     dimension {
-      name     = "PipelineName"
+      name     = "Name"
       operator = "Include"
       values   = ["GPD_LIFECYCLE_SCRIPT_EXECUTION"]
     }
@@ -162,7 +164,7 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_script_execution_mar
     threshold        = 1
 
     dimension {
-      name     = "ActivityName"
+      name     = "Name"
       operator = "Include"
       values   = ["Mark_archived_in_online"]
     }
@@ -187,6 +189,7 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_script_execution_mar
 
   severity = 2
 
+  frequency = "PT1H"
   window_size = "PT6H"
 
   criteria {
@@ -197,7 +200,7 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_script_execution_mar
     threshold        = 1
 
     dimension {
-      name     = "ActivityName"
+      name     = "Name"
       operator = "Include"
       values   = ["Mark_archived_in_online"]
     }
@@ -232,7 +235,7 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_script_execution_del
     threshold        = 1
 
     dimension {
-      name     = "ActivityName"
+      name     = "Name"
       operator = "Include"
       values   = ["Delete_elements_from_online"]
     }
@@ -257,6 +260,7 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_script_execution_del
 
   severity = 2
 
+  frequency = "PT1H"
   window_size = "PT6H"
 
   criteria {
@@ -267,7 +271,7 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_script_execution_del
     threshold        = 1
 
     dimension {
-      name     = "ActivityName"
+      name     = "Name"
       operator = "Include"
       values   = ["Delete_elements_from_online"]
     }
