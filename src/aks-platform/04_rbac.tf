@@ -117,6 +117,12 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
     verbs      = ["*"]
   }
 
+  rule {
+    api_groups = ["kafka.strimzi.io"]
+    resources  = ["kafkaconnectors"]
+    verbs      = ["*"]
+  }
+
   depends_on = [
     module.aks
   ]
