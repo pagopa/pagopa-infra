@@ -41,8 +41,8 @@ aks_user_node_pool = {
   vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Ephemeral"
   os_disk_size_gb = "300"
-  node_count_min  = "10"
-  node_count_max  = "12"
+  node_count_min  = "11"
+  node_count_max  = "14"
   node_labels     = { node_name : "aks-user-01", node_type : "user" },
   node_taints     = [],
   node_tags       = { node_tag_1 : "1" },
@@ -52,9 +52,10 @@ aks_cidr_subnet = ["10.1.0.0/17"]
 
 aks_kubernetes_version = "1.34.2"
 
-ingress_min_replica_count = "2"
-ingress_max_replica_count = "30"
-ingress_load_balancer_ip  = "10.1.100.250"
+ingress_min_replica_count        = "2"
+ingress_max_replica_count        = "30"
+ingress_load_balancer_ip         = "10.1.100.250"
+haproxy_ingress_load_balancer_ip = "10.1.100.252"
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
 # Pinned versions from "4.1.0" release: https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.1.0/charts/ingress-nginx/values.yaml
 nginx_helm = {
@@ -131,3 +132,8 @@ tls_checker_https_endpoints_to_check = [
     helm_present   = true,
   },
 ]
+non_critical_nodepool = {
+  idh_tier = "Standard_D4ds_noncore",
+  min_size = 1,
+  max_size = 1,
+}

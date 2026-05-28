@@ -148,6 +148,11 @@ variable "ingress_load_balancer_ip" {
   type = string
 }
 
+variable "haproxy_ingress_load_balancer_ip" {
+  type = string
+}
+
+
 variable "ingress_min_replica_count" {
   type = string
 }
@@ -234,3 +239,11 @@ variable "aks_enable_workload_identity" {
   default = false
 }
 
+variable "non_critical_nodepool" {
+  type = object({
+    idh_tier = string
+    min_size = number
+    max_size = number
+  })
+  description = "The non critical nodepool configuration"
+}
