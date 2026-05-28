@@ -91,6 +91,24 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
     verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
   }
 
+  rule {
+    api_groups = ["apiextensions.k8s.io"]
+    resources  = ["customresourcedefinitions"]
+    verbs      = ["*"]
+  }
+
+  rule {
+    api_groups = ["kafka.strimzi.io"]
+    resources  = ["kafkaconnects"]
+    verbs      = ["*"]
+  }
+
+  rule {
+    api_groups = ["kafka.strimzi.io"]
+    resources  = ["kafkaconnectors"]
+    verbs      = ["*"]
+  }
+
   depends_on = [
     module.aks_leonardo
   ]
@@ -269,6 +287,34 @@ resource "kubernetes_cluster_role_binding" "view_binding" {
   subject {
     kind      = "Group"
     name      = data.azuread_group.adgroup_technical_project_managers.object_id
+    namespace = "kube-system"
+  }
+
+  depends_on = [
+    module.aks_leonardo
+  ]
+}
+
+# Bind the cluster_deployer role to adgroup_admin_dev
+# Grants the admin-dev team permissions to:
+# - Manage KEDA scaled objects and trigger authentications
+# - Create, update, patch, and delete deployments, services, configmaps, secrets
+# - Manage ingresses, jobs, cronjobs, and monitoring resources
+# - Full cluster deployment capabilities across all namespaces
+resource "kubernetes_cluster_role_binding" "cluster_deployer_admin_dev_binding" {
+  metadata {
+    name = "cluster-deployer-admin-dev-binding"
+  }
+
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "ClusterRole"
+    name      = kubernetes_cluster_role.cluster_deployer.metadata[0].name
+  }
+
+  subject {
+    kind      = "Group"
+    name      = data.azuread_group.adgroup_admin_dev.object_id
     namespace = "kube-system"
   }
 

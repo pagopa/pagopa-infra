@@ -252,7 +252,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_authorization_
 AzureDiagnostics
 | where url_s matches regex "https://api.platform.pagopa.it/ecommerce/npg/notifications/v1/sessions/.*/outcomes"
 | where method_s == "POST"
-| where responseCode_d != 200
+| where responseCode_d == 401 or responseCode_d >= 500 
 | project TimeGenerated, responseCode_d
   QUERY
   )
@@ -541,6 +541,43 @@ AzureDiagnostics
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < 95
+  QUERY
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
+
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_checkout_get_carts_availability" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "ecommerce-checkout-get-carts-availability-alert"
+  resource_group_name = azurerm_resource_group.rg_ecommerce_alerts[0].name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "[eCommerce] Checkout GET carts availability less than 99% in the last 30 minutes"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "Ecommerce GET carts availability less than or equal 99% in the last 30 minutes"
+  enabled        = true
+  #TO DO: tuning alert thresholds based 503 status code
+  query = (<<-QUERY
+AzureDiagnostics
+| where url_s startswith "https://api.platform.pagopa.it/ecommerce/checkout/v1/carts" and method_s == "GET"
+| summarize
+    Total=count(),
+    Success=countif(responseCode_d == 200)
+    by Time = bin(TimeGenerated, 15m)
+| extend availability=(toreal(Success) / Total) * 100
+| where availability < 99
   QUERY
   )
   severity    = 1
