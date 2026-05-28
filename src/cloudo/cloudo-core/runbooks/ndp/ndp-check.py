@@ -340,8 +340,7 @@ def trigger_switch(switch_to_perform: str, azure_credentials: Any) -> None:
   trigger_cloudo_switch(switch_to_perform, secrets.get(CLOUDO_API_KEY))
 
   try:
-    # wr_link = create_war_room(switch_to_perform, secrets)
-    wr_link = "https://www.google.it"
+    wr_link = create_war_room(switch_to_perform, secrets)
     # send message to pagopainfra with war room link
     message = create_slack_message(switch_to_perform, wr_link)
     send_slack_message(message, secrets.get(SLACK_WEBHOOK_URL))
