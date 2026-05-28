@@ -312,10 +312,21 @@ def create_war_room(switch: str, secrets: dict):
 
 def trigger_cloudo_switch(switch: str, cloudo_api_key: str):
   print("Triggering cloudo switch runbook")
-  #todo trigger cloudo runbook
-  requests.post(f"https://pagopa-{os.environ.get('CLOUDO_ENVIRONMENT_SHORT', 'd')}-cloudo-orchestrator.azurewebsites.net/api/Trigger/infra?id={SWITCH_SCHEMA_ID}",
-                headers={"Content-Type": "application/json"},
-                data={"switch": switch})
+  response = requests.post(f"https://pagopa-{os.environ.get('CLOUDO_ENVIRONMENT_SHORT', 'd')}-cloudo-orchestrator.azurewebsites.net/api/Trigger/infra?id={SWITCH_SCHEMA_ID}",
+                headers={"Content-Type": "application/json", "x-cloudo-key": cloudo_api_key},
+                data={
+                  "source": "cloudo",
+                  "payload": {
+                    "switch": switch
+                  }
+                })
+
+  if not response.ok:
+    print(f"Failed to trigger cloudo switch: {response.status_code} - {response.text}")
+    exit(1)
+
+  print(f"cloudo trigger response code: {response.status_code}")
+  print(f"cloudo trigger response : {response.text}")
 
 
 
@@ -323,10 +334,12 @@ def trigger_switch(switch_to_perform: str, azure_credentials: Any) -> None:
   print(f"triggering switch: {switch_to_perform}")
 
   secrets = get_runbook_secrets(azure_credentials)
+  print(f"secrets: {secrets}")
   trigger_cloudo_switch(switch_to_perform, secrets.get(CLOUDO_API_KEY))
 
   try:
-    wr_link = create_war_room(switch_to_perform, secrets)
+    # wr_link = create_war_room(switch_to_perform, secrets)
+    wr_link = "https://www.google.it"
     # send message to pagopainfra with war room link
     message = create_slack_message(switch_to_perform, wr_link)
     send_slack_message(message, secrets.get(SLACK_WEBHOOK_URL))
