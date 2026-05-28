@@ -113,7 +113,7 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
 
   rule {
     api_groups = ["kafka.strimzi.io"]
-    resources  = ["customresourcedefinitions"]
+    resources  = ["kafkaconnects"]
     verbs      = ["*"]
   }
 
