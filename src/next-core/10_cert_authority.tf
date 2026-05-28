@@ -14,7 +14,7 @@ module "certification_authority" {
   ]
   location            = azurerm_resource_group.certification_authority.location
   resource_group_name = azurerm_resource_group.certification_authority.name
-  root_subject        = "CN=PagoPA Pagamenti Root CA ${var.env == "prod" ? "" : "- ${var.env}"}, OU=Pagamenti, O=PagoPA S.p.A., C=IT"
+  root_subject        = "CN=PagoPA Pagamenti Root CA${var.env == "prod" ? "" : " - ${var.env}"}, OU=Pagamenti, O=PagoPA S.p.A., C=IT"
   tenant_id           = data.azurerm_client_config.current.tenant_id
 
   tags = module.tag_config.tags

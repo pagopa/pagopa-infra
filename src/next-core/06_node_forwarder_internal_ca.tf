@@ -1,10 +1,10 @@
 data "azurerm_key_vault_secret" "certificate_crt_node_forwarder_internal_ca" {
-  name         = "certificate-crt-node-forwarder"
+  name         = "certificate-crt-node-forw-internal-ca"
   key_vault_id = module.key_vault.id
 }
 
 data "azurerm_key_vault_secret" "certificate_key_node_forwarder_internal_ca" {
-  name         = "certificate-key-node-forwarder"
+  name         = "certificate-key-node-forw-internal-ca"
   key_vault_id = module.key_vault.id
 }
 
