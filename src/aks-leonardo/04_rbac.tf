@@ -91,6 +91,24 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
     verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
   }
 
+  rule {
+    api_groups = ["apiextensions.k8s.io"]
+    resources  = ["customresourcedefinitions"]
+    verbs      = ["*"]
+  }
+
+  rule {
+    api_groups = ["kafka.strimzi.io"]
+    resources  = ["kafkaconnects"]
+    verbs      = ["*"]
+  }
+
+  rule {
+    api_groups = ["kafka.strimzi.io"]
+    resources  = ["kafkaconnectors"]
+    verbs      = ["*"]
+  }
+
   depends_on = [
     module.aks_leonardo
   ]
