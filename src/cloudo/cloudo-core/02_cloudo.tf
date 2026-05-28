@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "cloudo" {
-  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=ff0a7512dde1c0a8a9029363f6460c2798a548d9" #0.20.0
+  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=7383d9e35c6b06a0a6cb2cd670d34b3193c08073" #0.21.1
 
   prefix                    = local.product
   product_name              = var.prefix
@@ -78,7 +78,7 @@ module "cloudo" {
     token   = data.azurerm_key_vault_secret.cloudo_slack_token.value
   }
 
-  opsgenie_api_key = var.env_short == "p" ? data.azurerm_key_vault_secret.opsgenie_token.0.value : ""
+  jsm_api_key = var.env_short == "p" ? data.azurerm_key_vault_secret.opsgenie_token.0.value : ""
 
   schemas = file("${path.module}/env/${var.env}/schemas.json.tpl")
 
