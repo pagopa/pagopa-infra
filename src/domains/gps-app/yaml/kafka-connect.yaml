@@ -52,7 +52,7 @@ spec:
   build:
     output:
       type: docker
-      image: ${container_registry}/debezium-connector-postgres:latest
+      image: ${container_registry}/debezium-connector-postgres:v2
       # src/domains/gps-app/set_registry_secrets.sh
       pushSecret: acr-credential
     plugins:
@@ -60,6 +60,16 @@ spec:
         artifacts:
           - type: tgz
             url: https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/3.0.0.Final/debezium-connector-postgres-3.0.0.Final-plugin.tar.gz
+
+          - type: jar
+            url: https://repo1.maven.org/maven2/io/debezium/debezium-scripting/3.0.0.Final/debezium-scripting-3.0.0.Final.jar
+
+          - type: jar
+            url: https://repo1.maven.org/maven2/org/codehaus/groovy/groovy/3.0.22/groovy-3.0.22.jar
+          - type: jar
+            url: https://repo1.maven.org/maven2/org/codehaus/groovy/groovy-jsr223/3.0.22/groovy-jsr223-3.0.22.jar
+          - type: jar
+            url: https://repo1.maven.org/maven2/org/codehaus/groovy/groovy-json/3.0.22/groovy-json-3.0.22.jar
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
