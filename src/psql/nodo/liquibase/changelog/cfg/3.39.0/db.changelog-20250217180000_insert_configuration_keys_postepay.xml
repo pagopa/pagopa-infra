@@ -7,13 +7,13 @@
         <insert tableName="CONFIGURATION_KEYS">
             <column name="CONFIG_CATEGORY"    value="GLOBAL"/>
             <column name="CONFIG_KEY"         value="postepay_in_poste"/>
-            <column name="CONFIG_VALUE"       value="true"/>
+            <column name="CONFIG_VALUE"       value="false"/>
             <column name="CONFIG_DESCRIPTION" value="Toggle per abilitare/disabilitare il controllo sul canale del PSP Poste (verifica che sia presente nella lista dei canali Poste)"/>
         </insert>
         <insert tableName="CONFIGURATION_KEYS">
             <column name="CONFIG_CATEGORY"    value="GLOBAL"/>
             <column name="CONFIG_KEY"         value="lista_canali_poste"/>
-            <column name="CONFIG_VALUE"       value="POSTE1,POSTE3"/>
+            <column name="CONFIG_VALUE"       value=""/>
             <column name="CONFIG_DESCRIPTION" value="Lista dei canali di Poste italiane"/>
         </insert>
         <rollback>
