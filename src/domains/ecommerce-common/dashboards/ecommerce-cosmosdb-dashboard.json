@@ -264,31 +264,29 @@
                 "content": {
                   "options": {
                     "chart": {
-                      "grouping": {
-                        "dimension": [
-                          "CollectionName",
-                          "CommandName",
-                          "Region"
-                        ],
-                        "sort": 2,
-                        "top": 10
-                      },
                       "metrics": [
                         {
-                          "aggregationType": 7,
-                          "metricVisualization": {
-                            "displayName": "Mongo Requests"
-                          },
-                          "name": "MongoRequests",
-                          "namespace": "microsoft.documentdb/databaseaccounts",
                           "resourceMetadata": {
                             "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          },
+                          "name": "MongoRequests",
+                          "aggregationType": 7,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Mongo Requests"
                           }
                         }
                       ],
-                      "title": "[eCommerce-history] - Mongo Requests for pagopa-p-weu-ecommerce-cosmos-account for update operation - transactions-view vs eventstore (CDC view update)",
+                      "title": "[eCommerce-history] - Mongo Requests for pagopa-p-weu-ecommerce-cosmos-account for update operation - transactions-view vs eventstore inserts (migration)",
                       "titleKind": 2,
                       "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        },
                         "axisVisualization": {
                           "x": {
                             "axisType": 2,
@@ -299,14 +297,16 @@
                             "isVisible": true
                           }
                         },
-                        "chartType": 2,
-                        "disablePinning": true,
-                        "legendVisualization": {
-                          "hideHoverCard": false,
-                          "hideLabelNames": true,
-                          "isVisible": true,
-                          "position": 2
-                        }
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": [
+                          "CollectionName",
+                          "CommandName",
+                          "Region"
+                        ],
+                        "sort": 2,
+                        "top": 10
                       }
                     }
                   }
@@ -326,7 +326,7 @@
                   "model": {
                     "operator": "equals",
                     "values": [
-                      "update"
+                      "Insert"
                     ]
                   }
                 },
@@ -1333,27 +1333,29 @@
                 "content": {
                   "options": {
                     "chart": {
-                      "grouping": {
-                        "dimension": "PhysicalPartitionId",
-                        "sort": 2,
-                        "top": 10
-                      },
                       "metrics": [
                         {
-                          "aggregationType": 3,
-                          "metricVisualization": {
-                            "displayName": "Normalized RU Consumption"
-                          },
-                          "name": "NormalizedRUConsumption",
-                          "namespace": "microsoft.documentdb/databaseaccounts",
                           "resourceMetadata": {
                             "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          },
+                          "name": "NormalizedRUConsumption",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Normalized RU Consumption"
                           }
                         }
                       ],
                       "title": "[eCommerce] - Mongo max Normalized consumption for pagopa-p-weu-ecommerce-cosmos-account per physical partition",
                       "titleKind": 2,
                       "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        },
                         "axisVisualization": {
                           "x": {
                             "axisType": 2,
@@ -1364,14 +1366,12 @@
                             "isVisible": true
                           }
                         },
-                        "chartType": 2,
-                        "disablePinning": true,
-                        "legendVisualization": {
-                          "hideHoverCard": false,
-                          "hideLabelNames": true,
-                          "isVisible": true,
-                          "position": 2
-                        }
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": "PhysicalPartitionId",
+                        "sort": 2,
+                        "top": 50
                       }
                     }
                   }
@@ -1480,27 +1480,29 @@
                 "content": {
                   "options": {
                     "chart": {
-                      "grouping": {
-                        "dimension": "PhysicalPartitionId",
-                        "sort": 2,
-                        "top": 10
-                      },
                       "metrics": [
                         {
-                          "aggregationType": 3,
-                          "metricVisualization": {
-                            "displayName": "Normalized RU Consumption"
-                          },
-                          "name": "NormalizedRUConsumption",
-                          "namespace": "microsoft.documentdb/databaseaccounts",
                           "resourceMetadata": {
                             "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-ecommerce-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-p-weu-ecommerce-cosmos-account"
+                          },
+                          "name": "NormalizedRUConsumption",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Normalized RU Consumption"
                           }
                         }
                       ],
                       "title": "[eCommerce-history] - Mongo max Normalized consumption for pagopa-p-weu-ecommerce-cosmos-account per physical partition",
                       "titleKind": 2,
                       "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "hideHoverCard": false,
+                          "hideLabelNames": true,
+                          "isVisible": true,
+                          "position": 2
+                        },
                         "axisVisualization": {
                           "x": {
                             "axisType": 2,
@@ -1511,14 +1513,12 @@
                             "isVisible": true
                           }
                         },
-                        "chartType": 2,
-                        "disablePinning": true,
-                        "legendVisualization": {
-                          "hideHoverCard": false,
-                          "hideLabelNames": true,
-                          "isVisible": true,
-                          "position": 2
-                        }
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": "PhysicalPartitionId",
+                        "sort": 2,
+                        "top": 50
                       }
                     }
                   }
@@ -1714,18 +1714,18 @@
                 "value": "Past 4 hours"
               },
               "filteredPartIds": [
-                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a118",
-                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a11a",
-                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a120",
-                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a122",
-                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a124",
-                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a126",
-                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a128",
-                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a12a",
-                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a12c",
-                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a12e",
-                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a11c",
-                "StartboardPart-MonitorChartPart-55cc942e-362b-4a8d-9b29-052ff5e1a11e"
+                "StartboardPart-MonitorChartPart-76c85d2b-9a98-414a-a86e-d06d60b422a2",
+                "StartboardPart-MonitorChartPart-76c85d2b-9a98-414a-a86e-d06d60b422a4",
+                "StartboardPart-MonitorChartPart-76c85d2b-9a98-414a-a86e-d06d60b422aa",
+                "StartboardPart-MonitorChartPart-76c85d2b-9a98-414a-a86e-d06d60b422ac",
+                "StartboardPart-MonitorChartPart-76c85d2b-9a98-414a-a86e-d06d60b422ae",
+                "StartboardPart-MonitorChartPart-76c85d2b-9a98-414a-a86e-d06d60b422b0",
+                "StartboardPart-MonitorChartPart-76c85d2b-9a98-414a-a86e-d06d60b422b2",
+                "StartboardPart-MonitorChartPart-76c85d2b-9a98-414a-a86e-d06d60b422b4",
+                "StartboardPart-MonitorChartPart-76c85d2b-9a98-414a-a86e-d06d60b422b6",
+                "StartboardPart-MonitorChartPart-76c85d2b-9a98-414a-a86e-d06d60b422b8",
+                "StartboardPart-MonitorChartPart-76c85d2b-9a98-414a-a86e-d06d60b422a6",
+                "StartboardPart-MonitorChartPart-76c85d2b-9a98-414a-a86e-d06d60b422a8"
               ]
             }
           }
