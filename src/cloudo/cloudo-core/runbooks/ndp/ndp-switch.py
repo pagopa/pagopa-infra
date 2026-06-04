@@ -121,14 +121,16 @@ def update_apim_named_values(client, values: dict):
     print(f"Aggiornato: {name}")
 
 def main():
-  payload = os.environ.get('CLOUDO_PAYLOAD')
-  if not payload:
+  cloudo_playload = os.environ.get('CLOUDO_PAYLOAD')
+  if not cloudo_playload:
     print("No payload found in environment variable 'CLOUDO_PAYLOAD'")
     exit(1)
 
-  payload_j = json.loads(payload)
-  print(f"received payload: {payload_j}")
-  switch = payload_j.get("switch")
+  cloudo_playload_j = json.loads(cloudo_playload)
+  runbook_payload = cloudo_playload_j.get("payload")
+
+  print(f"received payload: {runbook_payload}")
+  switch = runbook_payload.get("switch")
 
   apim_client = build_apim_client()
 
