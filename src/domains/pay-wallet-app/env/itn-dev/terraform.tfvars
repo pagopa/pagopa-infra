@@ -28,3 +28,5 @@ enabled_payment_wallet_method_ids_pm      = "9d735400-9450-4f7e-9431-8c1e7fa2a33
 pay_wallet_jwt_issuer_api_key_use_primary = true
 
 payment_wallet_service_api_key_use_primary = true
+
+wallet_apim_frontend_enabled = false
