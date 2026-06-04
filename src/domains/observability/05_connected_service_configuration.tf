@@ -64,9 +64,9 @@ locals {
   #    }
   data_factory_linked_services_cosmosdb = {
     BizEventsPositivi = {
-        connection_string = data.azurerm_cosmosdb_account.bizevent_cosmos_account.primary_sql_connection_string
-        account_name      = data.azurerm_cosmosdb_account.bizevent_cosmos_account.name
-        database         = "db"
+      connection_string = data.azurerm_cosmosdb_account.bizevent_cosmos_account.primary_sql_connection_string
+      account_name      = data.azurerm_cosmosdb_account.bizevent_cosmos_account.name
+      database          = "db"
     }
   }
 

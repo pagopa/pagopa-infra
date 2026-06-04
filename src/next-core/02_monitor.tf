@@ -138,7 +138,7 @@ resource "azurerm_monitor_action_group" "pm_opsgenie" { # https://pagopa.atlassi
 
   webhook_receiver {
     name                    = "PMOpsgenieWebhook"
-    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.monitor_pm_opsgenie_webhook_key[0].value}"
+    service_uri             = "https://api.atlassian.com/jsm/ops/integration/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.monitor_pm_opsgenie_webhook_key[0].value}"
     use_common_alert_schema = true
   }
 
@@ -168,7 +168,7 @@ resource "azurerm_monitor_action_group" "infra_opsgenie" { #
 
   webhook_receiver {
     name                    = "INFRAOpsgenieWebhook"
-    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.opsgenie_infra_webhook_key[0].value}"
+    service_uri             = "https://api.atlassian.com/jsm/ops/integration/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.opsgenie_infra_webhook_key[0].value}"
     use_common_alert_schema = true
   }
 
