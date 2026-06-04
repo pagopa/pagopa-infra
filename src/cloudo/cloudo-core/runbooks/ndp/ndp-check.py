@@ -314,8 +314,10 @@ def trigger_cloudo_switch(switch: str, cloudo_api_key: str):
   print("Triggering cloudo switch runbook")
   response = requests.post(f"https://pagopa-{os.environ.get('CLOUDO_ENVIRONMENT_SHORT', 'd')}-cloudo-orchestrator.azurewebsites.net/api/Trigger/infra?id={SWITCH_SCHEMA_ID}",
                 headers={"Content-Type": "application/json", "x-cloudo-key": cloudo_api_key},
-                data={
+                json={
                   "source": "cloudo",
+                  "severity": "Sev1",
+                  "rule": f"{SWITCH_SCHEMA_ID}",
                   "payload": {
                     "switch": switch
                   }
