@@ -24,9 +24,9 @@ SYNTHETICS_OUTBOUND_QUEUE_NAME = "outbound-queue"
 STORAGE_ACCOUNT_NAME = f"pagopa{os.environ.get('CLOUDO_ENVIRONMENT_SHORT', 'd')}weusynthmon"
 TEST_ID_TO_WATCH = ["nodo_checkPosition_appgw", "nodo_checkPosition_nexiPostgres", "nodo_verifyPaymentNoticeOnPartner_appgw", "nodo_verifyPaymentNoticeOnPartner_nexiPostgres"]
 
-TESTS_TO_RUN = 1#3
-WAIT_BETWEEN_TESTS = 10#60
-WAIT_BEFORE_RESPONSE = 10#30
+TESTS_TO_RUN = 3
+WAIT_BETWEEN_TESTS = 60
+WAIT_BEFORE_RESPONSE = 30
 SWITCH_TO_NEXI = "toNexi"
 SWITCH_TO_PAGOPA = "toPagopa"
 NO_SWITCH = None
