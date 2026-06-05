@@ -24,9 +24,9 @@ SYNTHETICS_OUTBOUND_QUEUE_NAME = "outbound-queue"
 STORAGE_ACCOUNT_NAME = f"pagopa{os.environ.get('CLOUDO_ENVIRONMENT_SHORT', 'd')}weusynthmon"
 TEST_ID_TO_WATCH = ["nodo_checkPosition_appgw", "nodo_checkPosition_nexiPostgres", "nodo_verifyPaymentNoticeOnPartner_appgw", "nodo_verifyPaymentNoticeOnPartner_nexiPostgres"]
 
-TESTS_TO_RUN = 1#3
-WAIT_BETWEEN_TESTS = 10#60
-WAIT_BEFORE_RESPONSE = 10#30
+TESTS_TO_RUN = 3
+WAIT_BETWEEN_TESTS = 60
+WAIT_BEFORE_RESPONSE = 30
 SWITCH_TO_NEXI = "toNexi"
 SWITCH_TO_PAGOPA = "toPagopa"
 NO_SWITCH = None
@@ -312,10 +312,24 @@ def create_war_room(switch: str, secrets: dict):
 
 def trigger_cloudo_switch(switch: str, cloudo_api_key: str):
   print("Triggering cloudo switch runbook")
-  #todo trigger cloudo runbook
-  requests.post(f"https://pagopa-{os.environ.get('CLOUDO_ENVIRONMENT_SHORT', 'd')}-cloudo-orchestrator.azurewebsites.net/api/Trigger/infra?id={SWITCH_SCHEMA_ID}",
-                headers={"Content-Type": "application/json"},
-                data={"switch": switch})
+  response = requests.post(f"https://pagopa-{os.environ.get('CLOUDO_ENVIRONMENT_SHORT', 'd')}-cloudo-orchestrator.azurewebsites.net/api/Trigger/infra",
+                headers={"Content-Type": "application/json", "x-cloudo-key": cloudo_api_key},
+                json={
+                  "source": "cloudo",
+                  "severity": "Sev1",
+                  "monitorCondition": "Fired",
+                  "rule": SWITCH_SCHEMA_ID,
+                  "payload": {
+                    "switch": switch
+                  }
+                })
+
+  if not response.ok:
+    print(f"Failed to trigger cloudo switch: {response.status_code} - {response.text}")
+    exit(1)
+
+  print(f"cloudo trigger response code: {response.status_code}")
+  print(f"cloudo trigger response : {response.text}")
 
 
 
@@ -323,6 +337,7 @@ def trigger_switch(switch_to_perform: str, azure_credentials: Any) -> None:
   print(f"triggering switch: {switch_to_perform}")
 
   secrets = get_runbook_secrets(azure_credentials)
+  print(f"secrets: {secrets}")
   trigger_cloudo_switch(switch_to_perform, secrets.get(CLOUDO_API_KEY))
 
   try:
