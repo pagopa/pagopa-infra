@@ -80,6 +80,7 @@
                 </set-header>
             </when>
         </choose>
+        <rate-limit-by-key calls="5" renewal-period="10" counter-key="@((string)context.Variables["requestTransactionId"])" retry-after-header-name="Retry-After" />
     </inbound>
     <outbound>
         <base />
