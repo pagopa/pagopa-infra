@@ -312,12 +312,13 @@ def create_war_room(switch: str, secrets: dict):
 
 def trigger_cloudo_switch(switch: str, cloudo_api_key: str):
   print("Triggering cloudo switch runbook")
-  response = requests.post(f"https://pagopa-{os.environ.get('CLOUDO_ENVIRONMENT_SHORT', 'd')}-cloudo-orchestrator.azurewebsites.net/api/Trigger/infra?id={SWITCH_SCHEMA_ID}",
+  response = requests.post(f"https://pagopa-{os.environ.get('CLOUDO_ENVIRONMENT_SHORT', 'd')}-cloudo-orchestrator.azurewebsites.net/api/Trigger/infra",
                 headers={"Content-Type": "application/json", "x-cloudo-key": cloudo_api_key},
                 json={
                   "source": "cloudo",
                   "severity": "Sev1",
-                  "rule": f"{SWITCH_SCHEMA_ID}",
+                  "monitorCondition": "Fired",
+                  "rule": SWITCH_SCHEMA_ID,
                   "payload": {
                     "switch": switch
                   }

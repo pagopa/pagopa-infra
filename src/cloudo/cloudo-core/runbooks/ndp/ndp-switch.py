@@ -93,7 +93,6 @@ def build_apim_client():
 
 
 def get_apim_named_values(client, names):
-  print("print values")
   return [
     {nv.display_name: nv.value}
     for name in names
@@ -105,20 +104,24 @@ def get_apim_named_values(client, names):
   ]
 
 def update_apim_named_values(client, values: dict):
-  for name, value in values.items():
-    update = NamedValueCreateContract(
-      display_name=name,
-      value=value,
-      secret=False
-    )
-
-    client.named_value.begin_create_or_update(
-      resource_group_name=APIM_RG_NAME,
-      service_name=APIM_NAME,
-      named_value_id=name,
-      parameters=update
-    )
-    print(f"Aggiornato: {name}")
+  try:
+    for name, value in values.items():
+      update = NamedValueCreateContract(
+        display_name=name,
+        value=value,
+        secret=False
+      )
+      print(f"updating: {name}")
+      client.named_value.begin_create_or_update(
+        resource_group_name=APIM_RG_NAME,
+        service_name=APIM_NAME,
+        named_value_id=name,
+        parameters=update
+      )
+      print(f"updated: {name}")
+  except Exception as e:
+    print(f"Error during update: {str(e)}")
+    exit(1)
 
 def main():
   cloudo_playload = os.environ.get('CLOUDO_PAYLOAD')
@@ -134,11 +137,11 @@ def main():
 
   apim_client = build_apim_client()
 
-
   values = get_apim_named_values(apim_client, SWITCH.get(switch).keys())
   print(f"current values: {values}")
 
   update_apim_named_values(apim_client, SWITCH.get(switch))
+  print()
 
 if __name__ == "__main__":
   main()
