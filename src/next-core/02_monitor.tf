@@ -138,7 +138,7 @@ resource "azurerm_monitor_action_group" "pm_opsgenie" { # https://pagopa.atlassi
 
   webhook_receiver {
     name                    = "PMOpsgenieWebhook"
-    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.monitor_pm_opsgenie_webhook_key[0].value}"
+    service_uri             = "https://api.atlassian.com/jsm/ops/integration/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.monitor_pm_opsgenie_webhook_key[0].value}"
     use_common_alert_schema = true
   }
 
@@ -153,7 +153,7 @@ resource "azurerm_monitor_action_group" "new_conn_srv_opsgenie" { # https://pago
 
   webhook_receiver {
     name                    = "Nuova+ConnettivitOpsgenieWebhook"
-    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.monitor_new_conn_srv_webhook_key[0].value}"
+    service_uri             = "https://api.atlassian.com/jsm/ops/integration/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.monitor_new_conn_srv_webhook_key[0].value}"
     use_common_alert_schema = true
   }
 
@@ -183,7 +183,7 @@ resource "azurerm_monitor_action_group" "smo_opsgenie" { # pagoPA - Service Mana
 
   webhook_receiver {
     name                    = "SmoOpsgenieWebhook"
-    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.opsgenie_smo_webhook_key[0].value}"
+    service_uri             = "https://api.atlassian.com/jsm/ops/integration/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.opsgenie_smo_webhook_key[0].value}"
     use_common_alert_schema = true
   }
 
