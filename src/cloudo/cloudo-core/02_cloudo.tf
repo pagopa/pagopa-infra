@@ -47,7 +47,8 @@ module "cloudo" {
   custom_roles_subscription = [
     "Storage Blob Data Contributor",
     "Storage Account Key Operator Service Role",
-    "Storage Queue Data Contributor"
+    "Storage Queue Data Contributor",
+    "API Management Service Contributor"
   ]
 
   custom_role_assignments = [
