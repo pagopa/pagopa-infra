@@ -97,10 +97,10 @@ resource "azurerm_api_management_api_operation_policy" "wallet_frontend_get_font
 ## Feature flag: APIM frontend      ##
 ######################################
 
-resource "azurerm_api_management_named_value" "wallet_apim_frontend_enabled" {
-  name                = "wallet-apim-frontend-enabled"
+resource "azurerm_api_management_named_value" "pay_wallet_apim_frontend_enabled" {
+  name                = "pay-wallet-apim-frontend-enabled"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = "wallet-apim-frontend-enabled"
-  value               = var.wallet_apim_frontend_enabled
+  display_name        = "pay-wallet-apim-frontend-enabled"
+  value               = var.pay_wallet_apim_frontend_enabled
 }

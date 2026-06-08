@@ -1,7 +1,7 @@
 <policies>
     <inbound>
         <!-- direct APIM access: redirect to custom domain, or serve if FF enabled -->
-        <set-variable name="apimFrontendEnabled" value="{{wallet-apim-frontend-enabled}}" />
+        <set-variable name="apimFrontendEnabled" value="{{pay-wallet-apim-frontend-enabled}}" />
         <choose>
             <when condition="@(context.Request.OriginalUrl.Host != "${wallet_fe_hostname}" && context.Variables.GetValueOrDefault<string>("apimFrontendEnabled") != "true")">
                 <return-response>
