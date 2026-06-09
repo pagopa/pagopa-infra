@@ -499,7 +499,7 @@
 | <a name="input_upload_endpoint_enabled"></a> [upload\_endpoint\_enabled](#input\_upload\_endpoint\_enabled) | Enable upload for heavy payload size on appgw | `bool` | `true` | no |
 | <a name="input_vpn_gw_pip_allocation_method"></a> [vpn\_gw\_pip\_allocation\_method](#input\_vpn\_gw\_pip\_allocation\_method) | VPN GW PIP ALLOCATION METHOD | `string` | `"Dynamic"` | no |
 | <a name="input_vpn_gw_pip_sku"></a> [vpn\_gw\_pip\_sku](#input\_vpn\_gw\_pip\_sku) | VPN GW PIP SKU | `string` | `"Basic"` | no |
-| <a name="input_vpn_gw_sku"></a> [vpn\_gw\_sku](#input\_vpn\_gw\_sku) | VPN gateway sku | `string` | `"VpnGw1"` | no |
+| <a name="input_vpn_gw_sku"></a> [vpn\_gw\_sku](#input\_vpn\_gw\_sku) | VPN gateway sku | `string` | `"VpnGw1AZ"` | no |
 | <a name="input_vpn_random_specials_char"></a> [vpn\_random\_specials\_char](#input\_vpn\_random\_specials\_char) | Enable random special characters in VPN gateway's pip name | `bool` | `true` | no |
 
 ## Outputs

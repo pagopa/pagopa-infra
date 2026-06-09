@@ -17,7 +17,7 @@ module "monitoring_function" {
   application_insights_action_group_ids = var.env_short == "p" ? [data.azurerm_monitor_action_group.infra_opsgenie[0].id] : [data.azurerm_monitor_action_group.slack.id]
 
   docker_settings = {
-    image_tag = "v1.10.0@sha256:1686c4a719dc1a3c270f98f527ebc34179764ddf53ee3089febcb26df7a2d71d"
+    image_tag = "v1.11.0@sha256:2a3c9ae90f808ce7f3e66dc9e37ae40c51a822742ae0feeb08ecb8fb770e6387"
   }
 
   job_settings = {
@@ -26,6 +26,8 @@ module "monitoring_function" {
     http_client_timeout          = 30000
     workload_profile             = "None"
   }
+
+  enable_synthetic_on_demand = var.enabled_resource.synthetic_on_demand
 
   storage_account_settings = {
     private_endpoint_enabled  = var.use_private_endpoint

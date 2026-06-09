@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "cloudo" {
-  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=8c5d22a2f4a90fc87553964bca72ba2aea3c2fc2" #0.19.0
+  source = "git::https://github.com/pagopa/payments-ClouDO.git//src/core/iac?ref=e2a672c545ee7b69ed9426d2dea85612a91826a5" #0.23.0
 
   prefix                    = local.product
   product_name              = var.prefix
@@ -32,7 +32,7 @@ module "cloudo" {
   github_repo_info = {
     repo_name    = "pagopa/pagopa-infra"
     repo_branch  = "main"
-    runbook_path = "src/cloudo/runbooks"
+    runbook_path = "src/cloudo/cloudo-core/runbooks"
   }
 
   aks_integration = {
@@ -46,7 +46,9 @@ module "cloudo" {
 
   custom_roles_subscription = [
     "Storage Blob Data Contributor",
-    "Storage Account Key Operator Service Role"
+    "Storage Account Key Operator Service Role",
+    "Storage Queue Data Contributor",
+    "API Management Service Contributor"
   ]
 
   custom_role_assignments = [
@@ -61,6 +63,10 @@ module "cloudo" {
       name           = "pagopa-${var.env_short}-gps-kv"
       resource_group = "pagopa-${var.env_short}-gps-sec-rg"
     }
+    "pagopa-${var.env_short}-${var.location_short_ita}-cloudo-kv" = {
+      name           = "pagopa-${var.env_short}-${var.location_short_ita}-cloudo-kv"
+      resource_group = "pagopa-${var.env_short}-${var.location_short_ita}-cloudo-sec-rg"
+    }
   }
 
   approval_runbook = {
@@ -72,7 +78,7 @@ module "cloudo" {
     token   = data.azurerm_key_vault_secret.cloudo_slack_token.value
   }
 
-  opsgenie_api_key = var.env_short == "p" ? data.azurerm_key_vault_secret.opsgenie_token.0.value : ""
+  jsm_api_key = var.env_short == "p" ? data.azurerm_key_vault_secret.opsgenie_token.0.value : ""
 
   schemas = file("${path.module}/env/${var.env}/schemas.json.tpl")
 
@@ -104,6 +110,9 @@ module "cloudo" {
     registry_password = data.azurerm_key_vault_secret.github_pat.value
   }
 
+  api_management_name       = var.env_short != "p" ? data.azurerm_api_management.apim.name : ""
+  api_management_rg         = var.env_short != "p" ? data.azurerm_api_management.apim.resource_group_name : ""
+  api_subscription_required = true
+
   tags = module.tag_config.tags
 }
-

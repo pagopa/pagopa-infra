@@ -22,3 +22,8 @@ data "azuread_group" "adgroup_operations" {
 data "azuread_group" "adgroup_technical_project_managers" {
   display_name = "${local.product}-adgroup-technical-project-managers"
 }
+
+# Admin Dev group - grants permissions to manage KEDA scaled objects and other cluster resources
+data "azuread_group" "adgroup_admin_dev" {
+  display_name = "${local.product}-adgroup-admin-dev"
+}

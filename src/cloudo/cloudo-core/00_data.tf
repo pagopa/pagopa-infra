@@ -21,6 +21,11 @@ data "azurerm_key_vault_secret" "opsgenie_token" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
+data "azurerm_api_management" "apim" {
+  name                = "${local.product}-apim"
+  resource_group_name = "${local.product}-api-rg"
+}
+
 
 data "azurerm_application_insights" "app_insight" {
   name                = var.application_insisght_name
