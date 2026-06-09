@@ -1,12 +1,10 @@
 # general
-prefix              = "pagopa"
-env_short           = "p"
-env                 = "prod"
-domain              = "prod"
-location            = "italynorth"
-location_string     = "Italy North"
-location_short      = "itn"
-location_westeurope = "westeurope"
+prefix         = "pagopa"
+env_short      = "p"
+env            = "prod"
+domain         = "prod"
+location       = "italynorth"
+location_short = "itn"
 
 
 
@@ -63,17 +61,18 @@ aks_user_node_pool = {
   node_tags       = { node_tag_2 : "2" },
 }
 
-aks_addons = {
-  azure_policy                     = true,
-  azure_key_vault_secrets_provider = true,
-  pod_identity_enabled             = true,
-}
 
 # This is the k8s ingress controller ip. It must be in the aks subnet range.
-ingress_load_balancer_ip = "10.3.2.250"
-ingress_replica_count    = "2"
-nginx_helm_version       = "4.14.2"
+ingress_load_balancer_ip         = "10.3.2.250"
+haproxy_ingress_load_balancer_ip = "10.3.2.252"
+ingress_replica_count            = "2"
+nginx_helm_version               = "4.14.2"
 
 keda_helm_version = "2.17.2"
 
 enable_elastic_agent = false
+non_critical_nodepool = {
+  idh_tier = "Standard_D4ds_noncore",
+  min_size = 3,
+  max_size = 3,
+}

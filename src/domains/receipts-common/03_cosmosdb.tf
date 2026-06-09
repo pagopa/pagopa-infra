@@ -115,6 +115,13 @@ locals {
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
     {
+      name                       = "receipts-pk",
+      partition_key_path         = "/eventId",
+      default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
+      autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput },
+      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
+    },
+    {
       name                       = "cart-for-receipts",
       partition_key_path         = "/cartId",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
@@ -146,7 +153,7 @@ locals {
       name                       = "receipts-io-messages-evt",
       partition_key_path         = "/eventId",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
+      autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_io_messages },
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
     {

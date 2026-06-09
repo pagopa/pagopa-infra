@@ -681,6 +681,29 @@
     }
   },
   {
+    "apiName" : "checkPosition",
+    "appName" : "nodo",
+    "url" : "https://${appgw_public_ip}/nodo/nodo-per-pm/v1/checkPosition",
+    "type" : "appgw",
+    "checkCertificate" : true,
+    "method" : "POST",
+    "expectedCodes" : ["200"],
+    "body": {"positionslist": [{"fiscalCode": "${check_position_body.fiscal_code}", "noticeNumber": "${check_position_body.notice_number}"}]},
+    "expectedBody": {"outcome":"OK"},
+    "bodyCompareStrategy": "contains",
+    "headers": {
+      "Content-Type": "application/json",
+      "Host": "${api_dot_env_name}.platform.pagopa.it"
+    },
+    "tags" : {
+      "description" : "pagopa nodo ${env_name} check position"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
     "apiName" : "verifyPaymentNoticeOnPartner",
     "appName" : "nodo",
     "url" : "https://${api_dot_env_name}.platform.pagopa.it/nodo-auth/node-for-psp/v1",
@@ -913,5 +936,60 @@
         "enabled": ${alert_enabled},
         "customActionGroupIds" : ${developers_action_group_ids}
       }
-    }
+  },
+  {
+      "apiName": "checkout",
+      "appName": "fe",
+      "url": "${checkout_cdn_endpoint}",
+      "type": "cdn",
+      "checkCertificate": true,
+      "method": "GET",
+      "expectedCodes": ["200"],
+      "tags": {
+        "description": "pagopa ${env_name} checkout cdn endpoint"
+      },
+      "durationLimit": 10000,
+      "alertConfiguration": {
+        "enabled": "true",
+        "customActionGroupIds" : ${cloudo_action_group_ids},
+        "window_size": "PT15M",
+        "threshold": 0,
+        "operator": "LessThanOrEqual"
+      }
+  },
+  {
+      "apiName": "checkout",
+      "appName": "fe",
+      "url": "https://${env_dot}checkout.pagopa.it/",
+      "type": "public",
+      "checkCertificate": true,
+      "method": "GET",
+      "expectedCodes": ["200"],
+      "tags": {
+        "description": "pagopa ${env_name} checkout public endpoint"
+      },
+      "durationLimit": 10000,
+      "alertConfiguration": {
+        "enabled": ${alert_enabled}
+      }
+  },
+  {
+      "apiName": "checkout",
+      "appName": "fe",
+      "url": "https://${appgw_public_ip}",
+      "type": "appgw",
+      "checkCertificate": true,
+      "method": "GET",
+      "headers": {
+        "Host": "${env_name}.checkout.pagopa.it"
+      },
+      "expectedCodes": ["200"],
+      "tags": {
+        "description": "pagopa ${env_name} checkout appgw endpoint"
+      },
+      "durationLimit": 10000,
+      "alertConfiguration": {
+        "enabled": ${alert_enabled}
+      }
+  }
 ]

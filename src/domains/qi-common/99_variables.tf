@@ -135,14 +135,6 @@ variable "qi_storage_params" {
   description = "Azure storage DB params for qi function."
 }
 
-#
-# EVH
-#
-variable "cidr_subnet_qi_evh" {
-  type        = list(string)
-  description = "Address prefixes evh"
-}
-
 variable "ehns_private_endpoint_is_present" {
   type        = bool
   description = "(Required) create private endpoint to the event hubs"
@@ -171,11 +163,6 @@ variable "ehns_maximum_throughput_units" {
 variable "ehns_auto_inflate_enabled" {
   type        = bool
   description = "Is Auto Inflate enabled for the EventHub Namespace?"
-}
-
-variable "ehns_zone_redundant" {
-  type        = bool
-  description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
 }
 
 variable "ehns_alerts_enabled" {
@@ -272,12 +259,5 @@ variable "cosmos_mongo_db_accounting_reconciliation_params" {
 variable "cidr_subnet_cosmosdb_qi" {
   type        = list(string)
   description = "Cosmos DB address space for qi."
-}
-
-variable "is_feature_enabled" {
-  type = object({
-  })
-  default = {
-  }
 }
 

@@ -14,10 +14,6 @@ variable "env" {
   type = string
 }
 
-variable "env_capital" {
-  type = string
-}
-
 variable "env_short" {
   type = string
   validation {
@@ -96,17 +92,6 @@ variable "dns_zone_internal_prefix" {
   type        = string
   default     = null
   description = "The dns subdomain."
-}
-
-variable "enable_iac_pipeline" {
-  type        = bool
-  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
-  default     = false
-}
-
-variable "k8s_kube_config_path_prefix" {
-  type    = string
-  default = "~/.kube"
 }
 
 variable "bopagopa_datastore_cosmos_db_params" {
