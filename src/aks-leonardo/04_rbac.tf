@@ -174,6 +174,12 @@ resource "kubernetes_cluster_role_binding" "view_extra_binding" {
 
   subject {
     kind      = "Group"
+    name      = data.azuread_group.adgroup_developer_externals.object_id
+    namespace = "kube-system"
+  }
+
+  subject {
+    kind      = "Group"
     name      = data.azuread_group.adgroup_operations.object_id
     namespace = "kube-system"
   }
@@ -275,6 +281,12 @@ resource "kubernetes_cluster_role_binding" "view_binding" {
   subject {
     kind      = "Group"
     name      = data.azuread_group.adgroup_externals.object_id
+    namespace = "kube-system"
+  }
+
+  subject {
+    kind      = "Group"
+    name      = data.azuread_group.adgroup_developer_externals.object_id
     namespace = "kube-system"
   }
 
