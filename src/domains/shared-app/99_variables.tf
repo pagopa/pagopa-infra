@@ -103,15 +103,6 @@ variable "apim_dns_zone_prefix" {
   description = "The dns subdomain for apim."
 }
 
-variable "tls_cert_check_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "tls cert helm chart configuration"
-}
-
 variable "influxdb_helm" {
   type = object({
     chart_version = string,
@@ -148,39 +139,6 @@ variable "influxdb2_helm" {
   description = "influxdb2 helm chart configuration"
 }
 
-
-variable "cidr_subnet_authorizer_functions" {
-  type        = string
-  description = "CIDR subnet for Authorizer functions"
-}
-
-variable "authorizer_function_always_on" {
-  type        = bool
-  description = "Should authorizer-functions app be always on?"
-}
-
-variable "authorizer_functions_app_sku" {
-  type = object({
-    kind     = string
-    sku_size = string
-  })
-  description = "Authorizer functions app plan SKU"
-}
-
-variable "authorizer_functions_app_image_tag" {
-  type        = string
-  default     = "latest"
-  description = "Authorizer functions app docker image tag. Defaults to 'latest'"
-}
-
-variable "authorizer_functions_autoscale" {
-  type = object({
-    default = number
-    minimum = number
-    maximum = number
-  })
-  description = "Authorizer functions autoscaling parameters"
-}
 
 # taxonomy
 variable "taxonomy_function_subnet" {
@@ -313,8 +271,3 @@ variable "function_app_ip_restriction_default_action" {
   default     = "Allow"
 }
 
-variable "gh_runner_job_location" {
-  type        = string
-  description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
-  default     = "westeurope"
-}

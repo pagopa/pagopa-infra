@@ -82,6 +82,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss-egress" {
   os_disk {
     storage_account_type = "Standard_LRS"
     caching              = "ReadWrite"
+    disk_size_gb         = 128
   }
 
   network_interface {
@@ -301,6 +302,7 @@ locals {
 
   ## Database Postgres Flexible mapping for ADF proxy
   ## Each DB has a different external port to be mapped to the same destination port 5432
+  ### NOTE: After apply of new entry the vmss must be upgraded from portal page.
   database_adf_proxy_mapping = [
     {
       fqdn             = "crusc8-db.${var.env_short}.internal.postgresql.pagopa.it"
@@ -321,8 +323,12 @@ locals {
       fqdn             = "fdr-db.${var.env_short}.internal.postgresql.pagopa.it"
       external_port    = 5435
       destination_port = 5432
+    },
+    {
+      fqdn             = "gpd-storico-db.${var.env_short}.internal.postgresql.pagopa.it"
+      external_port    = 5436
+      destination_port = 5432
     }
-
   ]
 
   ## Postgres FQDN to Port mapping for ADF proxy

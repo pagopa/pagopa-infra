@@ -83,8 +83,10 @@ taxonomy_storage_account = {
   blob_delete_retention_days    = 0
   enable_low_availability_alert = false
 }
+redis_ha_enabled = false
 
-cidr_subnet_test_data_storage_account = ["10.1.188.0/24"]
+github_runner_ita_enabled = true
+
 test_data_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
@@ -95,7 +97,3 @@ test_data_storage_account = {
   blob_delete_retention_days    = 7
   enable_low_availability_alert = false
 }
-
-redis_ha_enabled = false
-
-github_runner_ita_enabled = true

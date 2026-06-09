@@ -11,7 +11,8 @@ data "azuread_group" "adgroup_externals" {
   display_name = "${local.product}-adgroup-externals"
 }
 
-data "azuread_group" "adgroup_developer_externals" {
+data "azuread_group" "adgroup_dev_externals" {
+  count        = var.env_short == "d" ? 1 : 0
   display_name = "${local.product}-adgroup-developer-externals"
 }
 
@@ -25,4 +26,9 @@ data "azuread_group" "adgroup_operations" {
 
 data "azuread_group" "adgroup_technical_project_managers" {
   display_name = "${local.product}-adgroup-technical-project-managers"
+}
+
+# Admin Dev group - grants permissions to manage KEDA scaled objects and other cluster resources
+data "azuread_group" "adgroup_admin_dev" {
+  display_name = "${local.product}-adgroup-admin-dev"
 }

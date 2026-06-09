@@ -85,16 +85,6 @@ variable "monitor_resource_group_name" {
   description = "Monitor resource group name"
 }
 
-variable "log_analytics_workspace_name" {
-  type        = string
-  description = "Specifies the name of the Log Analytics Workspace."
-}
-
-variable "log_analytics_workspace_resource_group_name" {
-  type        = string
-  description = "The name of the resource group in which the Log Analytics workspace is located in."
-}
-
 variable "monitor_italy_resource_group_name" {
   type        = string
   description = "Monitor Italy resource group name"
@@ -139,24 +129,6 @@ variable "apim_dns_zone_prefix" {
   description = "The dns subdomain for apim."
 }
 
-variable "payment_wallet_with_pm_enabled" {
-  type        = bool
-  default     = false
-  description = "payment wallet using Payment Manager"
-}
-
-variable "pdv_api_base_path" {
-  type        = string
-  default     = null
-  description = "Personal data vault api base path"
-}
-
-variable "io_backend_base_path" {
-  type        = string
-  default     = null
-  description = "io backend api base path"
-}
-
 # DNS
 
 variable "dns_zone_prefix" {
@@ -165,44 +137,11 @@ variable "dns_zone_prefix" {
   description = "The wallet dns subdomain."
 }
 
-variable "payment_wallet_migrations_enabled" {
-  type        = bool
-  default     = false
-  description = "Payment wallet migrations enabled"
-}
-
-#
-# APP Service PDF
-#
-variable "app_service_pdf_engine_autoscale_enabled" {
-  type = bool
-}
-
-variable "app_service_pdf_engine_zone_balancing_enabled" {
-  type = bool
-}
-
 variable "app_service_pdf_engine_always_on" {
   type        = bool
   description = "Always on property"
 }
 
-variable "app_service_pdf_engine_sku_name" {
-  type        = string
-  description = "app service plan size"
-}
-
-
-### PDF JAVA
-variable "app_service_pdf_engine_sku_name_java" {
-  type        = string
-  description = "app service plan size"
-}
-
-variable "app_service_pdf_engine_sku_name_java_zone_balancing_enabled" {
-  type        = bool
-  description = "Enable HA multi az balancing"
-}
 
 
 ### PDB
@@ -216,10 +155,4 @@ variable "pod_disruption_budgets" {
   default     = {}
 }
 
-
-variable "app_service_ip_restriction_default_action" {
-  type        = string
-  default     = "Allow"
-  description = "(Optional) The Default action for traffic that does not match any ip_restriction rule. possible values include Allow and Deny. Defaults to Allow."
-}
 

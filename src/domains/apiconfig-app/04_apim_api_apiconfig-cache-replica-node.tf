@@ -17,7 +17,7 @@ resource "azurerm_api_management_api_version_set" "api_apiconfig_cache_replica_n
 
 
 module "apim_api_apiconfig_cache_replica_node_api_v1_p" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   count = var.env_short == "p" ? 0 : 1
 
@@ -49,7 +49,7 @@ module "apim_api_apiconfig_cache_replica_node_api_v1_p" {
 }
 
 # module "apim_api_apiconfig_cache_replica_node_api_v1_o" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   count = var.env_short == "p" ? 0 : 1
 #

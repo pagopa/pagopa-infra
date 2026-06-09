@@ -1478,11 +1478,7 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_url = \"ecommerce/checkout/v2/transactions/[^/]+\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"GET\"\n| extend HTTPStatus = tostring(toint(httpStatus_d))\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
                   "ControlType": "FrameControlChart",
-                  "SpecificChart": "StackedArea",
-                  "PartTitle": "Response Codes (15m)",
-                  "PartSubTitle": "GET ecommerce/checkout/v2/transactions/{transactionId}",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [
@@ -1501,7 +1497,11 @@
                         "type": "long"
                       }
                     ]
-                  }
+                  },
+                  "PartSubTitle": "GET ecommerce/checkout/v2/transactions/{transactionId}",
+                  "PartTitle": "Response Codes (15m)",
+                  "Query": "let api_url = \"ecommerce/checkout/v2/transactions/[^/]+\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"GET\"\n| extend HTTPStatus = tostring(toint(httpStatus_d))\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+                  "SpecificChart": "StackedArea"
                 }
               }
             }
@@ -5626,14 +5626,14 @@
                   "name": "Scope",
                   "value": {
                     "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-checkout-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-p-checkout-cdn-profile"
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-checkout-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-p-weu-checkout-cdn-profile"
                     ]
                   },
                   "isOptional": true
                 },
                 {
                   "name": "PartId",
-                  "value": "059f33dc-50bf-4950-9116-a220c1506a87",
+                  "value": "5c8bcef2-4c9b-4c32-8316-003ae5e6b21b",
                   "isOptional": true
                 },
                 {
@@ -5643,7 +5643,7 @@
                 },
                 {
                   "name": "TimeRange",
-                  "value": "P1D",
+                  "value": "PT240M",
                   "isOptional": true
                 },
                 {
@@ -5659,7 +5659,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n | extend HTTPStatus = case(\n                          toint(httpStatusCode_s) between (100 .. 199),\n                          \"1XX\",\n                           toint(httpStatusCode_s) between (200 .. 299),\n                          \"2XX\",\n                           toint(httpStatusCode_s) between (300 .. 399),\n                          \"3XX\",\n                           toint(httpStatusCode_s) between (400 .. 499),\n                          \"4XX\",\n                          \"5XX\"\n                      )\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+                  "value": "AzureDiagnostics\n| extend HTTPStatus = case(\n                          toint(httpStatusCode_s) between (100 .. 199),\n                          \"1XX\",\n                          toint(httpStatusCode_s) between (200 .. 299),\n                          \"2XX\",\n                          toint(httpStatusCode_s) between (300 .. 399),\n                          \"3XX\",\n                          toint(httpStatusCode_s) between (400 .. 499),\n                          \"4XX\",\n                          \"5XX\"\n                      )\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
                   "isOptional": true
                 },
                 {
@@ -5679,19 +5679,12 @@
                 },
                 {
                   "name": "PartSubTitle",
-                  "value": "pagopa-p-checkout-cdn-profile",
+                  "value": "pagopa-p-weu-checkout-cdn-profile",
                   "isOptional": true
                 },
                 {
                   "name": "Dimensions",
                   "value": {
-                    "aggregation": "Sum",
-                    "splitBy": [
-                      {
-                        "name": "HTTPStatus",
-                        "type": "string"
-                      }
-                    ],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -5701,7 +5694,14 @@
                         "name": "count_",
                         "type": "long"
                       }
-                    ]
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "HTTPStatus",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
                   },
                   "isOptional": true
                 },
@@ -5720,10 +5720,10 @@
                 }
               ],
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
-              "settings": {
-                "content": {
-                  "PartTitle": "checkout CDN response code (15 min)"
-                }
+              "settings": {},
+              "partHeader": {
+                "title": "Checkout CDN response code (15 min)",
+                "subtitle": ""
               }
             }
           },
@@ -5960,10 +5960,6 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_url = \"ecommerce/checkout/v1/transactions/[^/]+/outcomes\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"GET\"\n| summarize count() by requestUri_s, bin(TimeGenerated, 15m)\n| where count_ <= 5\n| summarize sum(count_) by TimeGenerated \n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
-                  "SpecificChart": "StackedArea",
-                  "PartTitle": "Polling Outcome <=5 for single transaction",
-                  "PartSubTitle": "GET ecommerce/checkout/v1/transactions/{transactionId}/outcomes",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [],
@@ -5981,7 +5977,11 @@
                   "LegendOptions": {
                     "isEnabled": true,
                     "position": "Bottom"
-                  }
+                  },
+                  "PartSubTitle": "GET ecommerce/checkout/v1/transactions/{transactionId}/outcomes",
+                  "PartTitle": "Polling Outcome <=5 for single transaction",
+                  "Query": "let api_url = \"ecommerce/checkout/v1/transactions/[^/]+/outcomes\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"GET\"\n| summarize count() by requestUri_s, bin(TimeGenerated, 15m)\n| where count_ <= 5\n| summarize sum(count_) by TimeGenerated \n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
+                  "SpecificChart": "StackedArea"
                 }
               },
               "partHeader": {
@@ -6524,10 +6524,6 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let api_url = \"ecommerce/checkout/v1/transactions/[^/]+/outcomes\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"GET\"\n| summarize count() by requestUri_s, bin(TimeGenerated, 15m)\n| where count_ > 20\n| summarize sum(count_) by TimeGenerated \n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
-                  "SpecificChart": "UnstackedColumn",
-                  "PartTitle": "Polling Outcome > 20 for single transaction ",
-                  "PartSubTitle": "GET ecommerce/checkout/v1/transactions/{transactionId}/outcomes",
                   "Dimensions": {
                     "aggregation": "Sum",
                     "splitBy": [],
@@ -6545,7 +6541,11 @@
                   "LegendOptions": {
                     "isEnabled": true,
                     "position": "Bottom"
-                  }
+                  },
+                  "PartSubTitle": "GET ecommerce/checkout/v1/transactions/{transactionId}/outcomes",
+                  "PartTitle": "Polling Outcome > 20 for single transaction ",
+                  "Query": "let api_url = \"ecommerce/checkout/v1/transactions/[^/]+/outcomes\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"GET\"\n| summarize count() by requestUri_s, bin(TimeGenerated, 15m)\n| where count_ > 20\n| summarize sum(count_) by TimeGenerated \n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
+                  "SpecificChart": "UnstackedColumn"
                 }
               },
               "partHeader": {
@@ -6725,55 +6725,55 @@
                 "value": "Past 4 hours"
               },
               "filteredPartIds": [
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3ac0",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3ac2",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3ac4",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3ac6",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3ac8",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3aca",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3acc",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3ace",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3ad0",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3ad2",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3ad4",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3ad6",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3ad8",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3ada",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3adc",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3ade",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3ae0",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3ae2",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3ae4",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3ae6",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3ae8",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3aea",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3aec",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3aee",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3af0",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3af2",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3af4",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3af6",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3af8",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3afa",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3afc",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3afe",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3b00",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3b02",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3b04",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3b06",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3b08",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3b0a",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3b0c",
-                "StartboardPart-MonitorChartPart-40cba9df-f001-43cd-90fd-cc98123a3b0e",
-                "StartboardPart-MonitorChartPart-40cba9df-f001-43cd-90fd-cc98123a3b10",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3b12",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3b14",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3b16",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3b18",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3b1a",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3b1c",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3b1e",
-                "StartboardPart-LogsDashboardPart-40cba9df-f001-43cd-90fd-cc98123a3b20"
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f5fe",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f600",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f616",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f62c",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f642",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f656",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f658",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f65a",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f65c",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f65e",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f602",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f604",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f606",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f608",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f60a",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f60c",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f60e",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f610",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f612",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f614",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f618",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f61a",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f61c",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f61e",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f620",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f622",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f624",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f626",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f628",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f62a",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f62e",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f630",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f632",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f634",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f636",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f638",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f63a",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f63c",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f63e",
+                "StartboardPart-MonitorChartPart-ce5ab8d8-3d49-406f-96ff-256af539f640",
+                "StartboardPart-MonitorChartPart-ce5ab8d8-3d49-406f-96ff-256af539f644",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f648",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f64a",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f64c",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f64e",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f650",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f652",
+                "StartboardPart-LogsDashboardPart-ce5ab8d8-3d49-406f-96ff-256af539f654",
+                "StartboardPart-LogsDashboardPart-d9ddafcb-7b6b-4c31-b3dc-4df0816640cb"
               ]
             }
           }

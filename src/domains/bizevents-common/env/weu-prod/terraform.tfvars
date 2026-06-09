@@ -20,9 +20,6 @@ ingress_load_balancer_ip = "10.1.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"
-apim_dns_zone_prefix     = "platform"
-
-# CosmosDB Biz Events Datastore
 bizevents_datastore_cosmos_db_params = {
   kind         = "GlobalDocumentDB"
   capabilities = []
@@ -100,4 +97,3 @@ cidr_subnet_bizevents_datastore_cosmosdb = ["10.1.156.0/24"]
 enable_iac_pipeline              = true
 storage_account_replication_type = "GZRS"
 redis_ha_enabled                 = true
-

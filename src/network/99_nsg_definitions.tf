@@ -6,7 +6,9 @@ locals {
       target_subnet_vnet_name = local.vnet_core_name
       watcher_enabled         = var.nsg_network_watcher_enabled
 
-      inbound_rules  = local.weu_postgres_base_inbound_rules
+      inbound_rules = concat(local.weu_postgres_base_inbound_rules,
+        [local.nsg_rule_library.allow_fdr_archive_to_postgres]
+      )
       outbound_rules = []
     }
 
@@ -286,6 +288,14 @@ locals {
       source_subnet_name      = "pagopa-${var.env_short}-weu-nodo-storico-pgres-flexible-snet"
       source_subnet_vnet_name = "pagopa-${var.env_short}-vnet"
       description             = "Allow nodo storico to access PostgreSQL"
+    }
+    allow_fdr_archive_to_postgres = {
+      name                    = "AllowFdrArchivePostgreSQL"
+      priority                = 540
+      target_service          = "postgresql"
+      source_subnet_name      = "pagopa-${var.env_short}-itn-fdr-archive-pgflex-snet"
+      source_subnet_vnet_name = "pagopa-${var.env_short}-itn-spoke-data-vnet"
+      description             = "Allow FdR archive to access PostgreSQL"
     }
     allow_all_to_postgres = {
       name                    = "AllowPostgreSQL"
