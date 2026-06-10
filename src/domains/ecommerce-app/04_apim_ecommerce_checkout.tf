@@ -107,6 +107,7 @@ resource "azurerm_api_management_api_operation_policy" "get_transaction_info" {
 
   xml_content = templatefile("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl", {
     ecommerce_ingress_hostname = local.ecommerce_hostname
+    enable_rate_limit_by_transactionId = false
   })
 }
 
@@ -118,6 +119,7 @@ resource "azurerm_api_management_api_operation_policy" "get_transaction_info_v2"
 
   xml_content = templatefile("./api/ecommerce-checkout/v2/_validate_transactions_jwt_token.tpl", {
     ecommerce_ingress_hostname = local.ecommerce_hostname
+    enable_rate_limit_by_transactionId = false
   })
 }
 
@@ -129,6 +131,7 @@ resource "azurerm_api_management_api_operation_policy" "get_transaction_outcomes
 
   xml_content = templatefile("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl", {
     ecommerce_ingress_hostname = local.ecommerce_hostname
+    enable_rate_limit_by_transactionId = true
   })
 }
 
@@ -140,6 +143,7 @@ resource "azurerm_api_management_api_operation_policy" "delete_transaction" {
 
   xml_content = templatefile("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl", {
     ecommerce_ingress_hostname = local.ecommerce_hostname
+    enable_rate_limit_by_transactionId = false
   })
 }
 
@@ -151,6 +155,7 @@ resource "azurerm_api_management_api_operation_policy" "get_fees" {
 
   xml_content = templatefile("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl", {
     ecommerce_ingress_hostname = local.ecommerce_hostname
+    enable_rate_limit_by_transactionId = false
   })
 }
 
