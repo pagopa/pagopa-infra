@@ -110,8 +110,8 @@
     "entity": [
       {
       "id": "elastic-cache-postgres-error",
-      "name": "Cache postgres error",
-      "description": "",
+      "name": "Cache postgres DB connection error",
+      "description": "Rollout cache postgres deployment to mitigate connection error",
       "runbook": "aks/aks-deployments-rollout.sh",
       "run_args": "",
       "worker": "generic",
