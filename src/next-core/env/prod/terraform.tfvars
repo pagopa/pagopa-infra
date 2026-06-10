@@ -33,7 +33,6 @@ cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
 cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
 cidr_subnet_vpn                   = ["10.1.142.0/24"]
 
-vpn_gw_sku                   = "VpnGw1AZ"
 vpn_gw_pip_sku               = "Standard"
 vpn_gw_pip_allocation_method = "Static"
 # networking

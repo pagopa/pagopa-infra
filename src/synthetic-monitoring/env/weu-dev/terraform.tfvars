@@ -16,6 +16,7 @@ enabled_resource = {
   synthetic_on_demand = true
 }
 
+synthetic_alerts_enabled = false
 
 # monitoring
 law_sku               = "PerGB2018"
@@ -29,5 +30,4 @@ check_position_body = {
 verify_payment_internal_expected_outcome = "KO"
 nexi_node_ip                             = "10.79.20.63"
 nexi_node_ip_postgres                    = "10.79.20.63"
-nexi_ndp_host                            = "sit.nexi.ndp.pagopa.it"
-nexi_ndp_host_postgres                   = "sit.nexi.ndp.pagopa.it"
+nexi_ndp_host_postgres                   = "test.nexi.ndp.pagopa.it"
