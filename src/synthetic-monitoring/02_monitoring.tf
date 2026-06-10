@@ -33,6 +33,7 @@ module "monitoring_function" {
     private_endpoint_enabled  = var.use_private_endpoint
     table_private_dns_zone_id = var.use_private_endpoint ? data.azurerm_private_dns_zone.storage_account_table.id : null
     replication_type          = var.storage_account_replication_type
+    queue_private_dns_zone_id = var.use_private_endpoint ? data.azurerm_private_dns_zone.storage_account_queue.id : null
   }
 
   storage_private_endpoint_subnet_id = var.use_private_endpoint ? data.azurerm_subnet.private_endpoint_subnet[0].id : null
@@ -65,6 +66,7 @@ module "monitoring_function" {
     developers_action_group_ids              = jsonencode((can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]))
     nexi_postgres_enabled                    = var.enabled_resource.test_nexi_postgres
     checkout_cdn_endpoint                    = "https://${data.azurerm_cdn_frontdoor_endpoint.checkout_cdn_endpoint.host_name}"
-    cloudo_action_group_ids                  = jsonencode([data.azurerm_monitor_action_group.cloudo.id])
+    cloudo_action_group_ids                  = jsonencode([data.azurerm_monitor_action_group.cloudo.id]),
+    ndp_switch_alert_enabled                 = var.enabled_resource.ndp_switch_alert || var.synthetic_alerts_enabled
   })
 }

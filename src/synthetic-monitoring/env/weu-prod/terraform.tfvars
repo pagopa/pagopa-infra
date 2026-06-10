@@ -12,7 +12,8 @@ use_private_endpoint             = true
 # Feature Flags
 #
 enabled_resource = {
-  test_nexi_postgres = true
+  test_nexi_postgres = true,
+  ndp_switch_alert   = false
 }
 synthetic_alerts_enabled = true
 

@@ -655,7 +655,8 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : ${alert_enabled}
+      "enabled" : ${ndp_switch_alert_enabled},
+      "customActionGroupIds" : ${cloudo_action_group_ids}
     }
   },
   {
@@ -677,7 +678,8 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : ${alert_enabled}
+      "enabled" : ${ndp_switch_alert_enabled},
+      "customActionGroupIds" : ${cloudo_action_group_ids}
     }
   },
   {
@@ -895,7 +897,8 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : ${alert_enabled}
+      "enabled" : ${ndp_switch_alert_enabled},
+      "customActionGroupIds" : ${cloudo_action_group_ids}
     }
   },
   {
@@ -929,7 +932,8 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : ${alert_enabled}
+      "enabled" : ${ndp_switch_alert_enabled},
+      "customActionGroupIds" : ${cloudo_action_group_ids}
     }
   },
   {
