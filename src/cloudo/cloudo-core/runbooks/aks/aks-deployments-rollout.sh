@@ -9,8 +9,10 @@
 
 
 NAMESPACE=$AKS_NAMESPACE
-
 DEPLOYMENT_NAME=$AKS_DEPLOYMENT
+echo "namespace: $NAMESPACE"
+echo "deployment: $DEPLOYMENT_NAME"
+
 if [ -z $AKS_DEPLOYMENT ]; then
   DEPLOYMENT_NAME=$1
 fi
