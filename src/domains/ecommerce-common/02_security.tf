@@ -540,7 +540,6 @@ resource "azurerm_key_vault_secret" "user_stats_for_event_dispatcher_api_key" {
   }
 }
 
-
 resource "azurerm_key_vault_secret" "redirect_url_configurations" {
   name         = "redirect-url-configurations"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"

@@ -49,7 +49,6 @@ dns_a_reconds_dbnodonexipostgres_prf_ips = ["10.6.52.93"]  # db onPrem PRF balan
 dns_forwarder_vm_image_name  = "pagopa-u-dns-forwarder-ubuntu2204-image-v4"
 vpn_gw_pip_sku               = "Standard"
 vpn_gw_pip_allocation_method = "Static"
-vpn_gw_sku                   = "VpnGw1AZ"
 #
 # apim v2
 #
