@@ -107,6 +107,18 @@
   },
   {
     "partition_key": "elastic",
-    "entity": []
+    "entity": [
+      {
+      "id": "elastic-cache-postgres-error",
+      "name": "Cache postgres error",
+      "description": "",
+      "runbook": "aks/aks-deployments-rollout.sh",
+      "run_args": "",
+      "worker": "generic",
+      "oncall": false,
+      "require_approval": false,
+      "tags": ""
+    }
+    ]
   }
 ]
