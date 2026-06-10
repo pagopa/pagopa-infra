@@ -17,7 +17,7 @@ module "monitoring_function" {
   application_insights_action_group_ids = var.env_short == "p" ? [data.azurerm_monitor_action_group.infra_opsgenie[0].id] : [data.azurerm_monitor_action_group.slack.id]
 
   docker_settings = {
-    image_tag = "1.11.1@sha256:833266b9f1803027dd427f16839e87bc7eea7217fe0c5f969b43e00fb453dd68"
+    image_tag = "v1.11.1@sha256:833266b9f1803027dd427f16839e87bc7eea7217fe0c5f969b43e00fb453dd68"
   }
 
   job_settings = {
