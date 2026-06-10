@@ -868,6 +868,37 @@
     }
   },
   {
+    "apiName" : "verifyPaymentNoticeOnPartner",
+    "appName" : "nodo",
+    "url" : "https://${internal_api_domain_prefix}.nodo.${internal_api_domain_suffix}/nodo/webservices/input",
+    "type" : "pagoPa",
+    "checkCertificate" : true,
+    "method" : "POST",
+    "expectedCodes" : ["200"],
+    "expectedBody": {
+      "soapenv:Envelope": {
+        "soapenv:Body": {
+          "nfp:verifyPaymentNoticeRes": {
+            "outcome": "KO"
+          }
+        }
+      }
+    },
+    "bodyCompareStrategy": "xmlContains",
+    "body": "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/'><soapenv:Header /><soapenv:Body><nod:verifyPaymentNoticeReq xmlns:nod='http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd'><idPSP>ABI18164</idPSP><idBrokerPSP>02654890025</idBrokerPSP><idChannel>02654890025_01</idChannel><password>PLACEHOLDER</password><qrCode><fiscalCode>97532760580</fiscalCode><noticeNumber>302704889233205169</noticeNumber></qrCode></nod:verifyPaymentNoticeReq></soapenv:Body></soapenv:Envelope>",
+    "headers": {
+      "SOAPAction": "verifyPaymentNotice",
+      "Content-Type": "application/xml"
+    },
+    "tags" : {
+      "description" : "pagopa nodo ${env_name} verify payment notice using partner's service"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
     "enabled" : ${nexi_postgres_enabled},
     "apiName" : "verifyPaymentNoticeOnPartner",
     "appName" : "nodo",
