@@ -29,9 +29,9 @@ module "gh_runner_job" {
   }
   job_meta = {}
   key_vault = {
-    name        = local.gh_runner_pat_kv_name     # Name of the KeyVault which stores PAT as secret
-    rg          = local.gh_runner_pat_kv_rg # Resource group of the KeyVault which stores PAT as secret
-    secret_name = local.gh_runner_pat_key       # Data of the KeyVault which stores PAT as secret
+    name        = local.gh_runner_pat_kv_name # Name of the KeyVault which stores PAT as secret
+    rg          = local.gh_runner_pat_kv_rg   # Resource group of the KeyVault which stores PAT as secret
+    secret_name = local.gh_runner_pat_key     # Data of the KeyVault which stores PAT as secret
   }
 
   kubernetes_deploy = {

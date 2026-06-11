@@ -23,7 +23,7 @@ module "qa_hub_app_service" {
   docker_image_tag    = var.qa_hub_image.docker_image_tag
   docker_registry_url = var.qa_hub_image.docker_registry_url
 
-  tags                = module.tag_config.tags
+  tags = module.tag_config.tags
   # which subnet is allowed to reach this app service
   allowed_subnet_ids = []
 
@@ -46,5 +46,5 @@ module "qa_hub_app_service" {
 
   autoscale_settings = var.qa_hub_autoscale_settings
 
-  always_on  = var.qa_hub_always_on
+  always_on = var.qa_hub_always_on
 }

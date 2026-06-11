@@ -98,12 +98,12 @@ variable "qa_hub_always_on" {
 }
 
 variable "qa_hub_image" {
-   type = object({
-     docker_image        = string
-     docker_image_tag    = string
-     docker_registry_url = string
-   })
-   description = "Docker image settings for qa-hub"
+  type = object({
+    docker_image        = string
+    docker_image_tag    = string
+    docker_registry_url = string
+  })
+  description = "Docker image settings for qa-hub"
 }
 
 
