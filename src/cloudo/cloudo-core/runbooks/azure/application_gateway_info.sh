@@ -53,8 +53,6 @@ if ! az account show >/dev/null 2>&1; then
   az login --identity --client-id "$AZURE_CLIENT_ID" >/dev/null
 fi
 
-echo "TEST LOG"
-
 APPGW_ID="$(az network application-gateway show \
   --name "$APPGW_NAME" \
   --resource-group "$APPGW_RG" \

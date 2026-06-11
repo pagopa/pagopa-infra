@@ -141,8 +141,8 @@ def main():
 
   values = get_apim_named_values(apim_client, SWITCH.get(switch).keys())
   print(f"current values: {values}")
-  # print(f"updating to: {SWITCH.get(switch)}")
-  # update_apim_named_values(apim_client, SWITCH.get(switch))
+  print(f"updating to: {SWITCH.get(switch)}")
+  update_apim_named_values(apim_client, SWITCH.get(switch))
   print()
 
 if __name__ == "__main__":
