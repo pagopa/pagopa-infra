@@ -14,7 +14,6 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | ac1ff495df50f4c7a1f28ab6e09acf3322a4ebc9 |
-| <a name="module_client_certificate"></a> [client\_certificate](#module\_client\_certificate) | ./.terraform/modules/__v4__/keyvault_client_certificates | n/a |
 | <a name="module_cosmosdb_account_nodo_re"></a> [cosmosdb\_account\_nodo\_re](#module\_cosmosdb\_account\_nodo\_re) | ./.terraform/modules/__v4__/cosmosdb_account | n/a |
 | <a name="module_cosmosdb_account_nodo_re_containers"></a> [cosmosdb\_account\_nodo\_re\_containers](#module\_cosmosdb\_account\_nodo\_re\_containers) | ./.terraform/modules/__v4__/cosmosdb_sql_container | n/a |
 | <a name="module_cosmosdb_account_nodo_re_db"></a> [cosmosdb\_account\_nodo\_re\_db](#module\_cosmosdb\_account\_nodo\_re\_db) | ./.terraform/modules/__v4__/cosmosdb_sql_database | n/a |
@@ -184,7 +183,6 @@
 | [azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_nodo-dei-pagamenti-stand-in-sync-rx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_nodo-dei-pagamenti-stand-in-tx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_key_vault.key_vault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
-| [azurerm_key_vault.kv_ca](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault_secret.pgres_flex_admin_login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.pgres_flex_admin_pwd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.pgres_storico_flex_admin_login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
