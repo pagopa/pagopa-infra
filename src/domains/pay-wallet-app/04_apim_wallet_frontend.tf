@@ -73,6 +73,9 @@ module "apim_wallet_frontend_api" {
     csp_value            = local.wallet_csp_value
     wallet_fe_hostname   = local.wallet_fe_apim_hostname
   })
+
+  # force the named value to exist before the API/policy is applied
+  depends_on = [azurerm_api_management_named_value.pay_wallet_apim_frontend_enabled]
 }
 
 #####################################
