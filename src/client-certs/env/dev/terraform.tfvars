@@ -1,5 +1,5 @@
 prefix         = "pagopa"
-env            = "dev"
 env_short      = "d"
-location_short = "weu"
+env            = "dev"
 domain         = "core"
+location_short = "weu"
