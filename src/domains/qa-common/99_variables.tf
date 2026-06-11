@@ -1,8 +1,4 @@
 # general
-variable "prefix" {
-  type        = string
-  description = "Prefix for resource names"
-}
 
 variable "env" {
   type = string
@@ -63,7 +59,7 @@ variable "pgres_flex_params" {
   type = object({
     idh_resource_tier                      = string
     pgres_flex_diagnostic_settings_enabled = bool
-    db_version = string
+    db_version                             = string
   })
 
 }
