@@ -47,7 +47,7 @@ stages:
   - ${{ if eq(parameters['DEV'], true) }}:
     - template: './base-deploy-pipelines.yml'
       parameters:
-        ENV: 'dev'
+        ENV: 'dev-auto'
         ENV_FOLDER: 'dev'
         WORKING_DIR_MODULE: ${{ variables.WORKING_DIR }}
         DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
@@ -58,7 +58,7 @@ stages:
   - ${{ if eq(parameters['UAT'], true) }}:
     - template: './base-deploy-pipelines.yml'
       parameters:
-        ENV: 'uat'
+        ENV: 'uat-auto'
         ENV_FOLDER: 'uat'
         WORKING_DIR_MODULE: ${{ variables.WORKING_DIR }}
         DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
@@ -69,7 +69,7 @@ stages:
   - ${{ if eq(parameters['PROD'], true) }}:
     - template: './base-deploy-pipelines.yml'
       parameters:
-        ENV: 'prod'
+        ENV: 'prod-auto'
         ENV_FOLDER: 'prod'
         WORKING_DIR_MODULE: ${{ variables.WORKING_DIR }}
         DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
