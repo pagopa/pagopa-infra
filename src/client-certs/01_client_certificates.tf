@@ -13,7 +13,7 @@ module "client_certificate" {
     #     "www.${local.forwarder_fqdn}"
     #   ]
     # }
-    replace("test1.certificate.pagopa.it", ".", "-") = {
+    replace("test2.certificate.pagopa.it", ".", "-") = {
       key_vault_name     = data.azurerm_key_vault.kv_nodo.name
       subject            = "CN=test.certificate.pagopa.it",
       validity_in_months = 12
