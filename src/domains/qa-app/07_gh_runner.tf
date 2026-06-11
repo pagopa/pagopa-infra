@@ -10,9 +10,19 @@ module "gh_runner_job" {
   gh_identity_suffix = "job-01"
   gh_env             = var.env
   runner_labels      = ["self-hosted-job", "${var.env}"]
-  # FIXME: configure here the repositories to be used by the job
   gh_repositories = [
-
+    {
+      name : "pagopa-qa-centralhub-frontend",
+      short_name : "qa-ch-fe"
+    },
+    {
+      name : "pagopa-qa-centralhub-backend",
+      short_name : "qa-ch-be"
+    },
+    {
+      name : "pagopa-platform-integration-test",
+      short_name : "qa-pit"
+    }
   ]
   job = {
     name = local.domain

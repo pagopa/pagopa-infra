@@ -16,7 +16,8 @@ module "qa_hub_app_service" {
 
   app_service_plan_name = "${local.project}-qa-hub-plan"
   app_settings = {
-    # FIXME add your app settings here
+    "qachub",
+    "qachub-replica"
   }
 
   docker_image        = var.qa_hub_image.docker_image

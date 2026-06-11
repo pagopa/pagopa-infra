@@ -19,7 +19,8 @@ pgres_flex_params = {
 }
 
 pgres_flex_db_names = [
-# FIXME add here your database names
+  "qachub",
+  "qachub-replica"
 ]
 
 postgres_custom_metric_alerts = {
