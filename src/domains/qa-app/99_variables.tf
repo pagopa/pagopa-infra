@@ -1,9 +1,5 @@
 # general
 
-variable "prefix" {
-  type        = string
-  description = "Prefix for resource names"
-}
 
 variable "env" {
   type = string
