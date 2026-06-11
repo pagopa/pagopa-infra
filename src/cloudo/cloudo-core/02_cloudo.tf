@@ -31,7 +31,7 @@ module "cloudo" {
 
   github_repo_info = {
     repo_name    = "pagopa/pagopa-infra"
-    repo_branch  = "main"
+    repo_branch  = "test-uat-ndp-switch"
     runbook_path = "src/cloudo/cloudo-core/runbooks"
   }
 
