@@ -5,15 +5,15 @@ location_short = "itn"
 
 
 
-external_domain          =  "pagopa.it"
+external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
 
 alert_use_opsgenie = false
 
 
 pgres_flex_params = {
-  idh_resource_tier = "pgflex2"
-  db_version        = "16"
+  idh_resource_tier                      = "pgflex2"
+  db_version                             = "16"
   pgres_flex_diagnostic_settings_enabled = false
 }
 

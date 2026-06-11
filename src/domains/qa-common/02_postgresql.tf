@@ -28,9 +28,9 @@ module "postgres_flexible_server_qa" {
   product_name      = local.prefix
 
   embedded_subnet = {
-    enabled              = true
-    vnet_name            = local.spoke_data_vnet_name
-    vnet_rg_name         = local.spoke_data_vnet_resource_group_name
+    enabled      = true
+    vnet_name    = local.spoke_data_vnet_name
+    vnet_rg_name = local.spoke_data_vnet_resource_group_name
   }
 
   #fixme configure the cidr list and service name allowed on this database
@@ -51,20 +51,20 @@ module "postgres_flexible_server_qa" {
   custom_metric_alerts = var.postgres_custom_metric_alerts
 
   alert_action = concat(
-  [
-    {
-      action_group_id    = data.azurerm_monitor_action_group.email.id
-      webhook_properties = null
-    },
-    {
-      action_group_id    = data.azurerm_monitor_action_group.slack.id
-      webhook_properties = null
-    }
-  ], var.alert_use_opsgenie ? [
-    {
-      action_group_id    = data.azurerm_monitor_action_group.opsgenie[0].id
-      webhook_properties = null
-    }
+    [
+      {
+        action_group_id    = data.azurerm_monitor_action_group.email.id
+        webhook_properties = null
+      },
+      {
+        action_group_id    = data.azurerm_monitor_action_group.slack.id
+        webhook_properties = null
+      }
+      ], var.alert_use_opsgenie ? [
+      {
+        action_group_id    = data.azurerm_monitor_action_group.opsgenie[0].id
+        webhook_properties = null
+      }
   ] : [])
 
   databases = var.pgres_flex_db_names
