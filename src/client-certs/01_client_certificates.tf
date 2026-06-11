@@ -13,14 +13,6 @@ module "client_certificate" {
     #     "www.${local.forwarder_fqdn}"
     #   ]
     # }
-    replace("test3.certificate.pagopa.it", ".", "-") = {
-      key_vault_name     = data.azurerm_key_vault.kv_nodo.name
-      subject            = "CN=test.certificate.pagopa.it",
-      validity_in_months = 12
-      san_dns_names = [
-        "test.certificate.pagopa.it"
-      ]
-    }
   }
 
   tags = module.tag_config.tags

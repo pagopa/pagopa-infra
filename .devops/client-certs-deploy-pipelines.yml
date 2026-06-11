@@ -33,9 +33,8 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: fix/install-python3-venv # refs/tags/v6.17.4
+      ref: 0b575c6327c78e44527177cf0ee6dbd842a3418c # refs/tags/v6.17.5
       endpoint: "io-azure-devops-github-ro"
-
 
 variables:
   TIME_OUT: 15
