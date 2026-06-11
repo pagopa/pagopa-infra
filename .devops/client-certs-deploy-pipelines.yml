@@ -41,7 +41,7 @@ variables:
   TIME_OUT: 15
   # working dir
   WORKING_DIR: 'src/client-certs'
-  DOMAIN_NAME: client-certs
+  DOMAIN_NAME: client_certs
 
 stages:
   #DEV
