@@ -1,9 +1,9 @@
 locals {
-  npg_sdk_hostname = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
-  content_security_policy_header_name  = "Content-Security-Policy"
-  cdn_storage_account_name       = "${local.project}cdnsa"
-  cdn_index_document             = "index.html"
-  cdn_error_document             = "index.html"
+  npg_sdk_hostname                    = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
+  content_security_policy_header_name = "Content-Security-Policy"
+  cdn_storage_account_name            = "${local.project}cdnsa"
+  cdn_index_document                  = "index.html"
+  cdn_error_document                  = "index.html"
 
   # shared CSP value -> single source of truth for both CDN delivery rules and APIM policy
   checkout_csp_value = join("", [
