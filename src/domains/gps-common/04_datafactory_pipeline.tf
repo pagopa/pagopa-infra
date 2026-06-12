@@ -191,7 +191,7 @@ resource "azurerm_data_factory_trigger_schedule" "pipeline_lifecycle_management_
   interval  = 1
   frequency = "Day"
 
-  start_time = "2026-06-11T20:00:00Z"
+  start_time = "2026-06-12T20:00:00Z"
 
   pipeline_parameters = {
     ChunkSize          = 10000
