@@ -107,7 +107,7 @@ No outputs.
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.6 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 3.0.2 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | > 4.0.0 |
@@ -116,7 +116,7 @@ No outputs.
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 012471381d6d702b8742a716559d968d17a15829 |
 | <a name="module_cosmos_spoke_printit_snet"></a> [cosmos\_spoke\_printit\_snet](#module\_cosmos\_spoke\_printit\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_cosmosdb_account_mongodb"></a> [cosmosdb\_account\_mongodb](#module\_cosmosdb\_account\_mongodb) | ./.terraform/modules/__v4__/cosmosdb_account | n/a |
@@ -137,7 +137,7 @@ No outputs.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [azurerm_cosmosdb_mongo_database.notices_mongo_db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_database) | resource |
 | [azurerm_key_vault_access_policy.gha_iac_managed_identities](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.gha_pr_iac_managed_identities](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
@@ -186,7 +186,7 @@ No outputs.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_cidr_printit_cosmosdb_italy"></a> [cidr\_printit\_cosmosdb\_italy](#input\_cidr\_printit\_cosmosdb\_italy) | Address prefixes for all cosmosdb in italy. | `list(string)` | n/a | yes |
 | <a name="input_cidr_printit_pdf_engine_italy"></a> [cidr\_printit\_pdf\_engine\_italy](#input\_cidr\_printit\_pdf\_engine\_italy) | Address prefixes for all pdf engine accounts in italy. | `list(string)` | n/a | yes |
 | <a name="input_cidr_printit_redis_italy"></a> [cidr\_printit\_redis\_italy](#input\_cidr\_printit\_redis\_italy) | Address prefixes for all redis accounts in italy. | `list(string)` | n/a | yes |
