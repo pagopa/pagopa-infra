@@ -693,6 +693,70 @@
           }
         }
       }
+    },
+    "/ecommerce/searchNpgOperationsByOrderId": {
+      "post": {
+        "tags": [
+          "eCommerce"
+        ],
+        "summary": "Search npg operations by orderId",
+        "description": "GET with body payload - no resources created",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/SearchNpgOperationsByOrderIdRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "Operations found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchNpgOperationsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Operations not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unsupported version",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1821,6 +1885,49 @@
           "idTransaction"
         ]
       },
+      "SearchNpgOperationsByOrderIdRequest": {
+        "type": "object",
+        "description": "",
+        "properties": {
+          "orderId": {
+            "description": "Merchant order id, unique in the merchant domain",
+            "type": "string",
+            "maxLength": 27,
+            "example": "btid2384983"
+          },
+          "pspId": {
+            "type": "string",
+            "description": "PSP identifier",
+            "example": "BPPIITRRXXX"
+          },
+          "paymentMethod": {
+            "type": "string",
+            "enum": [
+              "CARDS",
+              "PAYPAL",
+              "PAYPAL_PAGAIN3",
+              "GIROPAY",
+              "IDEAL",
+              "MYBANK",
+              "GOOGLEPAY",
+              "APPLEPAY",
+              "BANCOMATPAY",
+              "BANCONTACT",
+              "MULTIBANCO",
+              "WECHAT",
+              "ALIPAY",
+              "PIS",
+              "SATISPAY_DIRECT"
+            ],
+            "example": "PAYPAL"
+          }
+        },
+        "required": [
+          "orderId",
+          "pspId",
+          "paymentMethod"
+        ]
+      },
       "SearchNpgOperationsResponse": {
         "type": "object",
         "description": "",
@@ -2287,6 +2394,16 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/SearchNpgOperationsRequest"
+            }
+          }
+        }
+      },
+      "SearchNpgOperationsByOrderIdRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/SearchNpgOperationsByOrderIdRequest"
             }
           }
         }
