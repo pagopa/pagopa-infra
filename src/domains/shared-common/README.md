@@ -148,7 +148,7 @@ No outputs.
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 3.0.2 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.116.0 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | 5.18.3 |
@@ -157,7 +157,7 @@ No outputs.
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 179dddb9c85e412da5e807b430322155f30aeda5 |
 | <a name="module_authorizer_cosmosdb_account"></a> [authorizer\_cosmosdb\_account](#module\_authorizer\_cosmosdb\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v8.93.1 |
 | <a name="module_authorizer_cosmosdb_database"></a> [authorizer\_cosmosdb\_database](#module\_authorizer\_cosmosdb\_database) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database | v8.53.0 |
@@ -179,7 +179,7 @@ No outputs.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [azurerm_api_management_subscription.shared_anonymizer_api_key_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_cosmosdb_sql_container.skeydomains_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_container) | resource |
 | [azurerm_cosmosdb_table.iuvgenerator_cosmosdb_tables](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_table) | resource |
@@ -265,7 +265,7 @@ No outputs.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_cidr_subnet_authorizer_cosmosdb"></a> [cidr\_subnet\_authorizer\_cosmosdb](#input\_cidr\_subnet\_authorizer\_cosmosdb) | Cosmos DB address space | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_iuvgenerator_cosmosdb"></a> [cidr\_subnet\_iuvgenerator\_cosmosdb](#input\_cidr\_subnet\_iuvgenerator\_cosmosdb) | Cosmos DB address space | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_taxonomy_storage_account"></a> [cidr\_subnet\_taxonomy\_storage\_account](#input\_cidr\_subnet\_taxonomy\_storage\_account) | Storage account network address space. | `list(string)` | n/a | yes |

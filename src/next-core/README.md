@@ -3,7 +3,7 @@
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 3.0.2 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | > 4.0.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.12.1 |
@@ -13,7 +13,7 @@
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 7daabc5d931b095b03e12a3f911fa89d4bf6d1c0 |
 | <a name="module_apim"></a> [apim](#module\_apim) | ./.terraform/modules/__v4__/api_management | n/a |
 | <a name="module_apim_monitor"></a> [apim\_monitor](#module\_apim\_monitor) | ./.terraform/modules/__v4__/api_management_api | n/a |
@@ -65,7 +65,7 @@
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [azurerm_api_management_custom_domain.api_custom_domain](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_custom_domain) | resource |
 | [azurerm_api_management_group.afm_calculator](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
 | [azurerm_api_management_group.centro_stella](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
@@ -349,7 +349,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_apicfg_core_service_path_value"></a> [apicfg\_core\_service\_path\_value](#input\_apicfg\_core\_service\_path\_value) | apicfg core cache path | `string` | n/a | yes |
 | <a name="input_apicfg_selfcare_integ_service_path_value"></a> [apicfg\_selfcare\_integ\_service\_path\_value](#input\_apicfg\_selfcare\_integ\_service\_path\_value) | apicfg selfcare integ cache path | `string` | n/a | yes |
 | <a name="input_apim_enable_nm3_decoupler_switch"></a> [apim\_enable\_nm3\_decoupler\_switch](#input\_apim\_enable\_nm3\_decoupler\_switch) | Enable switch backend address in NM3 algorithm logic | `bool` | `false` | no |
