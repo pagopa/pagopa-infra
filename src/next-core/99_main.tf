@@ -38,6 +38,6 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 module "__v4__" {
-  # v10.13.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=fix/add-kv-reader"
+  # v10.16.2
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=0f846d5684ef493ad6d5c833d8787df3348e1326"
 }
