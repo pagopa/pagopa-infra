@@ -124,7 +124,7 @@ The currently supported types are:
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 2.0.1 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3.1 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.16 |
@@ -133,7 +133,7 @@ The currently supported types are:
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | d9105c01f5a063ec4742d3c8443c96109ca87a68 |
 | <a name="module_eventhub_namespace_observability"></a> [eventhub\_namespace\_observability](#module\_eventhub\_namespace\_observability) | ./.terraform/modules/__v4__/eventhub | n/a |
 | <a name="module_eventhub_namespace_observability_gpd"></a> [eventhub\_namespace\_observability\_gpd](#module\_eventhub\_namespace\_observability\_gpd) | ./.terraform/modules/__v4__/eventhub | n/a |
@@ -149,7 +149,7 @@ The currently supported types are:
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [azapi_resource.df_connection_linked_service_postgres](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource.ls_postgres_cruscotto](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource.ls_postgres_cruscotto_tf](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
@@ -301,7 +301,7 @@ The currently supported types are:
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_cidr_subnet_observability_storage"></a> [cidr\_subnet\_observability\_storage](#input\_cidr\_subnet\_observability\_storage) | Storage address space | `list(string)` | `null` | no |
 | <a name="input_dexp_db"></a> [dexp\_db](#input\_dexp\_db) | n/a | <pre>object({<br/>    enable             = bool<br/>    hot_cache_period   = string<br/>    soft_delete_period = string<br/>  })</pre> | n/a | yes |
 | <a name="input_dexp_params"></a> [dexp\_params](#input\_dexp\_params) | n/a | <pre>object({<br/>    enabled = bool<br/>    sku = object({<br/>      name     = string<br/>      capacity = number<br/>    })<br/>    autoscale = object({<br/>      enabled       = bool<br/>      min_instances = number<br/>      max_instances = number<br/>    })<br/>    public_network_access_enabled = bool<br/>    double_encryption_enabled     = bool<br/>    disk_encryption_enabled       = bool<br/>    purge_enabled                 = bool<br/>  })</pre> | n/a | yes |

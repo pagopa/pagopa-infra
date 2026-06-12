@@ -4,7 +4,7 @@
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.11.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 3.0.2 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | > 4.0.0 |
@@ -14,7 +14,7 @@
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 1c2a05083cf3145d0edcea7371161e62c28654fa |
 | <a name="module_monitoring_function"></a> [monitoring\_function](#module\_monitoring\_function) | ./.terraform/modules/__v4__/monitoring_function | n/a |
 | <a name="module_secret_core"></a> [secret\_core](#module\_secret\_core) | ./.terraform/modules/__v4__/key_vault_secrets_query | n/a |
@@ -23,7 +23,7 @@
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights) | resource |
 | [azurerm_log_analytics_workspace.log_analytics_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
 | [azurerm_resource_group.synthetic_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
@@ -49,7 +49,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_check_position_body"></a> [check\_position\_body](#input\_check\_position\_body) | (Required) fiscal code and notice number to be used in synthetic checkposition request body | <pre>object({<br/>    fiscal_code   = string<br/>    notice_number = string<br/>  })</pre> | n/a | yes |
 | <a name="input_enabled_resource"></a> [enabled\_resource](#input\_enabled\_resource) | Feature flags | <pre>object({<br/>    test_nexi_postgres  = optional(bool, false),<br/>    synthetic_on_demand = optional(bool, false),<br/>    ndp_switch_alert    = optional(bool, false)<br/>  })</pre> | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
