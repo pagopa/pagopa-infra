@@ -5,7 +5,7 @@
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.0.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.10.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.25.0 |
@@ -14,14 +14,14 @@
 ## Modules
 
 | Name | Source | Version |
-| ---- | ------ | ------- |
+|------|--------|---------|
 | <a name="module_auto_dashboard"></a> [auto\_dashboard](#module\_auto\_dashboard) | git::https://github.com/pagopa/terraform-azurerm-v4.git//grafana_dashboard | v1.24.0 |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../tag_config | n/a |
 
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azuread_application.grafana_infinity](https://registry.terraform.io/providers/hashicorp/azuread/2.10.0/docs/resources/application) | resource |
 | [azuread_application_password.grafana_infinity](https://registry.terraform.io/providers/hashicorp/azuread/2.10.0/docs/resources/application_password) | resource |
 | [azuread_service_principal.grafana_infinity](https://registry.terraform.io/providers/hashicorp/azuread/2.10.0/docs/resources/service_principal) | resource |
@@ -51,7 +51,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
