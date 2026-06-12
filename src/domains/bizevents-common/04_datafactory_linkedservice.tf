@@ -11,7 +11,7 @@ resource "azurerm_data_factory_linked_service_cosmosdb" "cosmos_biz_new" {
   )
 }
 resource "azurerm_data_factory_linked_service_cosmosdb" "cosmos_biz_new_dev" {
-  count = var.env_short == "d" ? 1 : 0 # used for ADF biz test developer 
+  count = var.env_short == "d" ? 1 : 0 # used for ADF biz test developer
 
   name            = "NewCosmosDbNoSqlBizPositivi${var.env_short}LinkServiceDev"
   data_factory_id = data.azurerm_data_factory.data_factory.id
@@ -32,6 +32,8 @@ locals {
 
 
 resource "azapi_resource" "tokenizer_rest_service" {
+  count = var.env_short == "d" ? 1 : 0 # used for ADF biz test developer
+
   type      = "Microsoft.DataFactory/factories/linkedservices@2018-06-01"
   name      = "${var.env}_TokenizerRestService"
   parent_id = data.azurerm_data_factory.data_factory.id
