@@ -4,7 +4,7 @@
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3.1 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.16 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
@@ -12,7 +12,7 @@
 ## Modules
 
 | Name | Source | Version |
-| ---- | ------ | ------- |
+|------|--------|---------|
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | da30369e66508e38252f34aa7209c645ba208546 |
 | <a name="module_load_balancer_observ_egress"></a> [load\_balancer\_observ\_egress](#module\_load\_balancer\_observ\_egress) | ./.terraform/modules/__v4__/load_balancer | n/a |
 | <a name="module_network_security_group"></a> [network\_security\_group](#module\_network\_security\_group) | ./.terraform/modules/__v4__/network_security_group | n/a |
@@ -29,7 +29,7 @@
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_key_vault_secret.database_map_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_linux_virtual_machine_scale_set.vmss-egress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine_scale_set) | resource |
 | [azurerm_monitor_autoscale_setting.vmss-scale](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
@@ -89,7 +89,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_enabled_features"></a> [enabled\_features](#input\_enabled\_features) | (Optional) Enable/Disable features | <pre>object({<br/>    nsg_metabase             = optional(bool, false)<br/>    data_factory_proxy       = optional(bool, false)<br/>    vpn_database_access      = optional(bool, true)<br/>    nsg                      = optional(bool, true)<br/>    db_replica_nsg           = optional(bool, false)<br/>    all_vnet_database_access = optional(bool, false)<br/>  })</pre> | <pre>{<br/>  "all_vnet_database_access": false,<br/>  "data_factory_proxy": false,<br/>  "db_replica_nsg": false,<br/>  "nsg": true,<br/>  "nsg_metabase": false,<br/>  "vpn_database_access": true<br/>}</pre> | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | general | `string` | n/a | yes |
