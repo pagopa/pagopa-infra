@@ -27,5 +27,4 @@ spec:
     # publication.autocreate.mode: "filtered"  # create it
     signal.enabled.channels: "source"
     signal.data.collection: "apd.debezium_signal"
-    table.exclude.list: "apd.debezium_signal"
 
