@@ -12,8 +12,9 @@ use_private_endpoint             = true
 # Feature Flags
 #
 enabled_resource = {
-  test_nexi_postgres = true,
-  ndp_switch_alert   = false
+  test_nexi_postgres  = true,
+  ndp_switch_alert    = false
+  synthetic_on_demand = true
 }
 
 # monitoring
