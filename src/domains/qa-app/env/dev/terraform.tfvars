@@ -16,9 +16,9 @@ qa_hub_autoscale_settings = {
   scale_down_requests_threshold = 150
 }
 qa_hub_image = {
-  docker_image        = "latest"
+  docker_registry_url = "https://pagopadcommonacr.azurecr.io"
+  docker_image        = "pagopa-qa-centralhub-fe"
   docker_image_tag    = "latest"
-  docker_registry_url = "https://index.docker.io"
 }
 qa_hub_always_on = true
 
