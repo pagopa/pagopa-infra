@@ -5,7 +5,7 @@
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | 2.30.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.30.0, <= 3.53.0 |
 | <a name="requirement_external"></a> [external](#requirement\_external) | = 2.2.3 |
@@ -16,7 +16,7 @@
 ## Modules
 
 | Name | Source | Version |
-| ---- | ------ | ------- |
+|------|--------|---------|
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v6.4.1 |
 | <a name="module_nodocerts_sa"></a> [nodocerts\_sa](#module\_nodocerts\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
@@ -24,7 +24,7 @@
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_key_vault_access_policy.ad_group_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.adgroup_admin_dev_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.adgroup_developers_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
@@ -58,7 +58,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_az_nodo_sa_share_name_firmatore"></a> [az\_nodo\_sa\_share\_name\_firmatore](#input\_az\_nodo\_sa\_share\_name\_firmatore) | Azure storage account share name | `string` | n/a | yes |
 | <a name="input_cacerts_path"></a> [cacerts\_path](#input\_cacerts\_path) | Java cacerts | `string` | n/a | yes |
 | <a name="input_certs_storage_account_replication_type"></a> [certs\_storage\_account\_replication\_type](#input\_certs\_storage\_account\_replication\_type) | (Optional) Certificates storage account replication type | `string` | `"LRS"` | no |
