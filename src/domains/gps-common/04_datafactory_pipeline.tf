@@ -191,7 +191,7 @@ resource "azurerm_data_factory_trigger_schedule" "pipeline_lifecycle_management_
   interval  = 1
   frequency = "Day"
 
-  start_time = "2026-06-15T10:51:00Z"
+  start_time = "2026-06-15T20:00:00Z"
   time_zone  = "W. Europe Standard Time"
 
   pipeline_parameters = {
