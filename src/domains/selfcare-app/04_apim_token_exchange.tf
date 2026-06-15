@@ -9,6 +9,7 @@ locals {
   selfcare-issuer                 = "https://${var.env_short != "p" ? "${var.env}." : ""}selfcare.pagopa.it"
   selfcare-jwt-issuer             = "https://${var.env_short == "d" ? "${var.env}." : ""}selfcare.pagopa.it"
   pagopa-issuer                   = "https://api.${var.env_short != "p" ? "${var.env}." : ""}platform.pagopa.it"
+  cert_subject                    = "${local.project}-jwt-signing-cert"
 }
 
 
@@ -162,7 +163,7 @@ resource "azurerm_api_management_api_operation_policy" "pagopa_token_exchange_po
     openid-config-url           = local.pagopa-oidc-config_url,
     selfcare-issuer             = local.selfcare-jwt-issuer,
     pagopa-issuer               = local.pagopa-issuer,
-    cert_cn                     = "${local.project}-jwt-signing-cert",
+    cert_cn                     = local.cert_subject,
     pagopa-portal-hostname      = local.pagopa-portal-hostname,
     origin                      = local.selfcare_fe_hostname,
   })
