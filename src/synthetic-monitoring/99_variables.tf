@@ -110,10 +110,6 @@ variable "verify_payment_internal_expected_outcome" {
   description = "(Required) Expected outcome for verify payment notice internal"
 }
 
-variable "nexi_node_ip" {
-  type        = string
-  description = "Nodo Pagamenti Nexi ip"
-}
 variable "nexi_node_ip_postgres" {
   type        = string
   description = "Nodo Pagamenti Nexi postgres ip"
@@ -123,4 +119,8 @@ variable "nexi_ndp_host_postgres" {
   description = "Nodo Pagamenti Nexi postgres hostname"
 }
 
+variable "nexi_ndphost_header" {
+    type        = string
+  description = "Nodo Pagamenti Nexi postgres ndphost header value"
+}
 

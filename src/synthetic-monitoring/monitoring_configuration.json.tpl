@@ -637,7 +637,7 @@
     "enabled" : ${nexi_postgres_enabled},
     "apiName" : "checkPosition",
     "appName" : "nodo",
-    "url" : "https://${nexi_node_ip_postgres}/checkPosition",
+    "url" : "https://${nexi_node_ip_postgres}/checkPositionx",
     "type" : "nexiPostgres",
     "checkCertificate" : true,
     "method" : "POST",
@@ -647,7 +647,7 @@
     "bodyCompareStrategy": "contains",
     "headers": {
       "Content-Type": "application/json",
-      "ndphost": "nodo-${env_short}.nexigroup.com",
+      "ndphost": "${nexi_ndphost_header}",
       "Host": "${nexi_ndp_host_postgres}"
     },
     "tags" : {
@@ -825,7 +825,7 @@
     "headers": {
       "SOAPAction": "verifyPaymentNotice",
       "Content-Type": "application/xml",
-      "ndphost": "nodo-${env_short}.nexigroup.com",
+      "ndphost": "${nexi_ndphost_header}",
       "Host": "${nexi_ndp_host_postgres}"
     },
     "tags" : {
@@ -905,7 +905,7 @@
     "enabled" : ${nexi_postgres_enabled},
     "apiName" : "verifyPaymentNoticeOnPartner",
     "appName" : "nodo",
-    "url" : "https://${nexi_node_ip_postgres}/webservices/input",
+    "url" : "https://${nexi_node_ip_postgres}/webservices/inputx",
     "type" : "nexiPostgres",
     "checkCertificate" : true,
     "method" : "POST",
@@ -924,7 +924,7 @@
     "headers": {
       "SOAPAction": "verifyPaymentNotice",
       "Content-Type": "application/xml",
-      "ndphost": "nodo-${env_short}.nexigroup.com",
+      "ndphost": "${nexi_ndphost_header}",
       "Host": "${nexi_ndp_host_postgres}"
     },
     "tags" : {

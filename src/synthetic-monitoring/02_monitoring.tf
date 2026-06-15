@@ -17,7 +17,7 @@ module "monitoring_function" {
   application_insights_action_group_ids = var.env_short == "p" ? [data.azurerm_monitor_action_group.infra_opsgenie[0].id] : [data.azurerm_monitor_action_group.slack.id]
 
   docker_settings = {
-    image_tag = "v1.11.1@sha256:833266b9f1803027dd427f16839e87bc7eea7217fe0c5f969b43e00fb453dd68"
+    image_tag = "v1.11.2@sha256:a0d9821489aef256345d558915319d5aa911dd7e648a1f4c826c001eaf9a80fe"
   }
 
   job_settings = {
@@ -25,6 +25,7 @@ module "monitoring_function" {
     container_app_environment_id = data.azurerm_container_app_environment.tools_cae.id
     http_client_timeout          = 30000
     workload_profile             = "None"
+    log_level                    = "INFO"
   }
 
   enable_synthetic_on_demand = var.enabled_resource.synthetic_on_demand
@@ -59,10 +60,10 @@ module "monitoring_function" {
     check_position_body                      = var.check_position_body
     alert_enabled                            = var.synthetic_alerts_enabled
     verify_payment_internal_expected_outcome = var.verify_payment_internal_expected_outcome
-    nexi_node_ip                             = var.nexi_node_ip
     nexi_node_ip_postgres                    = var.nexi_node_ip_postgres
     fdr_enabled                              = var.env == "prod" ? false : true
     nexi_ndp_host_postgres                   = var.nexi_ndp_host_postgres
+    nexi_ndphost_header                      = var.nexi_ndphost_header
     developers_action_group_ids              = jsonencode((can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]))
     nexi_postgres_enabled                    = var.enabled_resource.test_nexi_postgres
     checkout_cdn_endpoint                    = "https://${data.azurerm_cdn_frontdoor_endpoint.checkout_cdn_endpoint.host_name}"
