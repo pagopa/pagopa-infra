@@ -106,7 +106,8 @@ resource "azurerm_api_management_api_operation_policy" "get_transaction_info" {
   operation_id        = "getTransactionInfo"
 
   xml_content = templatefile("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl", {
-    ecommerce_ingress_hostname = local.ecommerce_hostname
+    ecommerce_ingress_hostname         = local.ecommerce_hostname
+    enable_rate_limit_by_transactionId = true
   })
 }
 
@@ -117,7 +118,8 @@ resource "azurerm_api_management_api_operation_policy" "get_transaction_info_v2"
   operation_id        = "getTransactionInfo"
 
   xml_content = templatefile("./api/ecommerce-checkout/v2/_validate_transactions_jwt_token.tpl", {
-    ecommerce_ingress_hostname = local.ecommerce_hostname
+    ecommerce_ingress_hostname         = local.ecommerce_hostname
+    enable_rate_limit_by_transactionId = true
   })
 }
 
@@ -128,7 +130,8 @@ resource "azurerm_api_management_api_operation_policy" "get_transaction_outcomes
   operation_id        = "getTransactionOutcomes"
 
   xml_content = templatefile("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl", {
-    ecommerce_ingress_hostname = local.ecommerce_hostname
+    ecommerce_ingress_hostname         = local.ecommerce_hostname
+    enable_rate_limit_by_transactionId = true
   })
 }
 
@@ -139,7 +142,8 @@ resource "azurerm_api_management_api_operation_policy" "delete_transaction" {
   operation_id        = "requestTransactionUserCancellation"
 
   xml_content = templatefile("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl", {
-    ecommerce_ingress_hostname = local.ecommerce_hostname
+    ecommerce_ingress_hostname         = local.ecommerce_hostname
+    enable_rate_limit_by_transactionId = true
   })
 }
 
@@ -150,7 +154,8 @@ resource "azurerm_api_management_api_operation_policy" "get_fees" {
   operation_id        = "calculateFees"
 
   xml_content = templatefile("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl", {
-    ecommerce_ingress_hostname = local.ecommerce_hostname
+    ecommerce_ingress_hostname         = local.ecommerce_hostname
+    enable_rate_limit_by_transactionId = true
   })
 }
 
