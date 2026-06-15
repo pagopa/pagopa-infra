@@ -1901,7 +1901,25 @@
             "example": "BPPIITRRXXX"
           },
           "paymentMethod": {
-            "$ref": "#/components/schemas/PaymentMethod"
+            "type": "string",
+            "enum": [
+              "CARDS",
+              "PAYPAL",
+              "PAYPAL_PAGAIN3",
+              "GIROPAY",
+              "IDEAL",
+              "MYBANK",
+              "GOOGLEPAY",
+              "APPLEPAY",
+              "BANCOMATPAY",
+              "BANCONTACT",
+              "MULTIBANCO",
+              "WECHAT",
+              "ALIPAY",
+              "PIS",
+              "SATISPAY_DIRECT"
+            ],
+            "example": "PAYPAL"
           }
         },
         "required": [
