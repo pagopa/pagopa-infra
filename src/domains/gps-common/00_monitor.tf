@@ -47,7 +47,7 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_management_single_fa
 
   severity = 3
 
-  frequency = "PT30M"
+  frequency   = "PT30M"
   window_size = "PT1H"
 
   criteria {
@@ -83,7 +83,7 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_management_multiple_
 
   severity = 3
 
-  frequency = "PT1H"
+  frequency   = "PT1H"
   window_size = "PT6H"
 
   criteria {
@@ -189,7 +189,7 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_script_execution_mar
 
   severity = 2
 
-  frequency = "PT1H"
+  frequency   = "PT1H"
   window_size = "PT6H"
 
   criteria {
@@ -260,7 +260,7 @@ resource "azurerm_monitor_metric_alert" "pipeline_lifecycle_script_execution_del
 
   severity = 2
 
-  frequency = "PT1H"
+  frequency   = "PT1H"
   window_size = "PT6H"
 
   criteria {
