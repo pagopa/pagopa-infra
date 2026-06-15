@@ -26,7 +26,7 @@ After creating the VM, login as admin user and follow these instructions:
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3.1 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.16 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
@@ -34,7 +34,7 @@ After creating the VM, login as admin user and follow these instructions:
 ## Modules
 
 | Name | Source | Version |
-| ---- | ------ | ------- |
+|------|--------|---------|
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 498aa770edfe95264936e9e8f7e209322e4a3820 |
 | <a name="module_app_service_snet"></a> [app\_service\_snet](#module\_app\_service\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_metabase_app_service"></a> [metabase\_app\_service](#module\_metabase\_app\_service) | ./.terraform/modules/__v4__/IDH/app_service_webapp | n/a |
@@ -48,7 +48,7 @@ After creating the VM, login as admin user and follow these instructions:
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_dev_test_global_vm_shutdown_schedule.auto_shutdown](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dev_test_global_vm_shutdown_schedule) | resource |
 | [azurerm_network_interface.vdi_nic](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_interface) | resource |
 | [azurerm_private_dns_zone.private_dns_vdi](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) | resource |
@@ -88,7 +88,7 @@ After creating the VM, login as admin user and follow these instructions:
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_db_vdi_settings"></a> [db\_vdi\_settings](#input\_db\_vdi\_settings) | n/a | <pre>object({<br/>    location              = optional(string, "westeurope")<br/>    location_short        = optional(string, "weu")<br/>    size                  = string<br/>    auto_shutdown_enabled = bool<br/>    auto_shutdown_time    = optional(string, "1900")<br/>    session_limit         = optional(number, 1)<br/>    host_pool_type        = optional(string, "Pooled")<br/>  })</pre> | <pre>{<br/>  "auto_shutdown_enabled": true,<br/>  "auto_shutdown_time": "1900",<br/>  "host_pool_type": "Pooled",<br/>  "location": "westeurope",<br/>  "location_short": "weu",<br/>  "session_limit": 1,<br/>  "size": "Standard_B4ms"<br/>}</pre> | no |
 | <a name="input_enabled_features"></a> [enabled\_features](#input\_enabled\_features) | (Required) A map of enabled features in the environment | <pre>object({<br/>    db_vdi = optional(bool, false)<br/>  })</pre> | <pre>{<br/>  "db_vdi": false<br/>}</pre> | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
