@@ -1,5 +1,4 @@
 # general
-
 variable "env" {
   type = string
 }
@@ -48,9 +47,6 @@ variable "alert_use_opsgenie" {
   default     = true
   description = "Use opsgenie for alerts"
 }
-
-
-
 
 #
 # postgres variables
@@ -152,6 +148,14 @@ variable "postgres_dns_registration_enabled" {
   type        = bool
   description = "(Optional) If true, adds a CNAME record for the database FQDN in the db private dns"
   default     = false
+}
+
+#
+# Redis variables
+#
+variable "redis_idh_resource_tier" {
+  type        = string
+  description = "The IDH resource tier for the Redis cache."
 }
 
 

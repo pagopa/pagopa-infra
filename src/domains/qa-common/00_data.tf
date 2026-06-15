@@ -71,7 +71,10 @@ data "azurerm_private_dns_zone" "postgres" {
   resource_group_name = local.private_dns_zone_rg_name
 }
 
-
+data "azurerm_private_dns_zone" "privatelink_redis_cache_windows_net" {
+  name                = "privatelink.redis.cache.windows.net"
+  resource_group_name = local.private_dns_zone_rg_name
+}
 
 
 
