@@ -77,7 +77,9 @@
 
                     var message = ($"{JOSEProtectedHeader}.{payload}");
 
-                    using (RSA rsa = context.Deployment.Certificates["${cert_name}"].GetRSAPrivateKey())
+                    using (RSA rsa = context.Deployment.Certificates.First(
+                        c => c.Value.SubjectName.Name == "CN=${cert_cn}"
+                    ).Value.GetRSAPrivateKey())
                     {
                         var signature = rsa.SignData(Encoding.UTF8.GetBytes(message), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
                         return message + "." + Convert.ToBase64String(signature).Split('=')[0].Replace('+', '-').Replace('/', '_');

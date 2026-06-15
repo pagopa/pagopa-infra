@@ -162,7 +162,7 @@ resource "azurerm_api_management_api_operation_policy" "pagopa_token_exchange_po
     openid-config-url           = local.pagopa-oidc-config_url,
     selfcare-issuer             = local.selfcare-jwt-issuer,
     pagopa-issuer               = local.pagopa-issuer,
-    cert_name                   = azurerm_api_management_certificate.pagopa_token_exchange_cert_jwt.name,
+    cert_cn                     = "${local.project}-jwt-signing-cert",
     pagopa-portal-hostname      = local.pagopa-portal-hostname,
     origin                      = local.selfcare_fe_hostname,
   })
