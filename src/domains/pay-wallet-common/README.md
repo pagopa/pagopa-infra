@@ -15,7 +15,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 5bd8befbaf30b3759f2355bf3e46a85acba0a6f7 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | da30369e66508e38252f34aa7209c645ba208546 |
 | <a name="module_cosmos_spoke_pay_wallet_snet"></a> [cosmos\_spoke\_pay\_wallet\_snet](#module\_cosmos\_spoke\_pay\_wallet\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_cosmosdb_account_mongodb"></a> [cosmosdb\_account\_mongodb](#module\_cosmosdb\_account\_mongodb) | ./.terraform/modules/__v4__/cosmosdb_account | n/a |
 | <a name="module_cosmosdb_pay_wallet_collections"></a> [cosmosdb\_pay\_wallet\_collections](#module\_cosmosdb\_pay\_wallet\_collections) | ./.terraform/modules/__v4__/cosmosdb_mongodb_collection | n/a |
