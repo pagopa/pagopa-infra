@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "redis_rg" {
   name     = "${local.project}-redis-rg"
   location = var.location
 
-  tags = False
+  tags = module.tag_config.tags
 }
 
 module "redis" {
@@ -61,7 +61,7 @@ module "redis" {
     }
   ]
 
-  tags = False
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "redis_qa_access_key" {
