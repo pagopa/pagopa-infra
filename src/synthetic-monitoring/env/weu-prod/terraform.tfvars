@@ -31,4 +31,4 @@ check_position_body = {
 verify_payment_internal_expected_outcome = "OK"
 nexi_node_ip_postgres                    = "10.79.20.25"
 nexi_ndp_host_postgres                   = "nexi.ndp.pagopa.it"
-nexi_ndphost_header                      = "nodo-p.nexigroup.it"
+nexi_ndphost_header                      = "nodo-p.nexigroup.com"
