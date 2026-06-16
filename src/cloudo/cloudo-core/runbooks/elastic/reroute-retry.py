@@ -32,7 +32,7 @@ def main():
   azure_credential = azure_login()
   secrets = get_runbook_secrets(azure_credential)
 
-  response = requests.post(f"{secrets['ELASTIC_BASE_URL_SECRET_NAME']}/_cluster/reroute?retry_failed&metric=none", headers={"Authorization": f"ApiKey {secrets['ELASTIC_API_KEY_SECRET_NAME']}"})
+  response = requests.post(f"{secrets.get(ELASTIC_BASE_URL_SECRET_NAME)}/_cluster/reroute?retry_failed&metric=none", headers={"Authorization": f"ApiKey {secrets.get(ELASTIC_API_KEY_SECRET_NAME)}"})
   if response.status_code != 200:
     print(f"Error during allocation retry: {response.status_code} - {response.text}")
     exit(1)
