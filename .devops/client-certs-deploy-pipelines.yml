@@ -33,7 +33,7 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: fix/venv-install # refs/tags/v6.17.5
+      ref: 9d95100cba190b37bed0e6fbb57052723dcc9544 # refs/tags/v6.17.6
       endpoint: "io-azure-devops-github-ro"
 
 variables:
