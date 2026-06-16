@@ -252,7 +252,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_authorization_
 AzureDiagnostics
 | where url_s matches regex "https://api.platform.pagopa.it/ecommerce/npg/notifications/v1/sessions/.*/outcomes"
 | where method_s == "POST"
-| where responseCode_d == 401 or responseCode_d >= 500 
+| where responseCode_d == 401 or responseCode_d >= 500
 | project TimeGenerated, responseCode_d
   QUERY
   )
@@ -292,7 +292,7 @@ AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/ecommerce/io/v2'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 and DurationMs < 10000)
+    Success=countif(responseCode_d < 500 and DurationMs < 10000 or (operationId_s == 'getPaymentRequestInfoForIO' and responseCode_d == 503))
     by Time = bin(TimeGenerated, 15m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
