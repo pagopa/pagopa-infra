@@ -339,7 +339,6 @@ def trigger_switch(switch_to_perform: str, azure_credentials: Any) -> None:
   print(f"triggering switch: {switch_to_perform}")
 
   secrets = get_runbook_secrets(azure_credentials)
-  print(f"secrets: {secrets}")
   trigger_cloudo_switch(switch_to_perform, secrets.get(CLOUDO_API_KEY))
 
   try:
