@@ -29,7 +29,7 @@ data "azurerm_data_factory" "data_factory" {
 }
 
 data "azurerm_key_vault_secret" "tokenizer_api_key" {
-  count = var.env_short == "d" ? 1 : 0 # used for ADF biz test developer
+  count        = var.env_short == "d" ? 1 : 0 # used for ADF biz test developer
   name         = "tokenizer-api-key"
   key_vault_id = module.key_vault.id
 }
