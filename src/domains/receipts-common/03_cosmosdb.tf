@@ -108,26 +108,23 @@ locals {
     #   autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
     # },
     {
-      name               = "receipts",
-      partition_key_path = "/id",
+      name               = "receipts"
+      partition_key_path = "/id"
       default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput },
+      autoscale_settings = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput }
       indexing_policy = {
-        "includedPaths" : [
-          { "path" : "/*" }
-        ],
-        "excludedPaths" : [
-          { path : "/\"_etag\"/?" },
-          { path : "/eventData/*" },
-          { path : "/ioMessageData/*" },
-          { path : "/mdAttach/*" },
-          { path : "/mdAttachPayer/*" },
-          { path : "/numRetry/?" },
-          { path : "/reasonErr/*" },
-          { path : "/reasonErrPayer/*" },
-          { path : "/notificationNumRetry/?" }
-        ],
-        "compositeIndexes" : [
+        excluded_paths = [
+          "/\"_etag\"/?",
+          "/eventData/*",
+          "/ioMessageData/*",
+          "/mdAttach/*",
+          "/mdAttachPayer/*",
+          "/numRetry/?",
+          "/reasonErr/*",
+          "/reasonErrPayer/*",
+          "/notificationNumRetry/?"
+        ]
+        composite_indexes = [
           [
             { path : "/status" },
             { path : "/inserted_at" }
@@ -213,7 +210,7 @@ module "receipts_datastore_cosmosdb_containers" {
   partition_key_path  = each.value.partition_key_path
   throughput          = lookup(each.value, "throughput", null)
   default_ttl         = lookup(each.value, "default_ttl", null)
-  indexing_policy     = lookup(each.value, "indexing_policy", {})
+  indexing_policy     = each.value.indexing_policy
 
   # conflict_resolution_policy = each.value.conflict_resolution_policy == null ? null : each.value.conflict_resolution_policy
   autoscale_settings = contains(var.receipts_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
