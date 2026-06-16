@@ -277,7 +277,7 @@ def create_google_calendar_event(auth_token: str, switch: str, calendar_id: str,
   now = datetime.now(tz)
   end = now + timedelta(hours=2)
   event = {
-    "summary": "TEST - [ NdP DR ] War room",
+    "summary": "[ NdP DR ] War room",
     "location": "OnCall",
     "description": f"War room creata automaticamente. Valutare lo switch consigliato {switch} e partecipare alla war room",
     "start": {
