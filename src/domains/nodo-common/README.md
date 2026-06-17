@@ -13,7 +13,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 76e8484e401488e4013be5e5033776290b3d503c |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | ac1ff495df50f4c7a1f28ab6e09acf3322a4ebc9 |
 | <a name="module_cosmosdb_account_nodo_re"></a> [cosmosdb\_account\_nodo\_re](#module\_cosmosdb\_account\_nodo\_re) | ./.terraform/modules/__v4__/cosmosdb_account | n/a |
 | <a name="module_cosmosdb_account_nodo_re_containers"></a> [cosmosdb\_account\_nodo\_re\_containers](#module\_cosmosdb\_account\_nodo\_re\_containers) | ./.terraform/modules/__v4__/cosmosdb_sql_container | n/a |
 | <a name="module_cosmosdb_account_nodo_re_db"></a> [cosmosdb\_account\_nodo\_re\_db](#module\_cosmosdb\_account\_nodo\_re\_db) | ./.terraform/modules/__v4__/cosmosdb_sql_database | n/a |

@@ -110,8 +110,8 @@ module "cloudo" {
     registry_password = data.azurerm_key_vault_secret.github_pat.value
   }
 
-  api_management_name       = var.env_short != "p" ? data.azurerm_api_management.apim.name : ""
-  api_management_rg         = var.env_short != "p" ? data.azurerm_api_management.apim.resource_group_name : ""
+  api_management_name       = data.azurerm_api_management.apim.name
+  api_management_rg         = data.azurerm_api_management.apim.resource_group_name
   api_subscription_required = true
 
   tags = module.tag_config.tags

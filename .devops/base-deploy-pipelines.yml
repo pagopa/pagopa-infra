@@ -6,6 +6,9 @@ parameters:
       - dev
       - uat
       - prod
+      - dev_auto
+      - uat_auto
+      - prod_auto
   - name: 'DEFINITION_NAME'
     displayName: 'Definition name to be deployed'
     type: string

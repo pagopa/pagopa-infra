@@ -1,4 +1,6 @@
 resource "azurerm_data_factory_data_flow" "write_biz_events_to_biz_view" {
+  count = var.env_short == "d" ? 1 : 0 # used for ADF biz test developer
+
   depends_on = [
     azurerm_data_factory_dataset_cosmosdb_sqlapi.biz_events_dataset,
     azurerm_data_factory_dataset_cosmosdb_sqlapi.biz_events_cart_view_dataset,
@@ -19,7 +21,7 @@ resource "azurerm_data_factory_data_flow" "write_biz_events_to_biz_view" {
     }
   }
 
-  # sink(s) 
+  # sink(s)
 
   sink {
     name        = "ViewDebtorUserTarget"
