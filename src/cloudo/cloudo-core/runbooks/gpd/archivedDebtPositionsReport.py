@@ -1,4 +1,4 @@
-import sys
+import sys, os
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
@@ -26,39 +26,21 @@ date_time_format = "%d/%m/%Y %H:%M:%S"
 # Set slack report webhook secret name
 slack_webhook_secret_name = "pagopa-platform-reporter-oauth-token"
 
-# Define global variables
-def def_global_vars(input):
-    global env_short
-    global env_upper
-    match input:
-        case "dev":
-            env_short = "d"
-            env_upper = "DEV"
-        case "uat":
-            env_short = "u"
-            env_upper = "UAT"
-        case "prod":
-            env_short = "p"
-            env_upper = "PROD"
-        case _:
-            print("Wrong input environment")
-            exit()
-
 # Get resource id
 def get_resource_id():
     sub_id = None
     subs = SubscriptionClient(credential)
     for element in subs.subscriptions.list():
-        if element.display_name == f"{env_upper}-pagoPA":
+        if element.display_name == f"{os.getenv('CLOUDO_ENVIRONMENT').upper()}-pagoPA":
             sub_id = element.subscription_id
 
     resource_client = ResourceManagementClient(credential, sub_id)
     resource = resource_client.resources.get(
-        resource_group_name=f"pagopa-{env_short}-monitor-rg",
+        resource_group_name=f"pagopa-{os.getenv('CLOUDO_ENVIRONMENT_SHORT')}-monitor-rg",
         resource_provider_namespace="Microsoft.Insights",
         parent_resource_path="",
         resource_type="components",
-        resource_name=f"pagopa-{env_short}-appinsights",
+        resource_name=f"pagopa-{os.getenv('CLOUDO_ENVIRONMENT_SHORT')}-appinsights",
         api_version="2020-02-02"
     )
     return resource.id
@@ -84,7 +66,7 @@ def query_app_insights(app_insight_id: str):
 
 # Retrieve slack secret from keyvault
 def get_slack_report_secret():
-    kv_uri = f"https://pagopa-{env_short}-gps-kv.vault.azure.net"
+    kv_uri = f"https://pagopa-{os.getenv('CLOUDO_ENVIRONMENT_SHORT')}-gps-kv.vault.azure.net"
     kv_client = SecretClient(vault_url=kv_uri, credential=credential)
     return kv_client.get_secret(slack_webhook_secret_name)
 
@@ -127,11 +109,10 @@ def send_slack_message(payload, slack_channel_id):
     except Exception as e:
         print(f"❌ An unexpected error occurred: {e}")
 
-# To launch this script: python3 archivedDebtPositionsReport.py <dev|uat|prod> <slack_channel_id>
+# To launch this script: python3 archivedDebtPositionsReport.py <slack_channel_id>
 if __name__ == "__main__":
-    def_global_vars(sys.argv[1])
     app_insights_id = get_resource_id()
     total_archived_debt_positions = query_app_insights(app_insights_id)
     slack_report_webhook = get_slack_report_secret()
     payload = create_slack_message(total_archived_debt_positions, start_time, end_time)
-    send_slack_message(payload, sys.argv[2])
+    send_slack_message(payload, sys.argv[1])
