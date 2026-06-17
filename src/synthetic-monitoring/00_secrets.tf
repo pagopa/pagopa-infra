@@ -5,6 +5,7 @@ module "secret_core" {
   key_vault_name = local.key_vault_name
 
   secrets = [
-    "synthetic-monitoring-nodo-subscription-key"
+    "synthetic-monitoring-nodo-subscription-key",
+    "synthetic-monitoring-ndp-pagopa-subscription-key"
   ]
 }

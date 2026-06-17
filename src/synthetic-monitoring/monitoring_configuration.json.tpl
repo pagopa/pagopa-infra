@@ -662,7 +662,7 @@
   {
     "apiName" : "checkPosition",
     "appName" : "nodo",
-    "url" : "https://${internal_api_domain_prefix}.nodo.${internal_api_domain_suffix}/nodo/checkPosition",
+    "url" : "https://${appgw_public_ip}/nodo-ndp/nodo-per-pm/v1/checkPosition",
     "type" : "pagoPa",
     "checkCertificate" : true,
     "method" : "POST",
@@ -671,29 +671,7 @@
     "expectedBody": {"outcome":"OK"},
     "bodyCompareStrategy": "contains",
     "headers": {
-      "Content-Type": "application/json"
-    },
-    "tags" : {
-      "description" : "pagopa nodo ${env_name} check position"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      %{if cloudo_ndp_switch }"customActionGroupIds" : ${cloudo_action_group_ids}, %{endif}
-      "enabled" : ${alert_enabled}
-    }
-  },
-  {
-    "apiName" : "checkPosition",
-    "appName" : "nodo",
-    "url" : "https://${appgw_public_ip}/nodo-ndp/nodo-per-pm/v1/checkPosition",
-    "type" : "pagoPaExt",
-    "checkCertificate" : true,
-    "method" : "POST",
-    "expectedCodes" : ["200"],
-    "body": {"positionslist": [{"fiscalCode": "${check_position_body.fiscal_code}", "noticeNumber": "${check_position_body.notice_number}"}]},
-    "expectedBody": {"outcome":"OK"},
-    "bodyCompareStrategy": "contains",
-    "headers": {
+      "Ocp-Apim-Subscription-Key": "${ndp_pagopa_subscription_key}",
       "Content-Type": "application/json",
       "Host": "${api_dot_env_name}.platform.pagopa.it"
     },
@@ -896,7 +874,7 @@
   {
     "apiName" : "verifyPaymentNoticeOnPartner",
     "appName" : "nodo",
-    "url" : "https://${internal_api_domain_prefix}.nodo.${internal_api_domain_suffix}/nodo/webservices/input",
+    "url" : "https://${appgw_public_ip}/nodo-ndp/node-for-psp/v1",
     "type" : "pagoPa",
     "checkCertificate" : true,
     "method" : "POST",
@@ -913,38 +891,7 @@
     "bodyCompareStrategy": "xmlContains",
     "body": "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/'><soapenv:Header /><soapenv:Body><nod:verifyPaymentNoticeReq xmlns:nod='http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd'><idPSP>ABI18164</idPSP><idBrokerPSP>02654890025</idBrokerPSP><idChannel>02654890025_01</idChannel><password>PLACEHOLDER</password><qrCode><fiscalCode>97532760580</fiscalCode><noticeNumber>302704889233205169</noticeNumber></qrCode></nod:verifyPaymentNoticeReq></soapenv:Body></soapenv:Envelope>",
     "headers": {
-      "SOAPAction": "verifyPaymentNotice",
-      "Content-Type": "application/xml"
-    },
-    "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice using partner's service"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      %{if cloudo_ndp_switch }"customActionGroupIds" : ${cloudo_action_group_ids}, %{endif}
-      "enabled" : ${alert_enabled}
-    }
-  },
-  {
-    "apiName" : "verifyPaymentNoticeOnPartner",
-    "appName" : "nodo",
-    "url" : "https://${appgw_public_ip}/nodo-ndp/node-for-psp/v1",
-    "type" : "pagoPaExt",
-    "checkCertificate" : true,
-    "method" : "POST",
-    "expectedCodes" : ["200"],
-    "expectedBody": {
-      "soapenv:Envelope": {
-        "soapenv:Body": {
-          "nfp:verifyPaymentNoticeRes": {
-            "outcome": "KO"
-          }
-        }
-      }
-    },
-    "bodyCompareStrategy": "xmlContains",
-    "body": "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/'><soapenv:Header /><soapenv:Body><nod:verifyPaymentNoticeReq xmlns:nod='http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd'><idPSP>ABI18164</idPSP><idBrokerPSP>02654890025</idBrokerPSP><idChannel>02654890025_01</idChannel><password>PLACEHOLDER</password><qrCode><fiscalCode>97532760580</fiscalCode><noticeNumber>302704889233205169</noticeNumber></qrCode></nod:verifyPaymentNoticeReq></soapenv:Body></soapenv:Envelope>",
-    "headers": {
+      "Ocp-Apim-Subscription-Key": "${ndp_pagopa_subscription_key}",
       "SOAPAction": "verifyPaymentNotice",
       "Content-Type": "application/xml",
       "Host": "${api_dot_env_name}.platform.pagopa.it"
