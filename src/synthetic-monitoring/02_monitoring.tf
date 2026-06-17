@@ -48,6 +48,12 @@ module "monitoring_function" {
   self_alert_configuration = {
     enabled = var.self_alert_enabled
   }
+
+  queue_job_settings = {
+    polling_interval_in_seconds = var.on_demand_polling_interval_seconds
+  }
+
+
   monitoring_configuration_encoded = templatefile("${path.module}/monitoring_configuration.json.tpl", {
     env_name                                 = var.env,
     env_short                                = var.env_short,
@@ -68,6 +74,7 @@ module "monitoring_function" {
     nexi_postgres_enabled                    = var.enabled_resource.test_nexi_postgres
     checkout_cdn_endpoint                    = "https://${data.azurerm_cdn_frontdoor_endpoint.checkout_cdn_endpoint.host_name}"
     cloudo_action_group_ids                  = jsonencode([data.azurerm_monitor_action_group.cloudo.id]),
-    ndp_switch_alert_enabled                 = var.enabled_resource.ndp_switch_alert || var.synthetic_alerts_enabled
+    cloudo_ndp_switch                        = var.enabled_resource.cloudo_ndp_switch
+    cloudo_checkout_cdn_switch               = var.enabled_resource.cloudo_checkout_cdn_switch
   })
 }

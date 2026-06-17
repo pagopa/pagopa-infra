@@ -12,14 +12,18 @@ use_private_endpoint             = true
 # Feature Flags
 #
 enabled_resource = {
-  test_nexi_postgres = true,
-  ndp_switch_alert   = false
+  test_nexi_postgres         = true,
+  synthetic_on_demand        = true,
+  cloudo_ndp_switch          = false,
+  cloudo_checkout_cdn_switch = false
 }
 synthetic_alerts_enabled = true
 
 law_sku               = "CapacityReservation" # TODO verify why it is changed from PerGB2018 to CapacityReservation
 law_retention_in_days = 30
 law_daily_quota_gb    = -1
+
+on_demand_polling_interval_seconds = 120
 
 #
 # monitoring template variables

@@ -13,7 +13,7 @@ use_private_endpoint             = true
 #
 enabled_resource = {
   test_nexi_postgres  = true,
-  ndp_switch_alert    = true
+  cloudo_ndp_switch   = true
   synthetic_on_demand = true
 }
 

@@ -655,8 +655,8 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : ${ndp_switch_alert_enabled},
-      "customActionGroupIds" : ${cloudo_action_group_ids}
+      %{if cloudo_ndp_switch }"customActionGroupIds" : ${cloudo_action_group_ids}, %{endif}
+      "enabled" : ${alert_enabled}
     }
   },
   {
@@ -678,8 +678,8 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : ${ndp_switch_alert_enabled},
-      "customActionGroupIds" : ${cloudo_action_group_ids}
+      %{if cloudo_ndp_switch }"customActionGroupIds" : ${cloudo_action_group_ids}, %{endif}
+      "enabled" : ${alert_enabled}
     }
   },
   {
@@ -897,8 +897,8 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : ${ndp_switch_alert_enabled},
-      "customActionGroupIds" : ${cloudo_action_group_ids}
+      %{if cloudo_ndp_switch }"customActionGroupIds" : ${cloudo_action_group_ids}, %{endif}
+      "enabled" : ${alert_enabled}
     }
   },
   {
@@ -932,8 +932,8 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : ${ndp_switch_alert_enabled},
-      "customActionGroupIds" : ${cloudo_action_group_ids}
+      %{if cloudo_ndp_switch }"customActionGroupIds" : ${cloudo_action_group_ids}, %{endif}
+      "enabled" : ${alert_enabled}
     }
   },
   {
@@ -985,8 +985,8 @@
       },
       "durationLimit": 10000,
       "alertConfiguration": {
+        %{if cloudo_checkout_cdn_switch }"customActionGroupIds" : ${cloudo_action_group_ids}, %{endif}
         "enabled": "true",
-        "customActionGroupIds" : ${cloudo_action_group_ids},
         "window_size": "PT15M",
         "threshold": 0,
         "operator": "LessThanOrEqual"
