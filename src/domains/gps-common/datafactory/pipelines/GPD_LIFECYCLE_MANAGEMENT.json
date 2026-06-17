@@ -19,7 +19,7 @@
         "userProperties": [],
         "typeProperties": {
           "expression": {
-            "value": "@greaterOrEquals(variables('CurrentOffset'), min(pipeline().parameters.MaxAmountToMigrate, int(activity('Compute_to_migrate').output.resultSets[0].rows[0].count)))",
+            "value": "@greaterOrEquals(variables('CurrentOffset'), min(int(pipeline().parameters.MaxAmountToMigrate), int(activity('Compute_to_migrate').output.resultSets[0].rows[0].count)))",
             "type": "Expression"
           },
           "activities": [
@@ -42,7 +42,7 @@
               "typeProperties": {
                 "variableName": "TempOffset",
                 "value": {
-                  "value": "@add(variables('CurrentOffset'), min(pipeline().parameters.ChunkSize,int(activity('Execute_GPD_LIFECYCLE_SCRIPT_EXECUTION').output.pipelineReturnValue.pCount)))",
+                  "value": "@add(variables('CurrentOffset'), min(int(pipeline().parameters.ChunkSize), int(activity('Execute_GPD_LIFECYCLE_SCRIPT_EXECUTION').output.pipelineReturnValue.pCount)))",
                   "type": "Expression"
                 }
               }
@@ -127,7 +127,7 @@
                     "typeProperties": {
                       "variableName": "TempDebtPositionCounter",
                       "value": {
-                        "value": "@add(min(pipeline().parameters.ChunkSize, int(activity('Execute_GPD_LIFECYCLE_SCRIPT_EXECUTION').output.pipelineReturnValue.pCount)), variables('DebtPositionCounter'))",
+                        "value": "@add(min(int(pipeline().parameters.ChunkSize), int(activity('Execute_GPD_LIFECYCLE_SCRIPT_EXECUTION').output.pipelineReturnValue.pCount)), variables('DebtPositionCounter'))",
                         "type": "Expression"
                       }
                     }
