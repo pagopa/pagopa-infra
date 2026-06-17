@@ -292,7 +292,7 @@ AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/ecommerce/io/v2'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 and DurationMs < 10000 or (operationId_s == 'getPaymentRequestInfoForIO' and responseCode_d == 503))
+Success=countif((responseCode_d < 500 or (operationId_s == 'getPaymentRequestInfoForIO' and responseCode_d == 503)) and DurationMs < 10000)
     by Time = bin(TimeGenerated, 15m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
