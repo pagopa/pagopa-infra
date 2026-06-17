@@ -272,7 +272,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Retrieve all Payment Methods (by filter)",
+        "summary": "Retrieve all Payment Methods (by filter into query)",
         "parameters": [
           {
             "name": "amount",
@@ -319,6 +319,82 @@
           },
           "502": {
             "description": "PagoPA services are not available or request is rejected by PagoPa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ecommerce-methods"
+        ],
+        "operationId": "getAllPaymentMethodsAuth",
+        "summary": "Retrieve all Payment Methods (by filter into body)",
+        "description": "GET with body payload - no resources created: API for retrieve payment method using the request query parameter filters",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-rpt-ids",
+            "required": false,
+            "description": "Optional RPT ID used to track get payment-methods attempts to payment notices",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentMethodsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Payment method successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentMethodsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
             "content": {
               "application/json": {
                 "schema": {
@@ -1304,6 +1380,136 @@
           "ONBOARDABLE_ONLY",
           "ONBOARDABLE_WITH_PAYMENT"
         ]
+      },
+      "PaymentMethodsRequest": {
+        "required": [
+          "paymentNotice",
+          "totalAmount",
+          "userTouchpoint"
+        ],
+        "type": "object",
+        "properties": {
+          "userTouchpoint": {
+            "type": "string",
+            "enum": [
+              "IO",
+              "CHECKOUT",
+              "CHECKOUT_CART"
+            ]
+          },
+          "userDevice": {
+            "type": "string",
+            "enum": [
+              "IOS",
+              "ANDROID",
+              "WEB",
+              "SAFARI"
+            ]
+          },
+          "totalAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "language": {
+              "type": "string",
+              "description": "The user language",
+              "enum": [
+                  "IT",
+                  "EN",
+                  "FR",
+                  "DE",
+                  "SL"
+              ]
+          },
+          "sortBy": {
+             "type": "string",
+             "enum": [
+                 "NAME",
+                 "DESCRIPTION",
+                 "FEE"
+             ]
+          },
+          "sortOrder": {
+             "type": "string",
+             "enum": [
+                 "ASC",
+                 "DESC"
+             ]
+          },
+          "priorityGroups": {
+             "type": "array",
+             "items": {
+                 "type": "string",
+                 "enum": [
+                     "CP",
+                     "MYBK",
+                     "BPAY",
+                     "PPAL",
+                     "RPIC",
+                     "RBPS",
+                     "SATY",
+                     "APPL",
+                     "RICO",
+                     "RBPB",
+                     "RBPP",
+                     "RBPR",
+                     "GOOG",
+                     "KLRN"
+                 ]
+             }
+          },
+          "paymentNotice": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentNoticeItem"
+            }
+          },
+          "allCCp": {
+            "type": "boolean"
+          },
+          "targetKey": {
+            "type": "string"
+          }
+        }
+      },
+      "PaymentNoticeItem": {
+        "required": [
+          "paymentAmount",
+          "primaryCreditorInstitution"
+        ],
+        "type": "object",
+        "properties": {
+          "paymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "primaryCreditorInstitution": {
+            "type": "string"
+          },
+          "transferList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferListItem"
+            }
+          }
+        }
+      },
+      "TransferListItem": {
+        "required": [
+          "creditorInstitution"
+        ],
+        "type": "object",
+        "properties": {
+          "creditorInstitution": {
+            "type": "string"
+          },
+          "transferCategory": {
+            "type": "string"
+          },
+          "digitalStamp": {
+            "type": "boolean"
+          }
+        }
       }
     },
     "requestBodies": {
@@ -1313,6 +1519,16 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/NewTransactionRequest"
+            }
+          }
+        }
+      },
+      "PaymentMethodsRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PaymentMethodsRequest"
             }
           }
         }
