@@ -6,6 +6,7 @@ module "secret_core" {
 
   secrets = [
     "synthetic-monitoring-nodo-subscription-key",
-    "synthetic-monitoring-ndp-pagopa-subscription-key"
+    "synthetic-monitoring-ndp-pagopa-subscription-key",
+    "synthetic-monitoring-nodo-ecommerce-subscription-key"
   ]
 }

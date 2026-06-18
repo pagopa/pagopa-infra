@@ -687,7 +687,7 @@
   {
     "apiName" : "checkPosition",
     "appName" : "nodo",
-    "url" : "https://${appgw_public_ip}/nodo/nodo-per-pm/v1/checkPosition",
+    "url" : "https://${appgw_public_ip}/nodo-auth/node-for-ecommerce/v1/checkPosition",
     "type" : "appgw",
     "checkCertificate" : true,
     "method" : "POST",
@@ -697,7 +697,8 @@
     "bodyCompareStrategy": "contains",
     "headers": {
       "Content-Type": "application/json",
-      "Host": "${api_dot_env_name}.platform.pagopa.it"
+      "Host": "${api_dot_env_name}.platform.pagopa.it",
+      "Ocp-Apim-Subscription-Key": "${ndp_ecommerce_subscription_key}"
     },
     "tags" : {
       "description" : "pagopa nodo ${env_name} check position"
@@ -1020,7 +1021,7 @@
       "checkCertificate": true,
       "method": "GET",
       "headers": {
-        "Host": "${env_name}.checkout.pagopa.it"
+        "Host": "${env_dot}checkout.pagopa.it"
       },
       "expectedCodes": ["200"],
       "tags": {
