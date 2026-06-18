@@ -28,7 +28,7 @@ module "apim_ecommerce_checkout_auth_product" {
 # pagopa-ecommerce APIs for checkout-auth
 locals {
   apim_ecommerce_checkout_auth_api = {
-    display_name          = "Ecommerce API for checkout pagoPA, authenticated version"
+    display_name          = "Ecommerce API for checkout pagoPA for authenticated flux"
     description           = "Ecommerce pagoPA API dedicated to checkout pagoPA for pagoPA payment with authentication"
     path                  = "ecommerce/checkout-auth"
     subscription_required = false
