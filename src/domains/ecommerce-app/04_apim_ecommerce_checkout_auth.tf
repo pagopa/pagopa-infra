@@ -30,7 +30,7 @@ locals {
   apim_ecommerce_checkout_auth_api = {
     display_name          = "Ecommerce API for checkout pagoPA for authenticated flux"
     description           = "Ecommerce pagoPA API dedicated to checkout pagoPA for pagoPA payment with authentication"
-    path                  = "ecommerce/checkout-auth"
+    path                  = "ecommerce/checkout/auth"
     subscription_required = false
     service_url           = null
   }

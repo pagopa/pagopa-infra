@@ -36,10 +36,9 @@
       <set-header name="X-Client-Id" exists-action="override" >
         <value>CHECKOUT</value>
       </set-header>
-      <rewrite-uri template="@((context.Request.Url.Path).Replace("auth/",""))" />
-      <set-variable name="transactionsOperationId" value="newTransactionV3" />
-      <set-variable name="paymentMethodsOperationId" value="getAllPaymentMethodsV3,createSessionV3" />
-      <set-variable name="paymentRequestsOperationId" value="getPaymentRequestInfoV3" />
+      <set-variable name="transactionsOperationId" value="newTransactionAuth" />
+      <set-variable name="paymentMethodsOperationId" value="getAllPaymentMethodsAuth,createSessionAuth" />
+      <set-variable name="paymentRequestsOperationId" value="getPaymentRequestInfoAuth" />
       <set-variable name="paymentMethodsHandlerOperationId" value="getAllPaymentMethodsAuth" />
 
       <choose>
