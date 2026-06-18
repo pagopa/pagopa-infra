@@ -51,7 +51,7 @@
         "tags": [
           "ecommerce-payment-requests"
         ],
-        "operationId": "getPaymentRequestInfoV3",
+        "operationId": "getPaymentRequestInfoAuth",
         "security": [
           {
             "bearerAuth": []
@@ -141,7 +141,7 @@
         "tags": [
           "ecommerce-transactions"
         ],
-        "operationId": "newTransactionV3",
+        "operationId": "newTransactionAuth",
         "security": [
           {
             "bearerAuth": []
@@ -262,73 +262,6 @@
       }
     },
     "/auth/payment-methods": {
-      "get": {
-        "tags": [
-          "ecommerce-methods"
-        ],
-        "operationId": "getAllPaymentMethodsV3",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "summary": "Retrieve all Payment Methods (by filter into query)",
-        "parameters": [
-          {
-            "name": "amount",
-            "in": "query",
-            "description": "Payment Amount",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "in": "header",
-            "name": "x-rpt-ids",
-            "required": false,
-            "description": "Optional RPT ID used to track get payment-methods attempts to payment notices",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Payment method successfully retrieved",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaymentMethodsResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized, access token missing or invalid"
-          },
-          "404": {
-            "description": "Payment methods not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "PagoPA services are not available or request is rejected by PagoPa",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
-      },
       "post": {
         "tags": [
           "ecommerce-methods"
