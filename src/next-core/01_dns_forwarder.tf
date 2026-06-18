@@ -16,7 +16,6 @@ module "dns_forwarder_backup_vmss_li" {
   name                = local.dns_forwarder_backup_name
   resource_group_name = azurerm_resource_group.rg_vnet.name
   subnet_id           = module.dns_forwarder_backup_snet[0].id
-  subscription_name   = data.azurerm_subscription.current.display_name
   subscription_id     = data.azurerm_subscription.current.subscription_id
   location            = var.location
   source_image_name   = var.dns_forwarder_vm_image_name

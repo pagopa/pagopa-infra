@@ -1,6 +1,10 @@
 <policies>
   <inbound>
     <base />
+    <set-variable name="payment_token" value="@{
+      Guid randomUUID = Guid.NewGuid();
+      return randomUUID.ToString().Replace("-","");
+    }" />
     <!-- verifyPaymentNotice -->
     <choose>
       <when condition="@(((string)context.Request.Headers.GetValueOrDefault("SOAPAction","")).Equals("verifyPaymentNotice"))">
@@ -60,7 +64,7 @@
                   <fiscalCodePA>77777777777</fiscalCodePA>
                   <companyName>company PA</companyName>
                   <officeName>office PA</officeName>
-                  <paymentToken>3d82a804063f46ed99dfa9e4a235774d</paymentToken>
+                  <paymentToken>{{ context.Variables["payment_token"] }}</paymentToken>
                   <transferList>
                     <transfer>
                       <idTransfer>1</idTransfer>
@@ -103,7 +107,7 @@
                         <fiscalCodePA>77777777777</fiscalCodePA>
                         <companyName>company</companyName>
                         <officeName>office</officeName>
-                        <paymentToken>622918c5dd3142668826d3bdd9282589</paymentToken>
+                        <paymentToken>{{ context.Variables["payment_token"] }}</paymentToken>
                         <transferList>
                             <transfer>
                                 <idTransfer>1</idTransfer>

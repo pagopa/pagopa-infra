@@ -154,13 +154,9 @@ module "node_forwarder_slot_staging" {
   source = "./.terraform/modules/__v4__/app_service_slot"
 
   # App service plan
-  app_service_id   = module.node_forwarder_app_service[0].id
-  app_service_name = module.node_forwarder_app_service[0].name
-
+  app_service_id = module.node_forwarder_app_service[0].id
   # App service
-  name                = "staging"
-  resource_group_name = local.node_forwarder_rg_name
-  location            = var.location
+  name = "staging"
 
   always_on                    = true
   health_check_path            = "/actuator/info"
@@ -534,13 +530,14 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forward
       azurerm_monitor_action_group.slack.id,
       azurerm_monitor_action_group.mo_email.id,
       azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id,
-    azurerm_monitor_action_group.smo_opsgenie.0.id]
+      azurerm_monitor_action_group.smo_opsgenie.0.id
+    ]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
   data_source_id          = module.apim[0].id
   description             = "Availability for /forward is less than or equal to 99% - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
-  enabled                 = true
+  enabled                 = false
   auto_mitigation_enabled = true
   query = (<<-QUERY
 let threshold = 0.96;

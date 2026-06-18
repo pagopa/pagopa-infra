@@ -85,17 +85,6 @@ variable "instance" {
 }
 
 
-variable "gpd_archive_advanced_threat_protection" {
-  type        = bool
-  description = "Enable contract threat advanced protection"
-  default     = false
-}
-
-variable "gpd_archive_replication_type" {
-  type        = string
-  description = "Archive storage account replication type"
-}
-
 
 ### External resources
 
@@ -161,6 +150,8 @@ variable "pgres_flex_params" {
     wal_level                                        = string
     shared_preoload_libraries                        = string
     public_network_access_enabled                    = bool
+    log_min_duration_statement                       = optional(number)
+    log_lock_waits                                   = optional(string)
   })
 
   default = null
@@ -519,15 +510,6 @@ variable "gpd_db_storico_name" {
   type        = string
   description = "GPD Storico DB name"
   default     = "apd"
-}
-
-variable "pgflex_storico_geo_replication" {
-  type = object({
-    enabled                     = bool
-    name                        = string
-    location                    = string
-    private_dns_registration_ve = bool
-  })
 }
 
 ####################

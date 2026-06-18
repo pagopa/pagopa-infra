@@ -7,7 +7,7 @@ resource "azurerm_api_management_api_version_set" "apiconfig_cache_external_v1" 
 }
 
 module "apim_api_apiconfig_cache_external_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-apiconfig-cache-external-api", local.project)
   api_management_name   = local.pagopa_apim_name

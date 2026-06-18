@@ -5,16 +5,6 @@ resource "azurerm_resource_group" "db_rg" {
   tags = module.tag_config.tags
 }
 
-data "azurerm_key_vault_secret" "pgres_flex_admin_login" {
-  name         = "db-administrator-login"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "pgres_flex_admin_pwd" {
-  name         = "db-administrator-login-password"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
 # Postgres Flexible Server subnet
 module "postgres_flexible_snet" {
   source                                        = "./.terraform/modules/__v4__/subnet"
@@ -44,7 +34,7 @@ module "postgres_flexible_server_fdr" {
   resource_group_name = azurerm_resource_group.db_rg.name
 
   private_endpoint_enabled      = var.pgres_flex_params.pgres_flex_private_endpoint_enabled
-  private_dns_zone_id           = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres.id : null
+  private_dns_zone_id           = data.azurerm_private_dns_zone.postgres.id
   delegated_subnet_id           = module.postgres_flexible_snet.id
   public_network_access_enabled = var.pgres_flex_params.public_network_access_enabled
 
@@ -160,14 +150,27 @@ resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_wal_lev
   value     = var.pgres_flex_params.wal_level # "logical", ...
 }
 
-resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_shared_preoload_libraries" {
+resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_shared_preload_libraries" {
   count = var.pgres_flex_params.wal_level != null ? 1 : 0
 
   name      = "shared_preload_libraries"
   server_id = module.postgres_flexible_server_fdr.id
-  value     = var.pgres_flex_params.shared_preoload_libraries # "pg_failover_slots"
+  value     = var.pgres_flex_params.shared_preload_libraries # "pg_failover_slots"
 }
 
+# add pg_cron extension to group azure_pg_admin
+resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_extensions" {
+  name      = "azure.extensions"
+  server_id = module.postgres_flexible_server_fdr.id
+  value     = var.pgres_flex_params.azure_extensions
+}
+
+# configure pg_cron to use postgres database (:warning: needs restart)
+resource "azurerm_postgresql_flexible_server_configuration" "pg_cron_database" {
+  name      = "cron.database_name"
+  server_id = module.postgres_flexible_server_fdr.id
+  value     = "postgres"
+}
 
 resource "azurerm_postgresql_flexible_server_database" "fdr_replica_db" {
   count     = var.env_short == "p" ? 0 : 1

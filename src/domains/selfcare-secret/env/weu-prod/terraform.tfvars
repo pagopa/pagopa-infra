@@ -1,15 +1,9 @@
-prefix          = "pagopa"
-env_short       = "p"
-env             = "prod"
-domain          = "selfcare"
-location        = "westeurope"
-location_short  = "weu"
-location_string = "West Europe"
-instance        = "prod"
-
-
-### External resources
-
-input_file = "./secret/weu-prod/configs.json"
+prefix         = "pagopa"
+env_short      = "p"
+env            = "prod"
+domain         = "selfcare"
+location       = "westeurope"
+location_short = "weu"
+input_file     = "./secret/weu-prod/configs.json"
 
 enable_iac_pipeline = true

@@ -10,10 +10,6 @@ variable "prefix" {
   }
 }
 
-variable "env" {
-  type = string
-}
-
 variable "env_short" {
   type = string
   validation {
@@ -34,11 +30,6 @@ variable "domain" {
   }
 }
 
-variable "location" {
-  type        = string
-  description = "One of westeurope, northeurope"
-}
-
 variable "location_short" {
   type = string
   validation {
@@ -48,10 +39,5 @@ variable "location_short" {
     error_message = "Length must be 3 chars."
   }
   description = "One of weu, itn"
-}
-
-variable "instance" {
-  type        = string
-  description = "One of beta, prod01, prod02"
 }
 
