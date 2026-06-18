@@ -6,7 +6,7 @@ module "apim_ecommerce_checkout_auth_product" {
   source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "ecommerce-checkout-auth"
-  display_name = "Ecommerce for checkout pagoPA"
+  display_name = "Ecommerce for checkout pagoPA with authentication"
   description  = "Ecommerce pagoPA product dedicated to checkout pagoPA with authentication"
 
   api_management_name = local.pagopa_apim_name
