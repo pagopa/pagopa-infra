@@ -56,6 +56,12 @@ data "azurerm_api_management_product" "apim_gpd_integration_product" {
   resource_group_name = local.pagopa_apim_rg
 }
 
+data "azurerm_api_management_product" "technical_support_api_product" {
+  product_id          = "technical_support_api"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+
 # fetch the apim qa user resource
 data "azurerm_api_management_user" "apim_qa_user" {
   count = var.env_short != "p" ? 1 : 0

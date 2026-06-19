@@ -74,6 +74,13 @@ pod_disruption_budgets = {
       "app.kubernetes.io/instance" = "pagopaspontaneouspayments"
     }
   },
+  
+  "pagopa-gpd-technical-support" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopa-gpd-technical-support"
+    }
+  },
 }
 
 
