@@ -495,23 +495,6 @@
         "exclusiveMaximum": true,
         "example": 200
       },
-      "Range": {
-        "type": "object",
-        "description": "Payment amount range in cents",
-        "properties": {
-          "min": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0,
-            "description": "Range min amount"
-          },
-          "max": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          }
-        }
-      },
       "PaymentRequestsGetResponse": {
         "type": "object",
         "title": "PaymentRequestsGetResponse",
@@ -1163,70 +1146,128 @@
         ]
       },
       "PaymentMethodResponse": {
+        "required": [
+          "description",
+          "paymentTypeCode",
+          "methodManagement",
+          "name",
+          "paymentMethodAsset",
+          "id",
+          "paymentMethodTypes",
+          "status",
+          "validityDateFrom"
+        ],
         "type": "object",
-        "description": "Payment method Response",
         "properties": {
           "id": {
-            "type": "string",
-            "description": "Payment method ID"
+            "type": "string"
           },
           "name": {
-            "type": "string",
-            "description": "Payment method name"
-          },
-          "description": {
-            "type": "string",
-            "description": "Payment method description"
-          },
-          "asset": {
-            "type": "string",
-            "description": "Payment method asset name"
-          },
-          "status": {
-            "$ref": "#/components/schemas/PaymentMethodStatus"
-          },
-          "paymentTypeCode": {
-            "type": "string",
-            "description": "Payment method type code"
-          },
-          "methodManagement": {
-            "$ref": "#/components/schemas/PaymentMethodManagementType"
-          },
-          "ranges": {
-            "description": "Payment amount range in eurocents",
-            "type": "array",
-            "minItems": 1,
-            "items": {
-              "$ref": "#/components/schemas/Range"
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
             }
           },
-          "brandAssets": {
-            "description": "Brand assets map associated to the selected payment method",
+          "description": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ENABLED",
+              "DISABLED",
+              "MAINTENANCE"
+            ]
+          },
+          "validityDateFrom": {
+            "type": "string",
+            "format": "date"
+          },
+          "paymentTypeCode": {
+            "type": "string"
+          },
+          "paymentMethodTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "CARTE",
+                "CONTO",
+                "APP"
+              ]
+            }
+          },
+          "feeRange": {
+            "$ref": "#/components/schemas/FeeRange"
+          },
+          "paymentMethodAsset": {
+            "type": "string"
+          },
+          "methodManagement": {
+            "type": "string",
+            "enum": [
+              "ONBOARDABLE",
+              "ONBOARDABLE_ONLY",
+              "NOT_ONBOARDABLE",
+              "REDIRECT"
+            ]
+          },
+          "disabledReason": {
+            "type": "string",
+            "enum": [
+              "AMOUNT_OUT_OF_BOUND",
+              "MAINTENANCE_IN_PROGRESS",
+              "METHOD_DISABLED",
+              "NOT_YET_VALID",
+              "TARGET_PREVIEW",
+              "NO_BUNDLE_AVAILABLE"
+            ]
+          },
+          "paymentMethodsBrandAssets": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "metadata": {
             "type": "object",
             "additionalProperties": {
               "type": "string"
             }
           }
-        },
-        "required": [
-          "id",
-          "name",
-          "description",
-          "status",
-          "paymentTypeCode",
-          "ranges",
-          "methodManagement"
-        ]
+        }
       },
       "PaymentMethodsResponse": {
+        "required": [
+          "paymentMethods"
+        ],
         "type": "object",
-        "description": "Payment methods response",
         "properties": {
           "paymentMethods": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PaymentMethodResponse"
             }
+          }
+        }
+      },
+      "FeeRange": {
+        "required": [
+          "max",
+          "min"
+        ],
+        "type": "object",
+        "properties": {
+          "min": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "max": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -1293,26 +1334,6 @@
             "example": "https://<fe>/field.html?id=CARDHOLDER_NAME&sid=052211e8-54c8-4e0a-8402-e10bcb8ff264"
           }
         }
-      },
-      "PaymentMethodStatus": {
-        "type": "string",
-        "description": "Payment method status",
-        "enum": [
-          "ENABLED",
-          "DISABLED",
-          "INCOMING"
-        ]
-      },
-      "PaymentMethodManagementType": {
-        "type": "string",
-        "description": "Describes how to manage the payment method authorization flow in wallet and eCommerce domain:\n- REDIRECT if it must be managed with a redirect flow;\n- ONBOARDABLE if it must be managed with NPG and it is possible to save the payment method in the wallet, but also guest payment is accepted;\n- NOT_ONBOARDABLE if it must be managed with NPG but the method cannot be saved, only guest payment is accepted;\n- ONBOARDABLE_ONLY if it must be managed with NPG and it is mandatory to save the payment method in the wallet to use it. Guest payment isn't accepted;\n- ONBORDABLE_WITH_PAYMENT if it must be managed with NPG and it is possible to save it, to use it as guest payment, and to onboard it during the payment;",
-        "enum": [
-          "ONBOARDABLE",
-          "NOT_ONBOARDABLE",
-          "REDIRECT",
-          "ONBOARDABLE_ONLY",
-          "ONBOARDABLE_WITH_PAYMENT"
-        ]
       },
       "PaymentMethodsRequest": {
         "required": [
