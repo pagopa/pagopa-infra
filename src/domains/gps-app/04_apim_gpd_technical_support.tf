@@ -8,7 +8,7 @@ locals {
     description           = "Technical support APIs for GPD"
     path                  = "gpd-technical-support"
     subscription_required = true
-    service_url           = format("https://%s/pagopa-gpd-technical-support", local.gps_hostname)
+    service_url           = format("https://%s/gpd-technical-support", local.gps_hostname)
   }
 }
 
