@@ -20,6 +20,29 @@
   },
   {
     "partition_key": "elastic",
-    "entity": []
+    "entity": [
+      {
+        "id": "elastic-cache-postgres-error",
+        "name": "Cache postgres DB connection error",
+        "description": "Rollout cache postgres deployment to mitigate connection error",
+        "runbook": "aks/aks-deployments-rollout.sh",
+        "run_args": "",
+        "worker": "generic",
+        "oncall": false,
+        "require_approval": false,
+        "tags": "elastic,aks,apiconfig"
+      },
+      {
+        "id": "cluster_health_red",
+        "name": "Elastic cluster health red",
+        "description": "Try the cluster reroute with retryFailed option",
+        "runbook": "elastic/reroute-retry.sh",
+        "run_args": "",
+        "worker": "generic",
+        "oncall": false,
+        "require_approval": false,
+        "tags": "elastic"
+      }
+    ]
   }
 ]
