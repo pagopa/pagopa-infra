@@ -37,8 +37,9 @@ cidr_subnet_vpn                   = ["10.1.142.0/24"]
 #
 # Dns
 #
-external_domain = "pagopa.it"
-dns_zone_wfesp  = "wfesp.test"
+external_domain     = "pagopa.it"
+dns_zone_wfesp      = "wfesp.test"
+dns_zone_prefix_prf = "prf.platform"
 
 private_dns_zone_db_nodo_pagamenti       = "u.db-nodo-pagamenti.com"
 dns_a_reconds_dbnodo_ips                 = ["10.70.73.10"] # db onCloud
