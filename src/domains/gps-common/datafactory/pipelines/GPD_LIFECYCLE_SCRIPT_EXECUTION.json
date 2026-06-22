@@ -69,7 +69,7 @@
             {
               "type": "Query",
               "text": {
-                "value": "@concat('CALL apd.delete_archived_chunk(',string(min(pipeline().parameters.ChunkSize,int(activity('Retrieve_count').output.resultSets[0].rows[0].count))),', ',string(pipeline().parameters.CurrentOffset),')')",
+                "value": "@concat('CALL apd.delete_archived_chunk(',string(min(int(pipeline().parameters.ChunkSize),int(activity('Retrieve_count').output.resultSets[0].rows[0].count))),', ',string(pipeline().parameters.CurrentOffset),')')",
                 "type": "Expression"
               }
             }
@@ -170,7 +170,7 @@
           "sink": {
             "type": "AzurePostgreSqlSink",
             "writeBatchSize": {
-              "value": "@div(pipeline().parameters.ChunkSize, 10)",
+              "value": "@div(int(pipeline().parameters.ChunkSize), 10)",
               "type": "Expression"
             },
             "writeBatchTimeout": "02:30:00",
@@ -293,7 +293,7 @@
             {
               "type": "Query",
               "text": {
-                "value": "@concat('CALL apd.mark_archived_chunk(',string(min(pipeline().parameters.ChunkSize,int(activity('Retrieve_count').output.resultSets[0].rows[0].count))),', ',string(pipeline().parameters.CurrentOffset),')')",
+                "value": "@concat('CALL apd.mark_archived_chunk(',string(min(int(pipeline().parameters.ChunkSize),int(activity('Retrieve_count').output.resultSets[0].rows[0].count))),', ',string(pipeline().parameters.CurrentOffset),')')",
                 "type": "Expression"
               }
             }
