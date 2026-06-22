@@ -36,6 +36,10 @@
       <set-header name="X-Client-Id" exists-action="override" >
         <value>CHECKOUT</value>
       </set-header>
+      <!-- Set payment-requests API Key header -->
+      <set-header name="x-api-key" exists-action="override">
+        <value>{{ecommerce-payment-requests-api-key-value}}</value>
+      </set-header>
       <set-variable name="transactionsOperationId" value="newTransactionAuth" />
       <set-variable name="paymentMethodsOperationId" value="getAllPaymentMethodsAuth,createSessionAuth" />
       <set-variable name="paymentRequestsOperationId" value="getPaymentRequestInfoAuth" />
@@ -67,7 +71,7 @@
       </choose>
       <!-- Check authorization token START-->
       <choose>
-        <when condition="@(context.Operation.Id != ("newTransactionV3"))">
+        <when condition="@(context.Operation.Id != ("newTransactionAuth"))">
           <send-request ignore-error="true" timeout="10" response-variable-name="checkSessionResponse" mode="new">
             <set-url>@($"https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/validate")</set-url>
             <set-method>GET</set-method>
