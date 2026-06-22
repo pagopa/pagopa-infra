@@ -13,7 +13,7 @@ use_private_endpoint             = true
 #
 enabled_resource = {
   test_nexi_postgres  = true,
-  ndp_switch_alert    = false
+  cloudo_ndp_switch   = true
   synthetic_on_demand = true
 }
 
@@ -30,6 +30,6 @@ check_position_body = {
   notice_number = "351173232582781477"
 }
 verify_payment_internal_expected_outcome = "KO"
-nexi_node_ip                             = "10.79.20.63"
 nexi_node_ip_postgres                    = "10.79.20.63"
 nexi_ndp_host_postgres                   = "test.nexi.ndp.pagopa.it"
+nexi_ndphost_header                      = "nodo-p-uat.nexigroup.com"
