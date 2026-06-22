@@ -42,6 +42,17 @@
         "oncall": false,
         "require_approval": false,
         "tags": "elastic"
+      },
+      {
+        "id": "cluster_health_yellow",
+        "name": "Elastic cluster health yellow",
+        "description": "Check if ilm is stuck and try to remove replica shard to fix",
+        "runbook": "elastic/ilm-stuck.sh",
+        "run_args": "",
+        "worker": "generic",
+        "oncall": false,
+        "require_approval": false,
+        "tags": "elastic"
       }
     ]
   }
