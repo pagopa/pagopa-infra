@@ -45,6 +45,6 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 module "__v4__" {
-  # v10.12.1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=1c2a05083cf3145d0edcea7371161e62c28654fa"
+  # v10.16.3
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=316b4ea15abec7b5f7fc88d010eb9186cebc6298"
 }
