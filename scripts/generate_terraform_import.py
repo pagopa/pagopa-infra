@@ -10,15 +10,15 @@ env = sys.argv[1]
 
 # change this with you terraform log
 log = """
+
 ╷
-│ Error: A resource with the ID "https://pagopa-d-bizevents-kv.vault.azure.net/secrets/elastic-apm-secret-token/a44a1dd8472e4cd79c44268d672042a0" already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azurerm_key_vault_secret" for more information.
+│ Error: A resource with the ID "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/policyFragments/ndphost-header" already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azapi_resource" for more information.
 │
-│   with azurerm_key_vault_secret.secret["elastic-apm-secret-token"],
-│   on key_secret.tf line 56, in resource "azurerm_key_vault_secret" "secret":
-│   56: resource "azurerm_key_vault_secret" "secret" {
+│   with azapi_resource.ndphost_header,
+│   on 04_apim_nodo_fragment.tf line 10, in resource "azapi_resource" "ndphost_header":
+│   10: resource "azapi_resource" "ndphost_header" {
 │
 ╵
-
 """
 
 # Regex patterns to extract resource ID and type information

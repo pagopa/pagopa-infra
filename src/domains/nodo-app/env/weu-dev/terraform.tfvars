@@ -183,3 +183,26 @@ wfesp_dismantling = {
   channel_list    = "13212880150_90"
   wfesp_fixed_url = "https://wfesp.pagopa.gov.it/redirect/wpl05/get?idSession="
 }
+
+
+app_gateway_allowed_paths_pagopa_onprem_only = {
+  paths = [
+    "/allowed/*",
+  ]
+  ips = [
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+  ]
+}
+apim_nodo_auth_decoupler_enable = true
+apim_nodo_decoupler_enable      = true

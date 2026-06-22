@@ -46,3 +46,5 @@ resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_a
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name = data.azurerm_resource_group.rg_api.name
 }
+
+// TODO controllare se è possibile dismetterlo

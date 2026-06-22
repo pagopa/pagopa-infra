@@ -82,3 +82,5 @@ resource "azurerm_api_management_named_value" "ndp_disable_activate" {
   display_name        = "ndp-disable-activate"
   value               = "false"
 }
+
+// TODO fatto

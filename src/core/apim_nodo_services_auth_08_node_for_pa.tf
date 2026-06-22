@@ -55,3 +55,5 @@ resource "azurerm_api_management_api_policy" "apim_node_for_pa_policy_auth" {
     is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
   })
 }
+
+// TODO fatto

@@ -85,3 +85,5 @@ resource "azurerm_api_management_api_operation_policy" "nodoInviaCarrelloRPT_api
 resource "terraform_data" "sha256_nodoInviaCarrelloRPT_api_auth_v1_policy" {
   input = sha256(file("./api/nodopagamenti_api/nodoPerPa/v1/nodoInviaCarrelloRPT_policy.xml"))
 }
+
+// TODO fatto

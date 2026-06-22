@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="pspForNode" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:pspfn="http://pagopa-api.pagopa.gov.it/psp/pspForNode.xsd" xmlns:tns="http://pagopa-api.pagopa.gov.it/psp/pspForNode.wsdl" targetNamespace="http://pagopa-api.pagopa.gov.it/psp/pspForNode.wsdl">
+
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://pagopa-api.pagopa.gov.it/psp/pspForNode.xsd" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" targetNamespace="http://pagopa-api.pagopa.gov.it/psp/pspForNode.xsd">
+
+            <!--Simple type-->
+            <xsd:simpleType name="stText6">
+                <xsd:restriction base="xsd:string">
+                    <xsd:minLength value="1" />
+                    <xsd:maxLength value="6" />
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="stText35">
+                <xsd:restriction base="xsd:string">
+                    <xsd:minLength value="1" />
+                    <xsd:maxLength value="35" />
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="stText140">
+                <xsd:restriction base="xsd:string">
+                    <xsd:minLength value="1" />
+                    <xsd:maxLength value="140" />
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="stIdTransfer">
+                <xsd:restriction base="xsd:int">
+                    <xsd:enumeration value="1" />
+                    <xsd:enumeration value="2" />
+                    <xsd:enumeration value="3" />
+                    <xsd:enumeration value="4" />
+                    <xsd:enumeration value="5" />
+                </xsd:restriction>
+            </xsd:simpleType>
+
+
+            <xsd:simpleType name="stIBAN">
+                <xsd:restriction base="xsd:string">
+                    <xsd:pattern value="[a-zA-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}" />
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="stUUID">
+                <xsd:restriction base="xsd:string">
+                    <xsd:pattern value="[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" />
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="stAmount">
+                <xsd:restriction base="xsd:decimal">
+                    <xsd:pattern value="\d+\.\d{2}" />
+                    <xsd:maxInclusive value="999999999.99" />
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="stFiscalCodePA">
+                <xsd:restriction base="xsd:string">
+                    <xsd:length value="11" />
+                    <xsd:pattern value="[0-9]{11}" />
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="stOutcome">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="OK" />
+                    <xsd:enumeration value="KO" />
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="stISODate">
+                <xsd:restriction base="xsd:date" />
+            </xsd:simpleType>
+
+            <xsd:simpleType name="stISODateTime">
+                <xsd:restriction base="xsd:dateTime" />
+            </xsd:simpleType>
+
+
+            <!--- COmplex Type from nodeForPSP -->
+            <xsd:simpleType name="stIdPSP">
+                <xsd:annotation>
+                    <xsd:documentation>
+PSP Identifier, it has been assigned from pagoPA.
+
+Code used in the primitive web service and in its objects exchanged with the NodoSPC.
+
+The code is generally represented by the **BIC** code (_Bank Identifier Code_) of the PSP.
+
+In the absence of the BIC code, or to handle particular situations, another code can be used, as long as it uniquely identifies the PSP.
+            </xsd:documentation>
+                </xsd:annotation>
+                <xsd:restriction base="xsd:string">
+                    <xsd:minLength value="1" />
+                    <xsd:maxLength value="35" />
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="stIdBroker">
+                <xsd:annotation>
+                    <xsd:documentation>
+Broker Identifier, it has been assigned from pagoPA.
+
+Identification of the intermediary/broker of the PSP that provides the specific access (channel) to the PSP for the service delivery.
+
+_Note_: The intermediary/broker can coincide with the PSP itself
+
+            </xsd:documentation>
+                </xsd:annotation>
+                <xsd:restriction base="xsd:string">
+                    <xsd:minLength value="1" />
+                    <xsd:maxLength value="35" />
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="stIdChannel">
+                <xsd:annotation>
+                    <xsd:documentation>
+Channel Identifier, it identifies a payment service category and through which the transaction is carried out.
+
+A Channel identifier belongs to only one PSP intermediary/broker and consequently must be unique with respect to the PSP.
+            </xsd:documentation>
+                </xsd:annotation>
+                <xsd:restriction base="xsd:string">
+                    <xsd:minLength value="1" />
+                    <xsd:maxLength value="35" />
+                </xsd:restriction>
+            </xsd:simpleType>
+
+
+            <xsd:simpleType name="stPaymentToken">
+                <xsd:annotation>
+                    <xsd:documentation>
+It is generated by the system during the payment activation phase, it is the correlation identifier to match activation and payment outcome.
+
+- **PA OLD**: the PA receives it into `CCP` (_CodiceContestoPagamento_) which uniquely identifies a single payment activity started from PSP.
+- **PA NEW**: the PA does not know it, it will receive it as a unique identifier of the receipt.
+
+      </xsd:documentation>
+                </xsd:annotation>
+                <xsd:restriction base="xsd:string">
+                    <xsd:minLength value="1" />
+                    <xsd:maxLength value="35" />
+                </xsd:restriction>
+            </xsd:simpleType>
+
+
+            <xsd:simpleType name="stPassword">
+                <xsd:annotation>
+                    <xsd:documentation>
+                channel password, it has been assigned from pagoPA
+      </xsd:documentation>
+                </xsd:annotation>
+                <xsd:restriction base="xsd:string">
+                    <xsd:minLength value="8" />
+                    <xsd:maxLength value="15" />
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <!--Complex type-->
+            <xsd:complexType name="ctResponse">
+                <xsd:sequence>
+                    <xsd:element name="outcome" type="tns:stOutcome" />
+                    <xsd:element name="fault" type="tns:ctFaultBean" minOccurs="0" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="ctFaultBean">
+                <xsd:sequence>
+                    <xsd:element name="faultCode" type="xsd:string" />
+                    <xsd:element name="faultString" type="xsd:string" />
+                    <xsd:element name="id" type="xsd:string" />
+                    <xsd:element name="description" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="serial" type="xsd:int" minOccurs="0" />
+                    <xsd:element name="originalFaultCode" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="originalFaultString" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="originalDescription" type="xsd:string" minOccurs="0" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="ctTransferPSP">
+                <xsd:sequence>
+                    <xsd:element name="idTransfer" type="tns:stIdTransfer" />
+                    <xsd:element name="transferAmount" type="tns:stAmount" />
+                    <xsd:element name="fiscalCodePA" type="tns:stFiscalCodePA" />
+                    <xsd:element name="IBAN" type="tns:stIBAN" />
+                    <xsd:element name="remittanceInformation" type="tns:stText140" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="ctTransferListPSP">
+                <xsd:sequence>
+                    <xsd:element name="transfer" type="tns:ctTransferPSP" maxOccurs="5" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="ctCreditCardPayment">
+                <xsd:sequence>
+                    <xsd:element name="rrn" type="xsd:string" />
+                    <xsd:element name="outcomePaymentGateway" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+            outcome from the payment gateway
+          </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element> <!--esitoTransazioneCarta -->
+                    <xsd:element name="totalAmount" type="tns:stAmount">
+                        <xsd:annotation>
+                            <xsd:documentation>
+            transaction amount  = fee + EC service amount
+          </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element> <!--fee + debtAmount -->
+                    <xsd:element name="fee" type="tns:stAmount" />
+                    <xsd:element name="timestampOperation" type="tns:stISODateTime" /> <!--timestampOperazione -->
+                    <xsd:element name="authorizationCode" type="tns:stText6" /> <!--codiceAutorizzativo -->
+                    <xsd:element name="paymentGateway" type="tns:stText35" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+            Describe the payment gateway used ( es. VPOS )
+          </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element> <!-- for future use -->
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <!--Element req/res-->
+            <xsd:complexType name="pspNotifyPaymentReq">
+                <xsd:sequence>
+                    <xsd:element name="idPSP" type="tns:stIdPSP" />
+                    <xsd:element name="idBrokerPSP" type="tns:stIdBroker" />
+                    <xsd:element name="idChannel" type="tns:stIdChannel" />
+                    <xsd:element name="paymentToken" type="tns:stPaymentToken" />
+                    <xsd:element name="paymentDescription" type="tns:stText140" />
+                    <xsd:element name="fiscalCodePA" type="tns:stFiscalCodePA" />
+                    <xsd:element name="companyName" type="tns:stText140" />
+                    <xsd:element name="officeName" type="tns:stText140" minOccurs="0" />
+                    <xsd:element name="creditorReferenceId" type="tns:stText35" />
+                    <xsd:element name="debtAmount" type="tns:stAmount">
+                        <xsd:annotation>
+                            <xsd:documentation>
+            EC services amout ( without fee )
+          </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="transferList" type="tns:ctTransferListPSP" />
+                    <!--Choice for future use. In this moment is defined only credit card -->
+                    <xsd:choice>
+                        <xsd:annotation>
+                            <xsd:documentation>
+            Each payment instrument has its own element name.
+          </xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:element name="creditCardPayment" type="tns:ctCreditCardPayment">
+                            <xsd:annotation>
+                                <xsd:documentation>
+              It describes an on-line payment with cards ( credit / debit ) .
+              Plese see project integration documentation for further details
+            </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:choice>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="pspNotifyPaymentRes">
+                <xsd:complexContent>
+                    <xsd:extension base="tns:ctResponse" />
+                </xsd:complexContent>
+            </xsd:complexType>
+
+            <!-- Wrapper Elements -->
+            <xsd:element name="pspNotifyPaymentReq" type="tns:pspNotifyPaymentReq" />
+            <xsd:element name="pspNotifyPaymentRes" type="tns:pspNotifyPaymentRes" />
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="pspNotifyPaymentReq">
+        <wsdl:part name="requestBody" element="pspfn:pspNotifyPaymentReq" />
+    </wsdl:message>
+    <wsdl:message name="pspNotifyPaymentRes">
+        <wsdl:part name="responseBody" element="pspfn:pspNotifyPaymentRes" />
+    </wsdl:message>
+
+    <wsdl:portType name="pspForNode_PortType">
+        <wsdl:operation name="pspNotifyPayment">
+            <wsdl:documentation>
+Notify the outcome of a payment transaction started on any PagoPA client and executed on a payment gateway integrated with Payment Manager.
+
+if outcome is OK, the PSP will receive a transfer found on a technical account. Therefore the PSP shall :
+
+- close the payment by using the *sendPaymentOutcome* message using the *paymentToken* on the request.
+- trasfer founds to the account according to the *transferList* element.
+
+if outcome is KO, the PSP can use this information to balance payment gateway transaction and PSP transfers
+
+
+            </wsdl:documentation>
+
+            <wsdl:input message="tns:pspNotifyPaymentReq" wsam:Action="http://pagopa-api.pagopa.gov.it/service/psp/pspForNode/pspNotifyPaymentReq" />
+            <wsdl:output message="tns:pspNotifyPaymentRes" wsam:Action="http://pagopa-api.pagopa.gov.it/service/psp/pspForNode/pspNotifyPaymentRes" />
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="pspForNode_Binding" type="tns:pspForNode_PortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+        <wsdl:operation name="pspNotifyPayment">
+            <soap:operation soapAction="pspNotifyPayment" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="pspForNode_Service">
+        <wsdl:port name="pspForNode_Port" binding="tns:pspForNode_Binding">
+            <soap:address location="http://pagopa-api.pagopa.gov.it/service/psp/pspForNode" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
