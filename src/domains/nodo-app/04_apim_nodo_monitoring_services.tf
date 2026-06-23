@@ -3,7 +3,7 @@
 ##############
 
 module "apim_nodo_dei_pagamenti_monitoring_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "nodo-monitoring"
   display_name = "Nodo dei Pagamenti - Monitoring"
@@ -78,3 +78,5 @@ module "apim_nodo_monitoring_api" {
     allowed_ip_5 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[10] # NEXI VPN
   })
 }
+
+// TODO fatto

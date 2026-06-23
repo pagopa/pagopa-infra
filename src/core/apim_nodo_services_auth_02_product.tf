@@ -83,4 +83,4 @@ resource "azurerm_api_management_named_value" "ndp_disable_activate" {
   value               = "false"
 }
 
-// TODO fatto
+// TODO fatto migrato

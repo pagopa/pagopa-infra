@@ -153,7 +153,6 @@ for RES in $RESOURCES_TO_MOVE; do
         echo "  ${green}[OK] Risorsa migrata con successo da $ENV_A a $ENV_B!${normal}"
     else
         echo "  ${red}[!!!] ERRORE durante l'importazione in Cartella B.${normal}"
-        echo "        ${red}Dettaglio dell'errore di Terraform:${normal}"
 
         # Stampa l'errore formattato mantenendo l'indentazione
         echo "$IMPORT_OUTPUT" | while IFS= read -r line; do echo "        ${red}> $line${normal}"; done

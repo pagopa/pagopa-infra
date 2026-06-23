@@ -86,4 +86,4 @@ resource "terraform_data" "sha256_nodoInviaCarrelloRPT_api_auth_v1_policy" {
   input = sha256(file("./api/nodopagamenti_api/nodoPerPa/v1/nodoInviaCarrelloRPT_policy.xml"))
 }
 
-// TODO fatto
+// TODO fatto migrato

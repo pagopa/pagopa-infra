@@ -10,7 +10,7 @@ module "apim_donations_product" {
   description  = "Donations"
 
   api_management_name = local.pagopa_apim_name
-  resource_group_name = data.azurerm_resource_group.rg_api.name
+  resource_group_name = local.pagopa_apim_rg
 
   published             = true
   subscription_required = false # TO DISABLE DONA
@@ -26,8 +26,8 @@ module "apim_donations_product" {
 
 resource "azurerm_api_management_api_version_set" "api_donations_api" {
 
-  name                = format("%s-api-donations-api", local.project)
-  resource_group_name = data.azurerm_resource_group.rg_api.name
+  name                = format("%s-api-donations-api", local.product)
+  resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   display_name        = "Donations"
   versioning_scheme   = "Segment"
@@ -37,9 +37,9 @@ resource "azurerm_api_management_api_version_set" "api_donations_api" {
 module "apim_api_donations_api" {
   source = "./.terraform/modules/__v3__/api_management_api"
 
-  name                  = format("%s-api-donations-api", local.project)
+  name                  = format("%s-api-donations-api", local.product)
   api_management_name   = local.pagopa_apim_name
-  resource_group_name   = data.azurerm_resource_group.rg_api.name
+  resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_donations_product.product_id]
   subscription_required = false # TO DISABLE DONA
   api_version           = "v1"
@@ -63,9 +63,9 @@ module "apim_api_donations_api" {
 
 
 resource "azurerm_api_management_api_operation_policy" "get_donations" {
-  api_name            = format("%s-api-donations-api-v1", local.project)
+  api_name            = format("%s-api-donations-api-v1", local.product)
   api_management_name = local.pagopa_apim_name
-  resource_group_name = data.azurerm_resource_group.rg_api.name
+  resource_group_name = local.pagopa_apim_rg
   operation_id        = "getavailabledonations"
 
   # xml_content = file("./api/donations/v1/donazioni_ucraina.xml")
@@ -86,3 +86,5 @@ resource "azurerm_api_management_api_operation_policy" "get_donations" {
 ## Storage Account and related resources
 
 # moved to next-core module
+
+// TODO fatto

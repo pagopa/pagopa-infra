@@ -163,3 +163,5 @@ resource "azapi_resource" "wisp_nodoinviarpt_nodoinviacarrellorpt_outbound_polic
     ignore_changes = [output]
   }
 }
+
+// TODO fatto migrato

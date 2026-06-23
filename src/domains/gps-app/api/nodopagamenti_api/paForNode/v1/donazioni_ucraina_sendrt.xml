@@ -1,0 +1,30 @@
+<policies>
+    <inbound>
+        <base />    
+        <return-response>
+            <set-status code="200" reason="OK" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/xml</value>
+            </set-header>
+            <set-body template="liquid">
+                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"  xmlns:paf="http://pagopa-api.pagopa.gov.it/pa/paForNode.xsd">
+                    <soapenv:Header />
+                    <soapenv:Body>
+                        <paf:paSendRTRes>
+                            <outcome>OK</outcome>
+                        </paf:paSendRTRes>
+                    </soapenv:Body>
+                </soapenv:Envelope>
+            </set-body>
+        </return-response>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

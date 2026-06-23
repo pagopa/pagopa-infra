@@ -1,0 +1,95 @@
+{
+  "debtorFullName": "",
+  "debtorEntityUniqueIdentifierType": "F",
+  "debtorEntityUniqueIdentifierValue": "anonimo",
+  "data": [
+    {
+      "name": "ActionAid International Italia Onlus",
+      "reason": "Donazioni Emergenza Ucraina",
+      "web_site": "https://donaora.actionaid.it/emergenzaucr/~mia-donazione",
+      "base64Logo": "/9j/4AAQSk",
+      "cf": "09686720153",
+      "iban": "IT20O0503401647000000064120",
+      "paymentDescription": "Donazioni Emergenza Ucraina",
+      "companyName": "ActionAid International Italia Onlus",
+      "officeName": "ActionAid International Italia Onlus",
+      "auxdigit": "3",
+      "segregationcode": "00",
+      "transferCategory": "0804101AP",
+      "slices": [
+        { "idDonation": "42", "amount": 500 },
+        { "idDonation": "43", "amount": 1000 },
+        { "idDonation": "44", "amount": 2000 },
+        { "idDonation": "45", "amount": 5000 },
+        { "idDonation": "46", "amount": 10000 },
+        { "idDonation": "47", "amount": 20000 }
+      ]
+    },
+    {
+      "name": "INTERSOS",
+      "reason": "Ucraina: in prima linea nell'emergenza",
+      "web_site": "https://www.intersos.org/donaora/emergenza-ucraina",
+      "base64Logo": "/9j/4AAQSk",
+      "cf": "97091470589",
+      "iban": "IT10T0501803200000015550007",
+      "paymentDescription": "Ucraina: in prima linea nell'emergenza",
+      "companyName": "INTERSOS",
+      "officeName": "INTERSOS",
+      "auxdigit": "3",
+      "segregationcode": "00",
+      "transferCategory": "0804101AP",
+      "slices": [
+        { "idDonation": "48", "amount": 500 },
+        { "idDonation": "49", "amount": 1000 },
+        { "idDonation": "50", "amount": 2000 },
+        { "idDonation": "51", "amount": 5000 },
+        { "idDonation": "52", "amount": 10000 },
+        { "idDonation": "53", "amount": 20000 }
+      ]
+    },
+    {
+      "name": "Medici Senza Frontiere Italia",
+      "reason": "Donazioni Fondo Emergenza per Ucraina",
+      "web_site": "https://www.medicisenzafrontiere.it/landing/emergenza-ucraina-reg/",
+      "base64Logo": "/9j/4AAQSk",
+      "cf": "97096120585",
+      "iban": "IT60F0501803200000010102325",
+      "paymentDescription": "Donazioni Fondo Emergenza per Ucraina",
+      "companyName": "Medici Senza Frontiere Italia",
+      "officeName": "Medici Senza Frontiere Italia",
+      "auxdigit": "3",
+      "segregationcode": "00",
+      "transferCategory": "0804101AP",
+      "slices": [
+        { "idDonation": "54", "amount": 500 },
+        { "idDonation": "55", "amount": 1000 },
+        { "idDonation": "56", "amount": 2000 },
+        { "idDonation": "57", "amount": 5000 },
+        { "idDonation": "58", "amount": 10000 },
+        { "idDonation": "59", "amount": 20000 }
+      ]
+    },
+    {
+      "name": "Comitato Italiano per l’UNICEF - Fondazione Onlus",
+      "reason": "EMERGENZA UCRAINA PER PROTEGGERE I BAMBINI",
+      "web_site": "https://donazioni.unicef.it/landing-emergenze/emergenza-ucraina#/home?utm_source=pagopa&utm_medium=appio&utm_campaign=em_ucraina",
+      "base64Logo": "/9j/4AAQSk",
+      "cf": "01561920586",
+      "iban": "IT98C0501803200000015100514",
+      "paymentDescription": "EMERGENZA UCRAINA PER PROTEGGERE I BAMBINI",
+      "companyName": "Comitato Italiano per l’UNICEF - Fondazione Onlus",
+      "officeName": "Comitato Italiano per l’UNICEF - Fondazione Onlus",
+      "auxdigit": "3",
+      "segregationcode": "00",
+      "transferCategory": "0804101AP",
+      "slices": [
+        { "idDonation": "60", "amount": 500 },
+        { "idDonation": "61", "amount": 1000 },
+        { "idDonation": "62", "amount": 2000 },
+        { "idDonation": "63", "amount": 5000 },
+        { "idDonation": "64", "amount": 10000 },
+        { "idDonation": "65", "amount": 20000 }
+      ]
+    }        
+  ]
+}

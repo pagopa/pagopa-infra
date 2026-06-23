@@ -34,11 +34,44 @@ locals {
 
 }
 
-resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_api_dev" {
-  for_each = toset(local.api_nodo_product_dev)
+# resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_api_dev" {
+#   for_each = toset(local.api_nodo_product_dev)
+#
+#   api_name            = each.key
+#   product_id          = module.apim_nodo_dei_pagamenti_product_dev[0].product_id
+#   api_management_name = data.azurerm_api_management.apim_migrated[0].name
+#   resource_group_name = data.azurerm_resource_group.rg_api.name
+# }
 
-  api_name            = each.key
-  product_id          = module.apim_nodo_dei_pagamenti_product_dev[0].product_id
+resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_api_dev_for_psp" {
+  count = var.env_short == "d" ? 1 : 0
+
+  api_name            = format("%s-node-for-psp-api-dev", var.env_short)
+  product_id          = "nodo-dev"
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+}
+resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_api_dev_per_psp" {
+  count = var.env_short == "d" ? 1 : 0
+
+  api_name            = format("%s-nodo-per-psp-api-dev", var.env_short)
+  product_id          = "nodo-dev"
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+}
+resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_api_dev_for_io" {
+  count = var.env_short == "d" ? 1 : 0
+
+  api_name            = format("%s-node-for-io-api-dev", var.env_short)
+  product_id          = "nodo-dev"
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+}
+resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_api_dev_per_pa" {
+  count = var.env_short == "d" ? 1 : 0
+
+  api_name            = format("%s-nodo-per-pa-api-dev", var.env_short)
+  product_id          = "nodo-dev"
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name = data.azurerm_resource_group.rg_api.name
 }
@@ -633,3 +666,5 @@ module "apim_nodo_monitoring_api_dev" {
     allowed_ip_5 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[10] # NEXI VPN
   })
 }
+
+// TODO migrato

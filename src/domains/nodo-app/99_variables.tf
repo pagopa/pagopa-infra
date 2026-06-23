@@ -435,7 +435,6 @@ variable "app_gateway_allowed_paths_pagopa_onprem_only" {
   description = "Allowed paths from pagopa onprem only"
 }
 
-
 variable "nodo_auth_subscription_limit" {
   type        = number
   description = "subscriptions limit"
@@ -458,4 +457,16 @@ variable "apim_nodo_decoupler_enable" {
   type        = bool
   default     = false
   description = "Apply decoupler to nodo product apim policy"
+}
+
+variable "node_decoupler_primitives" {
+  type        = string
+  description = "Node decoupler primitives"
+  default     = "nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"
+}
+
+variable "nodo_pagamenti_subkey_required" {
+  type        = bool
+  description = "Enabled subkeys for nodo dei pagamenti api"
+  default     = false
 }

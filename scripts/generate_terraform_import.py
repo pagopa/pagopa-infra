@@ -12,13 +12,14 @@ env = sys.argv[1]
 log = """
 
 ╷
-│ Error: A resource with the ID "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/policyFragments/ndphost-header" already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azapi_resource" for more information.
+│ Error: A resource with the ID "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/apis/d-nodo-monitoring-api-dev-v1;rev=1" already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azurerm_api_management_api" for more information.
 │
-│   with azapi_resource.ndphost_header,
-│   on 04_apim_nodo_fragment.tf line 10, in resource "azapi_resource" "ndphost_header":
-│   10: resource "azapi_resource" "ndphost_header" {
+│   with module.apim_nodo_monitoring_api_dev[0].azurerm_api_management_api.this,
+│   on .terraform/modules/apim_nodo_monitoring_api_dev/api_management_api/main.tf line 2, in resource "azurerm_api_management_api" "this":
+│    2: resource "azurerm_api_management_api" "this" {
 │
-╵
+
+
 """
 
 # Regex patterns to extract resource ID and type information
