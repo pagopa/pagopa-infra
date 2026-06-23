@@ -1,7 +1,0 @@
-prefix          = "pagopa"
-env_short       = "d"
-env             = "dev"
-domain          = "shared"
-location        = "westeurope"
-location_short  = "weu"
-dns_zone_prefix = "dev.platform.pagopa.it"

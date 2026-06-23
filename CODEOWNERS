@@ -1,10 +1,3 @@
 # see https://help.github.com/en/articles/about-code-owners#example-of-a-codeowners-file
 
-* @pagopa/pagopa-team-core @pagopa/pagopa-team-touchpoint @pagopa/payments-cloud-admin
-
-/src/domains/selfcare-common @pagopa/infrastructure-admins @pagopa/pagopa-team-core @pagopa/pagopa-team-touchpoint @andrea-putzu
-/src/domains/selfcare-app @pagopa/infrastructure-admins @pagopa/pagopa-team-core @pagopa/pagopa-team-touchpoint @andrea-putzu
-/src/next-core @pagopa/payments-cloud-admin
-/src/db-security @pagopa/payments-cloud-admin
-/src/db-security-configuration @pagopa/payments-cloud-admin
-/src/network @pagopa/payments-cloud-admin
+*@pagopa/payments-cloud-admin

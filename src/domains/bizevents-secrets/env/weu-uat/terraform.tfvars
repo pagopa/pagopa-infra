@@ -1,6 +1,0 @@
-prefix         = "pagopa"
-env_short      = "u"
-env            = "uat"
-domain         = "bizevents"
-location_short = "weu"
-input_file     = "./secret/weu-uat/configs.json"
