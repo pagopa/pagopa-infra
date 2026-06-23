@@ -12,14 +12,18 @@ use_private_endpoint             = true
 # Feature Flags
 #
 enabled_resource = {
-  test_nexi_postgres = true,
-  ndp_switch_alert   = false
+  test_nexi_postgres         = true,
+  synthetic_on_demand        = true,
+  cloudo_ndp_switch          = false,
+  cloudo_checkout_cdn_switch = false
 }
 synthetic_alerts_enabled = true
 
 law_sku               = "CapacityReservation" # TODO verify why it is changed from PerGB2018 to CapacityReservation
 law_retention_in_days = 30
 law_daily_quota_gb    = -1
+
+on_demand_polling_interval_seconds = 120
 
 #
 # monitoring template variables
@@ -29,6 +33,6 @@ check_position_body = {
   notice_number = "001000000136265862"
 }
 verify_payment_internal_expected_outcome = "OK"
-nexi_node_ip                             = "10.79.20.34"
 nexi_node_ip_postgres                    = "10.79.20.25"
 nexi_ndp_host_postgres                   = "nexi.ndp.pagopa.it"
+nexi_ndphost_header                      = "nodo-p.nexigroup.com"
