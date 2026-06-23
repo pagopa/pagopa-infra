@@ -1,6 +1,0 @@
-prefix         = "pagopa"
-env_short      = "d"
-env            = "dev"
-domain         = "gps"
-location_short = "weu"
-input_file     = "./secret/weu-dev/configs.json"

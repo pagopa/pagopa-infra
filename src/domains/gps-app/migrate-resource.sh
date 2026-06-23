@@ -1,1 +1,0 @@
-../../../scripts/migrate-resource.sh

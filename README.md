@@ -2,7 +2,7 @@
 
 [![Static Analysis](https://github.com/pagopa/pagopa-infra/actions/workflows/static_analysis.yml/badge.svg?branch=main&event=push)](https://github.com/pagopa/pagopa-infra/actions/workflows/static_analysis.yml)
 
-pagoPA project infrastructure
+pagoPA project core infrastructure
 
 ## Requirements
 

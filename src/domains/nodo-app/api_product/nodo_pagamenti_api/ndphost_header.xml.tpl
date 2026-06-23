@@ -1,3 +1,0 @@
-<fragment>
-  ${content}
-</fragment>

@@ -1,3 +1,0 @@
-<set-header name="ndphost" exists-action="override">
-  <value>nodo-p-sit.nexigroup.com</value>
-</set-header>

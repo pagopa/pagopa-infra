@@ -1,6 +1,0 @@
-prefix         = "pagopa"
-env_short      = "p"
-env            = "prod"
-domain         = "afm"
-location_short = "weu"
-input_file     = "./secret/weu-prod/configs.json"
