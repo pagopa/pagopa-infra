@@ -69,7 +69,7 @@ resource "azurerm_postgresql_flexible_server_virtual_endpoint" "gpd_readonly_vir
   name              = "${local.product}-${var.location_short}-gpd-pgflex-ro-ve"
   source_server_id  = module.postgres_flexible_server_private_db.id
   replica_server_id = module.postgresql_gpd_itn_replica_spoke_db[0].id
-  type              = "ReadOnly"
+  type              = "ReadWrite"
 }
 
 resource "azurerm_private_dns_cname_record" "gpd_db_readonly_cname_record" {
