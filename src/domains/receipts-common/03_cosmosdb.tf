@@ -112,56 +112,94 @@ locals {
       partition_key_path         = "/id",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput },
-      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
+      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null },
+      indexing_policy            = {}
     },
     {
       name                       = "receipts-pk",
       partition_key_path         = "/eventId",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput },
+      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null },
+      indexing_policy            = {}
+    },
+    {
+      name                       = "receipts-index",
+      partition_key_path         = "/id",
+      default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
+      autoscale_settings         = { max_throughput = 90000 },
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
+      indexing_policy = {
+        excluded_paths = [
+          "/\"_etag\"/?",
+          "/eventData/*",
+          "/ioMessageData/*",
+          "/mdAttach/*",
+          "/mdAttachPayer/*",
+          "/numRetry/?",
+          "/reasonErr/*",
+          "/reasonErrPayer/*",
+          "/notificationNumRetry/?"
+        ]
+        composite_indexes = [
+          [
+            { path : "/status" },
+            { path : "/inserted_at" }
+          ],
+          [
+            { path : "/status" },
+            { path : "/generated_at" }
+          ]
+        ]
+      }
     },
     {
       name                       = "cart-for-receipts",
       partition_key_path         = "/cartId",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
-      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
+      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null },
+      indexing_policy            = {}
     },
     {
       name                       = "receipts-message-errors",
       partition_key_path         = "/id",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
-      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
+      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null },
+      indexing_policy            = {}
     },
     {
       name                       = "cart-receipts-message-errors",
       partition_key_path         = "/id",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
-      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
+      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null },
+      indexing_policy            = {}
     },
     {
       name                       = "receipts-io-messages",
       partition_key_path         = "/messageId",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
-      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
+      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null },
+      indexing_policy            = {}
     },
     {
       name                       = "receipts-io-messages-evt",
       partition_key_path         = "/eventId",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_io_messages },
-      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
+      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null },
+      indexing_policy            = {}
     },
     {
       name                       = "cart-receipts-io-messages",
       partition_key_path         = "/cartId",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
-      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
+      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null },
+      indexing_policy            = {}
     },
   ]
 }
@@ -180,6 +218,7 @@ module "receipts_datastore_cosmosdb_containers" {
   partition_key_path  = each.value.partition_key_path
   throughput          = lookup(each.value, "throughput", null)
   default_ttl         = lookup(each.value, "default_ttl", null)
+  indexing_policy     = each.value.indexing_policy
 
   # conflict_resolution_policy = each.value.conflict_resolution_policy == null ? null : each.value.conflict_resolution_policy
   autoscale_settings = contains(var.receipts_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
