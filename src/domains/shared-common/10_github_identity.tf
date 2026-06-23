@@ -9,7 +9,7 @@ data "azurerm_kubernetes_cluster" "aks" {
 
 # repos must be lower than 20 items
 locals {
-  repos_01 = [
+  cd_repos_01 = [
     "pagopa-shared-toolbox",
     "pagopa-platform-authorizer",
     "pagopa-platform-authorizer-config",
@@ -19,18 +19,13 @@ locals {
     "pagopa-taxonomy"
   ]
 
-  reader_repos_01 = [
-    "pagopa-api"
-  ]
-
-  federations_01 = [
-    for repo in local.repos_01 : {
+  cd_federations_01 = [
+    for repo in local.cd_repos_01 : {
       repository = repo
       subject    = var.env
     }
   ]
 
-  # to avoid subscription Contributor -> https://github.com/microsoft/azure-container-apps/issues/35
   environment_cd_roles = {
     subscription = [
       "Contributor"
@@ -44,13 +39,20 @@ locals {
       ]
     }
   }
-  reader_federations_01 = [
-    for repo in local.reader_repos_01 : {
+  ci_repos_01 = [
+    "pagopa-api"
+  ]
+
+
+  # to avoid subscription Contributor -> https://github.com/microsoft/azure-container-apps/issues/35
+
+  ci_federations_01 = [
+    for repo in local.ci_repos_01 : {
       repository = repo
       subject    = var.env
     }
   ]
-  environment_reader_roles = {
+  environment_ci_roles = {
     subscription = [
       "Reader"
     ]
@@ -72,7 +74,7 @@ module "identity_cd_01" {
 
   identity_role = "cd"
 
-  github_federations = local.federations_01
+  github_federations = local.cd_federations_01
 
   cd_rbac_roles = {
     subscription_roles = local.environment_cd_roles.subscription
@@ -151,11 +153,11 @@ module "identity_ci_01_subscription_reader" {
 
   identity_role = "ci"
 
-  github_federations = local.reader_federations_01
+  github_federations = local.ci_federations_01
 
   ci_rbac_roles = {
-    subscription_roles = local.environment_reader_roles.subscription
-    resource_groups    = local.environment_reader_roles.resource_groups
+    subscription_roles = local.environment_ci_roles.subscription
+    resource_groups    = local.environment_ci_roles.resource_groups
   }
 
   tags = module.tag_config.tags
