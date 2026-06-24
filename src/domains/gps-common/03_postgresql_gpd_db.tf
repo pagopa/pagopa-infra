@@ -14,8 +14,11 @@ data "azurerm_key_vault_secret" "pgres_admin_pwd" {
   key_vault_id = module.key_vault.id
 }
 
-data "azurerm_key_vault_secret" "pgres_gpd_technical_support_login" {
+resource "azurerm_key_vault_secret" "pgres_gpd_technical_support_login_secret" {
   name         = "pgres-gpd-technical-support-user-login"
+  value        = "pgres_gpd_technical_support_user"
+  content_type = "text/plain"
+
   key_vault_id = module.key_vault.id
 }
 
@@ -281,7 +284,7 @@ resource "postgresql_role" "pgres_adf_user" {
 
 # Create a read-only user for GPD Technical Support reconciliation
 resource "postgresql_role" "pgres_gpd_technical_support_user" {
-  name     = data.azurerm_key_vault_secret.pgres_gpd_technical_support_login.value
+  name     = azurerm_key_vault_secret.pgres_gpd_technical_support_login_secret.value
   login    = true
   password = azurerm_key_vault_secret.pgres_gpd_technical_support_password_secret.value
 }
