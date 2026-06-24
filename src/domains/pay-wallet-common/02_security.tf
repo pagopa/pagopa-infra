@@ -118,6 +118,17 @@ resource "azurerm_key_vault_access_policy" "appgateway_wallet_kv" {
   certificate_permissions = ["Get", ]
 }
 
+resource "azurerm_key_vault_access_policy" "apim_wallet_kv" {
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azurerm_api_management.apim.identity[0].principal_id
+
+  secret_permissions      = ["Get", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", ]
+}
+
 resource "azurerm_key_vault_secret" "ai_connection_string" {
   name         = "ai-${var.env_short}-connection-string"
   value        = data.azurerm_application_insights.application_insights_italy.connection_string
