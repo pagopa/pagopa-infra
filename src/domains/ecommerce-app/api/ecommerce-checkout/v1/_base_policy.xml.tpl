@@ -17,6 +17,9 @@
           <header>x-transaction-id-from-client</header>
           <header>lang</header>
         </allowed-headers>
+        <expose-headers>
+           <header>Retry-After</header>
+        </expose-headers>
       </cors>
       <base />
       <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />

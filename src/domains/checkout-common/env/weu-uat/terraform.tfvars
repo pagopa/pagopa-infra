@@ -11,7 +11,7 @@ location_short = "weu"
 monitor_resource_group_name = "pagopa-u-monitor-rg"
 external_domain             = "pagopa.it"
 dns_zone_internal_prefix    = "internal.uat.platform"
-
+dns_zone_checkout           = "uat.checkout"
 # Networking
 
 ingress_load_balancer_ip = "10.1.100.250"
