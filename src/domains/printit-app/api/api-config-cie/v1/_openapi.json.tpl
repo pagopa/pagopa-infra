@@ -4,7 +4,7 @@
     "title": "PagoPA API configuration ${service}",
     "description": "Spring application exposes APIs to manage configuration for CI/PSP on the Nodo dei Pagamenti",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.59.36"
+    "version": "0.59.37"
   },
   "servers": [
     {
@@ -10873,7 +10873,8 @@
         "tags": [
           "Ibans"
         ],
-        "summary": "Upload a CSV file containing the details of multiple ibans to create",
+        "summary": "Massive insert/update/delete of IBANs via CSV file",
+        "description": "Upload a CSV file (UTF-8, comma-separated) containing the details of multiple IBANs to insert, update or delete in a single bulk operation.\n\n### CSV columns\n| Column | Required | Description |\n|---|---|---|\n| `iddominio` | always | Fiscal code of the Creditor Institution (11 digits) |\n| `iban` | always | IBAN code |\n| `operazione` | always | Operation type: `I` (insert), `U`/`M` (update), `D`/`C` (delete) |\n| `descrizione` | optional | IBAN description (used on insert/update) |\n| `dataattivazioneiban` | required on **insert**, forbidden on update/delete | IBAN activation/validity date (`yyyy-MM-dd`) |\n| `datascadenzaiban` | optional on insert/update, forbidden on delete | IBAN due date (`yyyy-MM-dd`); on insert defaults to *today + 1 year* if omitted |\n\n### Rules per operation\n- **Insert (`I`)**: `dataattivazioneiban` is mandatory; `descrizione` and `datascadenzaiban` are optional.\n- **Update (`U` / `M`)**: at least one of `descrizione` or `datascadenzaiban` must be provided; `dataattivazioneiban` must NOT be provided.\n- **Delete (`D` / `C`)**: only `iddominio`, `iban` and `operazione` are allowed; `descrizione`, `dataattivazioneiban` and `datascadenzaiban` must NOT be provided.\n- The same IBAN cannot appear more than once in the file.\n\n### CSV example\n```csv\niddominio,iban,operazione,descrizione,dataattivazioneiban,datascadenzaiban\n77777777777,IT60X0542811101000000123456,I,Conto principale,2025-01-01,2030-01-01\n77777777777,IT60X0542811101000000123457,I,,2025-02-01,\n77777777777,IT60X0542811101000000123458,U,Nuova descrizione,,2031-12-31\n77777777777,IT60X0542811101000000123459,M,,,2032-06-30\n77777777777,IT60X0542811101000000123460,D,,,\n77777777777,IT60X0542811101000000123461,C,,,\n```\n",
         "operationId": "massiveCreateIbansCsv",
         "requestBody": {
           "content": {
@@ -10886,7 +10887,7 @@
                 "properties": {
                   "file": {
                     "type": "string",
-                    "description": "CSV file regarding various Ibans actions",
+                    "description": "CSV file describing the IBAN operations to perform (insert/update/delete). See the operation description for the expected columns and per-operation rules.",
                     "format": "binary"
                   }
                 }
@@ -10897,7 +10898,7 @@
         },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "OK - all rows have been processed successfully",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -10939,8 +10940,8 @@
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
+          "404": {
+            "description": "Not Found",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -10948,10 +10949,35 @@
                   "type": "string"
                 }
               }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
             }
           },
-          "404": {
-            "description": "Not Found",
+          "409": {
+            "description": "Conflict",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -19144,9 +19170,6 @@
         ],
         "type": "object",
         "properties": {
-          "active": {
-            "type": "boolean"
-          },
           "iban": {
             "maxLength": 35,
             "minLength": 0,

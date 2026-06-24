@@ -457,6 +457,10 @@
           "pspId": {
             "type": "string",
             "description": "The id of the psp"
+          },
+          "pspChannelCode": {
+            "type": "string",
+            "description": "Payment service provider channel code"
           }
         },
         "required": [

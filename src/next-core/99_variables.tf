@@ -1032,7 +1032,7 @@ variable "cidr_subnet_dns_forwarder" {
 
 variable "vpn_gw_sku" {
   type        = string
-  default     = "VpnGw1"
+  default     = "VpnGw1AZ"
   description = "VPN gateway sku"
 }
 

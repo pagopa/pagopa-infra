@@ -122,20 +122,24 @@ resource "azurerm_monitor_diagnostic_setting" "pay_wallet_queue_diagnostics" {
 locals {
   queue_alert_props = var.env_short == "p" ? [
     {
-      queue_key    = "cdc-queue"
-      severity     = 1
-      time_window  = 30
-      frequency    = 15
-      threshold    = 10
-      action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+      queue_key         = "cdc-queue"
+      severity          = 1
+      time_window       = 30
+      fetch_time_window = 45
+      frequency         = 15
+      threshold         = 20
+      dynamic_threshold = 2.0
+      action_group      = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     },
     {
-      queue_key    = "logged-action-dead-letter-queue"
-      severity     = 1
-      time_window  = 30
-      frequency    = 15
-      threshold    = 10
-      action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
+      queue_key         = "logged-action-dead-letter-queue"
+      severity          = 1
+      time_window       = 30
+      fetch_time_window = 45
+      frequency         = 15
+      threshold         = 10
+      dynamic_threshold = 2.0
+      action_group      = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
     },
   ] : []
 }
@@ -153,40 +157,46 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_
     custom_webhook_payload = "{}"
   }
   data_source_id = module.pay_wallet_storage[0].id
-  description    = format("Enqueuing rate for queue %s > ${each.value.threshold} during last ${each.value.time_window} minutes", replace("${each.value.queue_key}", "-", " "))
+  description    = format("Enqueuing rate for queue %s > ${each.value.dynamic_threshold} percent threshold of 'PutMessage' (at least ${each.value.threshold}) during last ${each.value.time_window} minutes", replace("${each.value.queue_key}", "-", " "))
   enabled        = true
   query = format(<<-QUERY
-    let OpCountForQueue = (operation: string, queueKey: string) {
+    let endDelete = ago(10m);
+    let startDelete = endDelete - ${each.value.time_window}m;
+    let endPut = endDelete;
+    let startPut = endPut - ${each.value.time_window}m;
+    let OpCountForQueue = (operation: string, queueKey: string, timestart: datetime, timeend: datetime) {
         StorageQueueLogs
         | where OperationName == operation and ObjectKey startswith queueKey
+        | where TimeGenerated between (timestart .. timeend)
         | summarize count()
         | project count_
         | extend dummy=1
     };
-    let PutMessages = (queueName: string) {
-      OpCountForQueue("PutMessage", queueName)
+    let PutMessages = (queueName: string, timestart: datetime, timeend: datetime) {
+      OpCountForQueue("PutMessage", queueName, timestart, timeend)
         | project PutCount = count_
         | extend dummy = 1
     };
-    let DeletedMessages =  (queueName: string) {
-      OpCountForQueue("DeleteMessage", queueName)
+    let DeletedMessages =  (queueName: string, timestart: datetime, timeend: datetime) {
+      OpCountForQueue("DeleteMessage", queueName, timestart, timeend)
         | project DeleteCount = count_
         | extend dummy = 1
     };
-    let MessageRateForQueue = (queueKey: string) {
-        PutMessages(queueKey)
-        | join kind=inner (DeletedMessages(queueKey)) on dummy
+    let MessageRateForQueue = (queueKey: string, timestartPut: datetime, timeendPut: datetime, timestartDelete: datetime, timeendDelete: datetime) {
+        PutMessages(queueKey, timestartPut, timeendPut)
+        | join kind=inner (DeletedMessages(queueKey, timestartDelete, timeendDelete)) on dummy
         | extend Diff = PutCount - DeleteCount
         | project PutCount, DeleteCount, Diff
     };
-    MessageRateForQueue("%s")
-    | where Diff > ${each.value.threshold}
+    MessageRateForQueue("%s", startPut, endPut, startDelete, endDelete)
+    | extend threshold = max_of(PutCount*(${each.value.dynamic_threshold}/100.0), ${each.value.threshold})
+    | where Diff > threshold
     QUERY
     , "/${module.pay_wallet_storage[0].name}/${local.project}-${each.value.queue_key}"
   )
   severity    = each.value.severity
   frequency   = each.value.frequency
-  time_window = each.value.time_window
+  time_window = each.value.fetch_time_window
   trigger {
     operator  = "GreaterThan"
     threshold = 0
