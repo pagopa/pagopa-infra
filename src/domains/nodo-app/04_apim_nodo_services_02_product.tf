@@ -26,17 +26,6 @@ module "apim_nodo_dei_pagamenti_product" {
   })
 }
 
-locals {
-  api_nodo_product = [
-    azurerm_api_management_api.apim_node_for_psp_api_v1.name,
-    azurerm_api_management_api.apim_nodo_per_psp_api_v1.name,
-    azurerm_api_management_api.apim_node_for_io_api_v1.name,
-    azurerm_api_management_api.apim_nodo_per_pa_api_v1.name,
-    azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1.name,
-    module.apim_nodo_per_pm_api_v1.name,
-    module.apim_nodo_per_pm_api_v2.name,
-  ]
-}
 # associate API to product
 resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_api_for_psp" {
 

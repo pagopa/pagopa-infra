@@ -45,7 +45,8 @@ resource "azurerm_api_management_api_version_set" "nodo_monitoring_api" {
 }
 
 module "apim_nodo_monitoring_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "./.terraform/modules/__v3__/api_management_api"
+
 
   name                  = format("%s-nodo-monitoring-api", var.env_short)
   api_management_name   = local.pagopa_apim_name

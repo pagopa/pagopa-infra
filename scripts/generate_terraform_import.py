@@ -11,14 +11,15 @@ env = sys.argv[1]
 # change this with you terraform log
 log = """
 
-╷
-│ Error: A resource with the ID "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/apis/d-nodo-monitoring-api-dev-v1;rev=1" already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azurerm_api_management_api" for more information.
-│
-│   with module.apim_nodo_monitoring_api_dev[0].azurerm_api_management_api.this,
-│   on .terraform/modules/apim_nodo_monitoring_api_dev/api_management_api/main.tf line 2, in resource "azurerm_api_management_api" "this":
-│    2: resource "azurerm_api_management_api" "this" {
-│
 
+╷
+│ Error: A resource with the ID "/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/products/nodo-monitoring" already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azurerm_api_management_product" for more information.
+│
+│   with module.apim_nodo_dei_pagamenti_monitoring_product.azurerm_api_management_product.this,
+│   on .terraform/modules/__v3__/api_management_product/main.tf line 1, in resource "azurerm_api_management_product" "this":
+│    1: resource "azurerm_api_management_product" "this" {
+│
+╵
 
 """
 
