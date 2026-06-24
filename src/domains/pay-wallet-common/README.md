@@ -27,6 +27,7 @@
 | <a name="module_redis_spoke_pay_wallet_snet"></a> [redis\_spoke\_pay\_wallet\_snet](#module\_redis\_spoke\_pay\_wallet\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_storage_spoke_pay_wallet_snet"></a> [storage\_spoke\_pay\_wallet\_snet](#module\_storage\_spoke\_pay\_wallet\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
+| <a name="module_wallet_cdn_frontdoor"></a> [wallet\_cdn\_frontdoor](#module\_wallet\_cdn\_frontdoor) | ./.terraform/modules/__v4__/cdn_frontdoor | n/a |
 | <a name="module_wallet_fe_cdn"></a> [wallet\_fe\_cdn](#module\_wallet\_fe\_cdn) | ./.terraform/modules/__v4__/cdn | n/a |
 | <a name="module_wallet_fe_web_test"></a> [wallet\_fe\_web\_test](#module\_wallet\_fe\_web\_test) | ./.terraform/modules/__v4__/application_insights_standard_web_test | n/a |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v4__/kubernetes_workload_identity_init | n/a |

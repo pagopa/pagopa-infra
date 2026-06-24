@@ -131,6 +131,8 @@ def main():
 
   cloudo_playload_j = json.loads(cloudo_playload)
   runbook_payload = cloudo_playload_j.get("payload")
+  if isinstance(runbook_payload, str):
+    runbook_payload = json.loads(runbook_payload)
 
   print(f"received payload: {runbook_payload}")
   switch = runbook_payload.get("switch")
@@ -139,7 +141,7 @@ def main():
 
   values = get_apim_named_values(apim_client, SWITCH.get(switch).keys())
   print(f"current values: {values}")
-
+  print(f"updating to: {SWITCH.get(switch)}")
   update_apim_named_values(apim_client, SWITCH.get(switch))
   print()
 

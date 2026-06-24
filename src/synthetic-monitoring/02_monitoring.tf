@@ -17,7 +17,7 @@ module "monitoring_function" {
   application_insights_action_group_ids = var.env_short == "p" ? [data.azurerm_monitor_action_group.infra_opsgenie[0].id] : [data.azurerm_monitor_action_group.slack.id]
 
   docker_settings = {
-    image_tag = "v1.11.0@sha256:2a3c9ae90f808ce7f3e66dc9e37ae40c51a822742ae0feeb08ecb8fb770e6387"
+    image_tag = "v1.11.2@sha256:a0d9821489aef256345d558915319d5aa911dd7e648a1f4c826c001eaf9a80fe"
   }
 
   job_settings = {
@@ -25,6 +25,7 @@ module "monitoring_function" {
     container_app_environment_id = data.azurerm_container_app_environment.tools_cae.id
     http_client_timeout          = 30000
     workload_profile             = "None"
+    log_level                    = "INFO"
   }
 
   enable_synthetic_on_demand = var.enabled_resource.synthetic_on_demand
@@ -33,6 +34,7 @@ module "monitoring_function" {
     private_endpoint_enabled  = var.use_private_endpoint
     table_private_dns_zone_id = var.use_private_endpoint ? data.azurerm_private_dns_zone.storage_account_table.id : null
     replication_type          = var.storage_account_replication_type
+    queue_private_dns_zone_id = var.use_private_endpoint ? data.azurerm_private_dns_zone.storage_account_queue.id : null
   }
 
   storage_private_endpoint_subnet_id = var.use_private_endpoint ? data.azurerm_subnet.private_endpoint_subnet[0].id : null
@@ -46,6 +48,12 @@ module "monitoring_function" {
   self_alert_configuration = {
     enabled = var.self_alert_enabled
   }
+
+  queue_job_settings = {
+    polling_interval_in_seconds = var.on_demand_polling_interval_seconds
+  }
+
+
   monitoring_configuration_encoded = templatefile("${path.module}/monitoring_configuration.json.tpl", {
     env_name                                 = var.env,
     env_short                                = var.env_short,
@@ -54,18 +62,21 @@ module "monitoring_function" {
     internal_api_domain_prefix               = "weu${var.env}"
     internal_api_domain_suffix               = var.env == "prod" ? "internal.platform.pagopa.it" : "internal.${var.env}.platform.pagopa.it"
     nodo_subscription_key                    = nonsensitive(module.secret_core.values["synthetic-monitoring-nodo-subscription-key"].value)
+    ndp_pagopa_subscription_key              = nonsensitive(module.secret_core.values["synthetic-monitoring-ndp-pagopa-subscription-key"].value),
+    ndp_ecommerce_subscription_key           = nonsensitive(module.secret_core.values["synthetic-monitoring-nodo-ecommerce-subscription-key"].value),
     appgw_public_ip                          = data.azurerm_public_ip.appgateway_public_ip.ip_address
     check_position_body                      = var.check_position_body
     alert_enabled                            = var.synthetic_alerts_enabled
     verify_payment_internal_expected_outcome = var.verify_payment_internal_expected_outcome
-    nexi_node_ip                             = var.nexi_node_ip
     nexi_node_ip_postgres                    = var.nexi_node_ip_postgres
     fdr_enabled                              = var.env == "prod" ? false : true
-    nexi_ndp_host                            = var.nexi_ndp_host
     nexi_ndp_host_postgres                   = var.nexi_ndp_host_postgres
+    nexi_ndphost_header                      = var.nexi_ndphost_header
     developers_action_group_ids              = jsonencode((can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]))
     nexi_postgres_enabled                    = var.enabled_resource.test_nexi_postgres
     checkout_cdn_endpoint                    = "https://${data.azurerm_cdn_frontdoor_endpoint.checkout_cdn_endpoint.host_name}"
-    cloudo_action_group_ids                  = jsonencode([data.azurerm_monitor_action_group.cloudo.id])
+    cloudo_action_group_ids                  = jsonencode([data.azurerm_monitor_action_group.cloudo.id]),
+    cloudo_ndp_switch                        = var.enabled_resource.cloudo_ndp_switch
+    cloudo_checkout_cdn_switch               = var.enabled_resource.cloudo_checkout_cdn_switch
   })
 }

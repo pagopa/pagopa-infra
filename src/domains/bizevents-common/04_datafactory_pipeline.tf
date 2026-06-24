@@ -1,4 +1,6 @@
 resource "azurerm_data_factory_pipeline" "pipeline_biz_to_view" {
+  count = var.env_short == "d" ? 1 : 0 # used for ADF biz test developer
+
   depends_on = [azurerm_data_factory_data_flow.write_biz_events_to_biz_view]
 
   name            = "BIZEVENTS_TO_BIZVIEW_Pipeline"
