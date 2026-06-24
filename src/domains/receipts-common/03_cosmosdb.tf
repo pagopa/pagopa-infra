@@ -138,11 +138,33 @@ locals {
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
     {
-      name                       = "receipts-pk",
-      partition_key_path         = "/eventId",
-      default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput },
-      indexing_policy            = {}
+      name               = "receipts-pk",
+      partition_key_path = "/eventId",
+      default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
+      autoscale_settings = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput },
+      indexing_policy = {
+        excluded_paths = [
+          "/\"_etag\"/?",
+          "/eventData/*",
+          "/ioMessageData/*",
+          "/mdAttach/*",
+          "/mdAttachPayer/*",
+          "/numRetry/?",
+          "/reasonErr/*",
+          "/reasonErrPayer/*",
+          "/notificationNumRetry/?"
+        ]
+        composite_indexes = [
+          [
+            { path : "/status" },
+            { path : "/inserted_at" }
+          ],
+          [
+            { path : "/status" },
+            { path : "/generated_at" }
+          ]
+        ]
+      }
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
     {
