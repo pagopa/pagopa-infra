@@ -169,36 +169,6 @@ locals {
       }
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
-    # {
-    #   name                       = "receipts-index",
-    #   partition_key_path         = "/id",
-    #   default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
-    #   autoscale_settings         = { max_throughput = 90000 },
-    #   conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
-    #   indexing_policy = {
-    #     excluded_paths = [
-    #       "/\"_etag\"/?",
-    #       "/eventData/*",
-    #       "/ioMessageData/*",
-    #       "/mdAttach/*",
-    #       "/mdAttachPayer/*",
-    #       "/numRetry/?",
-    #       "/reasonErr/*",
-    #       "/reasonErrPayer/*",
-    #       "/notificationNumRetry/?"
-    #     ]
-    #     composite_indexes = [
-    #       [
-    #         { path : "/status" },
-    #         { path : "/inserted_at" }
-    #       ],
-    #       [
-    #         { path : "/status" },
-    #         { path : "/generated_at" }
-    #       ]
-    #     ]
-    #   }
-    # },
     {
       name                       = "cart-for-receipts",
       partition_key_path         = "/cartId",
