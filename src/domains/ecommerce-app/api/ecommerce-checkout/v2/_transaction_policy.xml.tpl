@@ -88,9 +88,8 @@
                 <value>{{ecommerce-personal-data-vault-api-key}}</value>
             </set-header>
             <set-body>@{
-            JObject requestBody = (JObject)context.Request.Body.As<JObject>(true);
             return new JObject(
-                    new JProperty("pii",  (string)requestBody["email"])
+                    new JProperty("pii",  (string)context.Variables["emailToValidate"])
                 ).ToString();
                 }</set-body>
         </send-request>
