@@ -50,6 +50,36 @@
         </choose>
         <!-- pass rptId value into header END -->
 
+        <!-- *** Email validation START *** -->
+        <set-variable name="emailToValidate" value="@{
+        JObject requestBody = (JObject)context.Request.Body.As<JObject>(preserveContent: true);
+        return requestBody.ContainsKey("email") ? (string)requestBody["email"] : "";
+        }" />
+        <choose>
+        <when condition="@{
+            string email = (string)context.Variables["emailToValidate"];
+            if (string.IsNullOrEmpty(email)) { return true; }
+            return !System.Text.RegularExpressions.Regex.IsMatch(
+            email,
+            @"^(([^<>()\[\]\\.,;:\s@""]+(\.[^<>()\[\]\\.,;:\s@""]+)*)|("".+""))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$",
+            System.Text.RegularExpressions.RegexOptions.IgnoreCase
+            );
+        }">
+            <return-response>
+            <set-status code="400" reason="Bad Request" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+            </set-header>
+            <set-body>{
+                "title": "Invalid email address",
+                "status": 400,
+                "detail": "The email field does not match the expected format"
+            }</set-body>
+            </return-response>
+        </when>
+        </choose>
+        <!-- *** Email validation END *** -->
+
         <!-- Post Token PDV START-->
         <send-request ignore-error="true" timeout="10" response-variable-name="pdv-token" mode="new">
             <set-url>${pdv_api_base_path}/tokens</set-url>
