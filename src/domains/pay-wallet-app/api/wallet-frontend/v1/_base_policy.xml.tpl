@@ -26,6 +26,16 @@
         </cors>
         <!-- Backend: storage static website (bypasses CDN in case of downtime) -->
         <set-backend-service base-url="https://${storage_web_hostname}" />
+        <!-- SPA fallback: non-file paths → /index.html so storage returns 200 not 404 (IO app checks status code) -->
+        <choose>
+            <when condition="@{
+                var path = context.Request.Url.Path;
+                var lastSegment = path.Substring(path.LastIndexOf('/') + 1);
+                return lastSegment.Length > 0 && !lastSegment.Contains(".");
+            }">
+                <rewrite-uri template="/index.html" copy-unmatched-params="false" />
+            </when>
+        </choose>
     </inbound>
     <outbound>
         <base />
