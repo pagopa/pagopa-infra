@@ -277,7 +277,7 @@ module "checkout_npg_sdk_web_test" {
   source = "./.terraform/modules/__v4__/application_insights_standard_web_test"
 
   https_endpoint                        = "https://${local.dns_zone_key}"
-  https_endpoint_path                   = "/npg/hfsdk.integrity.json"
+  https_endpoint_path                   = "/npg/sdk/hfsdk.integrity.json"
   alert_name                            = "${local.project}-npg-sdk-web-test"
   location                              = var.location
   alert_enabled                         = true
