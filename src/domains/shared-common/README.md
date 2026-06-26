@@ -165,6 +165,7 @@ No outputs.
 | <a name="module_github_runner_environment"></a> [github\_runner\_environment](#module\_github\_runner\_environment) | git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment_v2 | v8.53.0 |
 | <a name="module_github_runner_environment_italy"></a> [github\_runner\_environment\_italy](#module\_github\_runner\_environment\_italy) | git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment_v2 | v8.53.0 |
 | <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | ./.terraform/modules/__v3__/github_federated_identity | n/a |
+| <a name="module_identity_ci_01_subscription_reader"></a> [identity\_ci\_01\_subscription\_reader](#module\_identity\_ci\_01\_subscription\_reader) | ./.terraform/modules/__v3__/github_federated_identity | n/a |
 | <a name="module_iuvgenerator_cosmosdb_account"></a> [iuvgenerator\_cosmosdb\_account](#module\_iuvgenerator\_cosmosdb\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v8.93.1 |
 | <a name="module_iuvgenerator_cosmosdb_snet"></a> [iuvgenerator\_cosmosdb\_snet](#module\_iuvgenerator\_cosmosdb\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.53.0 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v8.53.0 |

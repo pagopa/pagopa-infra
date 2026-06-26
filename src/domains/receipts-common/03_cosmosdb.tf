@@ -75,6 +75,8 @@ module "receipts_datastore_cosmosdb_account" {
 
   action = local.action_groups
 
+  burst_capacity_enabled = true
+
   # add data.azurerm_subnet.<my_service>.id
   # allowed_virtual_network_subnet_ids = var.receipts_datastore_cosmos_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
   allowed_virtual_network_subnet_ids = []
@@ -108,17 +110,63 @@ locals {
     #   autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
     # },
     {
-      name                       = "receipts",
-      partition_key_path         = "/id",
-      default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput },
+      name               = "receipts"
+      partition_key_path = "/id"
+      default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
+      autoscale_settings = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput }
+      indexing_policy = {
+        excluded_paths = [
+          "/\"_etag\"/?",
+          "/eventData/*",
+          "/ioMessageData/*",
+          "/mdAttach/*",
+          "/mdAttachPayer/*",
+          "/numRetry/?",
+          "/reasonErr/*",
+          "/reasonErrPayer/*",
+          "/notificationNumRetry/?"
+        ]
+        composite_indexes = [
+          [
+            { path : "/status" },
+            { path : "/inserted_at" }
+          ],
+          [
+            { path : "/status" },
+            { path : "/generated_at" }
+          ]
+        ]
+      }
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
     {
-      name                       = "receipts-pk",
-      partition_key_path         = "/eventId",
-      default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput },
+      name               = "receipts-pk",
+      partition_key_path = "/eventId",
+      default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
+      autoscale_settings = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput },
+      indexing_policy = {
+        excluded_paths = [
+          "/\"_etag\"/?",
+          "/eventData/*",
+          "/ioMessageData/*",
+          "/mdAttach/*",
+          "/mdAttachPayer/*",
+          "/numRetry/?",
+          "/reasonErr/*",
+          "/reasonErrPayer/*",
+          "/notificationNumRetry/?"
+        ]
+        composite_indexes = [
+          [
+            { path : "/status" },
+            { path : "/inserted_at" }
+          ],
+          [
+            { path : "/status" },
+            { path : "/generated_at" }
+          ]
+        ]
+      }
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
     {
@@ -126,6 +174,7 @@ locals {
       partition_key_path         = "/cartId",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
+      indexing_policy            = {}
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
     {
@@ -133,6 +182,7 @@ locals {
       partition_key_path         = "/id",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
+      indexing_policy            = {}
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
     {
@@ -140,6 +190,7 @@ locals {
       partition_key_path         = "/id",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
+      indexing_policy            = {}
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
     {
@@ -147,6 +198,7 @@ locals {
       partition_key_path         = "/messageId",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
+      indexing_policy            = {}
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
     {
@@ -154,6 +206,7 @@ locals {
       partition_key_path         = "/eventId",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_io_messages },
+      indexing_policy            = {}
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
     {
@@ -161,6 +214,7 @@ locals {
       partition_key_path         = "/cartId",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
+      indexing_policy            = {}
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
   ]
@@ -180,6 +234,7 @@ module "receipts_datastore_cosmosdb_containers" {
   partition_key_path  = each.value.partition_key_path
   throughput          = lookup(each.value, "throughput", null)
   default_ttl         = lookup(each.value, "default_ttl", null)
+  indexing_policy     = each.value.indexing_policy
 
   # conflict_resolution_policy = each.value.conflict_resolution_policy == null ? null : each.value.conflict_resolution_policy
   autoscale_settings = contains(var.receipts_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
