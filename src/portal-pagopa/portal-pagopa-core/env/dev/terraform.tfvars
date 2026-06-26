@@ -1,0 +1,10 @@
+prefix                            = "pagopa"
+env_short                         = "d"
+env                               = "dev"
+domain                            = "portalpa"
+location_short                    = "itn"
+location                          = "italynorth"
+container_image_name              = "pagopadcommonacr.azurecr.io/pagopa-portal:latest"
+postgres_database_name            = "dipartimento_pagamenti"
+postgres_dns_registration_enabled = true
+next_public_app_url               = "https://pagopa-d-itn-portalpa-app.azurewebsites.net"
