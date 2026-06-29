@@ -22,14 +22,15 @@ from slack_sdk.errors import SlackApiError
 SYNTHETICS_INBOUND_QUEUE_NAME = "inbound-queue"
 SYNTHETICS_OUTBOUND_QUEUE_NAME = "outbound-queue"
 STORAGE_ACCOUNT_NAME = f"pagopa{os.environ.get('CLOUDO_ENVIRONMENT_SHORT', 'd')}weusynthmon"
-TEST_ID_TO_WATCH = ["nodo_checkPosition_appgw", "nodo_checkPosition_nexiPostgres", "nodo_verifyPaymentNoticeOnPartner_appgw", "nodo_verifyPaymentNoticeOnPartner_nexiPostgres"]
+TEST_ID_TO_WATCH = ["nodo_checkPosition_pagoPa", "nodo_checkPosition_nexiPostgres", "nodo_verifyPaymentNoticeOnPartner_pagoPa", "nodo_verifyPaymentNoticeOnPartner_nexiPostgres"]
 
-TESTS_TO_RUN = 1#3
-WAIT_BETWEEN_TESTS = 10#60
-WAIT_BEFORE_RESPONSE = 10#30
+TESTS_TO_RUN = 3
+WAIT_BETWEEN_TESTS = 60
+WAIT_BEFORE_RESPONSE = 30
 SWITCH_TO_NEXI = "toNexi"
 SWITCH_TO_PAGOPA = "toPagopa"
-NO_SWITCH = None
+NO_SWITCH = "noSwitch"
+UNCLEAR_SWITCH = "unclear"
 SLACK_WEBHOOK_URL = "ndp-dr-slack-webhook"
 GOOGLE_TOKEN_API = "dip-pagamenti-google-token-api"
 CALENDAR_ID = "dip-pagamenti-calendar-id"
@@ -161,19 +162,20 @@ def evaluate_test_results(test_results: dict) -> str:
     nexi_tests = list(filter(lambda test: test.get("type", "") == "nexiPostgres", watched_tests))
     nexi_success = list(filter(is_success, nexi_tests))
     # get pagopa tests
-    pagopa_tests = list(filter(lambda test: test.get("type", "") == "appgw", watched_tests))
+    pagopa_tests = list(filter(lambda test: test.get("type", "") == "appgw" or test.get("type", "") == "pagoPa", watched_tests))
     pagopa_success = list(filter(is_success, pagopa_tests))
 
     nexi_ok = len(nexi_success) == len(nexi_tests)
     pagopa_ok = len(pagopa_success) == len(pagopa_tests)
     print(f"Nexi ok: {len(nexi_success)}, Nexi ko: {len(nexi_tests) - len(nexi_success)}, Pagopa ok: {len(pagopa_success)}, Pagopa ko: {len(pagopa_tests) - len(pagopa_success)}")
-
-    if nexi_ok and not pagopa_ok and len(pagopa_success) == 0:
+    if nexi_ok and pagopa_ok:
+      switch_suggestion = NO_SWITCH
+    elif nexi_ok and not pagopa_ok and len(pagopa_success) == 0:
       switch_suggestion = SWITCH_TO_NEXI
     elif pagopa_ok and not nexi_ok and len(nexi_success) == 0:
       switch_suggestion = SWITCH_TO_PAGOPA
     else:
-      switch_suggestion = NO_SWITCH
+      switch_suggestion = UNCLEAR_SWITCH
 
     print(f"switch_suggestion: {switch_suggestion}")
     return switch_suggestion
@@ -275,7 +277,7 @@ def create_google_calendar_event(auth_token: str, switch: str, calendar_id: str,
   now = datetime.now(tz)
   end = now + timedelta(hours=2)
   event = {
-    "summary": "TEST - [ NdP DR ] War room",
+    "summary": "[ NdP DR ] War room",
     "location": "OnCall",
     "description": f"War room creata automaticamente. Valutare lo switch consigliato {switch} e partecipare alla war room",
     "start": {
@@ -312,10 +314,24 @@ def create_war_room(switch: str, secrets: dict):
 
 def trigger_cloudo_switch(switch: str, cloudo_api_key: str):
   print("Triggering cloudo switch runbook")
-  #todo trigger cloudo runbook
-  requests.post(f"https://pagopa-{os.environ.get('CLOUDO_ENVIRONMENT_SHORT', 'd')}-cloudo-orchestrator.azurewebsites.net/api/Trigger/infra?id={SWITCH_SCHEMA_ID}",
-                headers={"Content-Type": "application/json"},
-                data={"switch": switch})
+  response = requests.post(f"https://pagopa-{os.environ.get('CLOUDO_ENVIRONMENT_SHORT', 'd')}-cloudo-orchestrator.azurewebsites.net/api/Trigger/infra",
+                headers={"Content-Type": "application/json", "x-cloudo-key": cloudo_api_key},
+                json={
+                  "source": "cloudo",
+                  "severity": "Sev1",
+                  "monitorCondition": "Fired",
+                  "rule": SWITCH_SCHEMA_ID,
+                  "payload": {
+                    "switch": switch
+                  }
+                })
+
+  if not response.ok:
+    print(f"Failed to trigger cloudo switch: {response.status_code} - {response.text}")
+    exit(1)
+
+  print(f"cloudo trigger response code: {response.status_code}")
+  print(f"cloudo trigger response : {response.text}")
 
 
 
@@ -357,13 +373,25 @@ def main():
     time.sleep(WAIT_BETWEEN_TESTS)
 
   print(f"switch suggestion collected: {switch_to_perform}")
+
   # convert to set, implicit check if all elements are equals
-  if len(set(switch_to_perform)) == 1 and NO_SWITCH not in switch_to_perform:
-    trigger_switch(switch_to_perform[0], azure_credential)
-    exit(0)
-  else:
-    print(f"no clear switch identified; switch identified: {switch_to_perform}")
+  switch_set = set(switch_to_perform)
+
+  if len(switch_set) > 1:
+    print(f"no clear switch identified; switch suggestions identified: {switch_to_perform}")
     exit(1)
+  else:
+    if NO_SWITCH in switch_set:
+      print(f"Switch not necessary, all system are good")
+      exit(0)
+    elif UNCLEAR_SWITCH in switch_set:
+      print(f"Systems partially good, manual check required")
+      exit(1)
+    if UNCLEAR_SWITCH not in switch_set:
+      print(f"Switch identified: {switch_to_perform[0]}")
+      trigger_switch(switch_to_perform[0], azure_credential)
+      exit(0)
+
 
 
 

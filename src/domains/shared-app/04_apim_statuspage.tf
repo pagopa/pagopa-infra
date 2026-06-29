@@ -129,6 +129,7 @@ module "apim_api_statuspage_api_v1" {
           "bizevents"                = format("%s/pagopa-biz-events-service", format(local.aks_path, "bizevents"))
           "bizeventsdatastoreneg"    = format("%s/pagopa-negative-biz-events-datastore-service", format(local.aks_path, "bizevents"))
           "bizeventsdatastorepos"    = format("%s/pagopa-biz-events-datastore-service", format(local.aks_path, "bizevents"))
+          "bizeventsdatastoreview"   = format("%s/pagopa-biz-events-datastore-view", format(local.aks_path, "bizevents"))
           "backofficepagopa"         = format("%s/selfcare/pagopa/v1", format(local.aks_path, "selfcare"))
           "backofficepagopa-fe"      = format("%s", local.fe_backoffice_path)
           "backofficeexternalpagopa" = format("%s/backoffice-external", format(local.aks_path, "selfcare"))
