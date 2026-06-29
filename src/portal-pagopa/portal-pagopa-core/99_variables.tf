@@ -98,11 +98,16 @@ variable "postgres_admin_password_secret_name" {
   default     = "db-administrator-login-password"
 }
 
+variable "database_url_secret_name" {
+  type        = string
+  description = "Secret name in Key Vault for app DATABASE_URL"
+  default     = "portal-database-url"
+}
+
 # App settings
 variable "app_secret_names" {
   type = map(string)
   default = {
-    DATABASE_URL          = "portal-database-url"
     AUTH_GOOGLE_ID        = "portal-auth-google-id"
     AUTH_GOOGLE_SECRET    = "portal-auth-google-secret"
     BUDGET_AUTH_SECRET    = "portal-budget-auth-secret"

@@ -22,6 +22,10 @@ locals {
     setting_name => "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault_secret.portal_app[setting_name].versionless_id})"
   }
 
+  database_url_secret_ref = {
+    DATABASE_URL = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.portal_database_url.versionless_id})"
+  }
+
   app_settings_plain = {
     NEXT_PUBLIC_APP_URL = var.next_public_app_url
     EMAIL_FROM          = var.email_from
@@ -29,6 +33,6 @@ locals {
     WEBSITES_PORT       = tostring(var.websites_port)
   }
 
-  app_settings = merge(local.app_settings_secret_refs, local.app_settings_plain)
+  app_settings = merge(local.app_settings_secret_refs, local.database_url_secret_ref, local.app_settings_plain)
 }
 

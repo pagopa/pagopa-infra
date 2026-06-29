@@ -50,3 +50,4 @@ resource "azurerm_key_vault_secret" "secret" {
     azurerm_key_vault_access_policy.ad_group_policy,
   ]
 }
+

@@ -62,6 +62,19 @@ module "postgres_flexible_server" {
 
 }
 
+resource "azurerm_key_vault_secret" "portal_database_url" {
+  key_vault_id = data.azurerm_key_vault.portal.id
+  name         = var.database_url_secret_name
+  value = format(
+    "postgresql://%s:%s@portal-db.%s.internal.postgresql.pagopa.it:%s/%s?sslmode=require",
+    data.azurerm_key_vault_secret.pgres_flex_admin_login.value,
+    urlencode(data.azurerm_key_vault_secret.pgres_flex_admin_pwd.value),
+    var.env_short,
+    module.postgres_flexible_server.connection_port,
+    var.postgres_database_name
+  )
+}
+
 
 resource "azurerm_postgresql_flexible_server_firewall_rule" "allow_azure_services" {
   count = var.allow_azure_services_to_postgres ? 1 : 0
