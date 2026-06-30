@@ -1,6 +1,5 @@
 
 import os
-from wsgiref.validate import header_re
 
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
@@ -10,11 +9,17 @@ import json
 from slack_sdk.webhook import WebhookClient
 from slack_sdk.errors import SlackApiError
 
+SUBSCRIPTIONS = {
+  "d" : "bbe47ad4-08b3-4925-94c5-1278e5819b86",
+  "u" : "26abc801-0d8f-4a6e-ac5f-8e81bcc09112",
+  "p" : "b9fc9419-6097-45fe-9f74-ba0641c91912"
+}
+
+SUBSCRIPTION_ID = SUBSCRIPTIONS.get(os.environ.get('CLOUDO_ENVIRONMENT_SHORT'))
 
 
-SUBSCRIPTION_ID = "YOUR_SUBSCRIPTION_ID"
-APIM_RG_NAME = "YOUR_RESOURCE_GROUP"
-APIM_NAME = "YOUR_APIM_SERVICE_NAME"
+APIM_RG_NAME = f"pagopa-{os.environ.get('CLOUDO_ENVIRONMENT_SHORT')}-api-rg"
+APIM_NAME = f"pagopa-{os.environ.get('CLOUDO_ENVIRONMENT_SHORT')}-apim"
 
 SWITCH_TO_NEXI = "toNexi"
 SWITCH_TO_PAGOPA = "toPagopa"
@@ -23,16 +28,16 @@ NO_SWITCH = None
 NEXI_PUBLIC_CONFIGURATION = {
   "dev": {
     "node_id": "NDP004IT",
-    "address": "https://test.nexi.ndp.pagopa.it/nodo-p-sit.nexigroup.com"
+    "address": "https://10.79.20.63"
   },
   "uat": {
     "node_id": "NDP004UAT",
-    "address": "https://test.nexi.ndp.pagopa.it"
+    "address": "https://10.79.20.63"
 
   },
   "prod": {
     "node_id": "NDP004PROD",
-    "address": "https://nexi.ndp.pagopa.it"
+    "address": "https://10.79.20.25"
 
   }
 }
@@ -88,7 +93,6 @@ def build_apim_client():
 
 
 def get_apim_named_values(client, names):
-  print("print values")
   return [
     {nv.display_name: nv.value}
     for name in names
@@ -100,24 +104,46 @@ def get_apim_named_values(client, names):
   ]
 
 def update_apim_named_values(client, values: dict):
-  print("update values")
+  try:
+    for name, value in values.items():
+      update = NamedValueCreateContract(
+        display_name=name,
+        value=value,
+        secret=False
+      )
+      print(f"updating: {name}")
+      client.named_value.begin_create_or_update(
+        resource_group_name=APIM_RG_NAME,
+        service_name=APIM_NAME,
+        named_value_id=name,
+        parameters=update
+      )
+      print(f"updated: {name}")
+  except Exception as e:
+    print(f"Error during update: {str(e)}")
+    exit(1)
 
 def main():
-  payload = os.environ.get('CLOUDO_PAYLOAD')
-  if not payload:
+  cloudo_playload = os.environ.get('CLOUDO_PAYLOAD')
+  if not cloudo_playload:
     print("No payload found in environment variable 'CLOUDO_PAYLOAD'")
     exit(1)
 
-  payload_j = json.loads(payload)
-  print(f"received payload: {payload_j}")
-  # switch = payload_j.get("switch")
-  #
-  # apim_client = build_apim_client()
-  #
-  # values = get_apim_named_values(apim_client, SWITCH.get(switch).keys())
-  # print(f"current values: {values}")
-  #
-  # update_apim_named_values(apim_client, SWITCH.get(switch))
+  cloudo_playload_j = json.loads(cloudo_playload)
+  runbook_payload = cloudo_playload_j.get("payload")
+  if isinstance(runbook_payload, str):
+    runbook_payload = json.loads(runbook_payload)
+
+  print(f"received payload: {runbook_payload}")
+  switch = runbook_payload.get("switch")
+
+  apim_client = build_apim_client()
+
+  values = get_apim_named_values(apim_client, SWITCH.get(switch).keys())
+  print(f"current values: {values}")
+  print(f"updating to: {SWITCH.get(switch)}")
+  update_apim_named_values(apim_client, SWITCH.get(switch))
+  print()
 
 if __name__ == "__main__":
   main()
