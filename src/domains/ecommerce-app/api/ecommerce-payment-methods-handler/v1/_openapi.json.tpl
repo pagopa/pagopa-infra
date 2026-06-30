@@ -117,7 +117,7 @@
                         "name": "x-client-id",
                         "in": "header",
                         "description": "client id related to a given touchpoint",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "string",
                             "enum": [
