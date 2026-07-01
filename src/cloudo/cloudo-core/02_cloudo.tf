@@ -30,7 +30,7 @@ module "cloudo" {
   cloudo_google_sso_integration_client_id = data.azurerm_key_vault_secret.google_client_id.value
 
   github_repo_info = {
-    repo_name    = "pagopa/pagopa-infra"
+    repo_name    = "pagopa/pagopa-infra-core"
     repo_branch  = "main"
     runbook_path = "src/cloudo/cloudo-core/runbooks"
   }

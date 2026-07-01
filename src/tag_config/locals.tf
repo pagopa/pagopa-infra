@@ -6,7 +6,7 @@ locals {
     CreatedBy   = "Terraform"
     Environment = title(var.environment)
     Owner       = "pagoPA"
-    Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/${local.relative_folder}"
+    Source      = "https://github.com/pagopa/pagopa-infra-core/tree/main/src/${local.relative_folder}"
     # isolates the module working folder, removing the absolute path leading to the cwd and the leading slash
     Folder     = local.relative_folder
     CostCenter = "TS310 - PAGAMENTI & SERVIZI"
