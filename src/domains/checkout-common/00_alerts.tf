@@ -30,7 +30,7 @@ AzureDiagnostics
     Success=countif(responseCode_d < 500 and DurationMs < 250)
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
-| where Availability < 99
+| where Availability < 96
   QUERY
   )
   severity    = 1
@@ -149,6 +149,151 @@ AzureDiagnostics
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
+  QUERY
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
+
+
+#Checkout POST carts API availability
+resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_carts_v1" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "checkout-carts-v1-api-availability-alert"
+  resource_group_name = azurerm_resource_group.rg_checkout_alerts[0].name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "[Checkout] POST Carts V1 API availability alert"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "Checkout carts API availability less than or equal 95% in the last 30 minutes"
+  enabled        = true
+  query = (<<-QUERY
+AzureDiagnostics
+| where url_s startswith 'https://api.platform.pagopa.it/checkout/ec/v1/carts'
+| summarize
+    Total=count(),
+    Success=countif(responseCode_d < 500 and DurationMs < 500)
+    by Time = bin(TimeGenerated, 15m)
+| extend Availability=((Success * 1.0) / Total) * 100
+| where Availability < 95
+  QUERY
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
+
+#Checkout POST carts auth API availability
+resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_carts_v1" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "checkout-auth-carts-v1-api-availability-alert"
+  resource_group_name = azurerm_resource_group.rg_checkout_alerts[0].name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "[Checkout] POST Carts auth V1 API availability alert"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "Checkout carts auth API availability less than or equal 95% in the last 30 minutes"
+  enabled        = true
+  query = (<<-QUERY
+AzureDiagnostics
+| where url_s startswith 'https://api.platform.pagopa.it/checkout/carts-auth/v1/carts'
+| summarize
+    Total=count(),
+    Success=countif(responseCode_d < 500 and DurationMs < 500)
+    by Time = bin(TimeGenerated, 15m)
+| extend Availability=((Success * 1.0) / Total) * 100
+| where Availability < 95
+  QUERY
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
+
+#Checkout POST carts API availability
+resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_carts_v2" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "checkout-carts-v2-api-availability-alert"
+  resource_group_name = azurerm_resource_group.rg_checkout_alerts[0].name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "[Checkout] POST Carts V2 API availability alert"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "Checkout carts API availability less than or equal 95% in the last 30 minutes"
+  enabled        = true
+  query = (<<-QUERY
+AzureDiagnostics
+| where url_s startswith 'https://api.platform.pagopa.it/checkout/ec/v2/carts'
+| summarize
+    Total=count(),
+    Success=countif(responseCode_d < 500 and DurationMs < 500)
+    by Time = bin(TimeGenerated, 15m)
+| extend Availability=((Success * 1.0) / Total) * 100
+| where Availability < 95
+  QUERY
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
+
+#Checkout POST carts auth API availability
+resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_carts_v2" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "checkout-auth-carts-v2-api-availability-alert"
+  resource_group_name = azurerm_resource_group.rg_checkout_alerts[0].name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "[Checkout] POST Carts auth V2 API availability alert"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "Checkout carts auth API availability less than or equal 95% in the last 30 minutes"
+  enabled        = true
+  query = (<<-QUERY
+AzureDiagnostics
+| where url_s startswith 'https://api.platform.pagopa.it/checkout/carts-auth/v2/carts'
+| summarize
+    Total=count(),
+    Success=countif(responseCode_d < 500 and DurationMs < 500)
+    by Time = bin(TimeGenerated, 15m)
+| extend Availability=((Success * 1.0) / Total) * 100
+| where Availability < 95
   QUERY
   )
   severity    = 1

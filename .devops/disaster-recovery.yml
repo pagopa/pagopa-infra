@@ -88,7 +88,7 @@ stages:
           - template: templates/postgres-flexible-failover/template.yaml@terraform
             parameters:
               FAILOVER_DB_RG: "pagopa-p-weu-fdr-db-rg"
-              FAILOVER_DB_NAME: "pagopa-p-neu-fdr-flexible-postgresql"
+              FAILOVER_DB_NAME: "pagopa-p-itn-fdr-spoke-flexible-postgresql"
               WORKINGDIR: ${{ variables.WORKING_DIR }}
               AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
       - job: postgres_gpd_failover
@@ -102,7 +102,7 @@ stages:
           - template: templates/postgres-flexible-failover/template.yaml@terraform
             parameters:
               FAILOVER_DB_RG: "pagopa-p-pgres-flex-rg"
-              FAILOVER_DB_NAME: "pagopa-p-neu-gps-pgflex"
+              FAILOVER_DB_NAME: "pagopa-p-itn-gps-spoke-pgflex"
               WORKINGDIR: ${{ variables.WORKING_DIR }}
               AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
       - job: postgres_nodo_failover
@@ -116,6 +116,6 @@ stages:
           - template: templates/postgres-flexible-failover/template.yaml@terraform
             parameters:
               FAILOVER_DB_RG: "pagopa-p-weu-nodo-db-rg"
-              FAILOVER_DB_NAME: "pagopa-p-neu-nodo-flexible-postgresql"
+              FAILOVER_DB_NAME: "pagopa-p-itn-nodo-spoke-flexible-postgresql"
               WORKINGDIR: ${{ variables.WORKING_DIR }}
               AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"

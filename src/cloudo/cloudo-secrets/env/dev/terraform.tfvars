@@ -1,0 +1,7 @@
+prefix         = "pagopa"
+env_short      = "d"
+env            = "dev"
+domain         = "cloudo"
+location_short = "itn"
+location       = "italynorth"
+input_file     = "./secret/dev/configs.json"

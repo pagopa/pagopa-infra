@@ -48,7 +48,10 @@ variable "location_short" {
 #
 variable "enabled_resource" {
   type = object({
-    test_nexi_postgres = optional(bool, false),
+    test_nexi_postgres         = optional(bool, false),
+    synthetic_on_demand        = optional(bool, false),
+    cloudo_ndp_switch          = optional(bool, false),
+    cloudo_checkout_cdn_switch = optional(bool, false)
   })
 }
 
@@ -108,20 +111,23 @@ variable "verify_payment_internal_expected_outcome" {
   description = "(Required) Expected outcome for verify payment notice internal"
 }
 
-variable "nexi_node_ip" {
-  type        = string
-  description = "Nodo Pagamenti Nexi ip"
-}
 variable "nexi_node_ip_postgres" {
   type        = string
   description = "Nodo Pagamenti Nexi postgres ip"
 }
-variable "nexi_ndp_host" {
-  type        = string
-  description = "Nodo Pagamenti Nexi hostname"
-}
 variable "nexi_ndp_host_postgres" {
   type        = string
   description = "Nodo Pagamenti Nexi postgres hostname"
+}
+
+variable "nexi_ndphost_header" {
+  type        = string
+  description = "Nodo Pagamenti Nexi postgres ndphost header value"
+}
+
+variable "on_demand_polling_interval_seconds" {
+  type        = number
+  description = "Polling interval in seconds for on-demand synthetic monitoring"
+  default     = 300
 }
 
