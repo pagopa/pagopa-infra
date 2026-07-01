@@ -1,7 +1,0 @@
-prefix         = "pagopa"
-env_short      = "p"
-env            = "prod"
-domain         = "cloudo"
-location_short = "itn"
-location       = "italynorth"
-input_file     = "./secret/prod/configs.json"

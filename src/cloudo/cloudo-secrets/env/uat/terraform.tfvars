@@ -1,7 +1,0 @@
-prefix         = "pagopa"
-env_short      = "u"
-env            = "uat"
-domain         = "cloudo"
-location_short = "itn"
-location       = "italynorth"
-input_file     = "./secret/uat/configs.json"
