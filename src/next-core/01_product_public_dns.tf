@@ -89,16 +89,16 @@ locals {
         dmarc_record     = "v=DMARC1; p=reject; rua=mailto:dmarc@0f1qy7b5.uriports.com; aspf=s; adkim=s"
         dkim_records = [
           {
-            "name"  = "s4gfmqvqljfuychrhvz63mvt3lndb72b._domainkey"
-            "value" = "s4gfmqvqljfuychrhvz63mvt3lndb72b.dkim.eu-south-1.amazonses.com"
+            "r_name"  = "s4gfmqvqljfuychrhvz63mvt3lndb72b._domainkey"
+            "r_value" = "s4gfmqvqljfuychrhvz63mvt3lndb72b.dkim.eu-south-1.amazonses.com"
           },
           {
-            "name"  = "k5oplutx2zfzgojbbirymyzn5eqiiuef._domainkey"
-            "value" = "k5oplutx2zfzgojbbirymyzn5eqiiuef.dkim.eu-south-1.amazonses.com"
+            "r_name"  = "k5oplutx2zfzgojbbirymyzn5eqiiuef._domainkey"
+            "r_value" = "k5oplutx2zfzgojbbirymyzn5eqiiuef.dkim.eu-south-1.amazonses.com"
           },
           {
-            "name"  = "6jdsxdvu4gytfwy7tpg7i3ymngihs3hm._domainkey"
-            "value" = "6jdsxdvu4gytfwy7tpg7i3ymngihs3hm.dkim.eu-south-1.amazonses.com"
+            "r_name"  = "6jdsxdvu4gytfwy7tpg7i3ymngihs3hm._domainkey"
+            "r_value" = "6jdsxdvu4gytfwy7tpg7i3ymngihs3hm.dkim.eu-south-1.amazonses.com"
           },
         ]
       }
@@ -107,14 +107,14 @@ locals {
 }
 
 locals {
-  dev_products   = { for k, v in local.products_dns_zones : k => v.dev_delegation_records if v.dev_delegation_records != [] }
-  uat_products   = { for k, v in local.products_dns_zones : k => v.uat_delegation_records if v.uat_delegation_records != [] }
-  email_products = { for k, v in local.products_dns_zones : k => v.aws_ses_settings if v.aws_ses_settings != {} }
+  dev_products   = { for k, v in local.products_dns_zones : k => v.dev_delegation_records if length(v.dev_delegation_records) != 0 }
+  uat_products   = { for k, v in local.products_dns_zones : k => v.uat_delegation_records if length(v.uat_delegation_records) != 0 }
+  email_products = { for k, v in local.products_dns_zones : k => v.aws_ses_settings if length(v.aws_ses_settings) != 0 }
   email_dkim_flattened = {
     for item in flatten([
       for product, settings in local.products_dns_zones : [
         for dkim in settings.aws_ses_settings.dkim_records : {
-          key   = "${product}#${dkim.name}"
+          key   = "${product}#${dkim.r_name}"
           value = dkim
         }
       ] if settings.aws_ses_settings != {}
@@ -169,11 +169,11 @@ resource "azurerm_dns_txt_record" "aws_ses_dns_txt_record" {
 
 resource "azurerm_dns_cname_record" "dkim_aws_ses_dns_cname_record" {
   for_each            = var.env_short == "p" ? local.email_dkim_flattened : {}
-  name                = each.value.name
+  name                = each.value.r_name
   zone_name           = azurerm_dns_zone.public_product_dns_zone[split("#", each.key)[0]].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
-  record              = each.value.value
+  record              = each.value.r_value
   tags                = module.tag_config.tags
 }
 
@@ -206,12 +206,13 @@ resource "azurerm_dns_txt_record" "email_dns_txt_spf_record" {
 }
 
 # Prod ONLY bimi record
+
 resource "azurerm_dns_txt_record" "email_dns_txt_bimi_record" {
   for_each            = var.env_short == "p" ? local.email_products : {}
   name                = "default._bimi"
   zone_name           = azurerm_dns_zone.public_product_dns_zone[each.key].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
-  ttl                 = 60
+  ttl                 = var.dns_default_ttl_sec_short
   record {
     value = each.value.bimi_record
   }
@@ -223,7 +224,7 @@ resource "azurerm_dns_txt_record" "email_dns_txt_dmarc_record" {
   name                = "_dmarc"
   zone_name           = azurerm_dns_zone.public_product_dns_zone[each.key].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
-  ttl                 = 60
+  ttl                 = var.dns_default_ttl_sec_short
   record {
     value = each.value.dmarc_record
   }
