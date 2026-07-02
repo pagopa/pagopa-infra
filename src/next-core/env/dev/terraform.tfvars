@@ -149,6 +149,7 @@ base_path_nodo_web_bo_history = "/web-bo-history-sit"
 dns_zone_wisp2                = "dev.wisp2"
 base_path_nodo_oncloud        = "/nodo-sit"
 dns_zone_checkout             = "dev.checkout"
+dns_zone_wallet               = "dev.payment-wallet"
 
 
 ehns_public_network_access = true
@@ -730,6 +731,7 @@ app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it-stable"
 app_gateway_management_certificate_name = "management-dev-platform-pagopa-it-stable"
 app_gateway_wisp2_certificate_name      = "dev-wisp2-pagopa-it-stable"
 app_gateway_checkout_certificate_name   = "dev-checkout-pagopa-it"
+app_gateway_wallet_certificate_name     = "dev-payment-wallet-pagopa-it"
 app_gateway_wisp2govit_certificate_name = ""
 app_gateway_wfespgovit_certificate_name = ""
 app_gateway_sku_name                    = "Standard_v2"
