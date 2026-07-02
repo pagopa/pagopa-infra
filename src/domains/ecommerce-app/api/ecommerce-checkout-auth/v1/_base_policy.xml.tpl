@@ -41,7 +41,7 @@
         <value>{{ecommerce-payment-requests-api-key-value}}</value>
       </set-header>
       <set-variable name="transactionsOperationId" value="newTransactionAuth" />
-      <set-variable name="paymentMethodsOperationId" value="getAllPaymentMethodsAuth,createSessionAuth" />
+      <set-variable name="paymentMethodsOperationId" value="createSessionAuth" />
       <set-variable name="paymentRequestsOperationId" value="getPaymentRequestInfoAuth" />
       <set-variable name="paymentMethodsHandlerOperationId" value="getAllPaymentMethodsAuth" />
 
@@ -54,9 +54,9 @@
         </when>
         <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("paymentMethodsHandlerOperationId","").Split(','), operations => operations == context.Operation.Id))">
           <set-header name="x-api-key" exists-action="override">
-            <value>{{ecommerce-transactions-service-api-key-value}}</value>
+            <value>{{ecommerce-payment-methods-api-key-value}}</value>
           </set-header>
-          <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-handler")"/>
+          <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-handler")"/>
         </when>
         <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("paymentMethodsOperationId","").Split(','), operations => operations == context.Operation.Id))">
           <!-- Set payment-methods API Key header -->
