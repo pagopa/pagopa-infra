@@ -101,6 +101,18 @@ locals {
       default_ttl        = var.gpd_upload_status_ttl,
       autoscale_settings = { max_throughput = var.gpd_upload_status_throughput }
     },
+    {
+      name               = "gpd-reconciliation-runs",
+      partition_key_path = "/day",
+      default_ttl        = -1,
+      autoscale_settings = { max_throughput = var.gpd_reconciliation_runs_throughput }
+    },
+    {
+      name               = "gpd-reconciliation-reports",
+      partition_key_path = "/pk",
+      default_ttl        = -1,
+      autoscale_settings = { max_throughput = var.gpd_reconciliation_reports_throughput }
+    },
   ]
 }
 

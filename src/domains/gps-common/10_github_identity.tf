@@ -19,7 +19,8 @@ locals {
     "pagopa-gpd-ingestion-manager",
     "pagopa-spontaneous-payments",
     "pagopa-debt-position",
-    "pagopa-gpd-rtp"
+    "pagopa-gpd-rtp",
+    "pagopa-gpd-technical-support"
   ]
 
   federations_01 = [
