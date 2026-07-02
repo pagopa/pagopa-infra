@@ -6,6 +6,17 @@
 <changeSet author="liquibase" id="20260318000000">
         <comment>Aggiunta configurazioni FTP2 per rendicontazione enti creditori</comment>
 
+    <preConditions onFail="MARK_RAN">
+        <not>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*)
+                FROM CONFIGURATION_KEYS
+                WHERE CONFIG_CATEGORY='GLOBAL'
+                  AND CONFIG_KEY='creditorInstitutions.FTP2'
+            </sqlCheck>
+        </not>
+    </preConditions>
+
         <!-- Configurazione creditorInstitutions.FTP2 -->
         <insert tableName="CONFIGURATION_KEYS">
             <column name="CONFIG_CATEGORY"    value="GLOBAL"/>
