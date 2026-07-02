@@ -6,6 +6,15 @@
 
     <!-- Server FTP2 #2 — TEST -->
     <changeSet author="liquibase" id="20260318000002">
+      
+   <preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="0">
+            SELECT COUNT(*)
+            FROM FTP_SERVERS
+            WHERE OBJ_ID = 2
+        </sqlCheck>
+    </preConditions>
+
         <comment>Aggiunta server FTP2 #2 per ambiente TEST</comment>
         <insert tableName="FTP_SERVERS">
             <column name="OBJ_ID"        valueNumeric="2"/>
