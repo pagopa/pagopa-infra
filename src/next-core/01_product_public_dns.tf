@@ -3,6 +3,8 @@
  *
  * This module manages public DNS zones for PagoPA products.
  *
+ * How to add a zone to org infra: https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/426214700/Azure+-+DNS+deleghe+sotto+domini+per+prodotto
+ *
  * HOW TO ADD A NEW PRODUCT DNS ZONE:
  *
  * 1. Add a new entry in the 'products_dns_zones' map with the product name as key:
@@ -77,9 +79,17 @@ locals {
     "ricevute" = {
       # todo delegation records after create DNS zone in DEV env
       dev_delegation_records = [
+        "ns1-05.azure-dns.com.",
+        "ns2-05.azure-dns.net.",
+        "ns3-05.azure-dns.org.",
+        "ns4-05.azure-dns.info."
       ]
       # todo delegation records after create DNS zone in UAT env
       uat_delegation_records = [
+        "ns1-09.azure-dns.com.",
+        "ns2-09.azure-dns.net.",
+        "ns3-09.azure-dns.org.",
+        "ns4-09.azure-dns.info."
       ]
       aws_ses_settings = {
         amazonses_record = "ktEBl7wiK/gHr+30DkyhCC9EyLo4ANeHM2P9o/Og/eo="
