@@ -14,7 +14,7 @@ spec:
     value.converter: "org.apache.kafka.connect.json.JsonConverter"
     value.converter.schemas.enable: false
     database.hostname: ${postgres_hostname}
-    database.port:  ${postgres_port}
+    database.port: ${postgres_port}
     database.user: ${postgres_username}
     database.password: ${postgres_password}
     database.dbname: ${postgres_db_name}
@@ -23,6 +23,10 @@ spec:
     table.include.list: "apd.payment_option,apd.payment_position,apd.transfer"
     plugin.name: "pgoutput"
     snapshot.max.threads: ${max_threads}
+
+    signal.enabled.channels: "source"
+    signal.data.collection: "apd.debezium_signal"
+
     publication.autocreate.mode: "disabled" # shall be create before
 
     transforms: "filterArchived"
