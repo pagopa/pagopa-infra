@@ -54,6 +54,7 @@
             JObject requestBody = (JObject)context.Variables["npgNotificationRequestBody"];
             JObject operation = (JObject)requestBody["operation"];
             string operationResult = (string)operation["operationResult"];
+            string operationType = (string)operation["operationType"];
             string operationId = (string)operation["operationId"];
             string operationTime = (string)operation["operationTime"];
             var additionalData = operation["additionalData"];
@@ -89,6 +90,7 @@
             JObject request = new JObject();
             request["timestampOperation"] = timestampOperation;
             request["operationResult"] = operationResult;
+            request["operationType"] = operationType;
             request["operationId"] = operationId;
             request["errorCode"] = errorCode;
             request["details"] = details;
