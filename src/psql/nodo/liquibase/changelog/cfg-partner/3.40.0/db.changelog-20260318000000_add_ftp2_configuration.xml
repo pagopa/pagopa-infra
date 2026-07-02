@@ -4,19 +4,25 @@
   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
 
 <changeSet author="liquibase" id="20260318000000">
-        <comment>Aggiunta configurazioni FTP2 per rendicontazione enti creditori</comment>
 
-    <preConditions onFail="MARK_RAN">
-        <not>
-            <sqlCheck expectedResult="1">
-                SELECT COUNT(*)
-                FROM CONFIGURATION_KEYS
-                WHERE CONFIG_CATEGORY='GLOBAL'
-                  AND CONFIG_KEY='creditorInstitutions.FTP2'
-            </sqlCheck>
-        </not>
+<preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="0">
+            SELECT COUNT(*)
+            FROM CONFIGURATION_KEYS
+            WHERE CONFIG_CATEGORY = 'GLOBAL'
+              AND CONFIG_KEY IN (
+                    'creditorInstitutions.FTP2',
+                    'rendicontazioneFTP2.custCode.88888888888',
+                    'rendicontazioneFTP2.custCode.00488410010',
+                    'rendicontazioneFTP2.custCode.97532760580',
+                    'rendicontazioneFTP2.custCode.80078750587',
+                    'rendicontazioneFTP2.Service',
+                    'rendicontazioneFTP2.FileType'
+              )
+        </sqlCheck>
     </preConditions>
 
+        <comment>Aggiunta configurazioni FTP2 per rendicontazione enti creditori</comment>
         <!-- Configurazione creditorInstitutions.FTP2 -->
         <insert tableName="CONFIGURATION_KEYS">
             <column name="CONFIG_CATEGORY"    value="GLOBAL"/>
