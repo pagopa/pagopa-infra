@@ -18,3 +18,7 @@ data "azuread_group" "adgroup_security" {
 data "azuread_group" "adgroup_admin_dev" {
   display_name = "${local.product}-adgroup-admin-dev"
 }
+
+data "azuread_group" "adgroup_developer_externals" {
+  display_name = "${local.product}-adgroup-developer-externals"
+}

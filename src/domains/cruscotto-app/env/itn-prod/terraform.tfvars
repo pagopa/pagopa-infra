@@ -3,6 +3,7 @@ env_short       = "p"
 env             = "prod"
 domain          = "crusc8"
 location_string = "Italy North"
+location_short  = "itn"
 
 location_weu       = "westeurope"
 location_short_weu = "weu"
