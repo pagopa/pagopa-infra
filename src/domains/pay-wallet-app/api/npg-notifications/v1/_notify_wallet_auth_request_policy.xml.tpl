@@ -17,21 +17,8 @@
             </when>
         </choose>
 
-        <!-- Extract 'iss' claim -->
-        <set-variable name="jwtIssuer" value="@{
-            Jwt jwt;
-            context.Request.Url.Query.GetValueOrDefault("sessionToken","").Split(' ').Last().TryParseJwt(out jwt);
-        return jwt?.Claims.GetValueOrDefault("iss", "");
-        }" />
-
-        <!-- Store useOpenId as string 'true' or 'false' -->
-        <set-variable name="useOpenId" value="@(
-            (context.Variables.GetValueOrDefault<string>("jwtIssuer")?.Contains("jwt-issuer-service") == true).ToString()
-        )" />
-
         <set-variable name="transactionServiceBackendUri" value="https://${ecommerce_hostname}/pagopa-ecommerce-transactions-service" />
 
-        <!-- Conditional validation -->
         <validate-jwt query-parameter-name="sessionToken" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
             <openid-config url="https://${hostname}/pagopa-jwt-issuer-service/.well-known/openid-configuration" />
             <audiences>
