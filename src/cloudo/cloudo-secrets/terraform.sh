@@ -1,1 +1,0 @@
-../../../scripts/terraform.sh
