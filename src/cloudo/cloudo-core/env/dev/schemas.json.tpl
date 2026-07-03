@@ -19,9 +19,20 @@
       },
       {
         "id": "availability-fe-checkout-cdn",
-        "name": "Checkout CDN switch",
-        "description": "Switch checkout provider from CDN to APIM",
-        "runbook": "azure/checkout_cdn_switch.sh",
+        "name": "Checkout CDN check status",
+        "description": "Status check for checkout provider from CDN to APIM",
+        "runbook": "cdn/checkout_cdn_check.py",
+        "run_args": "",
+        "worker": "generic",
+        "oncall": false,
+        "require_approval": false,
+        "tags": "checkout,azure"
+      },
+      {
+        "id": "cdn-apim-switch",
+        "name": "Switch CDN to  APIM",
+        "description": "Switch static content provider from CDN to APIM",
+        "runbook": "cdn/cdn_to_apim_switch.sh",
         "run_args": "",
         "worker": "generic",
         "oncall": false,
