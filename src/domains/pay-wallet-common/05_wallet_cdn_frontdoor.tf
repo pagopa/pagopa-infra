@@ -10,18 +10,23 @@ locals {
 
   wallet_dns_zone_key = "${var.dns_zone_prefix}.${var.external_domain}"
 
-  # Note for App GW/APIM <-> CDN switches:
-  # when DNS is pointing to App GW, setting enable_dns_records to true and applying will change the A record IP to Front Door's one,
-  # while setting it to false and applying will destroy the A record (not managed by terraform anymore)
-  wallet_cdn_custom_domains = [
+  # Custom domains - empty to avoid Azure conflict with CDN Classic.
+  # Azure doesn't allow the same domain on both CDN Classic and Front Door simultaneously.
+  # Domain switch will happen in a separate PR which will:
+  #   1. Remove custom domain from CDN Classic
+  #   2. Add custom domain to Front Door
+  wallet_cdn_custom_domains_for_switch = [
     {
       domain_name             = local.wallet_dns_zone_key
       dns_name                = azurerm_dns_zone.payment_wallet_public.name
       dns_resource_group_name = azurerm_dns_zone.payment_wallet_public.resource_group_name
       ttl                     = var.dns_default_ttl_sec
-      enable_dns_records      = true
+      enable_dns_records      = false
     }
   ]
+
+  # empty for now, will be set to wallet_cdn_custom_domains_for_switch during domain switch
+  wallet_cdn_custom_domains = []
 
   wallet_cdn_global_delivery_rules = [
     {
