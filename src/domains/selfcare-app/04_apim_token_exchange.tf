@@ -169,3 +169,56 @@ resource "azurerm_api_management_api_operation_policy" "pagopa_token_exchange_po
   })
 
 }
+
+################################
+## Token Exchange API - v1    ##
+################################
+locals {
+  pagopa_token_exchange_v1_api = {
+    display_name          = "PagoPA Token Exchange API"
+    description           = "Exchange a Selfcare or pagoPA session token for a pagoPA platform token"
+    path                  = "backoffice/selfcare/sso"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "pagopa_token_exchange_v1" {
+  name                = "${var.env_short}-pagopa-token-exchange-api"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = local.pagopa_token_exchange_v1_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_pagopa_token_exchange_v1" {
+  source = "./.terraform/modules/__v4__/api_management_api"
+
+  name                  = "${local.project}-token-exchange-api"
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_selfcare_product.product_id]
+  subscription_required = local.pagopa_token_exchange_v1_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.pagopa_token_exchange_v1.id
+  api_version           = "v1"
+
+  description  = local.pagopa_token_exchange_v1_api.description
+  display_name = local.pagopa_token_exchange_v1_api.display_name
+  path         = local.pagopa_token_exchange_v1_api.path
+  protocols    = ["https"]
+  service_url  = local.pagopa_token_exchange_v1_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/pagopa_token_exchange/v1/_openapi.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/pagopa_token_exchange/v1/_base_policy.xml.tpl", {
+    openid-config-url = local.pagopa-oidc-config_url
+    selfcare-issuer   = local.selfcare-jwt-issuer
+    pagopa-issuer     = local.pagopa-issuer
+    cert_cn           = local.cert_subject
+    cert_id           = azurerm_api_management_certificate.pagopa_token_exchange_cert_jwt.name
+    origin            = local.selfcare_fe_hostname
+  })
+}
