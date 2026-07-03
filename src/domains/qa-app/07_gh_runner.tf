@@ -18,10 +18,6 @@ module "gh_runner_job" {
     {
       name : "pagopa-qa-centralhub-backend",
       short_name : "qa-ch-be"
-    },
-    {
-      name : "pagopa-platform-integration-test",
-      short_name : "qa-pit"
     }
   ]
   job = {

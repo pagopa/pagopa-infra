@@ -104,41 +104,64 @@ resource "kubernetes_role_binding" "system_deployer_binding" {
   }
 }
 
-module "tls_checker" {
-  source = "./.terraform/modules/__v4__/tls_checker"
-
-  https_endpoint                                            = local.domain_hostname
-  alert_name                                                = local.domain_hostname
-  alert_enabled                                             = true
-  helm_chart_present                                        = true
-  namespace                                                 = kubernetes_namespace.namespace.metadata[0].name
-  location_string                                           = var.location_string
-  kv_secret_name_for_application_insights_connection_string = "app-insight-connection-string"
-  application_insights_resource_group                       = data.azurerm_resource_group.monitor_rg.name
-  application_insights_id                                   = data.azurerm_application_insights.application_insights.id
-  application_insights_action_group_ids                     = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id]
-  keyvault_name                                             = data.azurerm_key_vault.key_vault.name
-  keyvault_tenant_id                                        = data.azurerm_client_config.current.tenant_id
-
-  workload_identity_enabled              = true
-  workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
-  workload_identity_client_id            = module.workload_identity.workload_identity_client_id
-
-  depends_on = [module.workload_identity]
-}
-
-module "cert_mounter" {
+module "cert_mounter_qa_central_hub" {
   source = "./.terraform/modules/__v4__/cert_mounter"
 
-  namespace        = local.domain
-  certificate_name = replace(local.domain_hostname, ".", "-")
-  kv_name          = data.azurerm_key_vault.key_vault.name
-  tenant_id        = data.azurerm_subscription.current.tenant_id
+  helm_release_name = "cert-mounter-qa-central-hub"
+  namespace         = local.domain
+  certificate_name  = replace(local.qa_hostname, ".", "-")
+  kv_name           = data.azurerm_key_vault.key_vault.name
+  tenant_id         = data.azurerm_subscription.current.tenant_id
 
   workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
   workload_identity_client_id            = module.workload_identity.workload_identity_client_id
 
-  depends_on = [module.workload_identity]
+  depends_on = [module.workload_identity, azurerm_key_vault_certificate.qa_central_hub_ingress]
+}
+
+resource "azurerm_key_vault_certificate" "qa_central_hub_ingress" {
+  name         = replace(local.qa_hostname, ".", "-")
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+
+  certificate_policy {
+    issuer_parameters {
+      name = "Self"
+    }
+
+    key_properties {
+      exportable = true
+      key_size   = 2048
+      key_type   = "RSA"
+      reuse_key  = false
+    }
+
+    lifetime_action {
+      action {
+        action_type = "AutoRenew"
+      }
+      trigger {
+        days_before_expiry = 30
+      }
+    }
+
+    secret_properties {
+      content_type = "application/x-pkcs12"
+    }
+
+    x509_certificate_properties {
+      extended_key_usage = ["1.3.6.1.5.5.7.3.1"]
+      key_usage = [
+        "cRLSign",
+        "dataEncipherment",
+        "digitalSignature",
+        "keyAgreement",
+        "keyEncipherment",
+        "keyCertSign",
+      ]
+      subject            = "CN=${local.qa_hostname}"
+      validity_in_months = 12
+    }
+  }
 }
 
 resource "helm_release" "reloader" {
