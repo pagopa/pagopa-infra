@@ -209,11 +209,11 @@ module "apim_pagopa_token_exchange_v1" {
   service_url  = local.pagopa_token_exchange_v1_api.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./api/pagopa_token_exchange/v1/_openapi.json.tpl", {
+  content_value = templatefile("./api/pagopa-selfcare-ms-backoffice/sso/v1/_openapi.json.tpl", {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/pagopa_token_exchange/v1/_base_policy.xml.tpl", {
+  xml_content = templatefile("./api/pagopa-selfcare-ms-backoffice/sso/v1/_base_policy.xml.tpl", {
     openid-config-url = local.pagopa-oidc-config_url
     selfcare-issuer   = local.selfcare-jwt-issuer
     pagopa-issuer     = local.pagopa-issuer

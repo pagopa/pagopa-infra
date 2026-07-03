@@ -47,28 +47,8 @@
               }
             }
           },
-          "400": {
-            "description": "The source token has a missing or invalid roles structure.",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
           "401": {
-            "description": "The source token is missing, expired, or has an invalid signature.",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "The requested role is not assigned to the user.",
+            "description": "The source token is invalid or the requested role is not assigned to the user.",
             "content": {
               "text/plain": {
                 "schema": {

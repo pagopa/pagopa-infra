@@ -1,0 +1,175 @@
+<policies>
+    <inbound>
+        <cors>
+            <allowed-origins>
+                <origin>https://${origin}</origin>
+            </allowed-origins>
+            <allowed-methods>
+                <method>POST</method>
+                <method>OPTIONS</method>
+            </allowed-methods>
+            <allowed-headers>
+                <header>*</header>
+            </allowed-headers>
+        </cors>
+        <validate-jwt header-name="IdentityToken" failed-validation-httpcode="401" require-expiration-time="true" require-signed-tokens="true" output-token-variable-name="outputToken">
+            <openid-config url="${openid-config-url}" />
+            <issuer-signing-keys>
+                <key certificate-id="${cert_id}" />
+            </issuer-signing-keys>
+            <audiences>
+                <audience>api.platform.pagopa.it</audience>
+            </audiences>
+            <issuers>
+                <issuer>${selfcare-issuer}</issuer>
+                <issuer>${pagopa-issuer}</issuer>
+            </issuers>
+        </validate-jwt>
+        <set-variable name="pagopaPortalToken" value='@{
+                    Jwt selcToken = (Jwt)context.Variables["outputToken"];
+                    string organizationClaim = selcToken.Claims.GetValueOrDefault("organization", "");
+                    bool isSelfcareToken = !string.IsNullOrWhiteSpace(organizationClaim);
+
+                    string org_id;
+                    string org_vat;
+                    JArray roles;
+
+                    if (isSelfcareToken)
+                    {
+                        JObject organization = JObject.Parse(organizationClaim);
+                        org_id = organization.Value&lt;string>("id");
+                        org_vat = organization.Value&lt;string>("fiscal_code");
+                        roles = organization.Value&lt;JArray>("roles");
+                    }
+                    else
+                    {
+                        org_id = selcToken.Claims.GetValueOrDefault("org_id", "");
+                        org_vat = selcToken.Claims.GetValueOrDefault("org_vat", "");
+                        roles = new JArray();
+
+                        string[] roleClaims;
+                        if (selcToken.Claims.TryGetValue("roles", out roleClaims) &amp;&amp; roleClaims != null)
+                        {
+                            foreach (string roleClaim in roleClaims)
+                            {
+                                JToken parsedRoleClaim = JToken.Parse(roleClaim);
+                                if (parsedRoleClaim is JArray)
+                                {
+                                    foreach (JToken role in (JArray)parsedRoleClaim)
+                                    {
+                                        roles.Add(role.DeepClone());
+                                    }
+                                }
+                                else
+                                {
+                                    roles.Add(parsedRoleClaim);
+                                }
+                            }
+                        }
+                    }
+
+                    if (roles == null || roles.Count == 0)
+                    {
+                        return "";
+                    }
+
+                    var validRoles = roles
+                        .OfType&lt;JObject>()
+                        .Where(role =>
+                            !string.IsNullOrWhiteSpace(role.Value&lt;string>("partyRole"))
+                            &amp;&amp; !string.IsNullOrWhiteSpace(role.Value&lt;string>("role"))
+                        )
+                        .ToList();
+
+                    if (validRoles.Count != roles.Count)
+                    {
+                        return "";
+                    }
+
+                    string desiredRole = context.Request.Url.Query.GetValueOrDefault("desidered_role", "").Trim();
+                    JObject selectedRole = string.IsNullOrWhiteSpace(desiredRole)
+                        ? validRoles.First()
+                        : validRoles.FirstOrDefault(role => role.Value&lt;string>("role") == desiredRole);
+
+                    if (selectedRole == null)
+                    {
+                        return "";
+                    }
+
+                    var JOSEProtectedHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(
+                        new {
+                            typ = "JWT",
+                            alg = "RS256"
+                        }))).Replace("=", "").Replace("+", "-").Replace("/", "_");
+
+                    var iat = DateTimeOffset.Now.ToUnixTimeSeconds();
+                    var exp = isSelfcareToken
+                        ? new DateTimeOffset(DateTime.Now.AddHours(8)).ToUnixTimeSeconds()
+                        : new DateTimeOffset(selcToken.ExpirationTime.Value).ToUnixTimeSeconds();
+                    var aud = "api.platform.pagopa.it";
+                    var iss = "${pagopa-issuer}";
+                    var uid = selcToken.Claims.GetValueOrDefault("uid", "");
+                    var name = selcToken.Claims.GetValueOrDefault("name", "");
+                    var family_name = selcToken.Claims.GetValueOrDefault("family_name", "");
+                    var email = selcToken.Claims.GetValueOrDefault("email", "");
+                    var org_party_role = selectedRole.Value&lt;string>("partyRole");
+                    var org_role = selectedRole.Value&lt;string>("role");
+                    var payload = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(
+                    new {
+                    iat,
+                    exp,
+                    aud,
+                    iss,
+                    uid,
+                    name,
+                    family_name,
+                    email,
+                    org_id,
+                    org_vat,
+                    org_party_role,
+                    org_role,
+                    roles
+                    }
+                    ))).Replace("=", "").Replace("+", "-").Replace("/", "_");
+
+                    var message = $"{JOSEProtectedHeader}.{payload}";
+
+                    using (RSA rsa = context.Deployment.Certificates.First(
+                        c => c.Value.SubjectName.Name == "CN=${cert_cn}"
+                    ).Value.GetRSAPrivateKey())
+                    {
+                        var signature = rsa.SignData(Encoding.UTF8.GetBytes(message), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+                        return message + "." + Convert.ToBase64String(signature).Replace("=", "").Replace("+", "-").Replace("/", "_");
+                    }
+
+                    return message;
+                }' />
+        <choose>
+            <when condition='@(string.IsNullOrEmpty((string)context.Variables["pagopaPortalToken"]))'>
+                <return-response>
+                    <set-status code="401" reason="Unauthorized" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>text/plain</value>
+                    </set-header>
+                    <set-body>The desired role is missing or is not assigned to the user.</set-body>
+                </return-response>
+            </when>
+        </choose>
+        <return-response>
+            <set-status code="200" reason="OK" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>text/plain</value>
+            </set-header>
+            <set-body>@((string)context.Variables["pagopaPortalToken"])</set-body>
+        </return-response>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>
