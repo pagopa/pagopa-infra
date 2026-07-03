@@ -8,6 +8,8 @@ location_string = "Italy North"
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
 dns_zone_prefix          = "qa.itn"
+apim_dns_zone_prefix     = "dev.platform"
+ingress_load_balancer_ip = "10.3.2.250"
 
 qa_hub_plan_idh_tier = "basic"
 qa_hub_autoscale_settings = {

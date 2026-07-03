@@ -67,6 +67,17 @@ variable "dns_zone_prefix" {
   description = "The wallet dns subdomain."
 }
 
+variable "apim_dns_zone_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain for apim."
+}
+
+variable "ingress_load_balancer_ip" {
+  type        = string
+  description = "The AKS internal ingress load balancer IP."
+}
+
 
 variable "k8s_kube_config_path_prefix" {
   type    = string

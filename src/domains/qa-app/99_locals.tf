@@ -44,6 +44,14 @@ locals {
   apim_name    = "${local.product}-apim"
   apim_rg_name = "${local.product}-api-rg"
 
+  pagopa_apim_name = "${local.product}-apim"
+  pagopa_apim_rg   = "${local.product}-api-rg"
+
+  apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
+  qa_hostname   = "qa-central-hub.${var.location_short}.${local.internal_dns_zone_name}"
+
+  ingress_hostname = "qa-central-hub.${var.location_short}"
+
   aks_name        = "${local.product}-${var.location_short}-${var.env}-aks"
   aks_rg_name     = "${local.product}-${var.location_short}-${var.env}-aks-rg"
   domain_hostname = "${var.dns_zone_prefix}.${local.internal_dns_zone_name}"
