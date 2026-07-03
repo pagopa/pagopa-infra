@@ -79,9 +79,6 @@ resource "azurerm_monitor_metric_alert" "snat_connection_over_10K" {
     action_group_id = azurerm_monitor_action_group.email.id
   }
   action {
-    action_group_id = azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
-  }
-  action {
     action_group_id = azurerm_monitor_action_group.infra_opsgenie.0.id
   }
 
