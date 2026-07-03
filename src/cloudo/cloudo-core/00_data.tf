@@ -51,3 +51,11 @@ data "azurerm_virtual_network" "network_tools_vnet" {
 data "azurerm_resource_group" "network_rg" {
   name = "pagopa-${var.env_short}-vnet-rg"
 }
+
+# Private DNS Zone per ciascun cluster AKS privato integrato
+data "azurerm_private_dns_zone" "aks_private_dns_zone" {
+  for_each            = local.aks_private_clusters
+  name                = each.value.private_dns_zone_name
+  resource_group_name = each.value.node_resource_group
+}
+
