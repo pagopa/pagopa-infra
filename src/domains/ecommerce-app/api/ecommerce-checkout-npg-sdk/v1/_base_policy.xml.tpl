@@ -2,11 +2,10 @@
     <inbound>
         <base />
 
-        <!-- Batch endpoint: called hourly by the checkout NPG SDK sync pipeline.
-             Stricter rate limit than the rest of the ecommerce-for-checkout group. PIDM-2190 -->
+        <!-- endpoint called hourly by the checkout NPG SDK sync pipeline -->
         <rate-limit-by-key calls="10" renewal-period="60" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
 
-        <!-- Authenticate to the payment-methods-handler backend; the npg-api-key stays in the eCommerce domain -->
+        <!-- auth to the payment-methods-handler backend -->
         <set-header name="x-api-key" exists-action="override">
             <value>{{ecommerce-payment-methods-api-key-value}}</value>
         </set-header>
