@@ -1,6 +1,6 @@
 module "rn_agent" {
-  #https://github.com/pagopa/payment-release-notes-agent/releases/tag/v0.0.6
-  source = "git::https://github.com/pagopa/payment-release-notes-agent.git//infrastructure/iac?ref=d7f0325787e648bddc06abf310084ecc98be6d81"
+  #https://github.com/pagopa/payment-release-notes-agent/releases/tag/v0.0.7
+  source = "git::https://github.com/pagopa/payment-release-notes-agent.git//infrastructure/iac?ref=1b64dfd05db51832ea3c6ece98f9d3896d0bee24"
 
   # General
   prefix   = var.prefix
@@ -23,7 +23,7 @@ module "rn_agent" {
   internal_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 
   # General App
-  docker_image_tag = "v0.0.6"
+  docker_image_tag = "v0.0.7"
   department_name  = "Dipartimento Pagamenti"
 
   # APIM
@@ -34,4 +34,12 @@ module "rn_agent" {
   # KV
   kv_resource_group_name = "${local.product}-${var.location_short}-${var.domain}-sec-rg"
   kv_name                = "${local.product}-${var.location_short}-${var.domain}-kv"
+
+  # Monitoring
+  log_analytics_workspace_name                = local.log_analytics_workspace_name
+  log_analytics_workspace_resource_group_name = local.monitor_resource_group_name
+  application_insights_name                   = local.application_insisght_name
+  application_insights_resource_group_name    = local.monitor_resource_group_name
+
+
 }
