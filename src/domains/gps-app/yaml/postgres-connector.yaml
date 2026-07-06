@@ -35,6 +35,7 @@ spec:
 
     # Groovy filter logic:
     # 1. If value is null (Tombstone): keep
-    # 2. If it is a DELETE (d): keep ONLY if before.archived is false
-    # 3. If it is INSERT/UPDATE: keep ONLY if after.archived is false
-    transforms.filterArchived.condition: "value == null ? true : (value.op == 'd' ? value.before?.archived != true : value.after?.archived != true)"
+    # 2. If from debezium_signal table: exclude (signaling table has no archived field)
+    # 3. If it is a DELETE (d): keep ONLY if before.archived is false or missing
+    # 4. If it is INSERT/UPDATE: keep ONLY if after.archived is false or missing
+    transforms.filterArchived.condition: "value == null ? true : (value.source.table == 'debezium_signal' ? false : (value.op == 'd' ? value.before?.archived != true : value.after?.archived != true))"
