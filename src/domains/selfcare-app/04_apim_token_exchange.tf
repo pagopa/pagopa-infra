@@ -218,7 +218,6 @@ module "apim_pagopa_token_exchange_v1" {
     selfcare-issuer   = local.selfcare-jwt-issuer
     pagopa-issuer     = local.pagopa-issuer
     cert_cn           = local.cert_subject
-    cert_id           = azurerm_api_management_certificate.pagopa_token_exchange_cert_jwt.name
     origin            = local.selfcare_fe_hostname
   })
 }

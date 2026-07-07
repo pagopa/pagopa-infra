@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "PagoPA Token Exchange API",
-    "description": "Exchange a Selfcare or pagoPA session token for a pagoPA platform token.",
+    "description": "Exchange a Selfcare identity token for a pagoPA platform token.",
     "version": "1.0.0"
   },
   "servers": [
@@ -19,7 +19,7 @@
           {
             "name": "IdentityToken",
             "in": "header",
-            "description": "Selfcare identity token or pagoPA session token.",
+            "description": "Selfcare identity token.",
             "required": true,
             "schema": {
               "type": "string"
@@ -48,7 +48,7 @@
             }
           },
           "401": {
-            "description": "The source token is invalid or the requested role is not assigned to the user.",
+            "description": "The Selfcare identity token is invalid or the requested role is not assigned to the user.",
             "content": {
               "text/plain": {
                 "schema": {
