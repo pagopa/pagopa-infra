@@ -97,6 +97,21 @@ resource "azurerm_app_configuration_feature" "commission_bundles_flag" {
   }
 }
 
+resource "azurerm_app_configuration_feature" "profile_item_flag" {
+  configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
+  description            = "It enables the profile item role switch"
+  name                   = "profile-item"
+  enabled                = true
+
+  lifecycle {
+    ignore_changes = [
+      enabled,
+      targeting_filter,
+      timewindow_filter
+    ]
+  }
+}
+
 resource "azurerm_app_configuration_feature" "commission_bundles_private_flag" {
   configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
   description            = "It enables the commission bundles of type PRIVATE"
