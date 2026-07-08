@@ -1032,7 +1032,7 @@ variable "cidr_subnet_dns_forwarder" {
 
 variable "vpn_gw_sku" {
   type        = string
-  default     = "VpnGw1"
+  default     = "VpnGw1AZ"
   description = "VPN gateway sku"
 }
 
@@ -1071,3 +1071,8 @@ variable "route_tools" {
   description = "AKS routing table"
 }
 
+variable "dns_default_ttl_sec_short" {
+  type        = number
+  description = "Short dns ttl for email records, in seconds"
+  default     = 60
+}

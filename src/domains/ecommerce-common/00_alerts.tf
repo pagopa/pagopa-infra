@@ -19,7 +19,7 @@ resource "azurerm_monitor_action_group" "ecommerce_opsgenie" {
 
   webhook_receiver {
     name                    = "EcommerceOpsgenieWebhook"
-    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.monitor_ecommerce_opsgenie_webhook_key[0].value}"
+    service_uri             = "https://api.atlassian.com/jsm/ops/integration/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.monitor_ecommerce_opsgenie_webhook_key[0].value}"
     use_common_alert_schema = true
   }
 
@@ -40,7 +40,7 @@ resource "azurerm_monitor_action_group" "service_management_opsgenie" {
 
   webhook_receiver {
     name                    = "EcommerceServiceManagementOpsgenieWebhook"
-    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.monitor_service_management_ecommerce_opsgenie_webhook_key[0].value}"
+    service_uri             = "https://api.atlassian.com/jsm/ops/integration/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.monitor_service_management_ecommerce_opsgenie_webhook_key[0].value}"
     use_common_alert_schema = true
   }
 
@@ -252,7 +252,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_authorization_
 AzureDiagnostics
 | where url_s matches regex "https://api.platform.pagopa.it/ecommerce/npg/notifications/v1/sessions/.*/outcomes"
 | where method_s == "POST"
-| where responseCode_d == 401 or responseCode_d >= 500 
+| where responseCode_d == 401 or responseCode_d >= 500
 | project TimeGenerated, responseCode_d
   QUERY
   )
@@ -292,7 +292,7 @@ AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/ecommerce/io/v2'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 and DurationMs < 10000)
+Success=countif((responseCode_d < 500 or (operationId_s == 'getPaymentRequestInfoForIO' and responseCode_d == 503)) and DurationMs < 10000)
     by Time = bin(TimeGenerated, 15m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
