@@ -174,39 +174,39 @@ resource "azurerm_api_management_api_operation_policy" "pagopa_token_exchange_po
 ## Token Exchange API - v1    ##
 ################################
 locals {
-  pagopa_token_exchange_v1_api = {
-    display_name          = "PagoPA Token Exchange API"
-    description           = "Exchange a Selfcare or pagoPA session token for a pagoPA platform token"
+  pagopa_backoffice_selfcare_sso_v1_api = {
+    display_name          = "pagoPA Backoffice Selfcare SSO API"
+    description           = "Exchange a Selfcare token to a pagoPA platform token"
     path                  = "backoffice/selfcare/sso"
     subscription_required = false
     service_url           = null
   }
 }
 
-resource "azurerm_api_management_api_version_set" "pagopa_token_exchange_v1" {
-  name                = "${var.env_short}-pagopa-token-exchange-api"
+resource "azurerm_api_management_api_version_set" "pagopa_backoffice_selfcare_sso_v1" {
+  name                = "${var.env_short}-pagopa-backoffice-selfcare-sso-v1"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  display_name        = local.pagopa_token_exchange_v1_api.display_name
+  display_name        = local.pagopa_backoffice_selfcare_sso_v1_api.display_name
   versioning_scheme   = "Segment"
 }
 
-module "apim_pagopa_token_exchange_v1" {
+module "apim_pagopa_backoffice_selfcare_sso_v1" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
-  name                  = "${local.project}-token-exchange-api"
+  name                  = "${local.project}-backoffice-selfcare-sso-v1"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_selfcare_product.product_id]
-  subscription_required = local.pagopa_token_exchange_v1_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.pagopa_token_exchange_v1.id
+  subscription_required = local.pagopa_backoffice_selfcare_sso_v1_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.pagopa_backoffice_selfcare_sso_v1.id
   api_version           = "v1"
 
-  description  = local.pagopa_token_exchange_v1_api.description
-  display_name = local.pagopa_token_exchange_v1_api.display_name
-  path         = local.pagopa_token_exchange_v1_api.path
+  description  = local.pagopa_backoffice_selfcare_sso_v1_api.description
+  display_name = local.pagopa_backoffice_selfcare_sso_v1_api.display_name
+  path         = local.pagopa_backoffice_selfcare_sso_v1_api.path
   protocols    = ["https"]
-  service_url  = local.pagopa_token_exchange_v1_api.service_url
+  service_url  = local.pagopa_backoffice_selfcare_sso_v1_api.service_url
 
   content_format = "openapi"
   content_value = templatefile("./api/pagopa-selfcare-ms-backoffice/sso/v1/_openapi.json.tpl", {

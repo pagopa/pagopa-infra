@@ -17,6 +17,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 9e205a1f0d0cb36b5677ee1b48a83cb321a54cb8 |
+| <a name="module_apim_pagopa_backoffice_selfcare_sso_v1"></a> [apim\_pagopa\_backoffice\_selfcare\_sso\_v1](#module\_apim\_pagopa\_backoffice\_selfcare\_sso\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
 | <a name="module_apim_selfcare_backoffice_external_ec_product"></a> [apim\_selfcare\_backoffice\_external\_ec\_product](#module\_apim\_selfcare\_backoffice\_external\_ec\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
 | <a name="module_apim_selfcare_backoffice_external_institution_services_consents_product"></a> [apim\_selfcare\_backoffice\_external\_institution\_services\_consents\_product](#module\_apim\_selfcare\_backoffice\_external\_institution\_services\_consents\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
 | <a name="module_apim_selfcare_backoffice_external_psp_product"></a> [apim\_selfcare\_backoffice\_external\_psp\_product](#module\_apim\_selfcare\_backoffice\_external\_psp\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
@@ -36,6 +37,7 @@
 | [azurerm_api_management_api.pagopa_token_exchange](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api_operation.pagopa_token_exchange](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation) | resource |
 | [azurerm_api_management_api_operation_policy.pagopa_token_exchange_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_version_set.pagopa_backoffice_selfcare_sso_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_certificate.pagopa_token_exchange_cert_jwt](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_certificate) | resource |
 | [azurerm_api_management_subscription.backoffice_external_for_rtp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.notices_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |

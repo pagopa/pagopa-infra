@@ -43,6 +43,7 @@
 | [azurerm_app_configuration_feature.maintenance_flag](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/app_configuration_feature) | resource |
 | [azurerm_app_configuration_feature.payment_notices_flag](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/app_configuration_feature) | resource |
 | [azurerm_app_configuration_feature.payments_receipts_flag](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/app_configuration_feature) | resource |
+| [azurerm_app_configuration_feature.profile_item_flag](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/app_configuration_feature) | resource |
 | [azurerm_app_configuration_feature.quicksight_dashboard_flag](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/app_configuration_feature) | resource |
 | [azurerm_app_configuration_feature.quicksight_product_free_trial](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/app_configuration_feature) | resource |
 | [azurerm_app_configuration_feature.settings_section](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/app_configuration_feature) | resource |
