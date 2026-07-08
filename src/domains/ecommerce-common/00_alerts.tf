@@ -568,7 +568,6 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_checkout_get_c
   data_source_id = data.azurerm_api_management.apim.id
   description    = "Ecommerce GET carts availability less than or equal 99% in the last 30 minutes"
   enabled        = true
-  #TO DO: tuning alert thresholds based 503 status code
   query = (<<-QUERY
 AzureDiagnostics
 | where url_s startswith "https://api.platform.pagopa.it/ecommerce/checkout/v1/carts" and method_s == "GET"
