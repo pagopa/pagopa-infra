@@ -273,14 +273,17 @@ module "checkout_fe_frontdoor_web_test" {
 }
 
 module "checkout_npg_sdk_web_test" {
+  # NOTE: intentionally scoped to non-prod (dev/uat) for testing only.
+  # TODO: switch to `var.env_short == "p"` (prod-only, matching checkout_fe_frontdoor_web_test above) before prod rollout.
   count  = var.env_short != "p" ? 1 : 0
   source = "./.terraform/modules/__v4__/application_insights_standard_web_test"
 
-  https_endpoint                        = "https://${local.dns_zone_key}"
-  https_endpoint_path                   = "/npg/sdk/hfsdk.integrity.json"
-  alert_name                            = "${local.project}-npg-sdk-web-test"
-  location                              = var.location
-  alert_enabled                         = true
+  https_endpoint      = "https://${local.dns_zone_key}"
+  https_endpoint_path = "/npg/sdk/hfsdk.integrity.json"
+  alert_name          = "${local.project}-npg-sdk-web-test"
+  location            = var.location
+  alert_enabled       = false # disabled to validate the dev probe with no notifications; TODO: set true before rollout
+
   application_insights_resource_group   = data.azurerm_resource_group.monitor_rg.name
   application_insights_id               = data.azurerm_application_insights.application_insights.id
   application_insights_action_group_ids = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id]
