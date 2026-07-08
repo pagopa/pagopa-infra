@@ -15,18 +15,8 @@ pids=()
 ACTION="$1"
 
 array=(
-    'src/aks-leonardo::itn-dev'
-    'src/aks-platform::weu-dev'
     'src/core::dev'
-    'src/grafana-monitoring::weu-dev'
-    'src/next-aks::weu-dev'
     'src/next-core::dev'
-    'src/network::dev'
-    'src/network-secrets::dev'
-    'src/tf-audit::weu-prod'
-    'src/packer::dev'
-    'src/synthetic-monitoring::weu-dev'
-    'src/zabbix::dev'
     'src/domains/aca-app::weu-dev'
     'src/domains/aca-common::weu-dev'
     'src/domains/afm-app::weu-dev'
