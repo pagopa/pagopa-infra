@@ -282,11 +282,11 @@ module "checkout_npg_sdk_web_test" {
   https_endpoint_path = "/npg/sdk/hfsdk.integrity.json"
   alert_name          = "${local.project}-npg-sdk-web-test"
   location            = var.location
-  alert_enabled       = false # disabled to validate the dev probe with no notifications; TODO: set true before rollout
+  alert_enabled       = true # enabled so the web test actually runs; notifications suppressed via empty action groups below. TODO: restore action groups + scope to prod before rollout
 
   application_insights_resource_group   = data.azurerm_resource_group.monitor_rg.name
   application_insights_id               = data.azurerm_application_insights.application_insights.id
-  application_insights_action_group_ids = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id]
+  application_insights_action_group_ids = [] # notifications suppressed for dev-probe validation (alert runs but pages no one); TODO: restore [slack, email] before rollout
   https_probe_method                    = "GET"
   timeout                               = 10
   frequency                             = 300
