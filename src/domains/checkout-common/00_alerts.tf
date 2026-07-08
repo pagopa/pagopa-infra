@@ -178,14 +178,23 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_carts_v1" {
   description    = "Checkout carts API availability less than or equal 95% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
+let thresholdTrafficMin = 50;
+let thresholdTrafficLinear = 200;
+let lowTrafficAvailability = 90;
+let highTrafficAvailability = 99;
+let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
+let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/checkout/ec/v1/carts'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 and DurationMs < 500)
+    Success=countif(responseCode_d < 500 and DurationMs < 1000)
     by Time = bin(TimeGenerated, 15m)
+| extend trafficUp = Total-thresholdTrafficMin
+| extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
-| where Availability < 95
+| where Availability < expectedAvailability
   QUERY
   )
   severity    = 1
@@ -214,14 +223,23 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_carts_v1" 
   description    = "Checkout carts auth API availability less than or equal 95% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
+let thresholdTrafficMin = 20;
+let thresholdTrafficLinear = 80;
+let lowTrafficAvailability = 90;
+let highTrafficAvailability = 99;
+let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
+let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/checkout/carts-auth/v1/carts'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 and DurationMs < 500)
+    Success=countif(responseCode_d < 500 and DurationMs < 1000)
     by Time = bin(TimeGenerated, 15m)
+| extend trafficUp = Total-thresholdTrafficMin
+| extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
-| where Availability < 95
+| where Availability < expectedAvailability
   QUERY
   )
   severity    = 1
@@ -250,14 +268,23 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_carts_v2" {
   description    = "Checkout carts API availability less than or equal 95% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
+let thresholdTrafficMin = 50;
+let thresholdTrafficLinear = 200;
+let lowTrafficAvailability = 90;
+let highTrafficAvailability = 99;
+let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
+let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/checkout/ec/v2/carts'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 and DurationMs < 500)
+    Success=countif(responseCode_d < 500 and DurationMs < 1000)
     by Time = bin(TimeGenerated, 15m)
+| extend trafficUp = Total-thresholdTrafficMin
+| extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
-| where Availability < 95
+| where Availability < expectedAvailability
   QUERY
   )
   severity    = 1
@@ -287,13 +314,22 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_carts_v2" 
   enabled        = true
   query = (<<-QUERY
 AzureDiagnostics
+let thresholdTrafficMin = 20;
+let thresholdTrafficLinear = 80;
+let lowTrafficAvailability = 90;
+let highTrafficAvailability = 99;
+let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
+let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 | where url_s startswith 'https://api.platform.pagopa.it/checkout/carts-auth/v2/carts'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 and DurationMs < 500)
+    Success=countif(responseCode_d < 500 and DurationMs < 1000)
     by Time = bin(TimeGenerated, 15m)
+| extend trafficUp = Total-thresholdTrafficMin
+| extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
-| where Availability < 95
+| where Availability < expectedAvailability
   QUERY
   )
   severity    = 1
