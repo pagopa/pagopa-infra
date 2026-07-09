@@ -49,6 +49,7 @@ locals {
   portal_domain           = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
   management_domain       = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
   checkout_domain         = format("%s.%s", var.dns_zone_checkout, var.external_domain)
+  wallet_domain           = format("%s.%s", var.dns_zone_wallet, var.external_domain)
   redis_connection_string = module.redis[0].primary_connection_string
   redis_cache_id          = module.redis[0].id
 }
@@ -236,6 +237,15 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
     key_vault_id = replace(
       data.azurerm_key_vault_certificate.checkout.secret_id,
       "/${data.azurerm_key_vault_certificate.checkout.version}",
+      ""
+    )
+  }
+
+  gateway {
+    host_name = local.wallet_domain
+    key_vault_id = replace(
+      data.azurerm_key_vault_certificate.wallet.secret_id,
+      "/${data.azurerm_key_vault_certificate.wallet.version}",
       ""
     )
   }
