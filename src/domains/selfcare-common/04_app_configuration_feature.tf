@@ -24,6 +24,12 @@ resource "azurerm_role_assignment" "appconf_dataowner_adgroup_admin" {
   principal_id         = data.azuread_group.adgroup_admin.object_id
 }
 
+resource "azurerm_role_assignment" "appconf_dataowner_adgroup_admin_dev" {
+  scope                = azurerm_app_configuration.selfcare_appconf.id
+  role_definition_name = "App Configuration Data Owner"
+  principal_id         = data.azuread_group.adgroup_admin_dev.object_id
+}
+
 resource "azurerm_app_configuration_feature" "maintenance_banner_flag" {
   configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
   description            = "It enables the banner"

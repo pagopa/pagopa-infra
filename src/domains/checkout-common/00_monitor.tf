@@ -32,7 +32,7 @@ resource "azurerm_monitor_action_group" "checkout_opsgenie" {
 
   webhook_receiver {
     name                    = "CheckoutOpsgenieWebhook"
-    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.checkout_opsgenie_webhook_key[0].value}"
+    service_uri             = "https://api.atlassian.com/jsm/ops/integration/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.checkout_opsgenie_webhook_key[0].value}"
     use_common_alert_schema = true
   }
 

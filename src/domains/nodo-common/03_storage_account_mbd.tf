@@ -44,9 +44,12 @@ resource "azurerm_storage_share" "firmatore_mbd" {
   quota                = 50
 }
 
-resource "azurerm_private_endpoint" "firmatore_mbd_private_endpoint" {
-  count = var.env_short == "d" ? 0 : 1
+moved {
+  from = azurerm_private_endpoint.firmatore_mbd_private_endpoint[0]
+  to   = azurerm_private_endpoint.firmatore_mbd_private_endpoint
+}
 
+resource "azurerm_private_endpoint" "firmatore_mbd_private_endpoint" {
   name                = "${local.project}-firmatore-mbd-private-endpoint"
   location            = var.location
   resource_group_name = azurerm_resource_group.mbd_rg.name

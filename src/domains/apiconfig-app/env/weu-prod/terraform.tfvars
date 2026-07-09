@@ -1,15 +1,11 @@
-prefix                 = "pagopa"
-env_short              = "p"
-env                    = "prod"
-domain                 = "apiconfig"
-location               = "westeurope"
-location_short         = "weu"
-location_string        = "West Europe"
-instance               = "prod"
-gh_runner_job_location = "italynorth"
-
-### External resources
-
+prefix                                      = "pagopa"
+env_short                                   = "p"
+env                                         = "prod"
+domain                                      = "apiconfig"
+location                                    = "westeurope"
+location_short                              = "weu"
+location_string                             = "West Europe"
+instance                                    = "prod"
 monitor_resource_group_name                 = "pagopa-p-monitor-rg"
 log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
@@ -31,15 +27,6 @@ tls_cert_check_helm = {
 
 # https://pagopa.atlassian.net/wiki/spaces/ACN/pages/525764770/API+Config+Ambienti+DB#On-Premise
 # db_service_name = "NDPSPCP_PP_NODO4_CFG"
-db_service_name = "NDPSPCP_NODO4_CFG"
-db_port         = 1521
-
-# API Config
-xsd_ica         = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
-api_config_tier = "PremiumV3"
-sku_name        = "P1v3"
-
-# API Config FE
 api_config_fe_enabled                = true
 cname_record_name                    = "config"
 cdn_storage_account_replication_type = "GZRS"

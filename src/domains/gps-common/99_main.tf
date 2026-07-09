@@ -16,6 +16,10 @@ terraform {
       source  = "hashicorp/null"
       version = "<= 3.2.2"
     }
+    postgresql = {
+      source  = "cyrilgdn/postgresql"
+      version = "~> 1.26.0"
+    }
   }
 
   backend "azurerm" {}
@@ -35,6 +39,6 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 module "__v4__" {
-  # 8.3.5
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=b7f9217e580b2b14913aecd052a1c3687e860a5d"
+  # 10.15.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=befe5693313f3b23ca2ca8a9a5c7ac190e4fe06c"
 }

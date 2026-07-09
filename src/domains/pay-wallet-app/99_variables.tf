@@ -34,11 +34,6 @@ variable "domain" {
   }
 }
 
-variable "location" {
-  type        = string
-  description = "One of westeurope, northeurope"
-}
-
 variable "location_short" {
   type = string
   validation {
@@ -112,24 +107,6 @@ variable "tls_cert_check_helm" {
   description = "tls cert helm chart configuration"
 }
 
-variable "payment_wallet_with_pm_enabled" {
-  type        = bool
-  default     = false
-  description = "payment wallet using Payment Manager"
-}
-
-variable "pdv_api_base_path" {
-  type        = string
-  default     = null
-  description = "Personal data vault api base path"
-}
-
-variable "io_backend_base_path" {
-  type        = string
-  default     = null
-  description = "io backend api base path"
-}
-
 # DNS
 
 variable "dns_zone_prefix" {
@@ -164,4 +141,10 @@ variable "payment_wallet_service_api_key_use_primary" {
   type        = bool
   description = "If true the current active API key used for wallet service requests will be the primary one."
   default     = true
+}
+
+variable "pay_wallet_apim_frontend_enabled" {
+  type        = bool
+  default     = false
+  description = "Feature flag to enable/disable the APIM frontend proxy for wallet. When 'false', APIM redirects all traffic to wallet CDN."
 }

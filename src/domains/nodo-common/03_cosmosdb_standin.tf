@@ -19,7 +19,7 @@ module "cosmosdb_account_standin" {
   private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos_nosql.id]
   is_virtual_network_filter_enabled   = var.standin_cosmos_nosql_db_params.is_virtual_network_filter_enabled
 
-  allowed_virtual_network_subnet_ids = var.standin_cosmos_nosql_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
+  allowed_virtual_network_subnet_ids = var.env_short == "p" ? [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id, data.azurerm_subnet.vpn_subnet.id]
 
   enable_automatic_failover = true
 

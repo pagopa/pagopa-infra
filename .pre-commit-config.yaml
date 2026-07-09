@@ -1,5 +1,28 @@
 repos:
-  ## terraform
+  - repo: local
+    hooks:
+      - id: check-variables-tf
+        name: Check Terraform variables.tf conventions
+        entry: scripts/check-variables-tf.sh
+        always_run: true
+        language: python
+        types: [java] # use java as filter to avoid triggering this hook for other file types, since this is a terraform specific check and we don't want to run it for every file change
+
+  - repo: https://github.com/mcole18/terraform-check-unused-variables.git
+    rev: v1.2.1
+    hooks:
+      - id: check-unused-vars
+        args: [ -r, -q, --dir=., --var-file=99_variables.tf ]
+
+  - repo: local
+    hooks:
+      - id: check-env-vars-consistency
+        name: Check Terraform env variables consistency
+        entry: scripts/check-env-vars-consistency.sh
+        always_run: true
+        language: python
+        types: [ java ] # use java as filter to avoid triggering this hook for other file types, since this is a terraform specific check and we don't want to run it for every file change
+
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.96.2
     hooks:

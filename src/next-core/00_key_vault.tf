@@ -78,6 +78,23 @@ data "azurerm_key_vault_certificate" "wisp2" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_certificate" "checkout" {
+  name         = var.app_gateway_checkout_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
+# wallet cert lives in the wallet domain KV; we reference it so it gets auto
+# renewed instead of relying on a static copy via import
+data "azurerm_key_vault" "wallet" {
+  name                = "${var.prefix}-${var.env_short}-pay-wallet-kv"
+  resource_group_name = "${var.prefix}-${var.env_short}-pay-wallet-sec-rg"
+}
+
+data "azurerm_key_vault_certificate" "wallet" {
+  name         = var.app_gateway_wallet_certificate_name
+  key_vault_id = data.azurerm_key_vault.wallet.id
+}
+
 data "azurerm_key_vault_certificate" "wisp2govit" {
   count = (var.app_gateway_wisp2govit_certificate_name == "") ? 0 : 1
 

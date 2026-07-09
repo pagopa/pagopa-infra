@@ -21,6 +21,14 @@ module "gh_runner_job" {
     {
       name : "pagopa-cruscotto-backend",
       short_name : "crusc8-be"
+    },
+    {
+      name : "pagopa-cruscotto-sert-backend",
+      short_name : "crusc8-sert"
+    },
+    {
+      name : "pagopa-cruscotto-ingestor",
+      short_name : "crusc8-ingestor"
     }
   ]
   job = {
@@ -40,7 +48,6 @@ module "gh_runner_job" {
     rg           = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
   }
 
-  location                = var.location
   prefix                  = var.prefix
   resource_group_name     = data.azurerm_resource_group.identity_rg.name
   domain_security_rg_name = "${local.project}-sec-rg"

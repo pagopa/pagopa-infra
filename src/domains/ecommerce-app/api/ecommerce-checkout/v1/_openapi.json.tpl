@@ -288,6 +288,16 @@
               }
             }
           },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "504": {
             "description": "Gateway timeout",
             "content": {
@@ -341,6 +351,16 @@
           },
           "409": {
             "description": "Transaction already processed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
             "content": {
               "application/json": {
                 "schema": {
@@ -422,6 +442,16 @@
           },
           "404": {
             "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
             "content": {
               "application/json": {
                 "schema": {
@@ -722,6 +752,16 @@
           },
           "404": {
             "description": "Payment method not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
             "content": {
               "application/json": {
                 "schema": {
@@ -2395,6 +2435,11 @@
                 "type": "string",
                 "format": "uri",
                 "example": "https://www.comune.di.prova.it/pagopa/error.html"
+              },
+              "returnWaitingUrl": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://www.comune.di.prova.it/pagopa/waiting.html"
               }
             }
           },

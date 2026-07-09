@@ -272,18 +272,6 @@ resource "azurerm_key_vault_secret" "pdf_engine_node_perf_test_subkey" {
   }
 }
 
-resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
-  name         = "elastic-otel-token-header"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
 #
 # IaC
 #
@@ -392,6 +380,43 @@ resource "azurerm_key_vault_secret" "shared_anonymizer_api_keysubkey_store_kv" {
   ]
   name         = "shared-anonymizer-api-key"
   value        = azurerm_api_management_subscription.shared_anonymizer_api_key_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+
+# ##########################
+# search-transactions
+# ##########################
+resource "azurerm_key_vault_secret" "search_transactions_token_secret" {
+  name         = "search-transactions-token-secret"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+# used by pagopa-search-transactions-fe e2e tests
+resource "azurerm_key_vault_secret" "bizevents_ds_cosmos_primary_key" {
+  count = var.env_short != "p" ? 1 : 0
+
+  name         = "bizevents-ds-cosmos-primary-key"
+  value        = data.azurerm_cosmosdb_account.bizevents_ds_cosmos[0].primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "bizevents_ds_cosmos_endpoint" {
+  count = var.env_short != "p" ? 1 : 0
+
+  name         = "bizevents-ds-cosmos-endpoint"
+  value        = data.azurerm_cosmosdb_account.bizevents_ds_cosmos[0].endpoint
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

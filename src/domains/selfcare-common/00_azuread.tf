@@ -49,3 +49,7 @@ data "azuread_group" "adgroup_admin" {
 data "azuread_group" "adgroup_developers" {
   display_name = "${local.product}-adgroup-developers"
 }
+
+data "azuread_group" "adgroup_admin_dev" {
+  display_name = "${local.product}-adgroup-admin-dev"
+}

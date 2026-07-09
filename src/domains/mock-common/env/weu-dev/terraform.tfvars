@@ -11,25 +11,17 @@ instance       = "dev"
 monitor_resource_group_name                 = "pagopa-d-monitor-rg"
 log_analytics_workspace_name                = "pagopa-d-law"
 log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
-application_insights_name                   = "pagopa-d-appinsights"
-
-ingress_load_balancer_ip = "10.1.100.250"
+ingress_load_balancer_ip                    = "10.1.100.250"
 
 cidr_subnet_mock_ec              = ["10.1.137.0/29"]
 cidr_subnet_mock_payment_gateway = ["10.1.137.8/29"]
-cidr_subnet_dbms                 = ["10.1.180.0/24"]
 cidr_subnet_mocker_cosmosdb      = ["10.1.192.0/24"]
+mock_payment_gateway_enabled     = true
+external_domain                  = "pagopa.it"
+dns_zone_prefix                  = "dev.platform"
+dns_zone_internal_prefix         = "internal.dev.platform"
 
-external_domain          = "pagopa.it"
-dns_zone_prefix          = "dev.platform"
-dns_zone_internal_prefix = "internal.dev.platform"
-
-mock_ec_enabled                    = true
-mock_ec_secondary_enabled          = true
-mock_payment_gateway_enabled       = true
-mock_psp_service_enabled           = true
-mock_psp_secondary_service_enabled = true
-
+mock_ec_enabled     = true
 enable_iac_pipeline = false
 
 
@@ -59,5 +51,3 @@ mocker_cosmosdb_params = {
 
 # CosmosDb MongoDb
 cosmosdb_mongodb_extra_capabilities = ["EnableServerless"]
-
-pagopa_proxy_ip_restriction_default_action = "Allow"

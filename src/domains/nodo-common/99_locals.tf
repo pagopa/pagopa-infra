@@ -42,6 +42,7 @@ locals {
   sb_resource_group_name               = "${local.project}-sb-rg"
 
   aks_subnet_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
+  vpn_subnet_name = "GatewaySubnet"
 
   evt_hub_location = "weu-core"
 

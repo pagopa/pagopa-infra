@@ -26,7 +26,7 @@ module "cosmosdb_account_nodo_verifyko" {
   private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos_nosql.id]
   is_virtual_network_filter_enabled   = var.verifyko_cosmos_nosql_db_params.is_virtual_network_filter_enabled
 
-  allowed_virtual_network_subnet_ids = var.verifyko_cosmos_nosql_db_params.public_network_access_enabled ? [] : [module.cosmosdb_nodo_verifyko_snet.id]
+  allowed_virtual_network_subnet_ids = var.env_short == "p" ? [module.cosmosdb_nodo_verifyko_snet.id] : [module.cosmosdb_nodo_verifyko_snet.id, data.azurerm_subnet.vpn_subnet.id]
 
   enable_automatic_failover = true
 

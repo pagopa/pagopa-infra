@@ -38,7 +38,7 @@ module "redis_pagopa_pay_wallet_snet" {
 # hub spoke
 module "redis_spoke_pay_wallet_snet" {
   source            = "./.terraform/modules/__v4__/IDH/subnet"
-  count             = var.env_short == "d" ? 0 : 1
+  count             = 1
   env               = var.env
   idh_resource_tier = "slash28_privatelink_true"
   name              = "${local.project}-spoke-data-redis-pe-snet"
@@ -57,7 +57,7 @@ module "redis_spoke_pay_wallet_snet" {
 
 module "cosmos_spoke_pay_wallet_snet" {
   source            = "./.terraform/modules/__v4__/IDH/subnet"
-  count             = var.env_short == "d" ? 0 : 1
+  count             = 1
   env               = var.env
   idh_resource_tier = "slash28_privatelink_true"
   name              = "${local.project}-spoke-data-cosmos-pe-snet"
@@ -81,7 +81,7 @@ module "cosmos_spoke_pay_wallet_snet" {
 
 module "storage_spoke_pay_wallet_snet" {
   source            = "./.terraform/modules/__v4__/IDH/subnet"
-  count             = var.env_short == "d" ? 0 : 1
+  count             = 1
   env               = var.env
   idh_resource_tier = "slash28_privatelink_true"
   name              = "${local.project}-spoke-data-storage-pe-snet"

@@ -20,25 +20,15 @@ is_feature_enabled = {
 
 ### CIRDs
 
-cidr_printit_cosmosdb_italy   = ["10.3.12.0/27"]
-cidr_printit_storage_italy    = ["10.3.12.32/27"]
-cidr_printit_redis_italy      = ["10.3.12.64/27"]
-cidr_printit_pdf_engine_italy = ["10.3.12.128/27"]
-cidr_printit_eventhub_italy   = ["10.3.12.160/27"]
-
-### External resources
-
+cidr_printit_cosmosdb_italy                       = ["10.3.12.0/27"]
+cidr_printit_pdf_engine_italy                     = ["10.3.12.128/27"]
+cidr_printit_redis_italy                          = ["10.3.12.64/27"]
 monitor_italy_resource_group_name                 = "pagopa-d-itn-core-monitor-rg"
 log_analytics_italy_workspace_name                = "pagopa-d-itn-core-law"
 log_analytics_italy_workspace_resource_group_name = "pagopa-d-itn-core-monitor-rg"
 
-monitor_resource_group_name                 = "pagopa-d-monitor-rg"
-log_analytics_workspace_name                = "pagopa-d-law"
-log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
-
-### Aks
-
-ingress_load_balancer_ip = "10.3.100.250"
+monitor_resource_group_name = "pagopa-d-monitor-rg"
+ingress_load_balancer_ip    = "10.3.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
@@ -58,9 +48,9 @@ cosmos_mongo_db_notices_params = {
   enable_free_tier                 = false
 
   additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = false
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = false
 
@@ -78,7 +68,7 @@ notices_storage_account = {
   account_replication_type            = "LRS"
   blob_versioning_enabled             = true
   advanced_threat_protection          = false
-  public_network_access_enabled       = true
+  public_network_access_enabled       = false
   blob_delete_retention_days          = 30
   enable_low_availability_alert       = false
   blob_tier_to_cool_after_last_access = 100
@@ -92,7 +82,7 @@ templates_storage_account = {
   account_replication_type      = "LRS"
   blob_versioning_enabled       = true
   advanced_threat_protection    = false
-  public_network_access_enabled = true
+  public_network_access_enabled = false
   blob_delete_retention_days    = 30
   enable_low_availability_alert = false
 }
@@ -103,7 +93,7 @@ institutions_storage_account = {
   account_replication_type      = "LRS"
   blob_versioning_enabled       = false
   advanced_threat_protection    = false
-  public_network_access_enabled = true
+  public_network_access_enabled = false
   blob_delete_retention_days    = 30
   enable_low_availability_alert = false
 }
@@ -114,14 +104,12 @@ institutions_storage_account = {
 ehns_sku_name = "Standard"
 
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
-ehns_auto_inflate_enabled     = false
-ehns_maximum_throughput_units = 5
-ehns_capacity                 = 1
-ehns_alerts_enabled           = false
-ehns_zone_redundant           = false
-
-ehns_public_network_access       = true
-ehns_private_endpoint_is_present = false
+ehns_auto_inflate_enabled        = false
+ehns_maximum_throughput_units    = 5
+ehns_capacity                    = 1
+ehns_alerts_enabled              = false
+ehns_public_network_access       = false
+ehns_private_endpoint_is_present = true
 
 ehns_metric_alerts = {
   no_trx = {
@@ -170,4 +158,3 @@ ehns_metric_alerts = {
     ],
   },
 }
-

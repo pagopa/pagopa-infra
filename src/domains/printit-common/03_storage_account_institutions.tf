@@ -17,9 +17,9 @@ module "institutions_sa" {
 
   blob_delete_retention_days = var.institutions_storage_account.blob_delete_retention_days
 
-  private_endpoint_enabled  = var.is_feature_enabled.storage_institutions && var.env_short != "d"
+  private_endpoint_enabled  = var.is_feature_enabled.storage_institutions
   private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.privatelink_blob_azure_com.id]
-  subnet_id                 = var.env_short != "d" ? module.storage_spoke_printit_snet[0].id : null
+  subnet_id                 = module.storage_spoke_printit_snet.id
 
 
   blob_change_feed_enabled             = var.institutions_storage_account.backup_enabled

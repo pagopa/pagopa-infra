@@ -18,7 +18,8 @@ module "eventhub_namespace" {
 
 
   public_network_access_enabled = var.ehns_public_network_access
-  private_endpoint_created      = false
+  # PE created in different resource to manage the migration from from standard vnet to hub-spoke
+  private_endpoint_created = false
 
   private_endpoint_resource_group_name = azurerm_resource_group.eventhub_ita_rg.name
 
