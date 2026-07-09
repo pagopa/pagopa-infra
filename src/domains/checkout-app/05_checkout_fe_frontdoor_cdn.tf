@@ -272,36 +272,44 @@ module "checkout_fe_frontdoor_web_test" {
   retry_enabled                         = true
 }
 
-module "checkout_npg_sdk_web_test" {
-  # NOTE: intentionally scoped to non-prod (dev/uat) for testing only.
-  # TODO: switch to `var.env_short == "p"` (prod-only, matching checkout_fe_frontdoor_web_test above) before prod rollout.
-  count  = var.env_short != "p" ? 1 : 0
-  source = "./.terraform/modules/__v4__/application_insights_standard_web_test"
+# This alert watches the npg sdk sync pipeline's own success heartbeat:
+# the pipeline emits a `NpgSdkSyncSuccess` customEvent to App Insights only
+# after a full download -> verify-vs-NPG -> publish -> purge run. No heartbeat in the
+# last 3h means the sync has stopped or is failing, so the served SDK/hash may be stale.
+#
+# NOTE: scoped to non-prod (dev/uat) for validation.
+# TODO: switch to `var.env_short == "p"` (prod-only, matching the domain alerts) before prod rollout.
+resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_npg_sdk_sync_staleness" {
+  count = var.env_short != "p" ? 1 : 0
 
-  https_endpoint      = "https://${local.dns_zone_key}"
-  https_endpoint_path = "/npg/sdk/hfsdk.integrity.json"
-  alert_name          = "${local.project}-npg-sdk-web-test"
+  name                = "${local.project}-npg-sdk-sync-staleness-alert"
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
   location            = var.location
-  alert_enabled       = true # enabled so the web test actually runs; notifications suppressed via empty action groups below. TODO: restore action groups + scope to prod before rollout
 
-  application_insights_resource_group   = data.azurerm_resource_group.monitor_rg.name
-  application_insights_id               = data.azurerm_application_insights.application_insights.id
-  application_insights_action_group_ids = [] # notifications suppressed for dev-probe validation (alert runs but pages no one); TODO: restore [slack, email] before rollout
-  https_probe_method                    = "GET"
-  timeout                               = 10
-  frequency                             = 300
-  https_probe_threshold                 = 99
-  metric_frequency                      = "PT5M"
-  metric_window_size                    = "PT1H"
-  retry_enabled                         = true
+  action {
+    # TEMP (dev validation): empty so the alert evaluates and fires (visible in Azure Monitor > Alerts)
+    # but notifies no one. TODO: restore [slack, email] before committing/merging #3929.
+    action_group           = []
+    email_subject          = "[Checkout] NPG SDK sync stale - no successful sync in the last 3h"
+    custom_webhook_payload = "{}"
+  }
 
-  validation_rules = {
-    content = {
-      content_match      = "integrityHash"
-      pass_if_text_found = true
-    }
-    expected_status_code        = 200
-    ssl_cert_remaining_lifetime = 7
-    ssl_check_enabled           = true
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "No NpgSdkSyncSuccess heartbeat in the last 3 hours: the hourly NPG SDK sync pipeline may have stopped or be failing, so the served SDK/hash could be stale."
+  enabled        = true
+  # single fire while the sync is down + auto-resolve once heartbeats resume (dead-man's-switch semantics)
+  auto_mitigation_enabled = true
+  query = (<<-QUERY
+customEvents
+| where name == "NpgSdkSyncSuccess"
+  QUERY
+  )
+
+  severity    = 1
+  frequency   = 30
+  time_window = 180
+  trigger {
+    operator  = "LessThan"
+    threshold = 1
   }
 }
