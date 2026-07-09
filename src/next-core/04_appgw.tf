@@ -88,6 +88,23 @@ locals {
       }
     }
 
+    wallet = {
+      protocol           = "Https"
+      host               = format("%s.%s", var.dns_zone_wallet, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.product)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_wallet_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.wallet.secret_id,
+          "/${data.azurerm_key_vault_certificate.wallet.version}",
+          ""
+        )
+      }
+    }
+
   }
   public_listeners_apiprf = {
     apiprf = {
@@ -200,6 +217,13 @@ locals {
       priority              = 40
     }
 
+    wallet = {
+      listener              = "wallet"
+      backend               = "wallet"
+      rewrite_rule_set_name = "rewrite-rule-set-wallet"
+      priority              = 100
+    }
+
   }
 
   public_routes_apiprf = {
@@ -261,6 +285,18 @@ locals {
       fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-checkout"
+      request_timeout             = 30
+      pick_host_name_from_backend = false
+    }
+
+    wallet = {
+      protocol                    = "Https"
+      host                        = format("%s.%s", var.dns_zone_wallet, var.external_domain)
+      port                        = 443
+      ip_addresses                = module.apim[0].private_ip_addresses
+      fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
+      probe                       = "/status-0123456789abcdef"
+      probe_name                  = "probe-wallet"
       request_timeout             = 30
       pick_host_name_from_backend = false
     }
@@ -470,6 +506,28 @@ locals {
           url = {
             components   = "path_only"
             path         = "/checkout-fe{var_uri_path}"
+            query_string = null
+          }
+        },
+      ]
+    },
+    {
+      name = "rewrite-rule-set-wallet"
+      rewrite_rules = [
+        {
+          name          = "root-base-path-redirect"
+          rule_sequence = 1
+          conditions = [{
+            variable    = "var_host"
+            pattern     = format("%s.%s", var.dns_zone_wallet, var.external_domain)
+            ignore_case = true
+            negate      = false
+          }]
+          request_header_configurations  = []
+          response_header_configurations = []
+          url = {
+            components   = "path_only"
+            path         = "/wallet-fe{var_uri_path}"
             query_string = null
           }
         },

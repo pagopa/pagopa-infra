@@ -397,6 +397,11 @@ variable "app_gateway_checkout_certificate_name" {
   description = "Application gateway checkout certificate name on Key Vault"
 }
 
+variable "app_gateway_wallet_certificate_name" {
+  type        = string
+  description = "Application gateway wallet certificate name on Key Vault"
+}
+
 variable "app_gateway_wisp2govit_certificate_name" {
   type        = string
   description = "Application gateway wisp2govit certificate name on Key Vault"
@@ -557,6 +562,12 @@ variable "dns_zone_checkout" {
   type        = string
   default     = null
   description = "The checkout dns subdomain."
+}
+
+variable "dns_zone_wallet" {
+  type        = string
+  default     = null
+  description = "The payment-wallet dns subdomain."
 }
 
 #
