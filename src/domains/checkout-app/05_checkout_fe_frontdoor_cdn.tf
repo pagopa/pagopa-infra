@@ -287,8 +287,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_npg_sdk_sync_st
   location            = var.location
 
   action {
-    # Intentionally empty during dev/uat validation: the alert still evaluates and is
-    # visible in Azure Monitor > Alerts but pages no one. The [slack, email] action groups
+    # empty during dev/uat validation: the alert still evaluates and is
+    # visible in Azure but notifies no one. The [slack, email] action groups
     # are restored together with the prod-only scoping in the follow-up PR.
     action_group           = []
     email_subject          = "[Checkout] NPG SDK sync stale - no successful sync in the last 3h"
@@ -298,7 +298,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_npg_sdk_sync_st
   data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "No NpgSdkSyncSuccess heartbeat in the last 3 hours: the hourly NPG SDK sync pipeline may have stopped or be failing, so the served SDK/hash could be stale."
   enabled        = true
-  # single fire while the sync is down + auto-resolve once heartbeats resume (dead-man's-switch semantics)
+  # single fire while the sync is down + auto-resolve once heartbeats resume
   auto_mitigation_enabled = true
   query = (<<-QUERY
 customEvents
