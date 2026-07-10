@@ -137,7 +137,7 @@
         <base />
     </outbound>
     <on-error>
-        <trace source="ecommerce_npg_notify" severity="error">
+        <trace source="pagopa_portal_token" severity="error">
             <message>pagoPA Backoffice Selfcare SSO Error</message>
             <metadata name="errorSource" value="@(context.LastError.Source)" />
             <metadata name="errorMessage" value="@(context.LastError.Message)" />
