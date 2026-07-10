@@ -31,9 +31,9 @@
                     }
 
                     JObject organization = JObject.Parse(organizationClaim);
-                    var org_id = organization.Value&lt;string>("id");
-                    var org_vat = organization.Value&lt;string>("fiscal_code");
-                    JArray roles = organization.Value&lt;JArray>("roles");
+                    var org_id = organization.Value<string>("id");
+                    var org_vat = organization.Value<string>("fiscal_code");
+                    JArray roles = organization.Value<JArray>("roles");
 
                     if (roles == null || roles.Count == 0)
                     {
@@ -43,16 +43,16 @@
                     
                     string desiredRole = context.Request.Url.Query.GetValueOrDefault("desidered_role", "").Trim();
                     JObject selectedRole = string.IsNullOrWhiteSpace(desiredRole)
-                        ? roles.OfType&lt;JObject>().FirstOrDefault()
-                        : roles.OfType&lt;JObject>().FirstOrDefault(role => role.Value&lt;string>("role") == desiredRole);
+                        ? roles.OfType<JObject>().FirstOrDefault()
+                        : roles.OfType<JObject>().FirstOrDefault(role => role.Value<string>("role") == desiredRole);
 
                     if (selectedRole == null)
                     {
                         return "";
                     }
 
-                    var org_party_role = selectedRole.Value&lt;string>("partyRole");
-                    var org_role = selectedRole.Value&lt;string>("role");
+                    var org_party_role = selectedRole.Value<string>("partyRole");
+                    var org_role = selectedRole.Value<string>("role");
 
                     if (string.IsNullOrWhiteSpace(org_party_role) || string.IsNullOrWhiteSpace(org_role))
                     {
@@ -110,7 +110,7 @@
                     <set-header name="Content-Type" exists-action="override">
                         <value>text/plain</value>
                     </set-header>
-                    <set-body>The desired role is missing or is not assigned to the user.</set-body>
+                    <set-body>Unauthorized</set-body>
                 </return-response>
             </when>
         </choose>
