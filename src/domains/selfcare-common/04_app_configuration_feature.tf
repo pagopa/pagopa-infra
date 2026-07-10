@@ -101,7 +101,7 @@ resource "azurerm_app_configuration_feature" "profile_item_flag" {
   configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
   description            = "It enables the profile item role switch"
   name                   = "profile-item"
-  enabled                = true
+  enabled                = false
 
   lifecycle {
     ignore_changes = [

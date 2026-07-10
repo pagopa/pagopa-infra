@@ -27,7 +27,9 @@
 
                     if (string.IsNullOrWhiteSpace(organizationClaim))
                     {
-                        return "";
+                        throw new Exception(
+                            "pagopaPortalToken: organization claim cannot be empty"
+                        );
                     }
 
                     JObject organization = JObject.Parse(organizationClaim);
@@ -37,7 +39,9 @@
 
                     if (roles == null || roles.Count == 0)
                     {
-                        return "";
+                        throw new Exception(
+                            "pagopaPortalToken: organization.roles cannot be empty"
+                        );
                     }
 
                     
@@ -48,7 +52,9 @@
 
                     if (selectedRole == null)
                     {
-                        return "";
+                        throw new Exception(
+                            "pagopaPortalToken: requested role was not found"
+                        );
                     }
 
                     var org_party_role = selectedRole.Value<string>("partyRole");
@@ -56,7 +62,9 @@
 
                     if (string.IsNullOrWhiteSpace(org_party_role) || string.IsNullOrWhiteSpace(org_role))
                     {
-                        return "";
+                        throw new Exception(
+                            "pagopaPortalToken: selected role partyRole or role cannot be empty"
+                        );
                     }
 
                     var JOSEProtectedHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(
@@ -129,6 +137,15 @@
         <base />
     </outbound>
     <on-error>
+        <trace source="ecommerce_npg_notify" severity="error">
+            <message>pagoPA Backoffice Selfcare SSO Error</message>
+            <metadata name="errorSource" value="@(context.LastError.Source)" />
+            <metadata name="errorMessage" value="@(context.LastError.Message)" />
+            <metadata name="errorReason" value="@(context.LastError?.Reason ?? "-")" />
+            <metadata name="errorSection" value="@(context.LastError?.Section ?? "-")" />
+            <metadata name="errorPath" value="@(context.LastError?.Path ?? "-")" />
+            <metadata name="errorStatusCode" value="@((context.Response?.StatusCode ?? -1).ToString())" />
+        </trace>
         <base />
     </on-error>
 </policies>
