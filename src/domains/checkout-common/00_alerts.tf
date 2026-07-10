@@ -171,11 +171,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_carts_v1" {
 
   action {
     action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.checkout_opsgenie[0].id]
-    email_subject          = "[Checkout] POST Carts V1 API availability alert"
+    email_subject          = "[Checkout] POST Carts (EC) V1 API availability alert"
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Checkout carts API availability less than or equal 95% in the last 30 minutes"
+  description    = "Checkout POST Carts (EC) V1 API availability less than threshold in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
 let thresholdTrafficMin = 50;
@@ -216,11 +216,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_carts_v1" 
 
   action {
     action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.checkout_opsgenie[0].id]
-    email_subject          = "[Checkout] POST Carts auth V1 API availability alert"
+    email_subject          = "[Checkout] POST Carts (Auth) V1 API availability alert"
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Checkout carts auth API availability less than or equal 95% in the last 30 minutes"
+  description    = "Checkout POST Carts (Auth) V1 API availability less than threshold in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
 let thresholdTrafficMin = 20;
@@ -261,11 +261,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_carts_v2" {
 
   action {
     action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.checkout_opsgenie[0].id]
-    email_subject          = "[Checkout] POST Carts V2 API availability alert"
+    email_subject          = "[Checkout] POST Carts (EC) V2 API availability alert"
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Checkout carts API availability less than or equal 95% in the last 30 minutes"
+  description    = "Checkout POST Carts (EC) V2 API availability less than threshold in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
 let thresholdTrafficMin = 50;
@@ -306,20 +306,20 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_carts_v2" 
 
   action {
     action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.checkout_opsgenie[0].id]
-    email_subject          = "[Checkout] POST Carts auth V2 API availability alert"
+    email_subject          = "[Checkout] POST Carts (Auth) V2 API availability alert"
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Checkout carts auth API availability less than or equal 95% in the last 30 minutes"
+  description    = "Checkout POST Carts (Auth) V2 API availability less than threshold in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
-AzureDiagnostics
 let thresholdTrafficMin = 20;
 let thresholdTrafficLinear = 80;
 let lowTrafficAvailability = 90;
 let highTrafficAvailability = 99;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
+AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/checkout/carts-auth/v2/carts'
 | summarize
     Total=count(),
