@@ -287,8 +287,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_npg_sdk_sync_st
   location            = var.location
 
   action {
-    # TEMP (dev validation): empty so the alert evaluates and fires (visible in Azure Monitor > Alerts)
-    # but notifies no one. TODO: restore [slack, email] before committing/merging #3929.
+    # Intentionally empty during dev/uat validation: the alert still evaluates and is
+    # visible in Azure Monitor > Alerts but pages no one. The [slack, email] action groups
+    # are restored together with the prod-only scoping in the follow-up PR.
     action_group           = []
     email_subject          = "[Checkout] NPG SDK sync stale - no successful sync in the last 3h"
     custom_webhook_payload = "{}"
