@@ -3,14 +3,15 @@
 ##############
 
 module "apim_node_forwarder_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "./.terraform/modules/__v3__/api_management_product"
+
 
   product_id   = "product-node-forwarder"
   display_name = "pagoPA Node Forwarder API"
   description  = "Product pagoPA Node Forwarder API"
 
-  api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = data.azurerm_resource_group.rg_api.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
 
   published             = true
   subscription_required = true
@@ -23,19 +24,20 @@ module "apim_node_forwarder_product" {
 resource "azurerm_api_management_api_version_set" "node_forwarder_api" {
 
   name                = "${var.env_short}-node-forwarder-api"
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  api_management_name = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
   display_name        = "pagoPA Node Forwarder API"
   versioning_scheme   = "Segment"
 }
 
 module "apim_node_forwarder_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "./.terraform/modules/__v3__/api_management_api"
+
 
   name                  = "${var.env_short}-node-forwarder-api"
-  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_node_forwarder_product.product_id, local.apim_x_node_product_id]
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_node_forwarder_product.product_id, "apim_for_node"]
   subscription_required = true
 
   version_set_id = azurerm_api_management_api_version_set.node_forwarder_api.id
@@ -50,7 +52,7 @@ module "apim_node_forwarder_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/node_forwarder_api/v1/_openapi.json.tpl", {
-    host = local.api_domain
+    host = local.apim_hostname
   })
 
   xml_content = templatefile("./api/node_forwarder_api/v1/_base_policy.xml", {

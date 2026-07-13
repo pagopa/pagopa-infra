@@ -65,8 +65,6 @@ ecommerce_ingress_hostname = "weuuat.ecommerce.internal.uat.platform.pagopa.it"
 
 
 # payment-manager clients
-cstar_outbound_ip_1 = "20.93.160.60"
-cstar_outbound_ip_2 = "20.76.182.7"
 
 
 

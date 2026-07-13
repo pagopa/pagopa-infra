@@ -58,4 +58,3 @@ resource "azurerm_api_management_api_policy" "apim_node_for_io_policy_auth" {
 
 }
 
-// TODO fatto migrato

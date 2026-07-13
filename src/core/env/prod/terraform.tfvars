@@ -68,8 +68,6 @@ ecommerce_ingress_hostname = "weuprod.ecommerce.internal.platform.pagopa.it"
 
 
 # payment-manager clients
-cstar_outbound_ip_1     = "20.86.161.243"
-cstar_outbound_ip_2     = "20.101.29.160"
 apim_logger_resource_id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim/loggers/pagopa-p-apim-logger"
 
 # WISP-dismantling-cfg

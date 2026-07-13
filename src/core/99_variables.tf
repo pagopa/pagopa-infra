@@ -166,16 +166,6 @@ variable "ecommerce_ingress_hostname" {
   default     = null
 }
 
-variable "cstar_outbound_ip_1" {
-  type        = string
-  description = "CSTAR ip 1"
-}
-
-variable "cstar_outbound_ip_2" {
-  type        = string
-  description = "CSTAR ip 2"
-}
-
 
 
 # node decoupler

@@ -101,4 +101,3 @@ resource "azurerm_api_management_api_operation_policy" "donazioni_sendrt_policy"
   xml_content = file("./api/nodopagamenti_api/paForNode/v1/donazioni_ucraina_sendrt.xml")
 }
 
-// TODO fatto

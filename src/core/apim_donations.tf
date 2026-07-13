@@ -87,4 +87,3 @@ resource "azurerm_api_management_api_operation_policy" "get_donations" {
 
 # moved to next-core module
 
-// TODO fatto
