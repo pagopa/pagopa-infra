@@ -276,21 +276,15 @@ module "checkout_fe_frontdoor_web_test" {
 # the pipeline emits a `NpgSdkSyncSuccess` customEvent to App Insights only
 # after a full download -> verify-vs-NPG -> publish -> purge run. No heartbeat in the
 # last 3h means the sync has stopped or is failing, so the served SDK/hash may be stale.
-#
-# NOTE: scoped to non-prod (dev/uat) for validation.
-# TODO: switch to `var.env_short == "p"` (prod-only, matching the domain alerts) before prod rollout.
 resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_npg_sdk_sync_staleness" {
-  count = var.env_short != "p" ? 1 : 0
+  count = var.env_short == "p" ? 1 : 0
 
   name                = "${local.project}-npg-sdk-sync-staleness-alert"
   resource_group_name = data.azurerm_resource_group.monitor_rg.name
   location            = var.location
 
   action {
-    # empty during dev/uat validation: the alert still evaluates and is
-    # visible in Azure but notifies no one. The [slack, email] action groups
-    # are restored together with the prod-only scoping in the follow-up PR.
-    action_group           = []
+    action_group           = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id]
     email_subject          = "[Checkout] NPG SDK sync stale - no successful sync in the last 3h"
     custom_webhook_payload = "{}"
   }
