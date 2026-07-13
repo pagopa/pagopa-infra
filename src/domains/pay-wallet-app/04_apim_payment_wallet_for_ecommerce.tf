@@ -21,7 +21,7 @@ resource "azurerm_api_management_api_version_set" "payment_wallet_for_ecommerce_
 }
 
 module "apim_payment_wallet_for_ecommerce_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-payment-wallet-for-ecommerce-api"
   api_management_name   = local.pagopa_apim_name

@@ -17,6 +17,8 @@ locals {
   repos_01 = [
     "pagopa-cruscotto-frontend",
     "pagopa-cruscotto-backend",
+    "pagopa-cruscotto-sert-backend",
+    "pagopa-cruscotto-ingestor"
   ]
 
   federations_01 = [
