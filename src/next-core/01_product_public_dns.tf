@@ -96,7 +96,7 @@ locals {
         mx_record        = "feedback-smtp.eu-south-1.amazonses.com"
         spf_record       = "v=spf1 include:amazonses.com -all"
         bimi_record      = "v=BIMI1; l=https://bimi.ssl.com/mc-dc1kuvp8h8c.svg; a=https://assets.cdn.platform.pagopa.it/pagoPA-VMC-full-bundle.pem;"
-        dmarc_record     = "v=DMARC1; p=reject; pct=100; rua=mailto:dmarc@0f1qy7b5.uriports.com; aspf=s; adkim=s"
+        dmarc_record     = "v=DMARC1; p=reject; pct=100; rua=mailto:dmarc@0f1qy7b5.uriports.com; aspf=r; adkim=s"
         dkim_records = [
           {
             "r_name"  = "s4gfmqvqljfuychrhvz63mvt3lndb72b._domainkey"
