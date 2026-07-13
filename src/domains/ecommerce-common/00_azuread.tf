@@ -20,5 +20,6 @@ data "azuread_group" "adgroup_admin_dev" {
 }
 
 data "azuread_group" "adgroup_developer_externals" {
+  count        = var.env_short != "p" ? 1 : 0
   display_name = "${local.product}-adgroup-developer-externals"
 }
