@@ -201,3 +201,26 @@ module "wallet_cdn_frontdoor" {
 
   tags = module.tag_config.tags
 }
+
+/**
+ * Web Test for CDN Front Door
+ */
+module "wallet_fe_web_test" {
+  count                                 = var.env_short == "p" ? 1 : 0
+  source                                = "./.terraform/modules/__v4__/application_insights_standard_web_test"
+  https_endpoint                        = "https://${module.wallet_cdn_frontdoor.fqdn}"
+  https_endpoint_path                   = "/index.html"
+  alert_name                            = "${local.project}-fe-web-test"
+  location                              = var.location
+  alert_enabled                         = true
+  application_insights_resource_group   = data.azurerm_resource_group.monitor_italy_rg.name
+  application_insights_id               = data.azurerm_application_insights.application_insights_italy.id
+  application_insights_action_group_ids = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
+  https_probe_method                    = "GET"
+  timeout                               = 10
+  frequency                             = 300
+  https_probe_threshold                 = 99
+  metric_frequency                      = "PT5M"
+  metric_window_size                    = "PT1H"
+  retry_enabled                         = true
+}
