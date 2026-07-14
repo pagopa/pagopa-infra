@@ -27,9 +27,8 @@
 
                     if (string.IsNullOrWhiteSpace(organizationClaim))
                     {
-                        throw new Exception(
-                            "pagopaPortalToken: organization claim cannot be empty"
-                        );
+                        context.Trace("pagopaPortalToken: organization claim cannot be empty");
+                        return "";
                     }
 
                     JObject organization = JObject.Parse(organizationClaim);
@@ -39,9 +38,8 @@
 
                     if (roles == null || roles.Count == 0)
                     {
-                        throw new Exception(
-                            "pagopaPortalToken: organization.roles cannot be empty"
-                        );
+                        context.Trace("pagopaPortalToken: organization.roles cannot be empty");
+                        return "";
                     }
 
                     
@@ -52,9 +50,8 @@
 
                     if (selectedRole == null)
                     {
-                        throw new Exception(
-                            "pagopaPortalToken: requested role was not found"
-                        );
+                        context.Trace("pagopaPortalToken: requested role was not found");
+                        return "";
                     }
 
                     var org_party_role = selectedRole.Value<string>("partyRole");
@@ -62,9 +59,8 @@
 
                     if (string.IsNullOrWhiteSpace(org_party_role) || string.IsNullOrWhiteSpace(org_role))
                     {
-                        throw new Exception(
-                            "pagopaPortalToken: selected role partyRole or role cannot be empty"
-                        );
+                        context.Trace("pagopaPortalToken: selected role partyRole or role cannot be empty");
+                        return "";
                     }
 
                     var JOSEProtectedHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(
