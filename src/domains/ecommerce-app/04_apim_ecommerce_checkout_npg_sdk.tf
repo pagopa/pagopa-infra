@@ -47,6 +47,7 @@ module "apim_ecommerce_checkout_npg_sdk_api_v1" {
   })
 
   xml_content = templatefile("./api/ecommerce-checkout-npg-sdk/v1/_base_policy.xml.tpl", {
-    hostname = local.ecommerce_hostname
+    hostname         = local.ecommerce_hostname
+    rate_limit_calls = var.env_short == "p" ? 10 : 60
   })
 }
