@@ -114,6 +114,27 @@ module "assets_cdn_platform_frontdoor" {
     }
   ]
 
+  delivery_custom_rules = [
+    {
+      name              = "AllowFontCORS"
+      order             = 4
+      behavior_on_match = "Continue"
+
+      url_file_extension_conditions = [{
+        operator         = "Equal"
+        match_values     = ["woff", "woff2", "ttf"]
+        negate_condition = false
+        transforms       = ["Lowercase"]
+      }]
+
+      modify_response_header_actions = [{
+        action = "Overwrite"
+        name   = "Access-Control-Allow-Origin"
+        value  = "*"
+      }]
+    }
+  ]
+
   log_analytics_workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   tags = module.tag_config.tags
