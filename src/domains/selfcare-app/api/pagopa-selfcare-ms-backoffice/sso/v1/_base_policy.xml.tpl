@@ -27,8 +27,7 @@
 
                     if (string.IsNullOrWhiteSpace(organizationClaim))
                     {
-                        context.Trace("pagopaPortalToken: organization claim cannot be empty");
-                        return "";
+                        throw new Exception("pagopaPortalToken: organization claim cannot be empty");
                     }
 
                     JObject organization = JObject.Parse(organizationClaim);
@@ -38,8 +37,7 @@
 
                     if (roles == null || roles.Count == 0)
                     {
-                        context.Trace("pagopaPortalToken: organization.roles cannot be empty");
-                        return "";
+                        throw new Exception("pagopaPortalToken: organization.roles cannot be empty");
                     }
 
                     
@@ -50,8 +48,7 @@
 
                     if (selectedRole == null)
                     {
-                        context.Trace("pagopaPortalToken: requested role was not found");
-                        return "";
+                        throw new Exception("pagopaPortalToken: requested role was not found");
                     }
 
                     var org_party_role = selectedRole.Value<string>("partyRole");
@@ -59,8 +56,7 @@
 
                     if (string.IsNullOrWhiteSpace(org_party_role) || string.IsNullOrWhiteSpace(org_role))
                     {
-                        context.Trace("pagopaPortalToken: selected role partyRole or role cannot be empty");
-                        return "";
+                        throw new Exception("pagopaPortalToken: selected role partyRole or role cannot be empty");
                     }
 
                     var JOSEProtectedHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(
@@ -107,17 +103,6 @@
 
                     return message;
                 }' />
-        <choose>
-            <when condition='@(string.IsNullOrEmpty((string)context.Variables["pagopaPortalToken"]))'>
-                <return-response>
-                    <set-status code="401" reason="Unauthorized" />
-                    <set-header name="Content-Type" exists-action="override">
-                        <value>text/plain</value>
-                    </set-header>
-                    <set-body>Unauthorized</set-body>
-                </return-response>
-            </when>
-        </choose>
         <return-response>
             <set-status code="200" reason="OK" />
             <set-header name="Content-Type" exists-action="override">
@@ -143,5 +128,12 @@
             <metadata name="errorStatusCode" value="@((context.Response?.StatusCode ?? -1).ToString())" />
         </trace>
         <base />
+        <return-response>
+            <set-status code="401" reason="Unauthorized" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>text/plain</value>
+            </set-header>
+            <set-body>Unauthorized</set-body>
+        </return-response>
     </on-error>
 </policies>
