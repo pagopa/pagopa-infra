@@ -1090,6 +1090,10 @@
           "paymentMethodName": {
             "type": "string"
           },
+          "paymentTypeCode": {
+            "type": "string",
+            "description": "AFM payment type code (e.g. CP, PPAL, BPAY)"
+          },
           "brand": {
             "type": "string"
           },
