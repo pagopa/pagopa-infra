@@ -43,8 +43,7 @@ variable "env" {
 #
 variable "enabled_features" {
   type = object({
-    vnet_ita          = bool
-    node_forwarder_ha = optional(bool, false)
+    vnet_ita = bool
   })
   default = {
     vnet_ita = false

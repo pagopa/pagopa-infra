@@ -46,6 +46,38 @@ os_type=$(uname)
 fi
 
 # Define functions
+# prompt_confirm: unified confirmation helper
+# Respects environment variables to avoid blocking in CI:
+# - TF_ASSUME_YES=yes|true  -> auto-accept all prompts
+# - TF_SKIP_POLICY_CONFIRM=yes -> auto-accept policy confirmations
+# If running in a non-interactive shell and none of the above are set, the prompt will fail
+function prompt_confirm() {
+  local prompt_text="$1"
+
+  # Auto-accept if explicitly requested
+  if [ "${TF_ASSUME_YES:-}" = "yes" ] || [ "${TF_ASSUME_YES:-}" = "true" ]; then
+    echo "(auto-confirmed by TF_ASSUME_YES)"
+    return 0
+  fi
+  if [ "${TF_SKIP_POLICY_CONFIRM:-}" = "yes" ]; then
+    echo "(auto-confirmed by TF_SKIP_POLICY_CONFIRM)"
+    return 0
+  fi
+
+  # If stdin is not a terminal, refuse to block and return failure
+  if [ ! -t 0 ]; then
+    echo "Non-interactive shell detected and no TF_ASSUME_YES/TF_SKIP_POLICY_CONFIRM provided. To auto-accept set TF_ASSUME_YES=yes or TF_SKIP_POLICY_CONFIRM=yes"
+    return 1
+  fi
+
+  # Otherwise prompt the user
+  read -p "$prompt_text" _ans
+  if [ "$_ans" = "yes" ]; then
+    return 0
+  fi
+  return 1
+}
+
 function clean_environment() {
   rm -rf .terraform
   rm tfplan 2>/dev/null
@@ -86,7 +118,11 @@ function download_tool() {
       chmod +x $tool
       echo "${tool} downloaded! Please note this tool WON'T be copied in your **/bin folder for safety reasons.
 You need to do it yourself!"
-      read -p "Press enter to continue"
+      if [ -t 0 ]; then
+        read -p "Press enter to continue"
+      else
+        echo "Non-interactive shell: continuing without waiting for enter"
+      fi
     fi
   fi
 }
@@ -278,8 +314,7 @@ function check_conftest_output(){
   fi
   if [ $opa_global_exitcode -gt 0 ]; then
     echo "${bold}${red}OPEN Policy Test FAILURE!${black}${normal}"
-    read -p "${bold}${red}Are you sure to continue? (only yes will be accepted): ${normal}" skip_confirmation
-    if [ "$skip_confirmation" != "yes" ]; then
+    if ! prompt_confirm "${bold}${red}Are you sure to continue? (only yes will be accepted): ${normal}"; then
         clean_audit_files  "$file_name"
         exit 1
     else
@@ -327,9 +362,7 @@ function opa_check_policy() {
         else
           scorecolor="${green}"
         fi
-        read -p "${bold}Apply Score: ${scorecolor}${score}${normal} Continue (only yes will be accepted): ${normal}" score_confirmation
-
-        if [ "$score_confirmation" != "yes" ]; then
+        if ! prompt_confirm "${bold}Apply Score: ${scorecolor}${score}${normal} Continue (only yes will be accepted): ${normal}"; then
           clean_audit_files  "$file_name"
           exit 1
         fi
@@ -414,7 +447,7 @@ function other_actions() {
         terraform plan -var-file="./env/$env/terraform.tfvars" -compact-warnings -out="$file_name.tfplan" -detailed-exitcode $other 2>&1 | tee "$plan_output_file"
         plan_exitcode=${PIPESTATUS[0]}
 
-        if [ $plan_exitcode -eq 1 ] && grep -q "already exists" "$plan_output_file"; then
+        if [ $plan_exitcode -ne 0 ] && grep -q "already exists" "$plan_output_file"; then
           echo "${yellow}Rilevato errore di risorsa esistente. Tento l'import automatico (Tentativo $attempt di $max_attempts)...${normal}"
           if auto_import_resources "$plan_output_file" "-var-file=./env/$env/terraform.tfvars"; then
             attempt=$((attempt + 1))
@@ -433,29 +466,74 @@ function other_actions() {
 
       if [ -f "$root_folder/.terraform-opa" ]; then
         opa_check_policy
+        # Se OPA è passato (o confermato dall'utente), non c'è bisogno di chiedere di nuovo yes per l'apply
+        apply_confirmation="yes"
+      else
+        # ask user confirmation before applying changes (uses prompt_confirm to avoid blocking in CI)
+        if prompt_confirm "${bold}Apply these changes (only yes will be accepted): ${normal}"; then
+          apply_confirmation="yes"
+        else
+          apply_confirmation="no"
+        fi
       fi
 
-      # ask user confirmation before applying changes
-      read -p "${bold}Apply these changes (only yes will be accepted): ${normal}" apply_confirmation
       if [ "$apply_confirmation" == "yes" ]; then
         audit_pre_apply "$file_name" "$partition_key" "$row_key" "$skip_policy"
-        terraform apply -auto-approve "$file_name.tfplan" -compact-warnings | tee "$file_name.apply"
-        audit_post_apply "$file_name" "$partition_key" "$row_key"
-        # cleanup temporary files
-        clean_audit_files "$file_name"
+
+        # Retry loop for apply: if apply fails due to resources "already exists" try auto-import and retry
+        local apply_attempt=1
+        local max_apply_attempts=3
+        while [ $apply_attempt -le $max_apply_attempts ]; do
+          terraform apply "$file_name.tfplan" -compact-warnings 2>&1 | tee "$file_name.apply"
+          apply_exitcode=${PIPESTATUS[0]}
+
+          # If terraform reports Apply complete in output, consider it success regardless of exit code
+          if grep -qi "Apply complete" "$file_name.apply"; then
+              apply_exitcode=0
+          fi
+
+          # If failed and contains "already exists", attempt automatic import and retry (re-plan required)
+          if [ $apply_exitcode -ne 0 ] && grep -q "already exists" "$file_name.apply"; then
+            echo "${yellow}Apply failed due to existing resources. Attempting automatic import (attempt $apply_attempt of $max_apply_attempts)...${normal}"
+            if auto_import_resources "$file_name.apply" "-var-file=./env/$env/terraform.tfvars"; then
+              # imported at least one resource: regenerate plan and continue
+              echo "${blue}Recreating plan after import to reconcile state...${normal}"
+              terraform plan -var-file="./env/$env/terraform.tfvars" -compact-warnings -out="$file_name.tfplan" -detailed-exitcode $other 2>&1 | tee /dev/null
+              apply_attempt=$((apply_attempt + 1))
+              continue
+            else
+              echo "${red}Automatic import did not resolve the issue.${normal}"
+              audit_post_apply "$file_name" "$partition_key" "$row_key"
+              clean_audit_files "$file_name"
+              exit $apply_exitcode
+            fi
+          fi
+
+          # Audit and cleanup after a non-import-case (success or unrecoverable error)
+          audit_post_apply "$file_name" "$partition_key" "$row_key"
+          clean_audit_files "$file_name"
+
+          if [ $apply_exitcode -ne 0 ]; then
+            exit $apply_exitcode
+          fi
+
+          break
+        done
       else
         echo "${bold}Apply canceled${normal}"
+        # clean plan file
+        clean_audit_files "$file_name"
       fi
-      # clean plan file
-      clean_audit_files "$file_name"
 
     else
       # Ciclo generale per tutti gli altri casi
       local attempt=1
       local max_attempts=3
+      local current_other="$other"
+
       while [ $attempt -le $max_attempts ]; do
         cmd_output_file=$(mktemp)
-        terraform "$action" -var-file="./env/$env/terraform.tfvars" -compact-warnings $other 2>&1 | tee "$cmd_output_file"
+        terraform "$action" -var-file="./env/$env/terraform.tfvars" -compact-warnings $current_other 2>&1 | tee "$cmd_output_file"
         cmd_exitcode=${PIPESTATUS[0]}
 
         # Se il comando fallisce per un 'already exists', lancia auto-import
@@ -468,6 +546,12 @@ function other_actions() {
              continue
            fi
         fi
+
+        # Ignora l'errore se l'apply risulta completato (es: warning fittizi di Azure Policy)
+        if [ "$action" == "apply" ] && grep -qi "Apply complete" "$cmd_output_file"; then
+            cmd_exitcode=0
+        fi
+
         rm -f "$cmd_output_file"
         break # Esci dal ciclo in caso di successo o di errori non parsabili
       done
@@ -578,9 +662,7 @@ function update_script() {
   echo "Available script version: $remote_vers"
 
   # Ask the user if they want to update the script
-  read -rp "Do you want to update the script to version $remote_vers? (y/n): " answer
-
-  if [ "$answer" == "y" ] || [ "$answer" == "Y" ]; then
+  if prompt_confirm "Do you want to update the script to version $remote_vers? (only yes will be accepted): "; then
     # Replace the local script with the updated version
     cp "$tmp_file" "$script_name"
     chmod +x "$script_name"

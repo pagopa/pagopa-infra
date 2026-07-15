@@ -2,8 +2,7 @@
 env_short = "p"
 env       = "prod"
 enabled_features = {
-  vnet_ita          = false
-  node_forwarder_ha = true
+  vnet_ita = false
 }
 
 

@@ -11,16 +11,30 @@ env = sys.argv[1]
 # change this with you terraform log
 log = """
 
-
 ╷
-│ Error: A resource with the ID "/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/products/nodo-monitoring" already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azurerm_api_management_product" for more information.
+│ Error: A resource with the ID "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim/apis/p-node-forwarder-api-v1" already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azurerm_api_management_api_policy" for more information.
 │
-│   with module.apim_nodo_dei_pagamenti_monitoring_product.azurerm_api_management_product.this,
-│   on .terraform/modules/__v3__/api_management_product/main.tf line 1, in resource "azurerm_api_management_product" "this":
-│    1: resource "azurerm_api_management_product" "this" {
+│   with module.apim_node_forwarder_api.azurerm_api_management_api_policy.this[0],
+│   on .terraform/modules/__v3__/api_management_api/main.tf line 46, in resource "azurerm_api_management_api_policy" "this":
+│   46: resource "azurerm_api_management_api_policy" "this" {
 │
 ╵
-
+╷
+│ Error: A resource with the ID "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim/products/product-node-forwarder/apis/p-node-forwarder-api-v1" already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azurerm_api_management_product_api" for more information.
+│
+│   with module.apim_node_forwarder_api.azurerm_api_management_product_api.this["product-node-forwarder"],
+│   on .terraform/modules/__v3__/api_management_api/main.tf line 55, in resource "azurerm_api_management_product_api" "this":
+│   55: resource "azurerm_api_management_product_api" "this" {
+│
+╵
+╷
+│ Error: A resource with the ID "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim/products/apim_for_node/apis/p-node-forwarder-api-v1" already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azurerm_api_management_product_api" for more information.
+│
+│   with module.apim_node_forwarder_api.azurerm_api_management_product_api.this["apim_for_node"],
+│   on .terraform/modules/__v3__/api_management_api/main.tf line 55, in resource "azurerm_api_management_product_api" "this":
+│   55: resource "azurerm_api_management_product_api" "this" {
+│
+╵
 """
 
 # Regex patterns to extract resource ID and type information
@@ -41,3 +55,4 @@ for block in error_blocks:
 # Print
 print("All done :)\nrun this command:\n")
 print(" ; ".join(import_commands))
+

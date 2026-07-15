@@ -2,8 +2,7 @@
 env_short = "u"
 env       = "uat"
 enabled_features = {
-  vnet_ita          = false
-  node_forwarder_ha = false
+  vnet_ita = false
 }
 
 

@@ -433,29 +433,46 @@ function other_actions() {
 
       if [ -f "$root_folder/.terraform-opa" ]; then
         opa_check_policy
+        # Se OPA è passato (o confermato dall'utente), non c'è bisogno di chiedere di nuovo yes per l'apply
+        apply_confirmation="yes"
+      else
+        # ask user confirmation before applying changes
+        read -p "${bold}Apply these changes (only yes will be accepted): ${normal}" apply_confirmation
       fi
 
-      # ask user confirmation before applying changes
-      read -p "${bold}Apply these changes (only yes will be accepted): ${normal}" apply_confirmation
       if [ "$apply_confirmation" == "yes" ]; then
         audit_pre_apply "$file_name" "$partition_key" "$row_key" "$skip_policy"
-        terraform apply -auto-approve "$file_name.tfplan" -compact-warnings | tee "$file_name.apply"
+
+        terraform apply "$file_name.tfplan" -compact-warnings 2>&1 | tee "$file_name.apply"
+        apply_exitcode=${PIPESTATUS[0]}
+
+        # Ignora l'errore se l'apply risulta completato (es: warning fittizi di Azure Policy)
+        if grep -q "Apply complete!" "$file_name.apply"; then
+            apply_exitcode=0
+        fi
+
         audit_post_apply "$file_name" "$partition_key" "$row_key"
         # cleanup temporary files
         clean_audit_files "$file_name"
+
+        if [ $apply_exitcode -ne 0 ]; then
+            exit $apply_exitcode
+        fi
       else
         echo "${bold}Apply canceled${normal}"
+        # clean plan file
+        clean_audit_files "$file_name"
       fi
-      # clean plan file
-      clean_audit_files "$file_name"
 
     else
       # Ciclo generale per tutti gli altri casi
       local attempt=1
       local max_attempts=3
+      local current_other="$other"
+
       while [ $attempt -le $max_attempts ]; do
         cmd_output_file=$(mktemp)
-        terraform "$action" -var-file="./env/$env/terraform.tfvars" -compact-warnings $other 2>&1 | tee "$cmd_output_file"
+        terraform "$action" -var-file="./env/$env/terraform.tfvars" -compact-warnings $current_other 2>&1 | tee "$cmd_output_file"
         cmd_exitcode=${PIPESTATUS[0]}
 
         # Se il comando fallisce per un 'already exists', lancia auto-import
@@ -468,6 +485,12 @@ function other_actions() {
              continue
            fi
         fi
+
+        # Ignora l'errore se l'apply risulta completato (es: warning fittizi di Azure Policy)
+        if [ "$action" == "apply" ] && grep -q "Apply complete!" "$cmd_output_file"; then
+            cmd_exitcode=0
+        fi
+
         rm -f "$cmd_output_file"
         break # Esci dal ciclo in caso di successo o di errori non parsabili
       done

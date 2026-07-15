@@ -2,8 +2,7 @@
 env_short = "d"
 env       = "dev"
 enabled_features = {
-  vnet_ita          = true
-  node_forwarder_ha = false
+  vnet_ita = true
 
 }
 
