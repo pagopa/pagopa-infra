@@ -15,7 +15,7 @@
         </sqlCheck>
     </preConditions>
 
-        <comment>Aggiunta server FTP2 #2 per ambiente TEST</comment>
+        <comment>Aggiunta server FTP2 #2 per ambiente UAT</comment>
         <insert tableName="FTP_SERVERS">
             <column name="OBJ_ID"        valueNumeric="2"/>
             <column name="HOST"          value="10.101.38.180"/>

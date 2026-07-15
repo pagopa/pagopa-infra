@@ -11,13 +11,7 @@
             FROM CONFIGURATION_KEYS
             WHERE CONFIG_CATEGORY = 'GLOBAL'
               AND CONFIG_KEY IN (
-                    'creditorInstitutions.FTP2',
-                    'rendicontazioneFTP2.custCode.88888888888',
-                    'rendicontazioneFTP2.custCode.00488410010',
-                    'rendicontazioneFTP2.custCode.97532760580',
-                    'rendicontazioneFTP2.custCode.80078750587',
-                    'rendicontazioneFTP2.Service',
-                    'rendicontazioneFTP2.FileType'
+                    'creditorInstitutions.FTP2'
               )
         </sqlCheck>
     </preConditions>
@@ -27,50 +21,11 @@
         <insert tableName="CONFIGURATION_KEYS">
             <column name="CONFIG_CATEGORY"    value="GLOBAL"/>
             <column name="CONFIG_KEY"         value="creditorInstitutions.FTP2"/>
-            <column name="CONFIG_VALUE"       value="00488410010,97532760580"/>
+            <column name="CONFIG_VALUE"       value=""/>
             <column name="CONFIG_DESCRIPTION" value="Enti creditori i cui flussi passano dal servizio FTP2. I domini delle PA che passano dalla modalità SFG. Per esempio: 00488410010,97532760580"/>
         </insert>
 
-        <!-- Configurazione rendicontazioneFTP2.custCode.00488410010 -->
-        <insert tableName="CONFIGURATION_KEYS">
-            <column name="CONFIG_CATEGORY"    value="GLOBAL"/>
-            <column name="CONFIG_KEY"         value="rendicontazioneFTP2.custCode.00488410010"/>
-            <column name="CONFIG_VALUE"       value="CU00Y"/>
-            <column name="CONFIG_DESCRIPTION" value="Codice SIA TELECOM, custCode per SFG"/>
-        </insert>
-
-        <!-- Configurazione rendicontazioneFTP2.custCode.97532760580 -->
-        <insert tableName="CONFIGURATION_KEYS">
-            <column name="CONFIG_CATEGORY"    value="GLOBAL"/>
-            <column name="CONFIG_KEY"         value="rendicontazioneFTP2.custCode.97532760580"/>
-            <column name="CONFIG_VALUE"       value="BFYKB"/>
-            <column name="CONFIG_DESCRIPTION" value="Codice SIA MIT, custCode per SFG"/>
-        </insert>
-
-        <!-- Configurazione rendicontazioneFTP2.custCode.80078750587 -->
-        <insert tableName="CONFIGURATION_KEYS">
-            <column name="CONFIG_CATEGORY"    value="GLOBAL"/>
-            <column name="CONFIG_KEY"         value="rendicontazioneFTP2.custCode.80078750587"/>
-            <column name="CONFIG_VALUE"       value="BV4GA"/>
-            <column name="CONFIG_DESCRIPTION" value="Codice SIA INPS, custCode per SFG"/>
-        </insert>
-
-        <!-- Configurazione rendicontazioneFTP2.Service -->
-        <insert tableName="CONFIGURATION_KEYS">
-            <column name="CONFIG_CATEGORY"    value="GLOBAL"/>
-            <column name="CONFIG_KEY"         value="rendicontazioneFTP2.Service"/>
-            <column name="CONFIG_VALUE"       value="PA"/>
-            <column name="CONFIG_DESCRIPTION" value="Codice Service per SFG"/>
-        </insert>
-
-        <!-- Configurazione rendicontazioneFTP2.FileType -->
-        <insert tableName="CONFIGURATION_KEYS">
-            <column name="CONFIG_CATEGORY"    value="GLOBAL"/>
-            <column name="CONFIG_KEY"         value="rendicontazioneFTP2.FileType"/>
-            <column name="CONFIG_VALUE"       value="RENDC"/>
-            <column name="CONFIG_DESCRIPTION" value="Codice fileType per SFG"/>
-        </insert>
-
+       
     </changeSet>
 
 </databaseChangeLog>
