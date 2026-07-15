@@ -117,7 +117,7 @@
                         "name": "x-client-id",
                         "in": "header",
                         "description": "client id related to a given touchpoint",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "string",
                             "enum": [
@@ -483,7 +483,7 @@
             "ApiKeyAuth": {
                 "type": "apiKey",
                 "in": "header",
-                "name": "ocp-apim-subscription-key"
+                "name": "Ocp-Apim-Subscription-Key"
             }
         }
     }
