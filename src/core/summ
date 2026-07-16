@@ -1,0 +1,101 @@
+|---azapi_resource
+|       |---ndphost_header(~) ⛳️
+|       |---wisp_batch_migration[0](~)⛳️
+|       |---wisp_cache_4_decoupler(~)⛳️
+|       |---wisp_cache_4_decoupler_cart(~)⛳️
+|       |---wisp_disable_payment_token_timer[0](~) ⛳️
+|       |---wisp_receipt_ko[0](~) ⛳️
+|---azurerm_api_management_api_operation_policy
+|       |---auth_close_payment_api_v2_wisp_policy[0](-/+) ⛳
+|---azurerm_api_management_api_policy
+|       |---apim_node_for_psp_policy_ndp(~) ⛳
+|---azurerm_api_management_api_version_set
+|       |---node_for_ecommerce_api(-/+)  ⛳
+|---azurerm_api_management_named_value
+|       |---wisp_checkout_predefined_expiration_time(~) ⛳
+|---azurerm_kubernetes_cluster_node_pool
+|       |---nodo_pool(~) ⛳
+|---azurerm_monitor_autoscale_setting
+|       |---nodo_verifyko_to_datastore_function[0](-/+) ⛳
+|       |---nodo_verifyko_to_tablestorage_function[0](-/+) ⛳
+|---azurerm_monitor_scheduled_query_rules_alert ⚠️
+|       |---cache-dumping-error[0](~) ⛳
+|       |---node_cfg_sync_sync_dumping_generic_problem(+) ⛳
+|       |---nodo_pagopa_api_availability[0](~) ⛳
+|       |---nodo_pagopa_psp_api_fault_code_availability_alert[0](~) ⛳
+|       |---nodo_verifyko_to_datastore_appexception[0](~) ⛳
+|       |---nodo_verifyko_to_datastore_appexception_lastretry[0](~) ⛳
+|       |---nodo_verifyko_to_datastore_cosmosexception[0](~) ⛳
+|       |---nodo_verifyko_to_tablestorage_appexception[0](~) ⛳
+|       |---nodo_verifyko_to_tablestorage_appexception_lastretry[0](~) ⛳
+|       |---nodo_verifyko_to_tablestorage_persistenceexception[0](~) ⛳
+|       |---opex_pagopa-wisp-converter-redirect-availability[0](~) ⛳
+|       |---wisp_cache_not_in_sync_after_retries[0](-) ⛳
+|---azurerm_resource_group
+|       |---nodo_re_to_datastore_rg[0](~) ⛳
+|       |---vmss_rg(~) ⛳
+|---kubernetes_pod_disruption_budget_v1
+|       |---nodo["nodo-cfg-data-migration"](-) ⛳
+|---kubernetes_role_binding
+|       |---kube_system_reader_binding(+) ⛳
+|---module
+|       |---apim_node_for_ecommerce_api_v1
+|       |       |---azurerm_api_management_api
+|       |       |       |---this(-/+) ⛳
+|       |       |---azurerm_api_management_api_policy
+|       |       |       |---this[0](-/+) ⛳
+|       |       |---azurerm_api_management_product_api
+|       |       |       |---this["node-for-ecommerce"](-/+) ⛳
+|       |---apim_node_for_ecommerce_api_v2
+|       |       |---azurerm_api_management_api
+|       |       |       |---this(-/+) ⛳
+|       |       |---azurerm_api_management_api_policy
+|       |       |       |---this[0](-/+) ⛳
+|       |       |---azurerm_api_management_product_api
+|       |       |       |---this["node-for-ecommerce"](-/+) ⛳
+|       |---apim_node_for_ecommerce_product
+|       |       |---azurerm_api_management_product_policy
+|       |       |       |---this[0](~) ⛳
+|       |---cert_mounter
+|       |       |---helm_release
+|       |       |       |---cert_mounter(+) ⛳
+|       |---load_balancer_nodo_egress ⛳
+|       |       |---azurerm_lb
+|       |       |       |---this(~) ⛳
+|       |---nodo_verifyko_to_datastore_function
+|       |       |---azurerm_linux_function_app
+|       |       |       |---this(~) ⛳
+|       |       |---azurerm_service_plan
+|       |       |       |---this[0](~) ⛳
+|       |       |---module
+|       |       |       |---storage_account
+|       |       |       |       |---azurerm_monitor_metric_alert
+|       |       |       |       |       |---storage_account_low_availability[0](~) ⛳
+|       |       |       |       |---azurerm_storage_account
+|       |       |       |       |       |---this(~) ⛳
+|       |---nodo_verifyko_to_datastore_function_slot_staging[0]
+|       |       |---azurerm_linux_function_app_slot
+|       |       |       |---this(~) ⛳
+|       |---nodo_verifyko_to_datastore_function_snet
+|       |       |---azurerm_subnet
+|       |       |       |---this(~) ⛳
+|       |---nodo_verifyko_to_tablestorage_function
+|       |       |---azurerm_linux_function_app
+|       |       |       |---this(~) ⛳
+|       |       |---azurerm_service_plan
+|       |       |       |---this[0](~) ⛳
+|       |       |---module
+|       |       |       |---storage_account
+|       |       |       |       |---azurerm_monitor_metric_alert
+|       |       |       |       |       |---storage_account_low_availability[0](~) ⛳
+|       |       |       |       |---azurerm_storage_account
+|       |       |       |       |       |---this(~) ⛳
+|       |---nodo_verifyko_to_tablestorage_function_slot_staging[0]
+|       |       |---azurerm_linux_function_app_slot
+|       |       |       |---this(~) ❓
+|       |---route_table_peering_nexi
+|       |       |---azurerm_route_table
+|       |       |       |---this[0](~) ❓
+|       |---tls_checker
+|       |       |---helm_release
+|       |       |       |---helm_this[0](~)  ❓

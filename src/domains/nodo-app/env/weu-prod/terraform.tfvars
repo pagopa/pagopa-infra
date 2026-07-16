@@ -35,8 +35,8 @@ nodo_user_node_pool = {
   vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Managed"
   os_disk_size_gb = "300"
-  node_count_min  = "4"
-  node_count_max  = "10"
+  node_count_min  = "5"
+  node_count_max  = "12"
   node_labels = {
   "nodo" = "true", },
   node_taints        = ["dedicated=nodo:NoSchedule"],
@@ -270,34 +270,3 @@ wfesp_dismantling = {
   channel_list    = "13212880150_90" # When we want to activate WFESP dismantling, insert correct channel list "13212880150_90"
   wfesp_fixed_url = "https://wfesp.pagopa.gov.it/redirect/wpl05/get?idSession="
 }
-
-app_gateway_allowed_paths_pagopa_onprem_only = {
-  paths = [
-    "/web-bo/.*",
-    "/bo-nodo/.*",
-    "/pp-admin-panel/.*",
-    "/nodo-monitoring/monitoring/.*",
-    "/nodo-ndp/monitoring/.*",
-    "/nodo-replica-ndp/monitoring/.*",
-    "/wfesp-ndp/.*",
-    "/wfesp-replica-ndp/.*",
-    "/web-bo-ndp/.*",
-  ]
-  ips = [
-    "93.63.219.230",  # PagoPA on prem VPN
-    "93.63.219.234",  # PagoPA on prem VPN DR
-    "20.86.161.243",  # CSTAR
-    "127.0.0.1",      # Softlab L1 Pagamenti VPN DISMESSO al 1/10/2024
-    "127.0.0.1",      # Softlab L1 Pagamenti VPN DISMESSO al 1/10/2024
-    "127.0.0.1",      # Softlab L1 Pagamenti VPN DISMESSO al 1/10/2024
-    "127.0.0.1",      # Softlab L1 Pagamenti VPN DISMESSO al 1/10/2024
-    "127.0.0.1",      # Softlab L1 Pagamenti VPN DISMESSO al 1/10/2024
-    "193.203.229.20", # VPN NEXI
-    "193.203.230.22", # VPN NEXI
-    "193.203.230.21", # VPN NEXI
-    "2.33.87.3"       # S.M.I. TECHNOLOGIES AND CONSULTING S.R.L attivo dal 1/10/2024
-  ]
-}
-apim_nodo_decoupler_enable      = true
-apim_nodo_auth_decoupler_enable = true
-nodo_auth_subscription_limit    = 10000
