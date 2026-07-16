@@ -112,7 +112,22 @@ locals {
           },
         ]
       }
-    }
+    },
+    "dipartimentopagamenti" = {
+      dev_delegation_records = [
+        "ns1-07.azure-dns.com.",
+        "ns2-07.azure-dns.net.",
+        "ns3-07.azure-dns.org.",
+        "ns4-07.azure-dns.info."
+      ]
+      uat_delegation_records = [
+        "ns1-09.azure-dns.com.",
+        "ns2-09.azure-dns.net.",
+        "ns3-09.azure-dns.org.",
+        "ns4-09.azure-dns.info."
+      ]
+      aws_ses_settings = {}
+    },
   }
 }
 
