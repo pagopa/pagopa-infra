@@ -15,12 +15,152 @@ locals {
     }
   ]
 
+  gpd_eventhub_topics = var.env_short != "p" ? [] : [
+    {
+      id   = "cdc-raw-auto.apd.payment_option"
+      name = "cdc-raw-auto.apd.payment_option"
+    },
+    {
+      id   = "cdc-raw-auto.apd.payment_position"
+      name = "cdc-raw-auto.apd.payment_position"
+    },
+    {
+      id   = "cdc-raw-auto.apd.transfer"
+      name = "cdc-raw-auto.apd.transfer"
+    },
+    {
+      id   = "gpd-ingestion.apd.payment_option"
+      name = "gpd-ingestion.apd.payment_option"
+    },
+    {
+      id   = "gpd-ingestion.apd.payment_position"
+      name = "gpd-ingestion.apd.payment_position"
+    },
+    {
+      id   = "gpd-ingestion.apd.transfer"
+      name = "gpd-ingestion.apd.transfer"
+    }
+  ]
+
+  gpd_ingestion_deadletter_table_name = "gpdingestiondeadletter"
+
 
   action_groups_default = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
 
   # ENABLE PROD afert deploy
   action_groups = var.env_short == "p" ? concat(local.action_groups_default, [data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]) : local.action_groups_default
   # action_groups = local.action_groups_default
+}
+
+data "azurerm_eventhub_namespace" "gpd_ingestion_evh" {
+  name                = "pagopa-${var.env_short}-itn-observ-gpd-evh"
+  resource_group_name = "pagopa-${var.env_short}-itn-observ-evh-rg"
+}
+
+data "azurerm_storage_account" "gpd_ingestion_sa" {
+  name                = "pagopa${var.env_short}gpdingestsa"
+  resource_group_name = "pagopa-${var.env_short}-itn-observ-gpd-rg"
+}
+
+resource "azurerm_monitor_metric_alert" "gpd_eventhub_incoming_messages" {
+  for_each = { for topic in local.gpd_eventhub_topics : topic.name => topic }
+
+  name                = "pagopa-${var.env_short}-gpd-eventhub-incoming-messages-${replace(each.value.id, ".", "-")}"
+  resource_group_name = "dashboards"
+
+  action {
+    action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
+    email_subject          = "gpd-eventhub topic ${each.value.name} no incoming messages"
+    custom_webhook_payload = "{}"
+  }
+
+  scopes      = [data.azurerm_eventhub_namespace.gpd_ingestion_evh.id]
+  description = "Alert when no messages arrive on Event Hub topic ${each.value.name} in 1 minute"
+  severity    = 2
+  frequency   = "PT1M"
+  window_size = "PT1M"
+
+  criteria {
+    metric_namespace = "Microsoft.EventHub/namespaces"
+    metric_name      = "IncomingMessages"
+    aggregation      = "Total"
+    operator         = "LessThan"
+    threshold        = 1
+
+    dimension {
+      name     = "EntityName"
+      operator = "Include"
+      values   = [each.value.name]
+    }
+  }
+}
+
+resource "azurerm_monitor_diagnostic_setting" "gpd_ingestion_storage_table_diagnostics" {
+  count                      = var.env_short == "p" ? 1 : 0
+  name                       = "${data.azurerm_storage_account.gpd_ingestion_sa.name}-table-diagnostics"
+  target_resource_id         = "${data.azurerm_storage_account.gpd_ingestion_sa.id}/tableServices/default/"
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
+
+  enabled_log {
+    category = "StorageWrite"
+
+    retention_policy {
+      enabled = true
+      days    = 7
+    }
+  }
+
+  metric {
+    category = "Capacity"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+
+  metric {
+    category = "Transaction"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "gpd_ingestion_deadletter_table_growth" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-gpd-ingestion-deadletter-table-growth"
+  location            = var.location
+
+  action {
+    action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
+    email_subject          = "gpd-ingestion-deadletter table growth"
+    custom_webhook_payload = "{}"
+  }
+
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics.id
+  description    = "Alert when gpdingestiondeadletter receives more than 100 inserts in 5 minutes"
+  enabled        = true
+  query = format(<<-QUERY
+StorageTableLogs
+| where OperationName == "InsertEntity"
+| where ObjectKey has "%s"
+| summarize RecordCount = count()
+| where RecordCount > 100
+  QUERY
+  , local.gpd_ingestion_deadletter_table_name)
+  severity    = 2
+  frequency   = 5
+  time_window = 5
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-availability" {
