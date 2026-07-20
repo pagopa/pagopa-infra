@@ -116,31 +116,16 @@ resource "azurerm_monitor_diagnostic_setting" "gpd_ingestion_storage_table_diagn
 
   enabled_log {
     category = "StorageWrite"
-
-    retention_policy {
-      enabled = true
-      days    = 1
-    }
   }
 
   metric {
     category = "Capacity"
     enabled  = false
-
-    retention_policy {
-      days    = 0
-      enabled = false
-    }
   }
 
   metric {
     category = "Transaction"
     enabled  = false
-
-    retention_policy {
-      days    = 0
-      enabled = false
-    }
   }
 }
 
