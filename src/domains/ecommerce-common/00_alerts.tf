@@ -79,7 +79,7 @@ AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/ecommerce/checkout/'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 or (operationId_s in ("getPaymentRequestInfo", "getPaymentRequestInfoV3") and responseCode_d in (502, 504)))
+    Success=countif(responseCode_d < 500 or (operationId_s in ("getPaymentRequestInfo","getPaymentRequestInfoV3","getPaymentRequestInfoAuth") and responseCode_d in (502, 504)))
     by Time = bin(TimeGenerated, 15m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
