@@ -119,7 +119,7 @@ resource "azurerm_monitor_diagnostic_setting" "gpd_ingestion_storage_table_diagn
 
     retention_policy {
       enabled = true
-      days    = 7
+      days    = 1
     }
   }
 
