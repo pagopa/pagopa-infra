@@ -87,10 +87,10 @@ resource "azurerm_monitor_metric_alert" "gpd_eventhub_incoming_messages" {
   resource_group_name = "dashboards"
 
   scopes      = [data.azurerm_eventhub_namespace.gpd_ingestion_evh.id]
-  description = "Alert when no messages arrive on Event Hub topic ${each.value.name} in 5 minutes"
+  description = "Alert when no messages arrive on Event Hub topic ${each.value.name} in 15 minutes"
   severity    = 2
-  frequency   = "PT5M"
-  window_size = "PT5M"
+  frequency   = "PT15M"
+  window_size = "PT15M"
 
   criteria {
     metric_namespace = "Microsoft.EventHub/namespaces"
