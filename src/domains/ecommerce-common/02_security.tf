@@ -55,7 +55,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_external_dev_policy" {
   key_vault_id = module.key_vault.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azuread_group.adgroup_developer_externals.object_id
+  object_id = data.azuread_group.adgroup_developer_externals[0].object_id
 
   key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
   secret_permissions  = ["Get", "List", "Set", "Delete", ]
@@ -556,20 +556,6 @@ resource "azurerm_key_vault_secret" "user_stats_for_event_dispatcher_api_key" {
     ]
   }
 }
-
-#TODO: to remove after migration to redirect_url_configurations
-resource "azurerm_key_vault_secret" "redirect_url_mapping" {
-  name         = "redirect-url-mapping"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
 
 resource "azurerm_key_vault_secret" "redirect_url_configurations" {
   name         = "redirect-url-configurations"

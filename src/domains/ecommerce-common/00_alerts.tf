@@ -79,7 +79,7 @@ AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/ecommerce/checkout/'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 or (operationId_s in ("getPaymentRequestInfo", "getPaymentRequestInfoV3") and responseCode_d in (502, 504)))
+    Success=countif(responseCode_d < 500 or (operationId_s in ("getPaymentRequestInfo","getPaymentRequestInfoV3","getPaymentRequestInfoAuth") and responseCode_d in (502, 504)))
     by Time = bin(TimeGenerated, 15m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
@@ -561,23 +561,31 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_checkout_get_c
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "[eCommerce] Checkout GET carts availability less than 99% in the last 30 minutes"
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
+    email_subject          = "[eCommerce] Checkout GET carts availability less than threshold in the last 30 minutes"
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Ecommerce GET carts availability less than or equal 99% in the last 30 minutes"
+  description    = "Ecommerce GET carts availability less than threshold in the last 30 minutes"
   enabled        = true
-  #TO DO: tuning alert thresholds based 503 status code
   query = (<<-QUERY
+let thresholdTrafficMin = 20;
+let thresholdTrafficLinear = 80;
+let lowTrafficAvailability = 90;
+let highTrafficAvailability = 99;
+let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
+let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
 | where url_s startswith "https://api.platform.pagopa.it/ecommerce/checkout/v1/carts" and method_s == "GET"
 | summarize
     Total=count(),
     Success=countif(responseCode_d == 200)
     by Time = bin(TimeGenerated, 15m)
-| extend availability=(toreal(Success) / Total) * 100
-| where availability < 99
+| extend trafficUp = Total-thresholdTrafficMin
+| extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
+| extend Availability=((Success * 1.0) / Total) * 100
+| where Availability < expectedAvailability
   QUERY
   )
   severity    = 1

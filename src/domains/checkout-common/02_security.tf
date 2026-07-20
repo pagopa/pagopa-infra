@@ -54,7 +54,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_external_dev_policy" {
   key_vault_id = module.key_vault.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azuread_group.adgroup_developer_externals.object_id
+  object_id = data.azuread_group.adgroup_developer_externals[0].object_id
 
   key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
   secret_permissions  = ["Get", "List", "Set", "Delete", ]
@@ -223,6 +223,19 @@ resource "azurerm_key_vault_secret" "checkout_feature_flags_map" {
 
 resource "azurerm_key_vault_secret" "one_identity_admin_for_checkout" {
   name         = "checkout-one-identity-admin-for-checkout"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "github_token_for_tas_integration_checkout" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "checkout-github-token-for-tas-integration"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 
