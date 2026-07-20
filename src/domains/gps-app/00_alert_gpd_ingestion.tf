@@ -45,20 +45,18 @@ locals {
 
   gpd_ingestion_deadletter_table_name = "gpdingestiondeadletter"
 
-  action_groups_default = [
+  action_groups_id_default = [
     data.azurerm_monitor_action_group.email.id,
     data.azurerm_monitor_action_group.slack.id
   ]
 
-  action_groups = var.env_short == "p"
-    ? concat(
-        local.action_groups_default,
-        [
-          data.azurerm_monitor_action_group.opsgenie[0].id,
-          data.azurerm_monitor_action_group.smo_opsgenie[0].id
-        ]
-      )
-    : local.action_groups_default
+  action_groups_id = var.env_short == "p" ? concat(
+    local.action_groups_id_default,
+    [
+      data.azurerm_monitor_action_group.opsgenie[0].id,
+      data.azurerm_monitor_action_group.smo_opsgenie[0].id
+    ]
+  ) : local.action_groups_id_default
 }
 
 
@@ -79,14 +77,14 @@ resource "azurerm_monitor_metric_alert" "gpd_eventhub_incoming_messages" {
     topic.name => topic
   }
 
+  dynamic "action" {
+    for_each = local.action_groups_id
+    content {
+      action_group_id = action.value
+    }
+  }
   name                = "pagopa-${var.env_short}-gpd-eventhub-incoming-messages-${replace(each.value.id, ".", "-")}"
   resource_group_name = "dashboards"
-
-  action {
-    action_group           = local.action_groups
-    email_subject          = "gpd-eventhub topic ${each.value.name} no incoming messages"
-    custom_webhook_payload = "{}"
-  }
 
   scopes      = [data.azurerm_eventhub_namespace.gpd_ingestion_evh.id]
   description = "Alert when no messages arrive on Event Hub topic ${each.value.name} in 5 minutes"
@@ -98,8 +96,8 @@ resource "azurerm_monitor_metric_alert" "gpd_eventhub_incoming_messages" {
     metric_namespace = "Microsoft.EventHub/namespaces"
     metric_name      = "IncomingMessages"
     aggregation      = "Total"
-    operator  = "LessThan"
-    threshold = 1
+    operator         = "LessThan"
+    threshold        = 1
 
     dimension {
       name     = "EntityName"
@@ -150,18 +148,18 @@ resource "azurerm_monitor_diagnostic_setting" "gpd_ingestion_storage_table_diagn
 resource "azurerm_monitor_scheduled_query_rules_alert" "gpd_ingestion_deadletter_table_growth" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name     = "pagopa-${var.env_short}-gpd-ingestion-deadletter-table-growth"
-  location = var.location
+  name                = "pagopa-${var.env_short}-gpd-ingestion-deadletter-table-growth"
+  location            = var.location
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.action_groups_id
     email_subject          = "gpd-ingestion-deadletter table growth"
     custom_webhook_payload = "{}"
   }
 
   data_source_id = data.azurerm_log_analytics_workspace.log_analytics.id
-  description = "Alert when gpdingestiondeadletter receives more than 100 inserts in 5 minutes"
-  enabled = true
+  description    = "Alert when gpdingestiondeadletter receives more than 100 inserts in 5 minutes"
+  enabled        = true
   query = format(
     <<-QUERY
 StorageTableLogs
@@ -193,18 +191,18 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-av
   }
 
   resource_group_name = "dashboards"
-  name     = "pagopa-${var.env_short}-gpd-ingestion-manager-availability-${each.value.id}"
-  location = var.location
+  name                = "pagopa-${var.env_short}-gpd-ingestion-manager-availability-${each.value.id}"
+  location            = var.location
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.action_groups_id
     email_subject          = "gpd-ingestion-manager-availability ${each.value.name}"
     custom_webhook_payload = "{}"
   }
 
   data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "Availability gpd-ingestion ${each.value.name}"
-  enabled = true
+  enabled        = true
   query = format(
     <<-QUERY
 let threshold = 0.99;
@@ -237,7 +235,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
   location            = var.location
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.action_groups_id
     email_subject          = "gpd-ingestion-manager-error-json ${each.value.name}"
     custom_webhook_payload = "{}"
   }
@@ -268,11 +266,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
   }
 
   resource_group_name = "dashboards"
-  name     = "pagopa-${var.env_short}-gpd-ingestion-manager-error-generic-${each.value.id}"
-  location = var.location
+  name                = "pagopa-${var.env_short}-gpd-ingestion-manager-error-generic-${each.value.id}"
+  location            = var.location
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.action_groups_id
     email_subject          = "gpd-ingestion-manager-error-generic ${each.value.name}"
     custom_webhook_payload = "{}"
   }
@@ -306,7 +304,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
   location            = var.location
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.action_groups_id
     email_subject          = "gpd-ingestion-manager-error-pdv-tokenizer ${each.value.name}"
     custom_webhook_payload = "{}"
   }
@@ -337,7 +335,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
   location            = var.location
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.action_groups_id
     email_subject          = "gpd-ingestion-manager-error-unexpected-pdv-tokenizer ${each.value.name}"
     custom_webhook_payload = "{}"
   }
@@ -368,18 +366,18 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
   }
 
   resource_group_name = "dashboards"
-  name     = "pagopa-${var.env_short}-gpd-ingestion-manager-error-alert-${each.value.id}"
-  location = var.location
+  name                = "pagopa-${var.env_short}-gpd-ingestion-manager-error-alert-${each.value.id}"
+  location            = var.location
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.action_groups_id
     email_subject          = "Unexpected error while managing gpd ingestion events"
     custom_webhook_payload = "{}"
   }
 
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description = "Binding exceptions on gpd-ingestion-manager"
-  enabled = true
+  description    = "Binding exceptions on gpd-ingestion-manager"
+  enabled        = true
   query = format(
     <<-QUERY
 exceptions
