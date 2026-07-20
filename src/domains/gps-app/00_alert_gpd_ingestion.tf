@@ -378,14 +378,15 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
   }
 
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description = "Unexpected exceptions on gpd-ingestion-manager"
+  description = "Binding exceptions on gpd-ingestion-manager"
   enabled = true
   query = format(
     <<-QUERY
 exceptions
-| where cloud_RoleName == "pagopagpdingestionmanager"
-| where operation_Name startswith "%s"
-| summarize ExceptionCount=count()
+    | where cloud_RoleName == "%s"
+    //| where outerMessage contains "${each.value.name} ingestion error Generic exception"
+    | where operation_Name startswith "${each.value.name}"
+    | order by timestamp desc
 QUERY
     , "pagopagpdingestionmanager" # from HELM's parameter WEBSITE_SITE_NAME
   )
@@ -396,6 +397,6 @@ QUERY
 
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 10
+    threshold = 30
   }
 }
