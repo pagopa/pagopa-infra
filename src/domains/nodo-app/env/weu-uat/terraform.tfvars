@@ -217,3 +217,38 @@ wfesp_dismantling = {
   channel_list    = "13212880150_90"
   wfesp_fixed_url = "https://wfesp.pagopa.gov.it/redirect/wpl05/get?idSession="
 }
+
+apim_nodo_decoupler_enable      = true
+nodo_auth_subscription_limit    = 10000
+apim_nodo_auth_decoupler_enable = true
+
+app_gateway_allowed_paths_pagopa_onprem_only = {
+  paths = [
+    "/web-bo/.*",
+    "/bo-nodo/.*",
+    "/pp-admin-panel/.*",
+    "/tkm/tkmacquirermanager/.*",
+    "/nodo-monitoring/monitoring/.*",
+    "/nodo-ndp/monitoring/.*",
+    "/nodo-replica-ndp/monitoring/.*",
+    "/wfesp-ndp/.*",
+    "/wfesp-replica-ndp/.*",
+    "/web-bo-ndp/.*",
+  ]
+  ips = [
+    "93.63.219.230",  # PagoPA on prem VPN
+    "93.63.219.234",  # PagoPA on prem VPN DR
+    "20.93.160.60",   # CSTAR
+    "213.215.138.80", # Softlab L1 Pagamenti VPN
+    "213.215.138.79", # Softlab L1 Pagamenti VPN
+    "82.112.220.178", # Softlab L1 Pagamenti VPN
+    "77.43.17.42",    # Softlab L1 Pagamenti VPN
+    "151.2.45.1",     # Softlab L1 Pagamenti VPN
+    "193.203.229.20", # VPN NEXI
+    "193.203.230.22", # VPN NEXI
+    "193.203.230.21", # VPN NEXI
+    "151.1.203.68"    # Softlab backup support line
+  ]
+}
+
+apim_logger_resource_id = "/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/loggers/pagopa-u-apim-logger"
