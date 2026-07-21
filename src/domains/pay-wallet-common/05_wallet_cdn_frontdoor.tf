@@ -208,7 +208,7 @@ module "wallet_cdn_frontdoor" {
 module "wallet_fe_web_test" {
   count                                 = var.env_short == "p" ? 1 : 0
   source                                = "./.terraform/modules/__v4__/application_insights_standard_web_test"
-  https_endpoint                        = "https://${module.wallet_cdn_frontdoor.fqdn}"
+  https_endpoint                        = "https://${local.wallet_dns_zone_key}"
   https_endpoint_path                   = "/index.html"
   alert_name                            = "${local.project}-fe-web-test"
   location                              = var.location
