@@ -67,7 +67,7 @@ resource "azurerm_api_management_api_operation_policy" "nodoInviaRPT_api_v1_poli
   api_name            = azurerm_api_management_api.apim_nodo_per_pa_api_v1.name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf8fa" : var.env_short == "u" ? "62189aede0f4ba17a8eae8e9" : "62189aea2a92e81fa4f15ec6"
+  operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf8fa" : var.env_short == "u" ? "6a5f497875a838165ccb206e" : "62189aea2a92e81fa4f15ec6"
   xml_content         = file("./api/legacy/nodopagamenti_api/nodoPerPa/v1/nodoInviaRPT_policy.xml")
 }
 
@@ -82,7 +82,7 @@ resource "azurerm_api_management_api_operation_policy" "nodoInviaCarrelloRPT_api
   api_name            = azurerm_api_management_api.apim_nodo_per_pa_api_v1.name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf8fb" : var.env_short == "u" ? "62189aede0f4ba17a8eae8ea" : "62189aea2a92e81fa4f15ec7"
+  operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf8fb" : var.env_short == "u" ? "6a5f497875a838165ccb206f" : "62189aea2a92e81fa4f15ec7"
   xml_content         = file("./api/legacy/nodopagamenti_api/nodoPerPa/v1/nodoInviaCarrelloRPT_policy.xml")
 }
 

@@ -63,7 +63,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
   api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1_auth.name
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  operation_id        = var.env_short == "d" ? "637608a0c257810fc0ecfe1c" : var.env_short == "u" ? "636cb7e439519a17ec9bf98b" : "63b6e2daea7c4a25440fdaa0"
+  operation_id        = var.env_short == "d" ? "637608a0c257810fc0ecfe1c" : var.env_short == "u" ? "6a5f497475a838165ccb1e3c" : "63b6e2daea7c4a25440fdaa0"
 
   #tfsec:ignore:GEN005
   xml_content = templatefile("./api/legacy/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
@@ -79,7 +79,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_p
   api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1_auth.name
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  operation_id        = var.env_short == "d" ? "637608a0c257810fc0ecfe21" : var.env_short == "u" ? "63756cf1451c1c01c4186baa" : "63b6e2daea7c4a25440fdaa5"
+  operation_id        = var.env_short == "d" ? "637608a0c257810fc0ecfe21" : var.env_short == "u" ? "6a5f497475a838165ccb1e41" : "63b6e2daea7c4a25440fdaa5"
 
   #tfsec:ignore:GEN005
   xml_content = templatefile("./api/legacy/nodopagamenti_api/nodeForPsp/v2/activate_nm3.xml", {
