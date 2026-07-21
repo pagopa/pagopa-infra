@@ -308,3 +308,5 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "2.33.87.3"       # S.M.I. TECHNOLOGIES AND CONSULTING S.R.L attivo dal 1/10/2024
   ]
 }
+
+apim_logger_resource_id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim/loggers/pagopa-p-apim-logger"

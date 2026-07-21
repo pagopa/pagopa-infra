@@ -471,3 +471,9 @@ variable "app_gateway_allowed_paths_pagopa_onprem_only" {
   })
   description = "Allowed paths from pagopa onprem only"
 }
+
+variable "apim_logger_resource_id" {
+  type        = string
+  description = "Resource id for the APIM logger"
+  default     = null
+}

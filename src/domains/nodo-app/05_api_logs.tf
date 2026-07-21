@@ -20,8 +20,8 @@ resource "azurerm_api_management_api_diagnostic" "apim_logs" {
   for_each = toset(local.api_verbose_log)
 
   identifier               = "applicationinsights"
-  resource_group_name      = data.azurerm_resource_group.rg_api.name
-  api_management_name      = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name      = local.pagopa_apim_rg
+  api_management_name      = local.pagopa_apim_name
   api_name                 = each.key
   api_management_logger_id = var.apim_logger_resource_id
 
@@ -53,8 +53,8 @@ resource "azurerm_api_management_api_diagnostic" "apim_info_logs" {
   for_each = toset(local.api_info_log)
 
   identifier               = "applicationinsights"
-  resource_group_name      = data.azurerm_resource_group.rg_api.name
-  api_management_name      = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name      = local.pagopa_apim_rg
+  api_management_name      = local.pagopa_apim_name
   api_name                 = each.key
   api_management_logger_id = var.apim_logger_resource_id
 

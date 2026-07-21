@@ -51,28 +51,6 @@ variable "enabled_features" {
   description = "Features enabled in this domain"
 }
 
-variable "nodo_pagamenti_subkey_required" {
-  type        = bool
-  description = "Enabled subkeys for nodo dei pagamenti api"
-  default     = false
-}
-
-
-variable "nodo_pagamenti_auth_password" {
-  type        = string
-  description = "Default password used for nodo-auth"
-  default     = "PLACEHOLDER"
-}
-
-
-
-# nodo dei pagamenti - auth (nuova connettività)
-variable "nodo_auth_subscription_limit" {
-  type        = number
-  description = "subscriptions limit"
-  default     = 1000
-}
-
 
 # DNS
 variable "dns_default_ttl_sec" {
@@ -97,37 +75,6 @@ variable "dns_zone_prefix_prf" {
   type        = string
   default     = "" # null
   description = "The dns subdomain."
-}
-
-
-
-# apim
-
-variable "apim_nodo_decoupler_enable" {
-  type        = bool
-  default     = false
-  description = "Apply decoupler to nodo product apim policy"
-}
-
-variable "apim_nodo_auth_decoupler_enable" {
-  type        = bool
-  default     = false
-  description = "Apply decoupler to nodo-auth product apim policy"
-}
-
-
-# Scaling
-
-
-
-
-
-variable "app_gateway_allowed_paths_pagopa_onprem_only" {
-  type = object({
-    paths = list(string)
-    ips   = list(string)
-  })
-  description = "Allowed paths from pagopa onprem only"
 }
 
 
@@ -162,23 +109,6 @@ variable "postgres_private_endpoint_enabled" {
 variable "ecommerce_ingress_hostname" {
   type        = string
   description = "ecommerce ingress hostname"
-  default     = null
-}
-
-
-
-# node decoupler
-variable "node_decoupler_primitives" {
-  type        = string
-  description = "Node decoupler primitives"
-  default     = "nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"
-}
-
-
-
-variable "apim_logger_resource_id" {
-  type        = string
-  description = "Resource id for the APIM logger"
   default     = null
 }
 
