@@ -63,7 +63,7 @@ resource "azurerm_api_management_api_operation_policy" "activateIO_reservation_p
   api_name            = azurerm_api_management_api.apim_node_for_io_api_v1.name
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  operation_id        = var.env_short == "d" ? "61dc5018b78e981290d7c176" : var.env_short == "u" ? "6a5f489e75a838165ccb1c58" : "61dedb1eea7c4a07cc7d47b8"
+  operation_id        = var.env_short == "d" ? "6a5f5390445a962140b72e6c" : var.env_short == "u" ? "6a5f489e75a838165ccb1c58" : "61dedb1eea7c4a07cc7d47b8"
 
   #tfsec:ignore:GEN005
   xml_content = file("./api/legacy/nodopagamenti_api/nodeForIO/v1/activateIO_reservation_nm3.xml")

@@ -184,6 +184,9 @@ wfesp_dismantling = {
   wfesp_fixed_url = "https://wfesp.pagopa.gov.it/redirect/wpl05/get?idSession="
 }
 
+apim_nodo_decoupler_enable      = true
+apim_nodo_auth_decoupler_enable = true
+
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
     "/allowed/*",
