@@ -533,7 +533,7 @@ data "azurerm_storage_account" "gpd_ingestion_sa" {
 }
 
 resource "azurerm_key_vault_secret" "azure_web_jobs_storage_kv" {
-  name         = "AzureWebJobsStorage-gdp-ingestion"
+  name         = "gpd-ingestion-sa-conn-string"
   value        = data.azurerm_storage_account.gpd_ingestion_sa.primary_connection_string
   content_type = "text/plain"
   key_vault_id = module.key_vault.id
