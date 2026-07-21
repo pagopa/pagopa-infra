@@ -149,7 +149,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd_ingestion_deadletter
     <<-QUERY
 StorageTableLogs
 | where TimeGenerated >= ago(5m)
-| where OperationName == "InsertEntity"
+| where OperationName == "InsertOrMergeEntity"
 | where ObjectKey has "%s"
 | summarize RecordCount = count()
 | where RecordCount > 100
