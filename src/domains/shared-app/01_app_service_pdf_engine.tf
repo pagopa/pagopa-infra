@@ -116,7 +116,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     capacity {
       default = var.env_short == "p" ? 3 : 1
       minimum = var.env_short == "p" ? 3 : 1
-      maximum = var.env_short == "p" ? 12 : 1
+      maximum = var.env_short == "p" ? 21 : 1
     }
 
     # Requests
@@ -126,11 +126,11 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         metric_resource_id       = module.shared_pdf_engine_app_service[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
-        statistic                = "Average"
+        statistic                = "Sum"
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 1500
+        threshold                = 400
         divide_by_instance_count = false
       }
 
@@ -148,11 +148,11 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         metric_resource_id       = module.shared_pdf_engine_app_service[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
-        statistic                = "Average"
+        statistic                = "Sum"
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 1000
+        threshold                = 400
         divide_by_instance_count = false
       }
 
@@ -160,7 +160,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT10M"
       }
     }
 
@@ -208,7 +208,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT10M"
       }
     }
 
@@ -256,7 +256,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT10M"
       }
     }
 
@@ -350,7 +350,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     capacity {
       default = var.env_short == "p" ? 3 : 1
       minimum = var.env_short == "p" ? 3 : 1
-      maximum = var.env_short == "p" ? 24 : 1
+      maximum = var.env_short == "p" ? 21 : 1
     }
 
     # Requests
@@ -360,11 +360,11 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         metric_resource_id       = module.shared_pdf_engine_app_service_java[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
-        statistic                = "Average"
+        statistic                = "Sum"
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 1500
+        threshold                = 400
         divide_by_instance_count = false
       }
 
@@ -382,11 +382,11 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         metric_resource_id       = module.shared_pdf_engine_app_service_java[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
-        statistic                = "Average"
+        statistic                = "Sum"
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 1000
+        threshold                = 400
         divide_by_instance_count = false
       }
 
@@ -394,7 +394,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT10M"
       }
     }
 
@@ -442,7 +442,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT10M"
       }
     }
 
@@ -490,7 +490,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT10M"
       }
     }
   }

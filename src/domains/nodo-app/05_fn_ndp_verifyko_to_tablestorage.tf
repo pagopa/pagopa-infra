@@ -63,16 +63,19 @@ module "nodo_verifyko_to_tablestorage_function" {
   resource_group_name = data.azurerm_resource_group.nodo_verify_ko_rg.name
   name                = "${local.project}-verifyko2ts-fn"
 
-  location          = var.location
-  health_check_path = "/info"
-  subnet_id         = module.nodo_verifyko_to_tablestorage_function_snet.id
-  runtime_version   = "~4"
+  location                     = var.location
+  health_check_path            = "/info"
+  health_check_maxpingfailures = null
+  subnet_id                    = module.nodo_verifyko_to_tablestorage_function_snet.id
+  runtime_version              = "~4"
 
   system_identity_enabled = true
 
   always_on = var.nodo_verifyko_to_tablestorage_function.always_on
 
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+
+
 
   docker = {
     image_name        = local.verifyko_ts_docker_settings.IMAGE_NAME
@@ -120,8 +123,10 @@ module "nodo_verifyko_to_tablestorage_function_slot_staging" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   always_on                                = var.nodo_verifyko_to_tablestorage_function.always_on
   health_check_path                        = "/info"
+  health_check_maxpingfailures             = null
   runtime_version                          = "~4"
   subnet_id                                = module.nodo_verifyko_to_tablestorage_function_snet.id
+
 
   # App settings
   app_settings = local.function_verifyko_to_tablestorage_app_settings
