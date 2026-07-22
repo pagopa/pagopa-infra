@@ -110,6 +110,7 @@ module "taxonomy_function_slot_staging" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   always_on                                = var.taxonomy_function.always_on
   health_check_path                        = "/info"
+  health_check_maxpingfailures             = null
   runtime_version                          = "~4"
   subnet_id                                = module.taxonomy_function_snet.id
 

@@ -75,7 +75,7 @@ module "receipts_datastore_cosmosdb_account" {
 
   action = local.action_groups
 
-  burst_capacity_enabled = true
+  burst_capacity_enabled = var.burst_capacity_enabled
 
   # add data.azurerm_subnet.<my_service>.id
   # allowed_virtual_network_subnet_ids = var.receipts_datastore_cosmos_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
@@ -103,47 +103,11 @@ module "receipts_datastore_cosmosdb_database" {
 ### Containers
 locals {
   receipts_datastore_cosmosdb_containers = [
-    # {
-    #   name               = "fake",
-    #   partition_key_path = "/fakeid",
-    #   default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
-    #   autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
-    # },
     {
       name               = "receipts"
       partition_key_path = "/id"
       default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput }
-      indexing_policy = {
-        excluded_paths = [
-          "/\"_etag\"/?",
-          "/eventData/*",
-          "/ioMessageData/*",
-          "/mdAttach/*",
-          "/mdAttachPayer/*",
-          "/numRetry/?",
-          "/reasonErr/*",
-          "/reasonErrPayer/*",
-          "/notificationNumRetry/?"
-        ]
-        composite_indexes = [
-          [
-            { path : "/status" },
-            { path : "/inserted_at" }
-          ],
-          [
-            { path : "/status" },
-            { path : "/generated_at" }
-          ]
-        ]
-      }
-      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
-    },
-    {
-      name               = "receipts-pk",
-      partition_key_path = "/eventId",
-      default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput },
       indexing_policy = {
         excluded_paths = [
           "/\"_etag\"/?",
