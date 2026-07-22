@@ -182,16 +182,17 @@ resource "azapi_resource" "pipeline_lifecycle_management" {
 }
 
 resource "azurerm_data_factory_trigger_schedule" "pipeline_lifecycle_management_schedule" {
-  count = var.env_short == "p" ? 1 : 0
+  count = var.env_short != "d" ? 1 : 0
 
   name            = "GPD_LIFECYCLE_MANAGEMENT_SCHEDULE"
   data_factory_id = data.azurerm_data_factory.data_factory.id
   pipeline_name   = azapi_resource.pipeline_lifecycle_management.name
 
+  activated = false # temporarily deactivated
   interval  = 1
   frequency = "Day"
 
-  start_time = "2026-06-12T20:00:00Z"
+  start_time = "2026-06-15T20:00:00Z"
   time_zone  = "W. Europe Standard Time"
 
   pipeline_parameters = {

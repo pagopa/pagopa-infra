@@ -63,6 +63,24 @@ resource "azurerm_key_vault_access_policy" "adgroup_admin_dev_policy" {
     "Delete", "Restore", "Purge", "Recover"
   ]
 }
+
+resource "azurerm_key_vault_access_policy" "adgroup_external_dev_policy" {
+  count = var.env_short != "p" ? 1 : 0
+
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azuread_group.adgroup_developer_externals[0].object_id
+
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions  = ["Get", "List", "Set", "Delete", ]
+  storage_permissions = []
+  certificate_permissions = [
+    "Get", "List", "Update", "Create", "Import",
+    "Delete", "Restore", "Purge", "Recover"
+  ]
+}
+
 # azure devops policy
 data "azuread_service_principal" "iac_principal" {
   count        = var.enable_iac_pipeline ? 1 : 0
@@ -95,6 +113,34 @@ resource "azurerm_key_vault_access_policy" "cdn_wallet_kv" {
 
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
+
+  secret_permissions      = ["Get", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", ]
+}
+
+# allow the core App GW managed identity to read the wallet TLS cert
+data "azurerm_user_assigned_identity" "appgateway_public" {
+  name                = "${local.product}-appgateway-identity"
+  resource_group_name = "${local.product}-sec-rg"
+}
+
+resource "azurerm_key_vault_access_policy" "appgateway_wallet_kv" {
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azurerm_user_assigned_identity.appgateway_public.principal_id
+
+  secret_permissions      = ["Get", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", ]
+}
+
+resource "azurerm_key_vault_access_policy" "apim_wallet_kv" {
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azurerm_api_management.apim.identity[0].principal_id
 
   secret_permissions      = ["Get", ]
   storage_permissions     = []
@@ -357,47 +403,6 @@ resource "azurerm_key_vault_secret" "payment_wallet_gha_bot_pat" {
     ignore_changes = [
       value,
     ]
-  }
-}
-
-
-resource "azurerm_key_vault_certificate" "pay-wallet-jwt-token-issuer-certificate" {
-  name         = "jwt-token-issuer-cert"
-  key_vault_id = module.key_vault.id
-
-  certificate_policy {
-    issuer_parameters {
-      name = "Self"
-    }
-
-    key_properties {
-      exportable = true
-      key_size   = 2048
-      key_type   = "RSA"
-      reuse_key  = false
-    }
-
-    lifetime_action {
-      action {
-        action_type = "AutoRenew"
-      }
-
-      trigger {
-        days_before_expiry = 2
-      }
-    }
-
-    secret_properties {
-      content_type = "application/x-pkcs12"
-    }
-
-    x509_certificate_properties {
-      key_usage = [
-        "digitalSignature"
-      ]
-      subject            = "CN=${var.env}-${var.domain}-jwt-issuer"
-      validity_in_months = 1
-    }
   }
 }
 

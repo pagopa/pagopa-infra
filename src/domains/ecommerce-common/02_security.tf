@@ -49,6 +49,23 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   ]
 }
 
+resource "azurerm_key_vault_access_policy" "adgroup_external_dev_policy" {
+  count = var.env_short != "p" ? 1 : 0
+
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azuread_group.adgroup_developer_externals[0].object_id
+
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions  = ["Get", "List", "Set", "Delete", ]
+  storage_permissions = []
+  certificate_permissions = [
+    "Get", "List", "Update", "Create", "Import",
+    "Delete", "Restore", "Purge", "Recover"
+  ]
+}
+
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "adgroup_admin_dev_policy" {
 
@@ -540,20 +557,6 @@ resource "azurerm_key_vault_secret" "user_stats_for_event_dispatcher_api_key" {
   }
 }
 
-#TODO: to remove after migration to redirect_url_configurations
-resource "azurerm_key_vault_secret" "redirect_url_mapping" {
-  name         = "redirect-url-mapping"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-
 resource "azurerm_key_vault_secret" "redirect_url_configurations" {
   name         = "redirect-url-configurations"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
@@ -830,46 +833,6 @@ resource "azurerm_key_vault_secret" "ecommerce_payment_methods_secondary_api_key
   name         = "ecommerce-payment-methods-secondary-api-key"
   value        = random_password.ecommerce_payment_methods_secondary_api_key_pass.result
   key_vault_id = module.key_vault.id
-}
-
-resource "azurerm_key_vault_certificate" "ecommerce-jwt-token-issuer-certificate" {
-  name         = "jwt-token-issuer-cert"
-  key_vault_id = module.key_vault.id
-
-  certificate_policy {
-    issuer_parameters {
-      name = "Self"
-    }
-
-    key_properties {
-      exportable = true
-      key_size   = 2048
-      key_type   = "RSA"
-      reuse_key  = false
-    }
-
-    lifetime_action {
-      action {
-        action_type = "AutoRenew"
-      }
-
-      trigger {
-        days_before_expiry = 2
-      }
-    }
-
-    secret_properties {
-      content_type = "application/x-pkcs12"
-    }
-
-    x509_certificate_properties {
-      key_usage = [
-        "digitalSignature"
-      ]
-      subject            = "CN=${var.env}-${var.domain}-jwt-issuer"
-      validity_in_months = 1
-    }
-  }
 }
 
 resource "azurerm_key_vault_certificate" "ecommerce-jwt-token-issuer-certificate-ec" {
