@@ -610,7 +610,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_update_transac
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "eCommerce - delayed/missing auth notifications detected, more than 150 updateTransactionAuthorization operations in two consecutive 15 minutes time windows"
+  description    = "eCommerce - delayed/missing auth notifications detected, more than 150 updateTransactionAuthorization (getState) operations in two consecutive 15 minutes time windows"
   enabled        = true
   query = (<<-QUERY
 AzureDiagnostics
