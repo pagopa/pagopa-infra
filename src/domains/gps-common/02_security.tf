@@ -103,6 +103,22 @@ resource "azurerm_key_vault_secret" "cosmos_gps_pkey" {
   key_vault_id = module.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "gpd_technical_support_reconciliation_cosmos_key" {
+  name         = "gpd-technical-support-reconciliation-cosmos-key"
+  value        = module.gps_cosmosdb_account.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "gpd_technical_support_biz_cosmos_key" {
+  name         = "gpd-technical-support-biz-cosmos-key"
+  value        = data.azurerm_cosmosdb_account.bizevents_datastore_cosmosdb_account.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
 resource "azurerm_key_vault_secret" "ai_connection_string" {
   name         = format("ai-%s-connection-string", var.env_short)
   value        = data.azurerm_application_insights.application_insights.connection_string
@@ -396,6 +412,14 @@ resource "azurerm_key_vault_secret" "db_url" {
 
   key_vault_id = module.key_vault.id
 
+}
+
+resource "azurerm_key_vault_secret" "gpd_technical_support_apd_jdbc_url" {
+  name         = "gpd-technical-support-apd-jdbc-url"
+  value        = format("jdbc:postgresql://%s:%s/%s?sslmode=require%s", local.gpd_technical_support_db_hostname, local.gpd_technical_support_dbmsport, var.gpd_db_name, "&prepareThreshold=0")
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
