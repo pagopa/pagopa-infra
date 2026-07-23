@@ -51,7 +51,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-wisp-convert
   description    = "Availability for https://api.platform.pagopa.it/wisp-converter/redirect/api/v1/payments is less than or equal to threshold - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-wisp-converter"
   enabled        = true
   query = (<<-QUERY
-let lowTrafficThreshold = 70; // the lower threshold that can be calculated regarding the number of invocations
+let lowTrafficThreshold = 50; // the lower threshold that can be calculated regarding the number of invocations
 let highTrafficThreshold = 95; // the upper threshold that can be calculated regarding the number of invocations
 let trafficMin = 100; // the minimum number of invocations (traffic) below which 'lowTrafficThreshold' guideline is used
 let trafficLinear = 500;  // the minimum number of invocations (traffic) above which 'highTrafficThreshold' guideline is used
@@ -68,8 +68,8 @@ AzureDiagnostics
 | extend deltaRatio = todouble(todouble(trafficUp) / todouble(thresholdDelta))
 | extend expectedAvailability = iff(total >= trafficLinear, toreal(highTrafficThreshold), iff(total <= trafficMin, toreal(lowTrafficThreshold), (deltaRatio * (availabilityDelta)) + lowTrafficThreshold))
 | extend availability = ((success * 1.0) / total) * 100
-| project timeslot, availability, threshold=expectedAvailability
-| where availability < threshold
+| project timeslot, availability, threshold=expectedAvailability, total
+| where availability < threshold and total > 10
   QUERY
   )
   severity    = 1
@@ -191,6 +191,41 @@ traces
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 5
+  }
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "wisp_cache_not_in_sync_after_retries" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "pagopa-${var.env_short}-weu-nodo-wisp-converter-rg"
+  name                = "pagopa-${var.env_short}-pagopa-wisp-converter-cache-not-in-sync"
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.opsgenie[0].id]
+    email_subject          = "wisp-converter cache not in sync after retries"
+    custom_webhook_payload = "{}"
+  }
+
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "Problem to have wisp cache in sync after retries"
+  enabled        = true
+
+  frequency   = 5
+  query       = <<-EOT
+            customEvents
+              | where name == "WISP-CONVERTER"
+              | where customDimensions["details"] contains "LoadCache from cache API failed after 3 attempts"
+              | order by timestamp desc
+        EOT
+  query_type  = "ResultCount"
+  severity    = 0
+  tags        = {}
+  throttling  = 0
+  time_window = 5
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
   }
 }
 

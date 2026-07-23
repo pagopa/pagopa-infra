@@ -59,7 +59,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_generate-pdf-engine
   }
   data_source_id = data.azurerm_api_management.apim.id
   description    = "Response time for /generate-pdf is less than or equal to 5s"
-  enabled        = true
+  enabled        = false
   query = (<<-QUERY
 let threshold = 5000;
 AzureDiagnostics
