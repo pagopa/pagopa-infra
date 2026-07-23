@@ -169,3 +169,55 @@ resource "azurerm_api_management_api_operation_policy" "pagopa_token_exchange_po
   })
 
 }
+
+################################
+## Token Exchange API - v1    ##
+################################
+locals {
+  pagopa_backoffice_selfcare_sso_v1_api = {
+    display_name          = "pagoPA Backoffice Selfcare SSO API"
+    description           = "Exchange a Selfcare token to a pagoPA platform token"
+    path                  = "backoffice/selfcare/sso"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "pagopa_backoffice_selfcare_sso_v1" {
+  name                = "${var.env_short}-pagopa-backoffice-selfcare-sso-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = local.pagopa_backoffice_selfcare_sso_v1_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_pagopa_backoffice_selfcare_sso_v1" {
+  source = "./.terraform/modules/__v4__/api_management_api"
+
+  name                  = "${local.project}-backoffice-selfcare-sso-v1"
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_selfcare_product.product_id]
+  subscription_required = local.pagopa_backoffice_selfcare_sso_v1_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.pagopa_backoffice_selfcare_sso_v1.id
+  api_version           = "v1"
+
+  description  = local.pagopa_backoffice_selfcare_sso_v1_api.description
+  display_name = local.pagopa_backoffice_selfcare_sso_v1_api.display_name
+  path         = local.pagopa_backoffice_selfcare_sso_v1_api.path
+  protocols    = ["https"]
+  service_url  = local.pagopa_backoffice_selfcare_sso_v1_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/pagopa-selfcare-ms-backoffice/sso/v1/_openapi.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/pagopa-selfcare-ms-backoffice/sso/v1/_base_policy.xml.tpl", {
+    openid-config-url = local.pagopa-oidc-config_url
+    selfcare-issuer   = local.selfcare-jwt-issuer
+    pagopa-issuer     = local.pagopa-issuer
+    cert_cn           = local.cert_subject
+    origin            = local.selfcare_fe_hostname
+  })
+}
