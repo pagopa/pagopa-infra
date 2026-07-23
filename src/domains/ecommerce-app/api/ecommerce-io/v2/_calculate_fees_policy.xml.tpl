@@ -17,8 +17,6 @@
             <when condition="@(((int)((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode) == 200)">
                 <set-variable name="paymentMethod" value="@((JObject)((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>())" />
                 <set-variable name="paymentTypeCode" value="@((string)((JObject)context.Variables["paymentMethod"])["paymentTypeCode"])" />
-                <set-variable name="isPayPal" value="@(((string)context.Variables["paymentTypeCode"]).Equals("PPAL"))" />
-                <set-variable name="isBancomatPay" value="@(((string)context.Variables["paymentTypeCode"]).Equals("BPAY"))" />
                 <set-variable name="isCard" value="@(((string)context.Variables["paymentTypeCode"]).Equals("CP"))" />
             </when>
             <when condition="@(((int)((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode) == 404)">
@@ -112,7 +110,7 @@
                         <set-variable name="paymentMethodSessionResponseBody" value="@((JObject)((IResponse)context.Variables["paymentMethodSessionResponse"]).Body.As<JObject>())" />
                         <set-variable name="bin" value="@((string)((JObject)context.Variables["paymentMethodSessionResponseBody"])["bin"])" />
                     </when>
-                    <when condition="@(((int)((IResponse)context.Variables["paymentMethodSessionResponseBody"]).StatusCode) == 404)">
+                    <when condition="@(((int)((IResponse)context.Variables["paymentMethodSessionResponse"]).StatusCode) == 404)">
                         <return-response>
                             <set-status code="404" reason="Not found" />
                             <set-header name="Content-Type" exists-action="override">
