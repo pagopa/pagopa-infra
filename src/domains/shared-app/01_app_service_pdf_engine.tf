@@ -262,6 +262,27 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
 
 
   }
+
+  # Peak hours profile (7 AM to 8 PM) - Workdays only
+  # This profile ensures 20 instances are always available during peak business hours
+  # Applied Monday through Friday, from 07:00 to 19:59 (8 PM)
+  # Helps handle high traffic during working hours with guaranteed capacity
+  profile {
+    name = "peak-hours"
+
+    capacity {
+      default = 20
+      minimum = 20
+      maximum = 20
+    }
+
+    recurrence {
+      timezone = "Europe/Rome"
+      days     = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+      hours    = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+      minutes  = [0]
+    }
+  }
 }
 
 
@@ -492,6 +513,27 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         value     = "1"
         cooldown  = "PT10M"
       }
+    }
+  }
+
+  # Peak hours profile (7 AM to 8 PM) - Workdays only
+  # This profile ensures 20 instances are always available during peak business hours
+  # Applied Monday through Friday, from 07:00 to 19:59 (8 PM)
+  # Helps handle high traffic during working hours with guaranteed capacity
+  profile {
+    name = "peak-hours"
+
+    capacity {
+      default = 20
+      minimum = 20
+      maximum = 20
+    }
+
+    recurrence {
+      timezone = "Europe/Rome"
+      days     = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+      hours    = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+      minutes  = [0]
     }
   }
 }
