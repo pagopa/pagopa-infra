@@ -271,3 +271,40 @@ module "checkout_fe_frontdoor_web_test" {
   metric_window_size                    = "PT1H"
   retry_enabled                         = true
 }
+
+# This alert watches the npg sdk sync pipeline's own success heartbeat:
+# the pipeline emits a `NpgSdkSyncSuccess` customEvent to App Insights only
+# after a full download -> verify-vs-NPG -> publish -> purge run. No heartbeat in the
+# last 3h means the sync has stopped or is failing, so the served SDK/hash may be stale.
+resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_npg_sdk_sync_staleness" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "${local.project}-npg-sdk-sync-staleness-alert"
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id]
+    email_subject          = "[Checkout] NPG SDK sync stale - no successful sync in the last 3h"
+    custom_webhook_payload = "{}"
+  }
+
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "No NpgSdkSyncSuccess heartbeat in the last 3 hours: the hourly NPG SDK sync pipeline may have stopped or be failing, so the served SDK/hash could be stale."
+  enabled        = true
+  # single fire while the sync is down + auto-resolve once heartbeats resume
+  auto_mitigation_enabled = true
+  query = (<<-QUERY
+customEvents
+| where name == "NpgSdkSyncSuccess"
+  QUERY
+  )
+
+  severity    = 1
+  frequency   = 30
+  time_window = 180
+  trigger {
+    operator  = "LessThan"
+    threshold = 1
+  }
+}
