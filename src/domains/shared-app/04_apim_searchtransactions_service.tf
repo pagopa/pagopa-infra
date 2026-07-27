@@ -30,7 +30,7 @@ module "apim_search_transactions_service" {
   published             = true
   subscription_required = local.apim_searchtransactionsservice_api.subscription_required
   approval_required     = false
-  subscriptions_limit   = 1000
+  subscriptions_limit   = 0
 
   policy_xml = file("./api_product/search-transactions/_base_policy.xml")
 }
