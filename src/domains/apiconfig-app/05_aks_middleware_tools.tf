@@ -61,7 +61,7 @@ resource "helm_release" "status_app" {
         INGRESS_URL                 = local.apiconfig_cache_locals.hostname,
         ENV_SHORT                   = var.env_short,
         SERVICE_ACCOUNT_NAME        = module.workload_identity_configuration.workload_identity_service_account_name,
-        WORKLOAD_IDENTITY_CLIENT_ID = module.workload_identity_configuration.workload_identity_client_id,
+        WORKLOAD_IDENTITY_CLIENT_ID = module.workload_identity_configuration.workload_identity_client_id
       })
     }"
   ]

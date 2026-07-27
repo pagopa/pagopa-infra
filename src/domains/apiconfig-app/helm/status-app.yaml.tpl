@@ -94,3 +94,6 @@ autoscaling:
 # workload identity configuration
 azure:
   workloadIdentityClientId: "${WORKLOAD_IDENTITY_CLIENT_ID}"
+
+secretProviderClass:
+  create: false
