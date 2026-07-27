@@ -6,7 +6,7 @@
 
     <!-- Server FTP2 #2 — TEST -->
     <changeSet author="liquibase" id="20260318000002">
-      
+
    <preConditions onFail="MARK_RAN">
         <sqlCheck expectedResult="0">
             SELECT COUNT(*)
@@ -18,8 +18,8 @@
         <comment>Aggiunta server FTP2 #2 per ambiente UAT</comment>
         <insert tableName="FTP_SERVERS">
             <column name="OBJ_ID"        valueNumeric="2"/>
-            <column name="HOST"          value="10.101.38.180"/>
-            <column name="PORT"          valueNumeric="20022"/>
+            <column name="HOST"          value="10.92.8.180"/>
+            <column name="PORT"          valueNumeric="8022"/>
             <column name="USERNAME"      value="NODOPA"/>
             <column name="PASSWORD"      value=""/>
             <column name="ROOT_PATH"     value="/Inbox"/>
