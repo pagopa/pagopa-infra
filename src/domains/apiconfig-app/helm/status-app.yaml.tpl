@@ -54,7 +54,7 @@ ingress:
 serviceAccount:
   create: false
   annotations: {}
-  name: ""
+  name: "${SERVICE_ACCOUNT_NAME}"
 
 podAnnotations: {}
 
@@ -90,3 +90,7 @@ autoscaling:
 # tolerations: []
 
 # affinity: {}
+
+# workload identity configuration
+azure:
+  workloadIdentityClientId: "${WORKLOAD_IDENTITY_CLIENT_ID}"

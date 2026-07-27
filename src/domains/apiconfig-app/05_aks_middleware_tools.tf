@@ -49,7 +49,7 @@ resource "helm_release" "status_app" {
   name         = "status-app"
   repository   = "https://pagopa.github.io/aks-microservice-chart-blueprint"
   chart        = "microservice-chart"
-  version      = "2.8.0"
+  version      = "7.6.0"
   namespace    = var.domain
   timeout      = 120
   force_update = true
@@ -57,12 +57,15 @@ resource "helm_release" "status_app" {
   values = [
     "${
       templatefile("${path.root}/helm/status-app.yaml.tpl", {
-        NAMESPACE   = var.domain,
-        INGRESS_URL = local.apiconfig_cache_locals.hostname,
-        ENV_SHORT   = var.env_short,
+        NAMESPACE                   = var.domain,
+        INGRESS_URL                 = local.apiconfig_cache_locals.hostname,
+        ENV_SHORT                   = var.env_short,
+        SERVICE_ACCOUNT_NAME        = module.workload_identity_configuration.workload_identity_service_account_name,
+        WORKLOAD_IDENTITY_CLIENT_ID = module.workload_identity_configuration.workload_identity_client_id,
       })
     }"
   ]
+  depends_on = [module.workload_identity_configuration]
 }
 
 resource "helm_release" "reloader" {
