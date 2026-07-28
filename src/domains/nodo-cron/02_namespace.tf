@@ -5,18 +5,32 @@ resource "kubernetes_namespace" "namespace" {
 }
 
 
-module "pod_identity" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity?ref=v6.4.1"
 
-  resource_group_name = local.aks_resource_group_name
-  location            = var.location
-  tenant_id           = data.azurerm_subscription.current.tenant_id
-  cluster_name        = local.aks_name
-
-  identity_name = "${kubernetes_namespace.namespace.metadata[0].name}-pod-identity" // TODO add env in name
-  namespace     = kubernetes_namespace.namespace.metadata[0].name
-  key_vault_id  = data.azurerm_key_vault.kv.id
-
-  secret_permissions = ["Get"]
+#
+# K8s service account - used here the same from node domain in order to make both
+# nodo and nodo-cron use the same workload identity
+#
+locals {
+  nodo_workload_identity_name = "${var.domain}-workload-identity"
 }
 
+
+data "azurerm_key_vault_secret" "nodo_cron_workload_identity_client_id" {
+  name         = "nodo-workload-identity-client-id"
+  key_vault_id = data.azurerm_key_vault.nodo_kv.id
+}
+
+data "azurerm_key_vault_secret" "nodo_cron_workload_identity_service_account_name" {
+  name         = "nodo-workload-identity-service-account-name"
+  key_vault_id = data.azurerm_key_vault.nodo_kv.id
+}
+
+resource "kubernetes_service_account_v1" "nodo_cron_workload_identity_sa" {
+  metadata {
+    name      = data.azurerm_key_vault_secret.nodo_cron_workload_identity_service_account_name.value
+    namespace = "nodo-cron"
+    annotations = {
+      "azure.workload.identity/client-id" = data.azurerm_key_vault_secret.nodo_cron_workload_identity_client_id.value
+    }
+  }
+}
