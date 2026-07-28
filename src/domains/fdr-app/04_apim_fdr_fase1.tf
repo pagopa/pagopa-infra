@@ -21,7 +21,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoIn
   api_name            = data.azurerm_api_management_api.apim_nodo_per_psp_api_v1.name
   api_management_name = data.azurerm_api_management_api.apim_nodo_per_psp_api_v1.api_management_name
   resource_group_name = data.azurerm_api_management_api.apim_nodo_per_psp_api_v1.resource_group_name
-  operation_id        = var.env_short == "d" ? "61e9630cb78e981290d7c74c" : var.env_short == "u" ? "61e96321e0f4ba04a49d1280" : "61e9633eea7c4a07cc7d4811"
+  operation_id        = var.env_short == "d" ? "61e9630cb78e981290d7c74c" : var.env_short == "u" ? "6a5f497475a838165ccb1dfe" : "61e9633eea7c4a07cc7d4811"
 
   xml_content = templatefile("./api/fdr-fase1/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
     is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
@@ -52,7 +52,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoCh
   api_name            = data.azurerm_api_management_api.apim_nodo_per_pa_api_v1.name
   api_management_name = data.azurerm_api_management_api.apim_nodo_per_pa_api_v1.api_management_name
   resource_group_name = data.azurerm_api_management_api.apim_nodo_per_pa_api_v1.resource_group_name
-  operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf902" : var.env_short == "u" ? "61e96321e0f4ba04a49d1286" : "61e9633dea7c4a07cc7d480e"
+  operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf902" : var.env_short == "u" ? "6a5f497875a838165ccb2076" : "61e9633dea7c4a07cc7d480e"
 
   #tfsec:ignore:GEN005
   xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa_nodoChiediFlussoRendicontazione.xml.tpl", {
@@ -79,7 +79,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoCh
   api_name            = data.azurerm_api_management_api.apim_nodo_per_pa_api_v1.name
   api_management_name = data.azurerm_api_management_api.apim_nodo_per_pa_api_v1.api_management_name
   resource_group_name = data.azurerm_api_management_api.apim_nodo_per_pa_api_v1.resource_group_name
-  operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf901" : var.env_short == "u" ? "61e96321e0f4ba04a49d1285" : "61e9633dea7c4a07cc7d480d"
+  operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf901" : var.env_short == "u" ? "6a5f497875a838165ccb2075" : "61e9633dea7c4a07cc7d480d"
 
   #tfsec:ignore:GEN005
   xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa_nodoChiediElencoFlussiRendicontazione.xml.tpl", {

@@ -181,6 +181,118 @@
                     }
                 }
             }
+        },
+        "/payment-methods/{id}/fees": {
+            "post": {
+                "tags": [
+                    "payment-methods-handler"
+                ],
+                "operationId": "calculateFees",
+                "summary": "Calculate payment method fees",
+                "description": "GET with body payload - no resources created: Return the fees for the choosen payment method based on transaction amount etc.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Payment Method ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "maxOccurrences",
+                        "in": "query",
+                        "description": "max occurrences",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "x-client-id",
+                        "in": "header",
+                        "description": "client id related to a given touchpoint",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "IO",
+                                "CHECKOUT",
+                                "CHECKOUT_CART"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "x-language",
+                        "in": "header",
+                        "description": "The user language",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "IT",
+                                "EN",
+                                "FR",
+                                "DE",
+                                "SL"
+                            ]
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CalculateFeeRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Return list of psp ordered by fee.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CalculateFeeResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Service unavailable",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -462,6 +574,174 @@
                     },
                     "title": {
                         "description": "Problem title",
+                        "type": "string"
+                    }
+                }
+            },
+            "CalculateFeeRequest": {
+                "description": "Calculate fee request",
+                "type": "object",
+                "required": [
+                    "paymentNotices",
+                    "touchpoint",
+                    "isAllCCP"
+                ],
+                "properties": {
+                    "touchpoint": {
+                        "type": "string",
+                        "description": "The touchpoint name"
+                    },
+                    "bin": {
+                        "type": "string",
+                        "description": "The user card bin"
+                    },
+                    "idPspList": {
+                        "description": "List of psps",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "paymentNotices": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 5,
+                        "items": {
+                            "$ref": "#/components/schemas/PaymentNotice"
+                        }
+                    },
+                    "isAllCCP": {
+                        "description": "Flag for the inclusion of Poste bundles. false -> excluded, true -> included",
+                        "type": "boolean"
+                    }
+                }
+            },
+            "PaymentNotice": {
+                "description": "Payment notice data",
+                "type": "object",
+                "required": [
+                    "paymentAmount",
+                    "primaryCreditorInstitution",
+                    "transferList"
+                ],
+                "properties": {
+                    "paymentAmount": {
+                        "description": "The transaction payment amount",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "primaryCreditorInstitution": {
+                        "description": "The primary creditor institution",
+                        "type": "string"
+                    },
+                    "transferList": {
+                        "description": "Transfer list",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TransferListItem"
+                        }
+                    }
+                }
+            },
+            "CalculateFeeResponse": {
+                "description": "Calculate fee response",
+                "type": "object",
+                "required": [
+                    "bundles",
+                    "paymentMethodName",
+                    "paymentMethodDescription",
+                    "paymentMethodStatus",
+                    "asset"
+                ],
+                "properties": {
+                    "paymentMethodName": {
+                        "description": "Payment method name",
+                        "type": "string"
+                    },
+                    "paymentMethodDescription": {
+                        "description": "Payment method description",
+                        "type": "string"
+                    },
+                    "paymentMethodStatus": {
+                        "type": "string",
+                        "description": "Payment method status",
+                        "enum": [
+                            "ENABLED",
+                            "DISABLED",
+                            "MAINTENANCE"
+                        ]
+                    },
+                    "belowThreshold": {
+                        "description": "Boolean value indicating if the payment is below the configured threshold",
+                        "type": "boolean"
+                    },
+                    "bundles": {
+                        "description": "Bundle list",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Bundle"
+                        }
+                    },
+                    "asset": {
+                        "description": "Payment method asset",
+                        "type": "string"
+                    },
+                    "brandAssets": {
+                        "description": "Brand assets map associated to the selected payment method",
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "Bundle": {
+                "description": "Bundle object",
+                "type": "object",
+                "properties": {
+                    "abi": {
+                        "description": "Bundle ABI code",
+                        "type": "string"
+                    },
+                    "bundleDescription": {
+                        "description": "Bundle description",
+                        "type": "string"
+                    },
+                    "idBrokerPsp": {
+                        "description": "Bundle PSP broker id",
+                        "type": "string"
+                    },
+                    "idBundle": {
+                        "description": "Bundle id",
+                        "type": "string"
+                    },
+                    "idChannel": {
+                        "description": "Channel id",
+                        "type": "string"
+                    },
+                    "idPsp": {
+                        "description": "PSP id",
+                        "type": "string"
+                    },
+                    "onUs": {
+                        "description": "Boolean value indicating if this bundle is an on-us ones",
+                        "type": "boolean"
+                    },
+                    "paymentMethod": {
+                        "description": "Payment method",
+                        "type": "string"
+                    },
+                    "taxPayerFee": {
+                        "description": "Tax payer fee",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "touchpoint": {
+                        "description": "The touchpoint name",
+                        "type": "string"
+                    },
+                    "pspBusinessName": {
+                        "description": "The psp business name",
                         "type": "string"
                     }
                 }

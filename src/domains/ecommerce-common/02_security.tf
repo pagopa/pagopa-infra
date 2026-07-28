@@ -557,20 +557,6 @@ resource "azurerm_key_vault_secret" "user_stats_for_event_dispatcher_api_key" {
   }
 }
 
-#TODO: to remove after migration to redirect_url_configurations
-resource "azurerm_key_vault_secret" "redirect_url_mapping" {
-  name         = "redirect-url-mapping"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-
 resource "azurerm_key_vault_secret" "redirect_url_configurations" {
   name         = "redirect-url-configurations"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
@@ -847,46 +833,6 @@ resource "azurerm_key_vault_secret" "ecommerce_payment_methods_secondary_api_key
   name         = "ecommerce-payment-methods-secondary-api-key"
   value        = random_password.ecommerce_payment_methods_secondary_api_key_pass.result
   key_vault_id = module.key_vault.id
-}
-
-resource "azurerm_key_vault_certificate" "ecommerce-jwt-token-issuer-certificate" {
-  name         = "jwt-token-issuer-cert"
-  key_vault_id = module.key_vault.id
-
-  certificate_policy {
-    issuer_parameters {
-      name = "Self"
-    }
-
-    key_properties {
-      exportable = true
-      key_size   = 2048
-      key_type   = "RSA"
-      reuse_key  = false
-    }
-
-    lifetime_action {
-      action {
-        action_type = "AutoRenew"
-      }
-
-      trigger {
-        days_before_expiry = 2
-      }
-    }
-
-    secret_properties {
-      content_type = "application/x-pkcs12"
-    }
-
-    x509_certificate_properties {
-      key_usage = [
-        "digitalSignature"
-      ]
-      subject            = "CN=${var.env}-${var.domain}-jwt-issuer"
-      validity_in_months = 1
-    }
-  }
 }
 
 resource "azurerm_key_vault_certificate" "ecommerce-jwt-token-issuer-certificate-ec" {

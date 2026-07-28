@@ -12,7 +12,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoIn
   api_name            = data.azurerm_api_management_api.apim_nodo_per_psp_api_v1_auth.name
   api_management_name = data.azurerm_api_management_api.apim_nodo_per_psp_api_v1_auth.api_management_name
   resource_group_name = data.azurerm_api_management_api.apim_nodo_per_psp_api_v1_auth.resource_group_name
-  operation_id        = var.env_short == "d" ? "6352c3bdc257810f183b399c" : var.env_short == "u" ? "636cbcb7451c1c01c4186a0b" : "63b6e2da2a92e811a8f33901"
+  operation_id        = var.env_short == "d" ? "6352c3bdc257810f183b399c" : var.env_short == "u" ? "6a5f489d75a838165ccb1c34" : "63b6e2da2a92e811a8f33901"
 
   xml_content = templatefile("./api/fdr-fase1/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
     is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
@@ -39,7 +39,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoIn
   api_name            = data.azurerm_api_management_api.apim_node_for_psp_api_v1_auth.name
   api_management_name = data.azurerm_api_management_api.apim_node_for_psp_api_v1_auth.api_management_name
   resource_group_name = data.azurerm_api_management_api.apim_node_for_psp_api_v1_auth.resource_group_name
-  operation_id        = var.env_short == "d" ? "63fc7fce3b3a670f709d79e9" : var.env_short == "u" ? "63fcb0f539519a2c40fd431a" : "63ff4f22aca2fd18dcc4a6f7"
+  operation_id        = var.env_short == "d" ? "63fc7fce3b3a670f709d79e9" : var.env_short == "u" ? "6a5f497475a838165ccb1e43" : "63ff4f22aca2fd18dcc4a6f7"
 
   xml_content = templatefile("./api/fdr-fase1/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
     is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
@@ -68,7 +68,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoCh
   api_name            = data.azurerm_api_management_api.apim_nodo_per_pa_api_v1_auth.name
   api_management_name = data.azurerm_api_management_api.apim_nodo_per_pa_api_v1_auth.api_management_name
   resource_group_name = data.azurerm_api_management_api.apim_nodo_per_pa_api_v1_auth.resource_group_name
-  operation_id        = var.env_short == "d" ? "6352c3bcc257810f183b398c" : var.env_short == "u" ? "636cb7e9451c1c01c4186999" : "63b6e2da2a92e811a8f338f9"
+  operation_id        = var.env_short == "d" ? "6352c3bcc257810f183b398c" : var.env_short == "u" ? "6a5f489d75a838165ccb1c3f" : "63b6e2da2a92e811a8f338f9"
 
   #tfsec:ignore:GEN005
   xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa_nodoChiediFlussoRendicontazione.xml.tpl", {
@@ -95,7 +95,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoCh
   api_name            = data.azurerm_api_management_api.apim_node_for_pa_api_v1_auth.name
   api_management_name = data.azurerm_api_management_api.apim_node_for_pa_api_v1_auth.api_management_name
   resource_group_name = data.azurerm_api_management_api.apim_node_for_pa_api_v1_auth.resource_group_name
-  operation_id        = var.env_short == "d" ? "63fc79f63b3a670f709d79c4" : var.env_short == "u" ? "63f85b45451c1c1f24639434" : "63ff73adea7c4a1860530e3b"
+  operation_id        = var.env_short == "d" ? "63fc79f63b3a670f709d79c4" : var.env_short == "u" ? "6a5f48a175a838165ccb1c80" : "63ff73adea7c4a1860530e3b"
 
   #tfsec:ignore:GEN005
   xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa_nodoChiediFlussoRendicontazione.xml.tpl", {
@@ -122,7 +122,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoCh
   api_name            = data.azurerm_api_management_api.apim_nodo_per_pa_api_v1_auth.name
   api_management_name = data.azurerm_api_management_api.apim_nodo_per_pa_api_v1_auth.api_management_name
   resource_group_name = data.azurerm_api_management_api.apim_nodo_per_pa_api_v1_auth.resource_group_name
-  operation_id        = var.env_short == "d" ? "6352c3bcc257810f183b398b" : var.env_short == "u" ? "636cb7e9451c1c01c4186998" : "63b6e2da2a92e811a8f338f8"
+  operation_id        = var.env_short == "d" ? "6352c3bcc257810f183b398b" : var.env_short == "u" ? "6a5f489d75a838165ccb1c3e" : "63b6e2da2a92e811a8f338f8"
 
   #tfsec:ignore:GEN005
   xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa_nodoChiediElencoFlussiRendicontazione.xml.tpl", {
@@ -148,7 +148,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoCh
   api_name            = data.azurerm_api_management_api.apim_node_for_pa_api_v1_auth.name
   api_management_name = data.azurerm_api_management_api.apim_node_for_pa_api_v1_auth.api_management_name
   resource_group_name = data.azurerm_api_management_api.apim_node_for_pa_api_v1_auth.resource_group_name
-  operation_id        = var.env_short == "d" ? "63fc79f53b3a670f709d79c3" : var.env_short == "u" ? "63f85b45451c1c1f24639433" : "63ff73adea7c4a1860530e3a"
+  operation_id        = var.env_short == "d" ? "63fc79f53b3a670f709d79c3" : var.env_short == "u" ? "6a5f48a175a838165ccb1c7f" : "63ff73adea7c4a1860530e3a"
 
   #tfsec:ignore:GEN005
   xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa_nodoChiediElencoFlussiRendicontazione.xml.tpl", {
