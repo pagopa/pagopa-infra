@@ -54,7 +54,7 @@ module "shared_pdf_engine_app_service" {
   client_cert_enabled = false
   always_on           = var.app_service_pdf_engine_always_on
   # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
-  docker_image             = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
+  docker_image             = "pagopapdfengine"
   docker_image_tag         = "latest"
   docker_registry_url      = "https://${data.azurerm_container_registry.container_registry.login_server}"
   docker_registry_username = data.azurerm_container_registry.container_registry.admin_username
@@ -88,7 +88,7 @@ module "shared_pdf_engine_slot_staging" {
   name = "staging"
 
   always_on        = true
-  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
+  docker_image     = "pagopapdfengine"
   docker_image_tag = "latest"
 
   health_check_path            = "/info"
@@ -445,7 +445,7 @@ module "shared_pdf_engine_app_service_java" {
   client_cert_enabled = false
   always_on           = var.app_service_pdf_engine_always_on
   # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
-  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
+  docker_image     = "pagopapdfenginejava"
   docker_image_tag = "latest"
 
   health_check_path            = "/info"
@@ -479,7 +479,7 @@ module "shared_pdf_engine_java_slot_staging" {
 
   always_on = true
   # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
-  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
+  docker_image     = "pagopapdfenginejava"
   docker_image_tag = "latest"
 
   health_check_path            = "/info"
