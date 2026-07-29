@@ -182,12 +182,6 @@ variable "redis_std_pay_wallet_params" {
   })
 }
 
-variable "enable_iac_pipeline" {
-  type        = bool
-  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
-  default     = false
-}
-
 ### Storage
 
 variable "pay_wallet_storage_params" {
