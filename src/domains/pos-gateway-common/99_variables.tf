@@ -53,14 +53,14 @@ variable "alert_use_opsgenie" {
 
 
 variable "redis_idh_resource_tier" {
-    type        = string
-    description = "The IDH resource tier for the Redis cache."
+  type        = string
+  description = "The IDH resource tier for the Redis cache."
 }
 
 
 variable "cosmos_idh_resource_tier" {
-    type        = string
-    description = "The IDH resource tier for the cosmosdb "
+  type        = string
+  description = "The IDH resource tier for the cosmosdb "
 }
 
 

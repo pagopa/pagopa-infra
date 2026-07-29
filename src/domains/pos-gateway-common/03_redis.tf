@@ -8,13 +8,13 @@ resource "azurerm_resource_group" "redis_rg" {
 module "redis" {
   source = "./.terraform/modules/__v4__/IDH/redis"
 
-  env = var.env
+  env               = var.env
   idh_resource_tier = var.redis_idh_resource_tier
-  product_name = local.prefix
+  product_name      = local.prefix
 
-  location = var.location
-  name = "${local.project}-redis"
-  resource_group_name = azurerm_resource_group.redis_rg.name
+  location               = var.location
+  name                   = "${local.project}-redis"
+  resource_group_name    = azurerm_resource_group.redis_rg.name
   alert_action_group_ids = concat([data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id], var.alert_use_opsgenie ? [] : [])
 
   embedded_subnet = {
@@ -25,7 +25,7 @@ module "redis" {
   }
 
   # fixme configure the cidr list and service name allowed on this redis
-  embedded_nsg_configuration    = {
+  embedded_nsg_configuration = {
     source_address_prefixes      = ["*"]
     source_address_prefixes_name = local.domain
   }

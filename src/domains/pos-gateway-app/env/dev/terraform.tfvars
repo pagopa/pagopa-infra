@@ -6,8 +6,6 @@ location_short = "itn"
 location_string = "Italy North"
 
 
-external_domain          =  "pagopa.it"
+external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
 dns_zone_prefix          = "pos-gateway.itn"
-
-
