@@ -87,10 +87,12 @@ module "shared_pdf_engine_slot_staging" {
   # App service
   name = "staging"
 
-  always_on         = true
-  docker_image      = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
-  docker_image_tag  = "latest"
-  health_check_path = "/info"
+  always_on        = true
+  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
+  docker_image_tag = "latest"
+
+  health_check_path            = "/info"
+  health_check_maxpingfailures = 10
 
 
   # App settings
@@ -477,9 +479,11 @@ module "shared_pdf_engine_java_slot_staging" {
 
   always_on = true
   # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
-  docker_image      = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
-  docker_image_tag  = "latest"
-  health_check_path = "/info"
+  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
+  docker_image_tag = "latest"
+
+  health_check_path            = "/info"
+  health_check_maxpingfailures = 10
 
 
   # App settings
