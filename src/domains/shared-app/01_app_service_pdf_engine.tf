@@ -54,11 +54,16 @@ module "shared_pdf_engine_app_service" {
   client_cert_enabled = false
   always_on           = var.app_service_pdf_engine_always_on
   # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
-  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
-  docker_image_tag = "latest"
+  docker_image             = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
+  docker_image_tag         = "latest"
+  docker_registry_url      = "https://${data.azurerm_container_registry.container_registry.login_server}"
+  docker_registry_username = data.azurerm_container_registry.container_registry.admin_username
+  docker_registry_password = data.azurerm_container_registry.container_registry.admin_password
 
   health_check_path            = "/info"
-  health_check_maxpingfailures = 2
+  health_check_maxpingfailures = 10
+
+  minimum_tls_version = "1.2"
 
   app_settings = local.shared_pdf_engine_app_settings
 
@@ -67,7 +72,6 @@ module "shared_pdf_engine_app_service" {
 
   subnet_id                     = module.shared_pdf_engine_app_service_snet.id
   ip_restriction_default_action = var.function_app_ip_restriction_default_action
-
 
   tags = module.tag_config.tags
 }
@@ -439,11 +443,16 @@ module "shared_pdf_engine_app_service_java" {
   client_cert_enabled = false
   always_on           = var.app_service_pdf_engine_always_on
   # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
-  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
-  docker_image_tag = "latest"
+  docker_image             = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
+  docker_image_tag         = "latest"
+  docker_registry_url      = "https://${data.azurerm_container_registry.container_registry.login_server}"
+  docker_registry_username = data.azurerm_container_registry.container_registry.admin_username
+  docker_registry_password = data.azurerm_container_registry.container_registry.admin_password
 
   health_check_path            = "/info"
-  health_check_maxpingfailures = 2
+  health_check_maxpingfailures = 10
+
+  minimum_tls_version = "1.2"
 
   app_settings = local.shared_pdf_engine_app_settings_java
 
