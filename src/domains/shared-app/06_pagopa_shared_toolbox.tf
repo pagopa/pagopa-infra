@@ -47,7 +47,7 @@ locals {
 module "pagopa_shared_toolbox_cdn" {
   source = "./.terraform/modules/__v4__/cdn"
 
-  count               = var.pagopa_shared_toolbox_enabled ? 1 : 0
+  count               = 0
   name                = "shared-toolbox"
   prefix              = local.product
   resource_group_name = azurerm_resource_group.pagopa_shared_toolbox_rg[0].name
@@ -248,7 +248,7 @@ module "pagopa_shared_toolbox_cdn" {
 }
 
 resource "azurerm_key_vault_secret" "pagopa_shared_toolbox_storage_account_key" {
-  count = var.pagopa_shared_toolbox_enabled ? 1 : 0
+  count = 0
 
   name         = "pagopa-shared-toolbox-storage-account-key"
   value        = module.pagopa_shared_toolbox_cdn[0].storage_primary_access_key
@@ -259,7 +259,7 @@ resource "azurerm_key_vault_secret" "pagopa_shared_toolbox_storage_account_key" 
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry
 resource "azurerm_key_vault_secret" "pagopa_shared_toolbox_web_storage_blob_connection_string" {
-  count = var.pagopa_shared_toolbox_enabled ? 1 : 0
+  count = 0
 
   name         = "web-storage-blob-connection-string"
   value        = module.pagopa_shared_toolbox_cdn[0].storage_primary_blob_connection_string

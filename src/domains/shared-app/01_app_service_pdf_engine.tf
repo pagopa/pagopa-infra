@@ -443,11 +443,8 @@ module "shared_pdf_engine_app_service_java" {
   client_cert_enabled = false
   always_on           = var.app_service_pdf_engine_always_on
   # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
-  docker_image             = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
-  docker_image_tag         = "latest"
-  docker_registry_url      = "https://${data.azurerm_container_registry.container_registry.login_server}"
-  docker_registry_username = data.azurerm_container_registry.container_registry.admin_username
-  docker_registry_password = data.azurerm_container_registry.container_registry.admin_password
+  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
+  docker_image_tag = "latest"
 
   health_check_path            = "/info"
   health_check_maxpingfailures = 10
