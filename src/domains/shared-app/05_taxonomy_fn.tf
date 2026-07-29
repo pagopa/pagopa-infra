@@ -94,6 +94,8 @@ module "taxonomy_function" {
 
   app_service_plan_type = "internal"
 
+  minimum_tls_version = "1.2"
+
   tags = module.tag_config.tags
 }
 

@@ -38,10 +38,11 @@ module "taxonomy_function_snet" {
 module "shared_pdf_engine_app_service_snet" {
   source = "./.terraform/modules/__v4__/subnet"
 
-  name                 = format("%s-pdf-engine-snet", local.project)
-  address_prefixes     = var.cidr_subnet_pdf_engine_app_service
-  resource_group_name  = local.vnet_resource_group_name
-  virtual_network_name = local.vnet_name
+  name                              = format("%s-pdf-engine-snet", local.project)
+  address_prefixes                  = var.cidr_subnet_pdf_engine_app_service
+  resource_group_name               = local.vnet_resource_group_name
+  virtual_network_name              = local.vnet_name
+  private_endpoint_network_policies = "Enabled"
 
   delegation = {
     name = "default"
