@@ -212,7 +212,7 @@
 | <a name="input_taxonomy_function"></a> [taxonomy\_function](#input\_taxonomy\_function) | Taxonomy function | <pre>object({<br/>    always_on                    = bool<br/>    kind                         = string<br/>    sku_size                     = string<br/>    maximum_elastic_worker_count = number<br/>  })</pre> | n/a | yes |
 | <a name="input_taxonomy_function_app_image_tag"></a> [taxonomy\_function\_app\_image\_tag](#input\_taxonomy\_function\_app\_image\_tag) | Taxonomy function app docker image tag. Defaults to 'latest' | `string` | `"latest"` | no |
 | <a name="input_taxonomy_function_autoscale"></a> [taxonomy\_function\_autoscale](#input\_taxonomy\_function\_autoscale) | Taxonomy function autoscaling parameters | <pre>object({<br/>    default = number<br/>    minimum = number<br/>    maximum = number<br/>  })</pre> | n/a | yes |
-| <a name="input_taxonomy_function_network_policies_enabled"></a> [taxonomy\_function\_network\_policies\_enabled](#input\_taxonomy\_function\_network\_policies\_enabled) | Network policies enabled | `bool` | `false` | no |
+| <a name="input_taxonomy_function_network_policies"></a> [taxonomy\_function\_network\_policies](#input\_taxonomy\_function\_network\_policies) | Network policies enabled | `string` | `"Disabled"` | no |
 | <a name="input_taxonomy_function_subnet"></a> [taxonomy\_function\_subnet](#input\_taxonomy\_function\_subnet) | Address prefixes subnet | `list(string)` | `null` | no |
 
 ## Outputs

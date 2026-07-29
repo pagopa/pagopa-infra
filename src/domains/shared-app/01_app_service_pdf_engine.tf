@@ -57,7 +57,8 @@ module "shared_pdf_engine_app_service" {
   docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
   docker_image_tag = "latest"
 
-  health_check_path = "/info"
+  health_check_path            = "/info"
+  health_check_maxpingfailures = 2
 
   app_settings = local.shared_pdf_engine_app_settings
 
@@ -441,7 +442,8 @@ module "shared_pdf_engine_app_service_java" {
   docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
   docker_image_tag = "latest"
 
-  health_check_path = "/info"
+  health_check_path            = "/info"
+  health_check_maxpingfailures = 2
 
   app_settings = local.shared_pdf_engine_app_settings_java
 

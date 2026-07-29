@@ -19,7 +19,7 @@ module "taxonomy_function_snet" {
   address_prefixes                  = var.taxonomy_function_subnet
   resource_group_name               = local.vnet_resource_group_name
   virtual_network_name              = data.azurerm_virtual_network.vnet.name
-  private_endpoint_network_policies = var.taxonomy_function_network_policies_enabled
+  private_endpoint_network_policies = var.taxonomy_function_network_policies
 
   service_endpoints = [
     "Microsoft.Web",
