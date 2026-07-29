@@ -130,6 +130,8 @@ module "taxonomy_function_slot_staging" {
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
 
+  minimum_tls_version = "1.2"
+
   tags = module.tag_config.tags
 }
 
