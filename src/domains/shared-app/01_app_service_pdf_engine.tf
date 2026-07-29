@@ -111,7 +111,7 @@ module "shared_pdf_engine_slot_staging" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_engine_autoscale" {
-  count = var.env_short != "d" ? 1 : 0
+  count = var.env_short == "p" ? 1 : 0
 
   name                = format("%s-autoscale-pdf-engine", local.project)
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
@@ -512,7 +512,7 @@ module "shared_pdf_engine_java_slot_staging" {
 
 
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_engine_java_autoscale" {
-  count = var.env_short != "d" ? 1 : 0
+  count = var.env_short == "p" ? 1 : 0
 
   name                = format("%s-autoscale-pdf-engine-java", local.project)
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
