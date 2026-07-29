@@ -39,7 +39,7 @@ data "azurerm_container_registry" "container_registry" {
 
 module "shared_pdf_engine_app_service" {
   count  = 1
-  source = "./.terraform/modules/__v3__/app_service"
+  source = "./.terraform/modules/__v4__/app_service"
 
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
@@ -74,16 +74,13 @@ module "shared_pdf_engine_app_service" {
 module "shared_pdf_engine_slot_staging" {
   count = var.env_short != "d" ? 1 : 0
 
-  source = "./.terraform/modules/__v3__/app_service_slot"
+  source = "./.terraform/modules/__v4__/app_service_slot"
 
   # App service plan
-  app_service_id   = module.shared_pdf_engine_app_service[0].id
-  app_service_name = module.shared_pdf_engine_app_service[0].name
+  app_service_id = module.shared_pdf_engine_app_service[0].id
 
   # App service
-  name                = "staging"
-  resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
-  location            = var.location
+  name = "staging"
 
   always_on         = true
   docker_image      = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
@@ -426,7 +423,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
 # java
 ################
 module "shared_pdf_engine_app_service_java" {
-  source              = "./.terraform/modules/__v3__/app_service"
+  source              = "./.terraform/modules/__v4__/app_service"
   count               = 1
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
@@ -461,17 +458,14 @@ module "shared_pdf_engine_app_service_java" {
 module "shared_pdf_engine_java_slot_staging" {
   count = var.env_short != "d" ? 1 : 0
 
-  source = "./.terraform/modules/__v3__/app_service_slot"
+  source = "./.terraform/modules/__v4__/app_service_slot"
 
   # App service plan
   # app_service_plan_id = module.shared_pdf_engine_app_service[0].plan_id
-  app_service_id   = module.shared_pdf_engine_app_service_java[0].id
-  app_service_name = module.shared_pdf_engine_app_service_java[0].name
+  app_service_id = module.shared_pdf_engine_app_service_java[0].id
 
   # App service
-  name                = "staging"
-  resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
-  location            = var.location
+  name = "staging"
 
   always_on = true
   # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")

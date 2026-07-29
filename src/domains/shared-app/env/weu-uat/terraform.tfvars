@@ -48,3 +48,5 @@ pdv_api_base_path    = "https://api.uat.tokenizer.pdv.pagopa.it/tokenizer/v1"
 enabled_features = {
   node_forwarder_ha = false
 }
+
+pagopa_shared_toolbox_enabled = false
