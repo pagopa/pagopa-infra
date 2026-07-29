@@ -1,8 +1,6 @@
-prefix         = "pagopa"
-env_short      = "d"
-env            = "dev"
-location       = "italynorth"
-location_short = "itn"
+env_short       = "d"
+env             = "dev"
+location_short  = "itn"
 location_string = "Italy North"
 
 
