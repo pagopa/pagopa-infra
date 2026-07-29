@@ -62,3 +62,7 @@ io_backend_base_path = "https://api-app.io.pagopa.it"
 pdv_api_base_path    = "https://api.tokenizer.pdv.pagopa.it/tokenizer/v1"
 
 function_app_ip_restriction_default_action = "Deny"
+
+enabled_features = {
+  node_forwarder_ha = true
+}

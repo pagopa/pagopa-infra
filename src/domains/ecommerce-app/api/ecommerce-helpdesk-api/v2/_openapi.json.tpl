@@ -355,6 +355,66 @@
           "userFiscalCode": "MRGHRN97L02C469W"
         }
       },
+      "SearchTransactionRequestRRN": {
+        "type": "object",
+        "description": "Search transaction by RRN (retrieve reference number)",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "rrn": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "rrn"
+        ],
+        "example": {
+          "type": "RRN",
+          "rrn": "rrn"
+        }
+      },
+      "SearchTransactionRequestEndToEndId": {
+        "type": "object",
+        "description": "Search transaction by payment gateway end to end id",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "endToEndId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "endToEndId"
+        ],
+        "example": {
+          "type": "END_TO_END_ID",
+          "endToEndId": "endToEndId"
+        }
+      },
+      "SearchTransactionRequestAuthorizationRequestId": {
+        "type": "object",
+        "description": "Search transaction by payment gateway authorization request id",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "authorizationRequestId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "authorizationRequestId"
+        ],
+        "example": {
+          "type": "AUTHORIZATION_REQUEST_ID",
+          "authorizationRequestId": "authorizationRequestId"
+        }
+      },
       "SearchTransactionRequestEmail": {
         "type": "object",
         "description": "Search transaction by user fiscal code",
@@ -765,6 +825,15 @@
           },
           {
             "$ref": "#/components/schemas/SearchTransactionRequestFiscalCode"
+          },
+          {
+            "$ref": "#/components/schemas/SearchTransactionRequestRRN"
+          },
+          {
+            "$ref": "#/components/schemas/SearchTransactionRequestAuthorizationRequestId"
+          },
+          {
+            "$ref": "#/components/schemas/SearchTransactionRequestEndToEndId"
           }
         ],
         "discriminator": {
@@ -774,7 +843,10 @@
             "PAYMENT_TOKEN": "#/components/schemas/SearchTransactionRequestPaymentToken",
             "TRANSACTION_ID": "#/components/schemas/SearchTransactionRequestTransactionId",
             "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail",
-            "USER_FISCAL_CODE": "#/components/schemas/SearchTransactionRequestFiscalCode"
+            "USER_FISCAL_CODE": "#/components/schemas/SearchTransactionRequestFiscalCode",
+            "RRN": "#/components/schemas/SearchTransactionRequestRRN",
+            "AUTHORIZATION_REQUEST_ID": "#/components/schemas/SearchTransactionRequestAuthorizationRequestId",
+            "END_TO_END_ID": "#/components/schemas/SearchTransactionRequestEndToEndId"
           }
         }
       },
@@ -1321,6 +1393,15 @@
                 },
                 {
                   "$ref": "#/components/schemas/SearchTransactionRequestFiscalCode"
+                },
+                {
+                  "$ref": "#/components/schemas/SearchTransactionRequestRRN"
+                },
+                {
+                  "$ref": "#/components/schemas/SearchTransactionRequestAuthorizationRequestId"
+                },
+                {
+                  "$ref": "#/components/schemas/SearchTransactionRequestEndToEndId"
                 }
               ],
               "discriminator": {
@@ -1330,7 +1411,10 @@
                   "PAYMENT_TOKEN": "#/components/schemas/SearchTransactionRequestPaymentToken",
                   "TRANSACTION_ID": "#/components/schemas/SearchTransactionRequestTransactionId",
                   "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail",
-                  "USER_FISCAL_CODE": "#/components/schemas/SearchTransactionRequestUserFiscalCode"
+                  "USER_FISCAL_CODE": "#/components/schemas/SearchTransactionRequestUserFiscalCode",
+                  "RRN": "#/components/schemas/SearchTransactionRequestRRN",
+                  "AUTHORIZATION_REQUEST_ID": "#/components/schemas/SearchTransactionRequestAuthorizationRequestId",
+                  "END_TO_END_ID": "#/components/schemas/SearchTransactionRequestEndToEndId"
                 }
               }
             },
@@ -1363,6 +1447,24 @@
                 "value": {
                   "type": "USER_FISCAL_CODE",
                   "userFiscalCode": "user_fiscal_code"
+                }
+              },
+              "search by authorization request id (NPG order id or redirect psp transactionId)": {
+                "value": {
+                  "type": "AUTHORIZATION_REQUEST_ID",
+                  "authorizationRequestId": "authId"
+                }
+              },
+              "search by RRN": {
+                "value": {
+                  "type": "RRN",
+                  "rrn": "rrn"
+                }
+              },
+              "search by user end to end id (NPG payment gateway specific)": {
+                "value": {
+                  "type": "END_TO_END_ID",
+                  "endToEndId": "endToEndId"
                 }
               }
             }
@@ -1432,6 +1534,24 @@
                 "value": {
                   "type": "TRANSACTION_ID",
                   "transactionId": "transactionId"
+                }
+              },
+              "search by authorization request id (NPG order id or redirect psp transactionId)": {
+                "value": {
+                  "type": "AUTHORIZATION_REQUEST_ID",
+                  "authorizationRequestId": "authId"
+                }
+              },
+              "search by RRN": {
+                "value": {
+                  "type": "RRN",
+                  "rrn": "rrn"
+                }
+              },
+              "search by user end to end id (NPG payment gateway specific)": {
+                "value": {
+                  "type": "END_TO_END_ID",
+                  "endToEndId": "endToEndId"
                 }
               }
             }

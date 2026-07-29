@@ -110,30 +110,32 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
   target_resource_id  = module.shared_pdf_engine_app_service[0].plan_id
   enabled             = var.app_service_pdf_engine_autoscale_enabled
 
+  # ==========================================
+  # 1. PROFILO DI DEFAULT (Applicato nei weekend e come fallback)
+  # ==========================================
   profile {
     name = "default"
 
     capacity {
       default = var.env_short == "p" ? 3 : 1
       minimum = var.env_short == "p" ? 3 : 1
-      maximum = var.env_short == "p" ? 12 : 1
+      maximum = var.env_short == "p" ? 21 : 1
     }
 
-    # Requests
+    # -- REGOLE METRICHE (REQUESTS) --
     rule {
       metric_trigger {
         metric_name              = "Requests"
         metric_resource_id       = module.shared_pdf_engine_app_service[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
-        statistic                = "Average"
+        statistic                = "Sum"
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 1500
+        threshold                = 400
         divide_by_instance_count = false
       }
-
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
@@ -148,26 +150,22 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         metric_resource_id       = module.shared_pdf_engine_app_service[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
-        statistic                = "Average"
+        statistic                = "Sum"
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 1000
+        threshold                = 400
         divide_by_instance_count = false
       }
-
       scale_action {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT10M"
       }
     }
 
-    # HttpResponseTime
-
-    # Supported metrics for Microsoft.Web/sites
-    # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
+    # -- REGOLE METRICHE (HTTP RESPONSE TIME) --
     rule {
       metric_trigger {
         metric_name              = "HttpResponseTime"
@@ -181,7 +179,6 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         threshold                = 3 #sec
         divide_by_instance_count = false
       }
-
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
@@ -203,19 +200,15 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         threshold                = 2 #sec
         divide_by_instance_count = false
       }
-
       scale_action {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT10M"
       }
     }
 
-    # CpuPercentage
-
-    # Supported metrics for Microsoft.Web/sites
-    # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
+    # -- REGOLE METRICHE (CPU PERCENTAGE) --
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
@@ -229,7 +222,6 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         threshold                = 75
         divide_by_instance_count = false
       }
-
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
@@ -248,22 +240,187 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 30 #sec
+        threshold                = 30
         divide_by_instance_count = false
       }
-
       scale_action {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT10M"
+      }
+    }
+  }
+
+  # ==========================================
+  # 2. PROFILO PEAK HOURS (Orari di punta lavorativi: fisso a 20)
+  # ==========================================
+  profile {
+    name = "peak-hours"
+
+    capacity {
+      default = 20
+      minimum = 20
+      maximum = 20
+    }
+
+    # Niente regole qui: la capacità è fissa a 20.
+
+    recurrence {
+      timezone = "Romance Standard Time"
+      days     = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+      hours    = [7] # Si attiva alle 07:00
+      minutes  = [0]
+    }
+  }
+
+  # ==========================================
+  # 3. PROFILO OFF-PEAK (Notte: torna dinamico)
+  # ==========================================
+  profile {
+    name = "off-peak"
+
+    capacity {
+      default = var.env_short == "p" ? 3 : 1
+      minimum = var.env_short == "p" ? 3 : 1
+      maximum = var.env_short == "p" ? 21 : 1
+    }
+
+    # -- DUPLICATO DELLE REGOLE METRICHE PER LA NOTTE --
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.shared_pdf_engine_app_service[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Sum"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 400
+        divide_by_instance_count = false
+      }
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
       }
     }
 
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.shared_pdf_engine_app_service[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Sum"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 400
+        divide_by_instance_count = false
+      }
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT10M"
+      }
+    }
 
+    rule {
+      metric_trigger {
+        metric_name              = "HttpResponseTime"
+        metric_resource_id       = module.shared_pdf_engine_app_service[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 3
+        divide_by_instance_count = false
+      }
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "HttpResponseTime"
+        metric_resource_id       = module.shared_pdf_engine_app_service[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 2
+        divide_by_instance_count = false
+      }
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT10M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.shared_pdf_engine_app_service[0].plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 75
+        divide_by_instance_count = false
+      }
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.shared_pdf_engine_app_service[0].plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 30
+        divide_by_instance_count = false
+      }
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT10M"
+      }
+    }
+
+    recurrence {
+      timezone = "Romance Standard Time"
+      days     = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+      hours    = [20] # Si attiva alle 20:00 per spegnere il peak-hours
+      minutes  = [0]
+    }
   }
 }
-
 
 ################
 # java
@@ -344,13 +501,16 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
   target_resource_id  = module.shared_pdf_engine_app_service_java[0].plan_id
   enabled             = var.app_service_pdf_engine_autoscale_enabled
 
+  # ==========================================
+  # 1. PROFILO DI DEFAULT (Applicato nei weekend e come fallback)
+  # ==========================================
   profile {
     name = "default"
 
     capacity {
       default = var.env_short == "p" ? 3 : 1
       minimum = var.env_short == "p" ? 3 : 1
-      maximum = var.env_short == "p" ? 24 : 1
+      maximum = var.env_short == "p" ? 21 : 1
     }
 
     # Requests
@@ -360,11 +520,11 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         metric_resource_id       = module.shared_pdf_engine_app_service_java[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
-        statistic                = "Average"
+        statistic                = "Sum"
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 1500
+        threshold                = 400
         divide_by_instance_count = false
       }
 
@@ -382,11 +542,11 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         metric_resource_id       = module.shared_pdf_engine_app_service_java[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
-        statistic                = "Average"
+        statistic                = "Sum"
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 1000
+        threshold                = 400
         divide_by_instance_count = false
       }
 
@@ -394,14 +554,11 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT10M"
       }
     }
 
     # HttpResponseTime
-
-    # Supported metrics for Microsoft.Web/sites
-    # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
     rule {
       metric_trigger {
         metric_name              = "HttpResponseTime"
@@ -442,14 +599,11 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT10M"
       }
     }
 
     # CpuPercentage
-
-    # Supported metrics for Microsoft.Web/sites
-    # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
@@ -490,9 +644,185 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT10M"
       }
     }
   }
-}
 
+  # ==========================================
+  # 2. PROFILO PEAK HOURS (Orari di punta lavorativi: fisso a 20)
+  # ==========================================
+  profile {
+    name = "peak-hours"
+
+    capacity {
+      default = 20
+      minimum = 20
+      maximum = 20
+    }
+
+    recurrence {
+      timezone = "Romance Standard Time"
+      days     = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+      hours    = [7] # Si attiva alle 07:00
+      minutes  = [0]
+    }
+  }
+
+  # ==========================================
+  # 3. PROFILO OFF-PEAK (Notte: torna dinamico)
+  # ==========================================
+  profile {
+    name = "off-peak"
+
+    capacity {
+      default = var.env_short == "p" ? 3 : 1
+      minimum = var.env_short == "p" ? 3 : 1
+      maximum = var.env_short == "p" ? 21 : 1
+    }
+
+    # -- DUPLICATO DELLE REGOLE METRICHE PER LA NOTTE --
+
+    # Requests
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.shared_pdf_engine_app_service_java[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Sum"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 400
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.shared_pdf_engine_app_service_java[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Sum"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 400
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT10M"
+      }
+    }
+
+    # HttpResponseTime
+    rule {
+      metric_trigger {
+        metric_name              = "HttpResponseTime"
+        metric_resource_id       = module.shared_pdf_engine_app_service_java[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 3 #sec
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "HttpResponseTime"
+        metric_resource_id       = module.shared_pdf_engine_app_service_java[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 2 #sec
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT10M"
+      }
+    }
+
+    # CpuPercentage
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.shared_pdf_engine_app_service_java[0].plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 75
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.shared_pdf_engine_app_service_java[0].plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 30 #sec
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT10M"
+      }
+    }
+
+    recurrence {
+      timezone = "Romance Standard Time"
+      days     = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+      hours    = [20] # Si attiva alle 20:00 per spegnere il peak-hours
+      minutes  = [0]
+    }
+  }
+}
