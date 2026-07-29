@@ -50,7 +50,7 @@
 | <a name="module_apim_technical_support_product"></a> [apim\_technical\_support\_product](#module\_apim\_technical\_support\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
 | <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v4__/gh_runner_container_app_job_domain_setup | n/a |
 | <a name="module_gh_runner_job_tools"></a> [gh\_runner\_job\_tools](#module\_gh\_runner\_job\_tools) | ./.terraform/modules/__v4__/gh_runner_container_app_job_domain_setup | n/a |
-| <a name="module_pagopa_shared_toolbox_cdn"></a> [pagopa\_shared\_toolbox\_cdn](#module\_pagopa\_shared\_toolbox\_cdn) | ./.terraform/modules/__v4__/cdn | n/a |
+| <a name="module_pagopa_shared_toolbox_cdn"></a> [pagopa\_shared\_toolbox\_cdn](#module\_pagopa\_shared\_toolbox\_cdn) | ./.terraform/modules/__v4__/cdn_frontdoor | n/a |
 | <a name="module_shared_pdf_engine_app_service"></a> [shared\_pdf\_engine\_app\_service](#module\_shared\_pdf\_engine\_app\_service) | ./.terraform/modules/__v4__/app_service | n/a |
 | <a name="module_shared_pdf_engine_app_service_java"></a> [shared\_pdf\_engine\_app\_service\_java](#module\_shared\_pdf\_engine\_app\_service\_java) | ./.terraform/modules/__v4__/app_service | n/a |
 | <a name="module_shared_pdf_engine_app_service_snet"></a> [shared\_pdf\_engine\_app\_service\_snet](#module\_shared\_pdf\_engine\_app\_service\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
