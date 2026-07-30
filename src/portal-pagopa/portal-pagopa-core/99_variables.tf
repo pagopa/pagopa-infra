@@ -66,12 +66,6 @@ variable "allow_azure_services_to_postgres" {
   default     = false
 }
 
-variable "postgres_dns_registration_enabled" {
-  type        = bool
-  description = "If true, creates private DNS registration record for PostgreSQL"
-  default     = true
-}
-
 variable "pgres_flex_params" {
   type = object({
     idh_resource                           = optional(string, "pgflex2")
@@ -108,6 +102,7 @@ variable "database_url_secret_name" {
 variable "app_secret_names" {
   type = map(string)
   default = {
+    AUTH_SECRET           = "portal-auth-secret"
     AUTH_GOOGLE_ID        = "portal-auth-google-id"
     AUTH_GOOGLE_SECRET    = "portal-auth-google-secret"
     BUDGET_AUTH_SECRET    = "portal-budget-auth-secret"

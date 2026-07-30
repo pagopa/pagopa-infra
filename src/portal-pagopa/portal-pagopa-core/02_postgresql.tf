@@ -48,10 +48,10 @@ module "postgres_flexible_server" {
     }
   ] : []
 
-  private_dns_registration = var.postgres_dns_registration_enabled
-  private_dns_zone_name    = "${var.env_short}.internal.postgresql.pagopa.it"
-  private_dns_zone_rg_name = "${local.product}-vnet-rg"
-  private_dns_record_cname = "portal-db"
+  private_dns_registration = false
+  # private_dns_zone_name    = "${var.env_short}.internal.postgresql.pagopa.it"
+  # private_dns_zone_rg_name = "${local.product}-vnet-rg"
+  # private_dns_record_cname = "portal-db"
 
 
   tags = module.tag_config.tags
@@ -66,10 +66,10 @@ resource "azurerm_key_vault_secret" "portal_database_url" {
   key_vault_id = data.azurerm_key_vault.portal.id
   name         = var.database_url_secret_name
   value = format(
-    "postgresql://%s:%s@portal-db.%s.internal.postgresql.pagopa.it:%s/%s?sslmode=require",
+    "postgresql://%s:%s@%s:%s/%s?sslmode=require",
     data.azurerm_key_vault_secret.pgres_flex_admin_login.value,
     urlencode(data.azurerm_key_vault_secret.pgres_flex_admin_pwd.value),
-    var.env_short,
+    module.postgres_flexible_server.fqdn,
     module.postgres_flexible_server.connection_port,
     var.postgres_database_name
   )

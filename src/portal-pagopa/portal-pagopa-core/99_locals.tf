@@ -28,6 +28,7 @@ locals {
 
   app_settings_plain = {
     NEXT_PUBLIC_APP_URL = var.next_public_app_url
+    AUTH_URL            = var.next_public_app_url
     EMAIL_FROM          = var.email_from
     PLAYWRIGHT_TEST     = tostring(var.playwright_test)
     WEBSITES_PORT       = tostring(var.websites_port)
