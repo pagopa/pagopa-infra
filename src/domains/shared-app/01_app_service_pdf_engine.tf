@@ -262,15 +262,15 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
   }
 
   # ==========================================
-  # 2. PROFILO PEAK HOURS (Orari di punta lavorativi: fisso a 20)
+  # 2. PROFILO PEAK HOURS (Orari di punta lavorativi: fisso a 24)
   # ==========================================
   profile {
     name = "peak-hours"
 
     capacity {
-      default = 20
-      minimum = 20
-      maximum = 20
+      default = 24
+      minimum = 24
+      maximum = 24
     }
 
     # Niente regole qui: la capacità è fissa a 20.
@@ -669,15 +669,15 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
   }
 
   # ==========================================
-  # 2. PROFILO PEAK HOURS (Orari di punta lavorativi: fisso a 20)
+  # 2. PROFILO PEAK HOURS (Orari di punta lavorativi: fisso a 24)
   # ==========================================
   profile {
     name = "peak-hours"
 
     capacity {
-      default = 20
-      minimum = 20
-      maximum = 20
+      default = 24
+      minimum = 24
+      maximum = 24
     }
 
     recurrence {
