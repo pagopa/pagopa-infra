@@ -123,9 +123,6 @@ cosmos_gpd_payments_db_params = {
     throughput = 2000
   }
 }
-
-
-enable_iac_pipeline                                            = true
 geo_replica_enabled                                            = true
 location_replica                                               = "italynorth"
 location_replica_short                                         = "itn"

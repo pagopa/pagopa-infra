@@ -58,10 +58,4 @@ variable "input_file" {
   description = "secret json file"
 }
 
-variable "enable_iac_pipeline" {
-  type        = bool
-  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
-  default     = false
-}
-
 
