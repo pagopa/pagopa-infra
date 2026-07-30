@@ -75,7 +75,6 @@
 | <a name="module_nodo_verifyko_to_tablestorage_function"></a> [nodo\_verifyko\_to\_tablestorage\_function](#module\_nodo\_verifyko\_to\_tablestorage\_function) | ./.terraform/modules/__v3__/function_app | n/a |
 | <a name="module_nodo_verifyko_to_tablestorage_function_slot_staging"></a> [nodo\_verifyko\_to\_tablestorage\_function\_slot\_staging](#module\_nodo\_verifyko\_to\_tablestorage\_function\_slot\_staging) | ./.terraform/modules/__v3__/function_app_slot | n/a |
 | <a name="module_nodo_verifyko_to_tablestorage_function_snet"></a> [nodo\_verifyko\_to\_tablestorage\_function\_snet](#module\_nodo\_verifyko\_to\_tablestorage\_function\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
-| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | ./.terraform/modules/__v3__/kubernetes_pod_identity | n/a |
 | <a name="module_route_table_peering_nexi"></a> [route\_table\_peering\_nexi](#module\_route\_table\_peering\_nexi) | ./.terraform/modules/__v3__/route_table | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
