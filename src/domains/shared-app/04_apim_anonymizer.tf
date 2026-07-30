@@ -9,7 +9,7 @@ locals {
 }
 
 module "apim_anonymizer_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "anonymizer"
   display_name = local.apim_anonymizer_api.display_name
