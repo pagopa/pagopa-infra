@@ -61,7 +61,7 @@ module "shared_pdf_engine_app_service" {
   docker_registry_password = data.azurerm_container_registry.container_registry.admin_password
 
   health_check_path            = "/info"
-  health_check_maxpingfailures = 10
+  health_check_maxpingfailures = var.env_short != "p" ? 10 : 2
 
   minimum_tls_version = "1.2"
 
@@ -95,7 +95,7 @@ module "shared_pdf_engine_slot_staging" {
   docker_registry_password = data.azurerm_container_registry.container_registry.admin_password
 
   health_check_path            = "/info"
-  health_check_maxpingfailures = 10
+  health_check_maxpingfailures = var.env_short != "p" ? 10 : 2
 
   minimum_tls_version = "1.2"
 
@@ -457,7 +457,7 @@ module "shared_pdf_engine_app_service_java" {
   docker_registry_password = data.azurerm_container_registry.container_registry.admin_password
 
   health_check_path            = "/info"
-  health_check_maxpingfailures = 10
+  health_check_maxpingfailures = var.env_short != "p" ? 10 : 2
 
   minimum_tls_version = "1.2"
 
@@ -494,7 +494,7 @@ module "shared_pdf_engine_java_slot_staging" {
   docker_registry_password = data.azurerm_container_registry.container_registry.admin_password
 
   health_check_path            = "/info"
-  health_check_maxpingfailures = 10
+  health_check_maxpingfailures = var.env_short != "p" ? 10 : 2
 
   minimum_tls_version = "1.2"
 
