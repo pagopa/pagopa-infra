@@ -29,11 +29,11 @@ locals {
           transforms       = null
         },
       ]
-      url_rewrite_action = {
+      url_rewrite_actions = [{
         source_pattern          = "/${spa}/"
         destination             = "/${spa}/index.html"
         preserve_unmatched_path = false
-      }
+      }]
     }
   ]
   cors = {
@@ -50,30 +50,31 @@ module "pagopa_shared_toolbox_cdn" {
 
   resource_group_name   = azurerm_resource_group.pagopa_shared_toolbox_rg[0].name
   location              = var.location
-  cdn_prefix_name       = local.project
+  cdn_prefix_name       = "${local.product}-shared-toolbox"
   https_rewrite_enabled = true
 
   storage_account_replication_type = var.cdn_storage_account_replication_type
 
   storage_account_index_document     = "index.html"
   storage_account_error_404_document = "not_found.html"
+  storage_account_name               = "${local.product}sharedtoolboxsa"
 
   keyvault_id = data.azurerm_key_vault.kv.id
   tenant_id   = data.azurerm_client_config.current.tenant_id
 
-  querystring_caching_behaviour = "BypassCaching"
+  querystring_caching_behaviour = "IgnoreQueryString"
 
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
 
   global_delivery_rules = [
     {
-      order                         = 1
-      cache_expiration_action       = []
-      cache_key_query_string_action = []
-      modify_request_header_action  = []
+      order                          = 1
+      cache_expiration_actions       = []
+      cache_key_query_string_actions = []
+      modify_request_header_actions  = []
 
       # HSTS
-      modify_response_header_action = [
+      modify_response_header_actions = [
         {
           action = "Overwrite"
           name   = "Strict-Transport-Security"
@@ -117,11 +118,11 @@ module "pagopa_shared_toolbox_cdn" {
         transforms       = null
       }
     ]
-    url_rewrite_action = {
+    url_rewrite_actions = [{
       source_pattern          = "/"
       destination             = "/ui/index.html"
       preserve_unmatched_path = false
-    }
+    }]
   }], local.single_page_applications)
 
   delivery_custom_rules = [
@@ -240,7 +241,7 @@ module "pagopa_shared_toolbox_cdn" {
 
   custom_domains = [
     {
-      domain_name             = "api.${var.cname_record_name}.${var.apim_dns_zone_prefix}.${var.external_domain}"
+      domain_name             = "${var.cname_record_name}.${var.apim_dns_zone_prefix}.${var.external_domain}"
       dns_name                = data.azurerm_dns_zone.public.name
       dns_resource_group_name = data.azurerm_dns_zone.public.resource_group_name
       ttl                     = 3600
