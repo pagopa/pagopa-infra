@@ -615,6 +615,36 @@ resource "azurerm_key_vault_secret" "ehub_rtp_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-rtp-integration-cdc-tx" {
+  name                = "cdc-filtered-tx"
+  namespace_name      = "${local.project_itn}-rtp-integration-evh"
+  eventhub_name       = "cdc-filtered"
+  resource_group_name = azurerm_resource_group.rtp_rg.name
+}
+
+resource "azurerm_key_vault_secret" "ehub_rtp_cdc_tx_connection_string" {
+  name         = format("ehub-%s-tx-rtp-cdc-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-rtp-integration-cdc-tx.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-rtp-integration-cdc-rx" {
+  name                = "cdc-filtered-rx"
+  namespace_name      = "${local.project_itn}-rtp-integration-evh"
+  eventhub_name       = "cdc-filtered"
+  resource_group_name = azurerm_resource_group.rtp_rg.name
+}
+
+resource "azurerm_key_vault_secret" "ehub_rtp_cdc_rx_connection_string" {
+  name         = format("ehub-%s-rx-rtp-cdc-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-rtp-integration-cdc-rx.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_eventhub_authorization_rule" "pagopa-evh-rtp-integration-test" {
   count = var.env_short != "p" ? 1 : 0
 
