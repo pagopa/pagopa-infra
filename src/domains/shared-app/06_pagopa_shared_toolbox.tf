@@ -13,21 +13,21 @@ locals {
     {
       name  = replace("SPA-${spa}", "-", "")
       order = i + 3 // +3 required because the order start from 1: 1 is reserved for default application redirect; 2 is reserved for the https rewrite;
-      conditions = [
+      url_path_conditions = [
         {
-          condition_type   = "url_path_condition"
           operator         = "BeginsWith"
           match_values     = ["/${spa}/"]
           negate_condition = false
-          transforms       = null
-        },
+          transforms       = []
+        }
+      ]
+      url_file_extension_conditions = [
         {
-          condition_type   = "url_file_extension_condition"
           operator         = "LessThanOrEqual"
           match_values     = ["0"]
           negate_condition = false
-          transforms       = null
-        },
+          transforms       = []
+        }
       ]
       url_rewrite_actions = [{
         source_pattern          = "/${spa}/"
@@ -109,9 +109,8 @@ module "pagopa_shared_toolbox_cdn" {
   delivery_rule_rewrites = concat([{
     name  = "RewriteRules"
     order = 2
-    conditions = [
+    url_path_conditions = [
       {
-        condition_type   = "url_path_condition"
         operator         = "Equal"
         match_values     = ["/"]
         negate_condition = false
