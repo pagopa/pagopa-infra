@@ -18,7 +18,7 @@ locals {
 
 //Search Transactions Webview
 module "apim_search_transactions_webview" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "searchtransactionswebview"
   display_name = local.apim_searchtransactionswebview_api.display_name
@@ -53,7 +53,7 @@ resource "azurerm_api_management_api_version_set" "searchtransactions_webview_ap
 ##############
 
 module "apim_api_search_transactions_webview_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-searchtransactions-webview-api", local.project)
   api_management_name   = local.pagopa_apim_name
