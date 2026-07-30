@@ -18,7 +18,7 @@ locals {
 
 //Search Transactions service
 module "apim_search_transactions_service" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "searchtransactions"
   display_name = "Search payment transactions"
@@ -54,7 +54,7 @@ resource "azurerm_api_management_api_version_set" "searchtransactions_api" {
 ##############
 
 module "apim_api_search_transactions_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-searchtransactions-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
