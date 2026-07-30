@@ -331,12 +331,6 @@ variable "cosmos_gpd_payments_db_params" {
 }
 
 
-variable "enable_iac_pipeline" {
-  type        = bool
-  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
-  default     = false
-}
-
 
 ################
 #GPD-SFTP-START#

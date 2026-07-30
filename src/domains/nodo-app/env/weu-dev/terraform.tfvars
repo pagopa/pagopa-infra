@@ -21,7 +21,7 @@ apim_dns_zone_prefix     = "dev.platform"
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
 tls_cert_check_helm = {
-  chart_version = "2.0.0"
+  chart_version = "7.6.0"
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
   image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
 }
@@ -183,3 +183,28 @@ wfesp_dismantling = {
   channel_list    = "13212880150_90"
   wfesp_fixed_url = "https://wfesp.pagopa.gov.it/redirect/wpl05/get?idSession="
 }
+
+apim_nodo_decoupler_enable      = true
+apim_nodo_auth_decoupler_enable = true
+
+app_gateway_allowed_paths_pagopa_onprem_only = {
+  paths = [
+    "/allowed/*",
+  ]
+  ips = [
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+  ]
+}
+
+apim_logger_resource_id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/loggers/pagopa-d-apim-logger"

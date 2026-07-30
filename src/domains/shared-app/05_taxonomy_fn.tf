@@ -41,7 +41,7 @@ locals {
 
 ## Function taxonomy
 module "taxonomy_function" {
-  source = "./.terraform/modules/__v3__/function_app"
+  source = "./.terraform/modules/__v4__/function_app"
 
   resource_group_name = data.azurerm_resource_group.taxonomy_rg.name
   name                = "${local.project}-${local.taxonomy_label}-fn"
@@ -92,24 +92,27 @@ module "taxonomy_function" {
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
 
+  app_service_plan_type = "internal"
+
+  minimum_tls_version = "1.2"
+
   tags = module.tag_config.tags
 }
 
 module "taxonomy_function_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "./.terraform/modules/__v3__/function_app_slot"
+  source = "./.terraform/modules/__v4__/function_app_slot"
 
-  app_service_plan_id                      = module.taxonomy_function.app_service_plan_id
   function_app_id                          = module.taxonomy_function.id
   storage_account_name                     = module.taxonomy_function.storage_account_name
   storage_account_access_key               = module.taxonomy_function.storage_account.primary_access_key
   name                                     = "staging"
   resource_group_name                      = data.azurerm_resource_group.taxonomy_rg.name
-  location                                 = var.location
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   always_on                                = var.taxonomy_function.always_on
   health_check_path                        = "/info"
+  health_check_maxpingfailures             = var.env_short != "p" ? 10 : 2
   runtime_version                          = "~4"
   subnet_id                                = module.taxonomy_function_snet.id
 
@@ -126,6 +129,8 @@ module "taxonomy_function_slot_staging" {
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
+
+  minimum_tls_version = "1.2"
 
   tags = module.tag_config.tags
 }

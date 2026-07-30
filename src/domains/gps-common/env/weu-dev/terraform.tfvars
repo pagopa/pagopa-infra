@@ -117,9 +117,6 @@ cosmos_gpd_payments_db_params = {
     throughput = 1000
   }
 }
-
-
-enable_iac_pipeline                                            = true
 gpd_sftp_sa_replication_type                                   = "LRS"
 gpd_sftp_sa_access_tier                                        = "Hot"
 gpd_sftp_cidr_subnet_gpd_storage_account                       = ["10.1.152.16/29"]
