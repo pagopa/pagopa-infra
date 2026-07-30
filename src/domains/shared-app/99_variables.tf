@@ -147,10 +147,10 @@ variable "taxonomy_function_subnet" {
   default     = null
 }
 
-variable "taxonomy_function_network_policies_enabled" {
-  type        = bool
+variable "taxonomy_function_network_policies" {
+  type        = string
   description = "Network policies enabled"
-  default     = false
+  default     = "Disabled"
 }
 
 variable "taxonomy_function" {
