@@ -1,29 +1,28 @@
-prefix                 = "pagopa"
-env_short              = "p"
-env                    = "prod"
-domain                 = "gps"
-location               = "westeurope"
-location_short         = "weu"
-location_string        = "West Europe"
-instance               = "prod"
+prefix          = "pagopa"
+env_short       = "p"
+env             = "prod"
+domain          = "gps"
+location        = "westeurope"
+location_short  = "weu"
+location_string = "West Europe"
+instance        = "prod"
+
 gh_runner_job_location = "italynorth"
 
 
 ### External resources
-
 monitor_resource_group_name                 = "pagopa-p-monitor-rg"
 log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
-
-external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.platform"
-apim_dns_zone_prefix     = "platform"
+external_domain                             = "pagopa.it"
+dns_zone_internal_prefix                    = "internal.platform"
+apim_dns_zone_prefix                        = "platform"
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
-reporting_function_autoscale_default = 5
 
 # gpd-reporting-functions
+reporting_function_autoscale_default  = 5
 reporting_analysis_function_always_on = true
 
 cidr_subnet_reporting_functions = ["10.1.177.0/24"]
@@ -36,7 +35,6 @@ reporting_functions_app_sku = {
 reporting_function_autoscale_minimum = 3
 
 cname_record_name = "config"
-
 # APIM
 create_wisp_converter = true
 
@@ -74,7 +72,7 @@ pod_disruption_budgets = {
       "app.kubernetes.io/instance" = "pagopaspontaneouspayments"
     }
   },
-  
+
   "pagopa-gpd-technical-support" = {
     minAvailable = 1
     matchLabels = {
