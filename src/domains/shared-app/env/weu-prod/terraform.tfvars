@@ -16,8 +16,8 @@ apim_dns_zone_prefix     = "platform"
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
-taxonomy_function_subnet                   = ["10.1.183.0/24"]
-taxonomy_function_network_policies_enabled = true
+taxonomy_function_subnet           = ["10.1.183.0/24"]
+taxonomy_function_network_policies = "Enabled"
 taxonomy_function = {
   always_on                    = true
   kind                         = "Linux"
