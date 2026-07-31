@@ -49,6 +49,10 @@ cosmos_gps_db_params = {
 
 gpd_upload_status_ttl = 604800 // 7 days
 gpd_cdc_enabled       = true
+
+gpd_reconciliation_runs_throughput    = 1000
+gpd_reconciliation_reports_throughput = 1000
+
 # Postgres Flexible
 pgres_flex_params = {
 

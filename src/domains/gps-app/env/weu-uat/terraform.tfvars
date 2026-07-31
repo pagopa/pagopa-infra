@@ -29,11 +29,10 @@ reporting_functions_app_sku = {
 }
 
 cname_record_name = "config"
-
 # APIM
 create_wisp_converter = true
 
-###debezium zookeeper_yaml
+### debezium zookeeper_yaml
 replicas           = 1
 request_cpu        = 0.5
 limits_cpu         = 2
