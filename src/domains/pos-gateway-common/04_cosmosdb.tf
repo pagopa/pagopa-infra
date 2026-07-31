@@ -15,10 +15,10 @@ module "cosmos" {
   idh_resource_tier = var.cosmos_idh_resource_tier
   product_name      = local.prefix
 
-  domain              = local.domain
-  name                = "${local.project}-cosmos-account"
-  resource_group_name = azurerm_resource_group.cosmos_rg.name
-  location            = var.location
+  domain                  = local.domain
+  name                    = "${local.project}-cosmos-account"
+  resource_group_name     = azurerm_resource_group.cosmos_rg.name
+  location                = var.location
   capabilities_additional = var.cosmos_mongo_db_params.capabilities
 
 
@@ -85,7 +85,7 @@ locals {
       indexes = [{
         keys   = ["_id"]
         unique = true
-      },
+        },
         {
           keys   = ["timestamp"]
           unique = false

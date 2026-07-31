@@ -64,7 +64,7 @@ variable "cosmos_idh_resource_tier" {
 
 variable "cosmos_mongo_db_params" {
   type = object({
-    ip_range_filter                              = list(string)
+    ip_range_filter = list(string)
   })
 }
 
