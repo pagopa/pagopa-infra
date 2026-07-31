@@ -130,7 +130,7 @@ resource "azurerm_eventhub_consumer_group" "gpd_ingestion_manager_consumer_gpd" 
   }
   name                = "gpd-ingestion-manager-${each.key}"
   namespace_name      = module.eventhub_namespace_observability_gpd.name
-  eventhub_name       = "${each.value}"
+  eventhub_name       = each.value
   resource_group_name = azurerm_resource_group.eventhub_observability_rg.name
 }
 
