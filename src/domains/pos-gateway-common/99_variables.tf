@@ -62,4 +62,16 @@ variable "cosmos_idh_resource_tier" {
   description = "The IDH resource tier for the cosmosdb "
 }
 
+variable "cosmos_mongo_db_params" {
+  type = object({
+    ip_range_filter                              = list(string)
+  })
+}
 
+variable "cosmos_mongo_db_pos_gateway_params" {
+  type = object({
+    enable_autoscaling = bool
+    throughput         = number
+    max_throughput     = number
+  })
+}
