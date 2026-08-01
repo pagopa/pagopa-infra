@@ -47,8 +47,9 @@ locals {
   pagopa_apim_name = "${local.product}-apim"
   pagopa_apim_rg   = "${local.product}-api-rg"
 
-  apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
-  qa_hostname   = "qa-central-hub.${var.location_short}.${local.internal_dns_zone_name}"
+  apim_hostname      = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
+  qa_hostname        = "qa-central-hub.${var.location_short}.${local.internal_dns_zone_name}"
+  mcp_server_hostname = "pagopa-mcp-server.${var.location_short}.${local.internal_dns_zone_name}"
 
   ingress_hostname = "qa-central-hub.${var.location_short}"
 
