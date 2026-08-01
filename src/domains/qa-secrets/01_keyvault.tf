@@ -69,7 +69,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
 ## ad group policy ##
 data "azuread_service_principal" "iac_principal" {
   count        = var.enable_iac_pipeline ? 1 : 0
-  display_name = "pagopaspa-pagoPA-iac-${data.azurerm_subscription.current.subscription_id}"
+  display_name = "${upper(var.env)}-PAGOPA"
 }
 
 resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
