@@ -119,6 +119,21 @@ module "cert_mounter_qa_central_hub" {
   depends_on = [module.workload_identity, azurerm_key_vault_certificate.qa_central_hub_ingress]
 }
 
+module "cert_mounter_mcp_server" {
+  source = "./.terraform/modules/__v4__/cert_mounter"
+
+  helm_release_name = "cert-mounter-mcp-server"
+  namespace         = local.domain
+  certificate_name  = local.mcp_server_cert_name
+  kv_name           = data.azurerm_key_vault.key_vault.name
+  tenant_id         = data.azurerm_subscription.current.tenant_id
+
+  workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
+  workload_identity_client_id            = module.workload_identity.workload_identity_client_id
+
+  depends_on = [module.workload_identity, azurerm_key_vault_certificate.mcp_server_ingress]
+}
+
 resource "azurerm_key_vault_certificate" "qa_central_hub_ingress" {
   name         = replace(local.qa_hostname, ".", "-")
   key_vault_id = data.azurerm_key_vault.key_vault.id
@@ -159,6 +174,51 @@ resource "azurerm_key_vault_certificate" "qa_central_hub_ingress" {
         "keyCertSign",
       ]
       subject            = "CN=${local.qa_hostname}"
+      validity_in_months = 12
+    }
+  }
+}
+
+resource "azurerm_key_vault_certificate" "mcp_server_ingress" {
+  name         = local.mcp_server_cert_name
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+
+  certificate_policy {
+    issuer_parameters {
+      name = "Self"
+    }
+
+    key_properties {
+      exportable = true
+      key_size   = 2048
+      key_type   = "RSA"
+      reuse_key  = false
+    }
+
+    lifetime_action {
+      action {
+        action_type = "AutoRenew"
+      }
+      trigger {
+        days_before_expiry = 30
+      }
+    }
+
+    secret_properties {
+      content_type = "application/x-pkcs12"
+    }
+
+    x509_certificate_properties {
+      extended_key_usage = ["1.3.6.1.5.5.7.3.1"]
+      key_usage = [
+        "cRLSign",
+        "dataEncipherment",
+        "digitalSignature",
+        "keyAgreement",
+        "keyEncipherment",
+        "keyCertSign",
+      ]
+      subject            = "CN=${local.mcp_server_hostname}"
       validity_in_months = 12
     }
   }

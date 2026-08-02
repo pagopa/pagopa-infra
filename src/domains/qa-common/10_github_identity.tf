@@ -61,6 +61,30 @@ module "identity_cd_01" {
   ]
 }
 
+# pagopa-platform-mcp uses GitHub's new numeric-ID subject format; add extra federated credentials
+data "azurerm_user_assigned_identity" "identity_cd_01" {
+  name                = module.identity_cd_01.identity_app_name
+  resource_group_name = module.identity_cd_01.identity_resource_group
+}
+
+resource "azurerm_federated_identity_credential" "mcp_cd_env_secure" {
+  name                = "pagopa-platform-mcp-cd-environment-${var.env}-secure"
+  resource_group_name = module.identity_cd_01.identity_resource_group
+  parent_id           = data.azurerm_user_assigned_identity.identity_cd_01.id
+  audience            = ["api://AzureADTokenExchange"]
+  issuer              = "https://token.actions.githubusercontent.com"
+  subject             = "repo:pagopa@57742367/pagopa-platform-mcp@1315113194:environment:${var.env}"
+}
+
+resource "azurerm_federated_identity_credential" "mcp_pr_secure" {
+  name                = "pagopa-platform-mcp-cd-pull-request-secure"
+  resource_group_name = module.identity_cd_01.identity_resource_group
+  parent_id           = data.azurerm_user_assigned_identity.identity_cd_01.id
+  audience            = ["api://AzureADTokenExchange"]
+  issuer              = "https://token.actions.githubusercontent.com"
+  subject             = "repo:pagopa@57742367/pagopa-platform-mcp@1315113194:pull_request"
+}
+
 resource "azurerm_key_vault_access_policy" "gha_cd_iac_managed_identities" {
   key_vault_id = data.azurerm_key_vault.domain_kv.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
