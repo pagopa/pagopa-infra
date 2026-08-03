@@ -65,24 +65,6 @@ resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
   ]
 }
 
-# azure devops policy
-data "azuread_service_principal" "iac_principal" {
-  count        = var.enable_iac_pipeline ? 1 : 0
-  display_name = "pagopaspa-pagoPA-iac-${data.azurerm_subscription.current.subscription_id}"
-}
-
-resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
-  count        = var.enable_iac_pipeline ? 1 : 0
-  key_vault_id = module.key_vault.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = data.azuread_service_principal.iac_principal[0].object_id
-
-  secret_permissions      = ["Get", "List", "Set", ]
-  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get"]
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
-
-  storage_permissions = []
-}
 
 # azure data factory access policy
 resource "azurerm_key_vault_access_policy" "azure_data_factory_policy" {
@@ -98,6 +80,22 @@ resource "azurerm_key_vault_access_policy" "azure_data_factory_policy" {
 resource "azurerm_key_vault_secret" "cosmos_gps_pkey" {
   name         = format("cosmos-gps-%s-%s-pkey", var.location_short, var.env_short) # cosmos-gps-<REGION>-<ENV>-pkey
   value        = module.gps_cosmosdb_account.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "gpd_technical_support_reconciliation_cosmos_key" {
+  name         = "gpd-technical-support-reconciliation-cosmos-key"
+  value        = module.gps_cosmosdb_account.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "gpd_technical_support_biz_cosmos_key" {
+  name         = "gpd-technical-support-biz-cosmos-key"
+  value        = data.azurerm_cosmosdb_account.bizevents_datastore_cosmosdb_account.primary_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -396,6 +394,14 @@ resource "azurerm_key_vault_secret" "db_url" {
 
   key_vault_id = module.key_vault.id
 
+}
+
+resource "azurerm_key_vault_secret" "gpd_technical_support_apd_jdbc_url" {
+  name         = "gpd-technical-support-apd-jdbc-url"
+  value        = format("jdbc:postgresql://%s:%s/%s?sslmode=require%s", local.gpd_technical_support_db_hostname, local.gpd_technical_support_dbmsport, var.gpd_db_name, "&prepareThreshold=0")
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
