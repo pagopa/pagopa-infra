@@ -115,7 +115,7 @@ locals {
   ]
 }
 
-module "cosmosdb_pay_wallet_collections" {
+module "cosmosdb_pos_gateway_collections" {
 
   source   = "./.terraform/modules/__v4__/cosmosdb_mongodb_collection"
   for_each = { for index, coll in local.collections : coll.name => coll }
@@ -124,7 +124,7 @@ module "cosmosdb_pay_wallet_collections" {
   resource_group_name = azurerm_resource_group.cosmos_rg.name
 
   cosmosdb_mongo_account_name  = "${local.project}-cosmos-account"
-  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.pos_gateway[0].name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.pos_gateway.name
 
   indexes             = each.value.indexes
   shard_key           = each.value.shard_key
