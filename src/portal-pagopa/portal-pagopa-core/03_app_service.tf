@@ -23,12 +23,13 @@ resource "azurerm_linux_web_app" "portal" {
   identity {
     type = "SystemAssigned"
   }
-
-  app_settings = local.app_settings
+  virtual_network_subnet_id = module.portal_app_subnet.id
+  app_settings              = local.app_settings
 
   site_config {
     always_on                               = true
     container_registry_use_managed_identity = true
+    vnet_route_all_enabled                  = true
 
     application_stack {
       docker_image_name   = local.portal_docker_image_name
