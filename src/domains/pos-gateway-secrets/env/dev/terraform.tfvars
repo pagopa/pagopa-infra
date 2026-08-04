@@ -4,4 +4,4 @@ location       = "italynorth"
 location_short = "itn"
 
 
-enable_iac_pipeline = true
+enable_iac_pipeline = false

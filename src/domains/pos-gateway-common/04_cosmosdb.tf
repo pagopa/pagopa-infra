@@ -98,7 +98,7 @@ locals {
       default_ttl_seconds = 15770000 #6 months
       indexes = [
         {
-          keys   = ["_id"] # wallet id pm
+          keys   = ["_id"]
           unique = true
         },
         {

@@ -16,7 +16,7 @@ cosmos_idh_resource_tier = "cosmos_mongo6"
 
 cosmos_mongo_db_params = {
   ip_range_filter = [],
-  capabilities    = ["EnableMongo"]
+  capabilities    = ["EnableMongo", "EnableServerless"]
 }
 
 cosmos_mongo_db_pos_gateway_params = {
