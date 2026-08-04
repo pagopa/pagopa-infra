@@ -20,7 +20,7 @@ cosmos_mongo_db_params = {
 
 cosmos_mongo_db_pos_gateway_params = {
   enable_autoscaling = true
-  enable_serverless  = false
+  enable_serverless  = true
   max_throughput     = 2000
   throughput         = 2000
 }
