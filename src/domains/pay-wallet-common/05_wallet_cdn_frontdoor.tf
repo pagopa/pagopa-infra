@@ -1,32 +1,24 @@
 locals {
-  # NOTE: After switch, rename these to drop the frontdoor_cdn_ prefix:
-  #   frontdoor_cdn_npg_sdk_hostname → npg_sdk_hostname
-  #   frontdoor_cdn_csp_header_name  → content_security_policy_header_name
-  frontdoor_cdn_npg_sdk_hostname = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
-  frontdoor_cdn_csp_header_name  = "Content-Security-Policy"
-  cdn_storage_account_name       = "${local.project}cdnsa"
-  cdn_index_document             = "index.html"
-  cdn_error_document             = "index.html"
+  npg_sdk_hostname                    = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
+  content_security_policy_header_name = "Content-Security-Policy"
+  cdn_storage_account_name            = "${local.project}cdnsa"
+  cdn_index_document                  = "index.html"
+  cdn_error_document                  = "index.html"
 
   wallet_dns_zone_key = "${var.dns_zone_prefix}.${var.external_domain}"
 
-  # Custom domains - empty to avoid Azure conflict with CDN Classic.
-  # Azure doesn't allow the same domain on both CDN Classic and Front Door simultaneously.
-  # Domain switch will happen in a separate PR which will:
-  #   1. Remove custom domain from CDN Classic
-  #   2. Add custom domain to Front Door
-  wallet_cdn_custom_domains_for_switch = [
+  # Note for App GW/APIM <-> CDN switches:
+  # when DNS is pointing to App GW, setting enable_dns_records to true and applying will change the A record IP to Front Door's one,
+  # while setting it to false and applying will destroy the A record (not managed by terraform anymore)
+  wallet_cdn_custom_domains = [
     {
       domain_name             = local.wallet_dns_zone_key
       dns_name                = azurerm_dns_zone.payment_wallet_public.name
       dns_resource_group_name = azurerm_dns_zone.payment_wallet_public.resource_group_name
       ttl                     = var.dns_default_ttl_sec
-      enable_dns_records      = false
+      enable_dns_records      = true
     }
   ]
-
-  # empty for now, will be set to wallet_cdn_custom_domains_for_switch during domain switch
-  wallet_cdn_custom_domains = []
 
   wallet_cdn_global_delivery_rules = [
     {
@@ -39,12 +31,12 @@ locals {
         },
         {
           action = "Overwrite"
-          name   = local.frontdoor_cdn_csp_header_name
+          name   = local.content_security_policy_header_name
           value  = "default-src 'self'; connect-src 'self' *.platform.pagopa.it *.pagopa.gov.it *.nexigroup.com;"
         },
         {
           action = "Append"
-          name   = local.frontdoor_cdn_csp_header_name
+          name   = local.content_security_policy_header_name
           value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' *.platform.pagopa.it *.nexigroup.com;"
         },
       ]
@@ -54,17 +46,17 @@ locals {
       modify_response_header_actions = [
         {
           action = "Append"
-          name   = local.frontdoor_cdn_csp_header_name
+          name   = local.content_security_policy_header_name
           value  = "img-src 'self' https://assets.cdn.io.italia.it *.platform.pagopa.it data:;"
         },
         {
           action = "Append"
-          name   = local.frontdoor_cdn_csp_header_name
+          name   = local.content_security_policy_header_name
           value  = "script-src 'self' 'unsafe-inline' *.nexigroup.com;"
         },
         {
           action = "Append"
-          name   = local.frontdoor_cdn_csp_header_name
+          name   = local.content_security_policy_header_name
           value  = "style-src 'self' 'unsafe-inline'; worker-src blob:;"
         },
       ]
@@ -126,7 +118,7 @@ locals {
       request_header_conditions = [{
         selector         = "Origin"
         operator         = "Equal"
-        match_values     = ["https://${local.frontdoor_cdn_npg_sdk_hostname}"]
+        match_values     = ["https://${local.npg_sdk_hostname}"]
         transforms       = []
         negate_condition = false
       }]
@@ -139,7 +131,7 @@ locals {
       modify_response_header_actions = [{
         action = "Overwrite"
         name   = "Access-Control-Allow-Origin"
-        value  = "https://${local.frontdoor_cdn_npg_sdk_hostname}"
+        value  = "https://${local.npg_sdk_hostname}"
       }]
       url_redirect_actions = []
       url_rewrite_actions  = []
@@ -169,26 +161,22 @@ locals {
 
 /**
  * Wallet FE resource group
- * NOTE: Currently defined in 05_wallet_cdn.tf
- * After switch: uncomment this block and delete 05_wallet_cdn.tf
  */
-# resource "azurerm_resource_group" "wallet_fe_rg" {
-#   name     = "${local.project}-fe-rg"
-#   location = var.location
-#
-#   tags = module.tag_config.tags
-# }
+resource "azurerm_resource_group" "wallet_fe_rg" {
+  name     = "${local.project}-fe-rg"
+  location = var.location
+
+  tags = module.tag_config.tags
+}
 
 /**
  * CDN Front Door
- * NOTE: After cleanup, optionally rename module to "wallet_cdn" and run:
- *   terraform state mv module.wallet_cdn_frontdoor module.wallet_cdn
  */
 module "wallet_cdn_frontdoor" {
   source = "./.terraform/modules/__v4__/cdn_frontdoor"
 
   cdn_prefix_name     = local.project
-  resource_group_name = azurerm_resource_group.wallet_fe_rg.name // refers to resource group in 05_wallet_cdn.tf, to be changed after cleanup
+  resource_group_name = azurerm_resource_group.wallet_fe_rg.name
   location            = var.location
 
   https_rewrite_enabled = true
@@ -212,4 +200,27 @@ module "wallet_cdn_frontdoor" {
   delivery_rule_rewrites = local.wallet_cdn_delivery_rule_rewrites
 
   tags = module.tag_config.tags
+}
+
+/**
+ * Web Test for CDN Front Door
+ */
+module "wallet_fe_web_test" {
+  count                                 = var.env_short == "p" ? 1 : 0
+  source                                = "./.terraform/modules/__v4__/application_insights_standard_web_test"
+  https_endpoint                        = "https://${local.wallet_dns_zone_key}"
+  https_endpoint_path                   = "/index.html"
+  alert_name                            = "${local.project}-fe-web-test"
+  location                              = var.location
+  alert_enabled                         = true
+  application_insights_resource_group   = data.azurerm_resource_group.monitor_italy_rg.name
+  application_insights_id               = data.azurerm_application_insights.application_insights_italy.id
+  application_insights_action_group_ids = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
+  https_probe_method                    = "GET"
+  timeout                               = 10
+  frequency                             = 300
+  https_probe_threshold                 = 99
+  metric_frequency                      = "PT5M"
+  metric_window_size                    = "PT1H"
+  retry_enabled                         = true
 }

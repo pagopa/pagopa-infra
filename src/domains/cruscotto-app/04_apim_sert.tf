@@ -22,3 +22,20 @@ module "apim_cruscotto_sert_product" {
 
   policy_xml = file("./api_product/_base_policy.xml")
 }
+module "apim_cruscotto_sert_product_subscription_key" {
+  source = "./.terraform/modules/__v4__/api_management_product"
+
+  product_id   = "pagopa-smo-cruscotto-cert-subkey"
+  display_name = "${local.apim_cruscotto_cert_pagopa_api.display_name} - Subscription Key"
+  description  = "${local.apim_cruscotto_cert_pagopa_api.description} - Subscription Key"
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = false
+  subscription_required = true
+  approval_required     = true
+  subscriptions_limit   = 1000 # false
+
+  policy_xml = file("./api_product/_base_policy.xml")
+}
