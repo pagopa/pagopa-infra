@@ -15,8 +15,7 @@ redis_idh_resource_tier = "basic"
 cosmos_idh_resource_tier = "cosmos_mongo6"
 
 cosmos_mongo_db_params = {
-  ip_range_filter = [],
-  capabilities    = ["EnableMongo", "EnableServerless"]
+  capabilities = ["EnableMongo"]
 }
 
 cosmos_mongo_db_pos_gateway_params = {
