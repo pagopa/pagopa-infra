@@ -279,6 +279,18 @@ variable "gpd_upload_status_throughput" {
   default     = 1000
 }
 
+variable "gpd_reconciliation_runs_throughput" {
+  type        = number
+  description = "Max throughput for GPD reconciliation runs Cosmos container"
+  default     = 1000
+}
+
+variable "gpd_reconciliation_reports_throughput" {
+  type        = number
+  description = "Max throughput for GPD reconciliation reports Cosmos container"
+  default     = 1000
+}
+
 variable "cidr_subnet_gps_cosmosdb" {
   type        = list(string)
   description = "Cosmos DB address space"
@@ -318,12 +330,6 @@ variable "cosmos_gpd_payments_db_params" {
   })
 }
 
-
-variable "enable_iac_pipeline" {
-  type        = bool
-  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
-  default     = false
-}
 
 
 ################
