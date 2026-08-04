@@ -27,13 +27,29 @@ locals {
   }
 
   app_settings_plain = {
-    NEXT_PUBLIC_APP_URL = var.next_public_app_url
-    AUTH_URL            = var.next_public_app_url
-    EMAIL_FROM          = var.email_from
-    PLAYWRIGHT_TEST     = tostring(var.playwright_test)
-    WEBSITES_PORT       = tostring(var.websites_port)
+    NEXT_PUBLIC_APP_URL                 = var.next_public_app_url
+    AUTH_URL                            = var.next_public_app_url
+    AWS_REGION                          = var.aws_region
+    EMAIL_FALLBACK_PROVIDER             = var.email_fallback_provider
+    EMAIL_FROM                          = var.email_from
+    EMAIL_PROVIDER                      = var.email_provider
+    EMAIL_PUBLIC_APP_URL                = var.email_public_app_url
+    GITHUB_ISSUES_OWNER                 = var.github_issues_owner
+    GITHUB_ISSUES_REPO                  = var.github_issues_repo
+    ONEMAIL_BASE_URL                    = var.onemail_base_url
+    ONEMAIL_ENV                         = var.onemail_env
+    ONEMAIL_FROM_EMAIL                  = var.onemail_from_email
+    ONEMAIL_TENANT_NAME                 = var.onemail_tenant_name
+    PLAYWRIGHT_TEST                     = tostring(var.playwright_test)
+    TIMETRACK_EMAIL_DISABLE_SEND        = tostring(var.timetrack_email_disable_send)
+    TIMETRACK_EMAIL_FORCE_TO            = var.timetrack_email_force_to
+    TIMETRACK_ONEMAIL_FROM_EMAIL        = var.timetrack_onemail_from_email
+    TRAINING_EMAIL_DISABLE_SEND         = tostring(var.training_email_disable_send)
+    TRAINING_EMAIL_FORCE_TO             = var.training_email_force_to
+    TRAINING_ONEMAIL_FROM_EMAIL         = var.training_onemail_from_email
+    WEBSITES_ENABLE_APP_SERVICE_STORAGE = tostring(var.websites_enable_app_service_storage)
+    WEBSITES_PORT                       = tostring(var.websites_port)
   }
 
   app_settings = merge(local.app_settings_secret_refs, local.database_url_secret_ref, local.app_settings_plain)
 }
-

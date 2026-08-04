@@ -48,10 +48,10 @@ module "postgres_flexible_server" {
     }
   ] : []
 
-  private_dns_registration = false
-  # private_dns_zone_name    = "${var.env_short}.internal.postgresql.pagopa.it"
-  # private_dns_zone_rg_name = "${local.product}-vnet-rg"
-  # private_dns_record_cname = "portal-db"
+  private_dns_registration = true
+  private_dns_zone_name    = "${var.env_short}.internal.postgresql.pagopa.it"
+  private_dns_zone_rg_name = "${local.product}-vnet-rg"
+  private_dns_record_cname = "portal-db"
 
 
   tags = module.tag_config.tags
