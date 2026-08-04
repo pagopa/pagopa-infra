@@ -24,7 +24,6 @@ module "redis" {
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_redis_cache_windows_net.id]
   }
 
-  # fixme configure the cidr list and service name allowed on this redis
   embedded_nsg_configuration = {
     source_address_prefixes      = ["*"]
     source_address_prefixes_name = local.domain
