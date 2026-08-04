@@ -59,7 +59,7 @@ stages:
     - template: './base-deploy-pipelines.yml'
       parameters:
         ENV: 'dev'
-        ENV_FOLDER: '${{ variables.REGION_SHORT }}-dev'
+        ENV_FOLDER: 'dev'
         WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
         WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
         WORKING_DIR_SECRET: ${{ variables.WORKING_DIR_SECRET }}
@@ -90,7 +90,7 @@ stages:
     - template: './base-deploy-pipelines.yml'
       parameters:
         ENV: 'uat'
-        ENV_FOLDER: '${{ variables.REGION_SHORT }}-uat'
+        ENV_FOLDER: 'uat'
         WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
         WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
         DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
@@ -120,7 +120,7 @@ stages:
     - template: './base-deploy-pipelines.yml'
       parameters:
         ENV: 'prod'
-        ENV_FOLDER: '${{ variables.REGION_SHORT }}-prod'
+        ENV_FOLDER: 'prod'
         WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
         WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
         DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
