@@ -75,6 +75,8 @@ resource "azurerm_cosmosdb_mongo_database" "pos_gateway" {
     }
   }
 
+  depends_on = [module.cosmos]
+
 }
 
 locals {
@@ -130,4 +132,6 @@ module "cosmosdb_pos_gateway_collections" {
   shard_key           = each.value.shard_key
   default_ttl_seconds = each.value.default_ttl_seconds
   lock_enable         = var.env_short != "p" ? false : true
+
+  depends_on = [module.cosmos]
 }
