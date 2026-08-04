@@ -50,7 +50,10 @@ resource "azurerm_linux_web_app_slot" "portal" {
     type = "SystemAssigned"
   }
   virtual_network_subnet_id = module.portal_app_subnet.id
-  app_settings              = local.app_settings
+  app_settings = merge(local.app_settings, {
+    NEXT_PUBLIC_APP_URL = var.next_public_app_url_staging
+    AUTH_URL            = var.next_public_app_url_staging
+  })
 
   site_config {
     always_on                               = true

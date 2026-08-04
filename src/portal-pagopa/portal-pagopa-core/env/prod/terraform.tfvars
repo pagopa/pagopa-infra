@@ -5,8 +5,9 @@ domain         = "portalpa"
 location_short = "itn"
 location       = "italynorth"
 
-app_service_sku_name     = "P1v3"
-app_service_slot_enabled = true
+app_service_sku_name        = "P1v3"
+app_service_slot_enabled    = true
+next_public_app_url_staging = "https://pagopa-p-itn-portalpa-app-staging.azurewebsites.net"
 
 container_image_name   = "pagopapcommonacr.azurecr.io/pagopa-portal:latest"
 postgres_database_name = "dipartimento_pagamenti"

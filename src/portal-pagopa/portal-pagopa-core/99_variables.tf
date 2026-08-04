@@ -59,6 +59,12 @@ variable "app_service_slot_name" {
   default     = "staging"
 }
 
+variable "next_public_app_url_staging" {
+  type        = string
+  description = "Public app URL for the staging slot"
+  default     = ""
+}
+
 variable "container_image_name" {
   type        = string
   description = "Container image including registry host"
