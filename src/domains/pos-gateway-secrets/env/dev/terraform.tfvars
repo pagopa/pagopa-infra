@@ -3,5 +3,3 @@ env            = "dev"
 location       = "italynorth"
 location_short = "itn"
 
-
-enable_iac_pipeline = false

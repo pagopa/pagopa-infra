@@ -36,7 +36,7 @@ module "cosmos" {
   # fixme configure the cidr list and service name allowed on this cosmosdb
   embedded_nsg_configuration = {
     source_address_prefixes      = ["*"]
-    source_address_prefixes_name = "All"
+    source_address_prefixes_name = local.domain
   }
 
   private_endpoint_config = {
