@@ -53,12 +53,6 @@ variable "pod_disruption_budgets" {
   default     = {}
 }
 
-variable "dns_zone_prefix" {
-  type        = string
-  default     = null
-  description = "The wallet dns subdomain."
-}
-
 
 variable "k8s_kube_config_path_prefix" {
   type    = string

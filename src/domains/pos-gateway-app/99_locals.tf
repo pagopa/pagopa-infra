@@ -46,8 +46,6 @@ locals {
 
   aks_name        = "${local.product}-${var.location_short}-${var.env}-aks"
   aks_rg_name     = "${local.product}-${var.location_short}-${var.env}-aks-rg"
-  domain_hostname = "${var.dns_zone_prefix}.${local.internal_dns_zone_name}"
-
-
+  domain_hostname = "${var.location_short}${var.env}.${local.domain}.${var.dns_zone_internal_prefix}.${var.external_domain}"
 
 }
