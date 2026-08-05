@@ -49,7 +49,7 @@ variables:
   # working dir
   WORKING_DIR_APP: 'src/domains/pos-gateway-app'
   WORKING_DIR_COMMON: 'src/domains/pos-gateway-common'
-  WORKING_DIR_SECRET: 'src/domains/pos-gateway-secret'
+  WORKING_DIR_SECRET: 'src/domains/pos-gateway-secrets'
   REGION_SHORT: "itn"
   DOMAIN_NAME: "pos-gateway"
 
