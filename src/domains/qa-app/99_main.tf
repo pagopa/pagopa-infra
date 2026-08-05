@@ -48,5 +48,5 @@ provider "helm" {
   }
 }
 module "__v4__" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=967a41a376e80daf7e4c2eb412fb4ae82d61ad85"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=d68ef3b9c833eeaa49d41c95532bc231d15be8f6"
 }
