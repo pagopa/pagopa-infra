@@ -10,7 +10,7 @@ dns_zone_internal_prefix = "internal.dev.platform"
 
 alert_use_opsgenie = false
 
-redis_idh_resource_tier = "basic"
+redis_idh_resource_tier = "balanced_0_5gb"
 
 cosmos_idh_resource_tier = "cosmos_mongo6"
 
