@@ -34,6 +34,6 @@ locals {
 
   aks_name         = "${local.product}-${var.location_short}-${var.env}-aks"
   aks_rg_name      = "${local.product}-${var.location_short}-${var.env}-aks-rg"
-  ingress_hostname = "${var.location_short}.${local.domain}"
+  ingress_hostname = "${var.location_short}${var.env}.${local.domain}"
 
 }
