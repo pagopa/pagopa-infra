@@ -136,4 +136,8 @@ variable "qa_hub_nextauth_url" {
   type = string
 }
 
+variable "qa_hub_public_api_url" {
+  type = string
+}
+
 

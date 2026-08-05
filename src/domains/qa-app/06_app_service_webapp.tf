@@ -35,6 +35,7 @@ module "qa_hub_app_service" {
     GOOGLE_CLIENT_SECRET                   = var.qa_hub_google_client_secret
     NEXTAUTH_SECRET                        = var.qa_hub_nextauth_secret
     NEXTAUTH_URL                           = var.qa_hub_nextauth_url
+    NEXT_PUBLIC_API_URL                    = var.qa_hub_public_api_url
     WEBSITE_ENABLE_SYNC_UPDATE_SITE        = "true"
   }
 

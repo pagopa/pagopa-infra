@@ -41,7 +41,6 @@ module "gh_runner_job" {
     rg           = local.aks_rg_name
   }
 
-  location                = var.location
   prefix                  = local.prefix
   resource_group_name     = data.azurerm_resource_group.identity_rg.name
   domain_security_rg_name = "${local.project}-sec-rg"

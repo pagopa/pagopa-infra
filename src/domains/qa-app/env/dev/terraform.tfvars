@@ -29,5 +29,6 @@ qa_hub_google_client_id     = "PLACEHOLDER"
 qa_hub_google_client_secret = "PLACEHOLDER"
 qa_hub_nextauth_secret      = "PLACEHOLDER"
 qa_hub_nextauth_url         = "PLACEHOLDER"
+qa_hub_public_api_url       = "PLACEHOLDER"
 
 
