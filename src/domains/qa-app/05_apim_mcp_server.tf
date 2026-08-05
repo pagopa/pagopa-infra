@@ -13,8 +13,8 @@ module "apim_mcp_server_product" {
   resource_group_name = local.pagopa_apim_rg
 
   published             = true
-  subscription_required = true
-  approval_required     = true
+  subscription_required = false
+  approval_required     = false
   subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/_base_policy.xml")
@@ -28,7 +28,7 @@ locals {
     display_name          = "PagoPA MCP Server"
     description           = "API for PagoPA MCP Server"
     path                  = "qa/mcp-server"
-    subscription_required = true
+    subscription_required = false
     service_url           = null
   }
 }
