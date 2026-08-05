@@ -28,12 +28,14 @@ module "qa_hub_app_service" {
 
   app_service_plan_name = "${local.project}-qa-hub-plan"
   app_settings = {
-    # porta su cui il container espone l'HTTP (Next.js standalone)
-    WEBSITES_PORT = "3000"
-    # mostra i log di stdout/stderr del container nello stream "Log stream"
+    WEBSITES_PORT                          = "3000"
     WEBSITE_DISABLE_CONTAINER_STARTUP_LOGS = "false"
-    # Auth.js: dietro App Service serve fidarsi dell'Host inoltrato dal proxy
-    AUTH_TRUST_HOST = "true"
+    AUTH_TRUST_HOST                        = "true"
+    GOOGLE_CLIENT_ID                       = var.qa_hub_google_client_id
+    GOOGLE_CLIENT_SECRET                   = var.qa_hub_google_client_secret
+    NEXTAUTH_SECRET                        = var.qa_hub_nextauth_secret
+    NEXTAUTH_URL                           = var.qa_hub_nextauth_url
+    WEBSITE_ENABLE_SYNC_UPDATE_SITE        = "true"
   }
 
   docker_image             = var.qa_hub_image.docker_image
