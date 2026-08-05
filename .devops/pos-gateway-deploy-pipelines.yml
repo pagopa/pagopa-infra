@@ -74,7 +74,7 @@ stages:
         COMMON_USE_AKS: false
   
   #UAT
-  - ${{ if eq(parameters['UAT'], true) }}:
+  - ${{ if eq(parameters['UAT'], 'disabled') }}:
     - template: './base-deploy-pipelines.yml'
       parameters:
         ENV: 'uat'
