@@ -3,7 +3,6 @@
 # Run once after every `terraform init` in this directory.
 # Tracked patches:
 #   - container_registry_use_managed_identity support in app_service + IDH/app_service_webapp
-#   - ignore_changes for externally-managed app_settings keys
 # TODO: remove once https://github.com/pagopa/terraform-azurerm-v4 merges these changes.
 
 set -euo pipefail
@@ -46,17 +45,6 @@ new = ('    always_on         = var.always_on\n'
        '    application_stack {')
 if old in src and 'container_registry_use_managed_identity' not in src:
     src = src.replace(old, new)
-
-# add ignore_changes for externally-managed app_settings
-old_ic = '      app_settings["DOCKER_CUSTOM_IMAGE_NAME"],'
-new_ic = ('      app_settings["DOCKER_CUSTOM_IMAGE_NAME"],\n'
-          '      app_settings["GOOGLE_CLIENT_ID"],\n'
-          '      app_settings["GOOGLE_CLIENT_SECRET"],\n'
-          '      app_settings["NEXTAUTH_SECRET"],\n'
-          '      app_settings["NEXTAUTH_URL"],\n'
-          '      app_settings["WEBSITE_ENABLE_SYNC_UPDATE_SITE"],')
-if old_ic in src and 'GOOGLE_CLIENT_ID' not in src:
-    src = src.replace(old_ic, new_ic)
 
 open(path, 'w').write(src)
 print("patched app_service/main.tf")
