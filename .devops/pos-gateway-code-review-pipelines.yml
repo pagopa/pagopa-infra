@@ -75,7 +75,7 @@ stages:
           TF_SUMMARIZE: true
 
   #UAT
-  - ${{ if eq(parameters['UAT'], true) }}:
+  - ${{ if eq(parameters['UAT'], 'disabled') }}:
       - template: './base-code-review-pipelines.yml'
         parameters:
           ENV: "uat"
@@ -94,7 +94,7 @@ stages:
 
 
   #PROD
-  - ${{ if eq(parameters['PROD'], true) }}:
+  - ${{ if eq(parameters['PROD'], 'disabled') }}:
       - template: './base-code-review-pipelines.yml'
         parameters:
           ENV: "prod"
