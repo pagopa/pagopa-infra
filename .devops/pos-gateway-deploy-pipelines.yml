@@ -51,7 +51,7 @@ variables:
   WORKING_DIR_COMMON: 'src/domains/pos-gateway-common'
   WORKING_DIR_SECRET: 'src/domains/pos-gateway-secrets'
   REGION_SHORT: "itn"
-  DOMAIN_NAME: "pos-gateway"
+  DOMAIN_NAME: "pos_gateway"
 
 stages:
   #DEV
@@ -72,6 +72,7 @@ stages:
         AKS_NAME: '$(TF_AKS_DEV_NAME)'
         POOL_NAME: '$(TF_POOL_NAME_DEV)'
         COMMON_USE_AKS: false
+        SECRET_USE_AKS: false
   
   # #UAT
   # - ${{ if eq(parameters['UAT'], true) }}:
