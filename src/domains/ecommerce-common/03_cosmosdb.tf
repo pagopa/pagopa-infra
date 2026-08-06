@@ -379,6 +379,10 @@ locals {
         {
           keys   = ["transactionId"]
           unique = false
+        },
+        {
+          keys   = ["timestamp"]
+          unique = false
         }
       ]
       shard_key           = "transactionId",
@@ -396,6 +400,20 @@ locals {
         }
       ]
       shard_key           = "transactionId",
+      default_ttl_seconds = null
+    },
+    {
+      name = "day_stats"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["date"]
+          unique = true
+        }
+      ]
+      shard_key           = "date",
       default_ttl_seconds = null
     }
   ]
