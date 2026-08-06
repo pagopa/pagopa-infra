@@ -41,7 +41,7 @@
                     }
 
                     
-                    string desiredRole = context.Request.Url.Query.GetValueOrDefault("desidered_role", "").Trim();
+                    string desiredRole = context.Request.Url.Query.GetValueOrDefault("desired_role", "").Trim();
                     JObject selectedRole = string.IsNullOrWhiteSpace(desiredRole)
                         ? roles.OfType<JObject>().FirstOrDefault()
                         : roles.OfType<JObject>().FirstOrDefault(role => role.Value<string>("role") == desiredRole);
@@ -128,12 +128,25 @@
             <metadata name="errorStatusCode" value="@((context.Response?.StatusCode ?? -1).ToString())" />
         </trace>
         <base />
-        <return-response>
-            <set-status code="401" reason="Unauthorized" />
-            <set-header name="Content-Type" exists-action="override">
-                <value>text/plain</value>
-            </set-header>
-            <set-body>Unauthorized</set-body>
-        </return-response>
+        <choose>
+            <when condition="@(context.LastError?.Source == "validate-jwt" || (context.LastError?.Message ?? "").Contains("pagopaPortalToken:"))">
+                <return-response>
+                    <set-status code="401" reason="Unauthorized" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>text/plain</value>
+                    </set-header>
+                    <set-body>Unauthorized</set-body>
+                </return-response>
+            </when>
+            <otherwise>
+                <return-response>
+                    <set-status code="500" reason="Internal Server Error" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>text/plain</value>
+                    </set-header>
+                    <set-body>Internal Server Error</set-body>
+                </return-response>
+            </otherwise>
+        </choose>
     </on-error>
 </policies>

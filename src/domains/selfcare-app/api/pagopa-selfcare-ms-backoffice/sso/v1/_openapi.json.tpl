@@ -26,7 +26,7 @@
             }
           },
           {
-            "name": "desidered_role",
+            "name": "desired_role",
             "in": "query",
             "description": "Role to activate. When omitted, the first assigned role is used.",
             "required": false,
