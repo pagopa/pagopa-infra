@@ -67,6 +67,7 @@ module "apim_qa_central_hub_api" {
   xml_content = templatefile("./api/qa-central-hub-api/v1/_base_policy.xml.tpl", {
     hostname   = local.qa_hostname
     backend_id = azurerm_api_management_backend.qa_central_hub.name
+    fe_server_url = "${local.project_short}-qa-hub-wa.azurewebsites.net"
   })
 }
 

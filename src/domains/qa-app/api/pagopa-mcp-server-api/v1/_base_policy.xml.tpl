@@ -1,15 +1,15 @@
 <policies>
     <inbound>
-      <base />
-      <set-backend-service backend-id="${backend_id}" />
+        <base />
+        <set-backend-service backend-id="${backend_id}" />
     </inbound>
     <outbound>
-      <base />
+        <base />
     </outbound>
     <backend>
-      <base />
+        <base />
     </backend>
     <on-error>
-      <base />
+        <base />
     </on-error>
-  </policies>
+</policies>

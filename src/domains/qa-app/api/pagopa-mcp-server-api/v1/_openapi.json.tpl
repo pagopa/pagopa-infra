@@ -19,7 +19,8 @@
   ],
   "security": [
     {
-      "azureAd": []
+      "bearerAuth": [
+      ]
     }
   ],
   "tags": [
@@ -27,22 +28,13 @@
       "name": "health"
     },
     {
-      "name": "skills"
+      "name": "assets"
     },
     {
-      "name": "prompts"
+      "name": "backoffice"
     },
     {
-      "name": "agents"
-    },
-    {
-      "name": "install"
-    },
-    {
-      "name": "tenants"
-    },
-    {
-      "name": "metrics"
+      "name": "mcp"
     }
   ],
   "paths": {
@@ -51,8 +43,10 @@
         "tags": [
           "health"
         ],
-        "summary": "Liveness/readiness probe",
-        "security": [],
+        "summary": "Liveness and readiness probe",
+        "security": [
+
+        ],
         "responses": {
           "200": {
             "description": "Service healthy",
@@ -67,49 +61,33 @@
         }
       }
     },
-    "/metrics": {
+    "/assets": {
       "get": {
         "tags": [
-          "metrics"
+          "assets"
         ],
-        "summary": "Prometheus-style metrics (also exported to App Insights)",
-        "responses": {
-          "200": {
-            "description": "Metrics exposition",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/skills": {
-      "get": {
-        "tags": [
-          "skills"
-        ],
-        "summary": "List skills visible to the caller's tenant",
+        "summary": "List or search catalog assets",
         "parameters": [
           {
             "in": "query",
-            "name": "visibility",
+            "name": "kind",
             "schema": {
-              "type": "string",
-              "enum": [
-                "public",
-                "private",
-                "all"
-              ]
-            }
+              "type": "string"
+            },
+            "description": "Restrict results to an asset kind."
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Case-insensitive search across id, name, and description."
           }
         ],
         "responses": {
           "200": {
-            "description": "Skill catalog",
+            "description": "Matching catalog assets",
             "content": {
               "application/json": {
                 "schema": {
@@ -120,71 +98,45 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
           }
         }
       }
     },
-    "/skills/{skillId}": {
+    "/assets/install": {
       "get": {
         "tags": [
-          "skills"
+          "assets"
         ],
-        "summary": "Get skill manifest (active version)",
+        "summary": "Get install descriptors for one or more assets",
         "parameters": [
           {
-            "$ref": "#/components/parameters/AssetId"
-          },
-          {
             "in": "query",
-            "name": "version",
+            "name": "asset_ids",
+            "required": true,
+            "style": "form",
+            "explode": true,
             "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Skill manifest",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SkillManifest"
-                }
+              "type": "array",
+              "items": {
+                "type": "string"
               }
-            }
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
-        }
-      }
-    },
-    "/skills/{skillId}/install": {
-      "get": {
-        "tags": [
-          "install"
-        ],
-        "summary": "Get the INSTALL DESCRIPTOR for a skill (hard install)",
-        "description": "Returns the descriptor the client uses to **materialize** the skill as a local file (e.g. `.github/skills/<id>/SKILL.md`), including target path, content, `source_version`, and `source_digest` for later drift detection. The server executes nothing.\n",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/AssetId"
-          },
-          {
-            "in": "query",
-            "name": "version",
-            "schema": {
-              "type": "string"
-            }
+            },
+            "description": "Asset IDs. Dependencies are included transitively."
           }
         ],
         "responses": {
           "200": {
-            "description": "Install descriptor",
+            "description": "Install descriptors in dependency resolution order",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InstallDescriptor"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InstallDescriptor"
+                  }
                 }
               }
             }
@@ -192,8 +144,36 @@
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/assets/{asset_id}": {
+      "get": {
+        "tags": [
+          "assets"
+        ],
+        "summary": "Get an asset manifest",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AssetId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Asset manifest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetManifest"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
@@ -201,56 +181,33 @@
         }
       }
     },
-    "/prompts": {
+    "/assets/{asset_id}/install": {
       "get": {
         "tags": [
-          "prompts"
+          "assets"
         ],
-        "summary": "List prompt templates visible to the tenant",
+        "summary": "Get install descriptors for an asset and its dependencies",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AssetId"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Prompt catalog",
+            "description": "Install descriptors in dependency resolution order",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AssetSummary"
+                    "$ref": "#/components/schemas/InstallDescriptor"
                   }
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/prompts/{promptId}": {
-      "get": {
-        "tags": [
-          "prompts"
-        ],
-        "summary": "Resolve a prompt template (base + tenant + request overrides)",
-        "description": "Returns the resolved prompt text. The client feeds it to its LOCAL model; the server never runs the prompt.\n",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "promptId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Resolved prompt",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PromptResolveResponse"
-                }
-              }
-            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
@@ -258,63 +215,33 @@
         }
       }
     },
-    "/agents": {
+    "/assets/{asset_id}/ephemeral": {
       "get": {
         "tags": [
-          "agents"
+          "assets"
         ],
-        "summary": "List agent definitions visible to the tenant",
+        "summary": "Get ephemeral load descriptors for an asset and its dependencies",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AssetId"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Agent catalog",
+            "description": "Ephemeral descriptors in dependency resolution order",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AssetSummary"
+                    "$ref": "#/components/schemas/EphemeralDescriptor"
                   }
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/agents/{agentId}": {
-      "get": {
-        "tags": [
-          "agents"
-        ],
-        "summary": "Get an agent DEFINITION (orchestrated client-side by the local model)",
-        "description": "The server returns the agent definition as a versioned resource. It does NOT execute the agent. Orchestration and reasoning are performed by the client using its local model.\n",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "agentId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
           },
-          {
-            "in": "query",
-            "name": "version",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Agent definition",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AgentDefinition"
-                }
-              }
-            }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
@@ -322,74 +249,12 @@
         }
       }
     },
-    "/tenants/{tenantId}/overrides": {
-      "get": {
-        "tags": [
-          "tenants"
-        ],
-        "summary": "Get tenant overrides (customization)",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/TenantId"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Overrides",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TenantOverrides"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "tenants"
-        ],
-        "summary": "Upsert tenant overrides (admin role required)",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/TenantId"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TenantOverrides"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TenantOverrides"
-                }
-              }
-            }
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          }
-        }
-      }
-    },
-    "/v1/assets/check-updates": {
+    "/assets/check-updates": {
       "post": {
         "tags": [
-          "install"
+          "assets"
         ],
-        "summary": "Check installed assets for updates",
-        "description": "Compare a list of installed assets (id, optional version and optional digest) against the catalog and return only entries that are not up-to-date. Each returned entry has a `status` of `outdated` or `not_found` and includes helpful fields for the client to present and act on.\n",
+        "summary": "Find installed assets that are outdated or missing",
         "requestBody": {
           "required": true,
           "content": {
@@ -402,7 +267,7 @@
         },
         "responses": {
           "200": {
-            "description": "Assets requiring attention (outdated / not_found)",
+            "description": "Assets requiring attention",
             "content": {
               "application/json": {
                 "schema": {
@@ -414,8 +279,32 @@
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/admin/reload": {
+      "post": {
+        "tags": [
+          "backoffice"
+        ],
+        "summary": "Reload catalog manifests and publish changed-asset events",
+        "description": "Requires the `admin` role.",
+        "responses": {
+          "200": {
+            "description": "Catalog reloaded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReloadResult"
+                }
+              }
+            }
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
@@ -423,15 +312,108 @@
           "403": {
             "$ref": "#/components/responses/Forbidden"
           },
-          "500": {
-            "description": "Internal server error",
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          }
+        }
+      }
+    },
+    "/events/publish": {
+      "post": {
+        "tags": [
+          "backoffice"
+        ],
+        "summary": "Publish an event to connected SSE clients",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublishEventRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event published",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "type": "object",
+                  "required": [
+                    "delivered"
+                  ],
+                  "properties": {
+                    "delivered": {
+                      "type": "integer"
+                    }
+                  }
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/events": {
+      "get": {
+        "tags": [
+          "backoffice"
+        ],
+        "summary": "Subscribe to catalog events over Server-Sent Events",
+        "responses": {
+          "200": {
+            "description": "SSE stream of event envelopes, with periodic keepalive comments.",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/mcp": {
+      "post": {
+        "tags": [
+          "mcp"
+        ],
+        "summary": "Handle an MCP JSON-RPC request",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JSONRPCRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "JSON-RPC response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "JSON-RPC notification processed without a response"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
           }
         }
       }
@@ -439,208 +421,92 @@
   },
   "components": {
     "securitySchemes": {
-      "azureAd": {
-        "type": "oauth2",
-        "description": "Azure AD (Entra ID) OAuth2 / OIDC",
-        "flows": {
-          "clientCredentials": {
-            "tokenUrl": "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token",
-            "scopes": {
-              "api://pagopa-platform-mcp/.default": "Default access scope"
-            }
-          }
-        }
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Required unless MCP_AUTH_DISABLED=1. The current implementation accepts development tokens in the form dev.<tenant_id>.<subject>.<role>.\n"
       }
     },
     "parameters": {
       "AssetId": {
         "in": "path",
-        "name": "skillId",
+        "name": "asset_id",
         "required": true,
         "schema": {
           "type": "string"
         }
-      },
-      "TenantId": {
-        "in": "path",
-        "name": "tenantId",
-        "required": true,
-        "schema": {
-          "type": "string",
-          "format": "uuid"
-        }
       }
     },
     "responses": {
-      "BadRequest": {
-        "description": "Invalid request",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
-          }
-        }
-      },
       "Unauthorized": {
-        "description": "Missing or invalid token",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
-          }
-        }
+        "description": "Missing Bearer token"
       },
       "Forbidden": {
-        "description": "Authenticated but not authorized (RBAC)",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
-          }
-        }
+        "description": "Authenticated caller lacks the required role"
       },
       "NotFound": {
-        "description": "Asset not found",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
-          }
-        }
+        "description": "Asset not found"
       },
-      "RateLimited": {
-        "description": "Too many requests (per-tenant quota)",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
-          }
-        }
+      "UnprocessableEntity": {
+        "description": "Catalog reload failed; the active catalog is unchanged"
+      },
+      "InternalError": {
+        "description": "Internal server error"
       }
     },
     "schemas": {
       "Health": {
         "type": "object",
+        "required": [
+          "status",
+          "version",
+          "uptime_s"
+        ],
         "properties": {
           "status": {
             "type": "string",
             "example": "ok"
           },
           "version": {
-            "type": "string",
-            "example": "0.1.0"
+            "type": "string"
           },
           "uptime_s": {
-            "type": "integer",
-            "example": 12345
+            "type": "integer"
           }
         }
       },
       "AssetSummary": {
         "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "name",
+          "version",
+          "visibility",
+          "description",
+          "dependencies"
+        ],
         "properties": {
           "id": {
             "type": "string"
           },
           "kind": {
-            "type": "string",
-            "enum": [
-              "agent",
-              "skill",
-              "prompt",
-              "policy",
-              "plugin"
-            ]
+            "type": "string"
           },
           "name": {
             "type": "string"
           },
           "version": {
-            "type": "string",
-            "example": "1.2.0"
+            "type": "string"
           },
           "visibility": {
-            "type": "string",
-            "enum": [
-              "public",
-              "private"
-            ]
+            "type": "string"
           },
           "description": {
             "type": "string"
-          }
-        }
-      },
-      "SkillManifest": {
-        "type": "object",
-        "description": "Manifest of a DISTRIBUTED skill asset. The catalog delivers it (load or install); the client's LOCAL model executes it. There is NO model field and NO server-side execution field (no entrypoint, isolation, resource_limits, or timeout).\n",
-        "properties": {
-          "id": {
-            "type": "string"
           },
-          "version": {
-            "type": "string"
-          },
-          "digest": {
-            "type": "string",
-            "example": "sha256:…"
-          },
-          "inputs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ParamSpec"
-            }
-          },
-          "outputs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ParamSpec"
-            }
-          },
-          "body_ref": {
-            "type": "string",
-            "description": "Resource ref to the SKILL.md content"
-          },
-          "install": {
-            "$ref": "#/components/schemas/InstallSpec"
-          },
-          "custom_params": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ParamSpec"
-            }
-          }
-        }
-      },
-      "AgentDefinition": {
-        "type": "object",
-        "description": "Versioned agent definition served as a resource. Orchestrated client-side by the local model; the server does not run it.\n",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "version": {
-            "type": "string"
-          },
-          "role": {
-            "type": "string"
-          },
-          "instructions": {
-            "type": "string",
-            "description": "Behavioural rules (Markdown)"
-          },
-          "handoffs": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "allowed_tools": {
+          "dependencies": {
             "type": "array",
             "items": {
               "type": "string"
@@ -648,63 +514,43 @@
           }
         }
       },
-      "ParamSpec": {
-        "type": "object",
-        "required": [
-          "name",
-          "type"
-        ],
-        "properties": {
-          "name": {
-            "type": "string"
+      "AssetManifest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AssetSummary"
           },
-          "type": {
-            "type": "string",
-            "enum": [
-              "string",
-              "integer",
-              "number",
-              "boolean",
-              "object",
-              "array"
-            ]
-          },
-          "required": {
-            "type": "boolean",
-            "default": false
-          },
-          "description": {
-            "type": "string"
-          },
-          "default": {}
-        }
-      },
-      "ResourceLimits": {
-        "type": "object",
-        "deprecated": true,
-        "description": "Retained only for backward compatibility of old clients. The catalog runs nothing, so resource limits are not applied server-side.\n",
-        "properties": {
-          "cpu": {
-            "type": "string",
-            "example": "0.5"
-          },
-          "memory_mb": {
-            "type": "integer",
-            "example": 256
-          },
-          "max_output_bytes": {
-            "type": "integer",
-            "example": 1048576
+          {
+            "type": "object",
+            "required": [
+              "digest",
+              "body_ref",
+              "install"
+            ],
+            "properties": {
+              "digest": {
+                "type": "string",
+                "example": "sha256:abcd1234"
+              },
+              "body_ref": {
+                "type": "string"
+              },
+              "install": {
+                "$ref": "#/components/schemas/InstallSpec"
+              }
+            }
           }
-        }
+        ]
       },
       "InstallSpec": {
         "type": "object",
-        "description": "How the client materializes the asset on hard install.",
+        "required": [
+          "target_path",
+          "files",
+          "frontmatter_anchor"
+        ],
         "properties": {
           "target_path": {
-            "type": "string",
-            "example": ".github/skills/mermaid-flow/SKILL.md"
+            "type": "string"
           },
           "files": {
             "type": "array",
@@ -713,135 +559,79 @@
             }
           },
           "frontmatter_anchor": {
-            "type": "boolean",
-            "default": true
+            "type": "boolean"
           }
         }
       },
-      "InstallDescriptor": {
+      "EphemeralDescriptor": {
         "type": "object",
-        "description": "Everything the client needs to install an asset as a local file and later detect drift against the catalog.\n",
+        "required": [
+          "id",
+          "kind",
+          "source_version",
+          "source_digest",
+          "target_path",
+          "content",
+          "files"
+        ],
         "properties": {
           "id": {
             "type": "string"
           },
           "kind": {
-            "type": "string",
-            "enum": [
-              "agent",
-              "skill",
-              "prompt",
-              "policy",
-              "plugin"
-            ]
+            "type": "string"
           },
           "source_version": {
-            "type": "string",
-            "example": "1.2.0"
+            "type": "string"
           },
           "source_digest": {
-            "type": "string",
-            "example": "sha256:…"
+            "type": "string"
           },
           "target_path": {
-            "type": "string",
-            "example": ".github/skills/mermaid-flow/SKILL.md"
+            "type": "string"
           },
           "content": {
-            "type": "string",
-            "description": "File content to write locally"
+            "type": "string"
           },
           "files": {
             "type": "array",
-            "description": "Additional attachments (path + content)",
             "items": {
-              "type": "object",
-              "properties": {
-                "path": {
-                  "type": "string"
-                },
-                "content": {
-                  "type": "string"
-                }
-              }
             }
           }
         }
       },
-      "PromptResolveRequest": {
-        "type": "object",
-        "properties": {
-          "arguments": {
+      "InstallDescriptor": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/EphemeralDescriptor"
+          },
+          {
             "type": "object",
-            "additionalProperties": true
-          },
-          "overrides": {
-            "type": "object",
-            "additionalProperties": true
-          }
-        }
-      },
-      "PromptResolveResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "version": {
-            "type": "string"
-          },
-          "content": {
-            "type": "string"
-          },
-          "target_agent": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "TenantOverrides": {
-        "type": "object",
-        "description": "Tenant customization. There is NO preferred_model and NO token quota, because the server performs no inference.\n",
-        "properties": {
-          "tenant_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "style": {
-            "type": "object",
-            "additionalProperties": true
-          },
-          "skill_params": {
-            "type": "object",
-            "additionalProperties": true
-          },
-          "quotas": {
-            "type": "object",
+            "required": [
+              "encoding",
+              "bom",
+              "replace_existing"
+            ],
             "properties": {
-              "requests_per_min": {
-                "type": "integer"
+              "encoding": {
+                "type": "string",
+                "example": "utf-8"
+              },
+              "bom": {
+                "type": "boolean"
+              },
+              "replace_existing": {
+                "type": "boolean"
               }
             }
           }
-        }
-      },
-      "Error": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "example": "forbidden"
-          },
-          "message": {
-            "type": "string"
-          },
-          "request_id": {
-            "type": "string"
-          }
-        }
+        ]
       },
       "InstalledAssetRef": {
         "type": "object",
+        "required": [
+          "id"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -854,13 +644,13 @@
             "type": "string",
             "nullable": true
           }
-        },
-        "required": [
-          "id"
-        ]
+        }
       },
       "CheckUpdatesRequest": {
         "type": "object",
+        "required": [
+          "installed"
+        ],
         "properties": {
           "installed": {
             "type": "array",
@@ -868,13 +658,14 @@
               "$ref": "#/components/schemas/InstalledAssetRef"
             }
           }
-        },
-        "required": [
-          "installed"
-        ]
+        }
       },
       "CheckUpdatesResult": {
         "type": "object",
+        "required": [
+          "id",
+          "status"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -887,27 +678,108 @@
             ]
           },
           "kind": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "name": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "installed_version": {
             "type": "string",
             "nullable": true
           },
           "current_version": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "installed_digest": {
             "type": "string",
             "nullable": true
           },
           "current_digest": {
+            "type": "string"
+          }
+        }
+      },
+      "ReloadResult": {
+        "type": "object",
+        "required": [
+          "status",
+          "previous_count",
+          "asset_count",
+          "updated_assets",
+          "notified"
+        ],
+        "properties": {
+          "status": {
             "type": "string",
+            "example": "ok"
+          },
+          "previous_count": {
+            "type": "integer"
+          },
+          "asset_count": {
+            "type": "integer"
+          },
+          "updated_assets": {
+            "type": "integer"
+          },
+          "notified": {
+            "type": "integer"
+          }
+        }
+      },
+      "PublishEventRequest": {
+        "type": "object",
+        "required": [
+          "event_type"
+        ],
+        "properties": {
+          "event_type": {
+            "type": "string"
+          },
+          "payload": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "array"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        }
+      },
+      "JSONRPCRequest": {
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "method"
+        ],
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "enum": [
+              "2.0"
+            ]
+          },
+          "id": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "nullable": true
+          },
+          "method": {
+            "type": "string"
+          },
+          "params": {
             "nullable": true
           }
         }
