@@ -13,9 +13,9 @@ module "apim_qa_central_hub_product" {
   resource_group_name = local.pagopa_apim_rg
 
   published             = true
-  subscription_required = true
-  approval_required     = true
-  subscriptions_limit   = 1000
+  subscription_required = false
+  approval_required     = false
+  # subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/_base_policy.xml")
 }
@@ -28,7 +28,7 @@ locals {
     display_name          = "QA Central Hub"
     description           = "API for QA Central Hub"
     path                  = "qa/central-hub"
-    subscription_required = true
+    subscription_required = false
     service_url           = null
   }
 }
