@@ -10,25 +10,39 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MOD="$DIR/.terraform/modules/__v4__"
 
 # ── 1. app_service/variables.tf ─────────────────────────────────────────────
-patch -N -r - "$MOD/app_service/variables.tf" <<'PATCH' || true
---- a/app_service/variables.tf
-+++ b/app_service/variables.tf
-@@ variable "docker_registry_password" {
-   type    = string
-   default = null
- }
-+variable "container_registry_use_managed_identity" {
-+  type        = bool
-+  description = "(Optional) Use the app service managed identity to authenticate to the container registry."
-+  default     = false
-+}
-+variable "container_registry_managed_identity_client_id" {
-+  type        = string
-+  description = "(Optional) Client ID of the user-assigned managed identity used for container registry authentication. Leave null for system-assigned identity."
-+  default     = null
-+}
- variable "dotnet_version" {
-PATCH
+python3 - "$MOD/app_service/variables.tf" <<'PYEOF'
+import sys
+path = sys.argv[1]
+src = open(path).read()
+old = (
+    'variable "docker_registry_password" {\n'
+    '  type    = string\n'
+    '  default = null\n'
+    '}\n'
+    'variable "dotnet_version" {\n'
+)
+new = (
+    'variable "docker_registry_password" {\n'
+    '  type    = string\n'
+    '  default = null\n'
+    '}\n'
+    'variable "container_registry_use_managed_identity" {\n'
+    '  type        = bool\n'
+    '  description = "(Optional) Use the app service managed identity to authenticate to the container registry."\n'
+    '  default     = false\n'
+    '}\n'
+    'variable "container_registry_managed_identity_client_id" {\n'
+    '  type        = string\n'
+    '  description = "(Optional) Client ID of the user-assigned managed identity used for container registry authentication. Leave null for system-assigned identity."\n'
+    '  default     = null\n'
+    '}\n'
+    'variable "dotnet_version" {\n'
+)
+if 'container_registry_use_managed_identity' not in src and old in src:
+    src = src.replace(old, new)
+open(path, 'w').write(src)
+print("patched app_service/variables.tf")
+PYEOF
 
 # ── 2. app_service/main.tf – site_config flags + ignore_changes ─────────────
 python3 - "$MOD/app_service/main.tf" <<'PYEOF'
