@@ -47,10 +47,6 @@ variable "alert_use_opsgenie" {
   description = "Use opsgenie for alerts"
 }
 
-
-
-
-
 variable "redis_idh_resource_tier" {
   type        = string
   description = "The IDH resource tier for the Redis cache."

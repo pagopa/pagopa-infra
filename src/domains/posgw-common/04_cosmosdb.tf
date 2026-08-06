@@ -62,7 +62,7 @@ resource "azurerm_key_vault_secret" "cosmos_pos_gateway_pkey" {
 }
 
 resource "azurerm_cosmosdb_mongo_database" "pos_gateway" {
-  name                = "pos-gateway"
+  name                = "posgw"
   resource_group_name = azurerm_resource_group.cosmos_rg.name
   account_name        = "${local.project}-cosmos-account"
 

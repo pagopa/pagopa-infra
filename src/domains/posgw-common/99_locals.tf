@@ -1,10 +1,8 @@
 locals {
-  domain        = "pos-gateway"
-  domain_short  = "posgw"
-  prefix        = "pagopa"
-  product       = "${local.prefix}-${var.env_short}"
-  project_short = "${local.prefix}-${var.env_short}-${var.location_short}-${local.domain_short}"
-  project       = "${local.prefix}-${var.env_short}-${var.location_short}-${local.domain}"
+  domain  = "posgw"
+  prefix  = "pagopa"
+  product = "${local.prefix}-${var.env_short}"
+  project = "${local.prefix}-${var.env_short}-${var.location_short}-${local.domain}"
 
 
   hub_vnet_name                            = "${local.product}-${var.location_short}-hub-vnet"

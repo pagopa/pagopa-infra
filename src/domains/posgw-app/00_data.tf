@@ -5,7 +5,7 @@ data "azurerm_resource_group" "identity_rg" {
 }
 
 data "azurerm_key_vault" "key_vault" {
-  name                = "${local.project_short}-kv"
+  name                = "${local.project}-kv"
   resource_group_name = "${local.product}-${var.location_short}-${local.domain}-sec-rg"
 
 }

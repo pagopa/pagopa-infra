@@ -1,10 +1,8 @@
 locals {
-  domain        = "pos-gateway"
-  domain_short  = "posgw"
-  prefix        = "pagopa"
-  product       = "${local.prefix}-${var.env_short}"
-  project_short = "${local.prefix}-${var.env_short}-${var.location_short}-${local.domain_short}"
-  project       = "${local.prefix}-${var.env_short}-${var.location_short}-${local.domain}"
+  domain  = "posgw"
+  prefix  = "pagopa"
+  product = "${local.prefix}-${var.env_short}"
+  project = "${local.prefix}-${var.env_short}-${var.location_short}-${local.domain}"
 
   hub_vnet_name                            = "${local.product}-${var.location_short}-hub-vnet"
   hub_vnet_resource_group_name             = "${local.product}-${var.location_short}-network-hub-spoke-rg"
@@ -37,7 +35,7 @@ locals {
   gh_runner_cae_name    = "${local.product}-${var.location_short}-core-tools-cae"
   gh_runner_cae_rg      = "${local.product}-${var.location_short}-core-tools-rg"
   gh_runner_pat_key     = "pagopa-platform-domain-github-bot-cd-pat"
-  gh_runner_pat_kv_name = "${local.project_short}-kv"
+  gh_runner_pat_kv_name = "${local.project}-kv"
   gh_runner_pat_kv_rg   = "${local.project}-sec-rg"
 
 

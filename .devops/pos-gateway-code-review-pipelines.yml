@@ -5,9 +5,9 @@ pr:
       - main
   paths:
     include:
-      - 'src/domains/pos-gateway-app'
-      - 'src/domains/pos-gateway-common'
-      - 'src/domains/pos-gateway-secrets'
+      - 'src/domains/posgw-app'
+      - 'src/domains/posgw-common'
+      - 'src/domains/posgw-secrets'
     exclude:
       - '**/*.lock.hcl'
       - '**/*.md'
@@ -50,9 +50,9 @@ resources:
 variables:
   TIME_OUT: 15
   # working dir
-  WORKING_DIR_APP: 'src/domains/pos-gateway-app'
-  WORKING_DIR_COMMON: 'src/domains/pos-gateway-common'
-  WORKING_DIR_SECRET: 'src/domains/pos-gateway-secrets'
+  WORKING_DIR_APP: 'src/domains/posgw-app'
+  WORKING_DIR_COMMON: 'src/domains/posgw-common'
+  WORKING_DIR_SECRET: 'src/domains/posgw-secrets'
   REGION_SHORT: "itn"
 
 stages:
