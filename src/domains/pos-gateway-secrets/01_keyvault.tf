@@ -17,54 +17,52 @@ module "key_vault" {
   tags = module.tag_config.tags
 }
 
-## ad group policy ##
-resource "azurerm_key_vault_access_policy" "ad_group_policy" {
-  key_vault_id = module.key_vault.id
-
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azuread_group.adgroup_admin.object_id
-
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "Backup", "Purge", "Recover", "Restore", "Sign", "UnwrapKey", "Update", "Verify", "WrapKey", "Release", "Rotate", "GetRotationPolicy", "SetRotationPolicy"]
-  secret_permissions      = ["Get", "List", "Set", "Delete", "Backup", "Purge", "Recover", "Restore"]
-  storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", ]
+## ad group policy admins ##
+module "kv_access_policy_admins" {
+  source            = "./.terraform/modules/__v4__/IDH/key_vault_access_policy"
+  product_name      = "pagopa"
+  idh_resource_tier = "admin"
+  env               = var.env
+  key_vault_id      = module.key_vault.id
+  tenant_id         = data.azurerm_client_config.current.tenant_id
+  object_id         = data.azuread_group.adgroup_admin.object_id
 }
 
-## ad group policy ##
-resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
-  count = var.env_short != "p" ? 1 : 0
-
-  key_vault_id = module.key_vault.id
-
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azuread_group.adgroup_developers.object_id
-
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "Recover", "Rotate", "GetRotationPolicy"]
-  secret_permissions  = ["Get", "List", "Set", "Delete", "Recover", ]
-  storage_permissions = []
-  certificate_permissions = [
-    "Get", "List", "Update", "Create", "Import",
-    "Delete", "Restore", "Purge", "Recover"
-  ]
+## ad group policy admin dev ##
+module "kv_access_policy_admin_dev" {
+  source            = "./.terraform/modules/__v4__/IDH/key_vault_access_policy"
+  product_name      = "pagopa"
+  idh_resource_tier = "admin_dev"
+  env               = var.env
+  key_vault_id      = module.key_vault.id
+  tenant_id         = data.azurerm_client_config.current.tenant_id
+  object_id         = data.azuread_group.adgroup_admin_dev.object_id
 }
 
-## ad group policy ##
-resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
-  count = var.env_short != "p" ? 1 : 0
-
-  key_vault_id = module.key_vault.id
-
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azuread_group.adgroup_externals.object_id
-
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "Recover", "Rotate", "GetRotationPolicy"]
-  secret_permissions  = ["Get", "List", "Set", "Delete", "Recover", ]
-  storage_permissions = []
-  certificate_permissions = [
-    "Get", "List", "Update", "Create", "Import",
-    "Delete", "Restore", "Purge", "Recover"
-  ]
+## ad group policy developers ##
+module "kv_access_policy_developers" {
+  count             = var.env_short != "p" ? 1 : 0
+  source            = "./.terraform/modules/__v4__/IDH/key_vault_access_policy"
+  product_name      = "pagopa"
+  idh_resource_tier = "developer"
+  env               = var.env
+  key_vault_id      = module.key_vault.id
+  tenant_id         = data.azurerm_client_config.current.tenant_id
+  object_id         = data.azuread_group.adgroup_developers.object_id
 }
+
+## ad group policy externals ##
+module "kv_access_policy_externals" {
+  count             = var.env_short != "p" ? 1 : 0
+  source            = "./.terraform/modules/__v4__/IDH/key_vault_access_policy"
+  product_name      = "pagopa"
+  idh_resource_tier = "external"
+  env               = var.env
+  key_vault_id      = module.key_vault.id
+  tenant_id         = data.azurerm_client_config.current.tenant_id
+  object_id         = data.azuread_group.adgroup_externals.object_id
+}
+
 
 
 ################
