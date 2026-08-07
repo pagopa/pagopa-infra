@@ -65,6 +65,10 @@ module "identity_cd_01" {
 data "azurerm_user_assigned_identity" "identity_cd_01" {
   name                = module.identity_cd_01.identity_app_name
   resource_group_name = module.identity_cd_01.identity_resource_group
+
+  depends_on = [
+    module.identity_cd_01
+  ]
 }
 
 resource "azurerm_federated_identity_credential" "mcp_cd_env_secure" {
