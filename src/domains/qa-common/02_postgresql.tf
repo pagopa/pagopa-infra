@@ -76,3 +76,30 @@ module "postgres_flexible_server_qa" {
 
   tags = module.tag_config.tags
 }
+
+# generates random password for the new user
+resource "random_password" "qachub_pwd" {
+  length  = 16
+  special = true
+}
+
+# 1. Create a new user (role) in PostgreSQL
+resource "postgresql_role" "qachub" {
+  name     = "qachub"
+  login    = true
+  password = random_password.qachub_pwd.result
+}
+
+# 2. Create the new Schema
+resource "postgresql_schema" "qachub_schema" {
+  name  = "qachub"
+  owner = postgresql_role.qachub.name
+  database = "qachub"
+}
+
+# Opzionale: Salva la password del nuovo utente nel Key Vault per farla leggere alla tua app!
+resource "azurerm_key_vault_secret" "qachub_pwd_secret" {
+  name         = "qa-centralhub-qachub-password"
+  value        = random_password.qachub_pwd.result
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}

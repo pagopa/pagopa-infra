@@ -17,6 +17,10 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "~> 2.35"
     }
+    postgresql = {
+      source  = "cyrilgdn/postgresql"
+      version = "~> 1.21.0"
+    }
   }
 
   backend "azurerm" {}
@@ -49,6 +53,15 @@ provider "kubernetes" {
       "--login", "azurecli"
     ]
   }
+}
+
+provider "postgresql" {
+  host            = module.postgres_flexible_server_qa.fqdn
+  port            = 5432
+  username        = data.azurerm_key_vault_secret.pgres_flex_admin_login.value
+  password        = data.azurerm_key_vault_secret.pgres_flex_admin_pwd.value
+  superuser       = false
+  sslmode         = "require"
 }
 
 module "__v4__" {
