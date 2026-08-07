@@ -1,5 +1,5 @@
 {
-  "openapi": "3.1.0",
+  "openapi": "3.0.3",
   "info": {
     "title": "QA Hub API",
     "version": "0.1.0"
@@ -10,6 +10,29 @@
     }
   ],
   "paths": {
+    "/api/v1/openapi.json": {
+      "get": {
+        "tags": [
+          "openapi"
+        ],
+        "summary": "Openapi",
+        "operationId": "openapi_api_v1_openapi_json_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Openapi Api V1 Openapi Json Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/health": {
       "get": {
         "tags": [
@@ -331,15 +354,9 @@
             "in": "query",
             "required": false,
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Status"
+              "title": "Status",
+              "type": "string",
+              "nullable": true
             }
           }
         ],
@@ -384,16 +401,10 @@
             "in": "query",
             "required": false,
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Project Id"
+              "title": "Project Id",
+              "type": "string",
+              "format": "uuid",
+              "nullable": true
             }
           },
           {
@@ -401,15 +412,9 @@
             "in": "query",
             "required": false,
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Status"
+              "title": "Status",
+              "type": "string",
+              "nullable": true
             }
           },
           {
@@ -982,16 +987,10 @@
             "in": "query",
             "required": false,
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Suite Id"
+              "title": "Suite Id",
+              "type": "string",
+              "format": "uuid",
+              "nullable": true
             }
           },
           {
@@ -1307,6 +1306,27 @@
         }
       }
     },
+    "/api/v1/jira/estimate-drift": {
+      "get": {
+        "tags": [
+          "jira"
+        ],
+        "summary": "Get Estimate Drift",
+        "operationId": "get_estimate_drift_api_v1_jira_estimate_drift_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JiraEstimateDrift"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/jira/sanp/overview": {
       "get": {
         "tags": [
@@ -1349,6 +1369,27 @@
         }
       }
     },
+    "/api/v1/jira/sanp/estimate-drift": {
+      "get": {
+        "tags": [
+          "jira"
+        ],
+        "summary": "Get Sanp Estimate Drift",
+        "operationId": "get_sanp_estimate_drift_api_v1_jira_sanp_estimate_drift_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JiraEstimateDrift"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/jira/data/overview": {
       "get": {
         "tags": [
@@ -1384,6 +1425,27 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/JiraTrend"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jira/data/estimate-drift": {
+      "get": {
+        "tags": [
+          "jira"
+        ],
+        "summary": "Get Data Estimate Drift",
+        "operationId": "get_data_estimate_drift_api_v1_jira_data_estimate_drift_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JiraEstimateDrift"
                 }
               }
             }
@@ -1899,15 +1961,13 @@
             "in": "query",
             "required": false,
             "schema": {
-              "anyOf": [
+              "title": "Category",
+              "allOf": [
                 {
                   "$ref": "#/components/schemas/DqCategory"
-                },
-                {
-                  "type": "null"
                 }
               ],
-              "title": "Category"
+              "nullable": true
             }
           }
         ],
@@ -2119,16 +2179,10 @@
             "in": "query",
             "required": false,
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Domain Id"
+              "title": "Domain Id",
+              "type": "string",
+              "format": "uuid",
+              "nullable": true
             }
           },
           {
@@ -2136,15 +2190,13 @@
             "in": "query",
             "required": false,
             "schema": {
-              "anyOf": [
+              "title": "Category",
+              "allOf": [
                 {
                   "$ref": "#/components/schemas/DqCategory"
-                },
-                {
-                  "type": "null"
                 }
               ],
-              "title": "Category"
+              "nullable": true
             }
           }
         ],
@@ -2534,6 +2586,465 @@
           }
         }
       }
+    },
+    "/api/v1/tm/resources": {
+      "get": {
+        "tags": [
+          "tm"
+        ],
+        "summary": "List Resources",
+        "operationId": "list_resources_api_v1_tm_resources_get",
+        "parameters": [
+          {
+            "name": "include_inactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Include Inactive"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExternalResourceOut"
+                  },
+                  "title": "Response List Resources Api V1 Tm Resources Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "tm"
+        ],
+        "summary": "Create Resource",
+        "operationId": "create_resource_api_v1_tm_resources_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalResourceCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalResourceOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tm/resources/{resource_id}": {
+      "patch": {
+        "tags": [
+          "tm"
+        ],
+        "summary": "Update Resource",
+        "operationId": "update_resource_api_v1_tm_resources__resource_id__patch",
+        "parameters": [
+          {
+            "name": "resource_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Resource Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalResourceUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalResourceOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "tm"
+        ],
+        "summary": "Deactivate Resource",
+        "operationId": "deactivate_resource_api_v1_tm_resources__resource_id__delete",
+        "parameters": [
+          {
+            "name": "resource_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Resource Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tm/absences": {
+      "get": {
+        "tags": [
+          "tm"
+        ],
+        "summary": "List Absences",
+        "operationId": "list_absences_api_v1_tm_absences_get",
+        "parameters": [
+          {
+            "name": "resource_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Resource Id",
+              "type": "string",
+              "format": "uuid",
+              "nullable": true
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Year",
+              "type": "integer",
+              "nullable": true
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Month",
+              "type": "integer",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResourceAbsenceOut"
+                  },
+                  "title": "Response List Absences Api V1 Tm Absences Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "tm"
+        ],
+        "summary": "Create Absence",
+        "operationId": "create_absence_api_v1_tm_absences_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResourceAbsenceCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceAbsenceOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tm/absences/{absence_id}": {
+      "delete": {
+        "tags": [
+          "tm"
+        ],
+        "summary": "Delete Absence",
+        "operationId": "delete_absence_api_v1_tm_absences__absence_id__delete",
+        "parameters": [
+          {
+            "name": "absence_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Absence Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tm/absences/import-csv": {
+      "post": {
+        "tags": [
+          "tm"
+        ],
+        "summary": "Import Absences Csv",
+        "operationId": "import_absences_csv_api_v1_tm_absences_import_csv_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CsvAbsenceImportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CsvAbsenceImportResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tm/absences/sync-confluence": {
+      "post": {
+        "tags": [
+          "tm"
+        ],
+        "summary": "Sync Confluence",
+        "operationId": "sync_confluence_api_v1_tm_absences_sync_confluence_post",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Year"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Month"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SyncResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tm/costs": {
+      "get": {
+        "tags": [
+          "tm"
+        ],
+        "summary": "Get Cost Report",
+        "operationId": "get_cost_report_api_v1_tm_costs_get",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Year"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Month"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CostReport"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2569,8 +3080,8 @@
           },
           "file": {
             "type": "string",
-            "contentMediaType": "application/octet-stream",
-            "title": "File"
+            "title": "File",
+            "format": "binary"
           }
         },
         "type": "object",
@@ -2597,6 +3108,109 @@
         ],
         "title": "BulkDeleteRequest"
       },
+      "CostReport": {
+        "properties": {
+          "year": {
+            "type": "integer",
+            "title": "Year"
+          },
+          "month": {
+            "type": "integer",
+            "title": "Month"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCostRow"
+            },
+            "type": "array",
+            "title": "Rows"
+          },
+          "grand_total": {
+            "type": "number",
+            "title": "Grand Total"
+          }
+        },
+        "type": "object",
+        "required": [
+          "year",
+          "month",
+          "rows",
+          "grand_total"
+        ],
+        "title": "CostReport"
+      },
+      "CsvAbsenceImportRequest": {
+        "properties": {
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/CsvAbsenceRow"
+            },
+            "type": "array",
+            "title": "Rows"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rows"
+        ],
+        "title": "CsvAbsenceImportRequest"
+      },
+      "CsvAbsenceImportResult": {
+        "properties": {
+          "imported": {
+            "type": "integer",
+            "title": "Imported"
+          },
+          "skipped": {
+            "type": "integer",
+            "title": "Skipped"
+          },
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Errors"
+          }
+        },
+        "type": "object",
+        "required": [
+          "imported",
+          "skipped",
+          "errors"
+        ],
+        "title": "CsvAbsenceImportResult"
+      },
+      "CsvAbsenceRow": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "absence_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Absence Date"
+          },
+          "absence_type": {
+            "type": "string",
+            "title": "Absence Type",
+            "default": "ferie"
+          },
+          "note": {
+            "title": "Note",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "absence_date"
+        ],
+        "title": "CsvAbsenceRow"
+      },
       "DocItemCreate": {
         "properties": {
           "title": {
@@ -2604,15 +3218,9 @@
             "title": "Title"
           },
           "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description"
+            "title": "Description",
+            "type": "string",
+            "nullable": true
           },
           "url": {
             "type": "string",
@@ -2645,15 +3253,9 @@
             "default": "page"
           },
           "thumbnail_url": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Thumbnail Url"
+            "title": "Thumbnail Url",
+            "type": "string",
+            "nullable": true
           },
           "position": {
             "type": "integer",
@@ -2680,15 +3282,9 @@
             "title": "Title"
           },
           "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description"
+            "title": "Description",
+            "type": "string",
+            "nullable": true
           },
           "url": {
             "type": "string",
@@ -2707,15 +3303,9 @@
             "title": "Icon"
           },
           "thumbnail_url": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Thumbnail Url"
+            "title": "Thumbnail Url",
+            "type": "string",
+            "nullable": true
           },
           "position": {
             "type": "integer",
@@ -2751,103 +3341,55 @@
       "DocItemUpdate": {
         "properties": {
           "title": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Title"
+            "title": "Title",
+            "type": "string",
+            "nullable": true
           },
           "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description"
+            "title": "Description",
+            "type": "string",
+            "nullable": true
           },
           "url": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Url"
+            "title": "Url",
+            "type": "string",
+            "nullable": true
           },
           "type": {
-            "anyOf": [
-              {
-                "type": "string",
-                "enum": [
-                  "external",
-                  "embedded"
-                ]
-              },
-              {
-                "type": "null"
-              }
+            "title": "Type",
+            "type": "string",
+            "enum": [
+              "external",
+              "embedded"
             ],
-            "title": "Type"
+            "nullable": true
           },
           "category": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Category"
+            "title": "Category",
+            "type": "string",
+            "nullable": true
           },
           "icon": {
-            "anyOf": [
-              {
-                "type": "string",
-                "enum": [
-                  "confluence",
-                  "page",
-                  "template",
-                  "web",
-                  "video"
-                ]
-              },
-              {
-                "type": "null"
-              }
+            "title": "Icon",
+            "type": "string",
+            "enum": [
+              "confluence",
+              "page",
+              "template",
+              "web",
+              "video"
             ],
-            "title": "Icon"
+            "nullable": true
           },
           "thumbnail_url": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Thumbnail Url"
+            "title": "Thumbnail Url",
+            "type": "string",
+            "nullable": true
           },
           "position": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Position"
+            "title": "Position",
+            "type": "integer",
+            "nullable": true
           }
         },
         "type": "object",
@@ -2936,49 +3478,25 @@
       "DqCatalogControlUpdate": {
         "properties": {
           "category": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Category"
+            "title": "Category",
+            "type": "string",
+            "nullable": true
           },
           "name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Name"
+            "title": "Name",
+            "type": "string",
+            "nullable": true
           },
           "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description"
+            "title": "Description",
+            "type": "string",
+            "nullable": true
           },
           "dimension_id": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "uuid"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Dimension Id"
+            "title": "Dimension Id",
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
           }
         },
         "type": "object",
@@ -3014,15 +3532,9 @@
             "title": "Field Ref"
           },
           "owner": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Owner"
+            "title": "Owner",
+            "type": "string",
+            "nullable": true
           },
           "risk": {
             "type": "string",
@@ -3038,15 +3550,9 @@
             "default": "da_implementare"
           },
           "notes": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Notes"
+            "title": "Notes",
+            "type": "string",
+            "nullable": true
           }
         },
         "type": "object",
@@ -3081,15 +3587,9 @@
             "title": "Field Ref"
           },
           "owner": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Owner"
+            "title": "Owner",
+            "type": "string",
+            "nullable": true
           },
           "risk": {
             "type": "string",
@@ -3105,15 +3605,9 @@
             "default": "da_implementare"
           },
           "notes": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Notes"
+            "title": "Notes",
+            "type": "string",
+            "nullable": true
           },
           "id": {
             "type": "string",
@@ -3152,81 +3646,39 @@
       "DqControlInstanceUpdate": {
         "properties": {
           "table_ref": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Table Ref"
+            "title": "Table Ref",
+            "type": "string",
+            "nullable": true
           },
           "field_ref": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Field Ref"
+            "title": "Field Ref",
+            "type": "string",
+            "nullable": true
           },
           "owner": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Owner"
+            "title": "Owner",
+            "type": "string",
+            "nullable": true
           },
           "risk": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Risk"
+            "title": "Risk",
+            "type": "string",
+            "nullable": true
           },
           "impact": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Impact"
+            "title": "Impact",
+            "type": "string",
+            "nullable": true
           },
           "status": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Status"
+            "title": "Status",
+            "type": "string",
+            "nullable": true
           },
           "notes": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Notes"
+            "title": "Notes",
+            "type": "string",
+            "nullable": true
           }
         },
         "type": "object",
@@ -3277,26 +3729,14 @@
       "DqDimensionUpdate": {
         "properties": {
           "name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Name"
+            "title": "Name",
+            "type": "string",
+            "nullable": true
           },
           "sort_order": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Sort Order"
+            "title": "Sort Order",
+            "type": "integer",
+            "nullable": true
           }
         },
         "type": "object",
@@ -3359,30 +3799,304 @@
       "DqDomainUpdate": {
         "properties": {
           "name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Name"
+            "title": "Name",
+            "type": "string",
+            "nullable": true
           },
           "sort_order": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Sort Order"
+            "title": "Sort Order",
+            "type": "integer",
+            "nullable": true
           }
         },
         "type": "object",
         "title": "DqDomainUpdate"
+      },
+      "EstimateDriftGroup": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "original_estimate_sec": {
+            "type": "integer",
+            "title": "Original Estimate Sec"
+          },
+          "time_spent_sec": {
+            "type": "integer",
+            "title": "Time Spent Sec"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "original_estimate_sec",
+          "time_spent_sec"
+        ],
+        "title": "EstimateDriftGroup"
+      },
+      "EstimateDriftItem": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "issue_type": {
+            "type": "string",
+            "title": "Issue Type"
+          },
+          "assignee": {
+            "type": "string",
+            "title": "Assignee"
+          },
+          "original_estimate_sec": {
+            "type": "integer",
+            "title": "Original Estimate Sec"
+          },
+          "time_spent_sec": {
+            "type": "integer",
+            "title": "Time Spent Sec"
+          },
+          "drift_sec": {
+            "type": "integer",
+            "title": "Drift Sec"
+          },
+          "drift_pct": {
+            "type": "number",
+            "title": "Drift Pct"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "summary",
+          "issue_type",
+          "assignee",
+          "original_estimate_sec",
+          "time_spent_sec",
+          "drift_sec",
+          "drift_pct"
+        ],
+        "title": "EstimateDriftItem"
+      },
+      "ExternalResourceCreate": {
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "First Name"
+          },
+          "last_name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Last Name"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "company": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Company"
+          },
+          "role": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Role"
+          },
+          "daily_rate": {
+            "type": "number",
+            "exclusiveMinimum": true,
+            "title": "Daily Rate",
+            "minimum": 0.0
+          },
+          "contract_start": {
+            "type": "string",
+            "format": "date",
+            "title": "Contract Start"
+          },
+          "contract_end": {
+            "title": "Contract End",
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "first_name",
+          "last_name",
+          "email",
+          "company",
+          "role",
+          "daily_rate",
+          "contract_start"
+        ],
+        "title": "ExternalResourceCreate"
+      },
+      "ExternalResourceOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "first_name": {
+            "type": "string",
+            "title": "First Name"
+          },
+          "last_name": {
+            "type": "string",
+            "title": "Last Name"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "company": {
+            "type": "string",
+            "title": "Company"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "daily_rate": {
+            "type": "number",
+            "title": "Daily Rate"
+          },
+          "contract_start": {
+            "type": "string",
+            "format": "date",
+            "title": "Contract Start"
+          },
+          "contract_end": {
+            "title": "Contract End",
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string",
+            "nullable": true
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "first_name",
+          "last_name",
+          "email",
+          "company",
+          "role",
+          "daily_rate",
+          "contract_start",
+          "contract_end",
+          "notes",
+          "is_active",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "ExternalResourceOut"
+      },
+      "ExternalResourceUpdate": {
+        "properties": {
+          "first_name": {
+            "title": "First Name",
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "nullable": true
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "nullable": true
+          },
+          "email": {
+            "title": "Email",
+            "type": "string",
+            "format": "email",
+            "nullable": true
+          },
+          "company": {
+            "title": "Company",
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "nullable": true
+          },
+          "role": {
+            "title": "Role",
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "nullable": true
+          },
+          "daily_rate": {
+            "title": "Daily Rate",
+            "type": "number",
+            "exclusiveMinimum": true,
+            "nullable": true,
+            "minimum": 0.0
+          },
+          "contract_start": {
+            "title": "Contract Start",
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "contract_end": {
+            "title": "Contract End",
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string",
+            "nullable": true
+          },
+          "is_active": {
+            "title": "Is Active",
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "title": "ExternalResourceUpdate"
       },
       "GenerateRequest": {
         "properties": {
@@ -3515,14 +4229,12 @@
             "title": "Items"
           },
           "sync_status": {
-            "anyOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/GpdPositionSyncStatusOut"
-              },
-              {
-                "type": "null"
               }
-            ]
+            ],
+            "nullable": true
           }
         },
         "type": "object",
@@ -3572,6 +4284,58 @@
           "days"
         ],
         "title": "JiraAlert"
+      },
+      "JiraEstimateDrift": {
+        "properties": {
+          "issues_with_estimate": {
+            "type": "integer",
+            "title": "Issues With Estimate"
+          },
+          "total_original_sec": {
+            "type": "integer",
+            "title": "Total Original Sec"
+          },
+          "total_spent_sec": {
+            "type": "integer",
+            "title": "Total Spent Sec"
+          },
+          "drift_sec": {
+            "type": "integer",
+            "title": "Drift Sec"
+          },
+          "by_assignee": {
+            "items": {
+              "$ref": "#/components/schemas/EstimateDriftGroup"
+            },
+            "type": "array",
+            "title": "By Assignee"
+          },
+          "by_type": {
+            "items": {
+              "$ref": "#/components/schemas/EstimateDriftGroup"
+            },
+            "type": "array",
+            "title": "By Type"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/EstimateDriftItem"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "issues_with_estimate",
+          "total_original_sec",
+          "total_spent_sec",
+          "drift_sec",
+          "by_assignee",
+          "by_type",
+          "items"
+        ],
+        "title": "JiraEstimateDrift"
       },
       "JiraOverview": {
         "properties": {
@@ -3779,37 +4543,19 @@
             "title": "Source Type"
           },
           "content": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Content"
+            "title": "Content",
+            "type": "string",
+            "nullable": true
           },
           "url": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Url"
+            "title": "Url",
+            "type": "string",
+            "nullable": true
           },
           "confluence_page_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Confluence Page Id"
+            "title": "Confluence Page Id",
+            "type": "string",
+            "nullable": true
           }
         },
         "type": "object",
@@ -3838,15 +4584,9 @@
             "title": "Name"
           },
           "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description"
+            "title": "Description",
+            "type": "string",
+            "nullable": true
           }
         },
         "type": "object",
@@ -3867,15 +4607,9 @@
             "title": "Name"
           },
           "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description"
+            "title": "Description",
+            "type": "string",
+            "nullable": true
           },
           "created_at": {
             "type": "string",
@@ -3906,26 +4640,14 @@
       "ProjectUpdate": {
         "properties": {
           "name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Name"
+            "title": "Name",
+            "type": "string",
+            "nullable": true
           },
           "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description"
+            "title": "Description",
+            "type": "string",
+            "nullable": true
           }
         },
         "type": "object",
@@ -3941,14 +4663,12 @@
             "title": "Items"
           },
           "sync_status": {
-            "anyOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/PspFeeSyncStatusOut"
-              },
-              {
-                "type": "null"
               }
-            ]
+            ],
+            "nullable": true
           }
         },
         "type": "object",
@@ -3990,26 +4710,14 @@
             "title": "Inf Desc Serv"
           },
           "inf_url_canale": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Inf Url Canale"
+            "title": "Inf Url Canale",
+            "type": "string",
+            "nullable": true
           },
           "url_informazioni_psp": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Url Informazioni Psp"
+            "title": "Url Informazioni Psp",
+            "type": "string",
+            "nullable": true
           },
           "tipo_vers_cod": {
             "type": "string",
@@ -4024,37 +4732,19 @@
             "title": "Canale Mod Pag Code"
           },
           "importo_minimo": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Importo Minimo"
+            "title": "Importo Minimo",
+            "type": "number",
+            "nullable": true
           },
           "importo_massimo": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Importo Massimo"
+            "title": "Importo Massimo",
+            "type": "number",
+            "nullable": true
           },
           "costo_fisso": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Costo Fisso"
+            "title": "Costo Fisso",
+            "type": "number",
+            "nullable": true
           },
           "on_us": {
             "type": "boolean",
@@ -4163,6 +4853,144 @@
           "synced_at"
         ],
         "title": "PspFeeSyncStatusOut"
+      },
+      "ResourceAbsenceCreate": {
+        "properties": {
+          "resource_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Resource Id"
+          },
+          "absence_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Absence Date"
+          },
+          "absence_type": {
+            "type": "string",
+            "title": "Absence Type",
+            "default": "ferie"
+          },
+          "note": {
+            "title": "Note",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "resource_id",
+          "absence_date"
+        ],
+        "title": "ResourceAbsenceCreate"
+      },
+      "ResourceAbsenceOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "resource_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Resource Id"
+          },
+          "absence_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Absence Date"
+          },
+          "absence_type": {
+            "type": "string",
+            "title": "Absence Type"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "confluence_event_id": {
+            "title": "Confluence Event Id",
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "title": "Note",
+            "type": "string",
+            "nullable": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "resource_id",
+          "absence_date",
+          "absence_type",
+          "source",
+          "confluence_event_id",
+          "note",
+          "created_at"
+        ],
+        "title": "ResourceAbsenceOut"
+      },
+      "ResourceCostRow": {
+        "properties": {
+          "resource_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Resource Id"
+          },
+          "full_name": {
+            "type": "string",
+            "title": "Full Name"
+          },
+          "company": {
+            "type": "string",
+            "title": "Company"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "working_days": {
+            "type": "integer",
+            "title": "Working Days"
+          },
+          "absence_days": {
+            "type": "integer",
+            "title": "Absence Days"
+          },
+          "billable_days": {
+            "type": "integer",
+            "title": "Billable Days"
+          },
+          "daily_rate": {
+            "type": "number",
+            "title": "Daily Rate"
+          },
+          "total_cost": {
+            "type": "number",
+            "title": "Total Cost"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resource_id",
+          "full_name",
+          "company",
+          "role",
+          "working_days",
+          "absence_days",
+          "billable_days",
+          "daily_rate",
+          "total_cost"
+        ],
+        "title": "ResourceCostRow"
       },
       "RoleMatrixResponse": {
         "properties": {
@@ -4392,15 +5220,9 @@
             "title": "Source Type"
           },
           "source_ref": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Source Ref"
+            "title": "Source Ref",
+            "type": "string",
+            "nullable": true
           },
           "gherkin": {
             "type": "string",
@@ -4428,15 +5250,9 @@
             "title": "Ai Model"
           },
           "generation_time_ms": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Generation Time Ms"
+            "title": "Generation Time Ms",
+            "type": "integer",
+            "nullable": true
           }
         },
         "type": "object",
@@ -4476,15 +5292,9 @@
             "title": "Source Type"
           },
           "source_ref": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Source Ref"
+            "title": "Source Ref",
+            "type": "string",
+            "nullable": true
           },
           "gherkin": {
             "type": "string",
@@ -4510,15 +5320,9 @@
             "title": "Ai Model"
           },
           "generation_time_ms": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Generation Time Ms"
+            "title": "Generation Time Ms",
+            "type": "integer",
+            "nullable": true
           },
           "created_at": {
             "type": "string",
@@ -4553,51 +5357,27 @@
       "ScenarioUpdate": {
         "properties": {
           "title": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Title"
+            "title": "Title",
+            "type": "string",
+            "nullable": true
           },
           "gherkin": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Gherkin"
+            "title": "Gherkin",
+            "type": "string",
+            "nullable": true
           },
           "tags": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Tags"
+            "title": "Tags",
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "nullable": true
           },
           "status": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Status"
+            "title": "Status",
+            "type": "string",
+            "nullable": true
           }
         },
         "type": "object",
@@ -4626,15 +5406,9 @@
             "title": "Ollama Model"
           },
           "confluence_email": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Confluence Email"
+            "title": "Confluence Email",
+            "type": "string",
+            "nullable": true
           },
           "confluence_token_set": {
             "type": "boolean",
@@ -4666,103 +5440,49 @@
       "SettingsUpdate": {
         "properties": {
           "ai_provider": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ai Provider"
+            "title": "Ai Provider",
+            "type": "string",
+            "nullable": true
           },
           "claude_api_key": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Claude Api Key"
+            "title": "Claude Api Key",
+            "type": "string",
+            "nullable": true
           },
           "claude_model": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Claude Model"
+            "title": "Claude Model",
+            "type": "string",
+            "nullable": true
           },
           "ollama_base_url": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ollama Base Url"
+            "title": "Ollama Base Url",
+            "type": "string",
+            "nullable": true
           },
           "ollama_model": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ollama Model"
+            "title": "Ollama Model",
+            "type": "string",
+            "nullable": true
           },
           "confluence_email": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Confluence Email"
+            "title": "Confluence Email",
+            "type": "string",
+            "nullable": true
           },
           "confluence_api_token": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Confluence Api Token"
+            "title": "Confluence Api Token",
+            "type": "string",
+            "nullable": true
           },
           "gherkin_language": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Gherkin Language"
+            "title": "Gherkin Language",
+            "type": "string",
+            "nullable": true
           },
           "max_scenarios": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Max Scenarios"
+            "title": "Max Scenarios",
+            "type": "integer",
+            "nullable": true
           }
         },
         "type": "object",
@@ -4793,15 +5513,9 @@
             "default": true
           },
           "sync_lookback_days": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Sync Lookback Days"
+            "title": "Sync Lookback Days",
+            "type": "integer",
+            "nullable": true
           }
         },
         "type": "object",
@@ -4840,27 +5554,15 @@
             "title": "Enabled"
           },
           "sync_lookback_days": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Sync Lookback Days"
+            "title": "Sync Lookback Days",
+            "type": "integer",
+            "nullable": true
           },
           "last_synced_at": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Last Synced At"
+            "title": "Last Synced At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         },
         "type": "object",
@@ -4879,59 +5581,29 @@
       "SuiteUpdate": {
         "properties": {
           "display_name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Display Name"
+            "title": "Display Name",
+            "type": "string",
+            "nullable": true
           },
           "suite_path": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Suite Path"
+            "title": "Suite Path",
+            "type": "string",
+            "nullable": true
           },
           "github_repo": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Github Repo"
+            "title": "Github Repo",
+            "type": "string",
+            "nullable": true
           },
           "enabled": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Enabled"
+            "title": "Enabled",
+            "type": "boolean",
+            "nullable": true
           },
           "sync_lookback_days": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Sync Lookback Days"
+            "title": "Sync Lookback Days",
+            "type": "integer",
+            "nullable": true
           }
         },
         "type": "object",
@@ -4943,14 +5615,12 @@
             "$ref": "#/components/schemas/SuiteOut"
           },
           "latest_run": {
-            "anyOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/RunOut"
-              },
-              {
-                "type": "null"
               }
-            ]
+            ],
+            "nullable": true
           },
           "trend": {
             "items": {
@@ -4979,15 +5649,9 @@
             "title": "Name"
           },
           "idp_sub": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Idp Sub"
+            "title": "Idp Sub",
+            "type": "string",
+            "nullable": true
           }
         },
         "type": "object",
@@ -5032,6 +5696,27 @@
           "message"
         ],
         "title": "SyncResponse"
+      },
+      "SyncResult": {
+        "properties": {
+          "synced": {
+            "type": "integer",
+            "title": "Synced"
+          },
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Errors"
+          }
+        },
+        "type": "object",
+        "required": [
+          "synced",
+          "errors"
+        ],
+        "title": "SyncResult"
       },
       "TrendWeek": {
         "properties": {
@@ -5149,26 +5834,14 @@
       "UserUpdate": {
         "properties": {
           "role": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Role"
+            "title": "Role",
+            "type": "string",
+            "nullable": true
           },
           "is_active": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Is Active"
+            "title": "Is Active",
+            "type": "boolean",
+            "nullable": true
           }
         },
         "type": "object",
