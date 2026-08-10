@@ -6,8 +6,8 @@ resource "azurerm_resource_group" "qa_hub_rg" {
 }
 
 data "azurerm_container_registry" "qa_hub_acr" {
-  name                = "pagopaditncoreacr"
-  resource_group_name = "pagopa-d-itn-acr-rg"
+  name                = "pagopa${var.env_short}${var.location_short}coreacr"
+  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-acr-rg"
 }
 
 resource "azurerm_role_assignment" "qa_hub_app_service_acr_pull" {
@@ -42,9 +42,8 @@ module "qa_hub_app_service" {
   docker_image             = var.qa_hub_image.docker_image
   docker_image_tag         = var.qa_hub_image.docker_image_tag
   docker_registry_url      = "https://${data.azurerm_container_registry.qa_hub_acr.login_server}"
-  docker_registry_username = null
-  docker_registry_password = null
-  container_registry_use_managed_identity = true
+  docker_registry_username = data.azurerm_container_registry.qa_hub_acr.admin_username
+  docker_registry_password = data.azurerm_container_registry.qa_hub_acr.admin_password
 
   tags = module.tag_config.tags
   # which subnet is allowed to reach this app service
