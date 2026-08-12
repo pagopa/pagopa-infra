@@ -24,14 +24,14 @@ github_issues_repo  = "pagopa-payments-department-centralhub"
 onemail_base_url    = "https://onemail.pagopa.it"
 onemail_env         = "prod"
 onemail_from_email  = "noreply@internal-apps.platform.pagopa.it"
-onemail_tenant_name = "PROD"
+onemail_tenant_name = "TEST" # Real tenant name for production
 
 timetrack_email_disable_send = false
-timetrack_email_force_to     = "cristiano.sticca@pagopa.it"
+timetrack_email_force_to     = ""
 timetrack_onemail_from_email = "noreply@internal-apps.platform.pagopa.it"
 
 training_email_disable_send = false
-training_email_force_to     = "cristiano.sticca@pagopa.it"
+training_email_force_to     = ""
 training_onemail_from_email = "noreply@internal-apps.platform.pagopa.it"
 
 websites_enable_app_service_storage = false
