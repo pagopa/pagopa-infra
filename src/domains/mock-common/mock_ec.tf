@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "mock_ec_rg" {
 # Subnet to host the mock ec
 module "mock_ec_snet" {
   count                                         = var.mock_ec_enabled && var.cidr_subnet_mock_ec != null ? 1 : 0
-  source                                        = "./.terraform/modules/__v3__/subnet"
+  source                                        = "./.terraform/modules/__v4__/subnet"
   name                                          = format("%s-mock-ec-snet", local.project_legacy)
   address_prefixes                              = var.cidr_subnet_mock_ec
   resource_group_name                           = local.vnet_resource_group_name
@@ -27,7 +27,7 @@ module "mock_ec_snet" {
 
 module "mock_ec" {
   count  = var.mock_ec_enabled ? 1 : 0
-  source = "./.terraform/modules/__v3__/app_service"
+  source = "./.terraform/modules/__v4__/app_service"
 
   resource_group_name = azurerm_resource_group.mock_ec_rg[0].name
   location            = var.location
@@ -44,6 +44,7 @@ module "mock_ec" {
   always_on           = var.mock_ec_always_on
   app_command_line    = "node /home/site/wwwroot/dist/index.js"
   health_check_path   = "/mock-ec/info"
+  health_check_maxpingfailures = var.env_short != "p" ? 10 : 2
   node_version        = "12-lts"
 
   app_settings = {
