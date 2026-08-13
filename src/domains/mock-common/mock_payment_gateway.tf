@@ -40,13 +40,13 @@ module "mock_payment_gateway" {
   ip_restriction_default_action = "Allow"
 
   # App service plan
-  name                = format("%s-app-mock-payment-gateway", local.project_legacy)
-  client_cert_enabled = false
-  always_on           = var.mock_payment_gateway_always_on
-  java_server         = "JAVA"
-  java_version        = "8"
-  java_server_version = "8"
-  health_check_path   = "/actuator/health"
+  name                         = format("%s-app-mock-payment-gateway", local.project_legacy)
+  client_cert_enabled          = false
+  always_on                    = var.mock_payment_gateway_always_on
+  java_server                  = "JAVA"
+  java_version                 = "8"
+  java_server_version          = "8"
+  health_check_path            = "/actuator/health"
   health_check_maxpingfailures = var.env_short != "p" ? 10 : 2
 
   app_settings = {

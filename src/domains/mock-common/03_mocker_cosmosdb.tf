@@ -11,11 +11,11 @@ resource "azurerm_resource_group" "mock_rg" {
 }
 
 module "mocker_cosmosdb_snet" {
-  source               = "./.terraform/modules/__v4__/subnet"
-  name                 = "${local.project}-cosmosdb-snet"
-  address_prefixes     = var.cidr_subnet_mocker_cosmosdb
-  resource_group_name  = local.vnet_resource_group_name
-  virtual_network_name = local.vnet_name
+  source                            = "./.terraform/modules/__v4__/subnet"
+  name                              = "${local.project}-cosmosdb-snet"
+  address_prefixes                  = var.cidr_subnet_mocker_cosmosdb
+  resource_group_name               = local.vnet_resource_group_name
+  virtual_network_name              = local.vnet_name
   private_endpoint_network_policies = "Disabled"
 
   service_endpoints = [
