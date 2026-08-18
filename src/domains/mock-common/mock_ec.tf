@@ -46,6 +46,7 @@ module "mock_ec" {
   health_check_path            = "/mock-ec/info"
   health_check_maxpingfailures = var.env_short != "p" ? 10 : 2
   node_version                 = "12-lts"
+  minimum_tls_version          = "1.2"
 
   app_settings = {
     WEBSITE_RUN_FROM_PACKAGE     = "1"
