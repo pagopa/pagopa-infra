@@ -147,10 +147,10 @@ variable "taxonomy_function_subnet" {
   default     = null
 }
 
-variable "taxonomy_function_network_policies_enabled" {
-  type        = bool
+variable "taxonomy_function_network_policies" {
+  type        = string
   description = "Network policies enabled"
-  default     = false
+  default     = "Disabled"
 }
 
 variable "taxonomy_function" {
@@ -271,3 +271,9 @@ variable "function_app_ip_restriction_default_action" {
   default     = "Allow"
 }
 
+variable "enabled_features" {
+  type = object({
+    node_forwarder_ha = optional(bool, false)
+  })
+  description = "Features enabled in this domain"
+}

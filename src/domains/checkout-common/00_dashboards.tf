@@ -1,6 +1,6 @@
-resource "azurerm_portal_dashboard" "checkout_auth_payment_flow_dashboard" {
+resource "azurerm_portal_dashboard" "checkout_authenticated_payment_flow_dashboard" {
   count               = var.env_short == "p" ? 1 : 0
-  name                = "checkout-auth-payment-flow-dashboard"
+  name                = "checkout-authenticated-payment-flow-dashboard"
   resource_group_name = var.monitor_resource_group_name
   location            = var.location
   tags = {
@@ -10,10 +10,10 @@ resource "azurerm_portal_dashboard" "checkout_auth_payment_flow_dashboard" {
   #see https://github.com/hashicorp/terraform-provider-azurerm/issues/27117 issue for more info
   dashboard_properties = jsonencode(
     merge(
-      jsondecode(file("./dashboards/checkout-auth-payment-flow-dashboard.json")).properties,
+      jsondecode(file("./dashboards/checkout-authenticated-payment-flow-dashboard.json")).properties,
       {
         "lenses" = {
-          for lens_index, lens in jsondecode(file("./dashboards/checkout-auth-payment-flow-dashboard.json")).properties.lenses :
+          for lens_index, lens in jsondecode(file("./dashboards/checkout-authenticated-payment-flow-dashboard.json")).properties.lenses :
           tostring(lens_index) => merge(lens, {
             "parts" = {
               for part_index, part in lens.parts :

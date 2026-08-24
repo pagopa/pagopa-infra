@@ -11,14 +11,13 @@ location_short = "weu"
 monitor_resource_group_name = "pagopa-d-monitor-rg"
 external_domain             = "pagopa.it"
 dns_zone_internal_prefix    = "internal.dev.platform"
-
+dns_zone_checkout           = "dev.checkout"
 # Networking
 
 ingress_load_balancer_ip = "10.1.100.250"
 
 
 # IAC Policy
-enable_iac_pipeline = true
 
 
 # Checkout Redis

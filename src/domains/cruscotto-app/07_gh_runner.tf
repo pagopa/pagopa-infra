@@ -21,6 +21,14 @@ module "gh_runner_job" {
     {
       name : "pagopa-cruscotto-backend",
       short_name : "crusc8-be"
+    },
+    {
+      name : "pagopa-cruscotto-sert-backend",
+      short_name : "crusc8-sert"
+    },
+    {
+      name : "pagopa-cruscotto-ingestor",
+      short_name : "crusc8-ingestor"
     }
   ]
   job = {

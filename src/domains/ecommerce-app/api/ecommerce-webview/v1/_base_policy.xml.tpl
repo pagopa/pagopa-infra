@@ -33,36 +33,12 @@
     <set-variable name="transactionsOperationId" value="getTransactionInfo,getTransactionOutcomes,newTransactionForEcommerceWebview" />
     <set-variable name="paymentMethodsOperationId" value="createSessionWebview" />
     <set-variable name="walletsOperationId" value="createWalletForTransactionsForIO" />
-    <!-- Extract 'iss' claim -->
-    <set-variable name="jwtIssuer" value="@{
-        Jwt jwt;
-        context.Request.Headers.GetValueOrDefault("Authorization", "").Split(' ').Last().TryParseJwt(out jwt);
-        return jwt?.Claims.GetValueOrDefault("iss", "");
-    }" />
-    <!-- Store useOpenId as string 'true' or 'false' -->
-    <set-variable name="useOpenId" value="@(
-        (context.Variables.GetValueOrDefault<string>("jwtIssuer")?.Contains("jwt-issuer-service") == true).ToString()
-    )" />
-    <!-- Conditional validation -->
-    <choose>
-        <when condition="@(bool.Parse(context.Variables.GetValueOrDefault<string>("useOpenId")))">
-            <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
-                <openid-config url="https://${ecommerce_ingress_hostname}/pagopa-jwt-issuer-service/.well-known/openid-configuration" />
-                <audiences>
-                  <audience>ecommerce</audience>
-                </audiences>
-            </validate-jwt>
-        </when>
-        <otherwise>
-            <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
-              <issuer-signing-keys>
-                  <key>{{ecommerce-webview-jwt-signing-key}}</key>
-                  <key>{{ecommerce-checkout-transaction-jwt-signing-key}}</key> <!-- TODO Need to review the key management for validation of the token used in this call as currently for payment wallet cards and apm tokens are signed differently -->
-                  <key>{{wallet-session-jwt-signing-key}}</key> <!-- TODO Need to remove this key. The session token for webview polling MUST be different from the one used for app IO Authentication -->
-              </issuer-signing-keys>
-            </validate-jwt>
-        </otherwise>
-    </choose>
+    <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
+        <openid-config url="https://${ecommerce_ingress_hostname}/pagopa-jwt-issuer-service/.well-known/openid-configuration" />
+        <audiences>
+          <audience>ecommerce</audience>
+        </audiences>
+    </validate-jwt>
     <set-variable name="xUserId" value="@{
       var jwt = (Jwt)context.Variables["jwtToken"];
       if(jwt.Claims.ContainsKey("userId")){

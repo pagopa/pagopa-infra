@@ -21,7 +21,7 @@ resource "azurerm_api_management_api_version_set" "pay_wallet_healthcheck_api" {
 }
 
 module "apim_pay_wallet_healthcheck_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.project}-healtcheck-api"
   api_management_name   = local.pagopa_apim_name

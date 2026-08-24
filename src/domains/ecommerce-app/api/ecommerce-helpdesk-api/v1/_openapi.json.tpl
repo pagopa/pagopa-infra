@@ -2290,7 +2290,8 @@
                 }
               },
               "required": [
-                "source"
+                "source",
+                "timeRange"
               ]
             },
             "examples": {

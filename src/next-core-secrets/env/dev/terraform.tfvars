@@ -1,6 +1,0 @@
-prefix         = "pagopa"
-env_short      = "d"
-env            = "dev"
-domain         = "core"
-location_short = "weu"
-input_file     = "./secret/dev/configs.json"

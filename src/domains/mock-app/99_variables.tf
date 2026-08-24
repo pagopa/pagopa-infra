@@ -34,11 +34,6 @@ variable "domain" {
   }
 }
 
-variable "location" {
-  type        = string
-  description = "One of westeurope, northeurope"
-}
-
 variable "location_short" {
   type = string
   validation {
@@ -143,4 +138,10 @@ variable "mock_enabled" {
   type        = bool
   description = "mock enabled on this environment"
   default     = false
+}
+
+variable "gh_runner_job_location" {
+  type        = string
+  description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
+  default     = "westeurope"
 }

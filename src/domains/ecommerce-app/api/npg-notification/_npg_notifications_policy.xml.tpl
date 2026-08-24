@@ -12,44 +12,17 @@
                 </return-response>
             </when>
         </choose>
-        <!-- Extract 'iss' claim -->
-        <set-variable name="jwtIssuer" value="@{
-            Jwt jwt;
-            context.Request.Url.Query.GetValueOrDefault("sessionToken","").Split(' ').Last().TryParseJwt(out jwt);
-            return jwt?.Claims.GetValueOrDefault("iss", "");
-        }" />
-        <!-- Store useOpenId as string 'true' or 'false' -->
-        <set-variable name="useOpenId" value="@(
-            (context.Variables.GetValueOrDefault<string>("jwtIssuer")?.Contains("jwt-issuer-service") == true).ToString()
-        )" />
-        <!-- Conditional validation -->
-        <choose>
-            <when condition="@(bool.Parse(context.Variables.GetValueOrDefault<string>("useOpenId")))">
-                <validate-jwt query-parameter-name="sessionToken" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
-                  <openid-config url="https://${hostname}/pagopa-jwt-issuer-service/.well-known/openid-configuration" />
-                  <audiences>
-                    <audience>npg</audience>
-                  </audiences>
-                  <required-claims>
-                    <claim name="orderId" match="all">
-                      <value>@((string)context.Variables.GetValueOrDefault("orderId",""))</value>
-                    </claim>
-                 </required-claims>
-                </validate-jwt>
-            </when>
-            <otherwise>
-                <validate-jwt query-parameter-name="sessionToken" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-signed-tokens="true" output-token-variable-name="jwtToken">
-                  <issuer-signing-keys>
-                      <key>{{npg-notification-jwt-secret}}</key>
-                  </issuer-signing-keys>
-                  <required-claims>
-                    <claim name="orderId" match="all">
-                      <value>@((string)context.Variables.GetValueOrDefault("orderId",""))</value>
-                    </claim>
-                 </required-claims>
-                </validate-jwt>
-            </otherwise>
-        </choose>
+        <validate-jwt query-parameter-name="sessionToken" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
+          <openid-config url="https://${hostname}/pagopa-jwt-issuer-service/.well-known/openid-configuration" />
+          <audiences>
+            <audience>npg</audience>
+          </audiences>
+          <required-claims>
+            <claim name="orderId" match="all">
+              <value>@((string)context.Variables.GetValueOrDefault("orderId",""))</value>
+            </claim>
+         </required-claims>
+        </validate-jwt>
         <!-- end validation policy -->
       <!-- start policy variables -->
       <set-variable name="transactionId" value="@{

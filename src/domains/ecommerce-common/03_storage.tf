@@ -362,7 +362,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
     custom_webhook_payload = "{}"
   }
   data_source_id = module.ecommerce_storage_transient.id
-  description    = format("Enqueuing rate for queue %s > ${each.value.dynamic_threshold} percent threshold of 'PutMessage' (at least 10) during last ${each.value.time_window} minutes", replace("${each.value.queue_key}", "-", " "))
+  description    = format("Enqueuing rate for queue %s > ${each.value.dynamic_threshold} percent threshold of 'PutMessage' (at least ${each.value.threshold}) during last ${each.value.time_window} minutes", replace("${each.value.queue_key}", "-", " "))
   enabled        = true
   query = format(<<-QUERY
     let endDelete = ago(10m);

@@ -48,6 +48,23 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   ]
 }
 
+resource "azurerm_key_vault_access_policy" "adgroup_external_dev_policy" {
+  count = var.env_short != "p" ? 1 : 0
+
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azuread_group.adgroup_developer_externals[0].object_id
+
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions  = ["Get", "List", "Set", "Delete", ]
+  storage_permissions = []
+  certificate_permissions = [
+    "Get", "List", "Update", "Create", "Import",
+    "Delete", "Restore", "Purge", "Recover"
+  ]
+}
+
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "adgroup_admin_dev_policy" {
   key_vault_id = module.key_vault.id
@@ -64,24 +81,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_admin_dev_policy" {
   ]
 }
 
-# azure devops policy
-data "azuread_service_principal" "iac_principal" {
-  count        = var.enable_iac_pipeline ? 1 : 0
-  display_name = format("pagopaspa-pagoPA-iac-%s", data.azurerm_subscription.current.subscription_id)
-}
 
-resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
-  count        = var.enable_iac_pipeline ? 1 : 0
-  key_vault_id = module.key_vault.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = data.azuread_service_principal.iac_principal[0].object_id
-
-  secret_permissions      = ["Get", "List", "Set", ]
-  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get"]
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
-
-  storage_permissions = []
-}
 
 resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
   name         = "elastic-otel-token-header"
@@ -205,6 +205,19 @@ resource "azurerm_key_vault_secret" "checkout_feature_flags_map" {
 
 resource "azurerm_key_vault_secret" "one_identity_admin_for_checkout" {
   name         = "checkout-one-identity-admin-for-checkout"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "github_token_for_tas_integration_checkout" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "checkout-github-token-for-tas-integration"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 

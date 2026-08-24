@@ -20,8 +20,8 @@ apim_dns_zone_prefix     = "dev.platform"
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
-taxonomy_function_subnet                   = ["10.1.183.0/24"]
-taxonomy_function_network_policies_enabled = false
+taxonomy_function_subnet           = ["10.1.183.0/24"]
+taxonomy_function_network_policies = "Disabled"
 taxonomy_function = {
   always_on                    = true
   kind                         = "Linux"
@@ -42,3 +42,7 @@ robots_indexed_paths = []
 // wallet session token
 io_backend_base_path = "http://{{aks-lb-nexi}}/pmmockservice/pmmockserviceapi"
 pdv_api_base_path    = "https://api.uat.tokenizer.pdv.pagopa.it/tokenizer/v1"
+
+enabled_features = {
+  node_forwarder_ha = false
+}
