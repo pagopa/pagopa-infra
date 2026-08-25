@@ -1,8 +1,7 @@
-env_short       = "d"
-env             = "dev"
-location        = "italynorth"
-location_short  = "itn"
-location_string = "Italy North"
+env_short      = "d"
+env            = "dev"
+location       = "italynorth"
+location_short = "itn"
 
 
 external_domain          = "pagopa.it"
@@ -30,5 +29,3 @@ qa_hub_google_client_secret = "PLACEHOLDER"
 qa_hub_nextauth_secret      = "PLACEHOLDER"
 qa_hub_nextauth_url         = "PLACEHOLDER"
 qa_hub_public_api_url       = "PLACEHOLDER"
-
-

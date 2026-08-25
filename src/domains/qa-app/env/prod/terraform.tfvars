@@ -1,8 +1,7 @@
-env_short       = "p"
-env             = "prod"
-location        = "italynorth"
-location_short  = "itn"
-location_string = "Italy North"
+env_short      = "p"
+env            = "prod"
+location       = "italynorth"
+location_short = "itn"
 
 
 external_domain          = "pagopa.it"

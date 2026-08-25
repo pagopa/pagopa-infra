@@ -32,11 +32,6 @@ variable "location_short" {
   description = "One of ..."
 }
 
-variable "location_string" {
-  type        = string
-  description = "One of ..."
-}
-
 
 variable "dns_zone_internal_prefix" {
   type        = string
