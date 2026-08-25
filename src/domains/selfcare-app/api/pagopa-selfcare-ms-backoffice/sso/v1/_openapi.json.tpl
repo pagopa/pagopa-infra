@@ -48,7 +48,27 @@
             }
           },
           "401": {
-            "description": "The Selfcare identity token is invalid or the requested role is not assigned to the user.",
+            "description": "The Selfcare identity token is missing, expired or invalid.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The identity token is valid, but the requested role is not assigned to the user.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error while exchanging the token.",
             "content": {
               "text/plain": {
                 "schema": {

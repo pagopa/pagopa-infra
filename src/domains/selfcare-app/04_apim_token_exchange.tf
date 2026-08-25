@@ -183,7 +183,7 @@ locals {
   }
 }
 
-resource "azurerm_api_management_api_version_set" "pagopa_backoffice_selfcare_sso_v1" {
+resource "azurerm_api_management_api_version_set" "pagopa_backoffice_selfcare_sso" {
   name                = "${var.env_short}-pagopa-backoffice-selfcare-sso"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -194,12 +194,12 @@ resource "azurerm_api_management_api_version_set" "pagopa_backoffice_selfcare_ss
 module "apim_pagopa_backoffice_selfcare_sso_v1" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
-  name                  = "${local.project}-backoffice-selfcare-sso"
+  name                  = "${local.project}-backoffice-sso"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_selfcare_product.product_id]
   subscription_required = local.pagopa_backoffice_selfcare_sso_v1_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.pagopa_backoffice_selfcare_sso_v1.id
+  version_set_id        = azurerm_api_management_api_version_set.pagopa_backoffice_selfcare_sso.id
   api_version           = "v1"
 
   description  = local.pagopa_backoffice_selfcare_sso_v1_api.description

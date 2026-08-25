@@ -1,5 +1,6 @@
 <policies>
     <inbound>
+        <base />
         <cors>
             <allowed-origins>
                 <origin>https://${origin}</origin>
@@ -44,7 +45,7 @@
                     string desiredRole = context.Request.Url.Query.GetValueOrDefault("desired_role", "").Trim();
                     JObject selectedRole = string.IsNullOrWhiteSpace(desiredRole)
                         ? roles.OfType<JObject>().FirstOrDefault()
-                        : roles.OfType<JObject>().FirstOrDefault(role => role.Value<string>("role") == desiredRole);
+                        : roles.OfType<JObject>().FirstOrDefault(role => string.Equals(role.Value<string>("role"), desiredRole, StringComparison.OrdinalIgnoreCase));
 
                     if (selectedRole == null)
                     {
@@ -129,6 +130,15 @@
         </trace>
         <base />
         <choose>
+            <when condition="@((context.LastError?.Message ?? "").Contains("pagopaPortalToken: requested role was not found"))">
+                <return-response>
+                    <set-status code="403" reason="Forbidden" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>text/plain</value>
+                    </set-header>
+                    <set-body>Forbidden</set-body>
+                </return-response>
+            </when>
             <when condition="@(context.LastError?.Source == "validate-jwt" || (context.LastError?.Message ?? "").Contains("pagopaPortalToken:"))">
                 <return-response>
                     <set-status code="401" reason="Unauthorized" />
