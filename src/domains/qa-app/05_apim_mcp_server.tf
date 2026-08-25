@@ -75,7 +75,7 @@ resource "azurerm_api_management_backend" "mcp_server" {
   protocol            = "http"
   # @TODO: remove the hardcoded "/v1" at the end of the URL when the backend service is updated to support multiple versions.
   # we want to manage the versioning at the API Management level, not at the backend service level.
-  url                 = "https://${local.mcp_server_hostname}/pagopa-mcp-server/v1"
+  url = "https://${local.mcp_server_hostname}/pagopa-mcp-server/v1"
 
   tls {
     validate_certificate_chain = false

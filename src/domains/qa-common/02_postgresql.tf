@@ -92,8 +92,8 @@ resource "postgresql_role" "qachub" {
 
 # 2. Create the new Schema
 resource "postgresql_schema" "qachub_schema" {
-  name  = "qachub"
-  owner = postgresql_role.qachub.name
+  name     = "qachub"
+  owner    = postgresql_role.qachub.name
   database = "qachub"
 }
 

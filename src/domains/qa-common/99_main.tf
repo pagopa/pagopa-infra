@@ -56,12 +56,12 @@ provider "kubernetes" {
 }
 
 provider "postgresql" {
-  host            = module.postgres_flexible_server_qa.fqdn
-  port            = 5432
-  username        = data.azurerm_key_vault_secret.pgres_flex_admin_login.value
-  password        = data.azurerm_key_vault_secret.pgres_flex_admin_pwd.value
-  superuser       = false
-  sslmode         = "require"
+  host      = module.postgres_flexible_server_qa.fqdn
+  port      = 5432
+  username  = data.azurerm_key_vault_secret.pgres_flex_admin_login.value
+  password  = data.azurerm_key_vault_secret.pgres_flex_admin_pwd.value
+  superuser = false
+  sslmode   = "require"
 }
 
 module "__v4__" {
