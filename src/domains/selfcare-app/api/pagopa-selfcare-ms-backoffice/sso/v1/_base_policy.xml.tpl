@@ -1,6 +1,5 @@
 <policies>
     <inbound>
-        <base />
         <cors>
             <allowed-origins>
                 <origin>https://${origin}</origin>
@@ -13,6 +12,7 @@
                 <header>*</header>
             </allowed-headers>
         </cors>
+        <base />
         <validate-jwt header-name="IdentityToken" failed-validation-httpcode="401" require-expiration-time="true" require-signed-tokens="true" output-token-variable-name="outputToken">
             <openid-config url="${openid-config-url}" />
             <audiences>
@@ -34,6 +34,12 @@
                     JObject organization = JObject.Parse(organizationClaim);
                     var org_id = organization.Value<string>("id");
                     var org_vat = organization.Value<string>("fiscal_code");
+
+                    if (string.IsNullOrWhiteSpace(org_id) || string.IsNullOrWhiteSpace(org_vat))
+                    {
+                        throw new Exception("pagopaPortalToken: organization id or fiscal_code cannot be empty");
+                    }
+
                     JArray roles = organization.Value<JArray>("roles");
 
                     if (roles == null || roles.Count == 0)
