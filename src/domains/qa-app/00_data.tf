@@ -10,6 +10,21 @@ data "azurerm_key_vault" "key_vault" {
 
 }
 
+data "azurerm_key_vault_secret" "qa_hub_google_client_id" {
+  name         = "google-client-id"
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "qa_hub_google_client_secret" {
+  name         = "google-client-secret"
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "qa_hub_nextauth_secret" {
+  name         = "nextauth-secret"
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
 data "azurerm_resource_group" "monitor_rg" {
   name = local.monitor_rg_name
 }

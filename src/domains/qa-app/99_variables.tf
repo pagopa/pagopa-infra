@@ -112,25 +112,6 @@ variable "qa_hub_image" {
   description = "Docker image settings for qa-hub"
 }
 
-variable "qa_hub_google_client_id" {
-  type      = string
-  sensitive = true
-}
-
-variable "qa_hub_google_client_secret" {
-  type      = string
-  sensitive = true
-}
-
-variable "qa_hub_nextauth_secret" {
-  type      = string
-  sensitive = true
-}
-
-variable "qa_hub_nextauth_url" {
-  type = string
-}
-
 variable "qa_hub_public_api_url" {
   type = string
 }

@@ -31,10 +31,9 @@ module "qa_hub_app_service" {
     WEBSITES_PORT                          = "3000"
     WEBSITE_DISABLE_CONTAINER_STARTUP_LOGS = "false"
     AUTH_TRUST_HOST                        = "true"
-    GOOGLE_CLIENT_ID                       = var.qa_hub_google_client_id
-    GOOGLE_CLIENT_SECRET                   = var.qa_hub_google_client_secret
-    NEXTAUTH_SECRET                        = var.qa_hub_nextauth_secret
-    NEXTAUTH_URL                           = var.qa_hub_nextauth_url
+    GOOGLE_CLIENT_ID                       = data.azurerm_key_vault_secret.qa_hub_google_client_id.value
+    GOOGLE_CLIENT_SECRET                   = data.azurerm_key_vault_secret.qa_hub_google_client_secret.value
+    NEXTAUTH_SECRET                        = data.azurerm_key_vault_secret.qa_hub_nextauth_secret.value
     NEXT_PUBLIC_API_URL                    = var.qa_hub_public_api_url
     WEBSITE_ENABLE_SYNC_UPDATE_SITE        = "true"
   }
