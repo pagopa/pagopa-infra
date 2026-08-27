@@ -35,6 +35,7 @@ module "qa_hub_app_service" {
     GOOGLE_CLIENT_SECRET                   = data.azurerm_key_vault_secret.qa_hub_google_client_secret.value
     NEXTAUTH_SECRET                        = data.azurerm_key_vault_secret.qa_hub_nextauth_secret.value
     NEXT_PUBLIC_API_URL                    = var.qa_hub_public_api_url
+    NEXTAUTH_URL                           = var.qa_hub_next_auth_url
     WEBSITE_ENABLE_SYNC_UPDATE_SITE        = "true"
   }
 

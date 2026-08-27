@@ -24,3 +24,5 @@ qa_hub_image = {
 qa_hub_always_on = true
 
 qa_hub_public_api_url = "https://api.platform.pagopa.it/qa/central-hub/v1"
+
+qa_hub_next_auth_url = "https://pagopa-p-itn-qa-qa-hub-wa.azurewebsites.net"
