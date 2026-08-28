@@ -29,6 +29,7 @@ module "qa_sa_shared" {
   }
 
   private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.privatelink_blob_azure_com.id]
+  private_dns_zone_file_ids = [data.azurerm_private_dns_zone.privatelink_file_core_windows_net.id]
 
   tags = module.tag_config.tags
 }

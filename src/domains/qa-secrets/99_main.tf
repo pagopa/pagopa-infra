@@ -6,15 +6,19 @@ terraform {
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "~> 3.1.0"
+      version = "~> 3.1"
     }
     null = {
       source  = "hashicorp/null"
-      version = "<= 3.2.3"
+      version = "~> 3.2"
     }
     external = {
       source  = "hashicorp/external"
-      version = "<= 2.3.4"
+      version = "~> 2.3"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.16"
     }
   }
 
@@ -34,6 +38,10 @@ provider "azurerm" {
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
+
+provider "kubernetes" {
+  config_path = "${var.k8s_kube_config_path_prefix}/config-${local.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks"
+}
 
 module "__v4__" {
   # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.25.0

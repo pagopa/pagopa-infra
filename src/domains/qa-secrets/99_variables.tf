@@ -36,4 +36,8 @@ variable "enable_iac_pipeline" {
   default     = false
 }
 
+variable "k8s_kube_config_path_prefix" {
+  type    = string
+  default = "~/.kube"
+}
 

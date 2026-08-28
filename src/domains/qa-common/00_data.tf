@@ -86,6 +86,11 @@ data "azurerm_private_dns_zone" "privatelink_blob_azure_com" {
   resource_group_name = local.private_dns_zone_rg_name
 }
 
+data "azurerm_private_dns_zone" "privatelink_file_core_windows_net" {
+  name                = "privatelink.file.core.windows.net"
+  resource_group_name = local.private_dns_zone_rg_name
+}
+
 
 
 
