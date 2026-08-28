@@ -31,7 +31,7 @@
 
 module "apim_mock_ec_nexi_product" {
   count  = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "product-mock-ec-nexi"
   display_name = "product-mock-ec-nexi"
@@ -59,7 +59,7 @@ resource "azurerm_api_management_api_version_set" "mock_ec_nexi_api" {
 
 module "apim_mock_ec_nexi_api" {
   count  = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-mock-ec-nexi-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
@@ -92,7 +92,7 @@ module "apim_mock_ec_nexi_api" {
 
 module "apim_mock_psp_nexi_product" {
   count  = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "product-mock-psp-nexi"
   display_name = "product-mock-psp-nexi"
@@ -120,7 +120,7 @@ resource "azurerm_api_management_api_version_set" "mock_psp_nexi_api" {
 
 module "apim_mock_psp_nexi_api" {
   count  = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-mock-psp-nexi-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
@@ -154,7 +154,7 @@ module "apim_mock_psp_nexi_api" {
 
 module "apim_mock_pm_nexi_product" {
   count  = var.env_short != "p" ? 1 : 0 # only UAT pointing out to NEXI PRF environment + Esposizione apim SIT mock PM
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "product-mock-pm-nexi"
   display_name = "product-mock-pm-nexi"
@@ -182,7 +182,7 @@ resource "azurerm_api_management_api_version_set" "mock_pm_nexi_api" {
 
 module "apim_mock_pm_nexi_api" {
   count  = var.env_short != "p" ? 1 : 0 # only UAT pointing out to NEXI PRF environment + Esposizione apim SIT mock PM
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-mock-pm-nexi-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
