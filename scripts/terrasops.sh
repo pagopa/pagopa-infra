@@ -89,7 +89,7 @@ error_log() {
     echo "❌ ERROR: $1" >&2
 }
 
-set -o pipefail
+set -x
 
 # Enable debug mode if passed as parameter
 if [[ "$1" == "debug" ]]; then
@@ -128,10 +128,7 @@ if [ -f "$encrypted_file_path" ]; then
     fi
 
     debug_log "🔓 Decrypting file with SOPS"
-    if ! sops -d --azure-kv "$azure_kv_vault_url" "$encrypted_file_path" | jq -c; then
-        error_log "🔐 SOPS decryption failed"
-        exit 1
-    fi
+    sops -d --azure-kv "$azure_kv_vault_url" "$encrypted_file_path" | jq -c
     debug_log "🎉 Decryption completed"
 else
     debug_log "⚠️ Encrypted file not found, returning empty JSON"
