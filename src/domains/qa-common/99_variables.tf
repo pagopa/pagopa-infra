@@ -150,15 +150,6 @@ variable "postgres_dns_registration_enabled" {
   default     = false
 }
 
-#
-# Redis variables
-#
-variable "redis_idh_resource_tier" {
-  type        = string
-  description = "The IDH resource tier for the Redis cache."
-  default     = "basic"
-}
-
 
 
 

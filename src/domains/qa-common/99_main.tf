@@ -65,6 +65,6 @@ provider "postgresql" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.25.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=0c7bdec9a6ec5bc89bff9f8ca2758ebfeebe6b9c"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.27.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=4f3bc5ae8f131c99e0beef0f779ed2dbefb199af"
 }
