@@ -5,7 +5,7 @@ location_short = "itn"
 
 
 external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.prod.platform"
+dns_zone_internal_prefix = "internal.platform"
 dns_zone_prefix          = "qa.itn"
 apim_dns_zone_prefix     = "platform"
 ingress_load_balancer_ip = "10.3.2.250"

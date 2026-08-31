@@ -7,11 +7,11 @@ terraform {
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "~> 3.1.0"
+      version = "~> 3.1"
     }
     null = {
       source  = "hashicorp/null"
-      version = "<= 3.2.3"
+      version = "~> 3.2"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -19,7 +19,7 @@ terraform {
     }
     postgresql = {
       source  = "cyrilgdn/postgresql"
-      version = "~> 1.21.0"
+      version = "~> 1.21"
     }
   }
 

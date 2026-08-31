@@ -1,5 +1,3 @@
-
-
 module "gh_runner_job" {
   source = "./.terraform/modules/__v4__/gh_runner_container_app_job_domain_setup"
 
@@ -9,7 +7,7 @@ module "gh_runner_job" {
   environment_rg     = local.gh_runner_cae_rg
   gh_identity_suffix = "job-01"
   gh_env             = var.env
-  runner_labels      = ["self-hosted-job", "${var.env}"]
+  runner_labels      = ["self-hosted-job", var.env]
   gh_repositories = [
     {
       name : "pagopa-qa-centralhub-frontend",

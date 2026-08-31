@@ -6,7 +6,7 @@ location_short = "itn"
 
 
 external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.prod.platform"
+dns_zone_internal_prefix = "internal.platform"
 
 alert_use_opsgenie = false
 
