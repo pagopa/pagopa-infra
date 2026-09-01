@@ -39,16 +39,22 @@ resource "azurerm_storage_share" "mcp_catalog" {
   name                 = "mcp-catalog"
   storage_account_name = module.qa_sa_shared.name
   quota                = 1
+
+  depends_on = [module.qa_sa_shared]
 }
 
 # Storage share directories for MCP catalog
 resource "azurerm_storage_share_directory" "mcp_catalog_manifests" {
   name             = "manifests"
   storage_share_id = azurerm_storage_share.mcp_catalog.id
+
+  depends_on = [module.qa_sa_shared]
 }
 
 resource "azurerm_storage_share_directory" "mcp_catalog_assets" {
   name             = "assets"
   storage_share_id = azurerm_storage_share.mcp_catalog.id
+
+  depends_on = [module.qa_sa_shared]
 }
 
