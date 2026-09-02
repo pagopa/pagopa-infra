@@ -73,3 +73,12 @@ resource "azurerm_key_vault_secret" "gpd_for_reporting_subkey_secret" {
   key_vault_id = data.azurerm_key_vault.gps_kv.id
 }
 
+resource "azurerm_api_management_subscription" "gpd_payments_helpdesk" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  product_id          = module.apim_gpd_payments_helpdesk_product.id
+  display_name        = "GPD Payments pagoPA - Helpdesk"
+  allow_tracing       = false
+  state               = "active"
+}
+

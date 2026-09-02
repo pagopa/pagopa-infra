@@ -47,23 +47,6 @@ module "apim_gpd_payments_soap_product" {
   policy_xml = file("./api_product/payments-service/_base_policy.xml")
 }
 
-module "apim_gpd_payments_helpdesk_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
-
-  product_id   = "gpd-payments-helpdesk"
-  display_name = "GPD Payments pagoPA - Helpdesk"
-  description  = "Servizio di Helpdesk per GPD Payments"
-
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-
-  published             = false
-  subscription_required = true
-  approval_required     = false
-
-  policy_xml = file("./api_product/payments-service/helpdesk/_base_policy.xml")
-}
-
 ##############
 ## SOAP API ##
 ##############
@@ -158,6 +141,23 @@ module "apim_gpd_payments_rest_external_product" {
   subscriptions_limit   = local.apim_gpd_payments_rest_external_api.subscriptions_limit
 
   policy_xml = file("./api_product/payments-service/external/_base_policy.xml")
+}
+
+module "apim_gpd_payments_helpdesk_product" {
+  source = "./.terraform/modules/__v3__/api_management_product"
+
+  product_id   = "gpd-payments-helpdesk"
+  display_name = "GPD Payments pagoPA - Helpdesk"
+  description  = "Servizio di Helpdesk per GPD Payments"
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = false
+  subscription_required = true
+  approval_required     = false
+
+  policy_xml = file("./api_product/payments-service/helpdesk/_base_policy.xml")
 }
 
 ##############
