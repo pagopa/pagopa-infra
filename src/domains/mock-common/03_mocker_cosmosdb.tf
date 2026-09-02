@@ -11,13 +11,12 @@ resource "azurerm_resource_group" "mock_rg" {
 }
 
 module "mocker_cosmosdb_snet" {
-  source               = "./.terraform/modules/__v3__/subnet"
-  name                 = "${local.project}-cosmosdb-snet"
-  address_prefixes     = var.cidr_subnet_mocker_cosmosdb
-  resource_group_name  = local.vnet_resource_group_name
-  virtual_network_name = local.vnet_name
-
-  private_endpoint_network_policies_enabled = false
+  source                            = "./.terraform/modules/__v4__/subnet"
+  name                              = "${local.project}-cosmosdb-snet"
+  address_prefixes                  = var.cidr_subnet_mocker_cosmosdb
+  resource_group_name               = local.vnet_resource_group_name
+  virtual_network_name              = local.vnet_name
+  private_endpoint_network_policies = "Disabled"
 
   service_endpoints = [
     "Microsoft.Web",
@@ -27,7 +26,7 @@ module "mocker_cosmosdb_snet" {
 }
 
 module "mocker_cosmosdb_account" {
-  source   = "./.terraform/modules/__v3__/cosmosdb_account"
+  source   = "./.terraform/modules/__v4__/cosmosdb_account"
   name     = "${local.project}-cosmos-account"
   location = var.location
   domain   = var.domain
@@ -51,8 +50,6 @@ module "mocker_cosmosdb_account" {
   backup_continuous_enabled  = var.mocker_cosmosdb_params.backup_continuous_enabled
 
   is_virtual_network_filter_enabled = var.mocker_cosmosdb_params.is_virtual_network_filter_enabled
-
-  ip_range = ""
 
   # add data.azurerm_subnet.<my_service>.id
   allowed_virtual_network_subnet_ids = var.mocker_cosmosdb_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
