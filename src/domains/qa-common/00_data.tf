@@ -1,5 +1,5 @@
 data "azurerm_key_vault" "domain_kv" {
-  name                = "${local.product}-${var.location_short}-${local.domain}-kv"
+  name                = "${local.product}-${var.location_short}-${local.domain_short}-kv"
   resource_group_name = "${local.product}-${var.location_short}-${local.domain}-sec-rg"
 }
 
@@ -66,13 +66,32 @@ data "azurerm_private_dns_zone" "internal" {
 }
 
 
+data "azurerm_private_dns_zone" "postgres" {
+  name                = "private.postgres.database.azure.com"
+  resource_group_name = local.private_dns_zone_rg_name
+}
+
+data "azurerm_private_dns_zone" "privatelink_redis_cache_windows_net" {
+  name                = "privatelink.redis.cache.windows.net"
+  resource_group_name = local.private_dns_zone_rg_name
+}
+
 data "azurerm_private_dns_zone" "privatelink_redis_azure_net" {
   name                = "privatelink.redis.azure.net"
   resource_group_name = local.private_dns_zone_rg_name
 }
 
-
-data "azurerm_private_dns_zone" "privatelink_mongo_cosmos_azure_com" {
-  name                = "privatelink.mongo.cosmos.azure.com"
+data "azurerm_private_dns_zone" "privatelink_blob_azure_com" {
+  name                = "privatelink.blob.core.windows.net"
   resource_group_name = local.private_dns_zone_rg_name
 }
+
+data "azurerm_private_dns_zone" "privatelink_file_core_windows_net" {
+  name                = "privatelink.file.core.windows.net"
+  resource_group_name = local.private_dns_zone_rg_name
+}
+
+
+
+
+
