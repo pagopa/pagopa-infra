@@ -49,6 +49,7 @@ locals {
 
   apim_hostname               = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   qa_hostname                 = "qa-central-hub.${var.location_short}.${local.internal_dns_zone_name}"
+  qa_hostname_superset        = "qa-superset.${var.location_short}.${local.internal_dns_zone_name}"
   mcp_server_hostname         = "pagopa-mcp-server.${var.location_short}.${local.internal_dns_zone_name}"
   mcp_server_ingress_hostname = "pagopa-mcp-server.${var.location_short}"
   # shorter name (47 chars) avoids the 63-char K8s volume name limit in cert-mounter

@@ -98,3 +98,25 @@ resource "kubernetes_secret" "superset" {
 
   type = "Opaque"
 }
+
+# Superset - Dedicated DNS Record - Private dns record Ingress
+resource "azurerm_private_dns_a_record" "ingress_superset" {
+  name                = "qa-superset.${var.location_short}"
+  zone_name           = data.azurerm_private_dns_zone.internal.name
+  resource_group_name = data.azurerm_private_dns_zone.internal.resource_group_name
+  ttl                 = 3600
+  records             = [var.ingress_load_balancer_ip]
+}
+
+module "cert_mounter" {
+  source = "./.terraform/modules/__v4__/cert_mounter"
+
+  helm_release_name = "cert-mounter-qa-superset"
+  namespace         = local.domain
+  certificate_name  = replace(local.qa_hostname_superset, ".", "-")
+  kv_name           = data.azurerm_key_vault.key_vault.name
+  tenant_id         = data.azurerm_subscription.current.tenant_id
+
+  workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
+  workload_identity_client_id            = module.workload_identity.workload_identity_client_id
+}
