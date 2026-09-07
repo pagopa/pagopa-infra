@@ -235,6 +235,7 @@ resource "helm_release" "reloader" {
     name  = "reloader.watchGlobally"
     value = "false"
   }
+}
 
   values = [
     yamlencode({
