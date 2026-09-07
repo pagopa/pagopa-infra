@@ -3,7 +3,7 @@
 ##############
 
 module "apim_mock_pagopa_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
   count  = var.env_short != "p" ? 1 : 0
 
   product_id   = "mock_pagopa"

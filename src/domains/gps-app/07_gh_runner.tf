@@ -54,6 +54,10 @@ module "gh_runner_job" {
     {
       name : "pagopa-gpd-rtp"
       short_name : "gpd-rtp"
+    },
+    {
+      name : "pagopa-gpd-technical-support"
+      short_name : "gpd-tech-supp"
     }
   ]
   job      = {}

@@ -8,7 +8,7 @@ location_string = "West Europe"
 instance        = "dev"
 
 
-## APIM
+### External resources
 monitor_resource_group_name                 = "pagopa-d-monitor-rg"
 log_analytics_workspace_name                = "pagopa-d-law"
 log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
@@ -29,8 +29,7 @@ reporting_functions_app_sku = {
 }
 
 cname_record_name = "config"
-
-# gpd database config for gpd-app-service
+# APIM
 create_wisp_converter = true
 
 ### debezium zookeeper_yaml

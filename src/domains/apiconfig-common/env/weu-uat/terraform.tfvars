@@ -22,5 +22,4 @@ external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
 
 # CosmosDb AFM Marketplace
-enable_iac_pipeline = true
-redis_ha_enabled    = false
+redis_ha_enabled = false

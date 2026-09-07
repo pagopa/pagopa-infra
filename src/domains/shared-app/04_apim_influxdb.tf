@@ -3,7 +3,7 @@
 ##############
 
 module "apim_influxdb_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "influxdb"
   display_name = "Influxdb"
@@ -44,7 +44,7 @@ resource "azurerm_api_management_api_version_set" "api_influxdb_api" {
 
 
 module "apim_api_influxdb_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-influxdb-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -94,7 +94,7 @@ resource "azurerm_api_management_api_version_set" "api_influxdb2_api" {
 
 
 module "apim_api_influxdb_api_v2" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-influxdb-api", local.project)
   api_management_name   = local.pagopa_apim_name

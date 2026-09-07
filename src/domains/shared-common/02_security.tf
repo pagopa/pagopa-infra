@@ -276,22 +276,6 @@ resource "azurerm_key_vault_secret" "pdf_engine_node_perf_test_subkey" {
 # IaC
 #
 
-#pagopaspa-cstar-platform-iac-projects-{subscription}
-data "azuread_service_principal" "platform_iac_sp" {
-  display_name = "pagopaspa-pagoPA-iac-${data.azurerm_subscription.current.subscription_id}"
-}
-
-resource "azurerm_key_vault_access_policy" "azdevops_platform_iac_policy" {
-  key_vault_id = module.key_vault.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = data.azuread_service_principal.platform_iac_sp.object_id
-
-  secret_permissions      = ["Get", "List", "Set", ]
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
-  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get", ]
-
-  storage_permissions = []
-}
 
 resource "azurerm_key_vault_secret" "ai_connection_string" {
   name         = "ai-${var.env_short}-connection-string"

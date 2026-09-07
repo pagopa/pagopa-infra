@@ -39,7 +39,7 @@ data "azurerm_container_registry" "container_registry" {
 
 module "shared_pdf_engine_app_service" {
   count  = 1
-  source = "./.terraform/modules/__v3__/app_service"
+  source = "./.terraform/modules/__v4__/app_service"
 
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
@@ -54,10 +54,16 @@ module "shared_pdf_engine_app_service" {
   client_cert_enabled = false
   always_on           = var.app_service_pdf_engine_always_on
   # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
-  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
-  docker_image_tag = "latest"
+  docker_image             = "pagopapdfengine"
+  docker_image_tag         = "latest"
+  docker_registry_url      = "https://${data.azurerm_container_registry.container_registry.login_server}"
+  docker_registry_username = data.azurerm_container_registry.container_registry.admin_username
+  docker_registry_password = data.azurerm_container_registry.container_registry.admin_password
 
-  health_check_path = "/info"
+  health_check_path            = "/info"
+  health_check_maxpingfailures = var.env_short != "p" ? 10 : 2
+
+  minimum_tls_version = "1.2"
 
   app_settings = local.shared_pdf_engine_app_settings
 
@@ -67,28 +73,31 @@ module "shared_pdf_engine_app_service" {
   subnet_id                     = module.shared_pdf_engine_app_service_snet.id
   ip_restriction_default_action = var.function_app_ip_restriction_default_action
 
-
   tags = module.tag_config.tags
 }
 
 module "shared_pdf_engine_slot_staging" {
   count = var.env_short != "d" ? 1 : 0
 
-  source = "./.terraform/modules/__v3__/app_service_slot"
+  source = "./.terraform/modules/__v4__/app_service_slot"
 
   # App service plan
-  app_service_id   = module.shared_pdf_engine_app_service[0].id
-  app_service_name = module.shared_pdf_engine_app_service[0].name
+  app_service_id = module.shared_pdf_engine_app_service[0].id
 
   # App service
-  name                = "staging"
-  resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
-  location            = var.location
+  name = "staging"
 
-  always_on         = true
-  docker_image      = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
-  docker_image_tag  = "latest"
-  health_check_path = "/info"
+  always_on                = true
+  docker_image             = "pagopapdfengine"
+  docker_image_tag         = "latest"
+  docker_registry_url      = "https://${data.azurerm_container_registry.container_registry.login_server}"
+  docker_registry_username = data.azurerm_container_registry.container_registry.admin_username
+  docker_registry_password = data.azurerm_container_registry.container_registry.admin_password
+
+  health_check_path            = "/info"
+  health_check_maxpingfailures = var.env_short != "p" ? 10 : 2
+
+  minimum_tls_version = "1.2"
 
 
   # App settings
@@ -102,7 +111,7 @@ module "shared_pdf_engine_slot_staging" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_engine_autoscale" {
-  count = var.env_short != "d" ? 1 : 0
+  count = var.env_short == "p" ? 1 : 0
 
   name                = format("%s-autoscale-pdf-engine", local.project)
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
@@ -253,15 +262,15 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
   }
 
   # ==========================================
-  # 2. PROFILO PEAK HOURS (Orari di punta lavorativi: fisso a 20)
+  # 2. PROFILO PEAK HOURS (Orari di punta lavorativi: fisso a 24)
   # ==========================================
   profile {
     name = "peak-hours"
 
     capacity {
-      default = 20
-      minimum = 20
-      maximum = 20
+      default = 24
+      minimum = 24
+      maximum = 24
     }
 
     # Niente regole qui: la capacità è fissa a 20.
@@ -426,7 +435,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
 # java
 ################
 module "shared_pdf_engine_app_service_java" {
-  source              = "./.terraform/modules/__v3__/app_service"
+  source              = "./.terraform/modules/__v4__/app_service"
   count               = 1
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
@@ -441,10 +450,16 @@ module "shared_pdf_engine_app_service_java" {
   client_cert_enabled = false
   always_on           = var.app_service_pdf_engine_always_on
   # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
-  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
-  docker_image_tag = "latest"
+  docker_image             = "pagopapdfenginejava"
+  docker_image_tag         = "latest"
+  docker_registry_url      = "https://${data.azurerm_container_registry.container_registry.login_server}"
+  docker_registry_username = data.azurerm_container_registry.container_registry.admin_username
+  docker_registry_password = data.azurerm_container_registry.container_registry.admin_password
 
-  health_check_path = "/info"
+  health_check_path            = "/info"
+  health_check_maxpingfailures = var.env_short != "p" ? 10 : 2
+
+  minimum_tls_version = "1.2"
 
   app_settings = local.shared_pdf_engine_app_settings_java
 
@@ -461,23 +476,27 @@ module "shared_pdf_engine_app_service_java" {
 module "shared_pdf_engine_java_slot_staging" {
   count = var.env_short != "d" ? 1 : 0
 
-  source = "./.terraform/modules/__v3__/app_service_slot"
+  source = "./.terraform/modules/__v4__/app_service_slot"
 
   # App service plan
   # app_service_plan_id = module.shared_pdf_engine_app_service[0].plan_id
-  app_service_id   = module.shared_pdf_engine_app_service_java[0].id
-  app_service_name = module.shared_pdf_engine_app_service_java[0].name
+  app_service_id = module.shared_pdf_engine_app_service_java[0].id
 
   # App service
-  name                = "staging"
-  resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
-  location            = var.location
+  name = "staging"
 
   always_on = true
   # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
-  docker_image      = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
-  docker_image_tag  = "latest"
-  health_check_path = "/info"
+  docker_image             = "pagopapdfenginejava"
+  docker_image_tag         = "latest"
+  docker_registry_url      = "https://${data.azurerm_container_registry.container_registry.login_server}"
+  docker_registry_username = data.azurerm_container_registry.container_registry.admin_username
+  docker_registry_password = data.azurerm_container_registry.container_registry.admin_password
+
+  health_check_path            = "/info"
+  health_check_maxpingfailures = var.env_short != "p" ? 10 : 2
+
+  minimum_tls_version = "1.2"
 
 
   # App settings
@@ -493,7 +512,7 @@ module "shared_pdf_engine_java_slot_staging" {
 
 
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_engine_java_autoscale" {
-  count = var.env_short != "d" ? 1 : 0
+  count = var.env_short == "p" ? 1 : 0
 
   name                = format("%s-autoscale-pdf-engine-java", local.project)
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
@@ -650,15 +669,15 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
   }
 
   # ==========================================
-  # 2. PROFILO PEAK HOURS (Orari di punta lavorativi: fisso a 20)
+  # 2. PROFILO PEAK HOURS (Orari di punta lavorativi: fisso a 24)
   # ==========================================
   profile {
     name = "peak-hours"
 
     capacity {
-      default = 20
-      minimum = 20
-      maximum = 20
+      default = 24
+      minimum = 24
+      maximum = 24
     }
 
     recurrence {

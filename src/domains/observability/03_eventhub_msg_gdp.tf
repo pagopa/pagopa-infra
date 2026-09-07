@@ -1,4 +1,3 @@
-
 module "eventhub_namespace_observability_gpd" {
   source = "./.terraform/modules/__v4__/eventhub"
 
@@ -122,3 +121,16 @@ resource "azurerm_eventhub_consumer_group" "rtp_consumer_gpd" {
   eventhub_name       = "cdc-raw-auto.apd.payment_option"
   resource_group_name = azurerm_resource_group.eventhub_observability_rg.name
 }
+
+resource "azurerm_eventhub_consumer_group" "gpd_ingestion_manager_consumer_gpd" {
+  for_each = {
+    "po" = "cdc-raw-auto.apd.payment_option"
+    "pp" = "cdc-raw-auto.apd.payment_position"
+    "tr" = "cdc-raw-auto.apd.transfer"
+  }
+  name                = "gpd-ingestion-manager-${each.key}"
+  namespace_name      = module.eventhub_namespace_observability_gpd.name
+  eventhub_name       = each.value
+  resource_group_name = azurerm_resource_group.eventhub_observability_rg.name
+}
+

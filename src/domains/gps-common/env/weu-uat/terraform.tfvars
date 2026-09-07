@@ -50,6 +50,9 @@ cosmos_gps_db_params = {
 gpd_upload_status_throughput = 10000
 gpd_upload_status_ttl        = 5184000 // 60 days
 
+gpd_reconciliation_runs_throughput    = 1000
+gpd_reconciliation_reports_throughput = 1000
+
 # Postgres Flexible
 pgres_flex_params = {
 
@@ -114,9 +117,6 @@ cosmos_gpd_payments_db_params = {
     throughput = 2000
   }
 }
-
-
-enable_iac_pipeline                                            = true
 gpd_sftp_sa_replication_type                                   = "GRS"
 gpd_sftp_sa_access_tier                                        = "Hot"
 gpd_sftp_cidr_subnet_gpd_storage_account                       = ["10.1.152.16/29"]

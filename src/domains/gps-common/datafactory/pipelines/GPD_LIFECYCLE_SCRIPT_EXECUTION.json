@@ -169,10 +169,7 @@
           },
           "sink": {
             "type": "AzurePostgreSqlSink",
-            "writeBatchSize": {
-              "value": "@div(int(pipeline().parameters.ChunkSize), 10)",
-              "type": "Expression"
-            },
+            "writeBatchSize": 1000,
             "writeBatchTimeout": "02:30:00",
             "writeMethod": "CopyCommand"
           },

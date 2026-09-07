@@ -13,7 +13,7 @@ data "azurerm_storage_account" "pagopa_apiconfig_fe_sa" {
 ##############
 
 module "apim_statuspage_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "statuspage"
   display_name = "Status Page"
@@ -83,7 +83,7 @@ data "azurerm_linux_web_app" "pdf_engine_printit" {
 }
 
 module "apim_api_statuspage_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-statuspage-api", local.project)
   api_management_name   = local.pagopa_apim_name

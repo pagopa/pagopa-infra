@@ -3,7 +3,7 @@
 ##############
 
 module "apim_node_forwarder_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
 
   product_id   = "product-node-forwarder"
@@ -31,7 +31,7 @@ resource "azurerm_api_management_api_version_set" "node_forwarder_api" {
 }
 
 module "apim_node_forwarder_api" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
 
   name                  = "${var.env_short}-node-forwarder-api"

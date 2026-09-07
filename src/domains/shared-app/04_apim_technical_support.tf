@@ -2,7 +2,7 @@
 ## Products ##
 ##############
 module "apim_technical_support_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "technical_support_api"
   display_name = "API Assistenza"
