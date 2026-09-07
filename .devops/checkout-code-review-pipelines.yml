@@ -74,6 +74,7 @@ stages:
           AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
           AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
           AKS_NAME: '$(TF_AKS_DEV_NAME)'
+          SECRET_USE_AKS: false
 
   #UAT
   - ${{ if eq(parameters['UAT'], true) }}:
@@ -92,6 +93,7 @@ stages:
           AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_CACRT)'
           AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_TOKEN)'
           AKS_NAME: '$(TF_AKS_UAT_NAME)'
+          SECRET_USE_AKS: false
 
 
   #PROD
@@ -111,3 +113,4 @@ stages:
           AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_CACRT)'
           AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
           AKS_NAME: '$(TF_AKS_PROD_NAME)'
+          SECRET_USE_AKS: false 
