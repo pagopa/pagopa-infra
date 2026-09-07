@@ -20,6 +20,10 @@ module "gh_runner_job" {
     {
       name : "pagopa-platform-mcp",
       short_name : "platform-mcp"
+    },
+    {
+      name : "pagopa-platform-integration-tests",
+      short_name : "qa-int-tests"
     }
   ]
   job = {
