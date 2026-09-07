@@ -4,7 +4,7 @@
     "title": "PagoPA API configuration ${service}",
     "description": "Spring application exposes APIs to manage configuration for CI/PSP on the Nodo dei Pagamenti",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.59.37"
+    "version": "0.59.38"
   },
   "servers": [
     {
@@ -14,19 +14,19 @@
       "url": "https://{host}{basePath}",
       "variables": {
         "host": {
-          "default": "api.dev.platform.pagopa.it",
           "enum": [
             "api.dev.platform.pagopa.it",
             "api.uat.platform.pagopa.it",
             "api.platform.pagopa.it"
-          ]
+          ],
+          "default": "api.dev.platform.pagopa.it"
         },
         "basePath": {
-          "default": "/apiconfig/auth/api/v1",
           "enum": [
             "/apiconfig/auth/api/v1",
             "/apiconfig/api/v1"
-          ]
+          ],
+          "default": "/apiconfig/auth/api/v1"
         }
       }
     }
@@ -43,6 +43,10 @@
     {
       "name": "Batch Operation",
       "description": "Everything about Batch Operation"
+    },
+    {
+      "name": "Common Data Services",
+      "description": "Everything about Common Data Services (CDS)"
     },
     {
       "name": "Creditor Institutions",
@@ -421,11 +425,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "CODE",
               "enum": [
                 "CODE",
                 "NAME"
-              ]
+              ],
+              "default": "CODE"
             }
           },
           {
@@ -435,11 +439,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ]
+              ],
+              "default": "DESC"
             }
           }
         ],
@@ -2251,11 +2255,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "CODE",
               "enum": [
                 "CODE",
                 "NAME"
-              ]
+              ],
+              "default": "CODE"
             }
           },
           {
@@ -2265,11 +2269,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ]
+              ],
+              "default": "DESC"
             }
           }
         ],
@@ -4435,6 +4439,2078 @@
         }
       ]
     },
+    "/cds/services": {
+      "get": {
+        "tags": [
+          "Common Data Services"
+        ],
+        "summary": "Get paginated list of CDS services",
+        "operationId": "getCdsServices",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CdsServizioList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Common Data Services"
+        ],
+        "summary": "Create a CDS service",
+        "operationId": "createCdsService",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CdsServizio"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CdsServizio"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/cds/services/{idservizio}": {
+      "get": {
+        "tags": [
+          "Common Data Services"
+        ],
+        "summary": "Get CDS service details",
+        "operationId": "getCdsService",
+        "parameters": [
+          {
+            "name": "idservizio",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "maxLength": 50,
+              "minLength": 0,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CdsServizio"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Common Data Services"
+        ],
+        "summary": "Update a CDS service",
+        "operationId": "updateCdsService",
+        "parameters": [
+          {
+            "name": "idservizio",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "maxLength": 50,
+              "minLength": 0,
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CdsServizio"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CdsServizio"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Common Data Services"
+        ],
+        "summary": "Delete a CDS service",
+        "operationId": "deleteCdsService",
+        "parameters": [
+          {
+            "name": "idservizio",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "maxLength": 50,
+              "minLength": 0,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/cds/subjects": {
+      "get": {
+        "tags": [
+          "Common Data Services"
+        ],
+        "summary": "Get list of CDS subjects",
+        "operationId": "getCdsSubjects",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CdsSoggettoList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Common Data Services"
+        ],
+        "summary": "Create a CDS subject",
+        "operationId": "createCdsSubject",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CdsSoggetto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CdsSoggetto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/cds/subjects/{subjectid}": {
+      "get": {
+        "tags": [
+          "Common Data Services"
+        ],
+        "summary": "Get CDS subject details",
+        "operationId": "getCdsSubject",
+        "parameters": [
+          {
+            "name": "subjectid",
+            "in": "path",
+            "description": "Subject's id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CdsSoggetto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Common Data Services"
+        ],
+        "summary": "Update a CDS subject",
+        "operationId": "updateCdsSubject",
+        "parameters": [
+          {
+            "name": "subjectid",
+            "in": "path",
+            "description": "Subject's id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CdsSoggetto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CdsSoggetto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Common Data Services"
+        ],
+        "summary": "Delete a CDS subject",
+        "operationId": "deleteCdsSubject",
+        "parameters": [
+          {
+            "name": "subjectid",
+            "in": "path",
+            "description": "Subject's id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/cds/subjects/{subjectid}/services": {
+      "get": {
+        "tags": [
+          "Common Data Services"
+        ],
+        "summary": "Get list of CDS subject services",
+        "operationId": "getCdsSubjectServices",
+        "parameters": [
+          {
+            "name": "subjectid",
+            "in": "path",
+            "description": "Subject's creditor institution code",
+            "required": true,
+            "schema": {
+              "maxLength": 35,
+              "minLength": 0,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CdsSoggettoServizioList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Common Data Services"
+        ],
+        "summary": "Create a CDS subject service",
+        "operationId": "createCdsSubjectService",
+        "parameters": [
+          {
+            "name": "subjectid",
+            "in": "path",
+            "description": "Subject's creditor institution code",
+            "required": true,
+            "schema": {
+              "maxLength": 35,
+              "minLength": 0,
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CdsSoggettoServizioRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CdsSoggettoServizio"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/cds/subjects/{subjectid}/services/{idsoggettoservizio}": {
+      "get": {
+        "tags": [
+          "Common Data Services"
+        ],
+        "summary": "Get CDS subject service details",
+        "operationId": "getCdsSubjectService",
+        "parameters": [
+          {
+            "name": "subjectid",
+            "in": "path",
+            "description": "Subject's creditor institution code",
+            "required": true,
+            "schema": {
+              "maxLength": 35,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "idsoggettoservizio",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "maxLength": 50,
+              "minLength": 0,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CdsSoggettoServizio"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Common Data Services"
+        ],
+        "summary": "Update a CDS subject service",
+        "operationId": "updateCdsSubjectService",
+        "parameters": [
+          {
+            "name": "subjectid",
+            "in": "path",
+            "description": "Subject's creditor institution code",
+            "required": true,
+            "schema": {
+              "maxLength": 35,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "idsoggettoservizio",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "maxLength": 50,
+              "minLength": 0,
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CdsSoggettoServizioRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CdsSoggettoServizio"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Common Data Services"
+        ],
+        "summary": "Delete a CDS subject service",
+        "operationId": "deleteCdsSubjectService",
+        "parameters": [
+          {
+            "name": "subjectid",
+            "in": "path",
+            "description": "Subject's creditor institution code",
+            "required": true,
+            "schema": {
+              "maxLength": 35,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "idsoggettoservizio",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "maxLength": 50,
+              "minLength": 0,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
     "/channels": {
       "get": {
         "tags": [
@@ -4499,11 +6575,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ]
+              ],
+              "default": "DESC"
             }
           }
         ],
@@ -10253,11 +12329,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "CODE",
               "enum": [
                 "CODE",
                 "NAME"
-              ]
+              ],
+              "default": "CODE"
             }
           },
           {
@@ -10267,11 +12343,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ]
+              ],
+              "default": "DESC"
             }
           },
           {
@@ -15384,11 +17460,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "CODE",
               "enum": [
                 "CODE",
                 "NAME"
-              ]
+              ],
+              "default": "CODE"
             }
           },
           {
@@ -15398,11 +17474,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ]
+              ],
+              "default": "DESC"
             }
           }
         ],
@@ -17287,14 +19363,14 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "IT",
               "enum": [
                 "IT",
                 "EN",
                 "FR",
                 "DE",
                 "SL"
-              ]
+              ],
+              "default": "IT"
             }
           },
           {
@@ -17488,11 +19564,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ]
+              ],
+              "default": "DESC"
             }
           }
         ],
@@ -19619,6 +21695,717 @@
           }
         }
       },
+      "CdsSoggetto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "creditorInstitutionCode": {
+            "type": "string"
+          },
+          "creditorInstitutionDescription": {
+            "type": "string"
+          }
+        }
+      },
+      "CdsSoggettoServizioRequestDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Subject service identifier"
+          },
+          "idSoggetto": {
+            "type": "string",
+            "description": "Subject identifier"
+          },
+          "dataInizioValidita": {
+            "type": "string",
+            "description": "Start validity date",
+            "format": "date-time"
+          },
+          "dataFineValidita": {
+            "type": "string",
+            "description": "End validity date",
+            "format": "date-time"
+          },
+          "commissione": {
+            "type": "boolean",
+            "description": "Commission flag"
+          },
+          "idServizio": {
+            "type": "string",
+            "description": "Service identifier"
+          },
+          "idStazione": {
+            "type": "string",
+            "description": "Station identifier"
+          },
+          "descrizione_servizio": {
+            "type": "string",
+            "description": "Service description"
+          }
+        }
+      },
+      "BinaryFile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fileContent": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "byte"
+            }
+          },
+          "fileHash": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "byte"
+            }
+          },
+          "fileSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "signatureType": {
+            "type": "string"
+          },
+          "xmlFileContent": {
+            "type": "string"
+          }
+        }
+      },
+      "CdsCategoria": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "CdsServizio": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idServizio": {
+            "type": "string"
+          },
+          "descrizioneServizio": {
+            "type": "string"
+          },
+          "xsdRiferimento": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "categoriaId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "categoria": {
+            "$ref": "#/components/schemas/CdsCategoria"
+          }
+        }
+      },
+      "CdsSoggettoServizio": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fkCdsSoggetto": {
+            "type": "string"
+          },
+          "fkCdsServizio": {
+            "type": "string"
+          },
+          "fkStazione": {
+            "type": "string"
+          },
+          "idSoggettoServizio": {
+            "type": "string"
+          },
+          "descrizioneServizio": {
+            "type": "string"
+          },
+          "dataInizioValidita": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dataFineValidita": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "commissione": {
+            "type": "boolean"
+          },
+          "stazionePa": {
+            "$ref": "#/components/schemas/PaStazionePa"
+          },
+          "soggetto": {
+            "$ref": "#/components/schemas/CdsSoggetto"
+          },
+          "servizio": {
+            "$ref": "#/components/schemas/CdsServizio"
+          }
+        }
+      },
+      "Iban": {
+        "type": "object",
+        "properties": {
+          "objId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "iban": {
+            "type": "string"
+          },
+          "fiscalCode": {
+            "type": "string"
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "description": {
+            "type": "string"
+          },
+          "ibanMasters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IbanMaster"
+            }
+          }
+        }
+      },
+      "IbanAttribute": {
+        "type": "object",
+        "properties": {
+          "objId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "attributeName": {
+            "type": "string"
+          },
+          "attributeDescription": {
+            "type": "string"
+          }
+        }
+      },
+      "IbanAttributeMaster": {
+        "type": "object",
+        "properties": {
+          "objId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fkIbanMaster": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fkAttribute": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "ibanMaster": {
+            "$ref": "#/components/schemas/IbanMaster"
+          },
+          "ibanAttribute": {
+            "$ref": "#/components/schemas/IbanAttribute"
+          }
+        }
+      },
+      "IbanMaster": {
+        "type": "object",
+        "properties": {
+          "objId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fkPa": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fkIban": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "ibanStatus": {
+            "type": "string",
+            "enum": [
+              "ENABLED",
+              "DISABLED",
+              "NA"
+            ]
+          },
+          "insertedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "validityDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "description": {
+            "type": "string"
+          },
+          "pa": {
+            "$ref": "#/components/schemas/Pa"
+          },
+          "iban": {
+            "$ref": "#/components/schemas/Iban"
+          },
+          "ibanAttributesMasters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IbanAttributeMaster"
+            }
+          }
+        }
+      },
+      "IbanValidiPerPa": {
+        "type": "object",
+        "properties": {
+          "objId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fkPa": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "ibanAccredito": {
+            "type": "string"
+          },
+          "dataInizioValidita": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dataPubblicazione": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ragioneSociale": {
+            "type": "string"
+          },
+          "idMerchant": {
+            "type": "string"
+          },
+          "idBancaSeller": {
+            "type": "string"
+          },
+          "chiaveAvvio": {
+            "type": "string"
+          },
+          "chiaveEsito": {
+            "type": "string"
+          },
+          "masterObj": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pa": {
+            "$ref": "#/components/schemas/Pa"
+          }
+        }
+      },
+      "InformativePaDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "flagDisponibilita": {
+            "type": "boolean"
+          },
+          "giorno": {
+            "type": "string"
+          },
+          "tipo": {
+            "type": "string"
+          },
+          "fkInformativaPaMaster": {
+            "$ref": "#/components/schemas/InformativePaMaster"
+          },
+          "fasce": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InformativePaFasce"
+            }
+          }
+        }
+      },
+      "InformativePaFasce": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "oraA": {
+            "type": "string"
+          },
+          "oraDa": {
+            "type": "string"
+          },
+          "fkInformativaPaDetail": {
+            "$ref": "#/components/schemas/InformativePaDetail"
+          }
+        }
+      },
+      "InformativePaMaster": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idInformativaPa": {
+            "type": "string"
+          },
+          "dataInizioValidita": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dataPubblicazione": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "fkPa": {
+            "$ref": "#/components/schemas/Pa"
+          },
+          "fkBinaryFile": {
+            "$ref": "#/components/schemas/BinaryFile"
+          },
+          "versione": {
+            "type": "string"
+          },
+          "pagamentiPressoPsp": {
+            "type": "boolean"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InformativePaDetail"
+            }
+          }
+        }
+      },
+      "IntermediariPa": {
+        "type": "object",
+        "properties": {
+          "objId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idIntermediarioPa": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "codiceIntermediario": {
+            "type": "string"
+          },
+          "faultBeanEsteso": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Pa": {
+        "type": "object",
+        "properties": {
+          "objId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idDominio": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "ragioneSociale": {
+            "type": "string"
+          },
+          "fkIntQuadrature": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "indirizzoDomicilioFiscale": {
+            "type": "string"
+          },
+          "capDomicilioFiscale": {
+            "maxLength": 5,
+            "minLength": 0,
+            "type": "string"
+          },
+          "siglaProvinciaDomicilioFiscale": {
+            "type": "string"
+          },
+          "comuneDomicilioFiscale": {
+            "type": "string"
+          },
+          "denominazioneDomicilioFiscale": {
+            "type": "string"
+          },
+          "pagamentoPressoPsp": {
+            "type": "boolean"
+          },
+          "rendicontazioneFtp": {
+            "type": "boolean"
+          },
+          "rendicontazioneZip": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          },
+          "cbill": {
+            "type": "string"
+          },
+          "ibans": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IbanValidiPerPa"
+            }
+          },
+          "informativePaMasters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InformativePaMaster"
+            }
+          },
+          "ibanMasters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IbanMaster"
+            }
+          }
+        }
+      },
+      "PaStazionePa": {
+        "type": "object",
+        "properties": {
+          "objId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "progressivo": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pa": {
+            "$ref": "#/components/schemas/Pa"
+          },
+          "fkPa": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fkStazione": {
+            "$ref": "#/components/schemas/Stazioni"
+          },
+          "auxDigit": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "segregazione": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "quartoModello": {
+            "type": "boolean"
+          },
+          "broadcast": {
+            "type": "boolean"
+          },
+          "pagamentoSpontaneo": {
+            "type": "boolean"
+          },
+          "aca": {
+            "type": "boolean"
+          },
+          "standin": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Stazioni": {
+        "type": "object",
+        "properties": {
+          "objId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idStazione": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "ip": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "porta": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "protocollo": {
+            "type": "string"
+          },
+          "redirectIp": {
+            "type": "string"
+          },
+          "redirectPath": {
+            "type": "string"
+          },
+          "redirectPorta": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "redirectQueryString": {
+            "type": "string"
+          },
+          "servizio": {
+            "type": "string"
+          },
+          "rtEnabled": {
+            "type": "boolean"
+          },
+          "servizioPof": {
+            "type": "string"
+          },
+          "intermediarioPa": {
+            "$ref": "#/components/schemas/IntermediariPa"
+          },
+          "fkIntermediarioPa": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "redirectProtocollo": {
+            "type": "string"
+          },
+          "protocollo4Mod": {
+            "type": "string"
+          },
+          "ip4Mod": {
+            "type": "string"
+          },
+          "porta4Mod": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "servizio4Mod": {
+            "type": "string"
+          },
+          "proxyEnabled": {
+            "type": "boolean"
+          },
+          "proxyHost": {
+            "type": "string"
+          },
+          "proxyPort": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "proxyUsername": {
+            "type": "string"
+          },
+          "proxyPassword": {
+            "type": "string"
+          },
+          "numThread": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "timeoutA": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "timeoutB": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "timeoutC": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "flagOnline": {
+            "type": "boolean"
+          },
+          "versione": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "servizioNmp": {
+            "type": "string"
+          },
+          "invioRtIstantaneo": {
+            "type": "boolean"
+          },
+          "targetHost": {
+            "type": "string"
+          },
+          "targetPort": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "targetPath": {
+            "type": "string"
+          },
+          "targetHostPof": {
+            "type": "string"
+          },
+          "targetPortPof": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "targetPathPof": {
+            "type": "string"
+          },
+          "flagStandin": {
+            "type": "boolean"
+          },
+          "versionePrimitive": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "paStazionePaList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaStazionePa"
+            }
+          },
+          "isPaymentOptionsEnabled": {
+            "type": "boolean"
+          },
+          "restEndpoint": {
+            "type": "string"
+          }
+        }
+      },
       "BrokerPspDetails": {
         "required": [
           "broker_psp_code",
@@ -20634,32 +23421,6 @@
           }
         }
       },
-      "Iban": {
-        "required": [
-          "iban",
-          "validity_date"
-        ],
-        "type": "object",
-        "properties": {
-          "iban": {
-            "maxLength": 35,
-            "minLength": 0,
-            "type": "string",
-            "description": "The iban code value",
-            "example": "IT99C0222211111000000000000"
-          },
-          "validity_date": {
-            "type": "string",
-            "description": "The date until which the iban is valid",
-            "format": "date-time"
-          },
-          "publication_date": {
-            "type": "string",
-            "description": "The publication date of the iban",
-            "format": "date-time"
-          }
-        }
-      },
       "Ibans": {
         "required": [
           "ibans"
@@ -20981,6 +23742,48 @@
           },
           "page_info": {
             "$ref": "#/components/schemas/PageInfo"
+          }
+        }
+      },
+      "CdsSoggettoList": {
+        "required": [
+          "subjects"
+        ],
+        "type": "object",
+        "properties": {
+          "subjects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CdsSoggetto"
+            }
+          }
+        }
+      },
+      "CdsSoggettoServizioList": {
+        "required": [
+          "subjectServices"
+        ],
+        "type": "object",
+        "properties": {
+          "subjectServices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CdsSoggettoServizio"
+            }
+          }
+        }
+      },
+      "CdsServizioList": {
+        "required": [
+          "services"
+        ],
+        "type": "object",
+        "properties": {
+          "services": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CdsServizio"
+            }
           }
         }
       },
