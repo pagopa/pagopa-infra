@@ -42,6 +42,7 @@ variables:
   # working dir
   WORKING_DIR_APP: 'src/domains/checkout-app'
   WORKING_DIR_COMMON: 'src/domains/checkout-common'
+  WORKING_DIR_SECRET: 'src/domains/checkout-secrets'
   REGION_SHORT: "weu"
   DOMAIN_NAME: "checkout"
 
@@ -54,6 +55,7 @@ stages:
         ENV_FOLDER: '${{ variables.REGION_SHORT }}-dev'
         WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
         WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+        WORKING_DIR_SECRET: ${{ variables.WORKING_DIR_SECRET }}
         DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
@@ -71,6 +73,7 @@ stages:
         ENV_FOLDER: '${{ variables.REGION_SHORT }}-uat'
         WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
         WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+        WORKING_DIR_SECRET: ${{ variables.WORKING_DIR_SECRET }}
         DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
@@ -88,6 +91,7 @@ stages:
         ENV_FOLDER: '${{ variables.REGION_SHORT }}-prod'
         WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
         WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+        WORKING_DIR_SECRET: ${{ variables.WORKING_DIR_SECRET }}
         DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
