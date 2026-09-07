@@ -82,3 +82,10 @@ resource "azurerm_api_management_subscription" "gpd_payments_helpdesk" {
   state               = "active"
 }
 
+resource "azurerm_key_vault_secret" "gpd_payments_helpdesk_subkey_secret" {
+  name         = "gpd-payments-helpdesk-subkey"
+  value        = azurerm_api_management_subscription.gpd_payments_helpdesk.primary_key
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.gps_kv.id
+}
+
