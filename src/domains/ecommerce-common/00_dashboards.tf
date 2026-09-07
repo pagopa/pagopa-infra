@@ -112,7 +112,7 @@ resource "azurerm_portal_dashboard" "pagopa_eCommerce_update_transactions_status
 
 }
 
-resource "azurerm_portal_dashboard" "ecommerce_notification_service_dashboard" {
+resource "azurerm_portal_dashboard" "ecommerce_payment_request_dashboard" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "ecommerce-payment-request-dashboard"
   resource_group_name = var.monitor_resource_group_name
