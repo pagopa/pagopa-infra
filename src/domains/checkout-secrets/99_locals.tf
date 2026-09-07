@@ -1,7 +1,6 @@
 locals {
-  domain  = "posgw"
   prefix  = "pagopa"
-  project = "${local.prefix}-${var.env_short}-${var.location_short}-${local.domain}"
+  project = "${local.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
   product = "${local.prefix}-${var.env_short}"
 
 

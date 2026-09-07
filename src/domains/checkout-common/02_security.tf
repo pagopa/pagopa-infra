@@ -39,7 +39,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_developers.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy"]
   secret_permissions  = ["Get", "List", "Set", "Delete", ]
   storage_permissions = []
   certificate_permissions = [
@@ -56,7 +56,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_external_dev_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_developer_externals[0].object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy"]
   secret_permissions  = ["Get", "List", "Set", "Delete", ]
   storage_permissions = []
   certificate_permissions = [
@@ -72,7 +72,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_admin_dev_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_admin_dev.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy", "Purge", "Recover", "Restore"]
   secret_permissions  = ["Get", "List", "Set", "Delete", ]
   storage_permissions = []
   certificate_permissions = [
