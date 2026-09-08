@@ -23,16 +23,5 @@ variable "env_short" {
   }
 }
 
-variable "location_short" {
-  type = string
-  validation {
-    condition = (
-      length(var.location_short) == 3
-    )
-    error_message = "Length must be 3 chars."
-  }
-  description = "One of weu, itn"
-}
-
 
 
