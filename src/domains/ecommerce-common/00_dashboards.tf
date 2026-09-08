@@ -112,7 +112,7 @@ resource "azurerm_portal_dashboard" "pagopa_eCommerce_update_transactions_status
 
 }
 
-resource "azurerm_portal_dashboard" "pagopa_eCommerce_event_dispatcher_dashboard" {
+resource "azurerm_portal_dashboard" "pagopa_ecommerce_event_dispatcher_dashboard" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "pagopa-ecommerce-event-dispatcher-dashboard"
   resource_group_name = var.monitor_resource_group_name
