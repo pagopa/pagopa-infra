@@ -235,7 +235,43 @@ resource "helm_release" "reloader" {
     name  = "reloader.watchGlobally"
     value = "false"
   }
+
+  values = [
+    yamlencode({
+      reloader = {
+        deployment = {
+          tolerations = [
+            {
+              key      = "dedicated"
+              operator = "Equal"
+              value    = "nonCritical"
+              effect   = "NoSchedule"
+            }
+          ]
+          affinity = {
+            nodeAffinity = {
+              requiredDuringSchedulingIgnoredDuringExecution = {
+                nodeSelectorTerms = [
+                  {
+                    matchExpressions = [
+                      {
+                        key      = "node_type"
+                        operator = "In"
+                        values   = ["user"]
+                      },
+                      {
+                        key      = "critical"
+                        operator = "In"
+                        values   = ["false"]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    })
+  ]
 }
-
-
-

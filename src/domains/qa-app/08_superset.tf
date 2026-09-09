@@ -16,6 +16,8 @@ resource "random_password" "db_user_superset_psw" {
 
 # DATABASE
 resource "azurerm_postgresql_flexible_server_database" "superset" {
+  count = var.enabled_superset ? 1 : 0
+
   name      = "superset"
   server_id = data.azurerm_postgresql_flexible_server.qa_postgresql.id
   collation = "en_US.utf8"
@@ -23,50 +25,59 @@ resource "azurerm_postgresql_flexible_server_database" "superset" {
 }
 
 resource "postgresql_grant" "superset_user_grant" {
+  count = var.enabled_superset ? 1 : 0
+
   database    = "superset"
-  role        = postgresql_role.superset_user.name
+  role        = postgresql_role.superset_user[0].name
   object_type = "schema"
   schema      = "public"
   privileges  = ["CREATE", "USAGE"]
 
   depends_on = [
-    azurerm_postgresql_flexible_server_database.superset
+    azurerm_postgresql_flexible_server_database.superset[0]
   ]
 }
 
 # GRANT SUPERSET USER ON DATABASE SUPERSET
 resource "postgresql_grant" "superset_user_grant_on_db" {
+  count = var.enabled_superset ? 1 : 0
+
   database    = "superset"
-  role        = postgresql_role.superset_user.name
+  role        = postgresql_role.superset_user[0].name
   object_type = "database"
   privileges  = ["CREATE"]
 
   depends_on = [
-    azurerm_postgresql_flexible_server_database.superset
+    azurerm_postgresql_flexible_server_database.superset[0]
   ]
 }
 
 # Permessi sulle tabelle esistenti nello schema public
 resource "postgresql_grant" "superset_user_grant_on_tables" {
+  count = var.enabled_superset ? 1 : 0
+
   database    = "superset"
   schema      = "public"
-  role        = postgresql_role.superset_user.name
+  role        = postgresql_role.superset_user[0].name
   object_type = "table"
   privileges  = ["SELECT", "INSERT", "UPDATE", "DELETE", "REFERENCES"]
 
   depends_on = [
-    azurerm_postgresql_flexible_server_database.superset
+    azurerm_postgresql_flexible_server_database.superset[0]
   ]
 }
 
 # USER - Superset
 resource "postgresql_role" "superset_user" {
+  count = var.enabled_superset ? 1 : 0
+
   name     = "superset"
   login    = true
   password = random_password.db_user_superset_psw.result
 }
 
 resource "kubernetes_secret" "superset" {
+  count = var.enabled_superset ? 1 : 0
   metadata {
     name      = "pagopa-superset-secret"
     namespace = kubernetes_namespace.namespace.metadata[0].name
@@ -84,8 +95,8 @@ resource "kubernetes_secret" "superset" {
     DB_HOST             = data.azurerm_postgresql_flexible_server.qa_postgresql.fqdn
     DB_PORT             = "5432"
     DB_NAME             = "superset"
-    DB_USER             = postgresql_role.superset_user.name
-    DB_PASS             = postgresql_role.superset_user.password
+    DB_USER             = postgresql_role.superset_user[0].name
+    DB_PASS             = postgresql_role.superset_user[0].password
     REDIS_CELERY_DB     = 0
     REDIS_DB            = 0
     REDIS_HOST          = data.azurerm_managed_redis.qa_redis.hostname
@@ -119,4 +130,36 @@ module "cert_mounter" {
 
   workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
   workload_identity_client_id            = module.workload_identity.workload_identity_client_id
+
+  tolerations = jsonencode([
+    {
+      key : "dedicated"
+      operator : "Equal"
+      value : "nonCritical"
+      effect : "NoSchedule"
+    }
+  ])
+
+  affinity = jsonencode({
+    nodeAffinity = {
+      requiredDuringSchedulingIgnoredDuringExecution = {
+        nodeSelectorTerms = [
+          {
+            matchExpressions = [
+              {
+                key      = "node_type"
+                operator = "In"
+                values   = ["user"]
+              },
+              {
+                key      = "critical"
+                operator = "In"
+                values   = ["false"]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  })
 }
