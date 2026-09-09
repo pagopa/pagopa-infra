@@ -879,11 +879,11 @@
       }
     }
   },
-  "name": "[pagoPA platform] Session payment wallet",
+  "name": "start-session-dashboard",
   "type": "Microsoft.Portal/dashboards",
   "location": "INSERT LOCATION",
   "tags": {
-    "hidden-title": "[pagoPA platform] Session payment wallet"
+    "hidden-title": "start-session-dashboard"
   },
   "apiVersion": "2022-12-01-preview"
 }
