@@ -459,11 +459,11 @@
       }
     }
   },
-  "name": "ecommerce-notification-service",
+  "name": "ecommerce-notification-service-dashboard",
   "type": "Microsoft.Portal/dashboards",
   "location": "INSERT LOCATION",
   "tags": {
-    "hidden-title": "ecommerce-notification-service"
+    "hidden-title": "ecommerce-notification-service-dashboard"
   },
   "apiVersion": "2022-12-01-preview"
 }
