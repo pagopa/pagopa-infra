@@ -106,3 +106,24 @@ data "azurerm_private_dns_zone" "azurewebsites" {
   resource_group_name = local.private_dns_zone_rg_name
 }
 
+# Database
+data "azurerm_postgresql_flexible_server" "qa_postgresql" {
+  name                = "${local.project}-flexible-postgresql"
+  resource_group_name = "${local.project}-db-rg"
+}
+
+data "azurerm_key_vault_secret" "pgres_flex_admin_login" {
+  name         = "db-administrator-login"
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "pgres_flex_admin_pwd" {
+  name         = "db-administrator-login-password"
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+# Redis
+data "azurerm_managed_redis" "qa_redis" {
+  name                = "${local.project}-redis"
+  resource_group_name = "${local.project}-redis-rg"
+}
