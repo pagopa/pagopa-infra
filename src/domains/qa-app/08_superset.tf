@@ -116,6 +116,8 @@ resource "kubernetes_secret" "superset" {
 
 # Superset - Dedicated DNS Record - Private dns record Ingress
 resource "azurerm_private_dns_a_record" "ingress_superset" {
+  count = var.enabled_superset ? 1 : 0
+
   name                = "qa-superset.${var.location_short}"
   zone_name           = data.azurerm_private_dns_zone.internal.name
   resource_group_name = data.azurerm_private_dns_zone.internal.resource_group_name
