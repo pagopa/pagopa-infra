@@ -119,3 +119,9 @@ variable "qa_hub_public_api_url" {
 variable "qa_hub_next_auth_url" {
   type = string
 }
+
+variable "enabled_superset" {
+  type        = bool
+  description = "Enable Superset deployment"
+  default     = false
+}
