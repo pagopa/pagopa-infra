@@ -132,8 +132,8 @@ gpd_sftp_sa_delete                                             = 2
 eventhubs_rtp = [
   {
     name              = "rtp-events"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
+    partitions        = 1
+    message_retention = 1
     consumers         = ["rtp-events-processor", "gpd-rtp-integration-test-consumer-group"]
     keys = [
       {
@@ -154,6 +154,26 @@ eventhubs_rtp = [
         send   = false
         manage = false
       }
+    ]
+  },
+  {
+    name              = "cdc-filtered"
+    partitions        = 1
+    message_retention = 1
+    consumers         = ["gpd-rtp"]
+    keys = [
+      {
+        name   = "cdc-filtered-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "cdc-filtered-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
     ]
   }
 ]
