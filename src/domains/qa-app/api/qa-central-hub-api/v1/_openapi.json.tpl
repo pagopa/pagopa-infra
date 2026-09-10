@@ -10,29 +10,6 @@
     }
   ],
   "paths": {
-    "/api/v1/openapi.json": {
-      "get": {
-        "tags": [
-          "openapi"
-        ],
-        "summary": "Openapi",
-        "operationId": "openapi_api_v1_openapi_json_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": true,
-                  "type": "object",
-                  "title": "Response Openapi Api V1 Openapi Json Get"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/health": {
       "get": {
         "tags": [
@@ -354,9 +331,15 @@
             "in": "query",
             "required": false,
             "schema": {
-              "title": "Status",
-              "type": "string",
-              "nullable": true
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
             }
           }
         ],
@@ -401,10 +384,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "title": "Project Id",
-              "type": "string",
-              "format": "uuid",
-              "nullable": true
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Project Id"
             }
           },
           {
@@ -412,9 +401,15 @@
             "in": "query",
             "required": false,
             "schema": {
-              "title": "Status",
-              "type": "string",
-              "nullable": true
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
             }
           },
           {
@@ -987,10 +982,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "title": "Suite Id",
-              "type": "string",
-              "format": "uuid",
-              "nullable": true
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Suite Id"
             }
           },
           {
@@ -1961,13 +1962,15 @@
             "in": "query",
             "required": false,
             "schema": {
-              "title": "Category",
-              "allOf": [
+              "anyOf": [
                 {
                   "$ref": "#/components/schemas/DqCategory"
+                },
+                {
+                  "type": "null"
                 }
               ],
-              "nullable": true
+              "title": "Category"
             }
           }
         ],
@@ -2179,10 +2182,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "title": "Domain Id",
-              "type": "string",
-              "format": "uuid",
-              "nullable": true
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Domain Id"
             }
           },
           {
@@ -2190,13 +2199,15 @@
             "in": "query",
             "required": false,
             "schema": {
-              "title": "Category",
-              "allOf": [
+              "anyOf": [
                 {
                   "$ref": "#/components/schemas/DqCategory"
+                },
+                {
+                  "type": "null"
                 }
               ],
-              "nullable": true
+              "title": "Category"
             }
           }
         ],
@@ -2773,10 +2784,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "title": "Resource Id",
-              "type": "string",
-              "format": "uuid",
-              "nullable": true
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Resource Id"
             }
           },
           {
@@ -2784,9 +2801,15 @@
             "in": "query",
             "required": false,
             "schema": {
-              "title": "Year",
-              "type": "integer",
-              "nullable": true
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Year"
             }
           },
           {
@@ -2794,9 +2817,15 @@
             "in": "query",
             "required": false,
             "schema": {
-              "title": "Month",
-              "type": "integer",
-              "nullable": true
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Month"
             }
           }
         ],
@@ -3045,6 +3074,179 @@
           }
         }
       }
+    },
+    "/api/v1/test-metrics/test-suites": {
+      "post": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Create Test Suite",
+        "operationId": "create_test_suite_api_v1_test_metrics_test_suites_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TestSuiteCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestSuiteOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-metrics/test-suites/latest/": {
+      "get": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Get Latest Test Suite Version",
+        "operationId": "get_latest_test_suite_version_api_v1_test_metrics_test_suites_latest__get",
+        "parameters": [
+          {
+            "name": "test_object",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Test Object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestSuiteOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-metrics/test-runs": {
+      "post": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Create Test Run",
+        "operationId": "create_test_run_api_v1_test_metrics_test_runs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TestRunCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestRunOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-metrics/test-executions": {
+      "post": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Create Test Execution",
+        "operationId": "create_test_execution_api_v1_test_metrics_test_executions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "$ref": "#/components/schemas/TestExecutionCreate"
+                },
+                "type": "array",
+                "title": "Body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TestExecutionOut"
+                  },
+                  "type": "array",
+                  "title": "Response Create Test Execution Api V1 Test Metrics Test Executions Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3080,8 +3282,8 @@
           },
           "file": {
             "type": "string",
-            "title": "File",
-            "format": "binary"
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
           }
         },
         "type": "object",
@@ -3199,9 +3401,15 @@
             "default": "ferie"
           },
           "note": {
-            "title": "Note",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
           }
         },
         "type": "object",
@@ -3218,9 +3426,15 @@
             "title": "Title"
           },
           "description": {
-            "title": "Description",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
           },
           "url": {
             "type": "string",
@@ -3253,9 +3467,15 @@
             "default": "page"
           },
           "thumbnail_url": {
-            "title": "Thumbnail Url",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thumbnail Url"
           },
           "position": {
             "type": "integer",
@@ -3282,9 +3502,15 @@
             "title": "Title"
           },
           "description": {
-            "title": "Description",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
           },
           "url": {
             "type": "string",
@@ -3303,9 +3529,15 @@
             "title": "Icon"
           },
           "thumbnail_url": {
-            "title": "Thumbnail Url",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thumbnail Url"
           },
           "position": {
             "type": "integer",
@@ -3341,55 +3573,103 @@
       "DocItemUpdate": {
         "properties": {
           "title": {
-            "title": "Title",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
           },
           "description": {
-            "title": "Description",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
           },
           "url": {
-            "title": "Url",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
           },
           "type": {
-            "title": "Type",
-            "type": "string",
-            "enum": [
-              "external",
-              "embedded"
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "external",
+                  "embedded"
+                ]
+              },
+              {
+                "type": "null"
+              }
             ],
-            "nullable": true
+            "title": "Type"
           },
           "category": {
-            "title": "Category",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
           },
           "icon": {
-            "title": "Icon",
-            "type": "string",
-            "enum": [
-              "confluence",
-              "page",
-              "template",
-              "web",
-              "video"
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "confluence",
+                  "page",
+                  "template",
+                  "web",
+                  "video"
+                ]
+              },
+              {
+                "type": "null"
+              }
             ],
-            "nullable": true
+            "title": "Icon"
           },
           "thumbnail_url": {
-            "title": "Thumbnail Url",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thumbnail Url"
           },
           "position": {
-            "title": "Position",
-            "type": "integer",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Position"
           }
         },
         "type": "object",
@@ -3478,25 +3758,49 @@
       "DqCatalogControlUpdate": {
         "properties": {
           "category": {
-            "title": "Category",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
           },
           "name": {
-            "title": "Name",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
           },
           "description": {
-            "title": "Description",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
           },
           "dimension_id": {
-            "title": "Dimension Id",
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dimension Id"
           }
         },
         "type": "object",
@@ -3532,9 +3836,15 @@
             "title": "Field Ref"
           },
           "owner": {
-            "title": "Owner",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner"
           },
           "risk": {
             "type": "string",
@@ -3550,9 +3860,15 @@
             "default": "da_implementare"
           },
           "notes": {
-            "title": "Notes",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
           }
         },
         "type": "object",
@@ -3587,9 +3903,15 @@
             "title": "Field Ref"
           },
           "owner": {
-            "title": "Owner",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner"
           },
           "risk": {
             "type": "string",
@@ -3605,9 +3927,15 @@
             "default": "da_implementare"
           },
           "notes": {
-            "title": "Notes",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
           },
           "id": {
             "type": "string",
@@ -3646,39 +3974,81 @@
       "DqControlInstanceUpdate": {
         "properties": {
           "table_ref": {
-            "title": "Table Ref",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Table Ref"
           },
           "field_ref": {
-            "title": "Field Ref",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Field Ref"
           },
           "owner": {
-            "title": "Owner",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner"
           },
           "risk": {
-            "title": "Risk",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Risk"
           },
           "impact": {
-            "title": "Impact",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Impact"
           },
           "status": {
-            "title": "Status",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
           },
           "notes": {
-            "title": "Notes",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
           }
         },
         "type": "object",
@@ -3729,14 +4099,26 @@
       "DqDimensionUpdate": {
         "properties": {
           "name": {
-            "title": "Name",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
           },
           "sort_order": {
-            "title": "Sort Order",
-            "type": "integer",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sort Order"
           }
         },
         "type": "object",
@@ -3799,18 +4181,39 @@
       "DqDomainUpdate": {
         "properties": {
           "name": {
-            "title": "Name",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
           },
           "sort_order": {
-            "title": "Sort Order",
-            "type": "integer",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sort Order"
           }
         },
         "type": "object",
         "title": "DqDomainUpdate"
+      },
+      "EnvEnum": {
+        "type": "string",
+        "enum": [
+          "DEV",
+          "UAT",
+          "PROD"
+        ],
+        "title": "EnvEnum"
       },
       "EstimateDriftGroup": {
         "properties": {
@@ -3916,9 +4319,8 @@
           },
           "daily_rate": {
             "type": "number",
-            "exclusiveMinimum": true,
-            "title": "Daily Rate",
-            "minimum": 0.0
+            "exclusiveMinimum": 0.0,
+            "title": "Daily Rate"
           },
           "contract_start": {
             "type": "string",
@@ -3926,15 +4328,27 @@
             "title": "Contract Start"
           },
           "contract_end": {
-            "title": "Contract End",
-            "type": "string",
-            "format": "date",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contract End"
           },
           "notes": {
-            "title": "Notes",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
           }
         },
         "type": "object",
@@ -3986,15 +4400,27 @@
             "title": "Contract Start"
           },
           "contract_end": {
-            "title": "Contract End",
-            "type": "string",
-            "format": "date",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contract End"
           },
           "notes": {
-            "title": "Notes",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
           },
           "is_active": {
             "type": "boolean",
@@ -4032,67 +4458,126 @@
       "ExternalResourceUpdate": {
         "properties": {
           "first_name": {
-            "title": "First Name",
-            "type": "string",
-            "maxLength": 100,
-            "minLength": 1,
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Name"
           },
           "last_name": {
-            "title": "Last Name",
-            "type": "string",
-            "maxLength": 100,
-            "minLength": 1,
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Name"
           },
           "email": {
-            "title": "Email",
-            "type": "string",
-            "format": "email",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "email"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
           },
           "company": {
-            "title": "Company",
-            "type": "string",
-            "maxLength": 200,
-            "minLength": 1,
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company"
           },
           "role": {
-            "title": "Role",
-            "type": "string",
-            "maxLength": 200,
-            "minLength": 1,
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role"
           },
           "daily_rate": {
-            "title": "Daily Rate",
-            "type": "number",
-            "exclusiveMinimum": true,
-            "nullable": true,
-            "minimum": 0.0
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Daily Rate"
           },
           "contract_start": {
-            "title": "Contract Start",
-            "type": "string",
-            "format": "date",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contract Start"
           },
           "contract_end": {
-            "title": "Contract End",
-            "type": "string",
-            "format": "date",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contract End"
           },
           "notes": {
-            "title": "Notes",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
           },
           "is_active": {
-            "title": "Is Active",
-            "type": "boolean",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Active"
           }
         },
         "type": "object",
@@ -4229,12 +4714,14 @@
             "title": "Items"
           },
           "sync_status": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/GpdPositionSyncStatusOut"
+              },
+              {
+                "type": "null"
               }
-            ],
-            "nullable": true
+            ]
           }
         },
         "type": "object",
@@ -4543,19 +5030,37 @@
             "title": "Source Type"
           },
           "content": {
-            "title": "Content",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Content"
           },
           "url": {
-            "title": "Url",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
           },
           "confluence_page_id": {
-            "title": "Confluence Page Id",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confluence Page Id"
           }
         },
         "type": "object",
@@ -4584,9 +5089,15 @@
             "title": "Name"
           },
           "description": {
-            "title": "Description",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
           }
         },
         "type": "object",
@@ -4607,9 +5118,15 @@
             "title": "Name"
           },
           "description": {
-            "title": "Description",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
           },
           "created_at": {
             "type": "string",
@@ -4640,14 +5157,26 @@
       "ProjectUpdate": {
         "properties": {
           "name": {
-            "title": "Name",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
           },
           "description": {
-            "title": "Description",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
           }
         },
         "type": "object",
@@ -4663,12 +5192,14 @@
             "title": "Items"
           },
           "sync_status": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/PspFeeSyncStatusOut"
+              },
+              {
+                "type": "null"
               }
-            ],
-            "nullable": true
+            ]
           }
         },
         "type": "object",
@@ -4710,14 +5241,26 @@
             "title": "Inf Desc Serv"
           },
           "inf_url_canale": {
-            "title": "Inf Url Canale",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Inf Url Canale"
           },
           "url_informazioni_psp": {
-            "title": "Url Informazioni Psp",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url Informazioni Psp"
           },
           "tipo_vers_cod": {
             "type": "string",
@@ -4732,19 +5275,37 @@
             "title": "Canale Mod Pag Code"
           },
           "importo_minimo": {
-            "title": "Importo Minimo",
-            "type": "number",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Importo Minimo"
           },
           "importo_massimo": {
-            "title": "Importo Massimo",
-            "type": "number",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Importo Massimo"
           },
           "costo_fisso": {
-            "title": "Costo Fisso",
-            "type": "number",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Costo Fisso"
           },
           "on_us": {
             "type": "boolean",
@@ -4872,9 +5433,15 @@
             "default": "ferie"
           },
           "note": {
-            "title": "Note",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
           }
         },
         "type": "object",
@@ -4910,14 +5477,26 @@
             "title": "Source"
           },
           "confluence_event_id": {
-            "title": "Confluence Event Id",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confluence Event Id"
           },
           "note": {
-            "title": "Note",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
           },
           "created_at": {
             "type": "string",
@@ -5220,9 +5799,15 @@
             "title": "Source Type"
           },
           "source_ref": {
-            "title": "Source Ref",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Ref"
           },
           "gherkin": {
             "type": "string",
@@ -5250,9 +5835,15 @@
             "title": "Ai Model"
           },
           "generation_time_ms": {
-            "title": "Generation Time Ms",
-            "type": "integer",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Generation Time Ms"
           }
         },
         "type": "object",
@@ -5292,9 +5883,15 @@
             "title": "Source Type"
           },
           "source_ref": {
-            "title": "Source Ref",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Ref"
           },
           "gherkin": {
             "type": "string",
@@ -5320,9 +5917,15 @@
             "title": "Ai Model"
           },
           "generation_time_ms": {
-            "title": "Generation Time Ms",
-            "type": "integer",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Generation Time Ms"
           },
           "created_at": {
             "type": "string",
@@ -5354,30 +5957,64 @@
         ],
         "title": "ScenarioOut"
       },
+      "ScenarioStatusEnum": {
+        "type": "string",
+        "enum": [
+          "PASSED",
+          "FAILED",
+          "BROKEN",
+          "SKIPPED"
+        ],
+        "title": "ScenarioStatusEnum"
+      },
       "ScenarioUpdate": {
         "properties": {
           "title": {
-            "title": "Title",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
           },
           "gherkin": {
-            "title": "Gherkin",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gherkin"
           },
           "tags": {
-            "title": "Tags",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tags"
           },
           "status": {
-            "title": "Status",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
           }
         },
         "type": "object",
@@ -5406,9 +6043,15 @@
             "title": "Ollama Model"
           },
           "confluence_email": {
-            "title": "Confluence Email",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confluence Email"
           },
           "confluence_token_set": {
             "type": "boolean",
@@ -5440,49 +6083,103 @@
       "SettingsUpdate": {
         "properties": {
           "ai_provider": {
-            "title": "Ai Provider",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ai Provider"
           },
           "claude_api_key": {
-            "title": "Claude Api Key",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Claude Api Key"
           },
           "claude_model": {
-            "title": "Claude Model",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Claude Model"
           },
           "ollama_base_url": {
-            "title": "Ollama Base Url",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ollama Base Url"
           },
           "ollama_model": {
-            "title": "Ollama Model",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ollama Model"
           },
           "confluence_email": {
-            "title": "Confluence Email",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confluence Email"
           },
           "confluence_api_token": {
-            "title": "Confluence Api Token",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confluence Api Token"
           },
           "gherkin_language": {
-            "title": "Gherkin Language",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gherkin Language"
           },
           "max_scenarios": {
-            "title": "Max Scenarios",
-            "type": "integer",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Scenarios"
           }
         },
         "type": "object",
@@ -5513,9 +6210,15 @@
             "default": true
           },
           "sync_lookback_days": {
-            "title": "Sync Lookback Days",
-            "type": "integer",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sync Lookback Days"
           }
         },
         "type": "object",
@@ -5554,15 +6257,27 @@
             "title": "Enabled"
           },
           "sync_lookback_days": {
-            "title": "Sync Lookback Days",
-            "type": "integer",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sync Lookback Days"
           },
           "last_synced_at": {
-            "title": "Last Synced At",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Synced At"
           }
         },
         "type": "object",
@@ -5581,29 +6296,59 @@
       "SuiteUpdate": {
         "properties": {
           "display_name": {
-            "title": "Display Name",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Display Name"
           },
           "suite_path": {
-            "title": "Suite Path",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Suite Path"
           },
           "github_repo": {
-            "title": "Github Repo",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Github Repo"
           },
           "enabled": {
-            "title": "Enabled",
-            "type": "boolean",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enabled"
           },
           "sync_lookback_days": {
-            "title": "Sync Lookback Days",
-            "type": "integer",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sync Lookback Days"
           }
         },
         "type": "object",
@@ -5615,12 +6360,14 @@
             "$ref": "#/components/schemas/SuiteOut"
           },
           "latest_run": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/RunOut"
+              },
+              {
+                "type": "null"
               }
-            ],
-            "nullable": true
+            ]
           },
           "trend": {
             "items": {
@@ -5649,9 +6396,15 @@
             "title": "Name"
           },
           "idp_sub": {
-            "title": "Idp Sub",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Idp Sub"
           }
         },
         "type": "object",
@@ -5718,6 +6471,546 @@
         ],
         "title": "SyncResult"
       },
+      "TestExecutionCreate": {
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Run Id"
+          },
+          "allure_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Allure Id"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "scenario_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenario Name"
+          },
+          "allure_report": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Allure Report"
+          },
+          "duration_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Ms"
+          },
+          "error_message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Message"
+          },
+          "retries": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retries"
+          }
+        },
+        "type": "object",
+        "required": [
+          "run_id"
+        ],
+        "title": "TestExecutionCreate"
+      },
+      "TestExecutionOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "run_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Run Id"
+          },
+          "allure_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Allure Id"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScenarioStatusEnum"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "scenario_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenario Name"
+          },
+          "allure_report": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Allure Report"
+          },
+          "duration_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Ms"
+          },
+          "error_message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Message"
+          },
+          "retries": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retries"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "run_id"
+        ],
+        "title": "TestExecutionOut"
+      },
+      "TestRunCreate": {
+        "properties": {
+          "suite_id": {
+            "type": "string",
+            "title": "Suite Id"
+          },
+          "scenario_qty": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenario Qty"
+          },
+          "passed_scenario": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Passed Scenario"
+          },
+          "failed_scenario": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Failed Scenario"
+          },
+          "broken_scenario": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Broken Scenario"
+          },
+          "skipped_scenario": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Skipped Scenario"
+          },
+          "timestamp_start": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timestamp Start"
+          },
+          "timestamp_end": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timestamp End"
+          },
+          "duration_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Ms"
+          },
+          "env": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Env"
+          },
+          "trigger_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trigger Type"
+          },
+          "test_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Test Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "suite_id"
+        ],
+        "title": "TestRunCreate"
+      },
+      "TestRunOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "suite_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Suite Id"
+          },
+          "scenario_qty": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenario Qty"
+          },
+          "passed_scenario": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Passed Scenario"
+          },
+          "failed_scenario": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Failed Scenario"
+          },
+          "broken_scenario": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Broken Scenario"
+          },
+          "skipped_scenario": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Skipped Scenario"
+          },
+          "timestamp_start": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timestamp Start"
+          },
+          "timestamp_end": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timestamp End"
+          },
+          "duration_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Ms"
+          },
+          "env": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EnvEnum"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "trigger_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TriggerTypeEnum"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "test_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Test Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "suite_id"
+        ],
+        "title": "TestRunOut"
+      },
+      "TestSuiteCreate": {
+        "properties": {
+          "test_object": {
+            "type": "string",
+            "title": "Test Object"
+          },
+          "test_type": {
+            "type": "string",
+            "title": "Test Type"
+          },
+          "suite_version": {
+            "type": "string",
+            "title": "Suite Version"
+          },
+          "owner_team": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner Team"
+          }
+        },
+        "type": "object",
+        "required": [
+          "test_object",
+          "test_type",
+          "suite_version"
+        ],
+        "title": "TestSuiteCreate"
+      },
+      "TestSuiteOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "test_object": {
+            "type": "string",
+            "title": "Test Object"
+          },
+          "test_type": {
+            "type": "string",
+            "title": "Test Type"
+          },
+          "suite_version": {
+            "type": "string",
+            "title": "Suite Version"
+          },
+          "owner_team": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner Team"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "test_object",
+          "test_type",
+          "suite_version"
+        ],
+        "title": "TestSuiteOut"
+      },
       "TrendWeek": {
         "properties": {
           "week": {
@@ -5745,6 +7038,15 @@
           "closed"
         ],
         "title": "TrendWeek"
+      },
+      "TriggerTypeEnum": {
+        "type": "string",
+        "enum": [
+          "MANUAL",
+          "CRON",
+          "CI_PIPELINE"
+        ],
+        "title": "TriggerTypeEnum"
       },
       "TypeCount": {
         "properties": {
@@ -5834,14 +7136,26 @@
       "UserUpdate": {
         "properties": {
           "role": {
-            "title": "Role",
-            "type": "string",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role"
           },
           "is_active": {
-            "title": "Is Active",
-            "type": "boolean",
-            "nullable": true
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Active"
           }
         },
         "type": "object",
