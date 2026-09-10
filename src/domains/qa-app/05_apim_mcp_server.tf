@@ -57,7 +57,7 @@ module "apim_mcp_server_api" {
   protocols    = ["https"]
   service_url  = local.apim_mcp_server_api.service_url
 
-  content_format = "openapi"
+  content_format = "openapi+json"
   content_value = templatefile("./api/pagopa-mcp-server-api/v1/_openapi.json.tpl", {
     hostname = local.apim_hostname
   })
