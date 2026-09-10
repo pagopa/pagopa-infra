@@ -235,7 +235,6 @@ resource "helm_release" "reloader" {
     name  = "reloader.watchGlobally"
     value = "false"
   }
-}
 
   values = [
     yamlencode({
@@ -275,4 +274,50 @@ resource "helm_release" "reloader" {
       }
     })
   ]
+}
+
+module "cert_mounter" {
+  source = "./.terraform/modules/__v4__/cert_mounter"
+  count  = var.enabled_superset ? 1 : 0
+
+  helm_release_name = "cert-mounter-qa-superset"
+  namespace         = local.domain
+  certificate_name  = replace(local.qa_hostname_superset, ".", "-")
+  kv_name           = data.azurerm_key_vault.key_vault.name
+  tenant_id         = data.azurerm_subscription.current.tenant_id
+
+  workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
+  workload_identity_client_id            = module.workload_identity.workload_identity_client_id
+
+  tolerations = jsonencode([
+    {
+      key : "dedicated"
+      operator : "Equal"
+      value : "nonCritical"
+      effect : "NoSchedule"
+    }
+  ])
+
+  affinity = jsonencode({
+    nodeAffinity = {
+      requiredDuringSchedulingIgnoredDuringExecution = {
+        nodeSelectorTerms = [
+          {
+            matchExpressions = [
+              {
+                key      = "node_type"
+                operator = "In"
+                values   = ["user"]
+              },
+              {
+                key      = "critical"
+                operator = "In"
+                values   = ["false"]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  })
 }

@@ -1,14 +1,18 @@
 resource "random_password" "superset_random_key" {
+  count = var.enabled_superset ? 1 : 0
+
   length  = 42
   special = false
 }
 
 resource "random_password" "superset_admin_user_psw" {
+  count   = var.enabled_superset ? 1 : 0
   length  = 42
   special = false
 }
 
 resource "random_password" "db_user_superset_psw" {
+  count            = var.enabled_superset ? 1 : 0
   length           = 42
   special          = true
   override_special = "!-_"
@@ -73,7 +77,7 @@ resource "postgresql_role" "superset_user" {
 
   name     = "superset"
   login    = true
-  password = random_password.db_user_superset_psw.result
+  password = random_password.db_user_superset_psw[0].result
 }
 
 resource "kubernetes_secret" "superset" {
@@ -90,8 +94,8 @@ resource "kubernetes_secret" "superset" {
 
   data = {
     SUPERSET_ADMIN_USER = "admin"
-    SUPERSET_ADMIN_PSW  = random_password.superset_admin_user_psw.result
-    SUPERSET_SECRET_KEY = random_password.superset_random_key.result
+    SUPERSET_ADMIN_PSW  = random_password.superset_admin_user_psw[0].result
+    SUPERSET_SECRET_KEY = random_password.superset_random_key[0].result
     DB_HOST             = data.azurerm_postgresql_flexible_server.qa_postgresql.fqdn
     DB_PORT             = "5432"
     DB_NAME             = "superset"
@@ -117,49 +121,4 @@ resource "azurerm_private_dns_a_record" "ingress_superset" {
   resource_group_name = data.azurerm_private_dns_zone.internal.resource_group_name
   ttl                 = 3600
   records             = [var.ingress_load_balancer_ip]
-}
-
-module "cert_mounter" {
-  source = "./.terraform/modules/__v4__/cert_mounter"
-
-  helm_release_name = "cert-mounter-qa-superset"
-  namespace         = local.domain
-  certificate_name  = replace(local.qa_hostname_superset, ".", "-")
-  kv_name           = data.azurerm_key_vault.key_vault.name
-  tenant_id         = data.azurerm_subscription.current.tenant_id
-
-  workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
-  workload_identity_client_id            = module.workload_identity.workload_identity_client_id
-
-  tolerations = jsonencode([
-    {
-      key : "dedicated"
-      operator : "Equal"
-      value : "nonCritical"
-      effect : "NoSchedule"
-    }
-  ])
-
-  affinity = jsonencode({
-    nodeAffinity = {
-      requiredDuringSchedulingIgnoredDuringExecution = {
-        nodeSelectorTerms = [
-          {
-            matchExpressions = [
-              {
-                key      = "node_type"
-                operator = "In"
-                values   = ["user"]
-              },
-              {
-                key      = "critical"
-                operator = "In"
-                values   = ["false"]
-              }
-            ]
-          }
-        ]
-      }
-    }
-  })
 }
