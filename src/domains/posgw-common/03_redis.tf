@@ -13,7 +13,7 @@ module "redis" {
   product_name      = local.prefix
 
   location               = var.location
-  name                   = local.project
+  name                   = "${local.project}-redis"
   resource_group_name    = azurerm_resource_group.redis_rg.name
   alert_action_group_ids = concat([data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id], var.alert_use_opsgenie ? [] : [])
 
