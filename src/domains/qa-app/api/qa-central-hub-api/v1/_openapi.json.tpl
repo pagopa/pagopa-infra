@@ -10,29 +10,6 @@
     }
   ],
   "paths": {
-    "/api/v1/openapi.json": {
-      "get": {
-        "tags": [
-          "openapi"
-        ],
-        "summary": "Openapi",
-        "operationId": "openapi_api_v1_openapi_json_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": true,
-                  "type": "object",
-                  "title": "Response Openapi Api V1 Openapi Json Get"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/health": {
       "get": {
         "tags": [
@@ -3045,6 +3022,179 @@
           }
         }
       }
+    },
+    "/api/v1/test-metrics/test-suites": {
+      "post": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Create Test Suite",
+        "operationId": "create_test_suite_api_v1_test_metrics_test_suites_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TestSuiteCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestSuiteOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-metrics/test-suites/latest/": {
+      "get": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Get Latest Test Suite Version",
+        "operationId": "get_latest_test_suite_version_api_v1_test_metrics_test_suites_latest__get",
+        "parameters": [
+          {
+            "name": "test_object",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Test Object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestSuiteOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-metrics/test-runs": {
+      "post": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Create Test Run",
+        "operationId": "create_test_run_api_v1_test_metrics_test_runs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TestRunCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestRunOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-metrics/test-executions": {
+      "post": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Create Test Execution",
+        "operationId": "create_test_execution_api_v1_test_metrics_test_executions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "$ref": "#/components/schemas/TestExecutionCreate"
+                },
+                "type": "array",
+                "title": "Body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TestExecutionOut"
+                  },
+                  "type": "array",
+                  "title": "Response Create Test Execution Api V1 Test Metrics Test Executions Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3080,8 +3230,8 @@
           },
           "file": {
             "type": "string",
-            "title": "File",
-            "format": "binary"
+            "format": "binary",
+            "title": "File"
           }
         },
         "type": "object",
@@ -3812,6 +3962,15 @@
         "type": "object",
         "title": "DqDomainUpdate"
       },
+      "EnvEnum": {
+        "type": "string",
+        "enum": [
+          "DEV",
+          "UAT",
+          "PROD"
+        ],
+        "title": "EnvEnum"
+      },
       "EstimateDriftGroup": {
         "properties": {
           "name": {
@@ -3916,9 +4075,9 @@
           },
           "daily_rate": {
             "type": "number",
+            "minimum": 0.0,
             "exclusiveMinimum": true,
-            "title": "Daily Rate",
-            "minimum": 0.0
+            "title": "Daily Rate"
           },
           "contract_start": {
             "type": "string",
@@ -4068,9 +4227,9 @@
           "daily_rate": {
             "title": "Daily Rate",
             "type": "number",
+            "minimum": 0.0,
             "exclusiveMinimum": true,
-            "nullable": true,
-            "minimum": 0.0
+            "nullable": true
           },
           "contract_start": {
             "title": "Contract Start",
@@ -5354,6 +5513,16 @@
         ],
         "title": "ScenarioOut"
       },
+      "ScenarioStatusEnum": {
+        "type": "string",
+        "enum": [
+          "PASSED",
+          "FAILED",
+          "BROKEN",
+          "SKIPPED"
+        ],
+        "title": "ScenarioStatusEnum"
+      },
       "ScenarioUpdate": {
         "properties": {
           "title": {
@@ -5718,6 +5887,330 @@
         ],
         "title": "SyncResult"
       },
+      "TestExecutionCreate": {
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Run Id"
+          },
+          "allure_id": {
+            "title": "Allure Id",
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "title": "Status",
+            "type": "string",
+            "nullable": true
+          },
+          "scenario_name": {
+            "title": "Scenario Name",
+            "type": "string",
+            "nullable": true
+          },
+          "allure_report": {
+            "title": "Allure Report",
+            "additionalProperties": true,
+            "type": "object",
+            "nullable": true
+          },
+          "duration_ms": {
+            "title": "Duration Ms",
+            "type": "integer",
+            "nullable": true
+          },
+          "error_message": {
+            "title": "Error Message",
+            "type": "string",
+            "nullable": true
+          },
+          "retries": {
+            "title": "Retries",
+            "type": "integer",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "run_id"
+        ],
+        "title": "TestExecutionCreate"
+      },
+      "TestExecutionOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "run_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Run Id"
+          },
+          "allure_id": {
+            "title": "Allure Id",
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ScenarioStatusEnum"
+              }
+            ],
+            "nullable": true
+          },
+          "scenario_name": {
+            "title": "Scenario Name",
+            "type": "string",
+            "nullable": true
+          },
+          "allure_report": {
+            "title": "Allure Report",
+            "additionalProperties": true,
+            "type": "object",
+            "nullable": true
+          },
+          "duration_ms": {
+            "title": "Duration Ms",
+            "type": "integer",
+            "nullable": true
+          },
+          "error_message": {
+            "title": "Error Message",
+            "type": "string",
+            "nullable": true
+          },
+          "retries": {
+            "title": "Retries",
+            "type": "integer",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "run_id"
+        ],
+        "title": "TestExecutionOut"
+      },
+      "TestRunCreate": {
+        "properties": {
+          "suite_id": {
+            "type": "string",
+            "title": "Suite Id"
+          },
+          "scenario_qty": {
+            "title": "Scenario Qty",
+            "type": "integer",
+            "nullable": true
+          },
+          "passed_scenario": {
+            "title": "Passed Scenario",
+            "type": "integer",
+            "nullable": true
+          },
+          "failed_scenario": {
+            "title": "Failed Scenario",
+            "type": "integer",
+            "nullable": true
+          },
+          "broken_scenario": {
+            "title": "Broken Scenario",
+            "type": "integer",
+            "nullable": true
+          },
+          "skipped_scenario": {
+            "title": "Skipped Scenario",
+            "type": "integer",
+            "nullable": true
+          },
+          "timestamp_start": {
+            "title": "Timestamp Start",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "timestamp_end": {
+            "title": "Timestamp End",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "duration_ms": {
+            "title": "Duration Ms",
+            "type": "integer",
+            "nullable": true
+          },
+          "env": {
+            "title": "Env",
+            "type": "string",
+            "nullable": true
+          },
+          "trigger_type": {
+            "title": "Trigger Type",
+            "type": "string",
+            "nullable": true
+          },
+          "test_version": {
+            "title": "Test Version",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "suite_id"
+        ],
+        "title": "TestRunCreate"
+      },
+      "TestRunOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "suite_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Suite Id"
+          },
+          "scenario_qty": {
+            "title": "Scenario Qty",
+            "type": "integer",
+            "nullable": true
+          },
+          "passed_scenario": {
+            "title": "Passed Scenario",
+            "type": "integer",
+            "nullable": true
+          },
+          "failed_scenario": {
+            "title": "Failed Scenario",
+            "type": "integer",
+            "nullable": true
+          },
+          "broken_scenario": {
+            "title": "Broken Scenario",
+            "type": "integer",
+            "nullable": true
+          },
+          "skipped_scenario": {
+            "title": "Skipped Scenario",
+            "type": "integer",
+            "nullable": true
+          },
+          "timestamp_start": {
+            "title": "Timestamp Start",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "timestamp_end": {
+            "title": "Timestamp End",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "duration_ms": {
+            "title": "Duration Ms",
+            "type": "integer",
+            "nullable": true
+          },
+          "env": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EnvEnum"
+              }
+            ],
+            "nullable": true
+          },
+          "trigger_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TriggerTypeEnum"
+              }
+            ],
+            "nullable": true
+          },
+          "test_version": {
+            "title": "Test Version",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "suite_id"
+        ],
+        "title": "TestRunOut"
+      },
+      "TestSuiteCreate": {
+        "properties": {
+          "test_object": {
+            "type": "string",
+            "title": "Test Object"
+          },
+          "test_type": {
+            "type": "string",
+            "title": "Test Type"
+          },
+          "suite_version": {
+            "type": "string",
+            "title": "Suite Version"
+          },
+          "owner_team": {
+            "title": "Owner Team",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "test_object",
+          "test_type",
+          "suite_version"
+        ],
+        "title": "TestSuiteCreate"
+      },
+      "TestSuiteOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "test_object": {
+            "type": "string",
+            "title": "Test Object"
+          },
+          "test_type": {
+            "type": "string",
+            "title": "Test Type"
+          },
+          "suite_version": {
+            "type": "string",
+            "title": "Suite Version"
+          },
+          "owner_team": {
+            "title": "Owner Team",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "test_object",
+          "test_type",
+          "suite_version"
+        ],
+        "title": "TestSuiteOut"
+      },
       "TrendWeek": {
         "properties": {
           "week": {
@@ -5745,6 +6238,15 @@
           "closed"
         ],
         "title": "TrendWeek"
+      },
+      "TriggerTypeEnum": {
+        "type": "string",
+        "enum": [
+          "MANUAL",
+          "CRON",
+          "CI_PIPELINE"
+        ],
+        "title": "TriggerTypeEnum"
       },
       "TypeCount": {
         "properties": {
