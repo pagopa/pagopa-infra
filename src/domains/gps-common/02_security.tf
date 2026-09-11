@@ -187,6 +187,7 @@ resource "azurerm_key_vault_secret" "gpd_apiconfig_subscription_key" {
   }
 }
 
+# TODO remove
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "gpd_gps_subscription_key" {
   name         = format("gpd-%s-gps-subscription-key", var.env_short)
