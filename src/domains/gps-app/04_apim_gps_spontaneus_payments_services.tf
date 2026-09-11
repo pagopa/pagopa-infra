@@ -5,6 +5,7 @@ locals {
   }
 }
 
+# TODO remove
 module "apim_gps_spontaneous_payments_services_product" {
   source = "./.terraform/modules/__v3__/api_management_product"
 
