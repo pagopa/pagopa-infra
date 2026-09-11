@@ -81,102 +81,12 @@ resource "azurerm_key_vault_access_policy" "adgroup_admin_dev_policy" {
   ]
 }
 
-
-
-resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
-  name         = "elastic-otel-token-header"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
 resource "azurerm_key_vault_secret" "ai_connection_string" {
   name         = "ai-${var.env_short}-connection-string"
   value        = data.azurerm_application_insights.application_insights.connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
-}
-
-resource "azurerm_key_vault_secret" "checkout_opsgenie_webhook_token" {
-  count        = var.env_short == "p" ? 1 : 0
-  name         = "checkout-opsgenie-webhook-token"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-resource "azurerm_key_vault_secret" "checkout_oneidentity_onboarding_api_key" {
-  name         = "checkout-oneidentity-onboarding-api-key"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-resource "azurerm_key_vault_secret" "checkout_oneidentity_onboarding_params" {
-  name         = "checkout-oneidentity-onboarding-params"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-resource "azurerm_key_vault_secret" "one_identity_client_secret" {
-  name         = "checkout-one-identity-client-secret"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-
-resource "azurerm_key_vault_secret" "one_identity_client_secret_test" {
-  count        = var.env_short == "u" ? 1 : 0
-  name         = "checkout-one-identity-client-secret-test"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-resource "azurerm_key_vault_secret" "checkout_gha_bot_pat" {
-  count        = var.env_short == "p" ? 1 : 0
-  name         = "checkout-gha-bot-pat"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
 }
 
 resource "azurerm_key_vault_secret" "redis_std_checkout_access_key" {
@@ -189,41 +99,4 @@ resource "azurerm_key_vault_secret" "redis_std_checkout_hostname" {
   name         = "redis-std-checkout-hostname"
   value        = module.pagopa_checkout_redis_std.hostname
   key_vault_id = module.key_vault.id
-}
-
-
-resource "azurerm_key_vault_secret" "checkout_feature_flags_map" {
-  name         = "checkout-feature-flags-map"
-  value        = "{}"
-  key_vault_id = module.key_vault.id
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-resource "azurerm_key_vault_secret" "one_identity_admin_for_checkout" {
-  name         = "checkout-one-identity-admin-for-checkout"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-resource "azurerm_key_vault_secret" "github_token_for_tas_integration_checkout" {
-  count        = var.env_short == "p" ? 1 : 0
-  name         = "checkout-github-token-for-tas-integration"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
 }
