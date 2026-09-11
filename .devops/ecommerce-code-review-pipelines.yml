@@ -7,6 +7,7 @@ pr:
     include:
       - 'src/domains/ecommerce-app'
       - 'src/domains/ecommerce-common'
+      - 'src/domains/ecommerce-secrets'
     exclude:
       - '**/*.lock.hcl'
       - '**/*.md'
@@ -51,6 +52,7 @@ variables:
   # working dir
   WORKING_DIR_APP: 'src/domains/ecommerce-app'
   WORKING_DIR_COMMON: 'src/domains/ecommerce-common'
+  WORKING_DIR_SECRETS: 'src/domains/ecommerce-secrets'
   REGION_SHORT: "weu"
 
 stages:
@@ -62,6 +64,7 @@ stages:
           ENV_FOLDER: "${{ variables.REGION_SHORT }}-dev"
           WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
           WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+          WORKING_DIR_SECRETS: ${{ variables.WORKING_DIR_SECRETS }}
           SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
           POOL_NAME: '$(TF_POOL_NAME_DEV)'
           TIME_OUT: ${{ variables.TIME_OUT }}
@@ -70,6 +73,7 @@ stages:
           AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
           AKS_NAME: '$(TF_AKS_DEV_NAME)'
           TF_SUMMARIZE: true
+          SECRET_USE_AKS: false 
 
   #UAT
   - ${{ if eq(parameters['UAT'], true) }}:
@@ -79,6 +83,7 @@ stages:
           ENV_FOLDER: "${{ variables.REGION_SHORT }}-uat"
           WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
           WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+          WORKING_DIR_SECRETS: ${{ variables.WORKING_DIR_SECRETS }}
           SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
           POOL_NAME: '$(TF_POOL_NAME_UAT)'
           TIME_OUT: ${{ variables.TIME_OUT }}
@@ -87,6 +92,7 @@ stages:
           AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_TOKEN)'
           AKS_NAME: '$(TF_AKS_UAT_NAME)'
           TF_SUMMARIZE: true
+          SECRET_USE_AKS: false 
 
 
   #PROD
@@ -97,6 +103,7 @@ stages:
           ENV_FOLDER: "${{ variables.REGION_SHORT }}-prod"
           WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
           WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+          WORKING_DIR_SECRETS: ${{ variables.WORKING_DIR_SECRETS }}
           SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
           POOL_NAME: '$(TF_POOL_NAME_PROD)'
           TIME_OUT: ${{ variables.TIME_OUT }}
@@ -105,3 +112,4 @@ stages:
           AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
           AKS_NAME: '$(TF_AKS_PROD_NAME)'
           TF_SUMMARIZE: true
+          SECRET_USE_AKS: false 

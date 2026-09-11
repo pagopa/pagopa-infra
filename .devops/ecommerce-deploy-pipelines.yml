@@ -49,6 +49,7 @@ variables:
   # working dir
   WORKING_DIR_APP: 'src/domains/ecommerce-app'
   WORKING_DIR_COMMON: 'src/domains/ecommerce-common'
+  WORKING_DIR_SECRETS: 'src/domains/ecommerce-secrets'
   REGION_SHORT: "weu"
   DOMAIN_NAME: "ecommerce"
 
@@ -61,6 +62,7 @@ stages:
         ENV_FOLDER: '${{ variables.REGION_SHORT }}-dev'
         WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
         WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+        WORKING_DIR_SECRETS: ${{ variables.WORKING_DIR_SECRETS }}
         DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
@@ -70,6 +72,7 @@ stages:
         AKS_NAME: '$(TF_AKS_DEV_NAME)'
         POOL_NAME: '$(TF_POOL_NAME_DEV)'
         COMMON_USE_AKS: false
+        SECRET_USE_AKS: false
   # E2E test
   - stage: "E2E_Tests_Checkout_DEV_environment"
     displayName: '🧪 Running E2E test on DEV env'
@@ -91,6 +94,7 @@ stages:
         ENV_FOLDER: '${{ variables.REGION_SHORT }}-uat'
         WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
         WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+        WORKING_DIR_SECRETS: ${{ variables.WORKING_DIR_SECRETS }}
         DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
@@ -100,6 +104,7 @@ stages:
         AKS_NAME: '$(TF_AKS_UAT_NAME)'
         POOL_NAME: '$(TF_POOL_NAME_UAT)'
         COMMON_USE_AKS: false
+        SECRET_USE_AKS: false
       # E2E test
     - stage: "E2E_Tests_Checkout_UAT_environment"
       displayName: '🧪 Running E2E test on UAT env'
@@ -121,6 +126,7 @@ stages:
         ENV_FOLDER: '${{ variables.REGION_SHORT }}-prod'
         WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
         WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+        WORKING_DIR_SECRETS: ${{ variables.WORKING_DIR_SECRETS }}
         DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
@@ -130,3 +136,4 @@ stages:
         AKS_NAME: '$(TF_AKS_PROD_NAME)'
         POOL_NAME: '$(TF_POOL_NAME_PROD)'
         COMMON_USE_AKS: false
+        SECRET_USE_AKS: false
