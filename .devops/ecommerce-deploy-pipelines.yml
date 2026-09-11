@@ -73,19 +73,19 @@ stages:
         POOL_NAME: '$(TF_POOL_NAME_DEV)'
         COMMON_USE_AKS: false
         SECRET_USE_AKS: false
-  # E2E test
-  - stage: "E2E_Tests_Checkout_DEV_environment"
-    displayName: '🧪 Running E2E test on DEV env'
-    pool:
-      vmImage: 'ubuntu-latest'
-    dependsOn: dev_apply_ecommerce_app
-    jobs:
-      - job: e2e_tests
-        steps:
-          - template: .devops/azure-templates/e2e-tests.yaml@pagopaCheckoutTests
-            parameters:
-              ENVIRONMENT: DEV
-              CHECKOUT_RESOURCE_REPO_NAME: pagopaCheckoutTests
+    # E2E test
+    - stage: "E2E_Tests_Checkout_DEV_environment"
+      displayName: '🧪 Running E2E test on DEV env'
+      pool:
+        vmImage: 'ubuntu-latest'
+      dependsOn: dev_apply_ecommerce_app
+      jobs:
+        - job: e2e_tests
+          steps:
+            - template: .devops/azure-templates/e2e-tests.yaml@pagopaCheckoutTests
+              parameters:
+                ENVIRONMENT: DEV
+                CHECKOUT_RESOURCE_REPO_NAME: pagopaCheckoutTests
   #UAT
   - ${{ if eq(parameters['UAT'], true) }}:
     - template: './base-deploy-pipelines.yml'
