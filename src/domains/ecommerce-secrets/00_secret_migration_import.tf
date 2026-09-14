@@ -56,6 +56,11 @@ locals {
     "helpdesk-service-testing-email-history",
     "checkout-payment-methods-handler-api-key",
     "io-payment-methods-handler-api-key",
+    "api-config-for-ecommerce-key",
+    "helpdesk-ecommerce-commands-testing-api-key",
+    "notifications-service-ai-instrumentation-key",
+    "notifications-service-testing-api-key",
+    "notifications-service-testing-mail"
   ] : []
 
   dev_only_secrets_to_import = contains(["d"], var.env_short) ? [
