@@ -130,3 +130,9 @@ variable "pod_disruption_budgets" {
   description = "Pod disruption budget for domain namespace"
   default     = {}
 }
+
+variable "redis_ha_enabled" {
+  type        = bool
+  description = "(Required) If true, enables the usage of HA redis instance"
+}
+

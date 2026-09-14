@@ -89,24 +89,31 @@ resource "azurerm_key_vault_secret" "gpd_qa_integration_testing_subscription_key
   key_vault_id = data.azurerm_key_vault.gps_kv.id
 }
 
-### FDR1-FDR3 secrets
-# resource "azurerm_key_vault_secret" "fdr1_subscription_key" {
-#   name         = "apikey-fdr1"
-#   value        = azurerm_api_management_subscription.fdr1_flow_subkey.primary_key
-#   content_type = "text/plain"
-#   key_vault_id = data.azurerm_key_vault.gps_kv.id
-# }
-#
-# resource "azurerm_key_vault_secret" "fdr3_subscription_key" {
-#   name         = "apikey-fdr3"
-#   value        = azurerm_api_management_subscription.fdr3_flow_subkey.primary_key
-#   content_type = "text/plain"
-#   key_vault_id = data.azurerm_key_vault.gps_kv.id
-# }
-
 resource "azurerm_key_vault_secret" "fdr_internal_subscription_key" {
   name         = "apikey-fdr-internal"
   value        = azurerm_api_management_subscription.fdr_internal_product_subkey.primary_key
   content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.gps_kv.id
+}
+
+resource "azurerm_api_management_subscription" "gps_pagopa_product_for_gpd_payments" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = module.apim_gps_product.id
+  display_name  = "GPS Vertical Services for GPD Payments"
+  allow_tracing = false
+  state         = "active"
+}
+
+resource "azurerm_key_vault_secret" "gps_pagopa_product_secret" {
+  // product apim "GPS pagoPA "
+  depends_on = [
+    azurerm_api_management_subscription.gps_pagopa_product_for_gpd_payments
+  ]
+  name         = "gpd-payments-to-vertical-services"
+  value        = azurerm_api_management_subscription.gps_pagopa_product_for_gpd_payments.primary_key
+  content_type = "text/plain"
+
   key_vault_id = data.azurerm_key_vault.gps_kv.id
 }
