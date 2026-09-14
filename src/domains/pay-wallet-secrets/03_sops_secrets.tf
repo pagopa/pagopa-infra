@@ -33,7 +33,7 @@ locals {
 resource "azurerm_key_vault_secret" "secret" {
   for_each = { for i, v in local.all_secrets_entries : local.all_secrets_entries[i].key => i }
 
-  key_vault_id = data.azurerm_key_vault.checkout_kv.id
+  key_vault_id = data.azurerm_key_vault.pay_wallet_kv.id
   name         = local.all_secrets_entries[each.value].key
   value        = local.all_secrets_entries[each.value].value
 
