@@ -149,3 +149,12 @@ data "azurerm_key_vault" "nodo_kv" {
   name                = "${local.product}-nodo-kv"
   resource_group_name = data.azurerm_resource_group.nodo_sec_rg.name
 }
+
+data "azurerm_resource_group" "bizevents_rg" {
+  name = "${local.product}-${var.location_short}-bizevents-rg"
+}
+
+data "azurerm_cosmosdb_account" "bizevents_datastore_cosmosdb_account" {
+  name                = "${local.product}-${var.location_short}-bizevents-ds-cosmos-account"
+  resource_group_name = data.azurerm_resource_group.bizevents_rg.name
+}

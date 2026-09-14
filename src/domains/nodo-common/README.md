@@ -48,6 +48,7 @@
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_wisp_converter_storage_account"></a> [wisp\_converter\_storage\_account](#module\_wisp\_converter\_storage\_account) | ./.terraform/modules/__v4__/storage_account | n/a |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v4__/kubernetes_workload_identity_init | n/a |
+| <a name="module_workload_identity_nodo_cron"></a> [workload\_identity\_nodo\_cron](#module\_workload\_identity\_nodo\_cron) | ./.terraform/modules/__v4__/kubernetes_workload_identity_init | n/a |
 
 ## Resources
 

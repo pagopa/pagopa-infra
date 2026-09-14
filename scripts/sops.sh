@@ -44,6 +44,10 @@ if [ -z "$action" ]; then
     example: ./sops.sh f itn-dev
     example: ./sops.sh file-encrypt itn-dev
 
+./sops.sh rk <env> -> rotate encryption key in Azure Key Vault and re-encrypt the file with the new key
+    example: ./sops.sh rk itn-dev
+    example: ./sops.sh rotate-key itn-dev
+
 EOF
 )
   echo "$helpmessage"
@@ -89,7 +93,7 @@ echo "[INFO] Key URL: $kv_key_url"
 
 echo "🔨 Key URL loaded correctly"
 
-if echo "d decrypt a add s search n new e edit f file-encrypt di decryptignore" | grep -w "$action" > /dev/null; then
+if echo "d decrypt a add s search n new e edit f file-encrypt di decryptignore rk rotate-key" | grep -w "$action" > /dev/null; then
   case $action in
     "d"|"decrypt")
       sops --decrypt --azure-kv "$kv_key_url" "$encrypted_file_path"
@@ -137,6 +141,80 @@ if echo "d decrypt a add s search n new e edit f file-encrypt di decryptignore" 
     "f"|"file-encrypt")
       read -r -p 'file: ' file
       sops --encrypt --azure-kv "$kv_key_url" "./secret/$env/$file" > "$encrypted_file_path"
+      ;;
+    "rk"|"rotate-key")
+      if [ ! -f "$encrypted_file_path" ]; then
+        echo "⚠️ file $encrypted_file_path not found"
+        exit 1
+      fi
+
+      old_kv_key_urls=$(jq -r '.sops.azure_kv[]? | "\(.vault_url)/keys/\(.name)/\(.version)"' "$encrypted_file_path")
+      if [ -z "$old_kv_key_urls" ]; then
+        echo "❌ Unable to extract existing Azure Key Vault keys from $encrypted_file_path"
+        exit 1
+      fi
+
+      new_kv_key_url="$kv_key_url"
+
+      if echo "$old_kv_key_urls" | grep -Fxq "$kv_key_url"; then
+        echo "ℹ️ The file is currently using the latest key version ($kv_key_url)."
+        read -r -p "Do you want to rotate the key in Azure Key Vault to generate a new version? (y/n): " confirm_rotate
+        if [[ "$confirm_rotate" =~ ^[Yy]$ ]]; then
+          echo "🔄 Rotating key in Azure Key Vault..."
+          new_kv_key_url=$(az keyvault key rotate --vault-name "$kv_name" --name "$kv_sops_key_name" --query "key.kid" -o tsv)
+          if [ -z "$new_kv_key_url" ]; then
+            echo "❌ Failed to rotate key in Azure Key Vault."
+            exit 1
+          fi
+          echo "[INFO] New Key URL: $new_kv_key_url"
+        else
+          echo "Rotation cancelled."
+          exit 0
+        fi
+      else
+        echo "ℹ️ Azure Key Vault has a newer key version ($kv_key_url) than the one(s) in $encrypted_file_path:"
+        echo "$old_kv_key_urls"
+        read -r -p "Rotate in Azure Key Vault first [r] or sync with existing latest version [s] (r/s)?: " choice
+        case "$choice" in
+          [Rr]*)
+            echo "🔄 Rotating key in Azure Key Vault..."
+            new_kv_key_url=$(az keyvault key rotate --vault-name "$kv_name" --name "$kv_sops_key_name" --query "key.kid" -o tsv)
+            if [ -z "$new_kv_key_url" ]; then
+              echo "❌ Failed to rotate key in Azure Key Vault."
+              exit 1
+            fi
+            echo "[INFO] New Key URL: $new_kv_key_url"
+            ;;
+          [Ss]*)
+            echo "ℹ️ Syncing file with existing latest Key Vault version ($new_kv_key_url)..."
+            ;;
+          *)
+            echo "Operation cancelled."
+            exit 0
+            ;;
+        esac
+      fi
+
+      rm_args=()
+      while IFS= read -r old_url; do
+        if [ -n "$old_url" ] && [ "$old_url" != "$new_kv_key_url" ]; then
+          rm_args+=(--rm-azure-kv "$old_url")
+        fi
+      done <<< "$old_kv_key_urls"
+
+      echo "🔄 Re-encrypting $encrypted_file_path with new key..."
+      if [ ${#rm_args[@]} -gt 0 ]; then
+        sops rotate -i "${rm_args[@]}" --add-azure-kv "$new_kv_key_url" "$encrypted_file_path"
+      else
+        sops rotate -i --add-azure-kv "$new_kv_key_url" "$encrypted_file_path"
+      fi
+
+      if [ $? -eq 0 ]; then
+        echo "✅ Key rotation and re-encryption completed successfully"
+      else
+        echo "❌ Key rotation failed"
+        exit 1
+      fi
       ;;
   esac
 else

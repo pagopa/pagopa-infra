@@ -53,6 +53,9 @@ cosmos_gps_db_params = {
 gpd_upload_status_throughput = 10000
 gpd_upload_status_ttl        = 7776000 // 90 days
 
+gpd_reconciliation_runs_throughput    = 1000
+gpd_reconciliation_reports_throughput = 4000
+
 # Postgres Flexible
 # https://docs.microsoft.com/it-it/azure/postgresql/flexible-server/concepts-high-availability
 # https://azure.microsoft.com/it-it/global-infrastructure/geographies/#choose-your-region

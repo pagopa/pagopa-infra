@@ -63,3 +63,12 @@ resource "azurerm_private_dns_cname_record" "cname_record" {
   ttl                 = 300
   record              = "${azurerm_postgresql_flexible_server_virtual_endpoint.virtual_endpoint[0].name}.writer.postgres.database.azure.com"
 }
+
+resource "azurerm_private_dns_cname_record" "gpd_db_readonly_cname_record" {
+  count               = var.env_short == "p" && var.geo_replica_enabled && var.pgres_flex_params.enable_private_dns_registration_virtual_endpoint ? 1 : 0
+  name                = "gpd-db-ro"
+  zone_name           = "${var.env_short}.internal.postgresql.pagopa.it"
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
+  ttl                 = 300
+  record              = "${azurerm_postgresql_flexible_server_virtual_endpoint.virtual_endpoint[0].name}.reader.postgres.database.azure.com"
+}

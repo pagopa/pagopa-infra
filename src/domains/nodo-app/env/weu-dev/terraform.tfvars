@@ -21,7 +21,7 @@ apim_dns_zone_prefix     = "dev.platform"
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
 tls_cert_check_helm = {
-  chart_version = "2.0.0"
+  chart_version = "7.6.0"
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
   image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
 }
@@ -85,7 +85,7 @@ route_aks = [
   {
     #  dev aks nodo nexi postgres onprem
     name                   = "aks-outbound-to-nexi-postgres-onprem-subnet"
-    address_prefix         = "10.222.214.176/32"
+    address_prefix         = "10.6.52.94/32"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.8.150"
   },
