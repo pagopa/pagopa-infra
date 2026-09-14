@@ -1,3 +1,3 @@
-env_short      = "p"
-env            = "prod"
-domain         = "pay-wallet"
+env_short = "p"
+env       = "prod"
+domain    = "pay-wallet"
