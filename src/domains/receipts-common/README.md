@@ -71,6 +71,7 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_application_insights_name"></a> [application\_insights\_name](#input\_application\_insights\_name) | Specifies the name of the Application Insights. | `string` | n/a | yes |
+| <a name="input_burst_capacity_enabled"></a> [burst\_capacity\_enabled](#input\_burst\_capacity\_enabled) | burst capacity enabled | `bool` | `false` | no |
 | <a name="input_cidr_subnet_receipts_datastore_cosmosdb"></a> [cidr\_subnet\_receipts\_datastore\_cosmosdb](#input\_cidr\_subnet\_receipts\_datastore\_cosmosdb) | Cosmos DB address space | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_receipts_datastore_storage"></a> [cidr\_subnet\_receipts\_datastore\_storage](#input\_cidr\_subnet\_receipts\_datastore\_storage) | Storage address space | `list(string)` | `null` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |

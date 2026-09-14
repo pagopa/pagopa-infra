@@ -33,10 +33,6 @@ data "azurerm_redis_cache" "redis_cache" {
   resource_group_name = "${var.prefix}-${var.env_short}-data-rg"
 }
 
-data "azuread_service_principal" "iac_principal" {
-  count        = var.enable_iac_pipeline ? 1 : 0
-  display_name = "pagopaspa-pagoPA-iac-${data.azurerm_subscription.current.subscription_id}"
-}
 
 data "azurerm_key_vault" "shared_kv" {
   name                = "${local.product}-shared-kv"

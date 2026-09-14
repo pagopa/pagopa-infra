@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "./.terraform/modules/__v3__/key_vault"
+  source = "./.terraform/modules/__v4__/key_vault"
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -46,19 +46,6 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   ]
 }
 
-# azure devops policy
-resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
-  count        = var.enable_iac_pipeline ? 1 : 0
-  key_vault_id = module.key_vault.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = data.azuread_service_principal.iac_principal[0].object_id
-
-  secret_permissions      = ["Get", "List", "Set", ]
-  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get"]
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
-
-  storage_permissions = []
-}
 
 resource "azurerm_key_vault_secret" "ai_connection_string" {
   name         = "ai-connection-string"
@@ -70,7 +57,7 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
 
 resource "azurerm_key_vault_secret" "mocker_cosmosdb_connection_string" {
   name         = "db-mocker-uri"
-  value        = module.mocker_cosmosdb_account.connection_strings[0]
+  value        = module.mocker_cosmosdb_account.primary_connection_strings
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

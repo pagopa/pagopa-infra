@@ -26,12 +26,12 @@ module "apim_node_for_ecommerce_product" {
   subscription_required = true
   approval_required     = false
 
-  policy_xml = "./api_product/node_for_ecommerce/_base_policy.xml"
+  policy_xml = file("./api_product/node_for_ecommerce/_base_policy.xml")
 }
 
 resource "azurerm_api_management_api_version_set" "node_for_ecommerce_api" {
 
-  name                = "${local.project}-node-for-ecommerce-api"
+  name                = "${local.product}-node-for-ecommerce-api"
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   api_management_name = data.azurerm_api_management.apim.name
   display_name        = local.apim_node_for_ecommerce_api.display_name

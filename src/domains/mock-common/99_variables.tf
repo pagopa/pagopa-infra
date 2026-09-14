@@ -143,12 +143,6 @@ variable "ingress_load_balancer_ip" {
   type = string
 }
 
-variable "enable_iac_pipeline" {
-  type        = bool
-  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
-  default     = false
-}
-
 
 variable "mocker_cosmosdb_params" {
   type = object({

@@ -50,10 +50,6 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-variable "cdn_location" {
-  type = string
-}
-
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
@@ -184,12 +180,6 @@ variable "redis_std_pay_wallet_params" {
     version  = string
     zones    = list(number)
   })
-}
-
-variable "enable_iac_pipeline" {
-  type        = bool
-  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
-  default     = false
 }
 
 ### Storage

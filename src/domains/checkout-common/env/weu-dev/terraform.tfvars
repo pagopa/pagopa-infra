@@ -18,7 +18,6 @@ ingress_load_balancer_ip = "10.1.100.250"
 
 
 # IAC Policy
-enable_iac_pipeline = true
 
 
 # Checkout Redis

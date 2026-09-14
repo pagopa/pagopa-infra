@@ -10,7 +10,7 @@ terraform {
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "<= 3.116.0"
+      version = "~> 4.0"
     }
     helm = {
       source  = "hashicorp/helm"
@@ -60,7 +60,7 @@ provider "helm" {
 }
 
 
-module "__v3__" {
-  # v8.103.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=d0a0b3a81963169bdc974f79eba31e41e918e63d"
+module "__v4__" {
+  # v10.20.1
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=639a4f39198027aa12d70db65aaaa585086366db"
 }

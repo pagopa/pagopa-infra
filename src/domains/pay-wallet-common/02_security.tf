@@ -81,11 +81,6 @@ resource "azurerm_key_vault_access_policy" "adgroup_external_dev_policy" {
   ]
 }
 
-# azure devops policy
-data "azuread_service_principal" "iac_principal" {
-  count        = var.enable_iac_pipeline ? 1 : 0
-  display_name = "pagopaspa-pagoPA-iac-${data.azurerm_subscription.current.subscription_id}"
-}
 
 data "azurerm_eventhub_authorization_rule" "sender_evt_tx_event_hub_connection_string" {
   name                = "payment-wallet-evt-tx"
@@ -94,18 +89,6 @@ data "azurerm_eventhub_authorization_rule" "sender_evt_tx_event_hub_connection_s
   resource_group_name = "${local.product_italy}-observ-evh-rg"
 }
 
-resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
-  count        = var.enable_iac_pipeline ? 1 : 0
-  key_vault_id = module.key_vault.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = data.azuread_service_principal.iac_principal[0].object_id
-
-  secret_permissions      = ["Get", "List", "Set", ]
-  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get"]
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
-
-  storage_permissions = []
-}
 
 
 resource "azurerm_key_vault_access_policy" "cdn_wallet_kv" {
@@ -403,47 +386,6 @@ resource "azurerm_key_vault_secret" "payment_wallet_gha_bot_pat" {
     ignore_changes = [
       value,
     ]
-  }
-}
-
-
-resource "azurerm_key_vault_certificate" "pay-wallet-jwt-token-issuer-certificate" {
-  name         = "jwt-token-issuer-cert"
-  key_vault_id = module.key_vault.id
-
-  certificate_policy {
-    issuer_parameters {
-      name = "Self"
-    }
-
-    key_properties {
-      exportable = true
-      key_size   = 2048
-      key_type   = "RSA"
-      reuse_key  = false
-    }
-
-    lifetime_action {
-      action {
-        action_type = "AutoRenew"
-      }
-
-      trigger {
-        days_before_expiry = 2
-      }
-    }
-
-    secret_properties {
-      content_type = "application/x-pkcs12"
-    }
-
-    x509_certificate_properties {
-      key_usage = [
-        "digitalSignature"
-      ]
-      subject            = "CN=${var.env}-${var.domain}-jwt-issuer"
-      validity_in_months = 1
-    }
   }
 }
 

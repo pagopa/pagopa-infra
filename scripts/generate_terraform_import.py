@@ -11,14 +11,13 @@ env = sys.argv[1]
 # change this with you terraform log
 log = """
 ╷
-│ Error: A resource with the ID "https://pagopa-d-bizevents-kv.vault.azure.net/secrets/elastic-apm-secret-token/a44a1dd8472e4cd79c44268d672042a0" already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azurerm_key_vault_secret" for more information.
+│ Error: A resource with the ID "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim/apis/p-node-for-psp-api;rev=1" already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azurerm_api_management_api" for more information.
 │
-│   with azurerm_key_vault_secret.secret["elastic-apm-secret-token"],
-│   on key_secret.tf line 56, in resource "azurerm_key_vault_secret" "secret":
-│   56: resource "azurerm_key_vault_secret" "secret" {
+│   with azurerm_api_management_api.apim_node_for_psp_api_v1,
+│   on 04_apim_nodo_services_03_node_for_psp.tf line 23, in resource "azurerm_api_management_api" "apim_node_for_psp_api_v1":
+│   23: resource "azurerm_api_management_api" "apim_node_for_psp_api_v1" {
 │
 ╵
-
 """
 
 # Regex patterns to extract resource ID and type information
@@ -39,3 +38,4 @@ for block in error_blocks:
 # Print
 print("All done :)\nrun this command:\n")
 print(" ; ".join(import_commands))
+

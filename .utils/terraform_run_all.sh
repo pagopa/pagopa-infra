@@ -15,7 +15,6 @@ pids=()
 ACTION="$1"
 
 array=(
-    'src/core::dev'
     'src/domains/aca-app::weu-dev'
     'src/domains/aca-common::weu-dev'
     'src/domains/afm-app::weu-dev'

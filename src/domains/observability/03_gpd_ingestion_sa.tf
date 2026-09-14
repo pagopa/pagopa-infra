@@ -34,3 +34,8 @@ module "gpd_ingestion_sa" {
 
   tags = module.tag_config.tags
 }
+
+resource "azurerm_storage_table" "gpd_ingestion_dead_letter" {
+  name                 = "gpdingestiondeadletter"
+  storage_account_name = module.gpd_ingestion_sa.name
+}

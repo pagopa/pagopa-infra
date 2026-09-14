@@ -21,8 +21,7 @@ external_domain                  = "pagopa.it"
 dns_zone_prefix                  = "dev.platform"
 dns_zone_internal_prefix         = "internal.dev.platform"
 
-mock_ec_enabled     = true
-enable_iac_pipeline = false
+mock_ec_enabled = true
 
 
 # CosmosDB for Mocker

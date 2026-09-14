@@ -4,7 +4,7 @@
 
 module "apim_mock_payment_gateway_product" {
   count  = var.mock_payment_gateway_enabled ? 1 : 0
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "product-mock-payment-gateway"
   display_name = "product-mock-payment-gateway"
@@ -26,7 +26,7 @@ module "apim_mock_payment_gateway_product" {
 
 module "apim_mock_payment_gateway_api" {
   count  = var.mock_payment_gateway_enabled ? 1 : 0
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-mock-payment-gateway-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -60,7 +60,7 @@ locals {
 
 module "apim_mock_payment_gateway_mng_api" {
   count  = var.mock_payment_gateway_enabled ? 1 : 0
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = local.apim_mock_payment_gateway_mng_api_name
   api_management_name   = local.pagopa_apim_name
