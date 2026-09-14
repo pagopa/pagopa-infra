@@ -44,6 +44,8 @@ locals {
     "ecommerce-storage-reporting-connection-string",
     "ecommerce-helpdesk-service-api-key-for-watchdog",
     "nodo-helpdesk-service-api-key-for-watchdog",
+    "afm-api-key",
+    "ecommerce-storage-account-key"
   ]
 
   not_prod_secrets_to_import = contains(["d", "u"], var.env_short) ? [
@@ -56,8 +58,20 @@ locals {
     "io-payment-methods-handler-api-key",
   ] : []
 
+  dev_only_secrets_to_import = contains(["d"], var.env_short) ? [
+    "afm-api-key-blue",
+    "db-mock-psp-user-login",
+    "db-mock-psp-user-login-password",
+    "ecommerce-for-checkout-api-key",
+    "token-release"
+  ] : []
+
   uat_only_secrets_to_import = contains(["u"], var.env_short) ? [
     "ecommerce-dev-sendpaymentresult-subscription-key",
+    "ecommerce-load-test-subscription-key",
+    "ecommerce-storage-connection-string",
+    "help-desk-api-key-ecommerce-prod",
+    "mock-gmp-api-key"
   ] : []
 
   prod_only_secrets_to_import = var.env_short == "p" ? [
@@ -67,11 +81,14 @@ locals {
     "service-management-opsgenie-webhook-token",
     "ecommerce-github-packages-read-bot-token",
     "ecommerce-ratemyopenapi-api-key",
+    "touchpoint-pagopa-apim-user-password",
+    "ecommerce-storage-connection-string"
   ] : []
 
   secrets_to_import = concat(
     local.common_secrets_to_import,
     local.not_prod_secrets_to_import,
+    local.dev_only_secrets_to_import,
     local.uat_only_secrets_to_import,
     local.prod_only_secrets_to_import,
   )
