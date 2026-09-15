@@ -1,20 +1,24 @@
-# NPG SDK sync staleness alert (PIDM-2048, part of PIDM-500).
+# NPG SDK sync staleness alert
 #
-# Single, shared supply-chain liveness alert. The NPG SDK is self-hosted on the
-# platform CDN and republished by the cdn-assets NPG SDK sync pipeline
-# (https://github.com/pagopa/pagopa-platform-cdn-assets), which runs every 3 hours
-# and emits a `NpgSdkSyncSuccess` customEvent to App Insights.
-# Three frontends (checkout-fe, wallet-fe, ecommerce-fe) consume the same
-# CDN folders in the same way.
+# The NPG SDK is self-hosted on the platform CDN and republished by the cdn-assets 
+# NPG SDK sync pipeline (https://github.com/pagopa/pagopa-platform-cdn-assets), 
+# which runs every 3 hours and emits a `NpgSdkSyncSuccess` customEvent to App Insights.
+# Three frontends (checkout-fe, wallet-fe, ecommerce-fe) consume the same CDN folders in the same way.
 #
-# No `NpgSdkSyncSuccess` heartbeat in the last 7h means the sync has stopped or is
-# failing, so the served SDK/hash may be stale. The 7h window is sized to the
-# every-3-hours cadence: one missed or late run does not page, ~2 consecutive misses do.
+# No `NpgSdkSyncSuccess` heartbeat in the last 7h means the sync has stopped or is failing, 
+# so the served SDK/hash may be stale. The 7h window is sized to the every-3-hours cadence: 
+# one missed or late run does not page, ~2 consecutive misses do.
 #
-# On trigger: check the cdn-assets sync pipeline and all three products (checkout,
-# pay-wallet, ecommerce).
+# On trigger: check the cdn-assets sync pipeline and all three products (checkout, pay-wallet, ecommerce).
 #
-# TODO: responder touchpoint
+# Responder: the checkout OpsGenie action group, ChkOpsgenie, that is defined in the checkout-common domain 
+# and lives in the shared prod monitor RG; prod-only, matching this alert's prod-only count.
+data "azurerm_monitor_action_group" "checkout_opsgenie" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = var.monitor_resource_group_name
+  name                = "ChkOpsgenie"
+}
+
 resource "azurerm_monitor_scheduled_query_rules_alert" "npg_sdk_sync_staleness" {
   count = var.env_short == "p" ? 1 : 0
 
@@ -23,7 +27,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "npg_sdk_sync_staleness" 
   location            = var.location
 
   action {
-    action_group           = var.env_short == "p" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = var.env_short == "p" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.checkout_opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[Platform] NPG SDK sync stale - no successful sync in the last 7h"
     custom_webhook_payload = "{}"
   }
