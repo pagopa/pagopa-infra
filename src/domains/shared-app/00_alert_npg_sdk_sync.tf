@@ -11,14 +11,7 @@
 #
 # On trigger: check the cdn-assets sync pipeline and all three products (checkout, pay-wallet, ecommerce).
 #
-# Responder: the checkout OpsGenie action group, ChkOpsgenie, that is defined in the checkout-common domain 
-# and lives in the shared prod monitor RG; prod-only, matching this alert's prod-only count.
-data "azurerm_monitor_action_group" "checkout_opsgenie" {
-  count               = var.env_short == "p" ? 1 : 0
-  resource_group_name = var.monitor_resource_group_name
-  name                = "ChkOpsgenie"
-}
-
+# Responder: the checkout OpsGenie action group (data source declared in 00_monitor.tf alongside the others)
 resource "azurerm_monitor_scheduled_query_rules_alert" "npg_sdk_sync_staleness" {
   count = var.env_short == "p" ? 1 : 0
 
