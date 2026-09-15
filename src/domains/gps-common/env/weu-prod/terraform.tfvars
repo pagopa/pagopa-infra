@@ -167,6 +167,26 @@ eventhubs_rtp = [
         manage = false
       }
     ]
+  },
+  {
+    name              = "cdc-filtered"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["gpd-rtp"]
+    keys = [
+      {
+        name   = "cdc-filtered-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "cdc-filtered-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
   }
 ]
 
