@@ -352,10 +352,11 @@
       },
       "OperationType": {
         "type": "string",
-        "description": "It indicates the purpose of the request:\n* AUTHORIZATION - any authorization with explicit capture\n* CAPTURE - a captured authorization or an implicit captured payment\n* VOID - reversal of an authorization\n* REFUND - refund of a captured amount\n* CANCEL - the rollback of an capture, refund.      \n",
+        "description": "It indicates the purpose of the request:\n* AUTHORIZATION - any authorization with explicit capture\n* CARD_VERIFICATION - card verification operation\n* CAPTURE - a captured authorization or an implicit captured payment\n* VOID - reversal of an authorization\n* REFUND - refund of a captured amount\n* CANCEL - the rollback of an capture, refund.      \n",
         "example": "CAPTURE",
         "enum": [
           "AUTHORIZATION",
+          "CARD_VERIFICATION",
           "CAPTURE",
           "VOID",
           "REFUND",
