@@ -20,7 +20,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "npg_sdk_sync_staleness" 
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.checkout_opsgenie[0].id, data.azurerm_monitor_action_group.ecommerce_opsgenie[0].id, data.azurerm_monitor_action_group.pay_wallet_opsgenie[0].id]
+    #action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.checkout_opsgenie[0].id, data.azurerm_monitor_action_group.ecommerce_opsgenie[0].id, data.azurerm_monitor_action_group.pay_wallet_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[Platform] NPG SDK sync stale - no successful sync in the last 7h"
     custom_webhook_payload = "{}"
   }
