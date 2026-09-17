@@ -132,6 +132,7 @@ resource "azapi_resource" "fragment_chk_jwt_session_token" {
       description = "Component that permits to check JWT session wallet token pagoPA for IO"
       format      = "rawxml"
       value = templatefile("./api/session-wallet/v1/_fragment_policiy_chk_jwt.tpl.xml", {
+        ecommerce_ingress_hostname = local.ecommerce_hostname
       })
 
     }
