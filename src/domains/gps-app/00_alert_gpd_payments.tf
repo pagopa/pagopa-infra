@@ -139,3 +139,38 @@ AzureDiagnostics
     threshold = 1
   }
 }
+
+
+## GPD-Payments paSendRT Dead Letter ##
+resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-payments-pasendrt-dead-letter" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-gpd-payments-pasendrt-dead-letter"
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    email_subject          = "gpd-payments-pasendrt-dead-letter"
+    custom_webhook_payload = "{}"
+  }
+
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "GPD Payments paSendRT message moved to dead-letter storage after maximum retry attempts"
+  enabled        = true
+
+  query = (<<-QUERY
+traces
+| where cloud_RoleName == "pagopa-${var.env_short}-gpd-payments-service"
+| where message startswith "[paSendRT] Maximum retry attempts reached. Message moved to dead-letter storage"
+  QUERY
+  )
+
+  severity    = 1
+  frequency   = 15
+  time_window = 15
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+}
