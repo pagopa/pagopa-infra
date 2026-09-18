@@ -36,3 +36,15 @@ data "azurerm_api_management_product" "apim_gdp_debt_positions_product" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 }
+
+data "azurerm_redis_cache" "redis_cache" {
+  name                = var.redis_ha_enabled ? format("%s-%s-%s-redis", var.prefix, var.env_short, var.location_short) : format("%s-%s-redis", var.prefix, var.env_short)
+  resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
+}
+
+data "azurerm_eventhub_authorization_rule" "pagopa_weu_core_evh_ns04_nodo_dei_pagamenti_cache_sync_reader" {
+  name                = "nodo-dei-pagamenti-cache-sync-rx"
+  namespace_name      = "${local.product}-${local.evt_hub_location}-evh-ns04"
+  eventhub_name       = "nodo-dei-pagamenti-cache"
+  resource_group_name = "${local.product}-msg-rg"
+}
