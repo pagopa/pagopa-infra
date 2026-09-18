@@ -183,6 +183,18 @@ rtp_storage_account = {
   enable_low_availability_alert      = false
 }
 
+audit_storage_account = {
+  account_kind                       = "StorageV2"
+  account_tier                       = "Standard"
+  account_replication_type           = "LRS"
+  blob_versioning_enabled            = false
+  advanced_threat_protection         = false
+  advanced_threat_protection_enabled = false
+  public_network_access_enabled      = false
+  blob_delete_retention_days         = 30
+  enable_low_availability_alert      = false
+}
+
 # Postgres Flexible Storico
 pgflex_storico_params = {
   pgres_flex_pgbouncer_enabled           = false
