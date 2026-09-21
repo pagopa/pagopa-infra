@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "./.terraform/modules/__v3__/key_vault"
+  source = "./.terraform/modules/__v4__/key_vault"
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -57,7 +57,7 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
 
 resource "azurerm_key_vault_secret" "mocker_cosmosdb_connection_string" {
   name         = "db-mocker-uri"
-  value        = module.mocker_cosmosdb_account.connection_strings[0]
+  value        = module.mocker_cosmosdb_account.primary_connection_strings
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
