@@ -19,16 +19,14 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "bizeventsdatastore-avail
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
-union traces, exceptions
+requests
 | where cloud_RoleName == "pagopabizeventsdatastore"
 | where operation_Name == "Info"
-//| summarize count() by operation_Name, itemType, tostring(customDimensions["LogLevel"])
 | summarize
-    Total=count(),
-    Success=count(itemType == "trace")
+    Total=sum(itemCount),
+    Success=sumif(itemCount, success == true)
     by bin(timestamp, 5m)
 | extend availability=toreal(Success) / Total
-//| render timechart 
 | where availability < threshold
   QUERY
   )
