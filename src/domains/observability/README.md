@@ -160,6 +160,9 @@ The currently supported types are:
 | [azapi_resource.pdnd_cdc_gec_touchpoints_dataflow](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource_action.approve_privatelink_private_endpoint_connection](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource_action) | resource |
 | [azapi_resource_action.df_connection_approve_private_endpoint_connection](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource_action) | resource |
+| [azuread_application.celonis_adx_reader](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application) | resource |
+| [azuread_application_password.celonis_adx_secret](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_password) | resource |
+| [azuread_service_principal.celonis_adx_reader_sp](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal) | resource |
 | [azurerm_data_factory_custom_dataset.cfg_tables_list_datasets](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_custom_dataset) | resource |
 | [azurerm_data_factory_custom_dataset.crusc8_tables_datasets](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_custom_dataset) | resource |
 | [azurerm_data_factory_custom_dataset.gpd_storico_tables_list_datasets](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_custom_dataset) | resource |
@@ -236,9 +239,13 @@ The currently supported types are:
 | [azurerm_key_vault_access_policy.df_see_kv_cruscotto](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.df_see_kv_nodo](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_secret.azure_web_jobs_storage_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.celonis_service_principal_client_id](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.celonis_service_principal_client_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_kusto_cluster.data_explorer_cluster](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kusto_cluster) | resource |
 | [azurerm_kusto_database.pm_db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kusto_database) | resource |
+| [azurerm_kusto_database.public_re_db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kusto_database) | resource |
 | [azurerm_kusto_database.re_db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kusto_database) | resource |
+| [azurerm_kusto_database_principal_assignment.celonis_db_viewer](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kusto_database_principal_assignment) | resource |
 | [azurerm_kusto_database_principal_assignment.qi_principal_assignment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kusto_database_principal_assignment) | resource |
 | [azurerm_kusto_eventhub_data_connection.eventhub_connection_for_ingestion_qi_fdr](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kusto_eventhub_data_connection) | resource |
 | [azurerm_kusto_eventhub_data_connection.eventhub_connection_for_ingestion_qi_iuvs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kusto_eventhub_data_connection) | resource |
@@ -255,6 +262,7 @@ The currently supported types are:
 | [azurerm_role_assignment.fdr_qi_flow_data_evh_data_receiver_role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_storage_container.blob-observability-st](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_table.gpd_ingestion_dead_letter](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
+| [time_rotating.celonis_application](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/rotating) | resource |
 | [azapi_resource.df_connection_privatelink_private_endpoint_connection](https://registry.terraform.io/providers/azure/azapi/latest/docs/data-sources/resource) | data source |
 | [azapi_resource.privatelink_private_endpoint_connection](https://registry.terraform.io/providers/azure/azapi/latest/docs/data-sources/resource) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
@@ -308,6 +316,7 @@ The currently supported types are:
 | <a name="input_dexp_db"></a> [dexp\_db](#input\_dexp\_db) | n/a | <pre>object({<br/>    enable             = bool<br/>    hot_cache_period   = string<br/>    soft_delete_period = string<br/>  })</pre> | n/a | yes |
 | <a name="input_dexp_params"></a> [dexp\_params](#input\_dexp\_params) | n/a | <pre>object({<br/>    enabled = bool<br/>    sku = object({<br/>      name     = string<br/>      capacity = number<br/>    })<br/>    autoscale = object({<br/>      enabled       = bool<br/>      min_instances = number<br/>      max_instances = number<br/>    })<br/>    public_network_access_enabled = bool<br/>    double_encryption_enabled     = bool<br/>    disk_encryption_enabled       = bool<br/>    purge_enabled                 = bool<br/>  })</pre> | n/a | yes |
 | <a name="input_dexp_pm_db"></a> [dexp\_pm\_db](#input\_dexp\_pm\_db) | n/a | <pre>object({<br/>    enable             = bool<br/>    hot_cache_period   = string<br/>    soft_delete_period = string<br/>  })</pre> | <pre>{<br/>  "enable": false,<br/>  "hot_cache_period": "P5D",<br/>  "soft_delete_period": "P365D"<br/>}</pre> | no |
+| <a name="input_dexp_public_re_db"></a> [dexp\_public\_re\_db](#input\_dexp\_public\_re\_db) | n/a | <pre>object({<br/>    enable             = bool<br/>    hot_cache_period   = string<br/>    soft_delete_period = string<br/>  })</pre> | n/a | yes |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_ehns_alerts_enabled"></a> [ehns\_alerts\_enabled](#input\_ehns\_alerts\_enabled) | Event hub alerts enabled? | `bool` | n/a | yes |
 | <a name="input_ehns_auto_inflate_enabled"></a> [ehns\_auto\_inflate\_enabled](#input\_ehns\_auto\_inflate\_enabled) | Is Auto Inflate enabled for the EventHub Namespace? | `bool` | n/a | yes |
