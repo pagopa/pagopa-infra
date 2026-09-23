@@ -24,7 +24,7 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_admin.object_id
 
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy", "Purge", "Recover", "Restore"]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy", "SetRotationPolicy", "Purge", "Recover", "Restore", "Rotate"]
   secret_permissions      = ["Get", "List", "Set", "Delete", "Purge", "Recover", "Restore"]
   storage_permissions     = []
   certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover"]
@@ -39,7 +39,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_developers.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy", "SetRotationPolicy", "Rotate"]
   secret_permissions  = ["Get", "List", "Set", "Delete", ]
   storage_permissions = []
   certificate_permissions = [
@@ -55,7 +55,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_admin_dev_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_admin_dev.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy", "SetRotationPolicy", "Purge", "Recover", "Restore", "Rotate"]
   secret_permissions  = ["Get", "List", "Set", "Delete", ]
   storage_permissions = []
   certificate_permissions = [
@@ -72,7 +72,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_external_dev_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_developer_externals[0].object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy"]
   secret_permissions  = ["Get", "List", "Set", "Delete", ]
   storage_permissions = []
   certificate_permissions = [
@@ -151,107 +151,11 @@ resource "azurerm_key_vault_secret" "sender_evt_tx_event_hub_connection_string" 
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "personal-data-vault-api-key" {
-  name         = "personal-data-vault-api-key"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-resource "azurerm_key_vault_secret" "wallet-jwt-signing-key" {
-  name         = "wallet-jwt-signing-key"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-resource "azurerm_key_vault_secret" "payment-method-api-key" {
-  name         = "payment-method-api-key"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-
 resource "azurerm_key_vault_secret" "mongo_wallet_password" {
   name         = "mongo-wallet-password"
   value        = module.cosmosdb_account_mongodb[0].primary_master_key
   key_vault_id = module.key_vault.id
 
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
-  name         = "elastic-otel-token-header"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-resource "azurerm_key_vault_secret" "npg_service_api_key" {
-  name         = "npg-service-api-key"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-resource "azurerm_key_vault_secret" "wallet-token-test-key" {
-  count        = var.env_short != "p" ? 1 : 0
-  name         = "wallet-token-test-key"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-resource "azurerm_key_vault_secret" "paypal_psp_api_key" {
-  name         = "paypal-psp-api-key"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-resource "azurerm_key_vault_secret" "npg_notifications_jwt_secret_key" {
-  name         = "npg-notifications-jwt-secret-key"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
   lifecycle {
     ignore_changes = [
       value,
@@ -269,59 +173,6 @@ resource "azurerm_key_vault_secret" "wallet_storage_account_key" {
   name         = "wallet-storage-account-key"
   value        = module.pay_wallet_storage[0].primary_access_key
   key_vault_id = module.key_vault.id
-}
-
-resource "azurerm_key_vault_secret" "wallet_migration_api_key_test_dev" {
-  count        = var.env_short != "p" ? 1 : 0
-  name         = "wallet-migration-api-key-test-dev"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-resource "azurerm_key_vault_secret" "wallet_migration_cstar_api_key_test_dev" {
-  count        = var.env_short != "p" ? 1 : 0
-  name         = "wallet-migration-cstar-api-key-test-dev"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-resource "azurerm_key_vault_secret" "migration_wallet_token_test_dev" {
-  count        = var.env_short != "p" ? 1 : 0
-  name         = "migration-wallet-token-test-dev"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-
-resource "azurerm_key_vault_secret" "payment_wallet_opsgenie_webhook_token" {
-  count        = var.env_short == "p" ? 1 : 0
-  name         = "payment-wallet-opsgenie-webhook-token"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
 }
 
 //connection string to soak test evh instance
@@ -372,21 +223,6 @@ resource "azurerm_key_vault_secret" "sender_evt_tx_event_hub_connection_string_s
   name         = "sender-evt-tx-event-hub-connection-string-staging"
   value        = data.azurerm_eventhub_authorization_rule.sender_evt_tx_event_hub_connection_string_staging[0].primary_connection_string
   key_vault_id = module.key_vault.id
-}
-
-
-
-resource "azurerm_key_vault_secret" "payment_wallet_gha_bot_pat" {
-  count        = var.env_short == "p" ? 1 : 0
-  name         = "payment-wallet-gha-bot-pat"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
 }
 
 resource "azurerm_key_vault_certificate" "pay-wallet-jwt-token-issuer-certificate-ec" {

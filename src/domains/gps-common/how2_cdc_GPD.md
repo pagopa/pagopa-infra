@@ -112,3 +112,44 @@
      -target=azurerm_key_vault_secret.cdc-raw-auto_apd_transfer-rx_kv \
      -target=azurerm_key_vault_secret.azure_web_jobs_storage_kv
      ```
+
+
+### Signaling debezium
+
+1. create signaling table on DB
+    ```sql
+    -- as admin
+    CREATE TABLE debezium_signal (
+        id          VARCHAR(42)  NOT NULL PRIMARY KEY,
+        type        VARCHAR(32)  NOT NULL,
+        data        VARCHAR(2048)
+    );
+    ```
+
+2. create publication for signaling table
+    ```sql
+    -- as admin
+    ALTER PUBLICATION dbz_publication ADD TABLE debezium_signal;
+    ```
+
+3. grant debezium user on new table
+    ```sql
+    -- as admin
+    GRANT SELECT, INSERT ON debezium_signal TO cdcapd;
+    ```
+
+4. configure kafka-connect.yaml with
+    ```
+    signal.enabled.channels: "source"
+    signal.data.collection: "apd.debezium_signal"
+    ```
+
+5. to send signal
+    ```example
+    INSERT INTO apd.debezium_signal (id, type, data)
+    VALUES (
+        gen_random_uuid()::text,
+        'execute-snapshot',
+        '{"data-collections": ["apd.payment_option", "apd.payment_position"], "type": "incremental", "additional-conditions": [{"data-collection": "apd.payment_option", "filter": "fiscal_code != UPPER(fiscal_code)"}, {"data-collection": "apd.payment_position", "filter": "fiscal_code != UPPER(fiscal_code)"}]}'
+    );
+    ```

@@ -59,7 +59,7 @@ module "apim_qa_central_hub_api" {
   protocols    = ["https"]
   service_url  = local.apim_qa_central_hub_api.service_url
 
-  content_format = "openapi"
+  content_format = "openapi+json"
   content_value = templatefile("./api/qa-central-hub-api/v1/_openapi.json.tpl", {
     hostname = local.apim_hostname
   })

@@ -5,10 +5,10 @@ resource "azurerm_resource_group" "qa_rg" {
   tags = module.tag_config.tags
 }
 
-# Grant CD identity permission to upload files via az CLI --auth-mode login
-resource "azurerm_role_assignment" "identity_cd_storage_file_contributor" {
+# Grant CD identity permission to upload blobs via az CLI --auth-mode login
+resource "azurerm_role_assignment" "identity_cd_storage_blob_contributor" {
   scope                = module.qa_sa_shared.id
-  role_definition_name = "Storage File Data SMB Share Contributor"
+  role_definition_name = "Storage Blob Data Contributor"
   principal_id         = module.identity_cd_01.identity_principal_id
 }
 
@@ -34,27 +34,20 @@ module "qa_sa_shared" {
   tags = module.tag_config.tags
 }
 
-# Storage shares for MCP catalog
-resource "azurerm_storage_share" "mcp_catalog" {
-  name                 = "mcp-catalog"
-  storage_account_name = module.qa_sa_shared.name
-  quota                = 1
-
-  depends_on = [module.qa_sa_shared]
+# Blob container for MCP catalog
+resource "azurerm_storage_container" "mcp_catalog" {
+  name                  = "mcp-catalog"
+  storage_account_id    = module.qa_sa_shared.id
+  container_access_type = "private"
 }
 
-# Storage share directories for MCP catalog
-resource "azurerm_storage_share_directory" "mcp_catalog_manifests" {
-  name             = "manifests"
-  storage_share_id = azurerm_storage_share.mcp_catalog.id
+# Blob prefixes for MCP catalog
+resource "azurerm_storage_blob" "mcp_catalog_directories" {
+  for_each = toset(["manifests", "assets"])
 
-  depends_on = [module.qa_sa_shared]
-}
-
-resource "azurerm_storage_share_directory" "mcp_catalog_assets" {
-  name             = "assets"
-  storage_share_id = azurerm_storage_share.mcp_catalog.id
-
-  depends_on = [module.qa_sa_shared]
+  name                   = "${each.key}/.keep"
+  storage_account_name   = module.qa_sa_shared.name
+  storage_container_name = azurerm_storage_container.mcp_catalog.name
+  type                   = "Block"
 }
 
