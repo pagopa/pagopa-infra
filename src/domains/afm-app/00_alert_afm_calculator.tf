@@ -19,7 +19,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Response time for V1 version of /fees is less than or equal to 1.5s - ${local.afm-calculator-dash.calculator-v1}"
+  description    = "Response time for V1 version of /fees exceeds 1.5s - ${local.afm-calculator-dash.calculator-v1}"
   enabled        = true
   query = (<<-QUERY
 let threshold = 1500;
@@ -52,7 +52,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for V1 version of /fees is less than or equal to 99% - ${local.afm-calculator-dash.calculator-v1}"
+  description    = "Availability for V1 version of /fees is below 99% in two 5m buckets within 10m - ${local.afm-calculator-dash.calculator-v1}"
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
@@ -68,10 +68,10 @@ AzureDiagnostics
   )
   severity    = 1
   frequency   = 5
-  time_window = 5
+  time_window = 10
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 2
   }
 }
 
@@ -88,7 +88,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Response time for V1 version of /psps/[^/]+/fees is less than or equal to 1.5s - ${local.afm-calculator-dash.calculator-v1}"
+  description    = "Response time for V1 version of /psps/[^/]+/fees exceeds 1.5s - ${local.afm-calculator-dash.calculator-v1}"
   enabled        = true
   query = (<<-QUERY
 let threshold = 1500;
@@ -121,7 +121,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for V1 version of /psps/[^/]+/fees is less than or equal to 99% - ${local.afm-calculator-dash.calculator-v1}"
+  description    = "Availability for V1 version of /psps/[^/]+/fees is below 99% in two 5m buckets within 10m - ${local.afm-calculator-dash.calculator-v1}"
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
@@ -137,10 +137,10 @@ AzureDiagnostics
   )
   severity    = 1
   frequency   = 5
-  time_window = 5
+  time_window = 10
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 2
   }
 }
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculator-responsetime-searchpaymentmethods" {
@@ -156,7 +156,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Response time for V1 version of /payment-methods/search is less than or equal to 1.5s - ${local.afm-calculator-dash.calculator-v1}"
+  description    = "Response time for V1 version of /payment-methods/search exceeds 1.5s - ${local.afm-calculator-dash.calculator-v1}"
   enabled        = true
   query = (<<-QUERY
 let threshold = 1500;
@@ -189,7 +189,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for /payment-methods/search is less than or equal to 99% - ${local.afm-calculator-dash.calculator-v1}"
+  description    = "Availability for /payment-methods/search is below 99% in two 5m buckets within 10m - ${local.afm-calculator-dash.calculator-v1}"
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
@@ -205,10 +205,10 @@ AzureDiagnostics
   )
   severity    = 1
   frequency   = 5
-  time_window = 5
+  time_window = 10
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 2
   }
 }
 
@@ -225,7 +225,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Response time for V2 version of /fees is less than or equal to 1.5s - ${local.afm-calculator-dash.calculator-v2}"
+  description    = "Response time for V2 version of /fees exceeds 1.5s - ${local.afm-calculator-dash.calculator-v2}"
   enabled        = true
   query = (<<-QUERY
 let threshold = 1500;
@@ -260,7 +260,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for V2 version of /fees is less than or equal to 99% - ${local.afm-calculator-dash.calculator-v2}"
+  description    = "Availability for V2 version of /fees is below the traffic-adjusted threshold in two 5m buckets within 10m - ${local.afm-calculator-dash.calculator-v2}"
   enabled        = true
   query = (<<-QUERY
   let lowTrafficThreshold = 70; // the lower threshold used if traffic is low
@@ -314,7 +314,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Response time for V2 version of /psps/[^/]+/fees is less than or equal to 1.5s - ${local.afm-calculator-dash.calculator-v2}"
+  description    = "Response time for V2 version of /psps/[^/]+/fees exceeds 1.5s - ${local.afm-calculator-dash.calculator-v2}"
   enabled        = true
   query = (<<-QUERY
 let threshold = 1500;
@@ -347,7 +347,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for V2 version of /psps/[^/]+/fees is less than or equal to 99% - ${local.afm-calculator-dash.calculator-v2}"
+  description    = "Availability for V2 version of /psps/[^/]+/fees is below 99% in two 5m buckets within 10m - ${local.afm-calculator-dash.calculator-v2}"
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
@@ -363,9 +363,9 @@ AzureDiagnostics
   )
   severity    = 1
   frequency   = 5
-  time_window = 5
+  time_window = 10
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 2
   }
 }
