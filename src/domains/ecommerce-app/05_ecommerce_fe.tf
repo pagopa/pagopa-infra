@@ -5,6 +5,8 @@ locals {
   cdn_storage_account_name            = "${local.project}cdnsa"
   cdn_index_document                  = "index.html"
   cdn_error_document                  = "index.html"
+  # NPG SDK self-hosted for SRI: folder-scoped, the platform CDN also serves other assets
+  npg_sdk_cdn_url = "https://assets.cdn.platform.pagopa.it/${var.env_short == "p" ? "npg-prod" : "npg-uat"}/"
   # DNS Zone Key for the main CDN (the one configured in the module)
   dns_zone_key = "${var.dns_zone_ecommerce}.${var.external_domain}"
   # ecommerce zones apex
@@ -32,7 +34,7 @@ locals {
         {
           action = "Overwrite"
           name   = local.content_security_policy_header_name
-          value  = "default-src 'self'; connect-src 'self' https://api.${var.dns_zone_prefix}.${var.external_domain} https://api-eu.mixpanel.com; "
+          value  = "default-src 'self'; connect-src 'self' https://api.${var.dns_zone_prefix}.${var.external_domain} https://api-eu.mixpanel.com ${local.npg_sdk_cdn_url}; "
         },
         {
           action = "Append"
@@ -53,7 +55,7 @@ locals {
         {
           action = "Append"
           name   = local.content_security_policy_header_name
-          value  = "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://${local.npg_sdk_hostname}; "
+          value  = "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://${local.npg_sdk_hostname} ${local.npg_sdk_cdn_url}; "
         },
         {
           action = "Append"
