@@ -34,6 +34,6 @@ locals {
   hostname      = var.env == "prod" ? "${var.domain}.itn.internal.platform.pagopa.it" : "${var.domain}.itn.internal.${var.env}.platform.pagopa.it"
 
   location_short_weu = "weu"
-  evt_hub_location = "${local.location_short_weu}-core"
+  evt_hub_location   = "${local.location_short_weu}-core"
 
 }

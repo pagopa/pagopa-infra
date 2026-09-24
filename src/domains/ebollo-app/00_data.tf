@@ -38,7 +38,7 @@ data "azurerm_api_management_product" "apim_gdp_debt_positions_product" {
 }
 
 data "azurerm_redis_cache" "redis_cache" {
-  name                = var.redis_ha_enabled ? format("%s-%s-%s-redis", var.prefix, var.env_short, var.location_short) : format("%s-%s-redis", var.prefix, var.env_short)
+  name                = var.redis_ha_enabled ? format("%s-%s-weu-redis", var.prefix, var.env_short) : format("%s-%s-redis", var.prefix, var.env_short)
   resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
 }
 
