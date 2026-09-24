@@ -449,7 +449,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> .?(https://[a-zA-Z0-9-/.]+)', 1, message)\n| summarize round(avg(duration), 2)by URL\n| order by avg_duration desc \n| take 10\n",
+                  "value": "requests\n| where operation_Name contains \"forward\"\n| extend URL = tostring(customDimensions['Request-X-Host-Url'])\n| where isnotempty(URL)\n| summarize avg_duration = round(avg(duration), 2) by URL\n| order by avg_duration desc\n| take 10\n",
                   "isOptional": true
                 },
                 {
@@ -507,7 +507,7 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> https://?([a-zA-Z0-9-/.]+)', 1, message)\n| summarize round(avg(duration), 2)by URL\n| order by avg_duration desc \n| take 10\n\n",
+                  "Query": "requests\n| where operation_Name contains \"forward\"\n| extend URL = tostring(customDimensions['Request-X-Host-Url'])\n| where isnotempty(URL)\n| summarize avg_duration = round(avg(duration), 2) by URL\n| order by avg_duration desc\n| take 10\n",
                   "SpecificChart": "UnstackedBar",
                   "PartTitle": "Top 10 Response Time",
                   "PartSubTitle": "/forward"
@@ -570,7 +570,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> .?(https://[a-zA-Z0-9-/.]+)', 1, message)\n| summarize round(avg(duration), 2)by URL\n| order by avg_duration desc \n| take 10\n",
+                  "value": "requests\n| where operation_Name contains \"forward\"\n| extend URL = tostring(customDimensions['Request-X-Host-Url'])\n| where isnotempty(URL)\n| summarize avg_duration = round(avg(duration), 2) by URL, bin(timestamp, 5m)\n| order by avg_duration\n| render timechart with(xtitle=\"Endpoints\", ytitle=\"average resp. time\")\n",
                   "isOptional": true
                 },
                 {
@@ -628,7 +628,7 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n//| where timestamp > datetime(\"2023-07-20T12:46:06.437Z\") and timestamp < datetime(\"2023-07-20T13:46:06.437Z\")\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> https://?([a-zA-Z0-9-/.]+)', 1, message)\n| summarize round(avg(duration), 2)by URL, bin(timestamp, 5m)\n| order by avg_duration\n| render timechart with(xtitle=\"Endpoints\", ytitle=\"average resp. time\")\n//| order by avg_duration desc \n\n",
+                  "Query": "requests\n| where operation_Name contains \"forward\"\n| extend URL = tostring(customDimensions['Request-X-Host-Url'])\n| where isnotempty(URL)\n| summarize avg_duration = round(avg(duration), 2) by URL, bin(timestamp, 5m)\n| order by avg_duration\n| render timechart with(xtitle=\"Endpoints\", ytitle=\"average resp. time\")\n",
                   "SpecificChart": "StackedArea",
                   "PartTitle": "Target Average Response Time",
                   "PartSubTitle": "/forward",
@@ -710,7 +710,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> .?(https://[a-zA-Z0-9-/.]+)', 1, message)\n| summarize round(avg(duration), 2)by URL\n| order by avg_duration desc \n| take 10\n",
+                  "value": "requests\n| where operation_Name contains \"forward\"\n| extend URL = tostring(customDimensions['Request-X-Host-Url'])\n| where isnotempty(URL)\n| summarize Invocations = count() by URL\n| order by Invocations desc\n| take 10\n",
                   "isOptional": true
                 },
                 {
@@ -768,7 +768,7 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> https://?([a-zA-Z0-9-/.]+)', 1, message)\n| summarize Invocations = count() by URL\n| order by Invocations desc \n| take 10\n\n",
+                  "Query": "requests\n| where operation_Name contains \"forward\"\n| extend URL = tostring(customDimensions['Request-X-Host-Url'])\n| where isnotempty(URL)\n| summarize Invocations = count() by URL\n| order by Invocations desc\n| take 10\n",
                   "ControlType": "FrameControlChart",
                   "SpecificChart": "Pie",
                   "PartTitle": "Top 10 Invocations by Target",
@@ -842,7 +842,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> .?(https://[a-zA-Z0-9-/.]+)', 1, message)\n| summarize round(avg(duration), 2)by URL\n| order by avg_duration desc \n| take 10\n",
+                  "value": "requests\n| where operation_Name contains \"forward\"\n| extend URL = tostring(customDimensions['Request-X-Host-Url'])\n| where isnotempty(URL)\n| where toint(resultCode) >= 300\n| summarize Errors = count() by URL\n| order by Errors desc\n| take 10\n",
                   "isOptional": true
                 },
                 {
@@ -900,7 +900,7 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where toint(resultCode) >= 300\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> https://?([a-zA-Z0-9-/.]+)', 1, message)\n| summarize Errors = count() by URL\n| order by Errors desc \n| take 10\n\n",
+                  "Query": "requests\n| where operation_Name contains \"forward\"\n| extend URL = tostring(customDimensions['Request-X-Host-Url'])\n| where isnotempty(URL)\n| where toint(resultCode) >= 300\n| summarize Errors = count() by URL\n| order by Errors desc\n| take 10\n",
                   "SpecificChart": "Pie",
                   "PartTitle": "Top 10 Response Time",
                   "PartSubTitle": "/forward",
@@ -1209,7 +1209,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n//| where timestamp > datetime(\"2023-07-20T12:46:06.437Z\") and timestamp < datetime(\"2023-07-20T13:46:06.437Z\")\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> https://?([a-zA-Z0-9-/.]+)', 1, message)\n| summarize round(avg(duration), 2)by URL, bin(timestamp, 5m)\n| order by avg_duration\n| render timechart with(xtitle=\"Endpoints\", ytitle=\"average resp. time\")\n//| order by avg_duration desc \n\n",
+                  "value": "requests\n| where operation_Name contains \"forward\"\n| extend URL = tostring(customDimensions['Request-X-Host-Url'])\n| where isnotempty(URL)\n| summarize avg_duration = round(avg(duration), 2) by URL, bin(timestamp, 5m)\n| order by avg_duration\n| render timechart with(xtitle=\"Endpoints\", ytitle=\"average resp. time\")\n",
                   "isOptional": true
                 },
                 {
@@ -1328,7 +1328,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where toint(resultCode) >= 300\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> https://?([a-zA-Z0-9-/.]+)', 1, message)\n| summarize Errors = count() by URL, bin(timestamp,5m)\n| order by Errors desc \n| render timechart \n\n",
+                  "value": "requests\n| where operation_Name contains \"forward\"\n| extend URL = tostring(customDimensions['Request-X-Host-Url'])\n| where isnotempty(URL)\n| where toint(resultCode) >= 300\n| summarize Errors = count() by URL, bin(timestamp, 5m)\n| order by Errors desc\n| render timechart\n",
                   "isOptional": true
                 },
                 {
@@ -2195,7 +2195,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> .?(https://[a-zA-Z0-9-/.]+)', 1, message)\n| summarize round(avg(duration), 2)by URL\n| order by avg_duration desc \n| take 10\n",
+                  "value": "let threshold = 0.99;\nrequests\n| where operation_Name contains \"forward\"\n| extend URL = tostring(customDimensions['Request-X-Host-Url'])\n| where isnotempty(URL)\n| summarize total = count(), success = countif(toint(resultCode) < 500) by bin(timestamp, 5m)\n| extend availability = toreal(success) / total\n| project timestamp, availability, watermark = threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n",
                   "isOptional": true
                 },
                 {
@@ -2253,7 +2253,7 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let threshold = 0.99;\ntraces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> https://?([a-zA-Z0-9-/.]+)', 1, message)\n| summarize total = count(), success = countif(toint(resultCode) < 500) by bin(timestamp, 5m)\n| extend availability = toreal(success)/total\n| project timestamp, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n",
+                  "Query": "let threshold = 0.99;\nrequests\n| where operation_Name contains \"forward\"\n| extend URL = tostring(customDimensions['Request-X-Host-Url'])\n| where isnotempty(URL)\n| summarize total = count(), success = countif(toint(resultCode) < 500) by bin(timestamp, 5m)\n| extend availability = toreal(success) / total\n| project timestamp, availability, watermark = threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n",
                   "SpecificChart": "Line",
                   "PartTitle": "Availability (5m)",
                   "Dimensions": {
