@@ -27,7 +27,7 @@
       <set-variable name="transactionsV2OperationId" value="getTransactionInfo" />
       <set-variable name="transactionsV21OperationId" value="newTransaction" />
       <set-variable name="paymentMethodsOperationId" value="calculateFees" />
-      <set-variable name="paymentMethodsHandlerOperationId" value="getAllPaymentMethods,getPaymentMethod" />
+      <set-variable name="paymentMethodsHandlerOperationId" value="getAllPaymentMethods,getPaymentMethod,createSession" />
       <choose>
         <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("transactionsV21OperationId","").Split(','), operations => operations == context.Operation.Id))">
           <set-header name="x-api-key" exists-action="override">
