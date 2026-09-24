@@ -48,3 +48,10 @@ data "azurerm_eventhub_authorization_rule" "pagopa_weu_core_evh_ns04_nodo_dei_pa
   eventhub_name       = "nodo-dei-pagamenti-cache"
   resource_group_name = "${local.product}-msg-rg"
 }
+
+data "azurerm_api_management_user" "pagoapa_core_user" {
+  # user_id             = var.env_short == "u" ? "349fab55-1fe5-4b89-92ac-5bdeabe3010e" : "2d6fe3c6-5656-43c8-afd4-ccf2bb352cec"
+  user_id             = "pagopa-core-usr"
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+}
