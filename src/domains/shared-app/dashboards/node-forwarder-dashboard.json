@@ -1,0 +1,2344 @@
+{
+  "properties": {
+    "lenses": [
+      {
+        "order": 0,
+        "parts": [
+          {
+            "position": {
+              "x": 0,
+              "y": 0,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/forward\"\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Availability (5m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/forward",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "PartTitle": "Availability (5m)",
+                  "Query": "\nlet threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/forward\"\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n"
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 0,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet api_url = \"/forward\";\nAzureDiagnostics\n| where url_s matches regex api_url\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Pie",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Response Codes (5m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/forward",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "httpStatus_d",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [
+                      {
+                        "name": "HTTPStatus",
+                        "type": "string"
+                      }
+                    ],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  },
+                  "PartTitle": "Response Codes (5m)",
+                  "Query": "\nlet api_url = \"/forward\";\nAzureDiagnostics\n| where url_s matches regex api_url\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+                  "SpecificChart": "StackedArea"
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 12,
+              "y": 0,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet threshold = 1;\nAzureDiagnostics\n| where url_s matches regex \"/forward\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedColumn",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Percentile Response Time (5m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "/forward",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "duration_percentile_95",
+                        "type": "real"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "watermark",
+                        "type": "long"
+                      },
+                      {
+                        "name": "duration_percentile_95",
+                        "type": "real"
+                      }
+                    ]
+                  },
+                  "PartTitle": "Percentile Response Time (5m)",
+                  "Query": "\nlet threshold = 1;\nAzureDiagnostics\n| where url_s matches regex \"/forward\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "SpecificChart": "Line"
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 4,
+              "colSpan": 7,
+              "rowSpan": 6
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "0ad7c6d8-13df-4c7a-8c6f-1307cb1ebe8d",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT30M",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> .?(https://[a-zA-Z0-9-/.]+)', 1, message)\n| summarize round(avg(duration), 2)by URL\n| order by avg_duration desc \n| take 10\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedColumn",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "pagopa-p-appinsights",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "URL",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "avg_duration",
+                        "type": "real"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> https://?([a-zA-Z0-9-/.]+)', 1, message)\n| summarize round(avg(duration), 2)by URL\n| order by avg_duration desc \n| take 10\n\n",
+                  "SpecificChart": "UnstackedBar",
+                  "PartTitle": "Top 10 Response Time",
+                  "PartSubTitle": "/forward"
+                }
+              },
+              "partHeader": {
+                "title": "Top 10 Response Time by Target",
+                "subtitle": ""
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 7,
+              "y": 4,
+              "colSpan": 11,
+              "rowSpan": 6
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "0ad7c6d8-13df-4c7a-8c6f-1307cb1ebe8d",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT30M",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> .?(https://[a-zA-Z0-9-/.]+)', 1, message)\n| summarize round(avg(duration), 2)by URL\n| order by avg_duration desc \n| take 10\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedColumn",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "pagopa-p-appinsights",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "URL",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "avg_duration",
+                        "type": "real"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n//| where timestamp > datetime(\"2023-07-20T12:46:06.437Z\") and timestamp < datetime(\"2023-07-20T13:46:06.437Z\")\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> https://?([a-zA-Z0-9-/.]+)', 1, message)\n| summarize round(avg(duration), 2)by URL, bin(timestamp, 5m)\n| order by avg_duration\n| render timechart with(xtitle=\"Endpoints\", ytitle=\"average resp. time\")\n//| order by avg_duration desc \n\n",
+                  "SpecificChart": "StackedArea",
+                  "PartTitle": "Target Average Response Time",
+                  "PartSubTitle": "/forward",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "avg_duration",
+                        "type": "real"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "URL",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  }
+                }
+              },
+              "partHeader": {
+                "title": "Average Response Time by Target",
+                "subtitle": "/forward"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 10,
+              "colSpan": 9,
+              "rowSpan": 6
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "0ad7c6d8-13df-4c7a-8c6f-1307cb1ebe8d",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT30M",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> .?(https://[a-zA-Z0-9-/.]+)', 1, message)\n| summarize round(avg(duration), 2)by URL\n| order by avg_duration desc \n| take 10\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedColumn",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "pagopa-p-appinsights",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "URL",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "avg_duration",
+                        "type": "real"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> https://?([a-zA-Z0-9-/.]+)', 1, message)\n| summarize Invocations = count() by URL\n| order by Invocations desc \n| take 10\n\n",
+                  "ControlType": "FrameControlChart",
+                  "SpecificChart": "Pie",
+                  "PartTitle": "Top 10 Invocations by Target",
+                  "PartSubTitle": "/forward",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "URL",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "Invocations",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 9,
+              "y": 10,
+              "colSpan": 9,
+              "rowSpan": 6
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "0ad7c6d8-13df-4c7a-8c6f-1307cb1ebe8d",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT30M",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> .?(https://[a-zA-Z0-9-/.]+)', 1, message)\n| summarize round(avg(duration), 2)by URL\n| order by avg_duration desc \n| take 10\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedColumn",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "pagopa-p-appinsights",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "URL",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "avg_duration",
+                        "type": "real"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where toint(resultCode) >= 300\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> https://?([a-zA-Z0-9-/.]+)', 1, message)\n| summarize Errors = count() by URL\n| order by Errors desc \n| take 10\n\n",
+                  "SpecificChart": "Pie",
+                  "PartTitle": "Top 10 Response Time",
+                  "PartSubTitle": "/forward",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "URL",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "Errors",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  },
+                  "LegendOptions": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  }
+                }
+              },
+              "partHeader": {
+                "title": "Top 10 Errors by Target",
+                "subtitle": "/forward"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 16,
+              "colSpan": 6,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "10d76376-1508-43a3-a771-1ec739409571",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "requests\n| where timestamp > ago(1d)\n| where cloud_RoleName == \"pagopa-p-app-node-forwarder\"\n//| where operation_Name == \"p-node-forwarder-api-v1;rev=1 - forward\"\n| summarize count() by resultCode\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Pie",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "pagopa-p-appinsights",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "resultCode",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": true,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "requests\n| where timestamp > ago(1d)\n| where cloud_RoleName == \"pagopa-p-weu-core-app-node-forwarder-ha\"\n//| where operation_Name == \"p-node-forwarder-api-v1;rev=1 - forward\"\n| summarize count() by resultCode\n\n",
+                  "PartTitle": "Daily error distribution"
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 16,
+              "colSpan": 12,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "152f413b-41c3-43eb-8311-6db235c72f61",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "requests\n| where timestamp > ago(24h)\n| where cloud_RoleName == \"pagopa-p-app-node-forwarder\"\n//| where operation_Name == \"p-node-forwarder-api-v1;rev=1 - forward\"\n| summarize count() by bin(timestamp,1h)\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedColumn",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "pagopa-p-appinsights",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": true,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "requests\n| where timestamp > ago(24h)\n| where cloud_RoleName == \"pagopa-p-weu-core-app-node-forwarder-ha\"\n//| where operation_Name == \"p-node-forwarder-api-v1;rev=1 - forward\"\n| summarize count() by bin(timestamp,1h)\n\n",
+                  "PartTitle": "Daily requests x hh"
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 21,
+              "colSpan": 18,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "6d9baca2-e07f-4c6c-813e-30f4f2d9b83b",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n//| where timestamp > datetime(\"2023-07-20T12:46:06.437Z\") and timestamp < datetime(\"2023-07-20T13:46:06.437Z\")\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> https://?([a-zA-Z0-9-/.]+)', 1, message)\n| summarize round(avg(duration), 2)by URL, bin(timestamp, 5m)\n| order by avg_duration\n| render timechart with(xtitle=\"Endpoints\", ytitle=\"average resp. time\")\n//| order by avg_duration desc \n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "pagopa-p-appinsights",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "avg_duration",
+                        "type": "real"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "URL",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "PartTitle": "Avg Resp Time for URL"
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 26,
+              "colSpan": 18,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "15ed87a5-85c7-41ca-b815-4d16a800c0c2",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT12H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where toint(resultCode) >= 300\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> https://?([a-zA-Z0-9-/.]+)', 1, message)\n| summarize Errors = count() by URL, bin(timestamp,5m)\n| order by Errors desc \n| render timechart \n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "pagopa-p-appinsights",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "Errors",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "URL",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "PartTitle": "Error distribution by URL and timegrain 5'"
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 31,
+              "colSpan": 18,
+              "rowSpan": 1
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "content": "<span style=\"color:green\">pagopa-p-weu-core-app-node-forwarder-ha 💪 </span>\n==\n\n",
+                  "title": "",
+                  "subtitle": "",
+                  "markdownSource": 1,
+                  "markdownUri": ""
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 32,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/sites/pagopa-p-weu-core-app-node-forwarder-ha"
+                          },
+                          "name": "HealthCheckStatus",
+                          "aggregationType": 4,
+                          "namespace": "microsoft.web/sites",
+                          "metricVisualization": {
+                            "displayName": "Health check status"
+                          }
+                        }
+                      ],
+                      "title": "Avg Health check status for pagopa-p-weu-core-app-node-forwarder-ha",
+                      "titleKind": 1,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideHoverCard": false,
+                          "hideLabelNames": true
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/sites/pagopa-p-weu-core-app-node-forwarder-ha"
+                          },
+                          "name": "HealthCheckStatus",
+                          "aggregationType": 4,
+                          "namespace": "microsoft.web/sites",
+                          "metricVisualization": {
+                            "displayName": "Health check status"
+                          }
+                        }
+                      ],
+                      "title": "Avg Health check status for pagopa-p-weu-core-app-node-forwarder-ha",
+                      "titleKind": 1,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideHoverCard": false,
+                          "hideLabelNames": true
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 32,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/sites/pagopa-p-weu-core-app-node-forwarder-ha"
+                          },
+                          "name": "Requests",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.web/sites",
+                          "metricVisualization": {
+                            "displayName": "Requests"
+                          }
+                        }
+                      ],
+                      "title": "Sum Requests for pagopa-p-weu-core-app-node-forwarder-ha",
+                      "titleKind": 1,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideHoverCard": false,
+                          "hideLabelNames": true
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/sites/pagopa-p-weu-core-app-node-forwarder-ha"
+                          },
+                          "name": "Requests",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.web/sites",
+                          "metricVisualization": {
+                            "displayName": "Requests"
+                          }
+                        }
+                      ],
+                      "title": "Sum Requests for pagopa-p-weu-core-app-node-forwarder-ha",
+                      "titleKind": 1,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideHoverCard": false,
+                          "hideLabelNames": true
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 12,
+              "y": 32,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/sites/pagopa-p-weu-core-app-node-forwarder-ha"
+                          },
+                          "name": "Http5xx",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.web/sites",
+                          "metricVisualization": {
+                            "displayName": "Http Server Errors"
+                          }
+                        }
+                      ],
+                      "title": "Sum Http Server Errors for pagopa-p-weu-core-app-node-forwarder-ha",
+                      "titleKind": 1,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideHoverCard": false,
+                          "hideLabelNames": true
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/sites/pagopa-p-weu-core-app-node-forwarder-ha"
+                          },
+                          "name": "Http5xx",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.web/sites",
+                          "metricVisualization": {
+                            "displayName": "Http Server Errors"
+                          }
+                        }
+                      ],
+                      "title": "Sum Http Server Errors for pagopa-p-weu-core-app-node-forwarder-ha",
+                      "titleKind": 1,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideHoverCard": false,
+                          "hideLabelNames": true
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 36,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/sites/pagopa-p-weu-core-app-node-forwarder-ha"
+                          },
+                          "name": "AverageResponseTime",
+                          "aggregationType": 4,
+                          "namespace": "microsoft.web/sites",
+                          "metricVisualization": {
+                            "displayName": "Average Response Time (deprecated)"
+                          }
+                        }
+                      ],
+                      "title": "Avg Average Response Time (deprecated) for pagopa-p-weu-core-app-node-forwarder-ha",
+                      "titleKind": 1,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideHoverCard": false,
+                          "hideLabelNames": true
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 14400000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/sites/pagopa-p-weu-core-app-node-forwarder-ha"
+                          },
+                          "name": "AverageResponseTime",
+                          "aggregationType": 4,
+                          "namespace": "microsoft.web/sites",
+                          "metricVisualization": {
+                            "displayName": "Average Response Time (deprecated)"
+                          }
+                        }
+                      ],
+                      "title": "Avg Average Response Time (deprecated) for pagopa-p-weu-core-app-node-forwarder-ha",
+                      "titleKind": 1,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideHoverCard": false,
+                          "hideLabelNames": true
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 36,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/serverFarms/pagopa-p-weu-core-plan-node-forwarder-ha"
+                          },
+                          "name": "CpuPercentage",
+                          "aggregationType": 4,
+                          "metricVisualization": {
+                            "displayName": "CPU Percentage",
+                            "resourceDisplayName": "pagopa-p-weu-core-plan-node-forwarder-ha"
+                          }
+                        }
+                      ],
+                      "title": "CPU Percentage",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2
+                      },
+                      "openBladeOnClick": {
+                        "openBlade": true
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/serverFarms/pagopa-p-weu-core-plan-node-forwarder-ha"
+                          },
+                          "name": "CpuPercentage",
+                          "aggregationType": 4,
+                          "metricVisualization": {
+                            "displayName": "CPU Percentage",
+                            "resourceDisplayName": "pagopa-p-weu-core-plan-node-forwarder-ha"
+                          }
+                        }
+                      ],
+                      "title": "CPU Percentage",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "disablePinning": true
+                      },
+                      "openBladeOnClick": {
+                        "openBlade": true
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "MsPortalFx_TimeRange": {
+                  "model": {
+                    "format": "local",
+                    "granularity": "1m",
+                    "relative": "60m"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 12,
+              "y": 36,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/serverFarms/pagopa-p-weu-core-plan-node-forwarder-ha"
+                          },
+                          "name": "MemoryPercentage",
+                          "aggregationType": 4,
+                          "metricVisualization": {
+                            "displayName": "Memory Percentage",
+                            "resourceDisplayName": "pagopa-p-weu-core-plan-node-forwarder-ha"
+                          }
+                        }
+                      ],
+                      "title": "Memory Percentage",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2
+                      },
+                      "openBladeOnClick": {
+                        "openBlade": true
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/serverFarms/pagopa-p-weu-core-plan-node-forwarder-ha"
+                          },
+                          "name": "MemoryPercentage",
+                          "aggregationType": 4,
+                          "metricVisualization": {
+                            "displayName": "Memory Percentage",
+                            "resourceDisplayName": "pagopa-p-weu-core-plan-node-forwarder-ha"
+                          }
+                        }
+                      ],
+                      "title": "Memory Percentage",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "disablePinning": true
+                      },
+                      "openBladeOnClick": {
+                        "openBlade": true
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "MsPortalFx_TimeRange": {
+                  "model": {
+                    "format": "local",
+                    "granularity": "1m",
+                    "relative": "60m"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 40,
+              "colSpan": 18,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "5fb7392f-1a46-48ad-a61c-be0bf7101ead",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "let api_url = \"/forward\";\nAzureDiagnostics\n| where TimeGenerated > ago(5h)\n| where url_s matches regex api_url\n| summarize count() by ResultType, bin(TimeGenerated,2m)\n| render timechart \n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "pagopa-p-apim",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "ResultType",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": true,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "PartTitle": "View Succeeded vs Failed"
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 45,
+              "colSpan": 18,
+              "rowSpan": 6
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "0ad7c6d8-13df-4c7a-8c6f-1307cb1ebe8d",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT30M",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "traces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> .?(https://[a-zA-Z0-9-/.]+)', 1, message)\n| summarize round(avg(duration), 2)by URL\n| order by avg_duration desc \n| take 10\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedColumn",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "pagopa-p-appinsights",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "URL",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "avg_duration",
+                        "type": "real"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let threshold = 0.99;\ntraces\n| join kind=inner requests on operation_Id\n//| where duration >= 7000\n| where message startswith \"https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"\n| extend URL=extract('https req POST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> https://?([a-zA-Z0-9-/.]+)', 1, message)\n| summarize total = count(), success = countif(toint(resultCode) < 500) by bin(timestamp, 5m)\n| extend availability = toreal(success)/total\n| project timestamp, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n",
+                  "SpecificChart": "Line",
+                  "PartTitle": "Availability (5m)",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "model": {
+        "timeRange": {
+          "value": {
+            "relative": {
+              "duration": 24,
+              "timeUnit": 1
+            }
+          },
+          "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+        },
+        "filterLocale": {
+          "value": "en-us"
+        },
+        "filters": {
+          "value": {
+            "MsPortalFx_TimeRange": {
+              "model": {
+                "format": "local",
+                "granularity": "auto",
+                "relative": "4h"
+              },
+              "displayCache": {
+                "name": "Local Time",
+                "value": "Past 4 hours"
+              },
+              "filteredPartIds": [
+                "StartboardPart-LogsDashboardPart-125a86ff-fe4b-479f-b5af-13b2ddb2d013",
+                "StartboardPart-LogsDashboardPart-125a86ff-fe4b-479f-b5af-13b2ddb2d015",
+                "StartboardPart-LogsDashboardPart-125a86ff-fe4b-479f-b5af-13b2ddb2d017",
+                "StartboardPart-LogsDashboardPart-125a86ff-fe4b-479f-b5af-13b2ddb2d019",
+                "StartboardPart-LogsDashboardPart-125a86ff-fe4b-479f-b5af-13b2ddb2d01b",
+                "StartboardPart-LogsDashboardPart-125a86ff-fe4b-479f-b5af-13b2ddb2d01d",
+                "StartboardPart-LogsDashboardPart-125a86ff-fe4b-479f-b5af-13b2ddb2d01f",
+                "StartboardPart-LogsDashboardPart-125a86ff-fe4b-479f-b5af-13b2ddb2d021",
+                "StartboardPart-LogsDashboardPart-125a86ff-fe4b-479f-b5af-13b2ddb2d023",
+                "StartboardPart-LogsDashboardPart-125a86ff-fe4b-479f-b5af-13b2ddb2d025",
+                "StartboardPart-LogsDashboardPart-125a86ff-fe4b-479f-b5af-13b2ddb2d027",
+                "StartboardPart-MonitorChartPart-125a86ff-fe4b-479f-b5af-13b2ddb2d02b",
+                "StartboardPart-MonitorChartPart-125a86ff-fe4b-479f-b5af-13b2ddb2d02d",
+                "StartboardPart-MonitorChartPart-125a86ff-fe4b-479f-b5af-13b2ddb2d02f",
+                "StartboardPart-MonitorChartPart-125a86ff-fe4b-479f-b5af-13b2ddb2d031",
+                "StartboardPart-MonitorChartPart-125a86ff-fe4b-479f-b5af-13b2ddb2d033",
+                "StartboardPart-MonitorChartPart-125a86ff-fe4b-479f-b5af-13b2ddb2d035",
+                "StartboardPart-LogsDashboardPart-125a86ff-fe4b-479f-b5af-13b2ddb2d037",
+                "StartboardPart-LogsDashboardPart-125a86ff-fe4b-479f-b5af-13b2ddb2d039"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "name": "pagopa-p-opex_pagopa-node-forwarder",
+  "type": "Microsoft.Portal/dashboards",
+  "location": "INSERT LOCATION",
+  "tags": {
+    "hidden-title": "pagopa-p-opex_pagopa-node-forwarder"
+  },
+  "apiVersion": "2022-12-01-preview"
+}
