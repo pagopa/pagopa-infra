@@ -3,7 +3,7 @@
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.13.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 3.0.2 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4 |
@@ -13,7 +13,7 @@
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 1ed70549ce796e30c27d89bc6aabcb5f6eaaf925 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | ./.terraform/modules/__v4__/key_vault | n/a |
 | <a name="module_pagopa_checkout_redis_snet"></a> [pagopa\_checkout\_redis\_snet](#module\_pagopa\_checkout\_redis\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
@@ -24,7 +24,7 @@
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [azurerm_dns_caa_record.checkout_pagopa_it](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_caa_record) | resource |
 | [azurerm_dns_ns_record.dev_checkout](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_ns_record) | resource |
 | [azurerm_dns_ns_record.uat_checkout](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_ns_record) | resource |
@@ -80,7 +80,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_cidr_subnet_redis_checkout"></a> [cidr\_subnet\_redis\_checkout](#input\_cidr\_subnet\_redis\_checkout) | Redis DB address space for checkout. | `list(string)` | n/a | yes |
 | <a name="input_dns_default_ttl_sec"></a> [dns\_default\_ttl\_sec](#input\_dns\_default\_ttl\_sec) | value | `number` | `3600` | no |
 | <a name="input_dns_zone_checkout"></a> [dns\_zone\_checkout](#input\_dns\_zone\_checkout) | The checkout dns subdomain. | `string` | `null` | no |
