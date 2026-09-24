@@ -474,10 +474,166 @@
           }
         }
       }
+    },
+    "/payment-methods/{id}/sessions": {
+      "post": {
+        "tags": [
+          "ecommerce-methods-handler"
+        ],
+        "operationId": "createSession",
+        "summary": "Create frontend field data paired with a payment gateway session",
+        "description": "This endpoint returns an object containing data on how a frontend can build a form to allow direct exchanging of payment information to the payment gateway without eCommerce having to store PCI data. The returned data is tied to a session on the payment gateway identified by the field orderId.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Payment Method ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "header",
+            "description": "Language selection",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment form data successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateSessionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment method not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Payment gateway did return error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "CreateSessionResponse": {
+        "type": "object",
+        "description": "Form data needed to create a payment method input form",
+        "required": [
+          "paymentMethodData",
+          "orderId",
+          "correlationId"
+        ],
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "description": "Identifier of the payment gateway session associated to the form"
+          },
+          "correlationId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identifier of the payment gateway session associated to the transaction flow"
+          },
+          "paymentMethodData": {
+            "$ref": "#/components/schemas/CardFormFields"
+          }
+        }
+      },
+      "CardFormFields": {
+        "type": "object",
+        "description": "Form fields for credit cards",
+        "required": [
+          "paymentMethod",
+          "form"
+        ],
+        "properties": {
+          "paymentMethod": {
+            "type": "string"
+          },
+          "form": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Field"
+            }
+          }
+        }
+      },
+      "Field": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "text"
+          },
+          "class": {
+            "type": "string",
+            "example": "cardData"
+          },
+          "id": {
+            "type": "string",
+            "example": "cardholderName"
+          },
+          "src": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://example.com/field.html?id=CARDHOLDER_NAME&sid=052211e8-54c8-4e0a-8402-e10bcb8ff264"
+          }
+        }
+      },
       "NodeProblemJson404": {
         "oneOf": [
           {
