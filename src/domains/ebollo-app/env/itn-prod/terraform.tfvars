@@ -32,4 +32,4 @@ pod_disruption_budgets = {
   },
 }
 
-redis_ha_enabled                           = true
+redis_ha_enabled = true
