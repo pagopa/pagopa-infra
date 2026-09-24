@@ -505,9 +505,9 @@ resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
   }
 }
 
-# #######################
-# CDC GPD config secrets
-# #######################
+########################
+# CDC GPD config secrets
+########################
 
 
 data "azurerm_storage_account" "gpd_ingestion_sa" {
