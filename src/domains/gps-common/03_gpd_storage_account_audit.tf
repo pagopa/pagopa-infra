@@ -11,9 +11,9 @@ module "gpd_audit_sa" {
   location            = azurerm_resource_group.gpd_rg.location
   embedded_subnet = {
     enabled      = true,
-    vnet_name    = data.azurerm_virtual_network.vnet.name  // pagopa-p-vnet
+    vnet_name    = data.azurerm_virtual_network.vnet.name                // pagopa-p-vnet
     vnet_rg_name = data.azurerm_virtual_network.vnet.resource_group_name // pagopa-p-vnet-rg
-  } 
+  }
 
   private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.storage.id]
 
