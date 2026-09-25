@@ -17,12 +17,12 @@ module "qa_sa_dqf" {
   private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.privatelink_blob_azure_com.id]
   private_dns_zone_file_ids = [data.azurerm_private_dns_zone.privatelink_file_core_windows_net.id]
 
-#   network_rules = {
-#     default_action             = "Deny"
-#     bypass                     = ["AzureServices"]
-#     ip_rules                   = ["<PUBLIC_IP_TO_WHITELIST>"]
-#     virtual_network_subnet_ids = []
-#   }
+  #   network_rules = {
+  #     default_action             = "Deny"
+  #     bypass                     = ["AzureServices"]
+  #     ip_rules                   = ["<PUBLIC_IP_TO_WHITELIST>"]
+  #     virtual_network_subnet_ids = []
+  #   }
 
   tags = module.tag_config.tags
 }
