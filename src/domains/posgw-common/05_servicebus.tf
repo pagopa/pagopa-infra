@@ -18,6 +18,18 @@ module "servicebus_queues" {
   servicebus_queues       = var.servicebus_queues
 }
 
+#queues authorization rules connection strings
+resource "azurerm_key_vault_secret" "servicebus_queues_primary_connection_strings" {
+  for_each = module.servicebus_queues.queue_authorization_rules
+
+  name         = "${local.domain}-${var.env_short}-${each.value.name}-primary-connection-string"
+  value        = each.value.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+
+  depends_on = [module.servicebus_queues]
+}
 
 #Service bus topics
 module "servicebus_topics" {
@@ -25,3 +37,18 @@ module "servicebus_topics" {
   servicebus_namespace_id = data.azurerm_servicebus_namespace.nodo_service_bus.id
   servicebus_topics       = var.servicebus_topics
 }
+
+#topics authorization rules connection strings
+resource "azurerm_key_vault_secret" "servicebus_topics_primary_connection_strings" {
+  for_each = module.servicebus_topics.topic_authorization_rules
+
+  name         = "${local.domain}-${var.env_short}-${each.value.name}-primary-connection-string"
+  value        = each.value.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+
+  depends_on = [module.servicebus_topics]
+}
+
+
