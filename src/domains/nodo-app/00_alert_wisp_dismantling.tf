@@ -11,7 +11,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-wisp-convert
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for https://api.platform.pagopa.it/wisp-converter/ is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-wisp-converter"
+  description    = "Availability for https://api.platform.pagopa.it/wisp-converter/ is below 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-wisp-converter"
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
@@ -48,7 +48,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-wisp-convert
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for https://api.platform.pagopa.it/wisp-converter/redirect/api/v1/payments is less than or equal to threshold - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-wisp-converter"
+  description    = "Successful HTTP 302 redirects for /wisp-converter/redirect/api/v1/payments fall below the traffic-adjusted threshold in two 5m buckets within 10m - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-wisp-converter"
   enabled        = true
   query = (<<-QUERY
 let lowTrafficThreshold = 50; // the lower threshold that can be calculated regarding the number of invocations
@@ -81,35 +81,42 @@ AzureDiagnostics
   }
 }
 
-// These API invoking and result are logged only on application insight
+// Application Insights logs use controller method names for success and business process names for failure.
 // [receiptKo, receiptOk, createTimer, deleteTimer]
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-wisp-converter-ai-availability" {
-  for_each = var.env_short == "p" ? toset(["receiptKo", "receiptOk", "createTimer", "deleteTimer"]) : []
+  for_each = var.env_short == "p" ? {
+    receiptKo   = ["receipt-ko"]
+    receiptOk   = ["receipt-ok"]
+    createTimer = ["timer-set", "rpt-timer-set"]
+    deleteTimer = ["timer-delete", "rpt-timer-delete"]
+  } : {}
 
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-wisp-converter-${each.value}-availability"
+  name                = "pagopa-${var.env_short}-opex_pagopa-wisp-converter-${each.key}-availability"
   location            = var.location
 
   action {
     action_group           = local.action_groups
-    email_subject          = "Alert pagopa-wisp-converter-${each.value}-availability"
+    email_subject          = "Alert pagopa-wisp-converter-${each.key}-availability"
     custom_webhook_payload = "{}"
   }
 
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Availability for wisp-converter API ${each.value} is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-wisp-converter https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/0287abc9-da26-40fa-b261-f1634ee649aa"
+  description    = "Availability for wisp-converter API ${each.key} is below 99.9% in a 5m bucket - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-wisp-converter https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/0287abc9-da26-40fa-b261-f1634ee649aa"
   enabled        = true
   query = (<<-QUERY
-let threshold = 0.999;
+let failureOperations = dynamic(${jsonencode(each.value)});
 traces
 | where cloud_RoleName == "pagopawispconverter"
+| where message startswith "Successful API operation ${each.key} - " or message startswith "Failed API operation "
+| extend failureOperation = extract(@"^Failed API operation ([^ ]+) - ", 1, message)
 | summarize
-    Total=count(message startswith "Successful API operation ${each.value}" or message startswith "Failed API operation ${each.value}"),
-    Failed=count(message startswith "Failed API operation ${each.value}")
+    Total=countif(message startswith "Successful API operation ${each.key} - " or failureOperation in (failureOperations)),
+    Failed=countif(failureOperation in (failureOperations))
     by bin(timestamp, 5m)
 | where Total > 0
 | extend availability=toreal(Total-Failed) / Total
-| where availability < threshold
+| where availability < 0.999
   QUERY
   )
   severity    = 1
@@ -167,7 +174,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-wisp-convert
   }
 
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Errors for wisp-converter API WIC-ERROR is greater than 1 - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/0287abc9-da26-40fa-b261-f1634ee649aa"
+  description    = "At least five non-excluded WIC errors for wisp-converter within 5m - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/0287abc9-da26-40fa-b261-f1634ee649aa"
   enabled        = true
   query = (<<-QUERY
 let errorsToExclude = dynamic([
@@ -199,15 +206,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "wisp_cache_not_in_sync_a
   resource_group_name = "pagopa-${var.env_short}-weu-nodo-wisp-converter-rg"
   name                = "pagopa-${var.env_short}-pagopa-wisp-converter-cache-not-in-sync"
   location            = var.location
-
   action {
     action_group           = [data.azurerm_monitor_action_group.opsgenie[0].id]
     email_subject          = "wisp-converter cache not in sync after retries"
     custom_webhook_payload = "{}"
   }
-
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Problem to have wisp cache in sync after retries"
+  description    = "WISP cache refresh failed after 3 attempts"
   enabled        = true
 
   frequency   = 5
@@ -222,10 +227,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "wisp_cache_not_in_sync_a
   tags        = {}
   throttling  = 0
   time_window = 5
-
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1
   }
 }
-
