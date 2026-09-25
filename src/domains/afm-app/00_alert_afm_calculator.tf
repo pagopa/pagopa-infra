@@ -53,7 +53,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for /payment-methods/search is below 99% in two 5m buckets within 10m - ${local.afm-calculator-dash.calculator-v1}"
+  description    = "Availability for /payment-methods/search is below 99% - ${local.afm-calculator-dash.calculator-v1}"
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
@@ -61,7 +61,7 @@ AzureDiagnostics
 | where url_s matches regex "/payment-methods/search"
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500)
+    Success=count(responseCode_d < 500)
     by bin(TimeGenerated, 5m)
 | extend availability=toreal(Success) / Total
 | where availability < threshold
@@ -69,10 +69,10 @@ AzureDiagnostics
   )
   severity    = 1
   frequency   = 5
-  time_window = 10
+  time_window = 5
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 2
+    threshold = 1
   }
 }
 
@@ -138,7 +138,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   | where url_s matches regex "/v2/fees"
   | summarize
 	    total = count(),
-	    success = countif(responseCode_d < 500)
+	    success = count(responseCode_d < 500)
 	    by timeslot = bin(TimeGenerated, 5m)
   | extend trafficUp = total - trafficMin
   | extend deltaRatio = todouble(trafficUp) / todouble(thresholdDelta)
