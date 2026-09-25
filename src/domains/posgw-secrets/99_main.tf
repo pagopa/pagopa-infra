@@ -36,7 +36,7 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 # v10.24.2
+#TODO to update once dependant pr is merged https://github.com/pagopa/terraform-azurerm-v4/pull/322
 module "__v4__" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=d68ef3b9c833eeaa49d41c95532bc231d15be8f6"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=57cc9f470c059d10885e2508f8faa454ab46cf5b"
 }
-
