@@ -19,7 +19,7 @@ AzureDiagnostics
 | where url_s startswith "https://api.platform.pagopa.it/wisp-converter/"
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500)
+    Success=count(responseCode_d < 500)
     by bin(TimeGenerated, 5m)
 | extend availability=toreal(Success) / Total
 | where availability < threshold
@@ -62,7 +62,7 @@ AzureDiagnostics
 | where url_s startswith "https://api.platform.pagopa.it/wisp-converter/redirect/api/v1/payments"
 | summarize
     total=count(),
-    success=countif(responseCode_d == 302)
+    success=count(responseCode_d == 302)
     by timeslot = bin(TimeGenerated, 5m)
 | extend trafficUp = total - trafficMin
 | extend deltaRatio = todouble(todouble(trafficUp) / todouble(thresholdDelta))
@@ -130,33 +130,25 @@ traces
 
 # DISABLED included into opex_pagopa-wisp-converter-ai-availability above 👆
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-wisp-converter-ai-error" {
-  for_each = var.env_short == "p" ? {
-    receiptKo   = ["receipt-ko"]
-    receiptOk   = ["receipt-ok"]
-    createTimer = ["timer-set", "rpt-timer-set"]
-    deleteTimer = ["timer-delete", "rpt-timer-delete"]
-  } : {}
+  for_each = var.env_short == "p" ? toset(["receiptKo", "receiptOk", "createTimer", "deleteTimer"]) : []
 
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-wisp-converter-${each.key}-error"
+  name                = "pagopa-${var.env_short}-opex_pagopa-wisp-converter-${each.value}-error"
   location            = var.location
 
   action {
     action_group           = local.action_groups
-    email_subject          = "Alert pagopa-wisp-converter-${each.key}-error"
+    email_subject          = "Alert pagopa-wisp-converter-${each.value}-error"
     custom_webhook_payload = "{}"
   }
 
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "At least one failed API operation for wisp-converter API ${each.key} within 5m - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-wisp-converter https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/0287abc9-da26-40fa-b261-f1634ee649aa"
+  description    = "Errors for wisp-converter API ${each.value} is greater than 1 - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-wisp-converter https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/0287abc9-da26-40fa-b261-f1634ee649aa"
   enabled        = false # DISABLED included into opex_pagopa-wisp-converter-ai-availability above 👆
   query = (<<-QUERY
-let failureOperations = dynamic(${jsonencode(each.value)});
 traces
 | where cloud_RoleName == "pagopawispconverter"
-| where message startswith "Failed API operation "
-| extend failureOperation = extract(@"^Failed API operation ([^ ]+) - ", 1, message)
-| where failureOperation in (failureOperations)
+| where message startswith "Failed API operation ${each.value}"
   QUERY
   )
   severity    = 1
