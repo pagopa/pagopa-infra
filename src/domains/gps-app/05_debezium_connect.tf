@@ -91,7 +91,11 @@ locals {
     postgres_username     = data.azurerm_key_vault_secret.pgres_gpd_cdc_login.value
     postgres_password     = data.azurerm_key_vault_secret.pgres_gpd_cdc_pwd.value
     tasks_max             = var.tasks_max
-    max_threads           = var.max_threads
+    snapshot_max_threads           = var.snapshot_max_threads
+    snapshot_fetch_size         = var.snapshot_fetch_size
+    incremental_snapshot_chunk_size = var.incremental_snapshot_chunk_size
+    max_batch_size              = var.max_batch_size
+    poll_interval_ms            = var.poll_interval_ms
   })
 
   healthchecker_config_yaml = templatefile("${path.module}/yaml/healthchecker-config-map.yaml", {
