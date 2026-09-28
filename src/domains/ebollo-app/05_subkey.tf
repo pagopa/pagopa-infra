@@ -33,6 +33,7 @@ resource "azurerm_api_management_subscription" "gps_mbd_service_integration_test
   display_name        = "Subscription GPS MBD Service for Integration Test"
   allow_tracing       = false
   state               = "active"
+  user_id             = data.azurerm_api_management_user.pagoapa_core_user.id
 }
 
 resource "azurerm_api_management_subscription" "mbd_service_integration_test_subkey" {
@@ -43,6 +44,7 @@ resource "azurerm_api_management_subscription" "mbd_service_integration_test_sub
   display_name        = "Subscription MBD Service for Integration Test"
   allow_tracing       = false
   state               = "active"
+  user_id             = data.azurerm_api_management_user.pagoapa_core_user.id
 }
 
 
