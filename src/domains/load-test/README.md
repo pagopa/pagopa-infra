@@ -5,21 +5,21 @@
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.28.1 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | = 3.24.0 |
 
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module_grafana_managed"></a> [grafana\_managed](#module\_grafana\_managed) | git::https://github.com/pagopa/terraform-azurerm-v3.git//grafana | v3.4.3 |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [azurerm_dns_cname_record.grafana](https://registry.terraform.io/providers/hashicorp/azurerm/3.24.0/docs/resources/dns_cname_record) | resource |
 | [azurerm_resource_group.load_test](https://registry.terraform.io/providers/hashicorp/azurerm/3.24.0/docs/resources/resource_group) | resource |
 | [azurerm_role_assignment.adgroup_devevelopers_to_grafana_admin](https://registry.terraform.io/providers/hashicorp/azurerm/3.24.0/docs/resources/role_assignment) | resource |
@@ -35,7 +35,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
