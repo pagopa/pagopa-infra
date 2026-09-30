@@ -93,7 +93,7 @@ variable "pgres_flex_params" {
   description = "IDH postgres flexible server configuration"
   default = {
     idh_resource                           = "pgflex2"
-    pgres_flex_diagnostic_settings_enabled = true
+    pgres_flex_diagnostic_settings_enabled = false
     alerts_enabled                         = false
   }
 }

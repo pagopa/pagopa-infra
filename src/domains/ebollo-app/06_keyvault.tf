@@ -77,3 +77,19 @@ resource "azurerm_key_vault_secret" "gdp_debt_positions_test_sub_key" {
 
   key_vault_id = data.azurerm_key_vault.kv.id
 }
+
+resource "azurerm_key_vault_secret" "redis_password" {
+  name  = "redis-password"
+  value = data.azurerm_redis_cache.redis_cache.primary_access_key
+
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_nodo_pagamenti_cache_jaas_config" {
+  name         = "evh-cache-jaas-config"
+  value        = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_authorization_rule.pagopa_weu_core_evh_ns04_nodo_dei_pagamenti_cache_sync_reader.primary_connection_string}\";"
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}

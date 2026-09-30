@@ -5,7 +5,7 @@
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3.1 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.16 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.12.1 |
@@ -15,7 +15,7 @@
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 9e205a1f0d0cb36b5677ee1b48a83cb321a54cb8 |
 | <a name="module_apim_selfcare_backoffice_external_ec_product"></a> [apim\_selfcare\_backoffice\_external\_ec\_product](#module\_apim\_selfcare\_backoffice\_external\_ec\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
 | <a name="module_apim_selfcare_backoffice_external_institution_services_consents_product"></a> [apim\_selfcare\_backoffice\_external\_institution\_services\_consents\_product](#module\_apim\_selfcare\_backoffice\_external\_institution\_services\_consents\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
@@ -32,7 +32,7 @@
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [azurerm_api_management_api.pagopa_token_exchange](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api_operation.pagopa_token_exchange](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation) | resource |
 | [azurerm_api_management_api_operation_policy.pagopa_token_exchange_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
@@ -101,7 +101,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_apim_dns_zone_prefix"></a> [apim\_dns\_zone\_prefix](#input\_apim\_dns\_zone\_prefix) | The dns subdomain for apim. | `string` | `null` | no |
 | <a name="input_backoffice_external_for_rtp_sub_key_user"></a> [backoffice\_external\_for\_rtp\_sub\_key\_user](#input\_backoffice\_external\_for\_rtp\_sub\_key\_user) | (Mandatory) The user name to which associate backoffice external service subscription key to | `string` | `null` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
