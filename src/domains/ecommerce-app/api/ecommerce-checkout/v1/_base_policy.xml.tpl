@@ -10,6 +10,7 @@
           <method>GET</method>
           <method>OPTIONS</method>
           <method>DELETE</method>
+          <method>PATCH</method>
         </allowed-methods>
         <allowed-headers>
           <header>Content-Type</header>
@@ -28,8 +29,8 @@
       <value>CHECKOUT</value>
     </set-header>
       <set-variable name="transactionsOperationId" value="newTransaction,getTransactionInfo,getTransactionOutcomes,requestTransactionUserCancellation,requestTransactionAuthorization" />
-      <set-variable name="paymentMethodsOperationId" value="getAllPaymentMethods,getPaymentMethod,calculateFees,getSessionPaymentMethod" />
-      <set-variable name="paymentMethodsHandlerOperationId" value="createSession" />
+      <set-variable name="paymentMethodsOperationId" value="getAllPaymentMethods,getPaymentMethod,calculateFees" />
+      <set-variable name="paymentMethodsHandlerOperationId" value="createSession,getSessionPaymentMethod,updateSession,getTransactionIdForSession" />
       <set-variable name="paymentRequestsOperationId" value="getPaymentRequestInfo" />
       <set-variable name="cartsOperationId" value="GetCarts,GetCartsRedirect" />
       <choose>
