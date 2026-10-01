@@ -48,8 +48,7 @@ provider "helm" {
   }
 }
 
-# v10.24.2
-#TODO to update once dependant pr is merged https://github.com/pagopa/terraform-azurerm-v4/pull/322
+# v10.35.0
 module "__v4__" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=cbf3f3c522eb94b1c4d1615c675d74dd1666b6bf"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=ea557e9868f502b8840ea22a0d09ab64c26d7903"
 }
