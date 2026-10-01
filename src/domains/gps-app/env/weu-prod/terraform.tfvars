@@ -104,5 +104,5 @@ snapshot_max_threads        = 10
 snapshot_fetch_size         = 300
 incremental_snapshot_chunk_size = 200
 max_batch_size              = 200
-poll_interval_ms            = 3000
+poll_interval_ms            = 2000
 gpd_cdc_enabled    = true
