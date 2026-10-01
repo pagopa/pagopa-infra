@@ -56,6 +56,18 @@ resource "azurerm_kusto_database" "re_db" {
 
 }
 
+resource "azurerm_kusto_database" "public_re_db" {
+  count = var.dexp_public_re_db.enable ? 1 : 0
+
+  name                = "public_re"
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  location            = azurerm_kusto_cluster.data_explorer_cluster[count.index].location
+  cluster_name        = azurerm_kusto_cluster.data_explorer_cluster[count.index].name
+
+  hot_cache_period   = var.dexp_db.hot_cache_period
+  soft_delete_period = var.dexp_db.soft_delete_period
+}
+
 resource "azurerm_kusto_database" "pm_db" {
   count = var.dexp_pm_db.enable ? 1 : 0
 
