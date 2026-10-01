@@ -1241,6 +1241,135 @@
         }
       }
     },
+    "/api/v1/sanp-health/reports": {
+      "get": {
+        "tags": [
+          "sanp-health"
+        ],
+        "summary": "List Reports",
+        "operationId": "list_reports_api_v1_sanp_health_reports_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SanpHealthReportsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sanp-health/reports/latest": {
+      "get": {
+        "tags": [
+          "sanp-health"
+        ],
+        "summary": "Get Latest Report",
+        "operationId": "get_latest_report_api_v1_sanp_health_reports_latest_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SanpHealthLatestResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sanp-health/reports/{run_id}": {
+      "get": {
+        "tags": [
+          "sanp-health"
+        ],
+        "summary": "Get Report",
+        "operationId": "get_report_api_v1_sanp_health_reports__run_id__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SanpHealthReportDetailOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sanp-health/sync": {
+      "post": {
+        "tags": [
+          "sanp-health"
+        ],
+        "summary": "Trigger Sync",
+        "operationId": "trigger_sync_api_v1_sanp_health_sync_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SanpHealthSyncResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sanp-health/sync-status": {
+      "get": {
+        "tags": [
+          "sanp-health"
+        ],
+        "summary": "Get Sync Status",
+        "operationId": "get_sync_status_api_v1_sanp_health_sync_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Sync Status Api V1 Sanp Health Sync Status Get",
+                  "$ref": "#/components/schemas/SanpHealthSyncStatusOut",
+                  "nullable": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/jira/overview": {
       "get": {
         "tags": [
@@ -1939,11 +2068,7 @@
             "required": false,
             "schema": {
               "title": "Category",
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/DqCategory"
-                }
-              ],
+              "$ref": "#/components/schemas/DqCategory",
               "nullable": true
             }
           }
@@ -2168,11 +2293,27 @@
             "required": false,
             "schema": {
               "title": "Category",
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/DqCategory"
-                }
-              ],
+              "$ref": "#/components/schemas/DqCategory",
+              "nullable": true
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Status",
+              "$ref": "#/components/schemas/DqControlStatus",
+              "nullable": true
+            }
+          },
+          {
+            "name": "table_ref",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Table Ref",
+              "type": "string",
               "nullable": true
             }
           }
@@ -2227,6 +2368,63 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DqControlInstanceOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/dq/instances/tables": {
+      "get": {
+        "tags": [
+          "dq"
+        ],
+        "summary": "List Control Instance Tables",
+        "operationId": "list_control_instance_tables_api_v1_dq_instances_tables_get",
+        "parameters": [
+          {
+            "name": "domain_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Domain Id"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Category",
+              "$ref": "#/components/schemas/DqCategory",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "Response List Control Instance Tables Api V1 Dq Instances Tables Get"
                 }
               }
             }
@@ -3230,7 +3428,7 @@
           },
           "file": {
             "type": "string",
-            "format": "binary",
+            "contentMediaType": "application/octet-stream",
             "title": "File"
           }
         },
@@ -3834,6 +4032,17 @@
         "type": "object",
         "title": "DqControlInstanceUpdate"
       },
+      "DqControlStatus": {
+        "type": "string",
+        "enum": [
+          "da_implementare",
+          "in_sviluppo",
+          "attivo",
+          "non_attivo",
+          "eliminato"
+        ],
+        "title": "DqControlStatus"
+      },
       "DqDimensionCreate": {
         "properties": {
           "name": {
@@ -4075,7 +4284,6 @@
           },
           "daily_rate": {
             "type": "number",
-            "minimum": 0.0,
             "exclusiveMinimum": true,
             "title": "Daily Rate"
           },
@@ -4227,7 +4435,6 @@
           "daily_rate": {
             "title": "Daily Rate",
             "type": "number",
-            "minimum": 0.0,
             "exclusiveMinimum": true,
             "nullable": true
           },
@@ -4388,11 +4595,7 @@
             "title": "Items"
           },
           "sync_status": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GpdPositionSyncStatusOut"
-              }
-            ],
+            "$ref": "#/components/schemas/GpdPositionSyncStatusOut",
             "nullable": true
           }
         },
@@ -4822,11 +5025,7 @@
             "title": "Items"
           },
           "sync_status": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PspFeeSyncStatusOut"
-              }
-            ],
+            "$ref": "#/components/schemas/PspFeeSyncStatusOut",
             "nullable": true
           }
         },
@@ -5359,6 +5558,421 @@
         ],
         "title": "RunWithSuiteOut"
       },
+      "SanpEnvironment": {
+        "type": "string",
+        "enum": [
+          "SANP",
+          "COLLAUDO",
+          "PRODUZIONE"
+        ],
+        "title": "SanpEnvironment"
+      },
+      "SanpHealthChangeOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "level": {
+            "type": "integer",
+            "title": "Level"
+          },
+          "severity": {
+            "$ref": "#/components/schemas/SanpSeverity"
+          },
+          "rule_id": {
+            "type": "string",
+            "title": "Rule Id"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "path": {
+            "title": "Path",
+            "type": "string",
+            "nullable": true
+          },
+          "operation": {
+            "title": "Operation",
+            "type": "string",
+            "nullable": true
+          },
+          "section": {
+            "title": "Section",
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "title": "Comment",
+            "type": "string",
+            "nullable": true
+          },
+          "change_order": {
+            "type": "integer",
+            "title": "Change Order"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "level",
+          "severity",
+          "rule_id",
+          "message",
+          "path",
+          "operation",
+          "section",
+          "comment",
+          "change_order"
+        ],
+        "title": "SanpHealthChangeOut"
+      },
+      "SanpHealthLatestResponse": {
+        "properties": {
+          "report": {
+            "$ref": "#/components/schemas/SanpHealthReportDetailOut",
+            "nullable": true
+          },
+          "is_stale": {
+            "type": "boolean",
+            "title": "Is Stale"
+          },
+          "stale_reason": {
+            "title": "Stale Reason",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "report",
+          "is_stale",
+          "stale_reason"
+        ],
+        "title": "SanpHealthLatestResponse"
+      },
+      "SanpHealthMatrixCellOut": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "environment": {
+            "$ref": "#/components/schemas/SanpEnvironment"
+          },
+          "status": {
+            "$ref": "#/components/schemas/SanpResultStatus"
+          },
+          "source_branch": {
+            "title": "Source Branch",
+            "type": "string",
+            "nullable": true
+          },
+          "target_apim": {
+            "title": "Target Apim",
+            "type": "string",
+            "nullable": true
+          },
+          "display_name": {
+            "title": "Display Name",
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "nullable": true
+          },
+          "error_count": {
+            "type": "integer",
+            "title": "Error Count"
+          },
+          "warning_count": {
+            "type": "integer",
+            "title": "Warning Count"
+          },
+          "info_count": {
+            "type": "integer",
+            "title": "Info Count"
+          },
+          "changes": {
+            "items": {
+              "$ref": "#/components/schemas/SanpHealthChangeOut"
+            },
+            "type": "array",
+            "title": "Changes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "environment",
+          "status",
+          "source_branch",
+          "target_apim",
+          "display_name",
+          "description",
+          "error_count",
+          "warning_count",
+          "info_count",
+          "changes"
+        ],
+        "title": "SanpHealthMatrixCellOut"
+      },
+      "SanpHealthMatrixRowOut": {
+        "properties": {
+          "spec_name": {
+            "type": "string",
+            "title": "Spec Name"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "sanp": {
+            "$ref": "#/components/schemas/SanpHealthMatrixCellOut"
+          },
+          "collaudo": {
+            "$ref": "#/components/schemas/SanpHealthMatrixCellOut"
+          },
+          "produzione": {
+            "$ref": "#/components/schemas/SanpHealthMatrixCellOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "spec_name",
+          "display_name",
+          "description",
+          "sanp",
+          "collaudo",
+          "produzione"
+        ],
+        "title": "SanpHealthMatrixRowOut"
+      },
+      "SanpHealthReportDetailOut": {
+        "properties": {
+          "report": {
+            "$ref": "#/components/schemas/SanpHealthRunOut"
+          },
+          "sanp_version": {
+            "title": "Sanp Version",
+            "type": "string",
+            "nullable": true
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SanpHealthMatrixRowOut"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "report",
+          "sanp_version",
+          "items"
+        ],
+        "title": "SanpHealthReportDetailOut"
+      },
+      "SanpHealthReportsResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SanpHealthRunOut"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "SanpHealthReportsResponse"
+      },
+      "SanpHealthRunOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "github_run_id": {
+            "type": "integer",
+            "title": "Github Run Id"
+          },
+          "run_number": {
+            "type": "integer",
+            "title": "Run Number"
+          },
+          "head_sha": {
+            "type": "string",
+            "title": "Head Sha"
+          },
+          "workflow_branch": {
+            "type": "string",
+            "title": "Workflow Branch"
+          },
+          "conclusion": {
+            "type": "string",
+            "title": "Conclusion"
+          },
+          "html_url": {
+            "type": "string",
+            "title": "Html Url"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Started At"
+          },
+          "completed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Completed At"
+          },
+          "synced_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Synced At"
+          },
+          "import_status": {
+            "$ref": "#/components/schemas/SanpImportStatus"
+          },
+          "error_message": {
+            "title": "Error Message",
+            "type": "string",
+            "nullable": true
+          },
+          "error_count": {
+            "type": "integer",
+            "title": "Error Count"
+          },
+          "warning_count": {
+            "type": "integer",
+            "title": "Warning Count"
+          },
+          "info_count": {
+            "type": "integer",
+            "title": "Info Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "github_run_id",
+          "run_number",
+          "head_sha",
+          "workflow_branch",
+          "conclusion",
+          "html_url",
+          "started_at",
+          "completed_at",
+          "synced_at",
+          "import_status",
+          "error_message",
+          "error_count",
+          "warning_count",
+          "info_count"
+        ],
+        "title": "SanpHealthRunOut"
+      },
+      "SanpHealthSyncResult": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/SanpImportStatus"
+          },
+          "imported_run_count": {
+            "type": "integer",
+            "title": "Imported Run Count"
+          },
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Errors"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "imported_run_count",
+          "errors"
+        ],
+        "title": "SanpHealthSyncResult"
+      },
+      "SanpHealthSyncStatusOut": {
+        "properties": {
+          "last_attempt_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Last Attempt At"
+          },
+          "last_success_at": {
+            "title": "Last Success At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "last_error": {
+            "title": "Last Error",
+            "type": "string",
+            "nullable": true
+          },
+          "imported_run_count": {
+            "type": "integer",
+            "title": "Imported Run Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "last_attempt_at",
+          "last_success_at",
+          "last_error",
+          "imported_run_count"
+        ],
+        "title": "SanpHealthSyncStatusOut"
+      },
+      "SanpImportStatus": {
+        "type": "string",
+        "enum": [
+          "complete",
+          "partial",
+          "failed"
+        ],
+        "title": "SanpImportStatus"
+      },
+      "SanpResultStatus": {
+        "type": "string",
+        "enum": [
+          "KO",
+          "WARNING",
+          "INFO",
+          "OK",
+          "NOT_CONFIGURED"
+        ],
+        "title": "SanpResultStatus"
+      },
+      "SanpSeverity": {
+        "type": "string",
+        "enum": [
+          "error",
+          "warning",
+          "info"
+        ],
+        "title": "SanpSeverity"
+      },
       "ScenarioCreate": {
         "properties": {
           "project_id": {
@@ -5784,11 +6398,7 @@
             "$ref": "#/components/schemas/SuiteOut"
           },
           "latest_run": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RunOut"
-              }
-            ],
+            "$ref": "#/components/schemas/RunOut",
             "nullable": true
           },
           "trend": {
@@ -5955,11 +6565,7 @@
             "nullable": true
           },
           "status": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ScenarioStatusEnum"
-              }
-            ],
+            "$ref": "#/components/schemas/ScenarioStatusEnum",
             "nullable": true
           },
           "scenario_name": {
@@ -6121,19 +6727,11 @@
             "nullable": true
           },
           "env": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EnvEnum"
-              }
-            ],
+            "$ref": "#/components/schemas/EnvEnum",
             "nullable": true
           },
           "trigger_type": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TriggerTypeEnum"
-              }
-            ],
+            "$ref": "#/components/schemas/TriggerTypeEnum",
             "nullable": true
           },
           "test_version": {
