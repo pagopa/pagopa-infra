@@ -250,10 +250,34 @@ variable "limits_cpu" {
   default     = "0.5"
 }
 
-variable "max_threads" {
+variable "snapshot_max_threads" {
   type        = number
-  description = "Number of max_threads"
+  description = "Number of snapshot max threads"
   default     = 1
+}
+
+variable "snapshot_fetch_size" {
+  type        = number
+  description = "Snapshot fetch size"
+  default     = 1000
+}
+
+variable "incremental_snapshot_chunk_size" {
+  type        = number
+  description = "Incremental snapshot chunk size"
+  default     = 1000
+}
+
+variable "max_batch_size" {
+  type        = number
+  description = "Max batch size"
+  default     = 1000
+}
+
+variable "poll_interval_ms" {
+  type        = number
+  description = "Poll interval in milliseconds"
+  default     = 1500
 }
 
 variable "gh_runner_job_location" {
