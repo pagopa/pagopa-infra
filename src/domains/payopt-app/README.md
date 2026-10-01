@@ -4,7 +4,7 @@
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.6.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3.1 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.16 |
@@ -15,7 +15,7 @@
 ## Modules
 
 | Name | Source | Version |
-| ---- | ------ | ------- |
+|------|--------|---------|
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 77e0c671b8f4c11c6568e4b0cc87e30332b62090 |
 | <a name="module_apim_api_pay_opt_mock_api"></a> [apim\_api\_pay\_opt\_mock\_api](#module\_apim\_api\_pay\_opt\_mock\_api) | ./.terraform/modules/__v4__/api_management_api | n/a |
 | <a name="module_apim_payment_options_mock_product"></a> [apim\_payment\_options\_mock\_product](#module\_apim\_payment\_options\_mock\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
@@ -30,7 +30,7 @@
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_api_management_api_version_set.payment_options_mock_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_subscription.api_config_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.forwarder_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
@@ -80,7 +80,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_apim_dns_zone_prefix"></a> [apim\_dns\_zone\_prefix](#input\_apim\_dns\_zone\_prefix) | The dns subdomain for apim. | `string` | `null` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The wallet dns subdomain. | `string` | `null` | no |
