@@ -54,7 +54,7 @@ AzureDiagnostics
 | where url_s matches regex "/gpd-payments/api"
 | summarize
     Total=count(),
-    Success=count(responseCode_d < 500)
+    Success=count(responseCode_d < 500 || responseCode_d != 0)
     by bin(TimeGenerated, 5m)
 | extend availability=toreal(Success) / Total
 | where availability < threshold
