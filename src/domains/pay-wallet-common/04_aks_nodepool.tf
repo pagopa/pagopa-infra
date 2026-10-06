@@ -3,7 +3,14 @@ data "azurerm_kubernetes_cluster" "aks" {
   resource_group_name = local.aks_resource_group_name
 }
 
+moved {
+  from = azurerm_kubernetes_cluster_node_pool.user_nodepool_pay_wallet
+  to   = azurerm_kubernetes_cluster_node_pool.user_nodepool_pay_wallet[0]
+}
+
 resource "azurerm_kubernetes_cluster_node_pool" "user_nodepool_pay_wallet" {
+
+  count = var.aks_user_node_pool.enabled ? 1 : 0
 
   kubernetes_cluster_id = data.azurerm_kubernetes_cluster.aks.id
 
