@@ -4,7 +4,9 @@
     <!-- rate limit by subscription key -->
     <choose>
       <when condition="@(!((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") && !((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it"))">
-        <rate-limit-by-key calls="10" renewal-period="1" counter-key="@(context.Subscription.Key)" increment-condition="@(context.Response.StatusCode != 429)" remaining-calls-header-name="x-remaining-calls-per-period" />
+        <!-- livellamento: evita che le 1000 chiamate della finestra si concentrino in un solo secondo -->
+        <rate-limit-by-key calls="100" renewal-period="1" counter-key="@(context.Subscription.Key + "|burst")" increment-condition="@(context.Response.StatusCode != 429)" remaining-calls-header-name="x-remaining-calls-per-second" />
+        <rate-limit-by-key calls="1000" renewal-period="10" counter-key="@(context.Subscription.Key + "|window")" increment-condition="@(context.Response.StatusCode != 429)" remaining-calls-header-name="x-remaining-calls-per-period" />
       </when>
     </choose>
     <!-- Calling Authorizer's fragment -->
