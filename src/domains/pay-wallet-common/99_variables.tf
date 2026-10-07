@@ -228,3 +228,20 @@ variable "payment_wallet_service_api_key_use_primary" {
   description = "If true the current active API key used for wallet service requests will be the primary one."
   default     = true
 }
+
+
+variable "aks_foobar_paywallet_node_pool_configuration" {
+  type = object({
+    enabled         = optional(bool, false),
+    tier            = string,
+    name            = optional(string, "user"),
+    node_count_min  = number,
+    node_count_max  = number,
+    node_labels     = map(any),
+    node_taints     = list(string),
+    node_tags       = map(any),
+    max_pods        = optional(number, 250),
+    os_disk_type    = string,
+    os_disk_size_gb = string
+  })
+}
