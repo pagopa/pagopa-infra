@@ -118,7 +118,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_s
   enabled        = true
   query = (<<-QUERY
 AzureDiagnostics
-| where url_s startswith "https://api.platform.pagopa.it/ecommerce/transaction-auth-requests-service/v1/transactions/"
+| where url_s startswith "https://api.platform.pagopa.it/ecommerce/transaction-auth-requests-service/v2/transactions/"
 | where method_s == "PATCH"
 | where responseCode_d >= 500
 | project TimeGenerated, responseCode_d
@@ -180,14 +180,19 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_payment_method
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "eCommerce Payment methods handler service POST get all payment methods KO/slow api detected, more than 10 KO or above 250 ms as response time in 30 minutes time window"
+  description    = "eCommerce Payment methods handler service POST get all payment methods KO/slow api detected, availability less than 99% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
 AzureDiagnostics
 | where url_s == "https://api.platform.pagopa.it/ecommerce/checkout/v2/payment-methods"
 | where method_s == "POST"
-| where responseCode_d != 200 or DurationMs > 1000
-| project TimeGenerated, responseCode_d, DurationMs
+| summarize
+    Total = count(),
+    Success = countif(responseCode_d == 200 and DurationMs <= 1000 )
+    by Time = bin(TimeGenerated, 15m)
+| extend availability = ((Success * 1.0) / Total) * 100
+| where toint(Availability) < 99
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -195,7 +200,7 @@ AzureDiagnostics
   time_window = 30
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 10
+    threshold = 2
   }
 }
 
@@ -214,14 +219,28 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_payment_method
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "eCommerce Payment methods service POST session KO/slow api detected, more than 10 KO or above 2 seconds as response time in 30 minutes time window"
+  description    = "eCommerce Payment methods service POST session KO/slow api detected, availability less than 99% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
+let thresholdTrafficMin = 100;
+let thresholdTrafficLinear = 400;
+let lowTrafficAvailability = 96;
+let highTrafficAvailability = 99;
+let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
+let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
 | where url_s matches regex "https://api.platform.pagopa.it/ecommerce/checkout/v1/payment-methods/.*/sessions"
 | where method_s == "POST"
-| where responseCode_d != 200 or DurationMs > 2000
-| project TimeGenerated, responseCode_d, DurationMs
+| summarize
+    Total=count(),
+    Success=countif(responseCode_d == 200 and DurationMs <= 2000)
+    by Time = bin(TimeGenerated, 15m)
+| extend trafficUp = Total-thresholdTrafficMin
+| extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
+| extend Availability=((Success * 1.0) / Total) * 100
+| where Availability < expectedAvailability
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -229,7 +248,7 @@ AzureDiagnostics
   time_window = 30
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 10
+    threshold = 2
   }
 }
 
@@ -242,19 +261,24 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_authorization_
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
     email_subject          = "[eCommerce] NPG POST notification KO api detected"
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "eCommerce POST notification KO detected, more than 10 KO in 30 minutes time window"
+  description    = "eCommerce POST notification KO detected, availability less than 99% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
 AzureDiagnostics
 | where url_s matches regex "https://api.platform.pagopa.it/ecommerce/npg/notifications/v1/sessions/.*/outcomes"
 | where method_s == "POST"
-| where responseCode_d == 401 or responseCode_d >= 500
-| project TimeGenerated, responseCode_d
+| summarize
+    Total = count(),
+    Success = countif(responseCode_d < 500 and responseCode_d != 401)
+    by Time = bin(TimeGenerated, 15m)
+| extend availability = ((Success * 1.0) / Total) * 100
+| where toint(Availability) < 99
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -262,7 +286,7 @@ AzureDiagnostics
   time_window = 30
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 10
+    threshold = 2
   }
 }
 
