@@ -66,7 +66,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_for_checkout_a
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "eCommerce Availability less than or equal 99%"
+  description    = "eCommerce Availability less than threshold in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
 let thresholdTrafficMin = 150;
@@ -86,6 +86,7 @@ AzureDiagnostics
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -299,6 +300,7 @@ Success=countif((responseCode_d < 500 or (operationId_s == 'getPaymentRequestInf
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -343,6 +345,7 @@ AzureDiagnostics
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where toint(Availability) < 99
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -387,6 +390,7 @@ AzureDiagnostics
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -425,6 +429,7 @@ AzureDiagnostics
     by Time = bin(TimeGenerated, 15m)
 | extend availability=(toreal(Success) / Total) * 100
 | where availability < 99
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -469,6 +474,7 @@ AzureDiagnostics
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -505,6 +511,7 @@ AzureDiagnostics
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < 95
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -541,6 +548,7 @@ AzureDiagnostics
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < 95
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -586,6 +594,7 @@ AzureDiagnostics
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
