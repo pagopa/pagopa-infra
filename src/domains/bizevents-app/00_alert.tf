@@ -19,16 +19,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "bizeventsdatastore-avail
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
-union traces, exceptions
+requests
 | where cloud_RoleName == "pagopabizeventsdatastore"
 | where operation_Name == "Info"
-//| summarize count() by operation_Name, itemType, tostring(customDimensions["LogLevel"])
 | summarize
-    Total=count(),
-    Success=count(itemType == "trace")
-    by bin(timestamp, 5m)
+    Total=sum(itemCount),
+    Success=sumif(itemCount, success == true)
 | extend availability=toreal(Success) / Total
-//| render timechart 
 | where availability < threshold
   QUERY
   )
@@ -37,7 +34,7 @@ union traces, exceptions
   time_window = 5
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 2
+    threshold = 1
   }
 }
 
@@ -97,18 +94,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "bizeventsdatastore-avail
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
-union traces, exceptions
-| where cloud_RoleName == "pagopabizeventsdatastore"
+requests
+| where cloud_RoleName == "pagopabizeventsdatastoreview"
 | where operation_Name == "BizEventEnrichmentProcessor"
-//| where itemType != "trace"
-| where customDimensions["FormattedMessage"] !contains "calling the service URL"
-//| summarize count() by operation_Name, itemType
 | summarize
-    Total=count(),
-    Success=count(itemType == "trace")
-    by bin(timestamp, 10m)
+    Total=sum(itemCount),
+    Success=sumif(itemCount, success == true)
 | extend availability=toreal(Success) / Total
-//| render timechart 
 | where availability < threshold
   QUERY
   )
@@ -117,6 +109,6 @@ union traces, exceptions
   time_window = 5
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 2
+    threshold = 1
   }
 }
