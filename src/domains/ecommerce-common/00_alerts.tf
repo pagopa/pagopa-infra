@@ -120,7 +120,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_s
 AzureDiagnostics
 | where url_s startswith "https://api.platform.pagopa.it/ecommerce/transaction-auth-requests-service/v2/transactions/"
 | where method_s == "PATCH"
-| where responseCode_d >= 500
+| where responseCode_d >= 500 or responseCode_d == 401
 | project TimeGenerated, responseCode_d
   QUERY
   )
@@ -153,7 +153,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_s
 AzureDiagnostics
 | where url_s endswith "?clientId=ecomm" and (url_s startswith "https://api.platform.pagopa.it/payment-manager/pm-per-nodo/v2/transactions/" or url_s startswith "https://api.platform.pagopa.it/receipt-ndp/v1/transactions/")
 | where method_s == "POST"
-| where set_has_element(dynamic([400, 404, 408, 422]), responseCode_d)
+| where set_has_element(dynamic([400, 401, 404, 408, 422]), responseCode_d)
 | project TimeGenerated, responseCode_d
   QUERY
   )
@@ -317,7 +317,7 @@ AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/ecommerce/io/v2'
 | summarize
     Total=count(),
-Success=countif((responseCode_d < 500 or (operationId_s == 'getPaymentRequestInfoForIO' and responseCode_d == 503)) and DurationMs < 10000)
+Success=countif(((responseCode_d < 500 and responseCode_d != 401) or (operationId_s == 'getPaymentRequestInfoForIO' and responseCode_d == 503)) and DurationMs < 10000)
     by Time = bin(TimeGenerated, 15m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
@@ -407,7 +407,7 @@ AzureDiagnostics
 | where url_s == 'https://api.platform.pagopa.it/ecommerce/notifications-service/v1/emails'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500)
+    Success=countif(responseCode_d < 500 and responseCode_d != 401)
     by Time = bin(TimeGenerated, 15m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
@@ -449,7 +449,7 @@ AzureDiagnostics
 | where url_s startswith "https://api.platform.pagopa.it/ecommerce/payment-requests-service/v1/payment-requests" and method_s == "GET"
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 or responseCode_d == 502 or responseCode_d == 504 or responseCode_d == 503)
+    Success=countif((responseCode_d < 500 and responseCode_d != 401) or responseCode_d == 502 or responseCode_d == 504 or responseCode_d == 503)
     by Time = bin(TimeGenerated, 15m)
 | extend availability=(toreal(Success) / Total) * 100
 | where availability < 99
