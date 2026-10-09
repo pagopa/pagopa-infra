@@ -98,6 +98,14 @@ variable "dexp_db" {
   })
 }
 
+variable "dexp_public_re_db" {
+  type = object({
+    enable             = bool
+    hot_cache_period   = string
+    soft_delete_period = string
+  })
+}
+
 variable "dexp_pm_db" {
   type = object({
     enable             = bool
