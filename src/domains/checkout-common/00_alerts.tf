@@ -19,7 +19,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_service_v1
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Checkout-auth-service internal API availability less than or equal 99% in the last 30 minutes"
+  description    = "Checkout-auth-service internal API availability less than 96% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
 AzureDiagnostics
@@ -31,6 +31,7 @@ AzureDiagnostics
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < 96
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -56,7 +57,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_service_v1
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Checkout-auth-service external API availability less than or equal 95% in the last 30 minutes"
+  description    = "Checkout-auth-service external API availability less than 95% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
 AzureDiagnostics
@@ -68,6 +69,7 @@ AzureDiagnostics
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < 95
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -99,11 +101,12 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_service_v1
 AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/checkout/auth-service/v1'
 | summarize
-  Total = count() ,
-  UnautorizedCount= countif(responseCode_d == 401)
+  Total = count(),
+  UnauthorizedCount= countif(responseCode_d == 401)
   by Time = bin(TimeGenerated, 15m)
-| extend UnauthorizedPercentage = (UnautorizedCount * 1.0 / Total) * 100
+| extend UnauthorizedPercentage = (UnauthorizedCount * 1.0 / Total) * 100
 | where UnauthorizedPercentage > 10
+| where UnauthorizedCount >= 5
   QUERY
   )
   severity    = 1
@@ -129,7 +132,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_payment_wallet_
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Checkout Payment Wallet V1 - Availability less than 99% in the last 30 minutes"
+  description    = "Checkout Payment Wallet V1 - Availability less than threshold in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
 let thresholdTrafficMin = 20;
@@ -149,6 +152,7 @@ AzureDiagnostics
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -195,6 +199,7 @@ AzureDiagnostics
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -240,6 +245,7 @@ AzureDiagnostics
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -285,6 +291,7 @@ AzureDiagnostics
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -330,6 +337,7 @@ AzureDiagnostics
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
