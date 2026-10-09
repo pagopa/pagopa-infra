@@ -219,7 +219,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_payment_method
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "eCommerce Payment methods service POST session KO/slow api detected, availability less than 99% in the last 30 minutes"
+  description    = "eCommerce Payment methods service POST session KO/slow api detected, availability less than threshold in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
 let thresholdTrafficMin = 100;
