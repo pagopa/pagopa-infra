@@ -37,6 +37,8 @@ module "qa_hub_app_service" {
     NEXT_PUBLIC_API_URL                    = var.qa_hub_public_api_url
     NEXTAUTH_URL                           = var.qa_hub_next_auth_url
     WEBSITE_ENABLE_SYNC_UPDATE_SITE        = "true"
+    NEXT_PUBLIC_SUPERSET_URL               = "https://pagopa-${var.env_short}-itn-qa-qa-hub-wa.azurewebsites.net/"
+    NEXT_PUBLIC_SUPERSET_DASHBOARD_UUID    = var.env_short == "d" ? "cb5511b8-e399-4428-93d8-c1370e629c2a" : "e61d3a00-80d8-4723-82bb-e0fc02cc7211"
   }
 
   docker_image             = var.qa_hub_image.docker_image
