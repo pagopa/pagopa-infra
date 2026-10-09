@@ -3393,6 +3393,28 @@
           }
         }
       }
+    },
+    "/api/v1/metrics/guest-token": {
+      "get": {
+        "tags": [
+          "metrics"
+        ],
+        "summary": "Get Guest Token",
+        "operationId": "get_guest_token_api_v1_metrics_guest_token_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "title": "Response Get Guest Token Api V1 Metrics Guest Token Get"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -4285,7 +4307,8 @@
           "daily_rate": {
             "type": "number",
             "exclusiveMinimum": true,
-            "title": "Daily Rate"
+            "title": "Daily Rate",
+            "minimum": 0.0
           },
           "contract_start": {
             "type": "string",
@@ -4436,6 +4459,7 @@
             "title": "Daily Rate",
             "type": "number",
             "exclusiveMinimum": true,
+            "minimum": 0.0,
             "nullable": true
           },
           "contract_start": {
@@ -6664,6 +6688,11 @@
             "title": "Test Version",
             "type": "string",
             "nullable": true
+          },
+          "test_origin": {
+            "title": "Test Origin",
+            "type": "string",
+            "nullable": true
           }
         },
         "type": "object",
@@ -6736,6 +6765,11 @@
           },
           "test_version": {
             "title": "Test Version",
+            "type": "string",
+            "nullable": true
+          },
+          "test_origin": {
+            "title": "Test Origin",
             "type": "string",
             "nullable": true
           }
@@ -6842,7 +6876,9 @@
         "enum": [
           "MANUAL",
           "CRON",
-          "CI_PIPELINE"
+          "CI_PIPELINE",
+          "TAS",
+          "QA_GATE"
         ],
         "title": "TriggerTypeEnum"
       },
