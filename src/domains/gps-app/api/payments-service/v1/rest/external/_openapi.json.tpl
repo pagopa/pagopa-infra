@@ -4,12 +4,30 @@
     "title": "PagoPA API Payments",
     "description": "Payments",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.13.3"
+    "version": "0.13.8-1-PAGOPA-3770-fix-dashboard-for-soap-endpioint"
   },
   "servers": [
     {
-      "url": "${host}",
-      "description": "Generated server url"
+      "url": "${host}"
+    },
+    {
+      "url": "{host}{basePath}{version}",
+      "variables": {
+        "host": {
+          "default": "https://api.platform.pagopa.it",
+          "enum": [
+            "https://api.dev.platform.pagopa.it",
+            "https://api.uat.platform.pagopa.it",
+            "https://api.platform.pagopa.it"
+          ]
+        },
+        "basePath": {
+          "default": "/gpd/payments-receipts-service"
+        },
+        "version": {
+          "default": "/v1"
+        }
+      }
     }
   ],
   "tags": [
@@ -580,12 +598,6 @@
         "description": "The API key to access this function app.",
         "name": "Ocp-Apim-Subscription-Key",
         "in": "header"
-      },
-      "Authorization": {
-        "type": "http",
-        "description": "JWT token get after Azure Login",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
       }
     }
   }
