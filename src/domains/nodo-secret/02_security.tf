@@ -98,6 +98,23 @@ resource "azurerm_key_vault_access_policy" "azdevops_app_policy" {
   storage_permissions = []
 }
 
+data "azurerm_linux_web_app" "node_forwarder" {
+  name                = "${local.product}-${var.location_short}-core-app-node-forwarder"
+  resource_group_name = "${local.product}-node-forwarder-rg"
+}
+
+resource "azurerm_key_vault_access_policy" "node_forwarder_app_policy" {
+  key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azurerm_linux_web_app.node_forwarder.identity[0].principal_id
+
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = []
+  key_permissions         = []
+
+  storage_permissions = []
+}
+
 resource "kubernetes_config_map" "nodo_cacerts" {
   metadata {
     name      = "nodo-cacerts"
