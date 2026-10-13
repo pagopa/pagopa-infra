@@ -190,7 +190,7 @@ AzureDiagnostics
     Total = count(),
     Success = countif(responseCode_d == 200 and DurationMs <= 1000 )
     by Time = bin(TimeGenerated, 15m)
-| extend availability = ((Success * 1.0) / Total) * 100
+| extend Availability = ((Success * 1.0) / Total) * 100
 | where toint(Availability) < 99
 | where (Total - Success) >= 5
   QUERY
@@ -276,7 +276,7 @@ AzureDiagnostics
     Total = count(),
     Success = countif(responseCode_d < 500 and responseCode_d != 401)
     by Time = bin(TimeGenerated, 15m)
-| extend availability = ((Success * 1.0) / Total) * 100
+| extend Availability = ((Success * 1.0) / Total) * 100
 | where toint(Availability) < 99
 | where (Total - Success) >= 5
   QUERY
@@ -451,7 +451,7 @@ AzureDiagnostics
     Total=count(),
     Success=countif((responseCode_d < 500 and responseCode_d != 401) or responseCode_d == 502 or responseCode_d == 504 or responseCode_d == 503)
     by Time = bin(TimeGenerated, 15m)
-| extend availability=(toreal(Success) / Total) * 100
+| extend Availability=(toreal(Success) / Total) * 100
 | where availability < 99
 | where (Total - Success) >= 5
   QUERY
