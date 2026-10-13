@@ -270,7 +270,7 @@ variable "incremental_snapshot_chunk_size" {
 
 variable "max_batch_size" {
   type        = number
-  description = "Max batch size"
+  description = "Debezium Max batch size"
   default     = 1000
 }
 

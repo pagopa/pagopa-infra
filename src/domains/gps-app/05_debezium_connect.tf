@@ -85,17 +85,17 @@ locals {
     namespace         = "gps" # kubernetes_namespace.namespace.metadata[0].name
     postgres_hostname = "pagopa-${var.env_short}-${var.location_short}-gpd-pgflex.postgres.database.azure.com"
 
-    postgres_port         = 5432
-    postgres_db_name      = var.postgres_db_name
-    postgres_topic_prefix = "cdc-raw-auto"
-    postgres_username     = data.azurerm_key_vault_secret.pgres_gpd_cdc_login.value
-    postgres_password     = data.azurerm_key_vault_secret.pgres_gpd_cdc_pwd.value
-    tasks_max             = var.tasks_max
-    snapshot_max_threads           = var.snapshot_max_threads
-    snapshot_fetch_size         = var.snapshot_fetch_size
+    postgres_port                   = 5432
+    postgres_db_name                = var.postgres_db_name
+    postgres_topic_prefix           = "cdc-raw-auto"
+    postgres_username               = data.azurerm_key_vault_secret.pgres_gpd_cdc_login.value
+    postgres_password               = data.azurerm_key_vault_secret.pgres_gpd_cdc_pwd.value
+    tasks_max                       = var.tasks_max
+    snapshot_max_threads            = var.snapshot_max_threads
+    snapshot_fetch_size             = var.snapshot_fetch_size
     incremental_snapshot_chunk_size = var.incremental_snapshot_chunk_size
-    max_batch_size              = var.max_batch_size
-    poll_interval_ms            = var.poll_interval_ms
+    max_batch_size                  = var.max_batch_size
+    poll_interval_ms                = var.poll_interval_ms
   })
 
   healthchecker_config_yaml = templatefile("${path.module}/yaml/healthchecker-config-map.yaml", {
