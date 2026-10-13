@@ -1157,6 +1157,79 @@
         }
       }
     },
+    "/api/v1/features": {
+      "get": {
+        "tags": [
+          "features"
+        ],
+        "summary": "List Feature Visibility",
+        "operationId": "list_feature_visibility_api_v1_features_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeatureVisibilityResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/features/{feature_key}": {
+      "patch": {
+        "tags": [
+          "features"
+        ],
+        "summary": "Update Feature Visibility",
+        "operationId": "update_feature_visibility_api_v1_features__feature_key__patch",
+        "parameters": [
+          {
+            "name": "feature_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Feature Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeatureVisibilityUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeatureVisibilityUpdateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/psp-fees": {
       "get": {
         "tags": [
@@ -4487,6 +4560,91 @@
         },
         "type": "object",
         "title": "ExternalResourceUpdate"
+      },
+      "FeatureVisibilityItem": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "route": {
+            "type": "string",
+            "title": "Route"
+          },
+          "action": {
+            "type": "string",
+            "title": "Action"
+          },
+          "external": {
+            "type": "boolean",
+            "title": "External"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "label",
+          "route",
+          "action",
+          "external",
+          "enabled"
+        ],
+        "title": "FeatureVisibilityItem"
+      },
+      "FeatureVisibilityResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/FeatureVisibilityItem"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "FeatureVisibilityResponse"
+      },
+      "FeatureVisibilityUpdate": {
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled"
+          }
+        },
+        "type": "object",
+        "required": [
+          "enabled"
+        ],
+        "title": "FeatureVisibilityUpdate"
+      },
+      "FeatureVisibilityUpdateResponse": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "enabled"
+        ],
+        "title": "FeatureVisibilityUpdateResponse"
       },
       "GenerateRequest": {
         "properties": {
