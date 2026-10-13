@@ -452,7 +452,7 @@ AzureDiagnostics
     Success=countif((responseCode_d < 500 and responseCode_d != 401) or responseCode_d == 502 or responseCode_d == 504 or responseCode_d == 503)
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=(toreal(Success) / Total) * 100
-| where availability < 99
+| where Availability < 99
 | where (Total - Success) >= 5
   QUERY
   )
