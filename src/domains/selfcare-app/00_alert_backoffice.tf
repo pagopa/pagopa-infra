@@ -54,16 +54,16 @@ locals {
 
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert-pagopa-backoffice-availability" {
-  for_each            = { for c in local.selfcare_services : c.base_path => c }
+  for_each = {
+    for c in local.selfcare_services : c.base_path => c
+    if var.env_short == "p"
+  }
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-alert_pagopa-backoffice-${each.value.name}-availability"
   location            = var.location
 
   action {
-    action_group = var.env_short == "p" ? [
-      data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id,
-      data.azurerm_monitor_action_group.opsgenie[0].id
-    ] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
     email_subject          = "Backoffice Availability"
     custom_webhook_payload = "{}"
   }
@@ -71,25 +71,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-pagopa-backoffice-
   data_source_id = data.azurerm_api_management.apim.id
   description    = "Availability for ${each.value.base_path} is less than or equal to 99%"
   enabled        = true
-  query = var.env_short == "p" ? (<<-QUERY
+  query = (<<-QUERY
 let threshold = 0.9;
 AzureDiagnostics
 | where url_s matches regex "${each.value.base_path}"
 | summarize
     Total=count(),
     Success=count(responseCode_d < 500)
-    by bin(TimeGenerated, 5m)
-| extend availability=toreal(Success) / Total
-| where availability < threshold
-| where Total > 10
-  QUERY
-    ) : (<<-QUERY
-let threshold = 0.9;
-ApiManagementGatewayLogs
-| where Url matches regex "${each.value.base_path}"
-| summarize
-    Total=count(),
-    Success=count(ResponseCode < 500)
     by bin(TimeGenerated, 5m)
 | extend availability=toreal(Success) / Total
 | where availability < threshold
@@ -283,7 +271,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_pagopa_backoffice_
   enabled        = true
   query = (<<-QUERY
 AzureDiagnostics
-| where (url_s matches regex "https://api.platform.pagopa.it/backoffice/v1/institutions/[^/]+/services/consents" and method_s == "GET") or 
+| where (url_s matches regex "https://api.platform.pagopa.it/backoffice/v1/institutions/[^/]+/services/consents" and method_s == "GET") or
 (url_s matches regex "https://api.platform.pagopa.it/backoffice/v1/institutions/[^/]+/services/[^/]+/consent" and method_s == "PUT")
 | summarize
     Total=count(),
