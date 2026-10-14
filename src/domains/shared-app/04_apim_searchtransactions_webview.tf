@@ -75,6 +75,7 @@ module "apim_api_search_transactions_webview_api_v1" {
   })
 
   xml_content = templatefile("./api/search-transactions-webview/v1/_base_policy.xml", {
-    hostname = local.shared_hostname
+    hostname        = local.shared_hostname
+    frontend_origin = "https://${local.apim_hostname}"
   })
 }

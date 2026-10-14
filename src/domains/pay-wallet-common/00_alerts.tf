@@ -45,7 +45,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_for_io_av
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Payment Wallet for IO - Availability less than 99% in the last 30 minutes"
+  description    = "Payment Wallet for IO - Availability less than threshold in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
 let thresholdTrafficMin = 50;
@@ -65,6 +65,7 @@ AzureDiagnostics
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -91,7 +92,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_for_webvi
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Payment Wallet for Webview - Availability less than 99% in the last 30 minutes"
+  description    = "Payment Wallet for Webview - Availability less than threshold in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
 let thresholdTrafficMin = 50;
@@ -105,12 +106,13 @@ AzureDiagnostics
 | summarize
     Total=count(),
     Success=countif(responseCode_d < 500 and DurationMs < 3000)
-    by Time = bin(TimeGenerated, 10m)
+    by Time = bin(TimeGenerated, 15m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -140,7 +142,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_for_ecomm
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Payment Wallet for eCommerce V1 - Availability less than 99% in the last 30 minutes"
+  description    = "Payment Wallet for eCommerce V1 - Availability less than threshold in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
 let thresholdTrafficMin = 20;
@@ -160,6 +162,7 @@ AzureDiagnostics
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -185,7 +188,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_npg_notif
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Payment Wallet NPG Notifications - Availability less than 99% in the last 30 minutes"
+  description    = "Payment Wallet NPG Notifications - Availability less than threshold in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
 let thresholdTrafficMin = 10;
@@ -199,12 +202,13 @@ AzureDiagnostics
 | summarize
     Total=count(),
     Success=countif(responseCode_d < 500 and DurationMs < 500)
-    by Time = bin(TimeGenerated, 10m)
+    by Time = bin(TimeGenerated, 15m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
@@ -212,7 +216,7 @@ AzureDiagnostics
   time_window = 30
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 3
+    threshold = 2
   }
 }
 
@@ -230,7 +234,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_outcomes_
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Payment Wallet redirection outcomes - Availability less than 99% in the last 30 minutes"
+  description    = "Payment Wallet redirection outcomes - Availability less than threshold in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
 let thresholdTrafficMin = 50;
@@ -250,6 +254,7 @@ AzureDiagnostics
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
+| where (Total - Success) >= 5
   QUERY
   )
   severity    = 1
