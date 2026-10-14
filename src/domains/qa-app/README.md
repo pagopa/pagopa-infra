@@ -105,24 +105,24 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_apim_dns_zone_prefix"></a> [apim\_dns\_zone\_prefix](#input\_apim\_dns\_zone\_prefix) | The dns subdomain for apim. | `string` | `null` | no |
-| <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
-| <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The wallet dns subdomain. | `string` | `null` | no |
-| <a name="input_enabled_superset"></a> [enabled\_superset](#input\_enabled\_superset) | Enable Superset deployment | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
-| <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
 | <a name="input_ingress_load_balancer_ip"></a> [ingress\_load\_balancer\_ip](#input\_ingress\_load\_balancer\_ip) | The AKS internal ingress load balancer IP. | `string` | n/a | yes |
-| <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | n/a | `string` | `"~/.kube"` | no |
 | <a name="input_location"></a> [location](#input\_location) | One of .. | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of ... | `string` | n/a | yes |
-| <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br/>    name         = optional(string, null)<br/>    minAvailable = optional(number, null)<br/>    matchLabels  = optional(map(any), {})<br/>  }))</pre> | `{}` | no |
-| <a name="input_qa_hub_always_on"></a> [qa\_hub\_always\_on](#input\_qa\_hub\_always\_on) | Specifies whether the Web App is in Always On mode. Default is false. | `bool` | `true` | no |
 | <a name="input_qa_hub_autoscale_settings"></a> [qa\_hub\_autoscale\_settings](#input\_qa\_hub\_autoscale\_settings) | Autoscale settings for qa-hub | <pre>object({<br/>    max_capacity                       = number                 # maximum capacity for this app service<br/>    scale_up_requests_threshold        = optional(number, null) # request count threshold which triggers scale up<br/>    scale_down_requests_threshold      = optional(number, null) # request count threshold which triggers scale down<br/>    scale_up_response_time_threshold   = optional(number, null) # response time threshold which triggers scale up<br/>    scale_down_response_time_threshold = optional(number, null) # response time threshold which triggers scale down<br/>    scale_up_cpu_threshold             = optional(number, null) # cpu threshold which triggers scale up<br/>    scale_down_cpu_threshold           = optional(number, null) # cpu threshold which triggers scale down<br/>  })</pre> | n/a | yes |
 | <a name="input_qa_hub_image"></a> [qa\_hub\_image](#input\_qa\_hub\_image) | Docker image settings for qa-hub | <pre>object({<br/>    docker_image        = string<br/>    docker_image_tag    = string<br/>    docker_registry_url = string<br/>  })</pre> | n/a | yes |
 | <a name="input_qa_hub_next_auth_url"></a> [qa\_hub\_next\_auth\_url](#input\_qa\_hub\_next\_auth\_url) | n/a | `string` | n/a | yes |
 | <a name="input_qa_hub_plan_idh_tier"></a> [qa\_hub\_plan\_idh\_tier](#input\_qa\_hub\_plan\_idh\_tier) | The IDH resource tier for qa-hub | `string` | n/a | yes |
 | <a name="input_qa_hub_public_api_url"></a> [qa\_hub\_public\_api\_url](#input\_qa\_hub\_public\_api\_url) | n/a | `string` | n/a | yes |
+| <a name="input_apim_dns_zone_prefix"></a> [apim\_dns\_zone\_prefix](#input\_apim\_dns\_zone\_prefix) | The dns subdomain for apim. | `string` | `null` | no |
+| <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
+| <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The wallet dns subdomain. | `string` | `null` | no |
+| <a name="input_enabled_superset"></a> [enabled\_superset](#input\_enabled\_superset) | Enable Superset deployment | `bool` | `false` | no |
+| <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
+| <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | n/a | `string` | `"~/.kube"` | no |
+| <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br/>    name         = optional(string, null)<br/>    minAvailable = optional(number, null)<br/>    matchLabels  = optional(map(any), {})<br/>  }))</pre> | `{}` | no |
+| <a name="input_qa_hub_always_on"></a> [qa\_hub\_always\_on](#input\_qa\_hub\_always\_on) | Specifies whether the Web App is in Always On mode. Default is false. | `bool` | `true` | no |
 
 ## Outputs
 
