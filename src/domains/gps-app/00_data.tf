@@ -45,7 +45,7 @@ data "azurerm_api_management_product" "apim_iuv_generator_product" {
 }
 
 data "azurerm_api_management_product" "apim_gps_spontaneous_payments_services_product" {
-  product_id          = "gps-spontaneous-payments-services"
+  product_id          = "spontaneouspayments"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 }
