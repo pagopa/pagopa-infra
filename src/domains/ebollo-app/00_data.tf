@@ -16,7 +16,7 @@ data "azurerm_api_management_product" "apim_carts_product" {
 }
 
 data "azurerm_api_management_product" "apim_gpd_payments_rest" {
-  product_id          = "gpd-payments-rest-aks"
+  product_id          = "gpd-payments-internal"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 }
