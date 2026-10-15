@@ -1443,6 +1443,844 @@
         }
       }
     },
+    "/api/v1/ea/kb": {
+      "get": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Get Kb",
+        "operationId": "get_kb_api_v1_ea_kb_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaKbResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/nodes/{node_id}": {
+      "get": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Get Node",
+        "operationId": "get_node_api_v1_ea_nodes__node_id__get",
+        "parameters": [
+          {
+            "name": "node_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Node Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaNodeDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Update Node",
+        "operationId": "update_node_api_v1_ea_nodes__node_id__patch",
+        "parameters": [
+          {
+            "name": "node_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Node Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EaNodeUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaNodeOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/nodes/{node_id}/impact": {
+      "get": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Get Impact",
+        "operationId": "get_impact_api_v1_ea_nodes__node_id__impact_get",
+        "parameters": [
+          {
+            "name": "node_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Node Id"
+            }
+          },
+          {
+            "name": "depth",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 6,
+              "minimum": 1,
+              "default": 3,
+              "title": "Depth"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaImpactResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/edges": {
+      "post": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Create Edge",
+        "operationId": "create_edge_api_v1_ea_edges_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EaEdgeCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaEdgeOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/edges/{edge_id}": {
+      "patch": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Update Edge",
+        "operationId": "update_edge_api_v1_ea_edges__edge_id__patch",
+        "parameters": [
+          {
+            "name": "edge_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Edge Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EaEdgeUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaEdgeOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/edges/{edge_id}/verify": {
+      "post": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Verify Edge",
+        "operationId": "verify_edge_api_v1_ea_edges__edge_id__verify_post",
+        "parameters": [
+          {
+            "name": "edge_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Edge Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EaEdgeNote"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaEdgeOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/edges/{edge_id}/remove": {
+      "post": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Remove Edge",
+        "operationId": "remove_edge_api_v1_ea_edges__edge_id__remove_post",
+        "parameters": [
+          {
+            "name": "edge_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Edge Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EaEdgeNote"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaEdgeOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/nodes": {
+      "post": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Create Node",
+        "operationId": "create_node_api_v1_ea_nodes_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EaNodeCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaNodeOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/nodes/{node_id}/qa": {
+      "patch": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Update Qa",
+        "operationId": "update_qa_api_v1_ea_nodes__node_id__qa_patch",
+        "parameters": [
+          {
+            "name": "node_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Node Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EaQaUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaQaOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/nodes/{node_id}/history": {
+      "get": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Node History",
+        "operationId": "node_history_api_v1_ea_nodes__node_id__history_get",
+        "parameters": [
+          {
+            "name": "node_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Node Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EaHistoryItem"
+                  },
+                  "title": "Response Node History Api V1 Ea Nodes  Node Id  History Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/sync": {
+      "post": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Trigger Sync",
+        "operationId": "trigger_sync_api_v1_ea_sync_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EaSyncRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaSyncRunOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/sync-status": {
+      "get": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Get Sync Status",
+        "operationId": "get_sync_status_api_v1_ea_sync_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaSyncStatusOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/sync-runs": {
+      "get": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "List Sync Runs",
+        "operationId": "list_sync_runs_api_v1_ea_sync_runs_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 10,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EaSyncRunOut"
+                  },
+                  "title": "Response List Sync Runs Api V1 Ea Sync Runs Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/changes": {
+      "get": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "List Changes",
+        "operationId": "list_changes_api_v1_ea_changes_get",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "pending,conflict",
+              "title": "Status"
+            }
+          },
+          {
+            "name": "run_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Run Id",
+              "type": "string",
+              "format": "uuid",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 2000,
+              "minimum": 1,
+              "default": 500,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EaChangeOut"
+                  },
+                  "title": "Response List Changes Api V1 Ea Changes Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/changes/{change_id}/approve": {
+      "post": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Approve Change",
+        "operationId": "approve_change_api_v1_ea_changes__change_id__approve_post",
+        "parameters": [
+          {
+            "name": "change_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Change Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EaChangeDecision"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaChangeOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/changes/{change_id}/reject": {
+      "post": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Reject Change",
+        "operationId": "reject_change_api_v1_ea_changes__change_id__reject_post",
+        "parameters": [
+          {
+            "name": "change_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Change Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EaChangeDecision"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaChangeOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/changes/bulk": {
+      "post": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Bulk Decide",
+        "operationId": "bulk_decide_api_v1_ea_changes_bulk_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EaChangeBulk"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Bulk Decide Api V1 Ea Changes Bulk Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/jira/overview": {
       "get": {
         "tags": [
@@ -4352,6 +5190,861 @@
         },
         "type": "object",
         "title": "DqDomainUpdate"
+      },
+      "EaChangeBulk": {
+        "properties": {
+          "actor": {
+            "title": "Actor",
+            "type": "string",
+            "nullable": true
+          },
+          "ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 200,
+            "minItems": 1,
+            "title": "Ids"
+          },
+          "decision": {
+            "type": "string",
+            "pattern": "^(approve|reject)$",
+            "title": "Decision"
+          },
+          "note": {
+            "title": "Note",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "ids",
+          "decision"
+        ],
+        "title": "EaChangeBulk"
+      },
+      "EaChangeDecision": {
+        "properties": {
+          "actor": {
+            "title": "Actor",
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "title": "Note",
+            "type": "string",
+            "nullable": true
+          },
+          "parent_id": {
+            "title": "Parent Id",
+            "type": "string",
+            "nullable": true
+          },
+          "ctype": {
+            "title": "Ctype",
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "title": "EaChangeDecision"
+      },
+      "EaChangeOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string",
+            "nullable": true
+          },
+          "entity": {
+            "type": "string",
+            "title": "Entity"
+          },
+          "op": {
+            "type": "string",
+            "title": "Op"
+          },
+          "target_id": {
+            "type": "string",
+            "title": "Target Id"
+          },
+          "before": {
+            "title": "Before",
+            "additionalProperties": true,
+            "type": "object",
+            "nullable": true
+          },
+          "after": {
+            "title": "After",
+            "additionalProperties": true,
+            "type": "object",
+            "nullable": true
+          },
+          "structural": {
+            "type": "boolean",
+            "title": "Structural"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "reviewed_by": {
+            "title": "Reviewed By",
+            "type": "string",
+            "nullable": true
+          },
+          "reviewed_at": {
+            "title": "Reviewed At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "review_note": {
+            "title": "Review Note",
+            "type": "string",
+            "nullable": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "run_id",
+          "entity",
+          "op",
+          "target_id",
+          "before",
+          "after",
+          "structural",
+          "status",
+          "reviewed_by",
+          "reviewed_at",
+          "review_note",
+          "created_at"
+        ],
+        "title": "EaChangeOut"
+      },
+      "EaEdgeCreate": {
+        "properties": {
+          "actor": {
+            "title": "Actor",
+            "type": "string",
+            "nullable": true
+          },
+          "from_id": {
+            "type": "string",
+            "title": "From Id"
+          },
+          "to_id": {
+            "type": "string",
+            "title": "To Id"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "from_id",
+          "to_id",
+          "type",
+          "note"
+        ],
+        "title": "EaEdgeCreate"
+      },
+      "EaEdgeNote": {
+        "properties": {
+          "actor": {
+            "title": "Actor",
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "title": "Note",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "title": "EaEdgeNote"
+      },
+      "EaEdgeOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "from": {
+            "type": "string",
+            "title": "From"
+          },
+          "to": {
+            "type": "string",
+            "title": "To"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string",
+            "nullable": true
+          },
+          "origin": {
+            "type": "string",
+            "title": "Origin"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "confidence": {
+            "type": "integer",
+            "title": "Confidence"
+          },
+          "note": {
+            "title": "Note",
+            "type": "string",
+            "nullable": true
+          },
+          "created_by": {
+            "title": "Created By",
+            "type": "string",
+            "nullable": true
+          },
+          "verified_by": {
+            "title": "Verified By",
+            "type": "string",
+            "nullable": true
+          },
+          "verified_at": {
+            "title": "Verified At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "from",
+          "to",
+          "type",
+          "label",
+          "origin",
+          "status",
+          "confidence",
+          "note",
+          "created_by",
+          "verified_by",
+          "verified_at"
+        ],
+        "title": "EaEdgeOut"
+      },
+      "EaEdgeUpdate": {
+        "properties": {
+          "actor": {
+            "title": "Actor",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "title": "Type",
+            "type": "string",
+            "nullable": true
+          },
+          "label": {
+            "title": "Label",
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "title": "Note",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "title": "EaEdgeUpdate"
+      },
+      "EaHistoryItem": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "title": "Action"
+          },
+          "resource_type": {
+            "title": "Resource Type",
+            "type": "string",
+            "nullable": true
+          },
+          "resource_id": {
+            "title": "Resource Id",
+            "type": "string",
+            "nullable": true
+          },
+          "actor": {
+            "title": "Actor",
+            "type": "string",
+            "nullable": true
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "At"
+          },
+          "detail": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "required": [
+          "action",
+          "resource_type",
+          "resource_id",
+          "actor",
+          "at",
+          "detail"
+        ],
+        "title": "EaHistoryItem"
+      },
+      "EaImpactItem": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "depth": {
+            "type": "integer",
+            "title": "Depth"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "name",
+          "depth"
+        ],
+        "title": "EaImpactItem"
+      },
+      "EaImpactResponse": {
+        "properties": {
+          "node_id": {
+            "type": "string",
+            "title": "Node Id"
+          },
+          "depth": {
+            "type": "integer",
+            "title": "Depth"
+          },
+          "upstream": {
+            "items": {
+              "$ref": "#/components/schemas/EaImpactItem"
+            },
+            "type": "array",
+            "title": "Upstream"
+          },
+          "downstream": {
+            "items": {
+              "$ref": "#/components/schemas/EaImpactItem"
+            },
+            "type": "array",
+            "title": "Downstream"
+          }
+        },
+        "type": "object",
+        "required": [
+          "node_id",
+          "depth",
+          "upstream",
+          "downstream"
+        ],
+        "title": "EaImpactResponse"
+      },
+      "EaKbResponse": {
+        "properties": {
+          "meta": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Meta"
+          },
+          "nodes": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Nodes"
+          },
+          "edges": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Edges"
+          },
+          "blueprint": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Blueprint"
+          }
+        },
+        "type": "object",
+        "required": [
+          "meta",
+          "nodes",
+          "edges",
+          "blueprint"
+        ],
+        "title": "EaKbResponse",
+        "description": "Knowledge base in the shape used by the map views (kept loose on purpose)."
+      },
+      "EaNodeCreate": {
+        "properties": {
+          "actor": {
+            "title": "Actor",
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "nullable": true
+          },
+          "parent_id": {
+            "title": "Parent Id",
+            "type": "string",
+            "nullable": true
+          },
+          "repo": {
+            "title": "Repo",
+            "type": "string",
+            "nullable": true
+          },
+          "ctype": {
+            "title": "Ctype",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "name"
+        ],
+        "title": "EaNodeCreate"
+      },
+      "EaNodeDetail": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "parent": {
+            "title": "Parent",
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "desc": {
+            "title": "Desc",
+            "type": "string",
+            "nullable": true
+          },
+          "attrs": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Attrs"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "verified_at": {
+            "title": "Verified At",
+            "nullable": true
+          },
+          "verified_by": {
+            "title": "Verified By",
+            "type": "string",
+            "nullable": true
+          },
+          "qa": {
+            "title": "Qa",
+            "additionalProperties": true,
+            "type": "object",
+            "nullable": true
+          },
+          "docs": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Docs"
+          },
+          "out": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Out"
+          },
+          "in": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "In"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "parent",
+          "name",
+          "desc",
+          "attrs",
+          "source",
+          "status",
+          "verified_at",
+          "qa",
+          "docs",
+          "out",
+          "in"
+        ],
+        "title": "EaNodeDetail"
+      },
+      "EaNodeOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "parent_id": {
+            "title": "Parent Id",
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "nullable": true
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "verified_by": {
+            "title": "Verified By",
+            "type": "string",
+            "nullable": true
+          },
+          "verified_at": {
+            "title": "Verified At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "parent_id",
+          "name",
+          "description",
+          "source",
+          "verified_by",
+          "verified_at"
+        ],
+        "title": "EaNodeOut"
+      },
+      "EaNodeUpdate": {
+        "properties": {
+          "actor": {
+            "title": "Actor",
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "nullable": true
+          },
+          "parent_id": {
+            "title": "Parent Id",
+            "type": "string",
+            "nullable": true
+          },
+          "ctype": {
+            "title": "Ctype",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "title": "EaNodeUpdate"
+      },
+      "EaQaOut": {
+        "properties": {
+          "node_id": {
+            "type": "string",
+            "title": "Node Id"
+          },
+          "under_qa": {
+            "title": "Under Qa",
+            "type": "boolean",
+            "nullable": true
+          },
+          "tas_ci_override": {
+            "title": "Tas Ci Override",
+            "type": "boolean",
+            "nullable": true
+          },
+          "qa_owner": {
+            "title": "Qa Owner",
+            "type": "string",
+            "nullable": true
+          },
+          "qa_notes": {
+            "title": "Qa Notes",
+            "type": "string",
+            "nullable": true
+          },
+          "manual_updated_by": {
+            "title": "Manual Updated By",
+            "type": "string",
+            "nullable": true
+          },
+          "manual_updated_at": {
+            "title": "Manual Updated At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "node_id",
+          "under_qa",
+          "tas_ci_override",
+          "qa_owner",
+          "qa_notes",
+          "manual_updated_by",
+          "manual_updated_at"
+        ],
+        "title": "EaQaOut"
+      },
+      "EaQaUpdate": {
+        "properties": {
+          "actor": {
+            "title": "Actor",
+            "type": "string",
+            "nullable": true
+          },
+          "under_qa": {
+            "title": "Under Qa",
+            "type": "boolean",
+            "nullable": true
+          },
+          "tas_ci_override": {
+            "title": "Tas Ci Override",
+            "type": "boolean",
+            "nullable": true
+          },
+          "qa_owner": {
+            "title": "Qa Owner",
+            "type": "string",
+            "nullable": true
+          },
+          "qa_notes": {
+            "title": "Qa Notes",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "title": "EaQaUpdate"
+      },
+      "EaSyncRequest": {
+        "properties": {
+          "actor": {
+            "title": "Actor",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "title": "EaSyncRequest"
+      },
+      "EaSyncRunOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "trigger": {
+            "type": "string",
+            "title": "Trigger"
+          },
+          "triggered_by": {
+            "title": "Triggered By",
+            "type": "string",
+            "nullable": true
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Started At"
+          },
+          "finished_at": {
+            "title": "Finished At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "stats": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Stats"
+          },
+          "error": {
+            "title": "Error",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "trigger",
+          "triggered_by",
+          "started_at",
+          "finished_at",
+          "status",
+          "stats",
+          "error"
+        ],
+        "title": "EaSyncRunOut"
+      },
+      "EaSyncStatusOut": {
+        "properties": {
+          "running": {
+            "$ref": "#/components/schemas/EaSyncRunOut",
+            "nullable": true
+          },
+          "last": {
+            "$ref": "#/components/schemas/EaSyncRunOut",
+            "nullable": true
+          },
+          "last_success_at": {
+            "title": "Last Success At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "last_error": {
+            "title": "Last Error",
+            "type": "string",
+            "nullable": true
+          },
+          "open_changes": {
+            "type": "integer",
+            "title": "Open Changes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "running",
+          "last",
+          "last_success_at",
+          "last_error",
+          "open_changes"
+        ],
+        "title": "EaSyncStatusOut"
       },
       "EnvEnum": {
         "type": "string",
