@@ -71,14 +71,6 @@ resource "azurerm_key_vault_secret" "iuv_generator_subscription_key" {
   key_vault_id = data.azurerm_key_vault.gps_kv.id
 }
 
-resource "azurerm_key_vault_secret" "gps_mbd_service_integration_test_subscription_key" {
-  name         = "apikey-spontaneous-payments-services"
-  value        = azurerm_api_management_subscription.gps_spontaneous_payments_services_subkey.primary_key
-  content_type = "text/plain"
-
-  key_vault_id = data.azurerm_key_vault.gps_kv.id
-}
-
 #### QA secrets for integration testing
 resource "azurerm_key_vault_secret" "gpd_qa_integration_testing_subscription_key" {
   count        = contains(["d", "u"], var.env_short) ? 1 : 0
