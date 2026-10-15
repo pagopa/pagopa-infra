@@ -125,3 +125,15 @@ variable "enabled_superset" {
   description = "Enable Superset deployment"
   default     = false
 }
+
+variable "monitor_resource_group_name" {
+  type        = string
+  description = "Monitor resource group name"
+}
+
+### ADX
+variable "dexp_re_db_linkes_service" {
+  type = object({
+    enable = bool
+  })
+}
