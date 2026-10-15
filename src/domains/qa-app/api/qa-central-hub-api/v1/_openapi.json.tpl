@@ -2626,6 +2626,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Body",
+                "$ref": "#/components/schemas/DqControlInstanceUpdate",
+                "nullable": true
+              }
+            }
+          }
+        },
         "responses": {
           "204": {
             "description": "Successful Response"
@@ -3856,6 +3867,11 @@
             "type": "string",
             "format": "uuid",
             "title": "Dimension Id"
+          },
+          "created_by": {
+            "title": "Created By",
+            "type": "string",
+            "nullable": true
           }
         },
         "type": "object",
@@ -3894,6 +3910,16 @@
           "dimension": {
             "$ref": "#/components/schemas/DqDimensionOut"
           },
+          "created_by": {
+            "title": "Created By",
+            "type": "string",
+            "nullable": true
+          },
+          "updated_by": {
+            "title": "Updated By",
+            "type": "string",
+            "nullable": true
+          },
           "created_at": {
             "type": "string",
             "format": "date-time",
@@ -3913,6 +3939,8 @@
           "dimension_id",
           "id",
           "dimension",
+          "created_by",
+          "updated_by",
           "created_at",
           "updated_at"
         ],
@@ -3939,6 +3967,11 @@
             "title": "Dimension Id",
             "type": "string",
             "format": "uuid",
+            "nullable": true
+          },
+          "updated_by": {
+            "title": "Updated By",
+            "type": "string",
             "nullable": true
           }
         },
@@ -3996,6 +4029,20 @@
             "title": "Notes",
             "type": "string",
             "nullable": true
+          },
+          "check_name": {
+            "type": "string",
+            "title": "Check Name"
+          },
+          "soda_url": {
+            "title": "Soda Url",
+            "type": "string",
+            "nullable": true
+          },
+          "created_by": {
+            "title": "Created By",
+            "type": "string",
+            "nullable": true
           }
         },
         "type": "object",
@@ -4005,7 +4052,8 @@
           "table_ref",
           "field_ref",
           "risk",
-          "impact"
+          "impact",
+          "check_name"
         ],
         "title": "DqControlInstanceCreate"
       },
@@ -4052,6 +4100,16 @@
             "type": "string",
             "nullable": true
           },
+          "check_name": {
+            "title": "Check Name",
+            "type": "string",
+            "nullable": true
+          },
+          "soda_url": {
+            "title": "Soda Url",
+            "type": "string",
+            "nullable": true
+          },
           "id": {
             "type": "string",
             "format": "uuid",
@@ -4059,6 +4117,16 @@
           },
           "catalog_control": {
             "$ref": "#/components/schemas/DqCatalogControlOut"
+          },
+          "created_by": {
+            "title": "Created By",
+            "type": "string",
+            "nullable": true
+          },
+          "updated_by": {
+            "title": "Updated By",
+            "type": "string",
+            "nullable": true
           },
           "created_at": {
             "type": "string",
@@ -4079,8 +4147,12 @@
           "field_ref",
           "risk",
           "impact",
+          "check_name",
+          "soda_url",
           "id",
           "catalog_control",
+          "created_by",
+          "updated_by",
           "created_at",
           "updated_at"
         ],
@@ -4120,6 +4192,21 @@
           },
           "notes": {
             "title": "Notes",
+            "type": "string",
+            "nullable": true
+          },
+          "check_name": {
+            "title": "Check Name",
+            "type": "string",
+            "nullable": true
+          },
+          "soda_url": {
+            "title": "Soda Url",
+            "type": "string",
+            "nullable": true
+          },
+          "updated_by": {
+            "title": "Updated By",
             "type": "string",
             "nullable": true
           }
