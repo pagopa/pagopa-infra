@@ -311,7 +311,7 @@ AzureDiagnostics
 | where method_s == "POST"
 | summarize
     Total = count(),
-    Success = countif(responseCode_d < 500 and responseCode_d != 401)
+    Success = countif(responseCode_d < 500 and not(set_has_element(dynamic([400, 401]), responseCode_d)))
     by Time = bin(TimeGenerated, 15m)
 | extend Availability = ((Success * 1.0) / Total) * 100
 | where toint(Availability) < 99
