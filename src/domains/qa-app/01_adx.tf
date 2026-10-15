@@ -17,7 +17,7 @@ resource "azurerm_kusto_script" "create_tables" {
 
   count = var.dexp_re_db_linkes_service.enable ? 1 : 0
 
-  name        = "CreateTables"
+  name        = "QACreateTablesADX4NRT"
   database_id = data.azurerm_kusto_database.re_db[count.index].id
 
   script_content             = file("scripts/create_adx_nrt_tables.dexp")
