@@ -290,6 +290,43 @@ AzureDiagnostics
   }
 }
 
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_redirect_authorization_outcome_notification_alert" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "ecommerce-redirect-authorization-outcome-notification-alert"
+  resource_group_name = azurerm_resource_group.rg_ecommerce_alerts[0].name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
+    email_subject          = "[eCommerce] Redirect POST notification KO api detected"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "eCommerce Redirect notification KO detected, availability less than 99% in the last 30 minutes"
+  enabled        = true
+  query = (<<-QUERY
+AzureDiagnostics
+| where url_s matches regex "https://api.platform.pagopa.it/ecommerce/redirect/v1/redirections/.*/outcomes"
+| where method_s == "POST"
+| summarize
+    Total = count(),
+    Success = countif(responseCode_d < 500 and responseCode_d != 401)
+    by Time = bin(TimeGenerated, 15m)
+| extend Availability = ((Success * 1.0) / Total) * 100
+| where toint(Availability) < 99
+| where (Total - Success) >= 5
+  QUERY
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
+
 # eCommerce for app IO V2 availability
 resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_for_app_io_v2_availability_alert" {
   count = var.env_short == "p" ? 1 : 0
@@ -603,8 +640,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_checkout_get_c
   query = (<<-QUERY
 let thresholdTrafficMin = 20;
 let thresholdTrafficLinear = 80;
-let lowTrafficAvailability = 90;
-let highTrafficAvailability = 99;
+let lowTrafficAvailability = 85;
+let highTrafficAvailability = 95;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
