@@ -29,7 +29,7 @@ qa_hub_next_auth_url = "https://pagopa-p-itn-qa-qa-hub-wa.azurewebsites.net"
 
 enabled_superset = false
 
-monitor_resource_group_name                 = "pagopa-p-monitor-rg"
+monitor_resource_group_name = "pagopa-p-monitor-rg"
 
 dexp_re_db_linkes_service = {
   enable = true
