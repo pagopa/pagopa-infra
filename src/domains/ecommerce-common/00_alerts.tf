@@ -640,8 +640,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_checkout_get_c
   query = (<<-QUERY
 let thresholdTrafficMin = 20;
 let thresholdTrafficLinear = 80;
-let lowTrafficAvailability = 90;
-let highTrafficAvailability = 99;
+let lowTrafficAvailability = 85;
+let highTrafficAvailability = 95;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
