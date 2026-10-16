@@ -28,3 +28,14 @@ qa_hub_public_api_url = "https://api.dev.platform.pagopa.it/qa/central-hub/v1"
 qa_hub_next_auth_url = "https://pagopa-d-itn-qa-qa-hub-wa.azurewebsites.net"
 
 enabled_superset = true
+
+monitor_resource_group_name = "pagopa-d-monitor-rg"
+
+dexp_re_db_linkes_service = {
+  enable = true
+}
+
+qa_integration_runner_adx_ingestion = {
+  enabled      = true
+  principal_id = "8345dc76-b675-4fa7-b63b-50c45899f6f9"
+}

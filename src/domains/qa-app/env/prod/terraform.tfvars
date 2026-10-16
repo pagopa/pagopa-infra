@@ -28,3 +28,15 @@ qa_hub_public_api_url = "https://api.platform.pagopa.it/qa/central-hub/v1"
 qa_hub_next_auth_url = "https://pagopa-p-itn-qa-qa-hub-wa.azurewebsites.net"
 
 enabled_superset = false
+
+monitor_resource_group_name = "pagopa-p-monitor-rg"
+
+dexp_re_db_linkes_service = {
+  enable = true
+}
+
+qa_integration_runner_adx_ingestion = {
+  # After creating the runner, retrieve principal_id and set enabled = true:
+  # az containerapp job show --subscription b9fc9419-6097-45fe-9f74-ba0641c91912 --resource-group pagopa-p-identity-rg --name pagopa-p-qa-int-test-ca-job --query identity.principalId --output tsv
+  enabled = false
+}
