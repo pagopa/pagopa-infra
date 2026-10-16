@@ -17,6 +17,8 @@ module "workload_identity" {
   key_vault_certificate_permissions = ["Get"]
   key_vault_key_permissions         = ["Get"]
   key_vault_secret_permissions      = ["Get"]
+
+  tags = module.tag_config.tags
 }
 
 resource "kubernetes_pod_disruption_budget_v1" "pos_gateway_pdb" {
