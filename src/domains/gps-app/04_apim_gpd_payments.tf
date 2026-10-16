@@ -178,7 +178,7 @@ module "apim_api_gpd_payments_rest_external_api_v1" {
   name                  = format("%s-gpd-payments-rest-api-aks", var.env_short)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_gpd_payments_rest_external_product.product_id, module.apim_gpd_integration_product.product_id, "technical_support_api"]
+  product_ids           = [module.apim_gpd_payments_rest_external_product.product_id, module.apim_gpd_integration_product.product_id, "technical_support_api", module.apim_gpd_payments_internal.product_id]
   subscription_required = local.apim_gpd_payments_rest_external_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_gpd_payments_rest_external_api.id
   api_version           = "v1"
@@ -198,4 +198,26 @@ module "apim_api_gpd_payments_rest_external_api_v1" {
   xml_content = templatefile("./api/payments-service/v1/rest/_base_policy.xml", {
     hostname = local.gps_hostname
   })
+}
+
+#####################
+## Internal Product #
+#####################
+
+module "apim_gpd_payments_internal" {
+  source = "./.terraform/modules/__v3__/api_management_product"
+
+  product_id   = "gpd-payments-internal"
+  display_name = "GPD Payments pagoPA - Internal Services"
+  description  = "API Prodotto Payments per servizi interni di piattaforma"
+
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+
+  published             = true
+  subscription_required = true
+  approval_required     = false
+  subscriptions_limit   = 1000
+
+  policy_xml = file("./api_product/payments-service/internal/_base_policy.xml")
 }
