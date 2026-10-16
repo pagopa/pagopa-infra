@@ -922,6 +922,172 @@
             }
           }
         }
+      },
+      "patch": {
+        "tags": [
+          "ecommerce-methods-handler"
+        ],
+        "operationId": "updateSession",
+        "summary": "Update a payment method session",
+        "description": "Associates a transaction ID to an existing NPG session identified by payment method ID and order ID. Returns 204 No Content on success.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Payment Method ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "OrderId related to NPG session",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchSessionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Session successfully updated"
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Session or payment method not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Session already associated to a different transaction",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment-methods/{id}/sessions/{orderId}/transactionId": {
+      "get": {
+        "tags": [
+          "ecommerce-methods-handler"
+        ],
+        "operationId": "getTransactionIdForSession",
+        "summary": "Get eCommerce transaction id for the given NPG session",
+        "description": "API to get a transaction id from a NPG session. Validates the session security token provided via Authorization Bearer header.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Payment Method ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "OrderId related to NPG session",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction id successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionGetTransactionIdResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Session or payment method not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid session (no transaction associated or mismatched security token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/carts/{id_cart}": {
@@ -2369,6 +2535,32 @@
           "expiringDate",
           "brand"
         ]
+      },
+      "PatchSessionRequest": {
+        "type": "object",
+        "description": "Request body for updating a payment method session",
+        "required": [
+          "transactionId"
+        ],
+        "properties": {
+          "transactionId": {
+            "type": "string",
+            "description": "Transaction ID to associate with the session"
+          }
+        }
+      },
+      "SessionGetTransactionIdResponse": {
+        "type": "object",
+        "description": "Transaction id for session successful response",
+        "required": [
+          "transactionId"
+        ],
+        "properties": {
+          "transactionId": {
+            "type": "string",
+            "description": "Transaction id associated to this NPG session"
+          }
+        }
       },
       "CartRequest": {
         "description": "Cart request body",
