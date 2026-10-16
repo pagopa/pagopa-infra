@@ -137,3 +137,22 @@ variable "dexp_re_db_linkes_service" {
     enable = bool
   })
 }
+
+variable "qa_integration_runner_adx_ingestion" {
+  description = "Enable NRT staging tables and database re Admin access for the dedicated integration-test runner's system-assigned identity."
+  type = object({
+    enabled      = bool
+    principal_id = optional(string)
+  })
+  default = {
+    enabled = false
+  }
+
+  validation {
+    condition = !var.qa_integration_runner_adx_ingestion.enabled || can(regex(
+      "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+      var.qa_integration_runner_adx_ingestion.principal_id
+    ))
+    error_message = "When ADX ingestion is enabled, principal_id must be the runner managed identity's valid object ID."
+  }
+}

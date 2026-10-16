@@ -34,3 +34,8 @@ monitor_resource_group_name = "pagopa-u-monitor-rg"
 dexp_re_db_linkes_service = {
   enable = true
 }
+
+qa_integration_runner_adx_ingestion = {
+  enabled      = true
+  principal_id = "42be77f9-6180-4737-87bb-f6afc8d95ecd"
+}

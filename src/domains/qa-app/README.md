@@ -1,3 +1,133 @@
+## Integration test runner PostgreSQL to ADX synchronization
+
+The `pagopa-platform-integration-test` self-hosted runner runs in a Container Apps
+Job named `pagopa-<env_short>-qa-int-test-ca-job`, in `pagopa-<env_short>-identity-rg`.
+Only its system-assigned managed identity receives Kusto **Database Admin** on
+database `re`, via `azurerm_kusto_database_principal_assignment` with role `Admin`
+and principal type `App`. This is a data-plane role, not Azure IAM Contributor
+or Owner. No cluster-wide roles or Azure IAM privileges are added, and the
+shared GitHub OIDC deployment identity is not modified.
+
+Configure `qa_integration_runner_adx_ingestion` in each environment's tfvars with
+`enabled = true` and the job identity's **principal (object) ID**, not its client ID.
+The existing variable name is retained for compatibility; it now enables both
+staging provisioning and Database Admin access.
+
+| Environment | Principal object ID | Tenant ID | Status |
+|-------------|---------------------|-----------|--------|
+| dev | `8345dc76-b675-4fa7-b63b-50c45899f6f9` | `7788edaf-0346-4068-9d79-c868aed15b3d` | Prepared; plan dev only, apply requires confirmation |
+| uat | `42be77f9-6180-4737-87bb-f6afc8d95ecd` | `7788edaf-0346-4068-9d79-c868aed15b3d` | Prepared; rollout requires subsequent approval |
+| prod | Not configured | Not configured | Explicitly disabled |
+
+The assignment uses the authenticated tenant from `azurerm_client_config.current`;
+verify that it matches the runner identity's tenant before applying.
+
+### Staging and publication
+
+The separate staging script runs after the existing final-table script and
+creates these empty tables using `.create table ... based-on ... ifnotexists`:
+
+| Staging table | Schema source |
+|---------------|---------------|
+| `QA_NRT_TEST_SUITES_STAGING` | `QA_NRT_TEST_SUITES` |
+| `QA_NRT_TEST_RUNS_STAGING` | `QA_NRT_TEST_RUNS` |
+| `QA_NRT_TEST_EXECUTIONS_STAGING` | `QA_NRT_TEST_EXECUTIONS` |
+
+This copies the actual source schema, including column names, types, and order,
+without copying rows or modifying the final tables. Kusto does not copy update
+policies or authorized principals with `based-on`. No automatic publication
+policy is introduced. Existing staging tables and their data are left unchanged:
+compare schemas before synchronization if they already exist or final schemas
+change later; this creation script does not reconcile existing staging schemas.
+
+The workflow owns staging ingestion and cleanup, count checks, `.replace extents`,
+`.move extents`, and temporal `.delete table ... records` operations. Provisioning
+does not execute these data-changing commands.
+
+The workflow's ingestion client must explicitly authenticate with the job's
+system-assigned managed identity, for example using the Kusto SDK's managed
+identity authentication. A GitHub OIDC login to the shared deployment identity
+does not authenticate as the job identity. No client secret is required.
+For queued ingestion, verify connectivity to the ingestion endpoint and the
+staging resources used by the ingestion SDK, not only the query endpoint.
+
+### Migration from Table Ingestor
+
+The previous `integration_runner_table_ingestors` Terraform script resource is
+removed. If it is in state, the plan will delete the ARM script resource, **not**
+its existing grants. If it was never applied, there is no script to delete.
+Database Admin supersedes the runner's three Table Ingestor grants.
+
+After the approved environment's Admin assignment is applied and verified, an
+authorized operator must explicitly run the following commands in database `re`,
+replacing `<principal_id>` with that environment's object ID from the table above:
+
+```kusto
+.drop table QA_NRT_TEST_SUITES ingestors ('aadapp=<principal_id>;7788edaf-0346-4068-9d79-c868aed15b3d')
+.drop table QA_NRT_TEST_RUNS ingestors ('aadapp=<principal_id>;7788edaf-0346-4068-9d79-c868aed15b3d')
+.drop table QA_NRT_TEST_EXECUTIONS ingestors ('aadapp=<principal_id>;7788edaf-0346-4068-9d79-c868aed15b3d')
+```
+
+These commands revoke only the named principal's redundant grants; they neither
+delete tables/records nor modify grants belonging to other principals. They are
+a required migration step if the old grants exist, not an effect of deleting
+the script. ARM Kusto scripts do not support `.drop` commands, so this cleanup
+is deliberately not hidden in a provisioning script or a local-exec provisioner.
+No revocation commands are executed as part of preparing the plan.
+
+### Identity lifecycle and verification
+
+If the runner job is recreated, re-read its system-assigned identity's object ID
+and tenant, update the environment's tfvars, and review a new plan. Terraform
+replaces its managed Database Admin assignment when the object ID changes,
+removing the old assignment. Also explicitly revoke any old table grants using
+the commands above with the **old** principal ID; check for manually granted
+database/cluster roles before considering the old identity fully revoked.
+Disabling the configuration removes the managed Admin assignment, but does not
+drop staging tables or revoke historical script-created grants.
+
+Run `terraform validate` and plan from this domain directory, with the correct
+environment's backend and subscription. In this phase plan **dev only**; neither
+apply dev nor plan/apply UAT without the required approval. Prod stays disabled.
+Review that the final-table script/content is unchanged, only the new staging
+script and database-scoped assignment are added, and only the retired permissions
+script may be deleted. Do not apply unrelated changes.
+
+After rollout, use read-only `.show database re principals`,
+`.show table <table_name> principals`, and `.show table <table_name> schema as json`
+to verify the intended principal and matching final/staging schemas. Coordinate
+any functional synchronization tests separately; do not test extent replacement
+or soft delete against existing data during infrastructure validation.
+
+The previous test expecting ingestion into an unrelated table in `re` to be
+denied is **no longer valid**: Database Admin intentionally grants access to the
+entire database, including reads, ingestion, schema administration, extent
+operations, and soft delete. This configuration grants no rights on other databases.
+
+### Preparation results (2026-10-15)
+
+- `terraform fmt -check -diff` on the changed Terraform files: passed.
+- `git diff --check`: passed.
+- `terraform validate` from this directory: passed.
+- Full dev plan: failed because the private PostgreSQL hostname used by Superset
+  could not be resolved from the current environment. It also detected an unrelated
+  Web App image change from tag `298129` to `latest`; do not apply that change here.
+- Dev plan targeting `azurerm_kusto_script.create_staging_tables[0]` and
+  `azurerm_kusto_database_principal_assignment.integration_runner_admin[0]`:
+  passed, **2 to add, 0 to change, 0 to destroy**. The final-table script is unchanged.
+  The saved plan was also checked for the exact staging commands, dev object ID,
+  tenant, database, and Admin role. This is an exceptional, partial plan, not a
+  successful full-domain plan; it does not cover retirement of an old permissions
+  script if one exists outside its dependency graph.
+- No apply, UAT plan, grant revocation, or data-changing tests were executed.
+  A complete plan must be rerun from an environment with private PostgreSQL DNS
+  and connectivity before a full-domain rollout.
+
+References: [Kusto managed identity authentication](https://learn.microsoft.com/en-us/kusto/api/get-started/app-authentication-methods?view=azure-data-explorer)
+and [table security roles](https://learn.microsoft.com/en-us/kusto/management/manage-table-security-roles?view=azure-data-explorer),
+[empty table cloning](https://learn.microsoft.com/en-us/kusto/management/create-table-based-on-command?view=azure-data-explorer),
+and [ARM Kusto script limitations](https://learn.microsoft.com/en-us/azure/data-explorer/database-script).
+
 ## Requirements
 
 | Name | Version |
