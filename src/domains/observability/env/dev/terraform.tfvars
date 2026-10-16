@@ -30,6 +30,13 @@ dexp_db = {
   hot_cache_period   = "P5D"
   soft_delete_period = "P30D" // P1M
 }
+
+dexp_public_re_db = {
+  enable             = true
+  hot_cache_period   = "P5D"
+  soft_delete_period = "P30D"
+}
+
 cidr_subnet_observability_storage = ["10.3.14.0/27"]
 ehns_sku_name                     = "Standard"
 

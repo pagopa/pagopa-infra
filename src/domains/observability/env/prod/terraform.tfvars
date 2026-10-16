@@ -31,6 +31,13 @@ dexp_db = {
   soft_delete_period = "P365D" // "P1Y"
 }
 
+
+dexp_public_re_db = {
+  enable             = true
+  hot_cache_period   = "P5D"
+  soft_delete_period = "P365D"
+}
+
 dexp_pm_db = {
   enable             = true
   hot_cache_period   = "P5D"
