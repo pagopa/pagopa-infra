@@ -3962,6 +3962,53 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "tm"
+        ],
+        "summary": "Delete All Absences",
+        "operationId": "delete_all_absences_api_v1_tm_absences_delete",
+        "parameters": [
+          {
+            "name": "confirm",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Must be true: wipes every absence",
+              "default": false,
+              "title": "Confirm"
+            },
+            "description": "Must be true: wipes every absence"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "integer"
+                  },
+                  "title": "Response Delete All Absences Api V1 Tm Absences Delete"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/tm/absences/{absence_id}": {
@@ -4047,25 +4094,32 @@
           "tm"
         ],
         "summary": "Sync Confluence",
+        "description": "Without year/month syncs the whole window (last year → next year).",
         "operationId": "sync_confluence_api_v1_tm_absences_sync_confluence_post",
         "parameters": [
           {
             "name": "year",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
+              "description": "With month: sync one month only",
+              "title": "Year",
               "type": "integer",
-              "title": "Year"
-            }
+              "nullable": true
+            },
+            "description": "With month: sync one month only"
           },
           {
             "name": "month",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
+              "description": "With year: sync one month only",
+              "title": "Month",
               "type": "integer",
-              "title": "Month"
-            }
+              "nullable": true
+            },
+            "description": "With year: sync one month only"
           }
         ],
         "responses": {
@@ -8450,6 +8504,16 @@
             },
             "type": "array",
             "title": "Errors"
+          },
+          "period_start": {
+            "title": "Period Start",
+            "type": "string",
+            "nullable": true
+          },
+          "period_end": {
+            "title": "Period End",
+            "type": "string",
+            "nullable": true
           }
         },
         "type": "object",
