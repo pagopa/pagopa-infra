@@ -928,6 +928,10 @@
                         "additionalProperties": {
                             "type": "string"
                         }
+                    },
+                    "paymentTypeCode": {
+                        "description": "AFM payment type code of the selected payment method (e.g. CP, RBPR)",
+                        "type": "string"
                     }
                 }
             },
