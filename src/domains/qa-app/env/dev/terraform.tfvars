@@ -36,6 +36,5 @@ dexp_re_db_linkes_service = {
 }
 
 qa_integration_runner_adx_ingestion = {
-  enabled      = true
-  principal_id = "8345dc76-b675-4fa7-b63b-50c45899f6f9"
+  enabled = true
 }

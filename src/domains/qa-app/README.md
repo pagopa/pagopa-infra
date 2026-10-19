@@ -9,18 +9,19 @@ or Owner. No cluster-wide roles or Azure IAM privileges are added, and the
 shared GitHub OIDC deployment identity is not modified.
 
 Configure `qa_integration_runner_adx_ingestion` in each environment's tfvars with
-`enabled = true` and the job identity's **principal (object) ID**, not its client ID.
-The existing variable name is retained for compatibility; it now enables both
-staging provisioning and Database Admin access.
+`enabled = true`. Terraform looks up the job's service principal in Entra ID by
+its display name (`pagopa-<env_short>-qa-int-test-ca-job`) and uses its object ID
+for the ADX database role assignment. The lookup requires the AzureAD provider
+identity to have permission to read service principals in the tenant. The flag
+enables both staging provisioning and Database Admin access.
 
-| Environment | Principal object ID | Tenant ID | Status |
-|-------------|---------------------|-----------|--------|
-| dev | `8345dc76-b675-4fa7-b63b-50c45899f6f9` | `7788edaf-0346-4068-9d79-c868aed15b3d` | Prepared; plan dev only, apply requires confirmation |
-| uat | `42be77f9-6180-4737-87bb-f6afc8d95ecd` | `7788edaf-0346-4068-9d79-c868aed15b3d` | Prepared; rollout requires subsequent approval |
-| prod | Not configured | Not configured | Explicitly disabled |
+| Environment | Job display name | Status |
+|-------------|------------------|--------|
+| dev | `pagopa-d-qa-int-test-ca-job` | Enabled |
+| uat | `pagopa-u-qa-int-test-ca-job` | Enabled |
+| prod | `pagopa-p-qa-int-test-ca-job` | Explicitly disabled |
 
-The assignment uses the authenticated tenant from `azurerm_client_config.current`;
-verify that it matches the runner identity's tenant before applying.
+The assignment uses the authenticated tenant from `azurerm_client_config.current`.
 
 ### Staging and publication
 
@@ -60,7 +61,8 @@ Database Admin supersedes the runner's three Table Ingestor grants.
 
 After the approved environment's Admin assignment is applied and verified, an
 authorized operator must explicitly run the following commands in database `re`,
-replacing `<principal_id>` with that environment's object ID from the table above:
+replacing `<principal_id>` with the object ID returned by the AzureAD lookup for
+that environment:
 
 ```kusto
 .drop table QA_NRT_TEST_SUITES ingestors ('aadapp=<principal_id>;7788edaf-0346-4068-9d79-c868aed15b3d')

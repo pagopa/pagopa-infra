@@ -13,6 +13,12 @@ data "azurerm_kusto_database" "re_db" {
   cluster_name        = data.azurerm_kusto_cluster.dexp_cluster[count.index].name
 }
 
+data "azuread_service_principal" "integration_runner" {
+  count = var.dexp_re_db_linkes_service.enable && var.qa_integration_runner_adx_ingestion.enabled ? 1 : 0
+
+  display_name = "${local.product}-qa-int-test-ca-job"
+}
+
 resource "azurerm_kusto_script" "create_tables" {
 
   count = var.dexp_re_db_linkes_service.enable ? 1 : 0
@@ -43,7 +49,7 @@ resource "azurerm_kusto_database_principal_assignment" "integration_runner_admin
   database_name       = data.azurerm_kusto_database.re_db[0].name
 
   tenant_id      = data.azurerm_client_config.current.tenant_id
-  principal_id   = var.qa_integration_runner_adx_ingestion.principal_id
+  principal_id   = data.azuread_service_principal.integration_runner[0].object_id
   principal_type = "App"
   role           = "Admin"
 }
