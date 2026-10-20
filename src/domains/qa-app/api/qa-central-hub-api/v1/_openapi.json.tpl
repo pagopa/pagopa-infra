@@ -2470,6 +2470,50 @@
         }
       }
     },
+    "/api/v1/jira/issue/{issue_key}": {
+      "get": {
+        "tags": [
+          "jira"
+        ],
+        "summary": "Get Issue",
+        "operationId": "get_issue_api_v1_jira_issue__issue_key__get",
+        "parameters": [
+          {
+            "name": "issue_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Issue Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Issue Api V1 Jira Issue  Issue Key  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/docs": {
       "get": {
         "tags": [
@@ -4370,21 +4414,331 @@
         }
       }
     },
-    "/api/v1/metrics/guest-token": {
+    "/api/v1/test-metrics/nrts": {
       "get": {
         "tags": [
-          "metrics"
+          "test-metrics"
         ],
-        "summary": "Get Guest Token",
-        "operationId": "get_guest_token_api_v1_metrics_guest_token_get",
+        "summary": "Get Nrts",
+        "operationId": "get_nrts_api_v1_test_metrics_nrts_get",
+        "parameters": [
+          {
+            "name": "test_object",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Test Object",
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "trigger",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Trigger",
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 50,
+              "title": "Page Size"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "title": "Response Get Guest Token Api V1 Metrics Guest Token Get"
+                  "$ref": "#/components/schemas/PaginatedResponse_NrtListObject_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-metrics/nrt/{id}": {
+      "get": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Get Nrt By Id",
+        "operationId": "get_nrt_by_id_api_v1_test_metrics_nrt__id__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TestExecutionOut"
+                  },
+                  "title": "Response Get Nrt By Id Api V1 Test Metrics Nrt  Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-metrics/nrts/update": {
+      "put": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Update Nrt",
+        "operationId": "update_nrt_api_v1_test_metrics_nrts_update_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateNrtsObject"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateNrtsObject"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-metrics/flaky-scenarios/save": {
+      "post": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Save Flaky Scenarios",
+        "operationId": "save_flaky_scenarios_api_v1_test_metrics_flaky_scenarios_save_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "$ref": "#/components/schemas/FlakyScenarioIn"
+                },
+                "type": "array",
+                "title": "Flaky Scenarios"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/FlakyScenarioOut"
+                  },
+                  "type": "array",
+                  "title": "Response Save Flaky Scenarios Api V1 Test Metrics Flaky Scenarios Save Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-metrics/flaky-scenarios": {
+      "get": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Get Flaky Scenarios",
+        "operationId": "get_flaky_scenarios_api_v1_test_metrics_flaky_scenarios_get",
+        "parameters": [
+          {
+            "name": "test_object",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Test Object",
+              "type": "string",
+              "format": "uuid",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FlakyScenarioOut"
+                  },
+                  "title": "Response Get Flaky Scenarios Api V1 Test Metrics Flaky Scenarios Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-metrics/origins": {
+      "get": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Get Origins",
+        "operationId": "get_origins_api_v1_test_metrics_origins_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "Response Get Origins Api V1 Test Metrics Origins Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/suites/all": {
+      "get": {
+        "tags": [
+          "suites"
+        ],
+        "summary": "Get Suites",
+        "operationId": "get_suites_api_v1_suites_all_get",
+        "parameters": [
+          {
+            "name": "trigger",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Trigger",
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "Response Get Suites Api V1 Suites All Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -6480,6 +6834,108 @@
         ],
         "title": "FeatureVisibilityUpdateResponse"
       },
+      "FlakyScenarioIn": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "suite_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Suite Id"
+          },
+          "test_object": {
+            "type": "string",
+            "title": "Test Object"
+          },
+          "scenario_name": {
+            "type": "string",
+            "title": "Scenario Name"
+          },
+          "suite_version": {
+            "type": "string",
+            "title": "Suite Version"
+          },
+          "test_version": {
+            "type": "string",
+            "title": "Test Version"
+          },
+          "inserted_at": {
+            "title": "Inserted At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "is_flaky": {
+            "type": "boolean",
+            "title": "Is Flaky",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "suite_id",
+          "test_object",
+          "scenario_name",
+          "suite_version",
+          "test_version"
+        ],
+        "title": "FlakyScenarioIn"
+      },
+      "FlakyScenarioOut": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "suite_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Suite Id"
+          },
+          "test_object": {
+            "type": "string",
+            "title": "Test Object"
+          },
+          "scenario_name": {
+            "type": "string",
+            "title": "Scenario Name"
+          },
+          "suite_version": {
+            "type": "string",
+            "title": "Suite Version"
+          },
+          "test_version": {
+            "type": "string",
+            "title": "Test Version"
+          },
+          "inserted_at": {
+            "title": "Inserted At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "is_flaky": {
+            "type": "boolean",
+            "title": "Is Flaky"
+          }
+        },
+        "type": "object",
+        "required": [
+          "suite_id",
+          "test_object",
+          "scenario_name",
+          "suite_version",
+          "test_version",
+          "is_flaky"
+        ],
+        "title": "FlakyScenarioOut"
+      },
       "GenerateRequest": {
         "properties": {
           "requirement": {
@@ -6834,6 +7290,20 @@
         ],
         "title": "NameCount"
       },
+      "NrtListObject": {
+        "properties": {
+          "test_run": {
+            "$ref": "#/components/schemas/TestRunOut",
+            "nullable": true
+          },
+          "test_suite": {
+            "$ref": "#/components/schemas/TestSuiteOut",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "title": "NrtListObject"
+      },
       "OllamaStatusOut": {
         "properties": {
           "running": {
@@ -6851,6 +7321,37 @@
           "url"
         ],
         "title": "OllamaStatusOut"
+      },
+      "PaginatedResponse_NrtListObject_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/NrtListObject"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "page_size": {
+            "type": "integer",
+            "title": "Page Size"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "title": "PaginatedResponse[NrtListObject]"
       },
       "PaginatedResponse_RunWithSuiteOut_": {
         "properties": {
@@ -7365,6 +7866,15 @@
           "total_cost"
         ],
         "title": "ResourceCostRow"
+      },
+      "RevisionResultEnum": {
+        "type": "string",
+        "enum": [
+          "GO",
+          "NO_GO",
+          "PENDING"
+        ],
+        "title": "RevisionResultEnum"
       },
       "RoleMatrixResponse": {
         "properties": {
@@ -8565,6 +9075,16 @@
             "title": "Retries",
             "type": "integer",
             "nullable": true
+          },
+          "revision_note": {
+            "title": "Revision Note",
+            "type": "string",
+            "nullable": true
+          },
+          "allure_url": {
+            "title": "Allure Url",
+            "type": "string",
+            "nullable": true
           }
         },
         "type": "object",
@@ -8618,6 +9138,16 @@
           "retries": {
             "title": "Retries",
             "type": "integer",
+            "nullable": true
+          },
+          "revision_note": {
+            "title": "Revision Note",
+            "type": "string",
+            "nullable": true
+          },
+          "allure_url": {
+            "title": "Allure Url",
+            "type": "string",
             "nullable": true
           }
         },
@@ -8693,6 +9223,52 @@
           },
           "test_origin": {
             "title": "Test Origin",
+            "type": "string",
+            "nullable": true
+          },
+          "revisioned": {
+            "title": "Revisioned",
+            "default": false,
+            "type": "boolean",
+            "nullable": true
+          },
+          "revision_date": {
+            "title": "Revision Date",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "revisioned_by": {
+            "title": "Revisioned By",
+            "type": "string",
+            "nullable": true
+          },
+          "revision_result": {
+            "$ref": "#/components/schemas/RevisionResultEnum",
+            "nullable": true
+          },
+          "allure_url": {
+            "title": "Allure Url",
+            "type": "string",
+            "nullable": true
+          },
+          "product_issue": {
+            "title": "Product Issue",
+            "type": "string",
+            "nullable": true
+          },
+          "product_issue_status": {
+            "title": "Product Issue Status",
+            "type": "string",
+            "nullable": true
+          },
+          "qa_issue": {
+            "title": "Qa Issue",
+            "type": "string",
+            "nullable": true
+          },
+          "qa_issue_status": {
+            "title": "Qa Issue Status",
             "type": "string",
             "nullable": true
           }
@@ -8772,6 +9348,52 @@
           },
           "test_origin": {
             "title": "Test Origin",
+            "type": "string",
+            "nullable": true
+          },
+          "revisioned": {
+            "title": "Revisioned",
+            "default": false,
+            "type": "boolean",
+            "nullable": true
+          },
+          "revision_date": {
+            "title": "Revision Date",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "revisioned_by": {
+            "title": "Revisioned By",
+            "type": "string",
+            "nullable": true
+          },
+          "revision_result": {
+            "$ref": "#/components/schemas/RevisionResultEnum",
+            "nullable": true
+          },
+          "allure_url": {
+            "title": "Allure Url",
+            "type": "string",
+            "nullable": true
+          },
+          "product_issue": {
+            "title": "Product Issue",
+            "type": "string",
+            "nullable": true
+          },
+          "product_issue_status": {
+            "title": "Product Issue Status",
+            "type": "string",
+            "nullable": true
+          },
+          "qa_issue": {
+            "title": "Qa Issue",
+            "type": "string",
+            "nullable": true
+          },
+          "qa_issue_status": {
+            "title": "Qa Issue Status",
             "type": "string",
             "nullable": true
           }
@@ -8906,6 +9528,33 @@
           "phase"
         ],
         "title": "TypeCount"
+      },
+      "UpdateNrtsObject": {
+        "properties": {
+          "test_suite": {
+            "$ref": "#/components/schemas/TestSuiteOut",
+            "nullable": true
+          },
+          "test_runs": {
+            "title": "Test Runs",
+            "items": {
+              "$ref": "#/components/schemas/TestRunOut",
+              "nullable": true
+            },
+            "type": "array",
+            "nullable": true
+          },
+          "scenarios": {
+            "title": "Scenarios",
+            "items": {
+              "$ref": "#/components/schemas/TestExecutionOut"
+            },
+            "type": "array",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "title": "UpdateNrtsObject"
       },
       "UserListResponse": {
         "properties": {
