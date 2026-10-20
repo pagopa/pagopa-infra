@@ -5,7 +5,7 @@
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.3.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 3.0.2 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
@@ -17,7 +17,7 @@
 ## Modules
 
 | Name | Source | Version |
-| ---- | ------ | ------- |
+|------|--------|---------|
 | <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | d0a0b3a81963169bdc974f79eba31e41e918e63d |
 | <a name="module_apim_aca_integration_product"></a> [apim\_aca\_integration\_product](#module\_apim\_aca\_integration\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_api_gpd_debezium_api"></a> [apim\_api\_gpd\_debezium\_api](#module\_apim\_api\_gpd\_debezium\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
@@ -27,6 +27,7 @@
 | <a name="module_apim_gpd_debezium_product"></a> [apim\_gpd\_debezium\_product](#module\_apim\_gpd\_debezium\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gpd_integration_product"></a> [apim\_gpd\_integration\_product](#module\_apim\_gpd\_integration\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gpd_payments_helpdesk_product"></a> [apim\_gpd\_payments\_helpdesk\_product](#module\_apim\_gpd\_payments\_helpdesk\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_gpd_payments_internal"></a> [apim\_gpd\_payments\_internal](#module\_apim\_gpd\_payments\_internal) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gpd_payments_pull_product"></a> [apim\_gpd\_payments\_pull\_product](#module\_apim\_gpd\_payments\_pull\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gpd_payments_pull_product_and_debt_positions_product_test"></a> [apim\_gpd\_payments\_pull\_product\_and\_debt\_positions\_product\_test](#module\_apim\_gpd\_payments\_pull\_product\_and\_debt\_positions\_product\_test) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gpd_payments_rest_external_product"></a> [apim\_gpd\_payments\_rest\_external\_product](#module\_apim\_gpd\_payments\_rest\_external\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
@@ -50,7 +51,7 @@
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azapi_resource.segregation_codes_fragment](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource.service_type_set_fragment](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azurerm_api_management_api.apim_api_aca_payments_soap_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api) | resource |
@@ -73,7 +74,6 @@
 | [azurerm_api_management_subscription.gpd_integration_qa_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.gpd_payments_helpdesk](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.gps_pagopa_product_for_gpd_payments](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
-| [azurerm_api_management_subscription.gps_spontaneous_payments_services_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.iuv_generator_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.test_gpd_payments_pull_and_debt_positions_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_app_service_plan.gpd_reporting_service_plan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_service_plan) | resource |
@@ -85,7 +85,6 @@
 | [azurerm_key_vault_secret.gpd_payments_helpdesk_subkey_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.gpd_qa_integration_testing_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.gpd_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.gps_mbd_service_integration_test_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.gps_pagopa_product_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.iuv_generator_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.test_gpd_payments_pull_and_debt_positions_subkey_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -155,7 +154,6 @@
 | [azurerm_api_management_product.apim_fdr_internal](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_api_management_product.apim_fdr_orgs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_api_management_product.apim_gpd_integration_product](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
-| [azurerm_api_management_product.apim_gps_spontaneous_payments_services_product](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_api_management_product.apim_iuv_generator_product](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_api_management_user.apim_qa_user](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_user) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
@@ -194,7 +192,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_apim_dns_zone_prefix"></a> [apim\_dns\_zone\_prefix](#input\_apim\_dns\_zone\_prefix) | The dns subdomain for apim. | `string` | `null` | no |
 | <a name="input_cidr_subnet_reporting_functions"></a> [cidr\_subnet\_reporting\_functions](#input\_cidr\_subnet\_reporting\_functions) | Address prefixes subnet reporting\_common function | `list(string)` | `null` | no |
 | <a name="input_cname_record_name"></a> [cname\_record\_name](#input\_cname\_record\_name) | n/a | `string` | n/a | yes |

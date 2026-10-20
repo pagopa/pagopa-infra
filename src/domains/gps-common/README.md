@@ -3,17 +3,17 @@
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.13.1 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3.1 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.16 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.2 |
-| <a name="requirement_postgresql"></a> [postgresql](#requirement\_postgresql) | ~> 1.26.0 |
+| <a name="requirement_postgresql"></a> [postgresql](#requirement\_postgresql) | = 1.27.0 |
 
 ## Modules
 
 | Name | Source | Version |
-| ---- | ------ | ------- |
+|------|--------|---------|
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | befe5693313f3b23ca2ca8a9a5c7ac190e4fe06c |
 | <a name="module_eventhub_rtp_namespace_integration"></a> [eventhub\_rtp\_namespace\_integration](#module\_eventhub\_rtp\_namespace\_integration) | ./.terraform/modules/__v4__/eventhub | n/a |
 | <a name="module_gpd_audit_sa"></a> [gpd\_audit\_sa](#module\_gpd\_audit\_sa) | ./.terraform/modules/__v4__/IDH/storage_account | n/a |
@@ -41,7 +41,7 @@
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azapi_resource.gpd_postgres_archive_lifecycle_linked_service](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource.gpd_postgres_lifecycle_linked_service](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource.gpd_postgres_linked_service](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
@@ -121,6 +121,7 @@
 | [azurerm_monitor_metric_alert.pipeline_lifecycle_script_execution_single_failure](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.payments_gpd_inconsistency_error](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_portal_dashboard.debt_position_postgresql_dashboard](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/portal_dashboard) | resource |
+| [azurerm_portal_dashboard.opex_pagopa_gpd_payments_SOAP](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/portal_dashboard) | resource |
 | [azurerm_postgresql_flexible_server_configuration.pd_pgbouncer_ignore_startup_parameters](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
 | [azurerm_postgresql_flexible_server_configuration.pg_cron_database](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
 | [azurerm_postgresql_flexible_server_configuration.pg_log_lock_waits](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
@@ -153,18 +154,18 @@
 | [azurerm_storage_queue.gpd_receipt_poison](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
 | [azurerm_storage_queue.gpd_valid_positions_queue](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
 | [null_resource.github_runner_app_permissions_to_namespace_cd_01](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [postgresql_grant.flyway_routines_all](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/grant) | resource |
-| [postgresql_grant.flyway_schema_all](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/grant) | resource |
-| [postgresql_grant.flyway_sequences_all](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/grant) | resource |
-| [postgresql_grant.flyway_tables_all](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/grant) | resource |
-| [postgresql_grant.gpd_technical_support_schema_usage](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/grant) | resource |
-| [postgresql_grant.gpd_technical_support_select_reconciliation_tables](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/grant) | resource |
-| [postgresql_grant.routine_permissions](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/grant) | resource |
-| [postgresql_grant.schema_permissions](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/grant) | resource |
-| [postgresql_grant.select_payment_position](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/grant) | resource |
-| [postgresql_role.apd_storico_user](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/role) | resource |
-| [postgresql_role.pgres_adf_user](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/role) | resource |
-| [postgresql_role.pgres_gpd_technical_support_user](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/role) | resource |
+| [postgresql_grant.flyway_routines_all](https://registry.terraform.io/providers/cyrilgdn/postgresql/1.27.0/docs/resources/grant) | resource |
+| [postgresql_grant.flyway_schema_all](https://registry.terraform.io/providers/cyrilgdn/postgresql/1.27.0/docs/resources/grant) | resource |
+| [postgresql_grant.flyway_sequences_all](https://registry.terraform.io/providers/cyrilgdn/postgresql/1.27.0/docs/resources/grant) | resource |
+| [postgresql_grant.flyway_tables_all](https://registry.terraform.io/providers/cyrilgdn/postgresql/1.27.0/docs/resources/grant) | resource |
+| [postgresql_grant.gpd_technical_support_schema_usage](https://registry.terraform.io/providers/cyrilgdn/postgresql/1.27.0/docs/resources/grant) | resource |
+| [postgresql_grant.gpd_technical_support_select_reconciliation_tables](https://registry.terraform.io/providers/cyrilgdn/postgresql/1.27.0/docs/resources/grant) | resource |
+| [postgresql_grant.routine_permissions](https://registry.terraform.io/providers/cyrilgdn/postgresql/1.27.0/docs/resources/grant) | resource |
+| [postgresql_grant.schema_permissions](https://registry.terraform.io/providers/cyrilgdn/postgresql/1.27.0/docs/resources/grant) | resource |
+| [postgresql_grant.select_payment_position](https://registry.terraform.io/providers/cyrilgdn/postgresql/1.27.0/docs/resources/grant) | resource |
+| [postgresql_role.apd_storico_user](https://registry.terraform.io/providers/cyrilgdn/postgresql/1.27.0/docs/resources/role) | resource |
+| [postgresql_role.pgres_adf_user](https://registry.terraform.io/providers/cyrilgdn/postgresql/1.27.0/docs/resources/role) | resource |
+| [postgresql_role.pgres_gpd_technical_support_user](https://registry.terraform.io/providers/cyrilgdn/postgresql/1.27.0/docs/resources/role) | resource |
 | [random_password.pgres_adf_pipeline_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_password.pgres_apd_storico_user_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_password.pgres_gpd_technical_support_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
@@ -232,7 +233,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_application_insights_name"></a> [application\_insights\_name](#input\_application\_insights\_name) | Specifies the name of the Application Insights. | `string` | n/a | yes |
 | <a name="input_cidr_subnet_gps_cosmosdb"></a> [cidr\_subnet\_gps\_cosmosdb](#input\_cidr\_subnet\_gps\_cosmosdb) | Cosmos DB address space | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_pg_flex_dbms"></a> [cidr\_subnet\_pg\_flex\_dbms](#input\_cidr\_subnet\_pg\_flex\_dbms) | Postgres Flexible Server network address space. | `list(string)` | n/a | yes |

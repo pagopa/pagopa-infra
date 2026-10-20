@@ -216,7 +216,7 @@ resource "azurerm_key_vault_certificate" "ecommerce-jwt-token-issuer-certificate
       }
 
       trigger {
-        days_before_expiry = 2
+        days_before_expiry = 7
       }
     }
 

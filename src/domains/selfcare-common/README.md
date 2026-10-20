@@ -3,7 +3,7 @@
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 3.0.2 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | = 3.116.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.3.2 |
@@ -11,7 +11,7 @@
 ## Modules
 
 | Name | Source | Version |
-| ---- | ------ | ------- |
+|------|--------|---------|
 | <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 179dddb9c85e412da5e807b430322155f30aeda5 |
 | <a name="module_bopagopa_cosmosdb_mongo_account"></a> [bopagopa\_cosmosdb\_mongo\_account](#module\_bopagopa\_cosmosdb\_mongo\_account) | ./.terraform/modules/__v3__/cosmosdb_account | n/a |
 | <a name="module_bopagopa_cosmosdb_mongodb_snet"></a> [bopagopa\_cosmosdb\_mongodb\_snet](#module\_bopagopa\_cosmosdb\_mongodb\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
@@ -29,7 +29,7 @@
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azuread_application.selfcare](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application) | resource |
 | [azuread_application_password.selfcare](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_password) | resource |
 | [azuread_service_principal.selfcare](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal) | resource |
@@ -93,7 +93,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_application_insights_name"></a> [application\_insights\_name](#input\_application\_insights\_name) | Specifies the name of the Application Insights. | `string` | n/a | yes |
 | <a name="input_bopagopa_datastore_cosmos_db_params"></a> [bopagopa\_datastore\_cosmos\_db\_params](#input\_bopagopa\_datastore\_cosmos\_db\_params) | n/a | <pre>object({<br/>    kind           = string<br/>    capabilities   = list(string)<br/>    offer_type     = string<br/>    server_version = string<br/>    consistency_policy = object({<br/>      consistency_level       = string<br/>      max_interval_in_seconds = number<br/>      max_staleness_prefix    = number<br/>    })<br/>    main_geo_location_zone_redundant = bool<br/>    enable_free_tier                 = bool<br/>    additional_geo_locations = list(object({<br/>      location          = string<br/>      failover_priority = number<br/>      zone_redundant    = bool<br/>    }))<br/>    private_endpoint_enabled          = bool<br/>    public_network_access_enabled     = bool<br/>    is_virtual_network_filter_enabled = bool<br/>    backup_continuous_enabled         = bool<br/>    container_default_ttl             = number<br/>  })</pre> | n/a | yes |
 | <a name="input_cidr_subnet_cosmosdb_mongodb"></a> [cidr\_subnet\_cosmosdb\_mongodb](#input\_cidr\_subnet\_cosmosdb\_mongodb) | Cosmos DB address space | `list(string)` | `null` | no |

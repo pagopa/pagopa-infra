@@ -248,7 +248,7 @@ resource "azurerm_key_vault_certificate" "pay-wallet-jwt-token-issuer-certificat
       }
 
       trigger {
-        days_before_expiry = 2
+        days_before_expiry = 7
       }
     }
 
