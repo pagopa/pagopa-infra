@@ -5,6 +5,9 @@ locals {
   cdn_index_document                  = "index.html"
   cdn_error_document                  = "index.html"
 
+  # NPG SDK self-hosted for SRI, folder-scoped; connect-src already covers it via *.platform.pagopa.it
+  npg_sdk_cdn_url = "https://assets.cdn.platform.pagopa.it/${var.env_short == "p" ? "npg-prod" : "npg-uat"}/"
+
   wallet_dns_zone_key = "${var.dns_zone_prefix}.${var.external_domain}"
 
   # Note for App GW/APIM <-> CDN switches:
@@ -52,7 +55,7 @@ locals {
         {
           action = "Append"
           name   = local.content_security_policy_header_name
-          value  = "script-src 'self' 'unsafe-inline' *.nexigroup.com;"
+          value  = "script-src 'self' 'unsafe-inline' *.nexigroup.com ${local.npg_sdk_cdn_url};"
         },
         {
           action = "Append"

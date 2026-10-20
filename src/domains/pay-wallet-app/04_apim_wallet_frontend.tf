@@ -39,11 +39,14 @@ locals {
 
   wallet_frontend_npg_sdk_hostname = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
 
+  # NPG SDK self-hosted for SRI, folder-scoped; connect-src already covers it via *.platform.pagopa.it
+  wallet_frontend_npg_sdk_cdn_url = "https://assets.cdn.platform.pagopa.it/${var.env_short == "p" ? "npg-prod" : "npg-uat"}/"
+
   wallet_csp_value = join("", [
     "default-src 'self'; connect-src 'self' *.platform.pagopa.it *.pagopa.gov.it *.nexigroup.com;",
     " frame-ancestors 'none'; object-src 'none'; frame-src 'self' *.platform.pagopa.it *.nexigroup.com;",
     " img-src 'self' https://assets.cdn.io.italia.it *.platform.pagopa.it data:;",
-    " script-src 'self' 'unsafe-inline' *.nexigroup.com;",
+    " script-src 'self' 'unsafe-inline' *.nexigroup.com ${local.wallet_frontend_npg_sdk_cdn_url};",
     " style-src 'self' 'unsafe-inline'; worker-src blob:;"
   ])
 }
