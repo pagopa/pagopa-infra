@@ -88,7 +88,7 @@ pay_wallet_storage_params = {
 
 # AKS
 aks_user_node_pool = {
-  enabled         = true,
+  enabled         = false,
   name            = "pauakswalusr",
   vm_size         = "Standard_D8ds_v5",
   os_disk_type    = "Ephemeral",
@@ -102,3 +102,16 @@ aks_user_node_pool = {
 payment_wallet_service_api_key_use_primary = true
 
 pay_wallet_jwt_issuer_api_key_use_primary = true
+
+aks_foobar_paywallet_node_pool_configuration = {
+  enabled         = true,
+  tier            = "Standard_D8ds"
+  name            = "wallet"
+  node_count_min  = 1,
+  node_count_max  = 1,
+  node_labels     = { node_name : "aks-pay-wallet-user", node_type : "user", domain : "paywallet" },
+  node_taints     = ["paymentWalletOnly=true:NoSchedule"],
+  node_tags       = { payWallet : "true" },
+  os_disk_type    = "Ephemeral",
+  os_disk_size_gb = 300,
+}

@@ -105,6 +105,9 @@ variables:
     ${{ if eq(parameters.ACTION, 'teardown') }}:
       value: 2
 
+  - name: apimCapacity
+    value: 1
+
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -143,7 +146,11 @@ stages:
               scriptLocation: 'inlineScript'
               failOnStandardError: true
               inlineScript: |
-                az apim update --resource-group ${{ variables.apimRg }} --name ${{ variables.apimName }} --sku-name "${{ variables.apimSku }}"
+                if [ "${{ variables.apimSku }}" = "Developer" ]; then
+                  az apim update --resource-group ${{ variables.apimRg }} --name ${{ variables.apimName }} --sku-name "${{ variables.apimSku }}"
+                else
+                  az apim update --resource-group ${{ variables.apimRg }} --name ${{ variables.apimName }} --sku-name "${{ variables.apimSku }}" --sku-capacity "${{ variables.apimCapacity }}"
+                fi
           - task: AzureCLI@2
             displayName: 'Update APPGW'
             inputs:

@@ -31,3 +31,5 @@ pod_disruption_budgets = {
     }
   },
 }
+
+redis_ha_enabled = true

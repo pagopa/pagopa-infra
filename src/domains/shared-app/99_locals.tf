@@ -16,6 +16,15 @@ locals {
   monitor_action_group_opsgenie_name = "Opsgenie"
   monitor_appinsights_name           = "${local.product}-appinsights"
 
+  monitor_action_group_checkout_opsgenie_name    = "ChkOpsgenie"
+  monitor_action_group_checkout_opsgenie_rg_name = "pagopa-p-monitor-rg"
+
+  monitor_action_group_ecommerce_opsgenie_name    = "EcomOpsgenie"
+  monitor_action_group_ecommerce_opsgenie_rg_name = "pagopa-p-weu-ecommerce-alerts-rg"
+
+  monitor_action_group_pay_wallet_opsgenie_name    = "PayWalletOpsgenie"
+  monitor_action_group_pay_wallet_opsgenie_rg_name = "pagopa-p-itn-pay-wallet-alerts-rg"
+
   vnet_name                = "${local.product}-vnet"
   vnet_resource_group_name = "${local.product}-vnet-rg"
 

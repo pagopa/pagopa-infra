@@ -13,7 +13,7 @@ module "redis" {
   product_name      = local.prefix
 
   location               = var.location
-  name                   = "${local.project}-redis"
+  name                   = local.project
   resource_group_name    = azurerm_resource_group.redis_rg.name
   alert_action_group_ids = concat([data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id], var.alert_use_opsgenie ? [] : [])
 
@@ -21,7 +21,7 @@ module "redis" {
     enabled              = true
     vnet_name            = local.spoke_data_vnet_name
     vnet_rg_name         = local.spoke_data_vnet_resource_group_name
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_redis_cache_windows_net.id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_redis_azure_net.id]
   }
   eviction_policy_override = "AllKeysLRU"
   embedded_nsg_configuration = {

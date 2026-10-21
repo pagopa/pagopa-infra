@@ -66,11 +66,8 @@ data "azurerm_private_dns_zone" "internal" {
 }
 
 
-
-
-
-data "azurerm_private_dns_zone" "privatelink_redis_cache_windows_net" {
-  name                = "privatelink.redis.cache.windows.net"
+data "azurerm_private_dns_zone" "privatelink_redis_azure_net" {
+  name                = "privatelink.redis.azure.net"
   resource_group_name = local.private_dns_zone_rg_name
 }
 
@@ -79,6 +76,3 @@ data "azurerm_private_dns_zone" "privatelink_mongo_cosmos_azure_com" {
   name                = "privatelink.mongo.cosmos.azure.com"
   resource_group_name = local.private_dns_zone_rg_name
 }
-
-
-
