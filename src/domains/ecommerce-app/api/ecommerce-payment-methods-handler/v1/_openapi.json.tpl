@@ -227,7 +227,7 @@
                         "name": "x-language",
                         "in": "header",
                         "description": "The user language",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "string",
                             "enum": [
