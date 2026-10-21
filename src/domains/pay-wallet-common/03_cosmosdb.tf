@@ -169,11 +169,11 @@ locals {
       indexes = [{
         keys   = ["_id"]
         unique = true
-      },
-      {
-        keys   = ["timestamp"]
-        unique = false
-      }
+        },
+        {
+          keys   = ["timestamp"]
+          unique = false
+        }
       ]
       shard_key = "_id"
     },
