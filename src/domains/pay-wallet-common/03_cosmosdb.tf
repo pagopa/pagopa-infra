@@ -171,7 +171,7 @@ locals {
         unique = true
         },
         {
-          keys   = ["timestamp"]
+          keys   = ["timestamp", "_id"]
           unique = false
         }
       ]
