@@ -1610,6 +1610,171 @@
         }
       }
     },
+    "/api/v1/ea/live": {
+      "get": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Get Live",
+        "description": "Outcomes of the test runs of the last ``days`` in ``env``, on the map nodes.",
+        "operationId": "get_live_api_v1_ea_live_get",
+        "parameters": [
+          {
+            "name": "env",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^(DEV|UAT|PROD)$",
+              "default": "DEV",
+              "title": "Env"
+            }
+          },
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 30,
+              "minimum": 1,
+              "default": 7,
+              "title": "Days"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaLiveOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/flows": {
+      "get": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "List Flows",
+        "description": "Curated payment flows (SANP), step by step, on the nodes of the map.",
+        "operationId": "list_flows_api_v1_ea_flows_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/EaFlowOut"
+                  },
+                  "type": "array",
+                  "title": "Response List Flows Api V1 Ea Flows Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/impact/release": {
+      "post": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Release Impact",
+        "operationId": "release_impact_api_v1_ea_impact_release_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EaReleaseImpactRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaReleaseImpactOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/assistant/chat": {
+      "post": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Assistant Chat",
+        "operationId": "assistant_chat_api_v1_ea_assistant_chat_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EaAssistantRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaAssistantOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/ea/edges": {
       "post": {
         "tags": [
@@ -4433,11 +4598,11 @@
             }
           },
           {
-            "name": "trigger",
+            "name": "origin",
             "in": "query",
             "required": false,
             "schema": {
-              "title": "Trigger",
+              "title": "Origin",
               "type": "string",
               "nullable": true
             }
@@ -4674,31 +4839,6 @@
         }
       }
     },
-    "/api/v1/test-metrics/origins": {
-      "get": {
-        "tags": [
-          "test-metrics"
-        ],
-        "summary": "Get Origins",
-        "operationId": "get_origins_api_v1_test_metrics_origins_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "type": "string"
-                  },
-                  "type": "array",
-                  "title": "Response Get Origins Api V1 Test Metrics Origins Get"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/suites/all": {
       "get": {
         "tags": [
@@ -4708,11 +4848,11 @@
         "operationId": "get_suites_api_v1_suites_all_get",
         "parameters": [
           {
-            "name": "trigger",
+            "name": "origin",
             "in": "query",
             "required": false,
             "schema": {
-              "title": "Trigger",
+              "title": "Origin",
               "type": "string",
               "nullable": true
             }
@@ -5599,6 +5739,70 @@
         "type": "object",
         "title": "DqDomainUpdate"
       },
+      "EaAssistantOut": {
+        "properties": {
+          "answer": {
+            "type": "string",
+            "title": "Answer"
+          },
+          "highlight": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Highlight"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Labels"
+          },
+          "steps": {
+            "items": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Steps"
+          }
+        },
+        "type": "object",
+        "required": [
+          "answer",
+          "highlight",
+          "labels",
+          "steps"
+        ],
+        "title": "EaAssistantOut"
+      },
+      "EaAssistantRequest": {
+        "properties": {
+          "messages": {
+            "items": {
+              "$ref": "#/components/schemas/EaChatMessage"
+            },
+            "type": "array",
+            "maxItems": 40,
+            "minItems": 1,
+            "title": "Messages"
+          },
+          "context": {
+            "title": "Context",
+            "additionalProperties": true,
+            "type": "object",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "title": "EaAssistantRequest"
+      },
       "EaChangeBulk": {
         "properties": {
           "actor": {
@@ -5746,6 +5950,27 @@
           "created_at"
         ],
         "title": "EaChangeOut"
+      },
+      "EaChatMessage": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "pattern": "^(user|assistant)$",
+            "title": "Role"
+          },
+          "content": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "role",
+          "content"
+        ],
+        "title": "EaChatMessage"
       },
       "EaEdgeCreate": {
         "properties": {
@@ -5901,6 +6126,92 @@
         "type": "object",
         "title": "EaEdgeUpdate"
       },
+      "EaFlowOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "subtitle": {
+            "type": "string",
+            "title": "Subtitle"
+          },
+          "process": {
+            "type": "string",
+            "title": "Process"
+          },
+          "process_name": {
+            "type": "string",
+            "title": "Process Name"
+          },
+          "services": {
+            "items": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Services"
+          },
+          "lanes": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Lanes"
+          },
+          "steps": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Steps"
+          },
+          "missing": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing"
+          },
+          "validated": {
+            "type": "boolean",
+            "title": "Validated"
+          },
+          "sanp_url": {
+            "title": "Sanp Url",
+            "type": "string",
+            "nullable": true
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "subtitle",
+          "process",
+          "process_name",
+          "services",
+          "lanes",
+          "steps",
+          "missing",
+          "validated",
+          "source"
+        ],
+        "title": "EaFlowOut",
+        "description": "A curated payment flow, step by step, tied to the map nodes (draft until validated)."
+      },
       "EaHistoryItem": {
         "properties": {
           "action": {
@@ -6045,6 +6356,73 @@
         "title": "EaKbResponse",
         "description": "Knowledge base in the shape used by the map views (kept loose on purpose)."
       },
+      "EaLiveOut": {
+        "properties": {
+          "env": {
+            "type": "string",
+            "title": "Env"
+          },
+          "days": {
+            "type": "integer",
+            "title": "Days"
+          },
+          "generated_at": {
+            "type": "string",
+            "title": "Generated At"
+          },
+          "objects": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Objects"
+          },
+          "nodes": {
+            "additionalProperties": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "object",
+            "title": "Nodes"
+          },
+          "unmapped": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Unmapped"
+          },
+          "feed": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Feed"
+          },
+          "counts": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Counts"
+          }
+        },
+        "type": "object",
+        "required": [
+          "env",
+          "days",
+          "generated_at",
+          "objects",
+          "nodes",
+          "unmapped",
+          "feed",
+          "counts"
+        ],
+        "title": "EaLiveOut",
+        "description": "Recent outcomes of the automated test runs, tied to the map nodes."
+      },
       "EaNodeCreate": {
         "properties": {
           "actor": {
@@ -6168,6 +6546,12 @@
             },
             "type": "array",
             "title": "In"
+          },
+          "dq": {
+            "title": "Dq",
+            "additionalProperties": true,
+            "type": "object",
+            "nullable": true
           }
         },
         "type": "object",
@@ -6267,6 +6651,21 @@
             "title": "Ctype",
             "type": "string",
             "nullable": true
+          },
+          "layer": {
+            "title": "Layer",
+            "type": "string",
+            "nullable": true
+          },
+          "doc_url": {
+            "title": "Doc Url",
+            "type": "string",
+            "nullable": true
+          },
+          "slack_url": {
+            "title": "Slack Url",
+            "type": "string",
+            "nullable": true
           }
         },
         "type": "object",
@@ -6352,6 +6751,115 @@
         },
         "type": "object",
         "title": "EaQaUpdate"
+      },
+      "EaReleaseImpactOut": {
+        "properties": {
+          "change": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Change"
+          },
+          "component": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Component"
+          },
+          "risk": {
+            "type": "string",
+            "title": "Risk"
+          },
+          "categories": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Categories"
+          },
+          "impacted": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Impacted"
+          },
+          "suites": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Suites"
+          },
+          "gaps": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Gaps"
+          },
+          "processes": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Processes"
+          },
+          "highlight": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Highlight"
+          }
+        },
+        "type": "object",
+        "required": [
+          "change",
+          "component",
+          "risk",
+          "categories",
+          "impacted",
+          "suites",
+          "gaps",
+          "processes",
+          "highlight"
+        ],
+        "title": "EaReleaseImpactOut"
+      },
+      "EaReleaseImpactRequest": {
+        "properties": {
+          "url": {
+            "title": "Url",
+            "type": "string",
+            "maxLength": 500,
+            "nullable": true
+          },
+          "repo": {
+            "title": "Repo",
+            "type": "string",
+            "maxLength": 200,
+            "nullable": true
+          },
+          "base": {
+            "title": "Base",
+            "type": "string",
+            "maxLength": 200,
+            "nullable": true
+          },
+          "head": {
+            "title": "Head",
+            "type": "string",
+            "maxLength": 200,
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "title": "EaReleaseImpactRequest",
+        "description": "A GitHub pull request or comparison link, or repository + base + head."
       },
       "EaSyncRequest": {
         "properties": {
