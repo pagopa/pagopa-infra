@@ -494,7 +494,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"ecommerce/checkout/v1/transactions/[^/]+\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n",
+                  "value": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/io-payment-wallet/v1/wallets/[^/]+\" and httpMethod_s == \"GET\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
                   "isOptional": true
                 },
                 {
@@ -514,7 +514,7 @@
                 },
                 {
                   "name": "PartSubTitle",
-                  "value": "ecommerce/checkout/v1/transactions/{transactionId}",
+                  "value": "GET /io-payment-wallet/v1/wallets/{walletId}",
                   "isOptional": true
                 },
                 {
@@ -573,10 +573,7 @@
                         "type": "real"
                       }
                     ]
-                  },
-                  "PartSubTitle": "GET /io-payment-wallet/v1/wallets/{walletId}",
-                  "PartTitle": "Availability (15m)",
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/io-payment-wallet/v1/wallets/[^/]+\" and httpMethod_s == \"GET\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n"
+                  }
                 }
               }
             }
@@ -634,7 +631,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "\nlet api_url = \"ecommerce/checkout/v1/transactions/[^/]+\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
+                  "value": "let api_url = \"/io-payment-wallet/v1/wallets/[^/]+\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"GET\"\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
                   "isOptional": true
                 },
                 {
@@ -644,7 +641,7 @@
                 },
                 {
                   "name": "SpecificChart",
-                  "value": "Pie",
+                  "value": "StackedArea",
                   "isOptional": true
                 },
                 {
@@ -654,7 +651,7 @@
                 },
                 {
                   "name": "PartSubTitle",
-                  "value": "ecommerce/checkout/v1/transactions/{transactionId}",
+                  "value": "GET /io-payment-wallet/v1/wallets/{walletId}",
                   "isOptional": true
                 },
                 {
@@ -710,11 +707,7 @@
                         "type": "long"
                       }
                     ]
-                  },
-                  "PartSubTitle": "GET /io-payment-wallet/v1/wallets/{walletId}",
-                  "PartTitle": "Response Codes (15m)",
-                  "Query": "let api_url = \"/io-payment-wallet/v1/wallets/[^/]+\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"GET\"\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
-                  "SpecificChart": "StackedArea"
+                  }
                 }
               }
             }
@@ -1187,7 +1180,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"ecommerce/checkout/v1/transactions/[^/]+\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n",
+                  "value": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/payment-wallet-notifications/v1/wallets/[^/]+/sessions/[^/]+/notifications\" and httpMethod_s == \"POST\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
                   "isOptional": true
                 },
                 {
@@ -1197,7 +1190,7 @@
                 },
                 {
                   "name": "SpecificChart",
-                  "value": "StackedColumn",
+                  "value": "Line",
                   "isOptional": true
                 },
                 {
@@ -1207,7 +1200,7 @@
                 },
                 {
                   "name": "PartSubTitle",
-                  "value": "ecommerce/checkout/v1/transactions/{transactionId}",
+                  "value": "POST /payment-wallet-notifications/v1/wallets/{walletId}/sessions/{sessionId}/notifications",
                   "isOptional": true
                 },
                 {
@@ -1262,11 +1255,7 @@
                         "type": "real"
                       }
                     ]
-                  },
-                  "PartSubTitle": "POST /payment-wallet-notifications/v1/wallets/{walletId}/sessions/{sessionId}/notifications",
-                  "PartTitle": "Percentile Response Time (15m)",
-                  "Query": "let api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/payment-wallet-notifications/v1/wallets/[^/]+/sessions/[^/]+/notifications\" and httpMethod_s == \"POST\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
-                  "SpecificChart": "Line"
+                  }
                 }
               }
             }
