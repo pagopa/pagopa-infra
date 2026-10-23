@@ -1556,6 +1556,93 @@
         }
       }
     },
+    "/api/v1/ea/infra": {
+      "get": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Get Infra",
+        "description": "Infrastructure of one environment, from the Terraform of the platform.",
+        "operationId": "get_infra_api_v1_ea_infra_get",
+        "parameters": [
+          {
+            "name": "env",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^(prod|uat|dev)$",
+              "default": "prod",
+              "title": "Env"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaInfraViewOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ea/infra/resources/{resource_id}": {
+      "get": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Get Infra Resource",
+        "operationId": "get_infra_resource_api_v1_ea_infra_resources__resource_id__get",
+        "parameters": [
+          {
+            "name": "resource_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Resource Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaInfraResourceDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/ea/nodes/{node_id}/impact": {
       "get": {
         "tags": [
@@ -6317,6 +6404,508 @@
         ],
         "title": "EaImpactResponse"
       },
+      "EaInfraActionGroupOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "channels": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Channels"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "channels"
+        ],
+        "title": "EaInfraActionGroupOut"
+      },
+      "EaInfraAlertOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "severity": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Severity"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string",
+            "nullable": true
+          },
+          "targets": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Targets"
+          },
+          "action_groups": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Action Groups"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "severity",
+          "kind",
+          "targets",
+          "action_groups"
+        ],
+        "title": "EaInfraAlertOut"
+      },
+      "EaInfraDashboardOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "label"
+        ],
+        "title": "EaInfraDashboardOut"
+      },
+      "EaInfraLinkOut": {
+        "properties": {
+          "from": {
+            "type": "string",
+            "title": "From"
+          },
+          "to": {
+            "type": "string",
+            "title": "To"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "origin": {
+            "type": "string",
+            "title": "Origin"
+          },
+          "evidence": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Evidence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "from",
+          "to",
+          "kind",
+          "origin",
+          "evidence"
+        ],
+        "title": "EaInfraLinkOut"
+      },
+      "EaInfraLinkSide": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "ltype": {
+            "type": "string",
+            "title": "Ltype"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "origin": {
+            "type": "string",
+            "title": "Origin"
+          },
+          "envs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Envs"
+          },
+          "evidence": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Evidence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "ltype",
+          "kind",
+          "origin",
+          "envs",
+          "evidence"
+        ],
+        "title": "EaInfraLinkSide"
+      },
+      "EaInfraMonitoringOut": {
+        "properties": {
+          "alerts": {
+            "items": {
+              "$ref": "#/components/schemas/EaInfraAlertOut"
+            },
+            "type": "array",
+            "title": "Alerts"
+          },
+          "action_groups": {
+            "items": {
+              "$ref": "#/components/schemas/EaInfraActionGroupOut"
+            },
+            "type": "array",
+            "title": "Action Groups"
+          },
+          "dashboards": {
+            "items": {
+              "$ref": "#/components/schemas/EaInfraDashboardOut"
+            },
+            "type": "array",
+            "title": "Dashboards"
+          }
+        },
+        "type": "object",
+        "required": [
+          "alerts",
+          "action_groups",
+          "dashboards"
+        ],
+        "title": "EaInfraMonitoringOut"
+      },
+      "EaInfraResourceDetail": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "ltype": {
+            "type": "string",
+            "title": "Ltype"
+          },
+          "vendor": {
+            "type": "string",
+            "title": "Vendor"
+          },
+          "tf_type": {
+            "type": "string",
+            "title": "Tf Type"
+          },
+          "address": {
+            "type": "string",
+            "title": "Address"
+          },
+          "repo": {
+            "type": "string",
+            "title": "Repo"
+          },
+          "stack": {
+            "type": "string",
+            "title": "Stack"
+          },
+          "file_url": {
+            "title": "File Url",
+            "type": "string",
+            "nullable": true
+          },
+          "parent": {
+            "title": "Parent",
+            "type": "string",
+            "nullable": true
+          },
+          "blueprint": {
+            "title": "Blueprint",
+            "type": "string",
+            "nullable": true
+          },
+          "node": {
+            "title": "Node",
+            "type": "string",
+            "nullable": true
+          },
+          "external": {
+            "type": "boolean",
+            "title": "External"
+          },
+          "envs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Envs"
+          },
+          "location": {
+            "title": "Location",
+            "type": "string",
+            "nullable": true
+          },
+          "attrs": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Attrs"
+          },
+          "names": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Names"
+          },
+          "locations": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Locations"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "node_name": {
+            "title": "Node Name",
+            "type": "string",
+            "nullable": true
+          },
+          "children": {
+            "type": "integer",
+            "title": "Children"
+          },
+          "out": {
+            "items": {
+              "$ref": "#/components/schemas/EaInfraLinkSide"
+            },
+            "type": "array",
+            "title": "Out"
+          },
+          "in": {
+            "items": {
+              "$ref": "#/components/schemas/EaInfraLinkSide"
+            },
+            "type": "array",
+            "title": "In"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "ltype",
+          "vendor",
+          "tf_type",
+          "address",
+          "repo",
+          "stack",
+          "file_url",
+          "parent",
+          "blueprint",
+          "node",
+          "external",
+          "envs",
+          "location",
+          "attrs",
+          "names",
+          "locations",
+          "status",
+          "node_name",
+          "children",
+          "out",
+          "in"
+        ],
+        "title": "EaInfraResourceDetail"
+      },
+      "EaInfraResourceOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "ltype": {
+            "type": "string",
+            "title": "Ltype"
+          },
+          "vendor": {
+            "type": "string",
+            "title": "Vendor"
+          },
+          "tf_type": {
+            "type": "string",
+            "title": "Tf Type"
+          },
+          "address": {
+            "type": "string",
+            "title": "Address"
+          },
+          "repo": {
+            "type": "string",
+            "title": "Repo"
+          },
+          "stack": {
+            "type": "string",
+            "title": "Stack"
+          },
+          "file_url": {
+            "title": "File Url",
+            "type": "string",
+            "nullable": true
+          },
+          "parent": {
+            "title": "Parent",
+            "type": "string",
+            "nullable": true
+          },
+          "blueprint": {
+            "title": "Blueprint",
+            "type": "string",
+            "nullable": true
+          },
+          "node": {
+            "title": "Node",
+            "type": "string",
+            "nullable": true
+          },
+          "external": {
+            "type": "boolean",
+            "title": "External"
+          },
+          "envs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Envs"
+          },
+          "location": {
+            "title": "Location",
+            "type": "string",
+            "nullable": true
+          },
+          "attrs": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Attrs"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "ltype",
+          "vendor",
+          "tf_type",
+          "address",
+          "repo",
+          "stack",
+          "file_url",
+          "parent",
+          "blueprint",
+          "node",
+          "external",
+          "envs",
+          "location",
+          "attrs"
+        ],
+        "title": "EaInfraResourceOut"
+      },
+      "EaInfraViewOut": {
+        "properties": {
+          "env": {
+            "type": "string",
+            "title": "Env"
+          },
+          "envs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Envs"
+          },
+          "synced_at": {
+            "title": "Synced At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "resources": {
+            "items": {
+              "$ref": "#/components/schemas/EaInfraResourceOut"
+            },
+            "type": "array",
+            "title": "Resources"
+          },
+          "links": {
+            "items": {
+              "$ref": "#/components/schemas/EaInfraLinkOut"
+            },
+            "type": "array",
+            "title": "Links"
+          },
+          "monitoring": {
+            "$ref": "#/components/schemas/EaInfraMonitoringOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "env",
+          "envs",
+          "synced_at",
+          "resources",
+          "links",
+          "monitoring"
+        ],
+        "title": "EaInfraViewOut"
+      },
       "EaKbResponse": {
         "properties": {
           "meta": {
@@ -6552,6 +7141,15 @@
             "additionalProperties": true,
             "type": "object",
             "nullable": true
+          },
+          "infra": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Infra",
+            "default": []
           }
         },
         "type": "object",
