@@ -86,6 +86,11 @@ variable "ingress_load_balancer_ip" {
   type = string
 }
 
+variable "ingress_haproxy_load_balancer_ip" {
+  type        = string
+  description = "IP of the HAProxy ingress controller (temporary test host)"
+}
+
 ### Aks
 
 variable "external_domain" {
