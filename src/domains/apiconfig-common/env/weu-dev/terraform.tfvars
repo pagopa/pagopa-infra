@@ -16,7 +16,8 @@ application_insights_name                   = "pagopa-d-appinsights"
 
 ### Aks
 
-ingress_load_balancer_ip = "10.1.100.252" ## HAProxy (prima: Nginx 10.1.100.250)
+ingress_load_balancer_ip         = "10.1.100.250"
+ingress_haproxy_load_balancer_ip = "10.1.100.252" # HAProxy, host di test
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
