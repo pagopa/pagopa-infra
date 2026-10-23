@@ -10,7 +10,6 @@
           <method>GET</method>
           <method>OPTIONS</method>
           <method>DELETE</method>
-          <method>PATCH</method>
         </allowed-methods>
         <allowed-headers>
           <header>Content-Type</header>
@@ -29,7 +28,6 @@
       <value>CHECKOUT</value>
     </set-header>
       <set-variable name="transactionsOperationId" value="newTransaction,getTransactionInfo,getTransactionOutcomes,requestTransactionUserCancellation,requestTransactionAuthorization" />
-      <set-variable name="paymentMethodsOperationId" value="" />
       <set-variable name="paymentMethodsHandlerOperationId" value="createSession,getSessionPaymentMethod,updateSession,getTransactionIdForSession,getAllPaymentMethods,getPaymentMethod,calculateFees" />
       <set-variable name="paymentRequestsOperationId" value="getPaymentRequestInfo" />
       <set-variable name="cartsOperationId" value="GetCarts,GetCartsRedirect" />
@@ -46,13 +44,6 @@
             <value>{{ecommerce-payment-methods-api-key-value}}</value>
           </set-header>
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-handler")"/>
-        </when>
-        <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("paymentMethodsOperationId","").Split(','), operations => operations == context.Operation.Id))">
-          <!-- Set payment-methods API Key header -->
-          <set-header name="x-api-key" exists-action="override">
-            <value>{{ecommerce-payment-methods-api-key-value}}</value>
-          </set-header>
-          <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service")"/>
         </when>
         <when condition="@(
           Array.Exists(context.Variables.GetValueOrDefault("paymentRequestsOperationId","").Split(','), operations => operations == context.Operation.Id)
