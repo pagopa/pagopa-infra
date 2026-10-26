@@ -1780,6 +1780,66 @@
         }
       }
     },
+    "/api/v1/ea/assistant/settings": {
+      "get": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Get Assistant Settings",
+        "operationId": "get_assistant_settings_api_v1_ea_assistant_settings_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssistantSettingsOut"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Update Assistant Settings",
+        "operationId": "update_assistant_settings_api_v1_ea_assistant_settings_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssistantConfig"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssistantSettingsOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/ea/impact/release": {
       "post": {
         "tags": [
@@ -4999,6 +5059,92 @@
         ],
         "title": "ActionCatalogEntry"
       },
+      "AssistantConfig": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "gemini",
+              "groq"
+            ],
+            "title": "Provider",
+            "default": "gemini"
+          },
+          "gemini_model": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Gemini Model",
+            "default": "gemini-3.8-flash"
+          },
+          "groq_model": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Groq Model",
+            "default": "openai/gpt-oss-120b"
+          },
+          "fallback_enabled": {
+            "type": "boolean",
+            "title": "Fallback Enabled",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "AssistantConfig"
+      },
+      "AssistantSettingsOut": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "gemini",
+              "groq"
+            ],
+            "title": "Provider",
+            "default": "gemini"
+          },
+          "gemini_model": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Gemini Model",
+            "default": "gemini-3.8-flash"
+          },
+          "groq_model": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Groq Model",
+            "default": "openai/gpt-oss-120b"
+          },
+          "fallback_enabled": {
+            "type": "boolean",
+            "title": "Fallback Enabled",
+            "default": false
+          },
+          "configured": {
+            "additionalProperties": {
+              "type": "boolean"
+            },
+            "propertyNames": {
+              "enum": [
+                "gemini",
+                "groq"
+              ]
+            },
+            "type": "object",
+            "title": "Configured"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "configured"
+        ],
+        "title": "AssistantSettingsOut"
+      },
       "Body_parse_file_api_v1_bdd_parse_file_post": {
         "properties": {
           "source_type": {
@@ -5855,6 +6001,18 @@
             },
             "type": "array",
             "title": "Steps"
+          },
+          "provider": {
+            "type": "string",
+            "title": "Provider"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "fallback_used": {
+            "type": "boolean",
+            "title": "Fallback Used"
           }
         },
         "type": "object",
@@ -5862,7 +6020,10 @@
           "answer",
           "highlight",
           "labels",
-          "steps"
+          "steps",
+          "provider",
+          "model",
+          "fallback_used"
         ],
         "title": "EaAssistantOut"
       },
