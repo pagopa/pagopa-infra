@@ -67,6 +67,6 @@ module "apim_pagopa_payment_wallet_helpdesk_service_api_v1" {
   })
 
   xml_content = templatefile("./api/payment-wallet-helpdesk-api/v1/_base_policy.xml.tpl", {
-    hostname      = local.payment_wallet_hostname
+    hostname = local.payment_wallet_hostname
   })
 }
