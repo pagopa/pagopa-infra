@@ -110,6 +110,10 @@ module "apim_api_statuspage_api_v1" {
       xml_content  = templatefile("./api/status-page-service/v1/_proxygithub_policy.xml", {})
     },
     {
+      operation_id = "proxyGithubPost",
+      xml_content  = templatefile("./api/status-page-service/v1/_proxygithub_policy.xml", {})
+    },
+    {
       operation_id = "healthCheck",
       xml_content = templatefile("./api/status-page-service/v1/_healthcheck_policy.xml", {
         hostname = local.shared_hostname

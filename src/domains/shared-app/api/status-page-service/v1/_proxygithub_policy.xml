@@ -9,15 +9,19 @@
   <inbound>
     <cors allow-credentials="false">
       <allowed-origins>
-        <origin>*</origin>
+        <origin>https://pagopa.github.io</origin>
       </allowed-origins>
       <allowed-methods>
         <method>GET</method>
         <method>POST</method>
       </allowed-methods>
+      <allowed-headers>
+        <header>accept</header>
+        <header>content-type</header>
+      </allowed-headers>
     </cors>
     <base />
-    <rewrite-uri template="@(context.Request.Url.ToString().Replace("github","").Replace("%2F", "/"))" />
+    <rewrite-uri template="@(context.Request.OriginalUrl.Path.Substring("/shared/statuspage/v1/github".Length))" />
     <set-backend-service base-url="https://github.com" />
   </inbound>
   <!-- Control if and how the requests are forwarded to services  -->
