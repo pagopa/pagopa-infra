@@ -70,3 +70,12 @@ module "apim_pagopa_payment_wallet_helpdesk_service_api_v1" {
     hostname = local.payment_wallet_hostname
   })
 }
+
+resource "azurerm_api_management_named_value" "pagopa_payment_wallet_helpdesk_service_rest_api_key" {
+  name                = "payment-wallet-helpdesk-service-rest-api-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "payment-wallet-helpdesk-service-rest-api-key"
+  value               = var.payment_wallet_helpdesk_service_api_key_use_primary ? data.azurerm_key_vault_secret.pagopa_payment_wallet_helpdesk_service_rest_api_primary_key.value : data.azurerm_key_vault_secret.pagopa_payment_wallet_helpdesk_service_rest_api_secondary_key.value
+  secret              = true
+}
