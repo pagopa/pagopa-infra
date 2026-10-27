@@ -20,8 +20,10 @@
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 5bd8befbaf30b3759f2355bf3e46a85acba0a6f7 |
 | <a name="module_apim_io_payment_wallet_api_v1"></a> [apim\_io\_payment\_wallet\_api\_v1](#module\_apim\_io\_payment\_wallet\_api\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
 | <a name="module_apim_io_payment_wallet_product"></a> [apim\_io\_payment\_wallet\_product](#module\_apim\_io\_payment\_wallet\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_pagopa_payment_wallet_helpdesk_service_api_v1"></a> [apim\_pagopa\_payment\_wallet\_helpdesk\_service\_api\_v1](#module\_apim\_pagopa\_payment\_wallet\_helpdesk\_service\_api\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
 | <a name="module_apim_pay_wallet_healthcheck_api_v1"></a> [apim\_pay\_wallet\_healthcheck\_api\_v1](#module\_apim\_pay\_wallet\_healthcheck\_api\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
 | <a name="module_apim_payment_wallet_for_ecommerce_api_v1"></a> [apim\_payment\_wallet\_for\_ecommerce\_api\_v1](#module\_apim\_payment\_wallet\_for\_ecommerce\_api\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
+| <a name="module_apim_payment_wallet_helpdesk_product"></a> [apim\_payment\_wallet\_helpdesk\_product](#module\_apim\_payment\_wallet\_helpdesk\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
 | <a name="module_apim_payment_wallet_outcomes_api_v1"></a> [apim\_payment\_wallet\_outcomes\_api\_v1](#module\_apim\_payment\_wallet\_outcomes\_api\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
 | <a name="module_apim_payment_wallet_product"></a> [apim\_payment\_wallet\_product](#module\_apim\_payment\_wallet\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
 | <a name="module_apim_wallet_frontend_api"></a> [apim\_wallet\_frontend\_api](#module\_apim\_wallet\_frontend\_api) | ./.terraform/modules/__v4__/api_management_api | n/a |
@@ -46,6 +48,7 @@
 | [azurerm_api_management_api_operation_policy.wallet_frontend_get_fonts](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_version_set.io_payment_wallet_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.npg_notifications_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.pagopa_payment_wallet_helpdesk_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.pay_wallet_healthcheck_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.payment_wallet_for_ecommerce_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.wallet_outcomes_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
