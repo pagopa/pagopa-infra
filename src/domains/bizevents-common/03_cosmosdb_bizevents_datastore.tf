@@ -155,6 +155,11 @@ locals {
       partition_key_path = "/taxCode",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_view_user }
+    },
+    {
+      name               = "biz-events-leases",
+      partition_key_path = "/id",
+      autoscale_settings = { max_throughput = 1000 }
     }
   ]
 
