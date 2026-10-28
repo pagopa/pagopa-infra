@@ -45,7 +45,7 @@ locals {
   wallet_csp_value = join("", [
     "default-src 'self'; connect-src 'self' *.platform.pagopa.it *.pagopa.gov.it *.nexigroup.com;",
     " frame-ancestors 'none'; object-src 'none'; frame-src 'self' *.platform.pagopa.it *.nexigroup.com;",
-    " img-src 'self' https://assets.cdn.io.italia.it *.platform.pagopa.it data:;",
+    " img-src 'self' https://assets.cdn.platform.pagopa.it.it *.platform.pagopa.it data:;",
     " script-src 'self' 'unsafe-inline' *.nexigroup.com ${local.wallet_frontend_npg_sdk_cdn_url};",
     " style-src 'self' 'unsafe-inline'; worker-src blob:;"
   ])
