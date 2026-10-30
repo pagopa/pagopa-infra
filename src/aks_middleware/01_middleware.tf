@@ -14,7 +14,6 @@ module "aks_middleware" {
   keyvault_name                                             = var.keyvault_name
   keyvault_tenant_id                                        = var.keyvault_tenant_id
 
-  workload_identity_enabled              = true
   workload_identity_service_account_name = var.workload_identity_service_account_name
   workload_identity_client_id            = var.workload_identity_client_id
 
