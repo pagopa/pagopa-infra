@@ -9,27 +9,9 @@ variable "location_string" {
   description = "(Required) Location string"
 }
 
-variable "alert_name" {
-  type        = string
-  description = "(Optional) Alert name"
-  default     = null
-}
-
-variable "alert_enabled" {
-  type        = bool
-  description = "(Optional) Is this alert enabled?"
-  default     = true
-}
-
 variable "namespace" {
   type        = string
   description = "(Required) Namespace where the helm chart will be installed"
-}
-
-variable "helm_chart_present" {
-  type        = bool
-  description = "Is this helm chart present?"
-  default     = true
 }
 
 variable "keyvault_name" {
