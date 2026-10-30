@@ -1,14 +1,8 @@
-module "tls_checker" {
-  source = "./.terraform/modules/__v4__/tls_checker"
+module "aks_middleware" {
+  source = "../../aks_middleware"
 
   https_endpoint                                            = local.apiconfig_core_locals.hostname
-  alert_name                                                = local.apiconfig_core_locals.hostname
-  alert_enabled                                             = true
-  helm_chart_present                                        = true
-  helm_chart_version                                        = var.tls_cert_check_helm.chart_version
   namespace                                                 = kubernetes_namespace.namespace.metadata[0].name
-  helm_chart_image_name                                     = var.tls_cert_check_helm.image_name
-  helm_chart_image_tag                                      = var.tls_cert_check_helm.image_tag
   location_string                                           = var.location_string
   kv_secret_name_for_application_insights_connection_string = "ai-${var.env_short}-connection-string"
   application_insights_resource_group                       = data.azurerm_resource_group.monitor_rg.name
@@ -17,33 +11,12 @@ module "tls_checker" {
   keyvault_name                                             = data.azurerm_key_vault.kv.name
   keyvault_tenant_id                                        = data.azurerm_client_config.current.tenant_id
 
-  workload_identity_enabled              = true
   workload_identity_service_account_name = module.workload_identity_configuration.workload_identity_service_account_name
   workload_identity_client_id            = module.workload_identity_configuration.workload_identity_client_id
 
   depends_on = [module.workload_identity_configuration]
 }
 
-
-output "pa" {
-  value = "${path.root}/env/${var.location_short}-${var.env}/helm/cert-mounter.yaml"
-}
-
-# WL-IDENTITY
-# https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/1227751458/Migrazione+pod+Identity+vs+workload+Identity#%3Acertificate%3A-cert-mounter
-module "cert_mounter" {
-  source = "./.terraform/modules/__v4__/cert_mounter"
-
-  namespace        = var.domain
-  certificate_name = replace(local.hostname, ".", "-")
-  kv_name          = data.azurerm_key_vault.kv.name
-  tenant_id        = data.azurerm_subscription.current.tenant_id
-
-  workload_identity_service_account_name = module.workload_identity_configuration.workload_identity_service_account_name
-  workload_identity_client_id            = module.workload_identity_configuration.workload_identity_client_id
-
-  depends_on = [module.workload_identity_configuration]
-}
 
 resource "helm_release" "status_app" {
   name         = "status-app"
@@ -68,15 +41,3 @@ resource "helm_release" "status_app" {
   depends_on = [module.workload_identity_configuration]
 }
 
-resource "helm_release" "reloader" {
-  name       = "reloader"
-  repository = "https://stakater.github.io/stakater-charts"
-  chart      = "reloader"
-  version    = "v1.0.48"
-  namespace  = kubernetes_namespace.namespace.metadata[0].name
-
-  set {
-    name  = "reloader.watchGlobally"
-    value = "false"
-  }
-}

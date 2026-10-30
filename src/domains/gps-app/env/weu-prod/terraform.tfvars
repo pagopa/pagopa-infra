@@ -92,17 +92,17 @@ fn_app_storage_account_info = {
 
 
 ### debezium kafka conn
-replicas           = 1 # set 2 in PROD iif want a new istance replicate
-request_cpu        = 0.5
-limits_cpu         = 2
-request_memory     = "512Mi"
-limits_memory      = "3072Mi"
-postgres_db_name   = "apd"
-tasks_max          = "1"
-container_registry = "pagopapcommonacr.azurecr.io"
-snapshot_max_threads        = 10
-snapshot_fetch_size         = 2048
+replicas                        = 1 # set 2 in PROD iif want a new istance replicate
+request_cpu                     = 0.5
+limits_cpu                      = 2
+request_memory                  = "512Mi"
+limits_memory                   = "3072Mi"
+postgres_db_name                = "apd"
+tasks_max                       = "1"
+container_registry              = "pagopapcommonacr.azurecr.io"
+snapshot_max_threads            = 10
+snapshot_fetch_size             = 2048
 incremental_snapshot_chunk_size = 1024
-max_batch_size              = 2048
-poll_interval_ms            = 500
-gpd_cdc_enabled    = true
+max_batch_size                  = 2048
+poll_interval_ms                = 500
+gpd_cdc_enabled                 = true
