@@ -2,9 +2,6 @@ module "aks_middleware" {
   source = "../../aks_middleware"
 
   https_endpoint                                            = local.apiconfig_core_locals.hostname
-  alert_name                                                = local.apiconfig_core_locals.hostname
-  alert_enabled                                             = true
-  helm_chart_present                                        = true
   namespace                                                 = kubernetes_namespace.namespace.metadata[0].name
   location_string                                           = var.location_string
   kv_secret_name_for_application_insights_connection_string = "ai-${var.env_short}-connection-string"
