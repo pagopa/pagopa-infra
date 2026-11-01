@@ -4986,6 +4986,53 @@
         }
       }
     },
+    "/api/v1/test-metrics/nrts-suites": {
+      "get": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "List Suites",
+        "operationId": "list_suites_api_v1_test_metrics_nrts_suites_get",
+        "parameters": [
+          {
+            "name": "origin",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Origin",
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NrtWithLatestRunOut"
+                  },
+                  "title": "Response List Suites Api V1 Test Metrics Nrts Suites Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/suites/all": {
       "get": {
         "tags": [
@@ -8571,6 +8618,31 @@
         "type": "object",
         "title": "NrtListObject"
       },
+      "NrtWithLatestRunOut": {
+        "properties": {
+          "suite": {
+            "$ref": "#/components/schemas/TestSuiteOut"
+          },
+          "latest_run": {
+            "$ref": "#/components/schemas/TestRunOut",
+            "nullable": true
+          },
+          "trend": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Trend"
+          }
+        },
+        "type": "object",
+        "required": [
+          "suite",
+          "latest_run",
+          "trend"
+        ],
+        "title": "NrtWithLatestRunOut"
+      },
       "OllamaStatusOut": {
         "properties": {
           "running": {
@@ -9137,8 +9209,8 @@
       "RevisionResultEnum": {
         "type": "string",
         "enum": [
-          "GO",
-          "NO_GO",
+          "OK",
+          "KO",
           "PENDING"
         ],
         "title": "RevisionResultEnum"
