@@ -10,17 +10,15 @@
     <set-variable name="ndpTarget" value="@(context.Request.Headers.GetValueOrDefault("X-Ndp-Target", "NONE"))" />
 
     <set-variable name="baseUrl" value="@{
-          var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
-          foreach (JObject item in configuration) {
-            bool serviceIdentifierFound = false;
-
-            var serviceIdentifier = item.GetValue("node_id").ToString();
-
-            if (serviceIdentifier.Equals(context.Variables["ndpTarget"])) {
-                return item.GetValue("node_uri").ToString();
+        var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
+        var ndpTarget = context.Variables.GetValueOrDefault<string>("ndpTarget");
+        foreach (JObject item in configuration) {
+            var serviceIdentifier = (string) item["node_id"];
+            if (string.Equals(serviceIdentifier, ndpTarget, StringComparison.OrdinalIgnoreCase)) {
+              return (string) item["node_uri"];
             }
-          }
-          return "{{schema-ip-nexi}}";
+        }
+        return "{{schema-ip-nexi}}";
     }"
     />
 
