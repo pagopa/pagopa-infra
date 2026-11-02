@@ -7,7 +7,7 @@
     <include-fragment fragment-id="decoupler-configuration" />
 
     <!-- the following is to set the baseUrl according to decoupler configuration -->
-    <set-variable name="ndpTarget" value="@(context.Response.Headers.GetValueOrDefault("X-Ndp-Target", "NONE"))" />
+    <set-variable name="ndpTarget" value="@(context.Request.Headers.GetValueOrDefault("X-Ndp-Target", "NONE"))" />
 
     <set-variable name="baseUrl" value="@{
           var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
