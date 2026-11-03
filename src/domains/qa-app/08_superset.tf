@@ -109,6 +109,7 @@ resource "kubernetes_secret" "superset" {
     REDIS_SSL_CERT_REQS = "none"
     REDIS_USER          = ""
     REDIS_PASSWORD      = data.azurerm_managed_redis.qa_redis.default_database[0].primary_access_key
+    DQF_BLOB_SAS        = data.azurerm_key_vault_secret.dqf_data_sas_token.value
   }
 
   type = "Opaque"

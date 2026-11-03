@@ -4710,6 +4710,28 @@
         }
       }
     },
+    "/api/v1/test-metrics/avg-pass-rate": {
+      "get": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Avg Pass Rate",
+        "operationId": "avg_pass_rate_api_v1_test_metrics_avg_pass_rate_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "title": "Response Avg Pass Rate Api V1 Test Metrics Avg Pass Rate Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/suites/all": {
       "get": {
         "tags": [

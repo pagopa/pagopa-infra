@@ -10,6 +10,11 @@ data "azurerm_key_vault" "key_vault" {
 
 }
 
+data "azurerm_key_vault_secret" "dqf_data_sas_token" {
+  name         = "dqf-data-sas-token"
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
 data "azurerm_key_vault_secret" "qa_hub_google_client_id" {
   name         = "google-client-id"
   key_vault_id = data.azurerm_key_vault.key_vault.id
