@@ -1,6 +1,9 @@
 resource "kubernetes_namespace" "namespace" {
   metadata {
     name = "${var.domain}-cron"
+    labels = {
+      domain = var.domain # Icinga Business Process domain (continuos-platform-monitoring-app)
+    }
   }
 }
 
