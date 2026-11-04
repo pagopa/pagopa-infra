@@ -7851,9 +7851,9 @@
             "type": "string",
             "title": "Scenario Name"
           },
-          "suite_version": {
+          "test_object_version": {
             "type": "string",
-            "title": "Suite Version"
+            "title": "Test Object Version"
           },
           "test_version": {
             "type": "string",
@@ -7876,7 +7876,7 @@
           "suite_id",
           "test_object",
           "scenario_name",
-          "suite_version",
+          "test_object_version",
           "test_version"
         ],
         "title": "FlakyScenarioIn"
@@ -7902,9 +7902,9 @@
             "type": "string",
             "title": "Scenario Name"
           },
-          "suite_version": {
+          "test_object_version": {
             "type": "string",
-            "title": "Suite Version"
+            "title": "Test Object Version"
           },
           "test_version": {
             "type": "string",
@@ -7926,7 +7926,7 @@
           "suite_id",
           "test_object",
           "scenario_name",
-          "suite_version",
+          "test_object_version",
           "test_version",
           "is_flaky"
         ],
@@ -10107,9 +10107,9 @@
             "type": "string",
             "title": "Test Type"
           },
-          "suite_version": {
+          "test_object_version": {
             "type": "string",
-            "title": "Suite Version"
+            "title": "Test Object Version"
           },
           "owner_team": {
             "title": "Owner Team",
@@ -10121,7 +10121,7 @@
         "required": [
           "test_object",
           "test_type",
-          "suite_version"
+          "test_object_version"
         ],
         "title": "TestSuiteCreate"
       },
@@ -10140,9 +10140,9 @@
             "type": "string",
             "title": "Test Type"
           },
-          "suite_version": {
+          "test_object_version": {
             "type": "string",
-            "title": "Suite Version"
+            "title": "Test Object Version"
           },
           "owner_team": {
             "title": "Owner Team",
@@ -10155,7 +10155,7 @@
           "id",
           "test_object",
           "test_type",
-          "suite_version"
+          "test_object_version"
         ],
         "title": "TestSuiteOut"
       },
