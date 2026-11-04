@@ -207,6 +207,7 @@
 | <a name="input_fn_app_storage_account_info"></a> [fn\_app\_storage\_account\_info](#input\_fn\_app\_storage\_account\_info) | n/a | <pre>object({<br/>    account_kind                      = optional(string, "StorageV2")<br/>    account_tier                      = optional(string, "Standard")<br/>    account_replication_type          = optional(string, "LRS")<br/>    advanced_threat_protection_enable = optional(bool, true)<br/>    access_tier                       = optional(string, "Hot")<br/>    public_network_access_enabled     = optional(bool, false)<br/>    use_legacy_defender_version       = optional(bool, false)<br/>  })</pre> | <pre>{<br/>  "access_tier": "Hot",<br/>  "account_kind": "StorageV2",<br/>  "account_replication_type": "LRS",<br/>  "account_tier": "Standard",<br/>  "advanced_threat_protection_enable": true,<br/>  "public_network_access_enabled": false,<br/>  "use_legacy_defender_version": true<br/>}</pre> | no |
 | <a name="input_gh_runner_job_location"></a> [gh\_runner\_job\_location](#input\_gh\_runner\_job\_location) | (Optional) The GH runner container app job location. Consistent with the container app environment location | `string` | `"westeurope"` | no |
 | <a name="input_gpd_cdc_enabled"></a> [gpd\_cdc\_enabled](#input\_gpd\_cdc\_enabled) | Enable CDC for GDP | `bool` | `false` | no |
+| <a name="input_incremental_snapshot_chunk_size"></a> [incremental\_snapshot\_chunk\_size](#input\_incremental\_snapshot\_chunk\_size) | Incremental snapshot chunk size | `number` | `1000` | no |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
 | <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | n/a | `string` | `"~/.kube"` | no |
 | <a name="input_limits_cpu"></a> [limits\_cpu](#input\_limits\_cpu) | Connect Limit CPU | `string` | `"0.5"` | no |
@@ -216,9 +217,10 @@
 | <a name="input_location_string"></a> [location\_string](#input\_location\_string) | One of West Europe, North Europe | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
-| <a name="input_max_threads"></a> [max\_threads](#input\_max\_threads) | Number of max\_threads | `number` | `1` | no |
+| <a name="input_max_batch_size"></a> [max\_batch\_size](#input\_max\_batch\_size) | Debezium Max batch size | `number` | `1000` | no |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | `"pagopa-p-monitor-rg"` | no |
 | <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br/>    name         = optional(string, null)<br/>    minAvailable = optional(number, null)<br/>    matchLabels  = optional(map(any), {})<br/>  }))</pre> | `{}` | no |
+| <a name="input_poll_interval_ms"></a> [poll\_interval\_ms](#input\_poll\_interval\_ms) | Poll interval in milliseconds | `number` | `1500` | no |
 | <a name="input_postgres_db_name"></a> [postgres\_db\_name](#input\_postgres\_db\_name) | Postgres Database Name | `string` | `"apd"` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_replicas"></a> [replicas](#input\_replicas) | Number of replicas in cluster | `number` | `1` | no |
@@ -230,6 +232,8 @@
 | <a name="input_reporting_functions_app_sku"></a> [reporting\_functions\_app\_sku](#input\_reporting\_functions\_app\_sku) | Reporting functions app plan SKU | <pre>object({<br/>    kind     = string<br/>    sku_tier = string<br/>    sku_size = string<br/>  })</pre> | n/a | yes |
 | <a name="input_request_cpu"></a> [request\_cpu](#input\_request\_cpu) | Connect Request CPU | `string` | `"0.5"` | no |
 | <a name="input_request_memory"></a> [request\_memory](#input\_request\_memory) | Connect Request Memory | `string` | `"512m"` | no |
+| <a name="input_snapshot_fetch_size"></a> [snapshot\_fetch\_size](#input\_snapshot\_fetch\_size) | Snapshot fetch size | `number` | `1000` | no |
+| <a name="input_snapshot_max_threads"></a> [snapshot\_max\_threads](#input\_snapshot\_max\_threads) | Number of snapshot max threads | `number` | `1` | no |
 | <a name="input_tasks_max"></a> [tasks\_max](#input\_tasks\_max) | Number of tasks | `string` | `"1"` | no |
 
 ## Outputs
