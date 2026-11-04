@@ -79,3 +79,20 @@ resource "azurerm_api_management_named_value" "pagopa_payment_wallet_helpdesk_se
   value               = var.payment_wallet_helpdesk_service_api_key_use_primary ? data.azurerm_key_vault_secret.pagopa_payment_wallet_helpdesk_service_rest_api_primary_key.value : data.azurerm_key_vault_secret.pagopa_payment_wallet_helpdesk_service_rest_api_secondary_key.value
   secret              = true
 }
+# subscription key for payment-wallet helpdesk API
+resource "azurerm_api_management_subscription" "payment_wallet_helpdesk_subkey" {
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  product_id          = module.apim_payment_wallet_helpdesk_product.id
+  display_name        = "Subscription for payment-wallet helpdesk api"
+  allow_tracing       = false
+  state               = "active"
+}
+
+
+resource "azurerm_key_vault_secret" "payment_wallet_helpdesk_subscription_key" {
+  name         = "${local.product}-payment-wallet-helpdesk-api-sub-key"
+  value        = azurerm_api_management_subscription.payment_wallet_helpdesk_subkey.primary_key
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}

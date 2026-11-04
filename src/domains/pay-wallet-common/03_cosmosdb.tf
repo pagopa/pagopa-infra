@@ -163,6 +163,20 @@ locals {
       ]
       shard_key = "walletId"
     },
+    { # collection containing wallets in error during contractId deactivation process
+      name                = "wallet-contractId-deactivation-dlq"
+      default_ttl_seconds = "7776000" #90 days
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["timestamp", "_id"]
+          unique = false
+        }
+      ]
+      shard_key = "_id"
+    },
   ]
 }
 
