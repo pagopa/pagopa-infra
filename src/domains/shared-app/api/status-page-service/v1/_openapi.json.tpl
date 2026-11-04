@@ -63,6 +63,39 @@
                         "description": "OK"
                     }
                 }
+            },
+            "post": {
+                "summary": "Proxy GitHub OAuth Device Flow",
+                "operationId": "proxyGithubPost",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "client_id": { "type": "string" },
+                                    "scope": { "type": "string" },
+                                    "device_code": { "type": "string" },
+                                    "grant_type": { "type": "string" }
+                                },
+                                "required": ["client_id"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "GitHub OAuth response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     },
