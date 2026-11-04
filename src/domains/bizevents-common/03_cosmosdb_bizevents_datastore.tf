@@ -157,7 +157,7 @@ locals {
       autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_view_user }
     },
     {
-      name               = "biz-events-leases",
+      name               = "biz-events-views-leases",
       partition_key_path = "/id",
       autoscale_settings = { max_throughput = 1000 }
     }
