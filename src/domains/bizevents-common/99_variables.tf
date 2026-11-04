@@ -178,21 +178,10 @@ variable "storage_account_replication_type" {
   description = "(Optional) biz event fn storage account replication type"
 }
 
-variable "bizevents_sa_advanced_threat_protection" {
-  type        = bool
-  description = "Enable contract threat advanced protection"
-  default     = false
-}
 variable "bizevents_sa_idh_resource_tier" {
   type        = string
   description = "IDH resource tier identifier."
   default     = "basic"
-}
-
-variable "bizevents_sa_delete_retention_days" {
-  type        = number
-  description = "Number of days to retain deleted."
-  default     = 30
 }
 
 variable "redis_ha_enabled" {
