@@ -23,7 +23,7 @@ module "bizevents_sa" {
 }
 
 resource "azurerm_storage_container" "send_dead_letter_events" {
-  name               = "send-dead-letter-events"
+  name               = "send-filter-dead-letter-events"
   storage_account_id = module.bizevents_sa.id
 }
 
