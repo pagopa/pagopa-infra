@@ -1280,422 +1280,6 @@
                 },
                 {
                   "name": "Query",
-                  "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"ecommerce/checkout/v1/transactions/[^/]+\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n",
-                  "isOptional": true
-                },
-                {
-                  "name": "ControlType",
-                  "value": "FrameControlChart",
-                  "isOptional": true
-                },
-                {
-                  "name": "SpecificChart",
-                  "value": "Line",
-                  "isOptional": true
-                },
-                {
-                  "name": "PartTitle",
-                  "value": "Availability (15m)",
-                  "isOptional": true
-                },
-                {
-                  "name": "PartSubTitle",
-                  "value": "ecommerce/checkout/v1/transactions/{transactionId}",
-                  "isOptional": true
-                },
-                {
-                  "name": "Dimensions",
-                  "value": {
-                    "aggregation": "Sum",
-                    "splitBy": [],
-                    "xAxis": {
-                      "name": "TimeGenerated",
-                      "type": "datetime"
-                    },
-                    "yAxis": [
-                      {
-                        "name": "availability",
-                        "type": "real"
-                      },
-                      {
-                        "name": "watermark",
-                        "type": "real"
-                      }
-                    ]
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "LegendOptions",
-                  "value": {
-                    "isEnabled": true,
-                    "position": "Bottom"
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "IsQueryContainTimeRange",
-                  "value": false,
-                  "isOptional": true
-                }
-              ],
-              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
-              "settings": {
-                "content": {
-                  "Dimensions": {
-                    "aggregation": "Sum",
-                    "splitBy": [],
-                    "xAxis": {
-                      "name": "TimeGenerated",
-                      "type": "datetime"
-                    },
-                    "yAxis": [
-                      {
-                        "name": "availability",
-                        "type": "real"
-                      },
-                      {
-                        "name": "watermark",
-                        "type": "real"
-                      }
-                    ]
-                  },
-                  "PartSubTitle": "GET ecommerce/checkout/v2/transactions/{transactionId}",
-                  "PartTitle": "Availability (15m)",
-                  "Query": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.99;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"/ecommerce/checkout/v2/transactions/[^/]+\" and httpMethod_s == \"GET\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 400 or httpStatus_d == 401 ) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n"
-                }
-              }
-            }
-          },
-          {
-            "position": {
-              "x": 6,
-              "y": 12,
-              "colSpan": 6,
-              "rowSpan": 4
-            },
-            "metadata": {
-              "inputs": [
-                {
-                  "name": "resourceTypeMode",
-                  "isOptional": true
-                },
-                {
-                  "name": "ComponentId",
-                  "isOptional": true
-                },
-                {
-                  "name": "Scope",
-                  "value": {
-                    "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
-                    ]
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "PartId",
-                  "isOptional": true
-                },
-                {
-                  "name": "Version",
-                  "value": "2.0",
-                  "isOptional": true
-                },
-                {
-                  "name": "TimeRange",
-                  "value": "PT4H",
-                  "isOptional": true
-                },
-                {
-                  "name": "DashboardId",
-                  "isOptional": true
-                },
-                {
-                  "name": "DraftRequestParameters",
-                  "value": {
-                    "scope": "hierarchy"
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "Query",
-                  "value": "\nlet api_url = \"ecommerce/checkout/v1/transactions/[^/]+\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url\n| extend HTTPStatus = case(\n  httpStatus_d between (100 .. 199), \"1XX\",\n  httpStatus_d between (200 .. 299), \"2XX\",\n  httpStatus_d between (300 .. 399), \"3XX\",\n  httpStatus_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
-                  "isOptional": true
-                },
-                {
-                  "name": "ControlType",
-                  "value": "FrameControlChart",
-                  "isOptional": true
-                },
-                {
-                  "name": "SpecificChart",
-                  "value": "Pie",
-                  "isOptional": true
-                },
-                {
-                  "name": "PartTitle",
-                  "value": "Response Codes (15m)",
-                  "isOptional": true
-                },
-                {
-                  "name": "PartSubTitle",
-                  "value": "ecommerce/checkout/v1/transactions/{transactionId}",
-                  "isOptional": true
-                },
-                {
-                  "name": "Dimensions",
-                  "value": {
-                    "aggregation": "Sum",
-                    "splitBy": [],
-                    "xAxis": {
-                      "name": "httpStatus_d",
-                      "type": "string"
-                    },
-                    "yAxis": [
-                      {
-                        "name": "count_",
-                        "type": "long"
-                      }
-                    ]
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "LegendOptions",
-                  "value": {
-                    "isEnabled": true,
-                    "position": "Bottom"
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "IsQueryContainTimeRange",
-                  "value": false,
-                  "isOptional": true
-                }
-              ],
-              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
-              "settings": {
-                "content": {
-                  "ControlType": "FrameControlChart",
-                  "Dimensions": {
-                    "aggregation": "Sum",
-                    "splitBy": [
-                      {
-                        "name": "HTTPStatus",
-                        "type": "string"
-                      }
-                    ],
-                    "xAxis": {
-                      "name": "TimeGenerated",
-                      "type": "datetime"
-                    },
-                    "yAxis": [
-                      {
-                        "name": "count_",
-                        "type": "long"
-                      }
-                    ]
-                  },
-                  "PartSubTitle": "GET ecommerce/checkout/v2/transactions/{transactionId}",
-                  "PartTitle": "Response Codes (15m)",
-                  "Query": "let api_url = \"ecommerce/checkout/v2/transactions/[^/]+\";\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex api_url and httpMethod_s == \"GET\"\n| extend HTTPStatus = tostring(toint(httpStatus_d))\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n",
-                  "SpecificChart": "StackedArea"
-                }
-              }
-            }
-          },
-          {
-            "position": {
-              "x": 12,
-              "y": 12,
-              "colSpan": 6,
-              "rowSpan": 4
-            },
-            "metadata": {
-              "inputs": [
-                {
-                  "name": "resourceTypeMode",
-                  "isOptional": true
-                },
-                {
-                  "name": "ComponentId",
-                  "isOptional": true
-                },
-                {
-                  "name": "Scope",
-                  "value": {
-                    "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
-                    ]
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "PartId",
-                  "isOptional": true
-                },
-                {
-                  "name": "Version",
-                  "value": "2.0",
-                  "isOptional": true
-                },
-                {
-                  "name": "TimeRange",
-                  "value": "PT4H",
-                  "isOptional": true
-                },
-                {
-                  "name": "DashboardId",
-                  "isOptional": true
-                },
-                {
-                  "name": "DraftRequestParameters",
-                  "value": {
-                    "scope": "hierarchy"
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "Query",
-                  "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 1;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"ecommerce/checkout/v2/transactions/[^/]+\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n",
-                  "isOptional": true
-                },
-                {
-                  "name": "ControlType",
-                  "value": "FrameControlChart",
-                  "isOptional": true
-                },
-                {
-                  "name": "SpecificChart",
-                  "value": "StackedColumn",
-                  "isOptional": true
-                },
-                {
-                  "name": "PartTitle",
-                  "value": "Percentile Response Time (15m)",
-                  "isOptional": true
-                },
-                {
-                  "name": "PartSubTitle",
-                  "value": "ecommerce/checkout/v1/transactions/{transactionId}",
-                  "isOptional": true
-                },
-                {
-                  "name": "Dimensions",
-                  "value": {
-                    "aggregation": "Sum",
-                    "splitBy": [],
-                    "xAxis": {
-                      "name": "TimeGenerated",
-                      "type": "datetime"
-                    },
-                    "yAxis": [
-                      {
-                        "name": "duration_percentile_95",
-                        "type": "real"
-                      }
-                    ]
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "LegendOptions",
-                  "value": {
-                    "isEnabled": true,
-                    "position": "Bottom"
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "IsQueryContainTimeRange",
-                  "value": false,
-                  "isOptional": true
-                }
-              ],
-              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
-              "settings": {
-                "content": {
-                  "Dimensions": {
-                    "aggregation": "Sum",
-                    "splitBy": [],
-                    "xAxis": {
-                      "name": "TimeGenerated",
-                      "type": "datetime"
-                    },
-                    "yAxis": [
-                      {
-                        "name": "watermark",
-                        "type": "long"
-                      },
-                      {
-                        "name": "duration_percentile_95",
-                        "type": "real"
-                      }
-                    ]
-                  },
-                  "PartSubTitle": "GET ecommerce/checkout/v2/transactions/{transactionId}",
-                  "PartTitle": "Percentile Response Time (15m)",
-                  "Query": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.250;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"ecommerce/checkout/v2/transactions/[^/]+\" and httpMethod_s == \"GET\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(timeTaken_d, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n",
-                  "SpecificChart": "Line"
-                }
-              }
-            }
-          },
-          {
-            "position": {
-              "x": 0,
-              "y": 16,
-              "colSpan": 6,
-              "rowSpan": 4
-            },
-            "metadata": {
-              "inputs": [
-                {
-                  "name": "resourceTypeMode",
-                  "isOptional": true
-                },
-                {
-                  "name": "ComponentId",
-                  "isOptional": true
-                },
-                {
-                  "name": "Scope",
-                  "value": {
-                    "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/applicationGateways/pagopa-p-app-gw"
-                    ]
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "PartId",
-                  "isOptional": true
-                },
-                {
-                  "name": "Version",
-                  "value": "2.0",
-                  "isOptional": true
-                },
-                {
-                  "name": "TimeRange",
-                  "value": "PT4H",
-                  "isOptional": true
-                },
-                {
-                  "name": "DashboardId",
-                  "isOptional": true
-                },
-                {
-                  "name": "DraftRequestParameters",
-                  "value": {
-                    "scope": "hierarchy"
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "Query",
                   "value": "\nlet api_hosts = datatable (name: string) [\"api.platform.pagopa.it\"];\nlet threshold = 0.95;\nAzureDiagnostics\n| where originalHost_s in (api_hosts)\n| where requestUri_s matches regex \"ecommerce/checkout/v1/transactions/[^/]+/outcomes\"\n| summarize\n  Total=count(),\n  Success=count(httpStatus_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n",
                   "isOptional": true
                 },
@@ -1786,7 +1370,7 @@
           {
             "position": {
               "x": 6,
-              "y": 16,
+              "y": 12,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -1924,7 +1508,7 @@
           {
             "position": {
               "x": 12,
-              "y": 16,
+              "y": 12,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -2061,7 +1645,7 @@
           {
             "position": {
               "x": 0,
-              "y": 20,
+              "y": 16,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -2201,7 +1785,7 @@
           {
             "position": {
               "x": 6,
-              "y": 20,
+              "y": 16,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -2339,7 +1923,7 @@
           {
             "position": {
               "x": 12,
-              "y": 20,
+              "y": 16,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -2476,7 +2060,7 @@
           {
             "position": {
               "x": 0,
-              "y": 24,
+              "y": 20,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -2553,6 +2137,8 @@
                 {
                   "name": "Dimensions",
                   "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -2566,9 +2152,7 @@
                         "name": "watermark",
                         "type": "real"
                       }
-                    ],
-                    "splitBy": [],
-                    "aggregation": "Sum"
+                    ]
                   },
                   "isOptional": true
                 },
@@ -2589,8 +2173,8 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "PartTitle": "Availability (15m)",
-                  "PartSubTitle": "DELETE ecommerce/checkout/v1/transactions/{transactionId}"
+                  "PartSubTitle": "DELETE ecommerce/checkout/v1/transactions/{transactionId}",
+                  "PartTitle": "Availability (15m)"
                 }
               }
             }
@@ -2598,7 +2182,7 @@
           {
             "position": {
               "x": 6,
-              "y": 24,
+              "y": 20,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -2675,6 +2259,13 @@
                 {
                   "name": "Dimensions",
                   "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [
+                      {
+                        "name": "HTTPStatus",
+                        "type": "string"
+                      }
+                    ],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -2684,14 +2275,7 @@
                         "name": "count_",
                         "type": "long"
                       }
-                    ],
-                    "splitBy": [
-                      {
-                        "name": "HTTPStatus",
-                        "type": "string"
-                      }
-                    ],
-                    "aggregation": "Sum"
+                    ]
                   },
                   "isOptional": true
                 },
@@ -2712,8 +2296,8 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "PartTitle": "Response Codes (15m)",
-                  "PartSubTitle": "DELETE ecommerce/checkout/v1/transactions/{transactionId}"
+                  "PartSubTitle": "DELETE ecommerce/checkout/v1/transactions/{transactionId}",
+                  "PartTitle": "Response Codes (15m)"
                 }
               }
             }
@@ -2721,7 +2305,7 @@
           {
             "position": {
               "x": 12,
-              "y": 24,
+              "y": 20,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -2798,6 +2382,8 @@
                 {
                   "name": "Dimensions",
                   "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
                     "xAxis": {
                       "name": "TimeGenerated",
                       "type": "datetime"
@@ -2811,9 +2397,7 @@
                         "name": "duration_percentile_95",
                         "type": "real"
                       }
-                    ],
-                    "splitBy": [],
-                    "aggregation": "Sum"
+                    ]
                   },
                   "isOptional": true
                 },
@@ -2834,8 +2418,8 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "PartTitle": "Percentile Response Time (15m)",
-                  "PartSubTitle": "DELETE ecommerce/checkout/v1/transactions/{transactionId}"
+                  "PartSubTitle": "DELETE ecommerce/checkout/v1/transactions/{transactionId}",
+                  "PartTitle": "Percentile Response Time (15m)"
                 }
               }
             }
@@ -2843,7 +2427,7 @@
           {
             "position": {
               "x": 0,
-              "y": 28,
+              "y": 24,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -2983,7 +2567,7 @@
           {
             "position": {
               "x": 6,
-              "y": 28,
+              "y": 24,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -3121,7 +2705,7 @@
           {
             "position": {
               "x": 12,
-              "y": 28,
+              "y": 24,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -3258,7 +2842,7 @@
           {
             "position": {
               "x": 0,
-              "y": 32,
+              "y": 28,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -3398,7 +2982,7 @@
           {
             "position": {
               "x": 6,
-              "y": 32,
+              "y": 28,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -3536,7 +3120,7 @@
           {
             "position": {
               "x": 12,
-              "y": 32,
+              "y": 28,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -3673,7 +3257,7 @@
           {
             "position": {
               "x": 0,
-              "y": 36,
+              "y": 32,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -3813,7 +3397,7 @@
           {
             "position": {
               "x": 6,
-              "y": 36,
+              "y": 32,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -3951,7 +3535,7 @@
           {
             "position": {
               "x": 12,
-              "y": 36,
+              "y": 32,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -4088,7 +3672,7 @@
           {
             "position": {
               "x": 0,
-              "y": 40,
+              "y": 36,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -4228,7 +3812,7 @@
           {
             "position": {
               "x": 6,
-              "y": 40,
+              "y": 36,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -4366,7 +3950,7 @@
           {
             "position": {
               "x": 12,
-              "y": 40,
+              "y": 36,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -4503,7 +4087,7 @@
           {
             "position": {
               "x": 0,
-              "y": 44,
+              "y": 40,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -4643,7 +4227,7 @@
           {
             "position": {
               "x": 6,
-              "y": 44,
+              "y": 40,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -4780,7 +4364,7 @@
           {
             "position": {
               "x": 12,
-              "y": 44,
+              "y": 40,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -4916,7 +4500,7 @@
           {
             "position": {
               "x": 0,
-              "y": 48,
+              "y": 44,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -5037,7 +4621,7 @@
           {
             "position": {
               "x": 6,
-              "y": 48,
+              "y": 44,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -5174,7 +4758,7 @@
           {
             "position": {
               "x": 12,
-              "y": 48,
+              "y": 44,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -5310,7 +4894,7 @@
           {
             "position": {
               "x": 0,
-              "y": 52,
+              "y": 48,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -5450,7 +5034,7 @@
           {
             "position": {
               "x": 6,
-              "y": 52,
+              "y": 48,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -5588,7 +5172,7 @@
           {
             "position": {
               "x": 12,
-              "y": 52,
+              "y": 48,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -5725,7 +5309,7 @@
           {
             "position": {
               "x": 0,
-              "y": 56,
+              "y": 52,
               "colSpan": 18,
               "rowSpan": 6
             },
@@ -5855,7 +5439,7 @@
           {
             "position": {
               "x": 0,
-              "y": 62,
+              "y": 58,
               "colSpan": 18,
               "rowSpan": 7
             },
@@ -5975,7 +5559,7 @@
           {
             "position": {
               "x": 0,
-              "y": 69,
+              "y": 65,
               "colSpan": 18,
               "rowSpan": 7
             },
@@ -6097,7 +5681,7 @@
           {
             "position": {
               "x": 0,
-              "y": 76,
+              "y": 72,
               "colSpan": 18,
               "rowSpan": 5
             },
@@ -6219,7 +5803,7 @@
           {
             "position": {
               "x": 0,
-              "y": 81,
+              "y": 77,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -6360,7 +5944,7 @@
           {
             "position": {
               "x": 6,
-              "y": 81,
+              "y": 77,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -6501,7 +6085,7 @@
           {
             "position": {
               "x": 12,
-              "y": 81,
+              "y": 77,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -6642,7 +6226,7 @@
           {
             "position": {
               "x": 0,
-              "y": 85,
+              "y": 81,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -6783,7 +6367,7 @@
           {
             "position": {
               "x": 6,
-              "y": 85,
+              "y": 81,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -6924,7 +6508,7 @@
           {
             "position": {
               "x": 12,
-              "y": 85,
+              "y": 81,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -7092,58 +6676,55 @@
                 "value": "Past 4 hours"
               },
               "filteredPartIds": [
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2b5",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2b7",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2cd",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2e3",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2f9",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d30d",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d30f",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d311",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d313",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d315",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2b9",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2bb",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2bd",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2bf",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2c1",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2c3",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2c5",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2c7",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d728",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4daf6",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2cf",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2c9",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2cb",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2d5",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2d1",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2d3",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2db",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2d7",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2d9",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2e1",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2dd",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2df",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2e9",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2e5",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2e7",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2ef",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2eb",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2ed",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2f5",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2f1",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2f3",
-                "StartboardPart-MonitorChartPart-f5957569-2033-48c1-aeef-765ec3f4d2f7",
-                "StartboardPart-MonitorChartPart-f5957569-2033-48c1-aeef-765ec3f4d2fb",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2fd",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d2ff",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d301",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d303",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d305",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d307",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d309",
-                "StartboardPart-LogsDashboardPart-f5957569-2033-48c1-aeef-765ec3f4d30b",
-                "StartboardPart-LogsDashboardPart-e950f0dd-7062-4160-b410-d626ab9ba250"
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc644",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc646",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc648",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc64a",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc64c",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc64e",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc650",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc652",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc654",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc656",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc658",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc65a",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc65c",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc65e",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc660",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc662",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc664",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc666",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc668",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc66a",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc66c",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc66e",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc670",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc672",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc674",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc676",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc678",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc67a",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc67c",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc67e",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc680",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc682",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc684",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc686",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc688",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc68a",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc68c",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc68e",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc690",
+                "StartboardPart-MonitorChartPart-88258c4a-0ef8-4f33-a03d-53b900edc692",
+                "StartboardPart-MonitorChartPart-88258c4a-0ef8-4f33-a03d-53b900edc694",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc696",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc698",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc69a",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc69c",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc69e",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc6a0",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc6a2",
+                "StartboardPart-LogsDashboardPart-88258c4a-0ef8-4f33-a03d-53b900edc6a4"
               ]
             }
           }
@@ -7151,11 +6732,11 @@
       }
     }
   },
-  "name": "checkout-payment-flow-dashboard",
+  "name": "Clone of checkout-payment-flow-dashboard",
   "type": "Microsoft.Portal/dashboards",
   "location": "INSERT LOCATION",
   "tags": {
-    "hidden-title": "checkout-payment-flow-dashboard"
+    "hidden-title": "Clone of checkout-payment-flow-dashboard"
   },
   "apiVersion": "2022-12-01-preview"
 }
