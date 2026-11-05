@@ -44,9 +44,20 @@ resource "azurerm_api_management_api_version_set" "pagopa_payment_wallet_helpdes
 
 
 #helpdesk api for payment-wallet
-module "apim_pagopa_payment_wallet_helpdesk_service_api_v1" {
-  source = "./.terraform/modules/__v4__/api_management_api"
 
+resource "azurerm_api_management_named_value" "pagopa_payment_wallet_helpdesk_service_rest_api_key" {
+  name                = "payment-wallet-helpdesk-service-rest-api-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "payment-wallet-helpdesk-service-rest-api-key"
+  value               = var.payment_wallet_helpdesk_service_api_key_use_primary ? data.azurerm_key_vault_secret.pagopa_payment_wallet_helpdesk_service_rest_api_primary_key.value : data.azurerm_key_vault_secret.pagopa_payment_wallet_helpdesk_service_rest_api_secondary_key.value
+  secret              = true
+}
+
+
+module "apim_pagopa_payment_wallet_helpdesk_service_api_v1" {
+  source                = "./.terraform/modules/__v4__/api_management_api"
+  depends_on            = [azurerm_api_management_named_value.pagopa_payment_wallet_helpdesk_service_rest_api_key]
   name                  = "${local.project}-helpdesk-service-api"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg

@@ -3,6 +3,9 @@
       <base />
       <rate-limit-by-key calls="3" renewal-period="10" counter-key="@(context.Subscription != null ? context.Subscription.Id.ToLower() : "unknown_subscription")" />
       <set-backend-service base-url="https://${hostname}/pagopa-payment-wallet-helpdesk-service" />
+      <set-header name="x-api-key" exists-action="override">
+          <value>{{payment-wallet-helpdesk-service-rest-api-key}}</value>
+      </set-header>
     </inbound>
     <outbound>
       <base />
