@@ -118,77 +118,6 @@
         }
       }
     },
-    "/transactions/{transactionId}": {
-      "get": {
-        "tags": [
-          "ecommerce-transactions"
-        ],
-        "operationId": "getTransactionInfo",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "transactionId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Transaction ID"
-          }
-        ],
-        "security": [
-          {
-            "eCommerceSessionToken": []
-          }
-        ],
-        "summary": "Get transaction information",
-        "description": "Return information for the input specific transaction resource",
-        "responses": {
-          "200": {
-            "description": "Transaction data successfully retrieved",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TransactionInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid transaction id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized, access token missing or invalid"
-          },
-          "404": {
-            "description": "Transaction not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Gateway timeout",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/transactions/{transactionId}/outcomes": {
       "get": {
         "tags": [
@@ -772,29 +701,6 @@
           "CANCELLATION_EXPIRED"
         ]
       },
-      "TransactionInfo": {
-        "description": "Transaction data returned when querying for an existing transaction",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/NewTransactionResponse"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "status": {
-                "$ref": "#/components/schemas/TransactionStatus"
-              },
-              "gatewayAuthorizationStatus": {
-                "type": "string",
-                "description": "Payment gateway authorization status"
-              }
-            },
-            "required": [
-              "status"
-            ]
-          }
-        ]
-      },
       "Transfer": {
         "type": "object",
         "description": "The dto that contains information about the creditor entities",
@@ -1265,16 +1171,6 @@
       }
     },
     "requestBodies": {
-      "NewTransactionRequest": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/NewTransactionRequest"
-            }
-          }
-        }
-      }
     },
     "securitySchemes": {
       "eCommerceSessionToken": {
