@@ -137,99 +137,6 @@
         }
       }
     },
-    "/transactions": {
-      "post": {
-        "tags": [
-          "ecommerce-transactions"
-        ],
-        "operationId": "newTransaction",
-        "summary": "Make a new transaction",
-        "description": "Create a new transaction activating the payments notice by meaning of 'Nodo' ActivatePaymentNotice primitive",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewTransactionRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "parameters": [
-          {
-            "in": "query",
-            "name": "recaptchaResponse",
-            "description": "Recaptcha response",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "New transaction successfully created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NewTransactionResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Formally invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Node cannot find the services needed to process this request in its configuration. This error is most likely to occur when submitting a non-existing RPT id.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NodeProblemJson404"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict on payment status",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NodeProblemJson409"
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "PagoPA services are not available or request is rejected by PagoPa",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NodeProblemJson502"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "EC services are not available",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PartyConfigurationFaultPaymentProblemJson"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/transactions/{transactionId}": {
       "get": {
         "tags": [
@@ -1203,98 +1110,6 @@
           "amount"
         ]
       },
-      "ValidationFaultPaymentProblemJson": {
-        "description": "A PaymentProblemJson-like type specific for the GetPayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to validation errors.",
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
-          },
-          "faultCodeCategory": {
-            "$ref": "#/components/schemas/FaultCategory"
-          },
-          "faultCodeDetail": {
-            "$ref": "#/components/schemas/ValidationFault"
-          }
-        },
-        "required": [
-          "faultCodeCategory",
-          "faultCodeDetail"
-        ]
-      },
-      "PaymentStatusFaultPaymentProblemJson": {
-        "description": "A PaymentProblemJson-like type specific for the GetPayment and ActivatePayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to Nodo errors related to payment status conflicts.",
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
-          },
-          "faultCodeCategory": {
-            "$ref": "#/components/schemas/FaultCategory"
-          },
-          "faultCodeDetail": {
-            "$ref": "#/components/schemas/PaymentStatusFault"
-          }
-        },
-        "required": [
-          "faultCodeCategory",
-          "faultCodeDetail"
-        ]
-      },
-      "PartyTimeoutFaultPaymentProblemJson": {
-        "description": "A PaymentProblemJson-like type specific for the GetPayment an operations.",
-        "type": "object",
-        "properties": {
-          "faultCodeCategory": {
-            "$ref": "#/components/schemas/FaultCategory"
-          },
-          "faultCodeDetail": {
-            "$ref": "#/components/schemas/PartyTimeoutFault"
-          },
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
-          }
-        },
-        "required": [
-          "faultCodeCategory",
-          "faultCodeDetail"
-        ]
-      },
-      "PaymentStatusFault": {
-        "description": "Fault codes for errors related to payment attempts that cause conflict with the current payment status,\nsuch as a duplicated payment attempt or a payment attempt made while another attempt is still being processed.\nShould be mapped to 409 HTTP status code.\nFor further information visit https://docs.pagopa.it/gestionedeglierrori/struttura-degli-errori/fault-code.\nPossible fault codes are:\n- `PPT_PAGAMENTO_IN_CORSO`\n- `PAA_PAGAMENTO_IN_CORSO`\n- `PPT_PAGAMENTO_DUPLICATO`\n- `PAA_PAGAMENTO_DUPLICATO`\n- `PAA_PAGAMENTO_SCADUTO`",
-        "type": "string",
-        "enum": [
-          "PPT_PAGAMENTO_IN_CORSO",
-          "PAA_PAGAMENTO_IN_CORSO",
-          "PPT_PAGAMENTO_DUPLICATO",
-          "PAA_PAGAMENTO_DUPLICATO",
-          "PAA_PAGAMENTO_SCADUTO"
-        ]
-      },
-      "ValidationFault": {
-        "description": "Fault codes for errors related to well-formed requests to ECs not present inside Nodo, should be mapped to 404 HTTP status code.\nMost of the time these are generated when users input a wrong fiscal code or notice number.\nFor further information visit https://docs.pagopa.it/gestionedeglierrori/struttura-degli-errori/fault-code.\nPossible fault codes are:\n- `PAA_PAGAMENTO_SCONOSCIUTO`\n- `PPT_DOMINIO_SCONOSCIUTO`\n- `PPT_INTERMEDIARIO_PA_SCONOSCIUTO`\n- `PPT_STAZIONE_INT_PA_SCONOSCIUTA`\n- `PAA_PAGAMENTO_ANNULLATO`",
-        "type": "string",
-        "enum": [
-          "PAA_PAGAMENTO_SCONOSCIUTO",
-          "PPT_DOMINIO_SCONOSCIUTO",
-          "PPT_INTERMEDIARIO_PA_SCONOSCIUTO",
-          "PPT_STAZIONE_INT_PA_SCONOSCIUTA",
-          "PAA_PAGAMENTO_ANNULLATO"
-        ]
-      },
-      "PartyTimeoutFault": {
-        "description": "Fault codes for timeout errors, should be mapped to 504 HTTP status code.\nFor further information visit https://docs.pagopa.it/gestionedeglierrori/struttura-degli-errori/fault-code.\nPossible fault codes are:\n- `PPT_STAZIONE_INT_PA_TIMEOUT`\n- `PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE`\n- `PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO`\n- `GENERIC_ERROR`",
-        "type": "string",
-        "enum": [
-          "PPT_STAZIONE_INT_PA_TIMEOUT",
-          "PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE",
-          "PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO",
-          "GENERIC_ERROR"
-        ]
-      },
       "ValidationFaultPaymentUnavailableProblemJson": {
         "description": "A PaymentProblemJson-like type specific for the GetPayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to validation errors.",
         "type": "object",
@@ -1456,67 +1271,6 @@
           "faultCodeDetail"
         ]
       },
-      "GatewayFaultPaymentProblemJson": {
-        "description": "A PaymentProblemJson-like type specific for the GetPayment and ActivatePayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to Nodo errors.",
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
-          },
-          "faultCodeCategory": {
-            "type": "string",
-            "enum": [
-              "GENERIC_ERROR"
-            ]
-          },
-          "faultCodeDetail": {
-            "$ref": "#/components/schemas/GatewayFault"
-          }
-        },
-        "required": [
-          "faultCodeCategory",
-          "faultCodeDetail"
-        ]
-      },
-      "PartyConfigurationFaultPaymentProblemJson": {
-        "description": "A PaymentProblemJson-like type specific for the GetPayment",
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
-          },
-          "faultCodeCategory": {
-            "type": "string",
-            "enum": [
-              "DOMAIN_UNKNOWN"
-            ]
-          },
-          "faultCodeDetail": {
-            "$ref": "#/components/schemas/PartyConfigurationFault"
-          }
-        },
-        "required": [
-          "faultCodeCategory",
-          "faultCodeDetail"
-        ]
-      },
-      "FaultCategory": {
-        "description": "Fault code categorization for the PagoPA Verifica and Attiva operations.\nPossible categories are:\n- `PAYMENT_DUPLICATED`\n- `PAYMENT_ONGOING`\n- `PAYMENT_EXPIRED`\n- `PAYMENT_UNAVAILABLE`\n- `PAYMENT_UNKNOWN`\n- `DOMAIN_UNKNOWN`\n- `PAYMENT_CANCELED`\n- `GENERIC_ERROR`\n- `PAYMENT_DATA_ERROR`",
-        "type": "string",
-        "enum": [
-          "PAYMENT_DUPLICATED",
-          "PAYMENT_ONGOING",
-          "PAYMENT_EXPIRED",
-          "PAYMENT_UNAVAILABLE",
-          "PAYMENT_UNKNOWN",
-          "DOMAIN_UNKNOWN",
-          "PAYMENT_CANCELED",
-          "GENERIC_ERROR",
-          "PAYMENT_DATA_ERROR"
-        ]
-      },
       "PaymentOngoingStatusFault": {
         "description": "Fault codes for errors related to payment attempts that cause conflict with the current payment status,\nsuch as a duplicated payment attempt or a payment attempt made while another attempt is still being processed.\nShould be mapped to 409 HTTP status code.\nFor further information visit https://docs.pagopa.it/gestionedeglierrori/struttura-degli-errori/fault-code.\nPossible fault codes are:\n- `PPT_PAGAMENTO_IN_CORSO`\n- `PAA_PAGAMENTO_IN_CORSO`",
         "type": "string",
@@ -1585,28 +1339,6 @@
           "PAA_PAGAMENTO_SCONOSCIUTO"
         ]
       },
-      "GatewayFault": {
-        "description": "Fault codes for generic downstream services errors, should be mapped to 502 HTTP status code.\nFor further information visit https://docs.pagopa.it/gestionedeglierrori/struttura-degli-errori/fault-code.",
-        "type": "string"
-      },
-      "PartyConfigurationFault": {
-        "description": "Fault codes for fatal errors from ECs, should be mapped to 503 HTTP status code.\nFor further information visit https://docs.pagopa.it/gestionedeglierrori/struttura-degli-errori/fault-code.\nPossible fault codes are:\n- `PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE`\n- `PPT_STAZIONE_INT_PA_TIMEOUT`\n- `PPT_STAZIONE_INT_PA_ERRORE_RESPONSE`\n- `PPT_IBAN_NON_CENSITO`\n- `PAA_SINTASSI_EXTRAXSD`\n- `PAA_SINTASSI_XSD`\n- `PAA_ID_DOMINIO_ERRATO`\n- `PAA_ID_INTERMEDIARIO_ERRATO`\n- `PAA_STAZIONE_INT_ERRATA`\n- `PAA_ATTIVA_RPT_IMPORTO_NON_VALIDO`\n- `PPT_ERRORE_EMESSO_DA_PAA`\n- `PAA_SYSTEM_ERROR`",
-        "type": "string",
-        "enum": [
-          "PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE",
-          "PPT_STAZIONE_INT_PA_TIMEOUT",
-          "PPT_STAZIONE_INT_PA_ERRORE_RESPONSE",
-          "PPT_IBAN_NON_CENSITO",
-          "PAA_SINTASSI_EXTRAXSD",
-          "PAA_SINTASSI_XSD",
-          "PAA_ID_DOMINIO_ERRATO",
-          "PAA_ID_INTERMEDIARIO_ERRATO",
-          "PAA_STAZIONE_INT_ERRATA",
-          "PAA_ATTIVA_RPT_IMPORTO_NON_VALIDO",
-          "PPT_ERRORE_EMESSO_DA_PAA",
-          "PAA_SYSTEM_ERROR"
-        ]
-      },
       "RptId": {
         "type": "string",
         "pattern": "([a-zA-Z0-9]{1,35})|(RFd{2}[a-zA-Z0-9]{1,21})"
@@ -1616,30 +1348,6 @@
         "type": "string",
         "minLength": 32,
         "maxLength": 32
-      },
-      "PaymentNoticeInfo": {
-        "description": "Informations about a single payment notice",
-        "type": "object",
-        "properties": {
-          "rptId": {
-            "$ref": "#/components/schemas/RptId"
-          },
-          "paymentContextCode": {
-            "$ref": "#/components/schemas/PaymentContextCode"
-          },
-          "amount": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          }
-        },
-        "required": [
-          "rptId",
-          "amount"
-        ],
-        "example": {
-          "rptId": "string",
-          "paymentContextCode": "12345678901234567890123456789012",
-          "amount": 100
-        }
       },
       "PaymentInfo": {
         "description": "Informations about transaction payments",
@@ -1698,44 +1406,6 @@
             }
           ]
         }
-      },
-      "NewTransactionRequest": {
-        "type": "object",
-        "description": "Request body for creating a new transaction",
-        "properties": {
-          "paymentNotices": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PaymentNoticeInfo"
-            },
-            "minItems": 1,
-            "maxItems": 5,
-            "example": [
-              {
-                "rptId": "77777777777302012387654312384",
-                "paymentContextCode": "12345678901234567890123456789011",
-                "amount": 100
-              },
-              {
-                "rptId": "77777777777302012387654312385",
-                "paymentContextCode": "12345678901234567890123456789012",
-                "amount": 200
-              }
-            ]
-          },
-          "email": {
-            "type": "string"
-          },
-          "idCart": {
-            "description": "Cart identifier provided by creditor institution",
-            "type": "string",
-            "example": "idCartFromCreditorInstitution"
-          }
-        },
-        "required": [
-          "paymentNotices",
-          "email"
-        ]
       },
       "NewTransactionResponse": {
         "type": "object",
@@ -1799,16 +1469,6 @@
           },
           "feeTotal": {
             "$ref": "#/components/schemas/AmountEuroCents"
-          },
-          "clientId": {
-            "description": "transaction client id",
-            "type": "string",
-            "enum": [
-              "IO",
-              "CHECKOUT",
-              "CHECKOUT_CART",
-              "UNKNOWN"
-            ]
           },
           "authToken": {
             "type": "string"
@@ -2144,14 +1804,6 @@
         "type": "integer",
         "minimum": 0,
         "maximum": 99999999999
-      },
-      "AuthorizationResult": {
-        "description": "Authorization result",
-        "type": "string",
-        "enum": [
-          "OK",
-          "KO"
-        ]
       },
       "TransactionStatus": {
         "type": "string",
