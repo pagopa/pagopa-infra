@@ -32,7 +32,7 @@ locals {
 
 
 module "apim_lap_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "bizevent-lap"
   display_name = local.apim_lap_service_api.display_name
@@ -85,7 +85,7 @@ data "azurerm_api_management_product" "technical_support_api_product" {
 }
 
 module "apim_api_bizevents_lap_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-bizevents-lap-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -112,7 +112,7 @@ module "apim_api_bizevents_lap_api_v1" {
 }
 
 module "apim_api_bizevents_lap_api_jwt_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                = format("%s-bizevents-lap-service-api-jwt", local.project)
   api_management_name = local.pagopa_apim_name
