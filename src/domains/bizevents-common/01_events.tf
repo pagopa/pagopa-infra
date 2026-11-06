@@ -71,3 +71,15 @@ data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns04_nodo-dei-pagamenti-n
   resource_group_name = "${local.product}-msg-rg"
 }
 
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-rx-send-filter" {
+  name                = "${var.prefix}-pagopa-biz-evt-rx-send-filter"
+  namespace_name      = "${local.product}-${var.location_short}-core-evh-ns03"
+  eventhub_name       = "nodo-dei-pagamenti-biz-evt"
+  resource_group_name = "${local.product}-msg-rg"
+}
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt-send_pagopa-biz-evt-tx-send-filter" {
+  name                = "${var.prefix}-biz-evt-tx-send-filter"
+  namespace_name      = "${local.product}-${var.location_short}-core-evh-ns03"
+  eventhub_name       = "nodo-dei-pagamenti-biz-evt-send"
+  resource_group_name = "${local.product}-msg-rg"
+}
