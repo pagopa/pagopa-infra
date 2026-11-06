@@ -41,6 +41,7 @@ module "postgres_flexible_server_crus8" {
   env               = var.env
   idh_resource_tier = var.pgres_flex_params.idh_resource
   product_name      = var.prefix
+  storage_mb        = var.pgres_flex_params.storage_mb
 
   private_dns_zone_id = data.azurerm_private_dns_zone.postgres.id
   delegated_subnet_id = module.postgres_flexible_hub_spoke_snet.id

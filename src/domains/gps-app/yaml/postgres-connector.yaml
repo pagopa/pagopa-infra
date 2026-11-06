@@ -22,8 +22,12 @@ spec:
     schema.include.list: "apd"
     table.include.list: "apd.payment_option,apd.payment_position,apd.transfer"
     plugin.name: "pgoutput"
-    snapshot.max.threads: ${max_threads}
-
+    snapshot.max.threads: ${snapshot_max_threads}
+    snapshot.fetch.size: ${snapshot_fetch_size}
+    incremental.snapshot.chunk.size: ${incremental_snapshot_chunk_size}
+    max.batch.size: ${max_batch_size}
+    poll.interval.ms: ${poll_interval_ms}
+    
     signal.enabled.channels: "source"
     signal.data.collection: "apd.debezium_signal"
 

@@ -1407,6 +1407,9 @@
           "reason": {
             "type": "string"
           },
+          "companyName": {
+            "type": "string"
+          },
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
           },
@@ -1431,6 +1434,7 @@
           "rptId": "77777777777302012387654312384",
           "paymentToken": "paymentToken1",
           "reason": "reason1",
+          "companyName": "companyName1",
           "amount": 600,
           "authToken": "authToken1",
           "isAllCCP": false,
@@ -1492,6 +1496,7 @@
                 "rptId": "77777777777302012387654312384",
                 "paymentToken": "paymentToken1",
                 "reason": "reason1",
+                "companyName": "companyName1",
                 "amount": 600,
                 "transferList": [
                   {
