@@ -82,9 +82,12 @@ variables:
   CFG_USERNAME: cfg
   CFG_READ_USERNAME: cfgr
   CFG_SCHEMA: cfg
+  OBSERVABILITY_USERNAME: observability
+  OBSERVABILITY_SCHEMA: observability
   OFFLINE_USERNAME: offline
   OFFLINE_SCHEMA: offline
   ONLINE_USERNAME: online
+  ONLINE_READ_USERNAME: onliner
   ONLINE_SCHEMA: online
   RE_USERNAME: re
   RE_SCHEMA: re
@@ -106,7 +109,7 @@ stages:
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
-              secretsFilter: 'db-administrator-login-password,db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password,db-partition-password, db-cfg-password-read'
+              secretsFilter: 'db-administrator-login-password,db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password,db-partition-password,db-observability-password,db-cfg-password-read,db-online-password-read'
 
           - task: AzureCLI@2
             displayName: "create all schemas"
@@ -139,8 +142,9 @@ stages:
                 }
 
                 create_schema "$CFG_SCHEMA"     "$CFG_USERNAME"     "$(db-cfg-password)"
-                create_schema "$ONLINE_SCHEMA"  "$ONLINE_USERNAME"  "$(db-online-password)"
+                create_schema "$OBSERVABILITY_SCHEMA"   "$OBSERVABILITY_USERNAME"   "$(db-observability-password)"
                 create_schema "$OFFLINE_SCHEMA" "$OFFLINE_USERNAME" "$(db-offline-password)"
+                create_schema "$ONLINE_SCHEMA"  "$ONLINE_USERNAME"  "$(db-online-password)"
                 create_schema "$RE_SCHEMA"      "$RE_USERNAME"      "$(db-re-password)"
                 create_schema "$WFESP_SCHEMA"   "$WFESP_USERNAME"   "$(db-wfesp-password)"
 
@@ -435,36 +439,77 @@ stages:
                   \$\$;
                   "
 
+#          - task: AzureCLI@2
+#            displayName: "create CFG user READ"
+#            inputs:
+#              azureSubscription: $(AZURE_SERVICE_CONNECTION)
+#              scriptLocation: inlineScript
+#              scriptType: bash
+#              inlineScript: |
+#
+#                az config set extension.use_dynamic_install=yes_without_prompt
+#                az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
+#                --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
+#                --querytext "
+#                do \$\$
+#
+#                BEGIN
+#                  IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$CFG_READ_USERNAME') THEN
+#                    CREATE ROLE $CFG_READ_USERNAME WITH
+#                    NOSUPERUSER
+#                    LOGIN
+#                    NOREPLICATION
+#                    NOBYPASSRLS
+#                    CONNECTION LIMIT -1;
+#                  END IF;
+#
+#                  ALTER ROLE $CFG_READ_USERNAME PASSWORD '$(db-cfg-password-read)';
+#
+#                  GRANT SELECT ON ALL TABLES IN SCHEMA $CFG_SCHEMA TO $CFG_READ_USERNAME;
+#                  GRANT USAGE ON SCHEMA $CFG_SCHEMA TO $CFG_READ_USERNAME;
+#
+#                END;
+#
+#                \$\$;
+#                "
+
           - task: AzureCLI@2
-            displayName: "create CFG user READ"
+            displayName: "create schema user READ"
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |
-
-                az config set extension.use_dynamic_install=yes_without_prompt
-                az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
-                --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
-                --querytext "
-                do \$\$
-
-                BEGIN
-                  IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$CFG_READ_USERNAME') THEN
-                    CREATE ROLE $CFG_READ_USERNAME WITH
-                    NOSUPERUSER
-                    LOGIN
-                    NOREPLICATION
-                    NOBYPASSRLS
-                    CONNECTION LIMIT -1;
-                  END IF;
-
-                  ALTER ROLE $CFG_READ_USERNAME PASSWORD '$(db-cfg-password-read)';
-
-                  GRANT SELECT ON ALL TABLES IN SCHEMA $CFG_SCHEMA TO $CFG_READ_USERNAME;
-                  GRANT USAGE ON SCHEMA $CFG_SCHEMA TO $CFG_READ_USERNAME;
-
-                END;
-
-                \$\$;
-                "
+                
+                create_user_read () {
+                  SCHEMA=$1
+                  USER=$2
+                  PASS=$3
+                
+                  az config set extension.use_dynamic_install=yes_without_prompt
+                  az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
+                  --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
+                  --querytext "
+                  do \$\$
+                    BEGIN
+                      IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = \"$USER\") THEN
+                        CREATE ROLE \"$USER\" WITH
+                        NOSUPERUSER
+                        LOGIN
+                        NOREPLICATION
+                        NOBYPASSRLS
+                        CONNECTION LIMIT -1;
+                      END IF;
+    
+                      ALTER ROLE \"$USER\" PASSWORD \"$PASS\";
+    
+                      GRANT SELECT ON ALL TABLES IN SCHEMA \"$SCHEMA\" TO \"$USER\";
+                      GRANT USAGE ON SCHEMA \"$SCHEMA\" TO \"$USER\";
+    
+                    END;
+                  \$\$;
+                  "
+                }
+                
+                create_user_read "$CFG_SCHEMA"     "$CFG_READ_USERNAME"     "$(db-cfg-password-read)"
+                create_user_read "$ONLINE_SCHEMA"     "$ONLINE_READ_USERNAME"     "$(db-online-password-read)"
