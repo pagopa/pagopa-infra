@@ -3,3 +3,5 @@
 .create table QA_NRT_TEST_RUNS_STAGING based-on QA_NRT_TEST_RUNS ifnotexists
 
 .create table QA_NRT_TEST_EXECUTIONS_STAGING based-on QA_NRT_TEST_EXECUTIONS ifnotexists
+
+.create table QA_NRT_FLAKY_SCENARIOS_STAGING based-on QA_NRT_FLAKY_SCENARIOS ifnotexists

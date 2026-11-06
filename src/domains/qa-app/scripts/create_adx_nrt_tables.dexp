@@ -20,7 +20,16 @@
     env: string,
     trigger_type: string,
     test_version: string,
-    test_origin: string
+    test_origin: string,
+    revisioned: bool,
+    revision_date: datetime,
+    revisioned_by: string,
+    revision_result: string,
+    allure_url: string,
+    product_issue: string,
+    product_issue_status: string,
+    qa_issue: string,
+    qa_issue_status: string
 )
 
 .create-merge table QA_NRT_TEST_EXECUTIONS (
@@ -32,5 +41,18 @@
     allure_report: dynamic,
     duration_ms: long,
     error_message: string,
-    retries: int
+    retries: int,
+    revision_note: string,
+    allure_url: string
+)
+
+.create-merge table QA_NRT_FLAKY_SCENARIOS (
+    id: guid,
+    suite_id: guid,
+    test_object: string,
+    scenario_name: string,
+    test_object_version: string,
+    test_version: string,
+    inserted_at: datetime,
+    is_flaky: bool
 )
