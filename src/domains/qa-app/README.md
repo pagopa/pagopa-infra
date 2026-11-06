@@ -33,13 +33,15 @@ creates these empty tables using `.create table ... based-on ... ifnotexists`:
 | `QA_NRT_TEST_SUITES_STAGING` | `QA_NRT_TEST_SUITES` |
 | `QA_NRT_TEST_RUNS_STAGING` | `QA_NRT_TEST_RUNS` |
 | `QA_NRT_TEST_EXECUTIONS_STAGING` | `QA_NRT_TEST_EXECUTIONS` |
+| `QA_NRT_FLAKY_SCENARIOS_STAGING` | `QA_NRT_FLAKY_SCENARIOS` |
 
 This copies the actual source schema, including column names, types, and order,
 without copying rows or modifying the final tables. Kusto does not copy update
 policies or authorized principals with `based-on`. No automatic publication
-policy is introduced. Existing staging tables and their data are left unchanged:
-compare schemas before synchronization if they already exist or final schemas
-change later; this creation script does not reconcile existing staging schemas.
+policy is introduced. Staging tables are not reconciled on apply: `ifnotexists`
+leaves an existing staging table untouched. If a staging table already exists
+with a different schema, drop it manually before applying, so it is recreated
+from the final schema.
 
 The workflow owns staging ingestion and cleanup, count checks, `.replace extents`,
 `.move extents`, and temporal `.delete table ... records` operations. Provisioning

@@ -2,7 +2,7 @@
     id: guid,
     test_object: string,
     test_type: string,
-    suite_version: string,
+    test_object_version: string,
     owner_team: string
 )
 
