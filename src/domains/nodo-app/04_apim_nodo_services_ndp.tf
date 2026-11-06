@@ -562,52 +562,52 @@ module "apim_nodo_per_pm_api_v2_ndp" {
 
 # https://api.<env>.platform.pagopa.it/nodo-ndp/monitoring/v1/monitor
 
-locals {
-  apim_nodo_monitoring_api_ndp = {
-    display_name          = "Nodo monitoring NDP"
-    description           = "Nodo monitoring NDP"
-    path                  = "nodo-ndp/monitoring"
-    subscription_required = false
-    service_url           = null
-  }
-}
-
-resource "azurerm_api_management_api_version_set" "nodo_monitoring_api_ndp" {
-  name                = format("%s-nodo-monitoring-api-ndp", var.env_short)
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  display_name        = local.apim_nodo_monitoring_api_ndp.display_name
-  versioning_scheme   = "Segment"
-}
-
-module "apim_nodo_monitoring_api_ndp" {
-  source = "./.terraform/modules/__v3__/api_management_api"
-
-  name                  = format("%s-nodo-monitoring-api-ndp", var.env_short)
-  resource_group_name   = local.pagopa_apim_rg
-  api_management_name   = local.pagopa_apim_name
-  product_ids           = [module.apim_nodo_dei_pagamenti_product_ndp.product_id]
-  subscription_required = local.apim_nodo_monitoring_api_ndp.subscription_required
-
-  version_set_id = azurerm_api_management_api_version_set.nodo_monitoring_api_ndp.id
-  api_version    = "v1"
-
-  description  = local.apim_nodo_monitoring_api_ndp.description
-  display_name = local.apim_nodo_monitoring_api_ndp.display_name
-  path         = local.apim_nodo_monitoring_api_ndp.path
-  protocols    = ["https"]
-
-  service_url = null
-
-  content_format = "openapi"
-  content_value = templatefile("./api/nodopagamenti_api/monitoring/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = local.apim_hostname
-  })
-
-  xml_content = templatefile("./api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {
-    base-url = "https://${local.nodo_hostname}/nodo"
-  })
-}
+# locals {
+#   apim_nodo_monitoring_api_ndp = {
+#     display_name          = "Nodo monitoring NDP"
+#     description           = "Nodo monitoring NDP"
+#     path                  = "nodo-ndp/monitoring"
+#     subscription_required = false
+#     service_url           = null
+#   }
+# }
+#
+# resource "azurerm_api_management_api_version_set" "nodo_monitoring_api_ndp" {
+#   name                = format("%s-nodo-monitoring-api-ndp", var.env_short)
+#   resource_group_name = local.pagopa_apim_rg
+#   api_management_name = local.pagopa_apim_name
+#   display_name        = local.apim_nodo_monitoring_api_ndp.display_name
+#   versioning_scheme   = "Segment"
+# }
+#
+# module "apim_nodo_monitoring_api_ndp" {
+#   source = "./.terraform/modules/__v3__/api_management_api"
+#
+#   name                  = format("%s-nodo-monitoring-api-ndp", var.env_short)
+#   resource_group_name   = local.pagopa_apim_rg
+#   api_management_name   = local.pagopa_apim_name
+#   product_ids           = [module.apim_nodo_dei_pagamenti_product_ndp.product_id]
+#   subscription_required = local.apim_nodo_monitoring_api_ndp.subscription_required
+#
+#   version_set_id = azurerm_api_management_api_version_set.nodo_monitoring_api_ndp.id
+#   api_version    = "v1"
+#
+#   description  = local.apim_nodo_monitoring_api_ndp.description
+#   display_name = local.apim_nodo_monitoring_api_ndp.display_name
+#   path         = local.apim_nodo_monitoring_api_ndp.path
+#   protocols    = ["https"]
+#
+#   service_url = null
+#
+#   content_format = "openapi"
+#   content_value = templatefile("./api/nodopagamenti_api/monitoring/v1/_NodoDeiPagamenti.openapi.json.tpl", {
+#     host = local.apim_hostname
+#   })
+#
+#   xml_content = templatefile("./api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {
+#     base-url = "https://${local.nodo_hostname}/nodo"
+#   })
+# }
 
 # nodoInviaRPT
 resource "azurerm_api_management_api_operation_policy" "nodoInviaRPT_api_v1_policy_ndp" {

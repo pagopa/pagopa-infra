@@ -1,13 +1,13 @@
 <!--
     IMPORTANT:
     - Policy fragment are included as-is whenever they are referenced.
-    - If using variables. Ensure they are setup before use.
+    - If using variables. Ensure they are set up before use.
     - Copy and paste your code here or simply start coding
 -->
 <fragment>
-	<set-variable name="enable_nm3_switch" value="{{enable-nm3-decoupler-switch}}" />
-	<set-variable name="enable_routing_switch" value="{{enable-routing-decoupler-switch}}" />
-	<set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
+	<set-variable name="enable_nm3_switch" value="@("{{enable-nm3-decoupler-switch}}".ToLowerInvariant())" />
+	<set-variable name="enable_routing_switch" value="@("{{enable-routing-decoupler-switch}}".ToLowerInvariant())" />
+	<set-variable name="enable_wisp_dismantling_switch" value="@("{{enable-wisp-dismantling-switch}}".ToLowerInvariant())" />
 	<choose>
 		<!-- evaluate routing algorithm -->
 		<when condition="@(((string)context.Variables["primitiveType"]).Equals("ROUTING"))">
