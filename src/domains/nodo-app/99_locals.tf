@@ -77,6 +77,6 @@ locals {
   # subscriptionKey     by KV # ecommerce pagoPA - transaction user receipts service API
 
   dns_zone_nodo_observability = "observability"
-  dns_zone_platform   = var.env == "prod" ? "platform" : "${var.env}.platform"
-  external_domain     = "pagopa.it"
+  dns_zone_platform           = var.env == "prod" ? "platform" : "${var.env}.platform"
+  external_domain             = "pagopa.it"
 }

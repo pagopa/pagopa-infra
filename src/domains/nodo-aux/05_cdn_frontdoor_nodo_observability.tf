@@ -150,7 +150,7 @@ module "nodo_observability_cdn" {
         }
       ]
     }
-  ],
+    ],
     local.spa
   )
   delivery_custom_rules = [

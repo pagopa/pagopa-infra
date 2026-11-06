@@ -478,29 +478,3 @@ variable "apim_logger_resource_id" {
   default     = null
 }
 
-variable "nodo_observability_enabled" {
-  type        = bool
-  description = "Enable Nodo Observability FE"
-  default     = false
-}
-
-# Single Page Applications
-variable "spa" {
-  type        = list(string)
-  description = "spa root dirs"
-  default = [
-    "ui"
-  ]
-}
-
-variable "nodo_observability_storage_replication_type" {
-  type        = string
-  default     = "GRS"
-  description = "(Optional) Nodo Observability cdn storage account replication type"
-}
-
-variable "robots_indexed_paths" {
-  type        = list(string)
-  description = "List of cdn paths to allow robots index"
-  default     = []
-}
