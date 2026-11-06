@@ -5,11 +5,11 @@
 locals {
   pagopa_node_cfg_sync = {
     name = "pagopa-node-cfg-sync"
-    dumpProblem = {
+    eventHubProcessingError = {
       query       = <<-QUERY
           traces
           | where cloud_RoleName == "%s"
-          | where message contains "[api-config-cache][ALERT] Problem to dump cache"
+          | where message contains "[api-config-cache][ALERT] Error occurred from partition"
           | order by timestamp desc
           | summarize Total=count() by length=bin(timestamp,1m)
           | order by length desc
@@ -18,155 +18,38 @@ locals {
       frequency   = 5
       time_window = 5
     },
-    dumpTrigger = {
-      query       = <<-QUERY
-          let start = datetime_local_to_utc(startofday(now()), 'Europe/Rome');
-          let end = start + 30m;
-          traces
-          | where timestamp between(start .. end)
-          | where cloud_RoleName == "%s"
-          | where message contains "[api-config-cache][ALERT-OK]"
-          | summarize Total=count() by length=bin(timestamp,1d)
-          | order by length desc
-          QUERY
-      severity    = 0
-      frequency   = 30
-      time_window = 1440
-    },
-    genericProblem = {
-      query       = <<-QUERY
-          traces
-          | where cloud_RoleName == "%s"
-          | where message contains "[api-config-cache][ALERT] Generic Error"
-          | order by timestamp desc
-          | summarize Total=count() by length=bin(timestamp,1m)
-          | order by length desc
-          QUERY
-      severity    = 0
-      frequency   = 5
-      time_window = 5
-    },
-    syncDumpingGenericProblem = {
-      query       = <<-QUERY
-          traces
-          | where cloud_RoleName == "%s"
-          | where message contains "[riversamento][ALERT] Generic Error"
-          | order by timestamp desc
-          | summarize Total=count() by length=bin(timestamp,1m)
-          | order by length desc
-          QUERY
-      severity    = 0
-      frequency   = 5
-      time_window = 5
-    },
-    syncDumpingError = {
+    customEvent = {
       query       = <<-QUERY
         customEvents
           | where name == "NODE_CFG_SYNC"
           | where customDimensions.type == "%s"
           | order by timestamp desc
       QUERY
-      severity    = 0
+      severity    = 1
       frequency   = 5
       time_window = 5
     },
   }
 }
 
-# Problem to write cache on DB
-resource "azurerm_monitor_scheduled_query_rules_alert" "node_cfg_sync_dump_problem" {
-  name                = format("%s-%s", local.pagopa_node_cfg_sync.name, "cache-dump-problem")
-  resource_group_name = data.azurerm_resource_group.node_cfg_sync_rg.name
-  location            = var.location
-
-  action {
-    action_group           = var.env_short != "d" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "[${var.env}] Problem to dump cache on DB"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "[${var.env}] Problem to dump cache on DB"
-  enabled        = true
-  query          = format(local.pagopa_node_cfg_sync.dumpProblem.query, local.pagopa_node_cfg_sync.name)
-
-  severity    = local.pagopa_node_cfg_sync.dumpProblem.severity
-  frequency   = local.pagopa_node_cfg_sync.dumpProblem.frequency
-  time_window = local.pagopa_node_cfg_sync.dumpProblem.time_window
-  trigger {
-    operator  = "GreaterThanOrEqual"
-    threshold = 1
-  }
-}
-
-# No trigger received in the range 00:00 - 00:30
-resource "azurerm_monitor_scheduled_query_rules_alert" "node_cfg_sync_trigger_problem" {
-  name                = format("%s-%s", local.pagopa_node_cfg_sync.name, "cache-trigger-problem")
-  resource_group_name = data.azurerm_resource_group.node_cfg_sync_rg.name
-  location            = var.location
-
-  action {
-    action_group           = var.env_short != "d" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "[${var.env}] No trigger received at midnight"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "[${var.env}] No trigger received at midnight"
-  enabled        = false # PSFC-TODO should per active and apply on 23.59
-  query          = format(local.pagopa_node_cfg_sync.dumpTrigger.query, local.pagopa_node_cfg_sync.name)
-
-  severity    = local.pagopa_node_cfg_sync.dumpTrigger.severity
-  frequency   = local.pagopa_node_cfg_sync.dumpTrigger.frequency
-  time_window = local.pagopa_node_cfg_sync.dumpTrigger.time_window
-  trigger {
-    operator  = "LessThan"
-    threshold = 1
-  }
-}
-
-# Cache Generic error
-resource "azurerm_monitor_scheduled_query_rules_alert" "node_cfg_sync_generic_problem" {
-  name                = format("%s-%s", local.pagopa_node_cfg_sync.name, "cache-generic-problem")
-  resource_group_name = data.azurerm_resource_group.node_cfg_sync_rg.name
-  location            = var.location
-
-  action {
-    action_group           = var.env_short != "d" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "[${var.env}] Generic problem regarding cache dumping"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "[${var.env}] Generic problem regarding cache dumping"
-  enabled        = true
-  query          = format(local.pagopa_node_cfg_sync.dumpProblem.query, local.pagopa_node_cfg_sync.name)
-
-  severity    = local.pagopa_node_cfg_sync.genericProblem.severity
-  frequency   = local.pagopa_node_cfg_sync.genericProblem.frequency
-  time_window = local.pagopa_node_cfg_sync.genericProblem.time_window
-  trigger {
-    operator  = "GreaterThanOrEqual"
-    threshold = 1
-  }
-}
-
-# SYNC dumping Generic error
-resource "azurerm_monitor_scheduled_query_rules_alert" "node_cfg_sync_sync_dumping_generic_problem" {
-  name                = format("%s-%s", local.pagopa_node_cfg_sync.name, "sync-dumping-generic-problem")
+resource "azurerm_monitor_scheduled_query_rules_alert" "node_cfg_sync_cache_event_hub_error_processor" {
+  name                = format("%s-%s", local.pagopa_node_cfg_sync.name, "event-hub-error-processor")
   resource_group_name = data.azurerm_resource_group.node_cfg_sync_rg.name
   location            = var.location
 
   action {
     action_group           = var.env_short != "d" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "[${var.env}] Generic problem regarding SYNC dumping"
+    email_subject          = "[${var.env}] Error processing event hub message"
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "[${var.env}] Generic problem regarding SYNC dumping"
+  description    = "[${var.env}] Error processing event hub message"
   enabled        = true
-  query          = format(local.pagopa_node_cfg_sync.syncDumpingGenericProblem.query, local.pagopa_node_cfg_sync.name)
+  query          = format(local.pagopa_node_cfg_sync.eventHubProcessingError.query, local.pagopa_node_cfg_sync.name)
 
-  severity    = local.pagopa_node_cfg_sync.syncDumpingGenericProblem.severity
-  frequency   = local.pagopa_node_cfg_sync.syncDumpingGenericProblem.frequency
-  time_window = local.pagopa_node_cfg_sync.syncDumpingGenericProblem.time_window
+  severity    = local.pagopa_node_cfg_sync.eventHubProcessingError.severity
+  frequency   = local.pagopa_node_cfg_sync.eventHubProcessingError.frequency
+  time_window = local.pagopa_node_cfg_sync.eventHubProcessingError.time_window
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1
@@ -174,8 +57,34 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "node_cfg_sync_sync_dumpi
 }
 
 # Custom event
+###########
 # Cache
-resource "azurerm_monitor_scheduled_query_rules_alert" "cache-dumping-error" {
+###########
+resource "azurerm_monitor_scheduled_query_rules_alert" "cache-generic-error" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = format("%s-%s", local.pagopa_node_cfg_sync.name, "cache-generic-error")
+  resource_group_name = data.azurerm_resource_group.node_cfg_sync_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.smo_opsgenie[0].id]
+    email_subject          = "node-cfg-sync-cache-generic-error"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "Generic error regarding cache persistence on DB"
+  enabled        = true
+  query          = format(local.pagopa_node_cfg_sync.customEvent.query, "Cache not ready to be saved")
+  severity       = local.pagopa_node_cfg_sync.customEvent.severity
+  frequency      = local.pagopa_node_cfg_sync.customEvent.frequency
+  time_window    = local.pagopa_node_cfg_sync.customEvent.time_window
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "cache-save-error" {
   count               = var.env_short == "p" ? 1 : 0
   name                = format("%s-%s", local.pagopa_node_cfg_sync.name, "cache-dumping-error")
   resource_group_name = data.azurerm_resource_group.node_cfg_sync_rg.name
@@ -183,43 +92,150 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "cache-dumping-error" {
 
   action {
     action_group           = [data.azurerm_monitor_action_group.smo_opsgenie[0].id]
-    email_subject          = "node-cfg-sync-cache-dumping-error"
+    email_subject          = "node-cfg-sync-cache-save-error"
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Problem to dump cache on DBs"
+  description    = "Problem to save cache on DB"
   enabled        = true
-  query          = format(local.pagopa_node_cfg_sync.syncDumpingError.query, "Cache not ready to be saved")
-  severity       = local.pagopa_node_cfg_sync.syncDumpingError.severity
-  frequency      = local.pagopa_node_cfg_sync.syncDumpingError.frequency
-  time_window    = local.pagopa_node_cfg_sync.syncDumpingError.time_window
+  query          = format(local.pagopa_node_cfg_sync.customEvent.query, "Cache not saved")
+  severity       = local.pagopa_node_cfg_sync.customEvent.severity
+  frequency      = local.pagopa_node_cfg_sync.customEvent.frequency
+  time_window    = local.pagopa_node_cfg_sync.customEvent.time_window
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1
   }
 }
 
-# Stand-in
-resource "azurerm_monitor_scheduled_query_rules_alert" "stand-in-station-dumping-error" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "cache-rollback-error" {
   count               = var.env_short == "p" ? 1 : 0
-  name                = format("%s-%s", local.pagopa_node_cfg_sync.name, "stand-in-station-dumping-error")
+  name                = format("%s-%s", local.pagopa_node_cfg_sync.name, "cache-rollback-error")
   resource_group_name = data.azurerm_resource_group.node_cfg_sync_rg.name
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "stand-in-station-dumping-error"
+    action_group           = [data.azurerm_monitor_action_group.smo_opsgenie[0].id]
+    email_subject          = "node-cfg-sync-cache-rollback-error"
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Problem to dump stand-in-stations on DBs"
+  description    = "Problem to rollback saved cache on DB after a failed save"
   enabled        = true
-  query          = format(local.pagopa_node_cfg_sync.syncDumpingError.query, "Stand-in-Station not updated")
-  severity       = local.pagopa_node_cfg_sync.syncDumpingError.severity
-  frequency      = local.pagopa_node_cfg_sync.syncDumpingError.frequency
-  time_window    = local.pagopa_node_cfg_sync.syncDumpingError.time_window
+  query          = format(local.pagopa_node_cfg_sync.customEvent.query, "Cache rollback failed")
+  severity       = 0
+  frequency      = local.pagopa_node_cfg_sync.customEvent.frequency
+  time_window    = local.pagopa_node_cfg_sync.customEvent.time_window
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1
   }
 }
+
+###########
+# Stand-in
+###########
+# resource "azurerm_monitor_scheduled_query_rules_alert" "stand-in-station-generic-error" {
+#   count               = var.env_short == "p" ? 1 : 0
+#   name                = format("%s-%s", local.pagopa_node_cfg_sync.name, "stand-in-station-generic-error")
+#   resource_group_name = data.azurerm_resource_group.node_cfg_sync_rg.name
+#   location            = var.location
+#
+#   action {
+#     action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+#     email_subject          = "stand-in-station-generic-error"
+#     custom_webhook_payload = "{}"
+#   }
+#   data_source_id = data.azurerm_application_insights.application_insights.id
+#   description    = "Generic error regarding stand-in-stations persistence on DB"
+#   enabled        = true
+#   query          = format(local.pagopa_node_cfg_sync.customEvent.query, "Stand-in-Station not updated")
+#   severity       = local.pagopa_node_cfg_sync.customEvent.severity
+#   frequency      = local.pagopa_node_cfg_sync.customEvent.frequency
+#   time_window    = local.pagopa_node_cfg_sync.customEvent.time_window
+#   trigger {
+#     operator  = "GreaterThanOrEqual"
+#     threshold = 1
+#   }
+# }
+#
+# resource "azurerm_monitor_scheduled_query_rules_alert" "stand-in-station-fetch-error" {
+#   count               = var.env_short == "p" ? 1 : 0
+#   name = format("%s-%s", local.pagopa_node_cfg_sync.name, "stand-in-station-fetch-error")
+#   resource_group_name = data.azurerm_resource_group.node_cfg_sync_rg.name
+#   location            = var.location
+#
+#   action {
+#     action_group = [
+#       data.azurerm_monitor_action_group.email.id,
+#       data.azurerm_monitor_action_group.slack.id
+#     ]
+#     email_subject          = "stand-in-station-retrieve-error"
+#     custom_webhook_payload = "{}"
+#   }
+#   data_source_id = data.azurerm_application_insights.application_insights.id
+#   description    = "Problem to retrieve stand-in-stations"
+#   enabled        = true
+#   query = format(local.pagopa_node_cfg_sync.customEvent.query, "Unable to retrieve Stand-in-Stations")
+#   severity       = local.pagopa_node_cfg_sync.customEvent.severity
+#   frequency      = local.pagopa_node_cfg_sync.customEvent.frequency
+#   time_window    = local.pagopa_node_cfg_sync.customEvent.time_window
+#   trigger {
+#     operator  = "GreaterThanOrEqual"
+#     threshold = 1
+#   }
+# }
+#
+# resource "azurerm_monitor_scheduled_query_rules_alert" "stand-in-station-save-error" {
+#   count               = var.env_short == "p" ? 1 : 0
+#   name = format("%s-%s", local.pagopa_node_cfg_sync.name, "stand-in-station-fetch-error")
+#   resource_group_name = data.azurerm_resource_group.node_cfg_sync_rg.name
+#   location            = var.location
+#
+#   action {
+#     action_group = [
+#       data.azurerm_monitor_action_group.email.id,
+#       data.azurerm_monitor_action_group.slack.id
+#     ]
+#     email_subject          = "stand-in-station-retrieve-error"
+#     custom_webhook_payload = "{}"
+#   }
+#   data_source_id = data.azurerm_application_insights.application_insights.id
+#   description    = "Problem to retrieve stand-in-stations"
+#   enabled        = true
+#   query = format(local.pagopa_node_cfg_sync.customEvent.query, "Stand-in-Station not saved")
+#   severity       = local.pagopa_node_cfg_sync.customEvent.severity
+#   frequency      = local.pagopa_node_cfg_sync.customEvent.frequency
+#   time_window    = local.pagopa_node_cfg_sync.customEvent.time_window
+#   trigger {
+#     operator  = "GreaterThanOrEqual"
+#     threshold = 1
+#   }
+# }
+#
+# resource "azurerm_monitor_scheduled_query_rules_alert" "stand-in-station-rollback-error" {
+#   count               = var.env_short == "p" ? 1 : 0
+#   name = format("%s-%s", local.pagopa_node_cfg_sync.name, "stand-in-station-rollback-error")
+#   resource_group_name = data.azurerm_resource_group.node_cfg_sync_rg.name
+#   location            = var.location
+#
+#   action {
+#     action_group = [
+#       data.azurerm_monitor_action_group.email.id,
+#       data.azurerm_monitor_action_group.slack.id
+#     ]
+#     email_subject          = "stand-in-station-rollback-error"
+#     custom_webhook_payload = "{}"
+#   }
+#   data_source_id = data.azurerm_application_insights.application_insights.id
+#   description    = "Problem to rollback saved stand-in-stations on DB after a failed save"
+#   enabled        = true
+#   query = format(local.pagopa_node_cfg_sync.customEvent.query, "Stand-in rollback failed")
+#   severity       = 0
+#   frequency      = local.pagopa_node_cfg_sync.customEvent.frequency
+#   time_window    = local.pagopa_node_cfg_sync.customEvent.time_window
+#   trigger {
+#     operator  = "GreaterThanOrEqual"
+#     threshold = 1
+#   }
+# }
