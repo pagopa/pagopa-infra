@@ -12,14 +12,14 @@ locals {
   # cloudo_action_group_rg_name                     = "${local.product}-itn-cloudo-rg"
   # monitor_appinsights_name                        = "${local.product}-appinsights"
   #
-  # vnet_name                = "${local.product}-vnet"
+  vnet_name                = "${local.product}-vnet"
   vnet_resource_group_name = "${local.product}-vnet-rg"
   # vnet_integration_name    = "${local.product}-vnet-integration"
   #
   # acr_name                = replace("${local.product}commonacr", "-", "")
   # acr_resource_group_name = "${local.product}-container-registry-rg"
   #
-  aks_name                = "${local.product}-${var.location_short}-${var.instance}-aks"
+  aks_name = "${local.product}-${var.location_short}-${var.instance}-aks"
   # aks_resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
   # aks_subnet_name         = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
   #
@@ -34,6 +34,6 @@ locals {
   # nodo_hostname = var.env == "prod" ? "${var.location_short}${var.env}.${var.domain}.internal.platform.pagopa.it" : "${var.location_short}${var.env}.${var.domain}.internal.${var.env}.platform.pagopa.it"
 
   dns_zone_nodo_observability = "observability"
-  dns_zone_platform   = var.env == "prod" ? "platform" : "${var.env}.platform"
-  external_domain     = "pagopa.it"
+  dns_zone_platform           = var.env == "prod" ? "platform" : "${var.env}.platform"
+  external_domain             = "pagopa.it"
 }
