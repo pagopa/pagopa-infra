@@ -208,3 +208,5 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
 }
 
 apim_logger_resource_id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/loggers/pagopa-d-apim-logger"
+
+nodo_observability_enabled = true
