@@ -4840,6 +4840,49 @@
           }
         }
       }
+    },
+    "/api/v1/quality-gate/runs/{correlation_id}": {
+      "get": {
+        "tags": [
+          "quality-gate"
+        ],
+        "summary": "Get Run Status",
+        "operationId": "get_run_status_api_v1_quality_gate_runs__correlation_id__get",
+        "parameters": [
+          {
+            "name": "correlation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^qg-[0-9a-f]{32}$",
+              "title": "Correlation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityGateRunStatus"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -8891,6 +8934,56 @@
           "actions_url"
         ],
         "title": "QualityGateRunOut"
+      },
+      "QualityGateRunStatus": {
+        "properties": {
+          "correlation_id": {
+            "type": "string",
+            "title": "Correlation Id"
+          },
+          "run_name": {
+            "type": "string",
+            "title": "Run Name"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "queued",
+              "in_progress",
+              "completed"
+            ],
+            "title": "State"
+          },
+          "conclusion": {
+            "title": "Conclusion",
+            "type": "string",
+            "nullable": true
+          },
+          "html_url": {
+            "title": "Html Url",
+            "type": "string",
+            "nullable": true
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string",
+            "nullable": true
+          },
+          "updated_at": {
+            "title": "Updated At",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "correlation_id",
+          "run_name",
+          "state"
+        ],
+        "title": "QualityGateRunStatus",
+        "description": "Live state of a launched run, read from GitHub Actions.\n\n``pending`` means GitHub has not listed the run yet (dispatch is asynchronous).\n``conclusion`` is only set once ``state`` is ``completed``."
       },
       "ResourceAbsenceCreate": {
         "properties": {
