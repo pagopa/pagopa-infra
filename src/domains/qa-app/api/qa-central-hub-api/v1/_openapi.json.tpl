@@ -4801,6 +4801,29 @@
       }
     },
     "/api/v1/quality-gate/runs": {
+      "get": {
+        "tags": [
+          "quality-gate"
+        ],
+        "summary": "List Runs",
+        "operationId": "list_runs_api_v1_quality_gate_runs_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/QualityGateRunStatus"
+                  },
+                  "type": "array",
+                  "title": "Response List Runs Api V1 Quality Gate Runs Get"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
           "quality-gate"
@@ -4870,6 +4893,42 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/quality-gate/test-runs/{run_id}": {
+      "delete": {
+        "tags": [
+          "quality-gate"
+        ],
+        "summary": "Delete Run",
+        "operationId": "delete_run_api_v1_quality_gate_test_runs__run_id__delete",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
