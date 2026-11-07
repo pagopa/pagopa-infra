@@ -1517,6 +1517,27 @@
         }
       }
     },
+    "/api/v1/ea/impact/rules": {
+      "get": {
+        "tags": [
+          "ea-map"
+        ],
+        "summary": "Release Impact Rules",
+        "operationId": "release_impact_rules_api_v1_ea_impact_rules_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EaImpactRulesOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/ea/impact/release": {
       "post": {
         "tags": [
@@ -6294,6 +6315,44 @@
         ],
         "title": "EaImpactResponse"
       },
+      "EaImpactRulesOut": {
+        "properties": {
+          "categories": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Categories"
+          },
+          "change_risk": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Change Risk"
+          },
+          "promotion": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Promotion"
+          },
+          "depth": {
+            "type": "integer",
+            "title": "Depth"
+          }
+        },
+        "type": "object",
+        "required": [
+          "categories",
+          "change_risk",
+          "promotion",
+          "depth"
+        ],
+        "title": "EaImpactRulesOut",
+        "description": "How the risk of a release is rated, straight from the rules the analysis applies."
+      },
       "EaInfraActionGroupOut": {
         "properties": {
           "id": {
@@ -7256,6 +7315,11 @@
             "type": "string",
             "title": "Risk"
           },
+          "risk_explain": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Risk Explain"
+          },
           "categories": {
             "items": {
               "additionalProperties": true,
@@ -7309,6 +7373,7 @@
           "change",
           "component",
           "risk",
+          "risk_explain",
           "categories",
           "impacted",
           "suites",
