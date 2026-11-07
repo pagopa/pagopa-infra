@@ -4799,6 +4799,47 @@
           }
         }
       }
+    },
+    "/api/v1/quality-gate/runs": {
+      "post": {
+        "tags": [
+          "quality-gate"
+        ],
+        "summary": "Launch Run",
+        "operationId": "launch_run_api_v1_quality_gate_runs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualityGateRunCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityGateRunOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -8783,6 +8824,73 @@
           "synced_at"
         ],
         "title": "PspFeeSyncStatusOut"
+      },
+      "QualityGateRunCreate": {
+        "properties": {
+          "test_suite": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+            "title": "Test Suite"
+          },
+          "test_type": {
+            "type": "string",
+            "enum": [
+              "integration",
+              "e2e",
+              "api"
+            ],
+            "title": "Test Type",
+            "default": "integration"
+          },
+          "environment": {
+            "type": "string",
+            "enum": [
+              "dev",
+              "uat"
+            ],
+            "title": "Environment",
+            "default": "uat"
+          },
+          "tags": {
+            "type": "string",
+            "pattern": "^[@A-Za-z0-9_,.~-]{0,200}$",
+            "title": "Tags",
+            "default": "@runnable"
+          },
+          "allure": {
+            "type": "boolean",
+            "title": "Allure",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "test_suite"
+        ],
+        "title": "QualityGateRunCreate"
+      },
+      "QualityGateRunOut": {
+        "properties": {
+          "correlation_id": {
+            "type": "string",
+            "title": "Correlation Id"
+          },
+          "run_name": {
+            "type": "string",
+            "title": "Run Name"
+          },
+          "actions_url": {
+            "type": "string",
+            "title": "Actions Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "correlation_id",
+          "run_name",
+          "actions_url"
+        ],
+        "title": "QualityGateRunOut"
       },
       "ResourceAbsenceCreate": {
         "properties": {
