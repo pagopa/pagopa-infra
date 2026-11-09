@@ -2,11 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "0.0.1",
-    "title": "Pagopa eCommerce services for Checkout",
-    "description": "This microservice that expose eCommerce services to Checkout.",
-    "contact": {
-      "name": "pagoPA - Touchpoints team"
-    }
+    "title": "Ecommerce API for checkout pagoPA",
+    "description": "Ecommerce pagoPA API dedicated to checkout pagoPA for pagoPA payment"
   },
   "tags": [
     {
@@ -517,9 +514,9 @@
             "required": false,
             "description": "Language requested by the user",
             "schema": {
-              "type": "string",
+              "type": "string"
             }
-          },
+          }
         ],
         "security": [
           {
