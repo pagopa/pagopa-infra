@@ -4942,6 +4942,53 @@
           }
         }
       }
+    },
+    "/api/v1/quality-gate/test-runs/{run_id}/scenarios": {
+      "get": {
+        "tags": [
+          "quality-gate"
+        ],
+        "summary": "List Run Scenarios",
+        "operationId": "list_run_scenarios_api_v1_quality_gate_test_runs__run_id__scenarios_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QualityGateScenarioOut"
+                  },
+                  "title": "Response List Run Scenarios Api V1 Quality Gate Test Runs  Run Id  Scenarios Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -9044,6 +9091,51 @@
         "title": "QualityGateRunStatus",
         "description": "Live state of a launched run, read from GitHub Actions.\n\n``pending`` means GitHub has not listed the run yet (dispatch is asynchronous).\n``conclusion`` is only set once ``state`` is ``completed``."
       },
+      "QualityGateScenarioOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "scenario_name": {
+            "title": "Scenario Name",
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "title": "Status",
+            "type": "string",
+            "nullable": true
+          },
+          "duration_ms": {
+            "title": "Duration Ms",
+            "type": "integer",
+            "nullable": true
+          },
+          "retries": {
+            "title": "Retries",
+            "type": "integer",
+            "nullable": true
+          },
+          "error_message": {
+            "title": "Error Message",
+            "type": "string",
+            "nullable": true
+          },
+          "allure_url": {
+            "title": "Allure Url",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "QualityGateScenarioOut",
+        "description": "A scenario of a Quality Gate run, without the (large) raw Allure payload."
+      },
       "ResourceAbsenceCreate": {
         "properties": {
           "resource_id": {
@@ -10288,6 +10380,11 @@
             "title": "Qa Issue Status",
             "type": "string",
             "nullable": true
+          },
+          "gha_run_url": {
+            "title": "Gha Run Url",
+            "type": "string",
+            "nullable": true
           }
         },
         "type": "object",
@@ -10411,6 +10508,11 @@
           },
           "qa_issue_status": {
             "title": "Qa Issue Status",
+            "type": "string",
+            "nullable": true
+          },
+          "gha_run_url": {
+            "title": "Gha Run Url",
             "type": "string",
             "nullable": true
           }
