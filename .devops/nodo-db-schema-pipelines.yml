@@ -111,33 +111,6 @@ stages:
               keyVaultName: $(KEY_VAULT_NAME)
               secretsFilter: 'db-administrator-login-password,db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password,db-partition-password,db-observability-password,db-cfg-password-read,db-online-password-read'
 
-#          - script: |
-#              # 1. Locate and remove any APT repository definition referencing HashiCorp
-#              # to avoid GPG signature errors caused by missing or expired public keys.
-#                sudo grep -rl "apt.releases.hashicorp.com" /etc/apt/ | xargs -r sudo rm -f
-#
-#                # 2. Stop and forcibly terminate any active background upgrade services
-#                # to prevent contention over package management locks.
-#                sudo systemctl stop unattended-upgrades 2>/dev/null || true
-#                sudo killall -9 unattended-upgrade unattended-upgr 2>/dev/null || true
-#
-#                # 3. Poll until all dpkg and APT lock files are released by other processes.
-#                echo "Waiting for apt/dpkg locks to be released..."
-#                while sudo fuser /var/lib/dpkg/lock-frontend /var/lib/dpkg/lock /var/lib/apt/lists/lock >/dev/null 2>&1; do
-#                echo "Lock files are still in use, waiting 3 seconds..."
-#                sleep 3
-#                done
-#
-#                # 4. Recover any interrupted dpkg states, update package indexes,
-#                # and install the compilation tools and libraries required by the extension.
-#                sudo dpkg --configure -a
-#                sudo apt-get update -y
-#                sudo apt-get install -y gcc libpq-dev python3-dev
-#
-#                # 5. Install the Azure CLI 'rdbms-connect' extension, allowing preview builds.
-#                az extension add --name rdbms-connect --yes --allow-preview true
-#            displayName: 'Install rdbms-connect extension'
-
           - task: AzureCLI@2
             displayName: "create all schemas"
             inputs:
@@ -150,7 +123,6 @@ stages:
                   SCHEMA=$1
                   USER=$2
                   PASS=$3
-                  az extension show --name rdbms-connect --output table
                   az config set extension.use_dynamic_install=yes_without_prompt
                   az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
                   --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
@@ -183,7 +155,6 @@ stages:
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |
-                az extension show --name rdbms-connect --output table
                 az config set extension.use_dynamic_install=yes_without_prompt
                 az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
                 --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
@@ -508,36 +479,37 @@ stages:
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |
-                
+                set -euo pipefail
+
                 create_user_read () {
-                  SCHEMA=$1
-                  USER=$2
-                  PASS=$3
-                
+                  SCHEMA="$1"
+                  USER="$2"
+                  PASS="$3"
+
                   az config set extension.use_dynamic_install=yes_without_prompt
-                  az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
-                  --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
-                  --querytext "
-                  do \$\$
-                    BEGIN
-                      IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = \"$USER\") THEN
-                        CREATE ROLE \"$USER\" WITH
-                        NOSUPERUSER
-                        LOGIN
-                        NOREPLICATION
-                        NOBYPASSRLS
-                        CONNECTION LIMIT -1;
-                      END IF;
-    
-                      ALTER ROLE \"$USER\" PASSWORD \"$PASS\";
-    
-                      GRANT SELECT ON ALL TABLES IN SCHEMA \"$SCHEMA\" TO \"$USER\";
-                      GRANT USAGE ON SCHEMA \"$SCHEMA\" TO \"$USER\";
-    
-                    END;
+
+                  SQL_CMD=$(cat <<EOF
+                  DO \$\$
+                  BEGIN
+                    IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = '$USER') THEN
+                      EXECUTE format('CREATE ROLE %I WITH LOGIN NOSUPERUSER NOREPLICATION NOBYPASSRLS CONNECTION LIMIT -1', '$USER');
+                    END IF;
+
+                    EXECUTE format('ALTER ROLE %I WITH PASSWORD %L', '$USER', '$PASS');
+                    EXECUTE format('GRANT USAGE ON SCHEMA %I TO %I', '$SCHEMA', '$USER');
+                    EXECUTE format('GRANT SELECT ON ALL TABLES IN SCHEMA %I TO %I', '$SCHEMA', '$USER');
+                  END;
                   \$\$;
-                  "
+                EOF
+                  )
+
+                  az postgres flexible-server execute \
+                    --name "$(DB_HOST)" \
+                    --admin-user "$(ADMIN_USERNAME)" \
+                    --admin-password '$(db-administrator-login-password)' \
+                    --database-name "$(DATABASE_NAME)" \
+                    --querytext "$SQL_CMD"
                 }
-                
-                create_user_read "$CFG_SCHEMA"     "$CFG_READ_USERNAME"     "$(db-cfg-password-read)"
-                create_user_read "$ONLINE_SCHEMA"     "$ONLINE_READ_USERNAME"     "$(db-online-password-read)"
+
+                create_user_read "$CFG_SCHEMA" "$CFG_READ_USERNAME" "$(db-cfg-password-read)"
+                create_user_read "$ONLINE_SCHEMA" "$ONLINE_READ_USERNAME" "$(db-online-password-read)"
