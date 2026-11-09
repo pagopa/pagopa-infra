@@ -1,9 +1,9 @@
 {
     "openapi": "3.0.3",
     "info": {
-        "title": "pagoPA Checkout Payment Wallet API",
+        "title": "Checkout pagoPA Payment Wallet",
         "version": "0.0.1",
-        "description": "API to handle payment wallets PagoPA for checkout, where a wallet is tuple between user identifier and payment instrument",
+        "description": "Checkout APIs dedicated to wallet domain integration.",
         "termsOfService": "https://pagopa.it/terms/"
     },
     "tags": [
