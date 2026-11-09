@@ -5051,6 +5051,30 @@
           }
         }
       }
+    },
+    "/api/v1/meta/openapi": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "Get Openapi Spec",
+        "description": "The OpenAPI specification of this API, for the portal's API documentation page.\n\nThe built-in `/api/v1/openapi.json` is not part of the specification imported into Azure\nAPIM, so it is not reachable through the gateway: this regular endpoint is.",
+        "operationId": "get_openapi_spec_api_v1_meta_openapi_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Get Openapi Spec Api V1 Meta Openapi Get"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
