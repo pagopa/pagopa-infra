@@ -1,10 +1,9 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "pagoPA Payment Wallet API for eCommerce",
+    "title": "pagoPA - payment wallet API for eCommerce",
     "version": "0.0.1",
-    "description": "API dedicated to eCommerce to retrive wallet data useful to handle authorization request with eCommerce.",
-    "termsOfService": "https://pagopa.it/terms/"
+    "description": "API dedicated to eCommerce to retrive wallet data useful to handle authorization request with eCommerce."
   },
   "servers": [
     {

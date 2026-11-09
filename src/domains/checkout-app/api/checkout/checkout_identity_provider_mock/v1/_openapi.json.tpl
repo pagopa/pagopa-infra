@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "SPID Login Simulation",
-    "description": "API for simulating an SPID login page"
+    "title": "Checkout pagoPA identity provider mock",
+    "description": "This APIM level API used to mock the identity provider in the testing environment."
   },
   "servers": [
     {

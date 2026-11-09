@@ -2,11 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "Pagopa eCommerce services for Authenticated user in Checkout",
-    "description": "This microservice that expose eCommerce services to Checkout to be used by authenticated users.",
-    "contact": {
-      "name": "pagoPA - Touchpoints team"
-    }
+    "title": "Ecommerce API for checkout pagoPA for authenticated flux",
+    "description": "Ecommerce pagoPA API dedicated to checkout pagoPA for pagoPA payment with authentication"
   },
   "tags": [
     {
@@ -884,6 +881,9 @@
           "reason": {
             "type": "string"
           },
+          "companyName": {
+            "type": "string"
+          },
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
           },
@@ -914,6 +914,7 @@
           "rptId": "77777777777302012387654312384",
           "paymentToken": "paymentToken1",
           "reason": "reason1",
+          "companyName": "companyName1",
           "amount": 600,
           "authToken": "authToken1",
           "isAllCCP": false,
@@ -996,6 +997,7 @@
                 "rptId": "77777777777302012387654312384",
                 "paymentToken": "paymentToken1",
                 "reason": "reason1",
+               "companyName": "companyName1",
                 "amount": 600,
                 "transferList": [
                   {
@@ -1016,6 +1018,7 @@
                 "rptId": "77777777777302012387654312385",
                 "paymentToken": "paymentToken2",
                 "reason": "reason2",
+                "companyName": "companyName2",
                 "amount": 300,
                 "transferList": [
                   {
