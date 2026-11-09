@@ -4864,6 +4864,27 @@
         }
       }
     },
+    "/api/v1/quality-gate/suites": {
+      "get": {
+        "tags": [
+          "quality-gate"
+        ],
+        "summary": "List Suites",
+        "operationId": "list_suites_api_v1_quality_gate_suites_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityGateSuitesOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/quality-gate/runs/{correlation_id}": {
       "get": {
         "tags": [
@@ -4929,6 +4950,47 @@
         "responses": {
           "204": {
             "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "quality-gate"
+        ],
+        "summary": "Get Run",
+        "operationId": "get_run_api_v1_quality_gate_test_runs__run_id__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NrtListObject"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -9135,6 +9197,31 @@
         ],
         "title": "QualityGateScenarioOut",
         "description": "A scenario of a Quality Gate run, without the (large) raw Allure payload."
+      },
+      "QualityGateSuitesOut": {
+        "properties": {
+          "available": {
+            "type": "boolean",
+            "title": "Available"
+          },
+          "suites": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "object",
+            "title": "Suites"
+          }
+        },
+        "type": "object",
+        "required": [
+          "available",
+          "suites"
+        ],
+        "title": "QualityGateSuitesOut",
+        "description": "Suites that can be launched and the test types each one has in the TAS repository.\n\n`available` is false when the repository could not be read: the client must then not\nrestrict the choice, because the launch itself does not validate in that case either."
       },
       "ResourceAbsenceCreate": {
         "properties": {
