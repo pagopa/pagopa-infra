@@ -3,8 +3,7 @@
   "info": {
     "title": "pagoPA - wallet API for webview",
     "version": "0.0.1",
-    "description": "API to support payment wallet for webview",
-    "termsOfService": "https://pagopa.it/terms/"
+    "description": "API to support payment wallet for webview"
   },
   "tags": [
     {

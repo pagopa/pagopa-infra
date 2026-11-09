@@ -3,8 +3,7 @@
   "info": {
     "title": "pagoPA - wallet outcomes API for IO",
     "version": "0.0.1",
-    "description": "API to support payment wallet outcomes handling for IO",
-    "termsOfService": "https://pagopa.it/terms/"
+    "description": "API to support payment wallet outcomes handling for IO"
   },
   "tags": [
     {

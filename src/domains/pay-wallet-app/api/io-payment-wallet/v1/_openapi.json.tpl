@@ -3,8 +3,7 @@
   "info": {
     "title": "pagoPA - payment wallet API only for IO APP",
     "version": "0.0.1",
-    "description": "API to support payment wallet only for IO APP",
-    "termsOfService": "https://pagopa.it/terms/"
+    "description": "API to support payment wallet only for IO APP"
   },
   "tags": [
     {
