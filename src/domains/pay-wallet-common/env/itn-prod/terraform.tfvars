@@ -95,7 +95,7 @@ pay_wallet_storage_params = {
 # AKS
 #
 aks_user_node_pool = {
-  enabled         = true,
+  enabled         = false,
   name            = "padakswalusr",
   vm_size         = "Standard_D8ds_v5",
   os_disk_type    = "Ephemeral",
