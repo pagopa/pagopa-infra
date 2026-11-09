@@ -123,7 +123,7 @@ stages:
                   SCHEMA=$1
                   USER=$2
                   PASS=$3
-                  az extension update --name rdbms-connect 
+                  az extension add --name rdbms-connect --yes --allow-preview true
                   az config set extension.use_dynamic_install=yes_without_prompt
                   az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
                   --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
@@ -156,7 +156,7 @@ stages:
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |
-                az extension add --name rdbms-connect --upgrade
+                az extension add --name rdbms-connect --yes --allow-preview true
                 az config set extension.use_dynamic_install=yes_without_prompt
                 az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
                 --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
@@ -179,7 +179,7 @@ stages:
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |
-                az extension add --name rdbms-connect --upgrade
+                az extension add --name rdbms-connect --yes --allow-preview true
                 az config set extension.use_dynamic_install=yes_without_prompt
                 az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
                 --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
@@ -234,7 +234,7 @@ stages:
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |
-                az extension add --name rdbms-connect --upgrade
+                az extension add --name rdbms-connect --yes --allow-preview true
                 az config set extension.use_dynamic_install=yes_without_prompt
                 az postgres flexible-server execute --name $(DB_HOST) --admin-user $(PARTITION_USERNAME) \
                 --admin-password '$(db-partition-password)' --database-name "$(DATABASE_NAME)" \
@@ -419,7 +419,7 @@ stages:
                 scriptLocation: inlineScript
                 scriptType: bash
                 inlineScript: |
-                  az extension add --name rdbms-connect --upgrade
+                  az extension add --name rdbms-connect --yes --allow-preview true
                   az config set extension.use_dynamic_install=yes_without_prompt
                   az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
                   --admin-password '$(db-administrator-login-password)' --database-name "postgres" \
@@ -487,7 +487,7 @@ stages:
                   SCHEMA=$1
                   USER=$2
                   PASS=$3
-                  az extension add --name rdbms-connect --upgrade
+                  az extension add --name rdbms-connect --yes --allow-preview true
                   az config set extension.use_dynamic_install=yes_without_prompt
                   az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
                   --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
