@@ -3,8 +3,7 @@
     "info": {
         "title": "Checkout pagoPA Payment Wallet",
         "version": "0.0.1",
-        "description": "Checkout APIs dedicated to wallet domain integration.",
-        "termsOfService": "https://pagopa.it/terms/"
+        "description": "Checkout APIs dedicated to wallet domain integration."
     },
     "tags": [
         {
