@@ -2,11 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "2.0.0",
-    "title": "Pagopa eCommerce services for Checkout",
-    "description": "This microservice that expose eCommerce services to Checkout.",
-    "contact": {
-      "name": "pagoPA - Touchpoints team"
-    }
+    "title": "Ecommerce API for checkout pagoPA",
+    "description": "Ecommerce pagoPA API dedicated to checkout pagoPA for pagoPA payment"
   },
   "tags": [
     {
@@ -19,8 +16,8 @@
     },
     {
       "name": "ecommerce-methods-handler",
-      "description": "Api's for retrieve payment methods for performing transactions payment",
-    },
+      "description": "Api's for retrieve payment methods for performing transactions payment"
+    }
   ],
   "servers": [
     {

@@ -2,11 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "Pagopa eCommerce services for Authenticated user in Checkout",
-    "description": "This microservice that expose eCommerce services to Checkout to be used by authenticated users.",
-    "contact": {
-      "name": "pagoPA - Touchpoints team"
-    }
+    "title": "Ecommerce API for checkout pagoPA for authenticated flux",
+    "description": "Ecommerce pagoPA API dedicated to checkout pagoPA for pagoPA payment with authentication"
   },
   "tags": [
     {
