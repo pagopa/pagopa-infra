@@ -111,6 +111,10 @@ stages:
               keyVaultName: $(KEY_VAULT_NAME)
               secretsFilter: 'db-administrator-login-password,db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password,db-partition-password,db-observability-password,db-cfg-password-read,db-online-password-read'
 
+          - script: |
+              az extension add --name rdbms-connect --yes --allow-preview true
+            displayName: 'Install rdbms-connect extension'
+
           - task: AzureCLI@2
             displayName: "create all schemas"
             inputs:
@@ -123,7 +127,6 @@ stages:
                   SCHEMA=$1
                   USER=$2
                   PASS=$3
-                  az extension add --name rdbms-connect --yes --allow-preview true
                   az config set extension.use_dynamic_install=yes_without_prompt
                   az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
                   --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
