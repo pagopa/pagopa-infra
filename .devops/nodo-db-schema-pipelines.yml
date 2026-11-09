@@ -150,7 +150,7 @@ stages:
                   SCHEMA=$1
                   USER=$2
                   PASS=$3
-
+                  az extension show --name rdbms-connect --output table
                   az config set extension.use_dynamic_install=yes_without_prompt
                   az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
                   --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
@@ -183,7 +183,7 @@ stages:
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |
-
+                az extension show --name rdbms-connect --output table
                 az config set extension.use_dynamic_install=yes_without_prompt
                 az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
                 --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
