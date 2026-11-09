@@ -21,7 +21,8 @@ locals {
     "pagopa-wisp-converter-technical-support",
     "pagopa-node-technical-support-worker",
     "pagopa-mbd",
-    "pagopa-decoupler"
+    "pagopa-decoupler",
+    "pagopa-nodo-observability",
   ]
 
   federations_01 = [
