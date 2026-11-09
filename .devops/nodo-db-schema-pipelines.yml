@@ -112,6 +112,22 @@ stages:
               secretsFilter: 'db-administrator-login-password,db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password,db-partition-password,db-observability-password,db-cfg-password-read,db-online-password-read'
 
           - script: |
+              # rm hashicorp.list to avoid apt lock issues
+              sudo rm -f /etc/apt/sources.list.d/hashicorp.list
+              
+              # attempt to stop unattended-upgrades service and wait for apt/dpkg lock to be released
+              echo "Waiting for apt/dpkg lock..."
+              sudo systemctl stop unattended-upgrades 2>/dev/null || true
+              while sudo fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1 || sudo fuser /var/lib/apt/lists/lock >/dev/null 2>&1; do
+                echo "Lock still held, sleeping 3s..."
+                sleep 3
+              done
+              
+              # installa gcc, libpq-dev e python3-dev
+              sudo apt-get update -y
+              sudo apt-get install -y gcc libpq-dev python3-dev
+              
+              # install rdbms-connect extension
               az extension add --name rdbms-connect --yes --allow-preview true
             displayName: 'Install rdbms-connect extension'
 
