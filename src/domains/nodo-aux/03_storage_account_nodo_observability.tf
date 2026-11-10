@@ -1,11 +1,11 @@
 # Use the existing storage account used for cdn
 
 # blob checkpoint
-resource "azurerm_storage_container" "observability_checkpoint_storage_connection_string" {
+resource "azurerm_storage_container" "observability_checkpoint_storage" {
   count      = var.nodo_observability_enabled ? 1 : 0
   depends_on = [module.nodo_observability_cdn]
 
-  name                  = "observability-checkpoint-storage-connection-string"
+  name                  = "observability-checkpoint-storage"
   storage_account_id    = module.nodo_observability_cdn[0].storage_id # pagopa<env>observabilitysa
   container_access_type = "private"
 }
