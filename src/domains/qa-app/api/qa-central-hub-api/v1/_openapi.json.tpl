@@ -4753,6 +4753,186 @@
         }
       }
     },
+    "/api/v1/test-metrics/tas/test-runs/{run_id}": {
+      "get": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Get Tas Run",
+        "operationId": "get_tas_run_api_v1_test_metrics_tas_test_runs__run_id__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NrtListObject"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-metrics/tas/test-runs/{run_id}/scenarios": {
+      "get": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "List Tas Run Scenarios",
+        "operationId": "list_tas_run_scenarios_api_v1_test_metrics_tas_test_runs__run_id__scenarios_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QualityGateScenarioOut"
+                  },
+                  "title": "Response List Tas Run Scenarios Api V1 Test Metrics Tas Test Runs  Run Id  Scenarios Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-metrics/nrts/test-runs/{run_id}": {
+      "get": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Get Nrt Run",
+        "operationId": "get_nrt_run_api_v1_test_metrics_nrts_test_runs__run_id__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NrtListObject"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-metrics/nrts/test-runs/{run_id}/scenarios": {
+      "get": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "List Nrt Run Scenarios",
+        "operationId": "list_nrt_run_scenarios_api_v1_test_metrics_nrts_test_runs__run_id__scenarios_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QualityGateScenarioOut"
+                  },
+                  "title": "Response List Nrt Run Scenarios Api V1 Test Metrics Nrts Test Runs  Run Id  Scenarios Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/suites/all": {
       "get": {
         "tags": [
