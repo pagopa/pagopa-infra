@@ -44,7 +44,7 @@ locals {
  */
 module "nodo_observability_cdn" {
   count  = var.nodo_observability_enabled ? 1 : 0
-  source = "../nodo-app/.terraform/modules/__v4__/cdn_frontdoor"
+  source = "./.terraform/modules/__v4__/cdn_frontdoor"
 
 
   cdn_prefix_name     = "${local.product}-observability"
