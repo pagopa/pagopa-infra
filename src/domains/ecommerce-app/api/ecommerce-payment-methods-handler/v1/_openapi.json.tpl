@@ -482,6 +482,107 @@
                     }
                 }
             }
+        },
+        "/payment-methods/{id}/sessions/{orderId}/transactionId": {
+            "get": {
+                "tags": [
+                    "payment-methods-handler"
+                ],
+                "operationId": "getTransactionIdForSession",
+                "summary": "Get eCommerce transaction id for the given NPG session",
+                "description": "API to get a transaction id from a NPG session. Validates the session security token provided via Authorization Bearer header.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Payment Method ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orderId",
+                        "in": "path",
+                        "description": "OrderId related to NPG session",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "x-client-id",
+                        "in": "header",
+                        "description": "Transaction origin (populated by APIM policy)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "IO",
+                                "CHECKOUT",
+                                "CHECKOUT_CART"
+                            ]
+                        }
+                    }
+                ],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transaction id successfully retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SessionGetTransactionIdResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Session or payment method not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Invalid session (no transaction associated or mismatched security token)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Service unavailable",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -496,6 +597,24 @@
                     "transactionId": {
                         "type": "string",
                         "description": "Transaction ID to associate with the session"
+                    }
+                }
+            },
+            "SessionGetTransactionIdResponse": {
+                "type": "object",
+                "description": "Transaction id for session successful response",
+                "required": [
+                    "transactionId",
+                    "base64TransactionId"
+                ],
+                "properties": {
+                    "transactionId": {
+                        "type": "string",
+                        "description": "Transaction id associated to this NPG session"
+                    },
+                    "base64TransactionId": {
+                        "type": "string",
+                        "description": "Base64 URL-safe encoding of the transaction id UUID bytes"
                     }
                 }
             },
@@ -1004,6 +1123,10 @@
                 "type": "apiKey",
                 "in": "header",
                 "name": "Ocp-Apim-Subscription-Key"
+            },
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
             }
         }
     }
