@@ -2,11 +2,8 @@
   "openapi": "3.0.3",
   "info": {
     "version": "0.0.1,",
-    "title": "Payment Wallet pagoPA - healthcheck",
-    "description": "The Healthcheck API is used to monitor the operational status of a REST API by providing endpoints for liveness and readiness checks.\n- Liveness Check: This endpoint verifies that the API is running and able to process requests.\n- Readiness Check: This endpoint confirms that the API is fully initialized and ready to handle traffic. It ensures that all necessary resources, such as databases or external services, are available before the API starts accepting requests.\n",
-    "contact": {
-      "name": "pagoPA - Touchpoints team"
-    }
+    "title": "wallet pagoPA - healthcheck API",
+    "description": "API to support system healthcheck"
   },
   "tags": [
     {
