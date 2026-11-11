@@ -5,7 +5,7 @@
     <choose>
       <when condition="@(!((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") && !((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it"))">
         <choose>
-          <when condition="@(context.Request.Method == "GET" && context.Request.Url.Path.EndsWith("/status"))">
+          <when condition="@(context.Request.Method == "GET" && context.Request.Url.Path.EndsWith("/status") && context.Operation.Id == "get-debt-positions-upload-status")">
             <rate-limit-by-key calls="10" renewal-period="1" counter-key="@(context.Subscription.Key + (context.Operation.Id == "get-debt-positions-upload-status" ? ":gpd-upload-status" : ""))" increment-condition="@(context.Response.StatusCode != 429)" remaining-calls-header-name="x-remaining-calls-per-period" />
           </when>
           <otherwise>
