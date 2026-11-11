@@ -97,7 +97,7 @@ taxonomy_storage_account = {
 
 taxonomy_network_rules = {
   default_action             = "Deny"
-  ip_rules                   = ["18.159.227.69", "3.126.198.129", "18.192.147.151"]
+  ip_rules                   = ["18.159.227.69", "3.126.198.129", "18.192.147.151", "63.184.191.90", "63.184.95.69", "93.189.21.104"]
   virtual_network_subnet_ids = []
   bypass                     = ["AzureServices"]
 }

@@ -193,3 +193,9 @@ fdr_re_storage_account = {
 #
 geo_replica_enabled               = false
 postgres_dns_registration_enabled = true
+
+# Read access required by the recovery discovery worker.
+recovery_adx_viewer = {
+  cluster_name  = "pagopaudataexplorer"
+  database_name = "re"
+}
