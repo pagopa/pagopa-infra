@@ -79,7 +79,7 @@ resource "azurerm_monitor_diagnostic_setting" "biz_send_filter_stream_logs" {
 ## Maps a BizEvent to the output data contract; every value is a string except the top-level timestamp
 resource "azurerm_stream_analytics_function_javascript_udf" "nested_fields" {
   count                     = var.env_short != "p" ? 1 : 0
-  name                      = "nested-fields"
+  name                      = "nested_fields"
   stream_analytics_job_name = azurerm_stream_analytics_job.biz_send_filter_stream[0].name
   resource_group_name       = azurerm_resource_group.bizevents_rg.name
 
