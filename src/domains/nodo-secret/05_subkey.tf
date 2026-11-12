@@ -15,6 +15,7 @@ resource "azurerm_api_management_subscription" "nodo_technical_support_subkey" {
   state         = "active"
 }
 
+# Used by ClouDO alerts
 resource "azurerm_key_vault_secret" "nodo_technical_support_subkey_secret" {
   name         = "nodo-technical-support-subkey"
   value        = azurerm_api_management_subscription.nodo_technical_support_subkey.primary_key
