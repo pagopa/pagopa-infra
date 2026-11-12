@@ -52,6 +52,6 @@ provider "helm" {
 }
 
 module "__v3__" {
-  # v8.103.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=fix/support-immutable-subject-claims"
+  # v8.103.1
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=664e002aac45fa699bd9a902e4507186f0863e50"
 }
