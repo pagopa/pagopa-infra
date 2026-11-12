@@ -499,3 +499,21 @@ variable "robots_indexed_paths" {
   description = "List of cdn paths to allow robots index"
   default     = []
 }
+
+variable "nodo_observability_storage_account" {
+  type = object({
+    advanced_threat_protection         = bool
+    advanced_threat_protection_enabled = bool
+    blob_versioning_enabled            = bool
+    blob_delete_retention_days         = number
+    account_replication_type           = string
+  })
+
+  default = {
+    advanced_threat_protection         = false
+    advanced_threat_protection_enabled = false
+    blob_versioning_enabled            = false
+    blob_delete_retention_days         = 30
+    account_replication_type           = "LRS"
+  }
+}
