@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "Pagopa authService endpoints used by the checkout authenticated payment flow",
+    "title": "Checkout pagoPA Auth Service",
     "description": "This microservice that expose authService services to allow authenticaded flow."
   },
   "servers": [
