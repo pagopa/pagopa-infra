@@ -1,13 +1,9 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "pagoPA payment wallet helpdesk API",
-    "description": "pagoPA payment wallet helpdesk API",
-    "version": "1.0.0",
-    "contact": {
-      "name": "pagoPA - Touchpoints team",
-      "url": "https://www.pagopa.it/"
-    }
+    "title": "pagoPA payment-wallet - helpdesk service API",
+    "description": "API to support manual operation for payment-wallet operations - helpdesk service",
+    "version": "1.0.0"
   },
   "tags": [
     {

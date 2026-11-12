@@ -3,7 +3,7 @@
     "info": {
         "version": "1.0.0",
         "title": "Wallet Frontend Proxy",
-        "description": "APIM proxy for wallet frontend via App Gateway. Used during CDN migration and retained as fallback path for Front Door CDN."
+        "description": "Reverse proxy for wallet frontend served by Front Door CDN - used during migration and retained as fallback"
     },
     "servers": [
         {

@@ -21,9 +21,3 @@ module "bizevents_sa" {
   private_dns_zone_queue_ids = [data.azurerm_private_dns_zone.privatelink_queue_azure_com.id]
   private_dns_zone_table_ids = [data.azurerm_private_dns_zone.privatelink_table_azure_com.id]
 }
-
-resource "azurerm_storage_container" "send_dead_letter_events" {
-  name               = "send-filter-dead-letter-events"
-  storage_account_id = module.bizevents_sa.id
-}
-
