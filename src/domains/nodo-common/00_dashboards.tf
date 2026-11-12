@@ -34,9 +34,9 @@ locals {
   })) : null
 }
 
-resource "azurerm_portal_dashboard" "opex_pagopa_nodo_auth" {
+resource "azurerm_portal_dashboard" "opex-pagopa-nodo-auth-nm3-only-pagopa-node" {
   count               = local.opex_nodo_auth_dashboard_json != null ? 1 : 0
-  name                = "opex_pagopa-nodo-auth"
+  name                = "opex_${var.env_short}_pagopa-nodo-auth-nm3-only-PagoPA-node"
   resource_group_name = var.monitor_resource_group_name
   location            = var.location
   tags = {

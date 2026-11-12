@@ -301,7 +301,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 1.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${op_verifyPaymentNotice}\" // verifyPaymentNotice\n| where backendUrl_s !startswith \"${excluded_backend_url}\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${op_verifyPaymentNotice}\" // verifyPaymentNotice\n| where backendUrl_s !startswith \"${excluded_backend_url}\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -665,7 +665,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 1.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${op_activatePaymentNotice}\" // activatePaymentNotice\n| where backendUrl_s !startswith \"${excluded_backend_url}\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${op_activatePaymentNotice}\" // activatePaymentNotice\n| where backendUrl_s !startswith \"${excluded_backend_url}\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -1029,7 +1029,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 1.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${op_activatePaymentNoticeV2}\" // activatePaymentNoticeV2\n| where backendUrl_s !startswith \"${excluded_backend_url}\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${op_activatePaymentNoticeV2}\" // activatePaymentNoticeV2\n| where backendUrl_s !startswith \"${excluded_backend_url}\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -1393,7 +1393,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 1.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${op_sendPaymentOutcome}\" // sendPaymentOutcome\n| where backendUrl_s !startswith \"${excluded_backend_url}\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${op_sendPaymentOutcome}\" // sendPaymentOutcome\n| where backendUrl_s !startswith \"${excluded_backend_url}\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -1757,7 +1757,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 1.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${op_sendPaymentOutcomeV2}\" // sendPaymentOutcomeV2\n| where backendUrl_s !startswith \"${excluded_backend_url}\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${op_sendPaymentOutcomeV2}\" // sendPaymentOutcomeV2\n| where backendUrl_s !startswith \"${excluded_backend_url}\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
