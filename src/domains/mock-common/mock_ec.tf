@@ -45,15 +45,14 @@ module "mock_ec" {
   app_command_line             = "node /home/site/wwwroot/dist/index.js"
   health_check_path            = "/mock-ec/info"
   health_check_maxpingfailures = var.env_short != "p" ? 10 : 2
-  node_version                 = "12-lts"
+  node_version                 = "24-lts"
   minimum_tls_version          = "1.2"
 
   app_settings = {
-    WEBSITE_RUN_FROM_PACKAGE     = "1"
-    WEBSITE_NODE_DEFAULT_VERSION = "12.18.0"
-    NODE_ENV                     = "production"
-    PORT                         = "8080"
-    PPT_NODO                     = "/mock-ec"
+    WEBSITE_RUN_FROM_PACKAGE = "1"
+    NODE_ENV                 = "production"
+    PORT                     = "8080"
+    PPT_NODO                 = "/mock-ec"
 
     # Monitoring
     APPINSIGHTS_INSTRUMENTATIONKEY                  = data.azurerm_application_insights.application_insights.instrumentation_key
