@@ -35,6 +35,11 @@ data "azurerm_private_dns_zone" "privatelink_blob_azure_com" {
   resource_group_name = local.vnet_resource_group_name
 }
 
+data "azurerm_private_dns_zone" "privatelink_web_azure_com" {
+  name                = "privatelink.web.core.windows.net"
+  resource_group_name = local.vnet_resource_group_name
+}
+
 data "azurerm_api_management" "apim" {
   name                = "${var.prefix}-${var.env_short}-apim"
   resource_group_name = "${var.prefix}-${var.env_short}-api-rg"
@@ -66,4 +71,9 @@ data "kubernetes_namespace" "namespace" {
 
 data "azurerm_resource_group" "identity_rg" {
   name = "${local.product}-identity-rg"
+}
+
+data "azurerm_kubernetes_cluster" "aks" {
+  name                = local.aks_name
+  resource_group_name = local.aks_resource_group_name
 }

@@ -7,9 +7,9 @@ resource "azurerm_key_vault_secret" "nodo_dei_pagamenti_re_observability_connect
 
 resource "azurerm_key_vault_secret" "nodo_observability_storage_account_connection_string" {
   count        = var.nodo_observability_enabled ? 1 : 0
-  depends_on   = [module.nodo_observability_cdn]
+  depends_on   = [module.nodo_observability_sa]
   name         = "nodo-observability-storage-account-connection-string"
-  value        = module.nodo_observability_cdn[0].storage_primary_blob_connection_string
+  value        = module.nodo_observability_sa[0].primary_blob_connection_string
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv.id

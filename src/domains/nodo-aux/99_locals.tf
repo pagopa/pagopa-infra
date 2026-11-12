@@ -20,7 +20,7 @@ locals {
   # acr_resource_group_name = "${local.product}-container-registry-rg"
   #
   aks_name = "${local.product}-${var.location_short}-${var.instance}-aks"
-  # aks_resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
+  aks_resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
   # aks_subnet_name         = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
   #
   # ingress_hostname       = "${var.location_short}${var.instance}.${var.domain}"
