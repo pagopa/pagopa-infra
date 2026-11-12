@@ -38,7 +38,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "node_cfg_sync_cache_even
   location            = var.location
 
   action {
-    action_group           = var.env_short != "d" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = var.env_short != "d" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack_pagopa_pagamenti_alert.id]
     email_subject          = "[${var.env}] Error processing event hub message"
     custom_webhook_payload = "{}"
   }
