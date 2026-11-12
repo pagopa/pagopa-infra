@@ -1,4 +1,22 @@
-# Use the existing storage account used for cdn
+module "fdr_flows_sa" {
+  source = "./.terraform/modules/__v4__/storage_account"
+
+  name                            = replace("${local.product}-fdr-flows-sa", "-", "")
+  account_kind                    = "StorageV2"
+  account_tier                    = "Standard"
+  account_replication_type        = var.reporting_fdr_storage_account.account_replication_type
+  access_tier                     = "Hot"
+  blob_versioning_enabled         = var.reporting_fdr_storage_account.blob_versioning_enabled
+  resource_group_name             = azurerm_resource_group.data.name
+  location                        = var.location
+  advanced_threat_protection      = var.reporting_fdr_storage_account.advanced_threat_protection
+  allow_nested_items_to_be_public = false
+
+  blob_delete_retention_days    = var.reporting_fdr_storage_account.blob_delete_retention_days
+  public_network_access_enabled = true
+
+  tags = module.tag_config.tags
+}
 
 # blob checkpoint
 resource "azurerm_storage_container" "observability_checkpoint_storage" {

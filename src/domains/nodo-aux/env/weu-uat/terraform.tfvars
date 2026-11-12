@@ -1,11 +1,10 @@
-# prefix          = "pagopa"
-# env_short       = "u"
-# env             = "uat"
-# domain          = "nodo"
-# location        = "westeurope"
-# location_short  = "weu"
-# location_string = "West Europe"
-# instance        = "uat"
+prefix          = "pagopa"
+env_short       = "u"
+env             = "uat"
+domain          = "nodo"
+location        = "westeurope"
+location_short  = "weu"
+instance        = "uat"
 #
 #
 # ### External resources
