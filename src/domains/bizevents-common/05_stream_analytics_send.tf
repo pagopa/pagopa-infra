@@ -10,12 +10,22 @@ resource "azurerm_stream_analytics_job" "biz_send_filter_stream" {
   output_error_policy                      = "Drop"
   streaming_units                          = 1
 
-  # Nested blocks are built by the nested_fields UDF because the query language cannot create nested records
+  # Flat output: UDFs cannot return records and the query language cannot build nested ones
   transformation_query = <<QUERY
 SELECT
-  udf.nested_fields('debtorPosition', e) AS debtorPosition,
-  udf.nested_fields('creditor', e) AS creditor,
-  udf.nested_fields('paymentInfo', e) AS paymentInfo,
+  CAST(e.debtorPosition.modelType AS nvarchar(max)) AS modelType,
+  CAST(e.debtorPosition.iuv AS nvarchar(max)) AS iuv,
+  CAST(e.paymentInfo.IUR AS nvarchar(max)) AS iur,
+  CAST(e.debtorPosition.noticeNumber AS nvarchar(max)) AS noticeNumber,
+  CAST(e.creditor.idPA AS nvarchar(max)) AS idPA,
+  CAST(e.creditor.companyName AS nvarchar(max)) AS companyName,
+  CAST(e.paymentInfo.paymentDateTime AS nvarchar(max)) AS paymentDateTime,
+  CAST(e.paymentInfo.dueDate AS nvarchar(max)) AS dueDate,
+  CAST(e.paymentInfo.totalNotice AS nvarchar(max)) AS totalNotice,
+  CAST(e.paymentInfo.touchpoint AS nvarchar(max)) AS touchpoint,
+  CAST(e.paymentInfo.paymentChannel AS nvarchar(max)) AS paymentChannel,
+  CAST(e.paymentInfo.amount AS nvarchar(max)) AS amount,
+  CAST(e.paymentInfo.fee AS nvarchar(max)) AS fee,
   e.id AS id,
   e.timestamp AS timestamp
 INTO [evh-tx-stream-send-filter]
@@ -73,55 +83,5 @@ resource "azurerm_monitor_diagnostic_setting" "biz_send_filter_stream_logs" {
 
   enabled_log {
     category = "Execution"
-  }
-}
-
-## Maps a BizEvent to the output data contract; every value is a string except the top-level timestamp
-resource "azurerm_stream_analytics_function_javascript_udf" "nested_fields" {
-  count                     = var.env_short != "p" ? 1 : 0
-  name                      = "nested_fields"
-  stream_analytics_job_name = azurerm_stream_analytics_job.biz_send_filter_stream[0].name
-  resource_group_name       = azurerm_resource_group.bizevents_rg.name
-
-  script = <<SCRIPT
-function str(v) {
-  return v === undefined || v === null ? null : String(v);
-}
-
-function nested_fields(section, e) {
-  var dp = e.debtorPosition || {};
-  var cr = e.creditor || {};
-  var pi = e.paymentInfo || {};
-  var tx = (e.transactionDetails || {}).transaction || {};
-  switch (section) {
-    case 'debtorPosition':
-      return { modelType: str(dp.modelType), iuv: str(dp.iuv), iur: str(pi.IUR), noticeNumber: str(dp.noticeNumber) };
-    case 'creditor':
-      return { idPA: str(cr.idPA), companyName: str(cr.companyName) };
-    case 'paymentInfo':
-      return {
-        paymentDateTime: str(pi.paymentDateTime),
-        dueDate: str(pi.dueDate),
-        totalNotice: str(pi.totalNotice),
-        touchpoint: str(pi.touchpoint),
-        paymentChannel: str(pi.paymentChannel),
-        amount: str(pi.amount),
-        fee: str(tx.fee)
-      };
-  }
-  return null;
-}
-SCRIPT
-
-  input {
-    type = "any"
-  }
-
-  input {
-    type = "any"
-  }
-
-  output {
-    type = "any"
   }
 }
