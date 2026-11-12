@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "./.terraform/modules/__v3__/key_vault"
+  source = "./.terraform/modules/__v4__/key_vault"
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -95,7 +95,7 @@ resource "azurerm_key_vault_secret" "biz_events_datastore_cosmos_pkey" {
 
 resource "azurerm_key_vault_secret" "cosmos_biz_connection_string" {
   name         = format("cosmos-%s-biz-connection-string", var.env_short)
-  value        = module.bizevents_datastore_cosmosdb_account.connection_strings[0]
+  value        = module.bizevents_datastore_cosmosdb_account.primary_sql_connection_strings
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -103,7 +103,7 @@ resource "azurerm_key_vault_secret" "cosmos_biz_connection_string" {
 
 resource "azurerm_key_vault_secret" "cosmos_negative_biz_connection_string" {
   name         = format("cosmos-%s-negative-biz-connection-string", var.env_short)
-  value        = module.negative_bizevents_datastore_cosmosdb_account.connection_strings[0]
+  value        = module.negative_bizevents_datastore_cosmosdb_account.primary_sql_connection_strings
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

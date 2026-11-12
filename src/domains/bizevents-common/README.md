@@ -5,31 +5,32 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.13.1 |
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.21.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
-| <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 2.53 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.0 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | ~> 3.2 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | d0a0b3a81963169bdc974f79eba31e41e918e63d |
-| <a name="module_bizevents_datastore_cosmosdb_account"></a> [bizevents\_datastore\_cosmosdb\_account](#module\_bizevents\_datastore\_cosmosdb\_account) | ./.terraform/modules/__v3__/cosmosdb_account | n/a |
-| <a name="module_bizevents_datastore_cosmosdb_account_dev"></a> [bizevents\_datastore\_cosmosdb\_account\_dev](#module\_bizevents\_datastore\_cosmosdb\_account\_dev) | ./.terraform/modules/__v3__/cosmosdb_account | n/a |
-| <a name="module_bizevents_datastore_cosmosdb_containers"></a> [bizevents\_datastore\_cosmosdb\_containers](#module\_bizevents\_datastore\_cosmosdb\_containers) | ./.terraform/modules/__v3__/cosmosdb_sql_container | n/a |
-| <a name="module_bizevents_datastore_cosmosdb_containers_dev"></a> [bizevents\_datastore\_cosmosdb\_containers\_dev](#module\_bizevents\_datastore\_cosmosdb\_containers\_dev) | ./.terraform/modules/__v3__/cosmosdb_sql_container | n/a |
-| <a name="module_bizevents_datastore_cosmosdb_database"></a> [bizevents\_datastore\_cosmosdb\_database](#module\_bizevents\_datastore\_cosmosdb\_database) | ./.terraform/modules/__v3__/cosmosdb_sql_database | n/a |
-| <a name="module_bizevents_datastore_cosmosdb_database_dev"></a> [bizevents\_datastore\_cosmosdb\_database\_dev](#module\_bizevents\_datastore\_cosmosdb\_database\_dev) | ./.terraform/modules/__v3__/cosmosdb_sql_database | n/a |
-| <a name="module_bizevents_datastore_cosmosdb_snet"></a> [bizevents\_datastore\_cosmosdb\_snet](#module\_bizevents\_datastore\_cosmosdb\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
-| <a name="module_bizevents_datastore_fn_sa"></a> [bizevents\_datastore\_fn\_sa](#module\_bizevents\_datastore\_fn\_sa) | ./.terraform/modules/__v3__/storage_account | n/a |
-| <a name="module_bizevents_datastore_fn_sa_bizview"></a> [bizevents\_datastore\_fn\_sa\_bizview](#module\_bizevents\_datastore\_fn\_sa\_bizview) | ./.terraform/modules/__v3__/storage_account | n/a |
-| <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | n/a |
-| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | ./.terraform/modules/__v3__/key_vault | n/a |
-| <a name="module_negative_bizevents_datastore_cosmosdb_account"></a> [negative\_bizevents\_datastore\_cosmosdb\_account](#module\_negative\_bizevents\_datastore\_cosmosdb\_account) | ./.terraform/modules/__v3__/cosmosdb_account | n/a |
-| <a name="module_negative_bizevents_datastore_cosmosdb_containers"></a> [negative\_bizevents\_datastore\_cosmosdb\_containers](#module\_negative\_bizevents\_datastore\_cosmosdb\_containers) | ./.terraform/modules/__v3__/cosmosdb_sql_container | n/a |
-| <a name="module_negative_bizevents_datastore_cosmosdb_database"></a> [negative\_bizevents\_datastore\_cosmosdb\_database](#module\_negative\_bizevents\_datastore\_cosmosdb\_database) | ./.terraform/modules/__v3__/cosmosdb_sql_database | n/a |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 588ea917b4c495e1b6af2b955a154d2de6d94a43 |
+| <a name="module_bizevents_datastore_cosmosdb_account"></a> [bizevents\_datastore\_cosmosdb\_account](#module\_bizevents\_datastore\_cosmosdb\_account) | ./.terraform/modules/__v4__/cosmosdb_account | n/a |
+| <a name="module_bizevents_datastore_cosmosdb_account_dev"></a> [bizevents\_datastore\_cosmosdb\_account\_dev](#module\_bizevents\_datastore\_cosmosdb\_account\_dev) | ./.terraform/modules/__v4__/cosmosdb_account | n/a |
+| <a name="module_bizevents_datastore_cosmosdb_containers"></a> [bizevents\_datastore\_cosmosdb\_containers](#module\_bizevents\_datastore\_cosmosdb\_containers) | ./.terraform/modules/__v4__/cosmosdb_sql_container | n/a |
+| <a name="module_bizevents_datastore_cosmosdb_containers_dev"></a> [bizevents\_datastore\_cosmosdb\_containers\_dev](#module\_bizevents\_datastore\_cosmosdb\_containers\_dev) | ./.terraform/modules/__v4__/cosmosdb_sql_container | n/a |
+| <a name="module_bizevents_datastore_cosmosdb_database"></a> [bizevents\_datastore\_cosmosdb\_database](#module\_bizevents\_datastore\_cosmosdb\_database) | ./.terraform/modules/__v4__/cosmosdb_sql_database | n/a |
+| <a name="module_bizevents_datastore_cosmosdb_database_dev"></a> [bizevents\_datastore\_cosmosdb\_database\_dev](#module\_bizevents\_datastore\_cosmosdb\_database\_dev) | ./.terraform/modules/__v4__/cosmosdb_sql_database | n/a |
+| <a name="module_bizevents_datastore_cosmosdb_snet"></a> [bizevents\_datastore\_cosmosdb\_snet](#module\_bizevents\_datastore\_cosmosdb\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_bizevents_datastore_fn_sa"></a> [bizevents\_datastore\_fn\_sa](#module\_bizevents\_datastore\_fn\_sa) | ./.terraform/modules/__v4__/storage_account | n/a |
+| <a name="module_bizevents_datastore_fn_sa_bizview"></a> [bizevents\_datastore\_fn\_sa\_bizview](#module\_bizevents\_datastore\_fn\_sa\_bizview) | ./.terraform/modules/__v4__/storage_account | n/a |
+| <a name="module_bizevents_sa"></a> [bizevents\_sa](#module\_bizevents\_sa) | ./.terraform/modules/__v4__/IDH/storage_account | n/a |
+| <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | ./.terraform/modules/__v4__/github_federated_identity | n/a |
+| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | ./.terraform/modules/__v4__/key_vault | n/a |
+| <a name="module_negative_bizevents_datastore_cosmosdb_account"></a> [negative\_bizevents\_datastore\_cosmosdb\_account](#module\_negative\_bizevents\_datastore\_cosmosdb\_account) | ./.terraform/modules/__v4__/cosmosdb_account | n/a |
+| <a name="module_negative_bizevents_datastore_cosmosdb_containers"></a> [negative\_bizevents\_datastore\_cosmosdb\_containers](#module\_negative\_bizevents\_datastore\_cosmosdb\_containers) | ./.terraform/modules/__v4__/cosmosdb_sql_container | n/a |
+| <a name="module_negative_bizevents_datastore_cosmosdb_database"></a> [negative\_bizevents\_datastore\_cosmosdb\_database](#module\_negative\_bizevents\_datastore\_cosmosdb\_database) | ./.terraform/modules/__v4__/cosmosdb_sql_database | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
-| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
+| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v4__/kubernetes_workload_identity_init | n/a |
 
 ## Resources
 
@@ -130,6 +131,9 @@
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_private_dns_zone.cosmos](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.internal](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.privatelink_blob_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.privatelink_queue_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.privatelink_table_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_redis_cache.redis_cache](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/redis_cache) | data source |
 | [azurerm_resource_group.identity_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
@@ -143,9 +147,10 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_application_insights_name"></a> [application\_insights\_name](#input\_application\_insights\_name) | Specifies the name of the Application Insights. | `string` | n/a | yes |
-| <a name="input_bizevents_datastore_cosmos_db_params"></a> [bizevents\_datastore\_cosmos\_db\_params](#input\_bizevents\_datastore\_cosmos\_db\_params) | n/a | <pre>object({<br/>    kind           = string<br/>    capabilities   = list(string)<br/>    offer_type     = string<br/>    server_version = string<br/>    consistency_policy = object({<br/>      consistency_level       = string<br/>      max_interval_in_seconds = number<br/>      max_staleness_prefix    = number<br/>    })<br/>    main_geo_location_zone_redundant = bool<br/>    enable_free_tier                 = bool<br/>    additional_geo_locations = list(object({<br/>      location          = string<br/>      failover_priority = number<br/>      zone_redundant    = bool<br/>    }))<br/>    private_endpoint_enabled          = bool<br/>    public_network_access_enabled     = bool<br/>    is_virtual_network_filter_enabled = bool<br/>    backup_continuous_enabled         = bool<br/>    container_default_ttl             = number<br/>    ip_range_filter                   = string<br/>    max_throughput                    = number<br/><br/>    max_throughput_biz          = number<br/>    max_throughput_view_cart    = number<br/>    max_throughput_view_user    = number<br/>    max_throughput_view_general = number<br/>  })</pre> | n/a | yes |
+| <a name="input_bizevents_datastore_cosmos_db_params"></a> [bizevents\_datastore\_cosmos\_db\_params](#input\_bizevents\_datastore\_cosmos\_db\_params) | n/a | <pre>object({<br/>    kind           = string<br/>    capabilities   = list(string)<br/>    offer_type     = string<br/>    server_version = string<br/>    consistency_policy = object({<br/>      consistency_level       = string<br/>      max_interval_in_seconds = number<br/>      max_staleness_prefix    = number<br/>    })<br/>    main_geo_location_zone_redundant = bool<br/>    enable_free_tier                 = bool<br/>    additional_geo_locations = list(object({<br/>      location          = string<br/>      failover_priority = number<br/>      zone_redundant    = bool<br/>    }))<br/>    private_endpoint_enabled          = bool<br/>    public_network_access_enabled     = bool<br/>    is_virtual_network_filter_enabled = bool<br/>    backup_continuous_enabled         = bool<br/>    container_default_ttl             = number<br/>    ip_range_filter                   = list(string)<br/>    max_throughput                    = number<br/><br/>    max_throughput_biz          = number<br/>    max_throughput_view_cart    = number<br/>    max_throughput_view_user    = number<br/>    max_throughput_view_general = number<br/>  })</pre> | n/a | yes |
 | <a name="input_bizevents_datastore_fn_sa_advanced_threat_protection"></a> [bizevents\_datastore\_fn\_sa\_advanced\_threat\_protection](#input\_bizevents\_datastore\_fn\_sa\_advanced\_threat\_protection) | Enable contract threat advanced protection | `bool` | `false` | no |
 | <a name="input_bizevents_datastore_fn_sa_delete_retention_days"></a> [bizevents\_datastore\_fn\_sa\_delete\_retention\_days](#input\_bizevents\_datastore\_fn\_sa\_delete\_retention\_days) | Number of days to retain deleted. | `number` | `30` | no |
+| <a name="input_bizevents_sa_idh_resource_tier"></a> [bizevents\_sa\_idh\_resource\_tier](#input\_bizevents\_sa\_idh\_resource\_tier) | IDH resource tier identifier. | `string` | `"basic"` | no |
 | <a name="input_cidr_subnet_bizevents_datastore_cosmosdb"></a> [cidr\_subnet\_bizevents\_datastore\_cosmosdb](#input\_cidr\_subnet\_bizevents\_datastore\_cosmosdb) | Cosmos DB address space | `list(string)` | `null` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
