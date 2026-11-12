@@ -88,7 +88,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-payments
   query = (<<-QUERY
 let threshold = 1500;
 AzureDiagnostics
-| where url_s matches regex "/gpd/payments-receipts-service"
+| where apiId_s == 'p-gpd-payments-rest-api-aks-v1'
+| where url_s matches regex '/gpd/payments-receipts-service'
 | summarize
     watermark=threshold,
     duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 5m)
@@ -96,8 +97,8 @@ AzureDiagnostics
   QUERY
   )
   severity    = 2
-  frequency   = 5
-  time_window = 10
+  frequency   = 1440
+  time_window = 1440
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 2
@@ -122,7 +123,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-payments
   query = (<<-QUERY
 let threshold = 0.99;
 AzureDiagnostics
-| where url_s matches regex "/gpd/payments-receipts-service'"
+| where apiId_s == 'p-gpd-payments-rest-api-aks-v1'
+| where url_s matches regex '/gpd/payments-receipts-service'
 | summarize
     Total=count(),
     Success=count(responseCode_d < 500)

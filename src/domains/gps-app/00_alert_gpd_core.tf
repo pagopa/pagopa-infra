@@ -129,7 +129,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-core-ext
   query = (<<-QUERY
 let threshold = 2300;
 AzureDiagnostics
-| where url_s matches regex "/gpd/debt-positions-service/v1"
+| where apiId_s == 'pagopa-p-debt-positions-service-api-v1'
+| where url_s matches regex '/gpd/debt-positions-service/v1'
 | summarize
     watermark=threshold,
     duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 5m)
@@ -137,8 +138,8 @@ AzureDiagnostics
   QUERY
   )
   severity    = 2
-  frequency   = 5
-  time_window = 10
+  frequency   = 1440
+  time_window = 1440
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 2
@@ -282,7 +283,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-core-ext
   query = (<<-QUERY
 let threshold = 2300;
 AzureDiagnostics
-| where url_s matches regex "/gpd/debt-positions-service/v3"
+| where apiId_s == 'pagopa-p-debt-positions-service-api-v3'
+| where url_s matches regex '/gpd/debt-positions-service/v3'
 | summarize
     watermark = threshold,
     duration_percentile_95 = percentiles(DurationMs, 95)
@@ -292,8 +294,8 @@ AzureDiagnostics
   )
 
   severity    = 2
-  frequency   = 5
-  time_window = 10
+  frequency   = 1440
+  time_window = 1440
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 2
