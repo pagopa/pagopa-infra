@@ -97,7 +97,6 @@
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_storage_container.send_dead_letter_events](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_queue.queue-massive-biz-event-to-view-generation](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
-| [azurerm_stream_analytics_function_javascript_udf.nested_fields](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/stream_analytics_function_javascript_udf) | resource |
 | [azurerm_stream_analytics_job.biz_send_filter_stream](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/stream_analytics_job) | resource |
 | [azurerm_stream_analytics_output_eventhub.biz_send_filter_stream_out](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/stream_analytics_output_eventhub) | resource |
 | [azurerm_stream_analytics_stream_input_eventhub.biz_send_filter_stream_in](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/stream_analytics_stream_input_eventhub) | resource |
