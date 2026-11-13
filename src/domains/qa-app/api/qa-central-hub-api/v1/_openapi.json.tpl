@@ -4794,6 +4794,40 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Delete Run",
+        "operationId": "delete_run_api_v1_test_metrics_tas_test_runs__run_id__delete",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/test-metrics/tas/test-runs/{run_id}/scenarios": {
@@ -4884,6 +4918,40 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Delete Run",
+        "operationId": "delete_run_api_v1_test_metrics_nrts_test_runs__run_id__delete",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/test-metrics/nrts/test-runs/{run_id}/scenarios": {
@@ -4926,6 +4994,241 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-metrics/tas/runs": {
+      "get": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "List Runs",
+        "operationId": "list_runs_api_v1_test_metrics_tas_runs_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/QualityGateRunStatus"
+                  },
+                  "type": "array",
+                  "title": "Response List Runs Api V1 Test Metrics Tas Runs Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Launch Tas Run",
+        "operationId": "launch_tas_run_api_v1_test_metrics_tas_runs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualityGateRunCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityGateRunOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-metrics/tas/runs/{correlation_id}": {
+      "get": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Get Run Status",
+        "operationId": "get_run_status_api_v1_test_metrics_tas_runs__correlation_id__get",
+        "parameters": [
+          {
+            "name": "correlation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$",
+              "title": "Correlation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityGateRunStatus"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-metrics/nrts/runs": {
+      "get": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "List Runs",
+        "operationId": "list_runs_api_v1_test_metrics_nrts_runs_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/QualityGateRunStatus"
+                  },
+                  "type": "array",
+                  "title": "Response List Runs Api V1 Test Metrics Nrts Runs Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Launch Nrt Run",
+        "operationId": "launch_nrt_run_api_v1_test_metrics_nrts_runs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NrtRunCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityGateRunOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-metrics/nrts/runs/{correlation_id}": {
+      "get": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Get Run Status",
+        "operationId": "get_run_status_api_v1_test_metrics_nrts_runs__correlation_id__get",
+        "parameters": [
+          {
+            "name": "correlation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$",
+              "title": "Correlation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityGateRunStatus"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-metrics/nrts/launch-options": {
+      "get": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Get Nrt Launch Options",
+        "operationId": "get_nrt_launch_options_api_v1_test_metrics_nrts_launch_options_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NrtLaunchOptionsOut"
                 }
               }
             }
@@ -8807,6 +9110,28 @@
         ],
         "title": "NameCount"
       },
+      "NrtLaunchOptionsOut": {
+        "properties": {
+          "available": {
+            "type": "boolean",
+            "title": "Available"
+          },
+          "suites": {
+            "items": {
+              "$ref": "#/components/schemas/NrtSuiteOut"
+            },
+            "type": "array",
+            "title": "Suites"
+          }
+        },
+        "type": "object",
+        "required": [
+          "available",
+          "suites"
+        ],
+        "title": "NrtLaunchOptionsOut",
+        "description": "Suites the NRT workflow can run, with the environments each one supports.\n\n`available` is false when the registry could not be read: the client must then not\nrestrict the choice, because the launch does not validate in that case either."
+      },
       "NrtListObject": {
         "properties": {
           "test_run": {
@@ -8820,6 +9145,65 @@
         },
         "type": "object",
         "title": "NrtListObject"
+      },
+      "NrtRunCreate": {
+        "properties": {
+          "suites": {
+            "anyOf": [
+              {
+                "type": "string",
+                "const": "all"
+              },
+              {
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "Suites",
+            "default": "all"
+          },
+          "target_env": {
+            "type": "string",
+            "enum": [
+              "dev",
+              "uat"
+            ],
+            "title": "Target Env",
+            "default": "uat"
+          }
+        },
+        "type": "object",
+        "title": "NrtRunCreate",
+        "description": "Launch of the NRT workflow: every suite configured for the environment, or a selection."
+      },
+      "NrtSuiteOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "envs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Envs"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "envs"
+        ],
+        "title": "NrtSuiteOut"
       },
       "NrtWithLatestRunOut": {
         "properties": {
@@ -10676,6 +11060,11 @@
             "title": "Gha Run Url",
             "type": "string",
             "nullable": true
+          },
+          "note": {
+            "title": "Note",
+            "type": "string",
+            "nullable": true
           }
         },
         "type": "object",
@@ -10804,6 +11193,11 @@
           },
           "gha_run_url": {
             "title": "Gha Run Url",
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "title": "Note",
             "type": "string",
             "nullable": true
           }
