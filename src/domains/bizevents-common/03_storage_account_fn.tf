@@ -1,6 +1,6 @@
 
 module "bizevents_datastore_fn_sa" {
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                       = replace(format("%s-fn-sa", local.project), "-", "")
   account_kind               = "StorageV2"
@@ -21,7 +21,7 @@ module "bizevents_datastore_fn_sa" {
 
 
 module "bizevents_datastore_fn_sa_bizview" {
-  source = "./.terraform/modules/__v3__/storage_account"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                       = replace(format("%s-v-fn-sa", local.project), "-", "") # -v- aka biz view storage for azure-webjobs-eventhub
   account_kind               = "StorageV2"
