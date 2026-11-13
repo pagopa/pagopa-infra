@@ -8,6 +8,28 @@
             "position": {
               "x": 0,
               "y": 0,
+              "colSpan": 18,
+              "rowSpan": 1
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "settings": {
+                    "content": "SOAP API\n==",
+                    "title": "",
+                    "subtitle": "",
+                    "markdownSource": 1
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 1,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -58,7 +80,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_verifyPaymentNotice}\" // verifyPaymentNotice\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.verifyPaymentNotice}\" // verifyPaymentNotice\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -121,14 +143,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "NM3 - verifyPaymentNotice"
+                "subtitle": "verifyPaymentNotice"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 0,
+              "y": 1,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -179,7 +201,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_verifyPaymentNotice}\" // verifyPaymentNotice\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.verifyPaymentNotice}\" // verifyPaymentNotice\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -243,14 +265,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "NM3 - verifyPaymentNotice"
+                "subtitle": "verifyPaymentNotice"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 0,
+              "y": 1,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -301,7 +323,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_verifyPaymentNotice}\" // verifyPaymentNotice\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.verifyPaymentNotice}\" // verifyPaymentNotice\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -364,14 +386,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "NM3 - verifyPaymentNotice"
+                "subtitle": "verifyPaymentNotice"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 4,
+              "y": 5,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -422,7 +444,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_activatePaymentNotice}\" // activatePaymentNotice\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.activatePaymentNotice}\" // activatePaymentNotice\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -485,14 +507,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "NM3 - activatePaymentNotice"
+                "subtitle": "activatePaymentNotice"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 4,
+              "y": 5,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -543,7 +565,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_activatePaymentNotice}\" // activatePaymentNotice\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.activatePaymentNotice}\" // activatePaymentNotice\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -607,14 +629,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "NM3 - activatePaymentNotice"
+                "subtitle": "activatePaymentNotice"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 4,
+              "y": 5,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -665,7 +687,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_activatePaymentNotice}\" // activatePaymentNotice\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.activatePaymentNotice}\" // activatePaymentNotice\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -728,14 +750,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "NM3 - activatePaymentNotice"
+                "subtitle": "activatePaymentNotice"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 8,
+              "y": 9,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -786,7 +808,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_sendPaymentOutcome}\" // sendPaymentOutcome\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.sendPaymentOutcome}\" // sendPaymentOutcome\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -849,14 +871,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "NM3 - sendPaymentOutcome"
+                "subtitle": "sendPaymentOutcome"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 8,
+              "y": 9,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -907,7 +929,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_sendPaymentOutcome}\" // sendPaymentOutcome\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.sendPaymentOutcome}\" // sendPaymentOutcome\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -971,14 +993,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "NM3 - sendPaymentOutcome"
+                "subtitle": "sendPaymentOutcome"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 8,
+              "y": 9,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -1029,7 +1051,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_sendPaymentOutcome}\" // sendPaymentOutcome\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.sendPaymentOutcome}\" // sendPaymentOutcome\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -1092,14 +1114,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "NM3 - sendPaymentOutcome"
+                "subtitle": "sendPaymentOutcome"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 12,
+              "y": 13,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -1150,7 +1172,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_verificaBollettino}\" // verificaBollettino\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.verificaBollettino}\" // verificaBollettino\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -1213,14 +1235,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "NM3 - verificaBollettino"
+                "subtitle": "verificaBollettino"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 12,
+              "y": 13,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -1271,7 +1293,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_verificaBollettino}\" // verificaBollettino\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.verificaBollettino}\" // verificaBollettino\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -1335,14 +1357,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "NM3 - verificaBollettino"
+                "subtitle": "verificaBollettino"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 12,
+              "y": 13,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -1393,7 +1415,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_verificaBollettino}\" // verificaBollettino\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.verificaBollettino}\" // verificaBollettino\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -1456,14 +1478,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "NM3 - verificaBollettino"
+                "subtitle": "verificaBollettino"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 16,
+              "y": 17,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -1514,7 +1536,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_demandPaymentNotice}\" // demandPaymentNotice\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.demandPaymentNotice}\" // demandPaymentNotice\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -1577,14 +1599,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "NM3 - demandPaymentNotice"
+                "subtitle": "demandPaymentNotice"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 16,
+              "y": 17,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -1635,7 +1657,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_demandPaymentNotice}\" // demandPaymentNotice\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.demandPaymentNotice}\" // demandPaymentNotice\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -1699,14 +1721,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "NM3 - demandPaymentNotice"
+                "subtitle": "demandPaymentNotice"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 16,
+              "y": 17,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -1757,7 +1779,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_demandPaymentNotice}\" // demandPaymentNotice\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.demandPaymentNotice}\" // demandPaymentNotice\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -1820,14 +1842,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "NM3 - demandPaymentNotice"
+                "subtitle": "demandPaymentNotice"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 20,
+              "y": 21,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -1878,7 +1900,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_nodoChiediCatalogoServiziV2}\" // nodoChiediCatalogoServiziV2\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.nodoChiediCatalogoServiziV2}\" // nodoChiediCatalogoServiziV2\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -1941,14 +1963,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "NM3 - nodoChiediCatalogoServiziV2"
+                "subtitle": "nodoChiediCatalogoServiziV2"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 20,
+              "y": 21,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -1999,7 +2021,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_nodoChiediCatalogoServiziV2}\" // nodoChiediCatalogoServiziV2\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.nodoChiediCatalogoServiziV2}\" // nodoChiediCatalogoServiziV2\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -2063,14 +2085,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "NM3 - nodoChiediCatalogoServiziV2"
+                "subtitle": "nodoChiediCatalogoServiziV2"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 20,
+              "y": 21,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -2121,7 +2143,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_nodoChiediCatalogoServiziV2}\" // nodoChiediCatalogoServiziV2\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.nodoChiediCatalogoServiziV2}\" // nodoChiediCatalogoServiziV2\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -2184,14 +2206,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "NM3 - nodoChiediCatalogoServiziV2"
+                "subtitle": "nodoChiediCatalogoServiziV2"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 24,
+              "y": 25,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -2242,7 +2264,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_activatePaymentNoticeV2}\" // activatePaymentNoticeV2\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.activatePaymentNoticeV2}\" // activatePaymentNoticeV2\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -2305,14 +2327,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "NM3 - activatePaymentNoticeV2"
+                "subtitle": "activatePaymentNoticeV2"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 24,
+              "y": 25,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -2363,7 +2385,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_activatePaymentNoticeV2}\" // activatePaymentNoticeV2\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.activatePaymentNoticeV2}\" // activatePaymentNoticeV2\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -2427,14 +2449,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "NM3 - activatePaymentNoticeV2"
+                "subtitle": "activatePaymentNoticeV2"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 24,
+              "y": 25,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -2485,7 +2507,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_activatePaymentNoticeV2}\" // activatePaymentNoticeV2\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.activatePaymentNoticeV2}\" // activatePaymentNoticeV2\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -2548,14 +2570,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "NM3 - activatePaymentNoticeV2"
+                "subtitle": "activatePaymentNoticeV2"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 28,
+              "y": 29,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -2606,7 +2628,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_sendPaymentOutcomeV2}\" // sendPaymentOutcomeV2\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.sendPaymentOutcomeV2}\" // sendPaymentOutcomeV2\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -2669,14 +2691,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "NM3 - sendPaymentOutcomeV2"
+                "subtitle": "sendPaymentOutcomeV2"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 28,
+              "y": 29,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -2727,7 +2749,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_sendPaymentOutcomeV2}\" // sendPaymentOutcomeV2\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.sendPaymentOutcomeV2}\" // sendPaymentOutcomeV2\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -2791,14 +2813,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "NM3 - sendPaymentOutcomeV2"
+                "subtitle": "sendPaymentOutcomeV2"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 28,
+              "y": 29,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -2849,7 +2871,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_sendPaymentOutcomeV2}\" // sendPaymentOutcomeV2\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.sendPaymentOutcomeV2}\" // sendPaymentOutcomeV2\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -2912,14 +2934,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "NM3 - sendPaymentOutcomeV2"
+                "subtitle": "sendPaymentOutcomeV2"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 32,
+              "y": 33,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -2970,7 +2992,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_nodoChiediInformativaPA}\" // nodoChiediInformativaPA\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.nodoChiediInformativaPA}\" // nodoChiediInformativaPA\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -3033,14 +3055,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "NM3 - nodoChiediInformativaPA"
+                "subtitle": "nodoChiediInformativaPA (node-for-psp/v1)"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 32,
+              "y": 33,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -3091,7 +3113,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_nodoChiediInformativaPA}\" // nodoChiediInformativaPA\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.nodoChiediInformativaPA}\" // nodoChiediInformativaPA\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -3155,14 +3177,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "NM3 - nodoChiediInformativaPA"
+                "subtitle": "nodoChiediInformativaPA (node-for-psp/v1)"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 32,
+              "y": 33,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -3213,7 +3235,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_nodoChiediInformativaPA}\" // nodoChiediInformativaPA\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.nodoChiediInformativaPA}\" // nodoChiediInformativaPA\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -3276,14 +3298,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "NM3 - nodoChiediInformativaPA"
+                "subtitle": "nodoChiediInformativaPA (node-for-psp/v1)"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 36,
+              "y": 37,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -3334,7 +3356,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_nodoChiediTemplateInformativaPSP}\" // nodoChiediTemplateInformativaPSP\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.nodoChiediTemplateInformativaPSP}\" // nodoChiediTemplateInformativaPSP\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -3397,14 +3419,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "NM3 - nodoChiediTemplateInformativaPSP"
+                "subtitle": "nodoChiediTemplateInformativaPSP (node-for-psp/v1)"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 36,
+              "y": 37,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -3455,7 +3477,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_nodoChiediTemplateInformativaPSP}\" // nodoChiediTemplateInformativaPSP\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.nodoChiediTemplateInformativaPSP}\" // nodoChiediTemplateInformativaPSP\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -3519,14 +3541,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "NM3 - nodoChiediTemplateInformativaPSP"
+                "subtitle": "nodoChiediTemplateInformativaPSP (node-for-psp/v1)"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 36,
+              "y": 37,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -3577,7 +3599,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.nm3_nodoChiediTemplateInformativaPSP}\" // nodoChiediTemplateInformativaPSP\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s == \"${ops.node_for_psp_v1.nodoChiediTemplateInformativaPSP}\" // nodoChiediTemplateInformativaPSP\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -3640,14 +3662,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "NM3 - nodoChiediTemplateInformativaPSP"
+                "subtitle": "nodoChiediTemplateInformativaPSP (node-for-psp/v1)"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 40,
+              "y": 41,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -3698,7 +3720,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoChiediStatoRPT}\" // nodoChiediStatoRPT\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoChiediStatoRPT}\" // nodoChiediStatoRPT\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -3761,14 +3783,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "PA - nodoChiediStatoRPT"
+                "subtitle": "nodoChiediStatoRPT"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 40,
+              "y": 41,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -3819,7 +3841,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoChiediStatoRPT}\" // nodoChiediStatoRPT\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoChiediStatoRPT}\" // nodoChiediStatoRPT\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -3883,14 +3905,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "PA - nodoChiediStatoRPT"
+                "subtitle": "nodoChiediStatoRPT"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 40,
+              "y": 41,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -3941,7 +3963,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoChiediStatoRPT}\" // nodoChiediStatoRPT\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoChiediStatoRPT}\" // nodoChiediStatoRPT\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -4004,14 +4026,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "PA - nodoChiediStatoRPT"
+                "subtitle": "nodoChiediStatoRPT"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 44,
+              "y": 45,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -4062,7 +4084,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoChiediListaPendentiRPT}\" // nodoChiediListaPendentiRPT\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoChiediListaPendentiRPT}\" // nodoChiediListaPendentiRPT\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -4125,14 +4147,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "PA - nodoChiediListaPendentiRPT"
+                "subtitle": "nodoChiediListaPendentiRPT"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 44,
+              "y": 45,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -4183,7 +4205,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoChiediListaPendentiRPT}\" // nodoChiediListaPendentiRPT\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoChiediListaPendentiRPT}\" // nodoChiediListaPendentiRPT\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -4247,14 +4269,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "PA - nodoChiediListaPendentiRPT"
+                "subtitle": "nodoChiediListaPendentiRPT"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 44,
+              "y": 45,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -4305,7 +4327,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoChiediListaPendentiRPT}\" // nodoChiediListaPendentiRPT\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoChiediListaPendentiRPT}\" // nodoChiediListaPendentiRPT\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -4368,14 +4390,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "PA - nodoChiediListaPendentiRPT"
+                "subtitle": "nodoChiediListaPendentiRPT"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 48,
+              "y": 49,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -4426,7 +4448,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoInviaRPT}\" // nodoInviaRPT\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoInviaRPT}\" // nodoInviaRPT\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -4489,14 +4511,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "PA - nodoInviaRPT"
+                "subtitle": "nodoInviaRPT"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 48,
+              "y": 49,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -4547,7 +4569,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoInviaRPT}\" // nodoInviaRPT\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoInviaRPT}\" // nodoInviaRPT\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -4611,14 +4633,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "PA - nodoInviaRPT"
+                "subtitle": "nodoInviaRPT"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 48,
+              "y": 49,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -4669,7 +4691,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoInviaRPT}\" // nodoInviaRPT\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoInviaRPT}\" // nodoInviaRPT\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -4732,14 +4754,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "PA - nodoInviaRPT"
+                "subtitle": "nodoInviaRPT"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 52,
+              "y": 53,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -4790,7 +4812,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoInviaCarrelloRPT}\" // nodoInviaCarrelloRPT\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoInviaCarrelloRPT}\" // nodoInviaCarrelloRPT\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -4853,14 +4875,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "PA - nodoInviaCarrelloRPT"
+                "subtitle": "nodoInviaCarrelloRPT"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 52,
+              "y": 53,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -4911,7 +4933,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoInviaCarrelloRPT}\" // nodoInviaCarrelloRPT\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoInviaCarrelloRPT}\" // nodoInviaCarrelloRPT\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -4975,14 +4997,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "PA - nodoInviaCarrelloRPT"
+                "subtitle": "nodoInviaCarrelloRPT"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 52,
+              "y": 53,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -5033,7 +5055,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoInviaCarrelloRPT}\" // nodoInviaCarrelloRPT\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoInviaCarrelloRPT}\" // nodoInviaCarrelloRPT\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -5096,14 +5118,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "PA - nodoInviaCarrelloRPT"
+                "subtitle": "nodoInviaCarrelloRPT"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 56,
+              "y": 57,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -5154,7 +5176,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoChiediCopiaRT}\" // nodoChiediCopiaRT\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoChiediCopiaRT}\" // nodoChiediCopiaRT\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -5217,14 +5239,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "PA - nodoChiediCopiaRT"
+                "subtitle": "nodoChiediCopiaRT"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 56,
+              "y": 57,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -5275,7 +5297,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoChiediCopiaRT}\" // nodoChiediCopiaRT\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoChiediCopiaRT}\" // nodoChiediCopiaRT\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -5339,14 +5361,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "PA - nodoChiediCopiaRT"
+                "subtitle": "nodoChiediCopiaRT"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 56,
+              "y": 57,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -5397,7 +5419,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoChiediCopiaRT}\" // nodoChiediCopiaRT\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoChiediCopiaRT}\" // nodoChiediCopiaRT\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -5460,14 +5482,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "PA - nodoChiediCopiaRT"
+                "subtitle": "nodoChiediCopiaRT"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 60,
+              "y": 61,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -5518,7 +5540,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoChiediInformativaPSP}\" // nodoChiediInformativaPSP\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoChiediInformativaPSP}\" // nodoChiediInformativaPSP\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -5581,14 +5603,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "PA - nodoChiediInformativaPSP"
+                "subtitle": "nodoChiediInformativaPSP"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 60,
+              "y": 61,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -5639,7 +5661,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoChiediInformativaPSP}\" // nodoChiediInformativaPSP\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoChiediInformativaPSP}\" // nodoChiediInformativaPSP\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -5703,14 +5725,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "PA - nodoChiediInformativaPSP"
+                "subtitle": "nodoChiediInformativaPSP"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 60,
+              "y": 61,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -5761,7 +5783,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoChiediInformativaPSP}\" // nodoChiediInformativaPSP\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoChiediInformativaPSP}\" // nodoChiediInformativaPSP\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -5824,14 +5846,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "PA - nodoChiediInformativaPSP"
+                "subtitle": "nodoChiediInformativaPSP"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 64,
+              "y": 65,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -5882,7 +5904,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoPAChiediInformativaPA}\" // nodoPAChiediInformativaPA\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoPAChiediInformativaPA}\" // nodoPAChiediInformativaPA\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -5945,14 +5967,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "PA - nodoPAChiediInformativaPA"
+                "subtitle": "nodoPAChiediInformativaPA"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 64,
+              "y": 65,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -6003,7 +6025,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoPAChiediInformativaPA}\" // nodoPAChiediInformativaPA\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoPAChiediInformativaPA}\" // nodoPAChiediInformativaPA\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -6067,14 +6089,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "PA - nodoPAChiediInformativaPA"
+                "subtitle": "nodoPAChiediInformativaPA"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 64,
+              "y": 65,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -6125,7 +6147,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoPAChiediInformativaPA}\" // nodoPAChiediInformativaPA\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoPAChiediInformativaPA}\" // nodoPAChiediInformativaPA\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -6188,14 +6210,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "PA - nodoPAChiediInformativaPA"
+                "subtitle": "nodoPAChiediInformativaPA"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 68,
+              "y": 69,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -6246,7 +6268,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoChiediElencoQuadraturePA}\" // nodoChiediElencoQuadraturePA\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoChiediElencoQuadraturePA}\" // nodoChiediElencoQuadraturePA\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -6309,14 +6331,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "PA - nodoChiediElencoQuadraturePA"
+                "subtitle": "nodoChiediElencoQuadraturePA"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 68,
+              "y": 69,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -6367,7 +6389,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoChiediElencoQuadraturePA}\" // nodoChiediElencoQuadraturePA\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoChiediElencoQuadraturePA}\" // nodoChiediElencoQuadraturePA\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -6431,14 +6453,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "PA - nodoChiediElencoQuadraturePA"
+                "subtitle": "nodoChiediElencoQuadraturePA"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 68,
+              "y": 69,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -6489,7 +6511,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoChiediElencoQuadraturePA}\" // nodoChiediElencoQuadraturePA\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoChiediElencoQuadraturePA}\" // nodoChiediElencoQuadraturePA\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -6552,14 +6574,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "PA - nodoChiediElencoQuadraturePA"
+                "subtitle": "nodoChiediElencoQuadraturePA"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 72,
+              "y": 73,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -6610,7 +6632,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoChiediQuadraturaPA}\" // nodoChiediQuadraturaPA\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoChiediQuadraturaPA}\" // nodoChiediQuadraturaPA\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -6673,14 +6695,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "PA - nodoChiediQuadraturaPA"
+                "subtitle": "nodoChiediQuadraturaPA"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 72,
+              "y": 73,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -6731,7 +6753,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoChiediQuadraturaPA}\" // nodoChiediQuadraturaPA\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoChiediQuadraturaPA}\" // nodoChiediQuadraturaPA\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -6795,14 +6817,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "PA - nodoChiediQuadraturaPA"
+                "subtitle": "nodoChiediQuadraturaPA"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 72,
+              "y": 73,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -6853,7 +6875,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.pa_nodoChiediQuadraturaPA}\" // nodoChiediQuadraturaPA\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-pa/v1\"\n| where operationId_s == \"${ops.nodo_per_pa_v1.nodoChiediQuadraturaPA}\" // nodoChiediQuadraturaPA\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -6916,14 +6938,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "PA - nodoChiediQuadraturaPA"
+                "subtitle": "nodoChiediQuadraturaPA"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 76,
+              "y": 77,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -6974,7 +6996,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.psp_nodoVerificaRPT}\" // nodoVerificaRPT\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_v1.nodoVerificaRPT}\" // nodoVerificaRPT\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -7037,14 +7059,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "PSP - nodoVerificaRPT"
+                "subtitle": "nodoVerificaRPT"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 76,
+              "y": 77,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -7095,7 +7117,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.psp_nodoVerificaRPT}\" // nodoVerificaRPT\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_v1.nodoVerificaRPT}\" // nodoVerificaRPT\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -7159,14 +7181,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "PSP - nodoVerificaRPT"
+                "subtitle": "nodoVerificaRPT"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 76,
+              "y": 77,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -7217,7 +7239,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.psp_nodoVerificaRPT}\" // nodoVerificaRPT\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_v1.nodoVerificaRPT}\" // nodoVerificaRPT\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -7280,14 +7302,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "PSP - nodoVerificaRPT"
+                "subtitle": "nodoVerificaRPT"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 80,
+              "y": 81,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -7338,7 +7360,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.psp_nodoAttivaRPT}\" // nodoAttivaRPT\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_v1.nodoAttivaRPT}\" // nodoAttivaRPT\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -7401,14 +7423,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "PSP - nodoAttivaRPT"
+                "subtitle": "nodoAttivaRPT"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 80,
+              "y": 81,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -7459,7 +7481,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.psp_nodoAttivaRPT}\" // nodoAttivaRPT\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_v1.nodoAttivaRPT}\" // nodoAttivaRPT\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -7523,14 +7545,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "PSP - nodoAttivaRPT"
+                "subtitle": "nodoAttivaRPT"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 80,
+              "y": 81,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -7581,7 +7603,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.psp_nodoAttivaRPT}\" // nodoAttivaRPT\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_v1.nodoAttivaRPT}\" // nodoAttivaRPT\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -7644,14 +7666,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "PSP - nodoAttivaRPT"
+                "subtitle": "nodoAttivaRPT"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 84,
+              "y": 85,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -7702,7 +7724,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.psp_nodoInviaRT}\" // nodoInviaRT\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_v1.nodoInviaRT}\" // nodoInviaRT\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -7765,14 +7787,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "PSP - nodoInviaRT"
+                "subtitle": "nodoInviaRT"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 84,
+              "y": 85,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -7823,7 +7845,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.psp_nodoInviaRT}\" // nodoInviaRT\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_v1.nodoInviaRT}\" // nodoInviaRT\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -7887,14 +7909,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "PSP - nodoInviaRT"
+                "subtitle": "nodoInviaRT"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 84,
+              "y": 85,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -7945,7 +7967,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.psp_nodoInviaRT}\" // nodoInviaRT\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_v1.nodoInviaRT}\" // nodoInviaRT\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -8008,14 +8030,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "PSP - nodoInviaRT"
+                "subtitle": "nodoInviaRT"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 88,
+              "y": 89,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -8066,7 +8088,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.psp_nodoChiediInformativaPA}\" // nodoChiediInformativaPA\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_v1.nodoChiediInformativaPA}\" // nodoChiediInformativaPA\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -8129,14 +8151,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "PSP - nodoChiediInformativaPA"
+                "subtitle": "nodoChiediInformativaPA (nodo-per-psp/v1)"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 88,
+              "y": 89,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -8187,7 +8209,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.psp_nodoChiediInformativaPA}\" // nodoChiediInformativaPA\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_v1.nodoChiediInformativaPA}\" // nodoChiediInformativaPA\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -8251,14 +8273,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "PSP - nodoChiediInformativaPA"
+                "subtitle": "nodoChiediInformativaPA (nodo-per-psp/v1)"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 88,
+              "y": 89,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -8309,7 +8331,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.psp_nodoChiediInformativaPA}\" // nodoChiediInformativaPA\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_v1.nodoChiediInformativaPA}\" // nodoChiediInformativaPA\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -8372,14 +8394,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "PSP - nodoChiediInformativaPA"
+                "subtitle": "nodoChiediInformativaPA (nodo-per-psp/v1)"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 92,
+              "y": 93,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -8430,7 +8452,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.psp_nodoChiediTemplateInformativaPSP}\" // nodoChiediTemplateInformativaPSP\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_v1.nodoChiediTemplateInformativaPSP}\" // nodoChiediTemplateInformativaPSP\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -8493,14 +8515,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "PSP - nodoChiediTemplateInformativaPSP"
+                "subtitle": "nodoChiediTemplateInformativaPSP (nodo-per-psp/v1)"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 92,
+              "y": 93,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -8551,7 +8573,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.psp_nodoChiediTemplateInformativaPSP}\" // nodoChiediTemplateInformativaPSP\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_v1.nodoChiediTemplateInformativaPSP}\" // nodoChiediTemplateInformativaPSP\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -8615,14 +8637,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "PSP - nodoChiediTemplateInformativaPSP"
+                "subtitle": "nodoChiediTemplateInformativaPSP (nodo-per-psp/v1)"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 92,
+              "y": 93,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -8673,7 +8695,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.psp_nodoChiediTemplateInformativaPSP}\" // nodoChiediTemplateInformativaPSP\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_v1.nodoChiediTemplateInformativaPSP}\" // nodoChiediTemplateInformativaPSP\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -8736,14 +8758,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "PSP - nodoChiediTemplateInformativaPSP"
+                "subtitle": "nodoChiediTemplateInformativaPSP (nodo-per-psp/v1)"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 96,
+              "y": 97,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -8794,7 +8816,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.psp_nodoChiediElencoQuadraturePSP}\" // nodoChiediElencoQuadraturePSP\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_v1.nodoChiediElencoQuadraturePSP}\" // nodoChiediElencoQuadraturePSP\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -8857,14 +8879,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "PSP - nodoChiediElencoQuadraturePSP"
+                "subtitle": "nodoChiediElencoQuadraturePSP"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 96,
+              "y": 97,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -8915,7 +8937,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.psp_nodoChiediElencoQuadraturePSP}\" // nodoChiediElencoQuadraturePSP\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_v1.nodoChiediElencoQuadraturePSP}\" // nodoChiediElencoQuadraturePSP\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -8979,14 +9001,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "PSP - nodoChiediElencoQuadraturePSP"
+                "subtitle": "nodoChiediElencoQuadraturePSP"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 96,
+              "y": 97,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -9037,7 +9059,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.psp_nodoChiediElencoQuadraturePSP}\" // nodoChiediElencoQuadraturePSP\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_v1.nodoChiediElencoQuadraturePSP}\" // nodoChiediElencoQuadraturePSP\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -9100,14 +9122,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "PSP - nodoChiediElencoQuadraturePSP"
+                "subtitle": "nodoChiediElencoQuadraturePSP"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 100,
+              "y": 101,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -9158,7 +9180,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp-richiesta-avvisi/v1\"\n| where operationId_s == \"${ops.ra_nodoChiediNumeroAvviso}\" // nodoChiediNumeroAvviso\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp-richiesta-avvisi/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_richiesta_avvisi_v1.nodoChiediNumeroAvviso}\" // nodoChiediNumeroAvviso\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -9221,14 +9243,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "RichiestaAvvisi - nodoChiediNumeroAvviso"
+                "subtitle": "nodoChiediNumeroAvviso"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 100,
+              "y": 101,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -9279,7 +9301,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp-richiesta-avvisi/v1\"\n| where operationId_s == \"${ops.ra_nodoChiediNumeroAvviso}\" // nodoChiediNumeroAvviso\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp-richiesta-avvisi/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_richiesta_avvisi_v1.nodoChiediNumeroAvviso}\" // nodoChiediNumeroAvviso\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -9343,14 +9365,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "RichiestaAvvisi - nodoChiediNumeroAvviso"
+                "subtitle": "nodoChiediNumeroAvviso"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 100,
+              "y": 101,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -9401,7 +9423,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp-richiesta-avvisi/v1\"\n| where operationId_s == \"${ops.ra_nodoChiediNumeroAvviso}\" // nodoChiediNumeroAvviso\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp-richiesta-avvisi/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_richiesta_avvisi_v1.nodoChiediNumeroAvviso}\" // nodoChiediNumeroAvviso\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -9464,14 +9486,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "RichiestaAvvisi - nodoChiediNumeroAvviso"
+                "subtitle": "nodoChiediNumeroAvviso"
               }
             }
           },
           {
             "position": {
               "x": 0,
-              "y": 104,
+              "y": 105,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -9522,7 +9544,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp-richiesta-avvisi/v1\"\n| where operationId_s == \"${ops.ra_nodoChiediCatalogoServizi}\" // nodoChiediCatalogoServizi\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp-richiesta-avvisi/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_richiesta_avvisi_v1.nodoChiediCatalogoServizi}\" // nodoChiediCatalogoServizi\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
                   "isOptional": true
                 },
                 {
@@ -9585,14 +9607,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Availability (5m)",
-                "subtitle": "RichiestaAvvisi - nodoChiediCatalogoServizi"
+                "subtitle": "nodoChiediCatalogoServizi"
               }
             }
           },
           {
             "position": {
               "x": 6,
-              "y": 104,
+              "y": 105,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -9643,7 +9665,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp-richiesta-avvisi/v1\"\n| where operationId_s == \"${ops.ra_nodoChiediCatalogoServizi}\" // nodoChiediCatalogoServizi\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp-richiesta-avvisi/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_richiesta_avvisi_v1.nodoChiediCatalogoServizi}\" // nodoChiediCatalogoServizi\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
                   "isOptional": true
                 },
                 {
@@ -9707,14 +9729,14 @@
               "settings": {},
               "partHeader": {
                 "title": "Response Codes (5m)",
-                "subtitle": "RichiestaAvvisi - nodoChiediCatalogoServizi"
+                "subtitle": "nodoChiediCatalogoServizi"
               }
             }
           },
           {
             "position": {
               "x": 12,
-              "y": 104,
+              "y": 105,
               "colSpan": 6,
               "rowSpan": 4
             },
@@ -9765,7 +9787,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp-richiesta-avvisi/v1\"\n| where operationId_s == \"${ops.ra_nodoChiediCatalogoServizi}\" // nodoChiediCatalogoServizi\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/nodo-per-psp-richiesta-avvisi/v1\"\n| where operationId_s == \"${ops.nodo_per_psp_richiesta_avvisi_v1.nodoChiediCatalogoServizi}\" // nodoChiediCatalogoServizi\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
                   "isOptional": true
                 },
                 {
@@ -9828,7 +9850,757 @@
               "settings": {},
               "partHeader": {
                 "title": "Percentile Response Time (5m)",
-                "subtitle": "RichiestaAvvisi - nodoChiediCatalogoServizi"
+                "subtitle": "nodoChiediCatalogoServizi"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 109,
+              "colSpan": 18,
+              "rowSpan": 1
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "settings": {
+                    "content": "REST API\n==",
+                    "title": "",
+                    "subtitle": "",
+                    "markdownSource": 1
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 110,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "${apim_id}"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "76254b3b-b6e5-45cc-99cc-d1460ab5a8f3",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-ecommerce/v1\"\n| where operationId_s == \"${ops.node_for_ecommerce_v1.checkPosition}\" // checkPosition\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Log Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "${apim_name}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {},
+              "partHeader": {
+                "title": "Availability (5m)",
+                "subtitle": "checkPosition"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 110,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "${apim_id}"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "5a6d483f-259b-44c4-b2e8-01ccd1e443f9",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-ecommerce/v1\"\n| where operationId_s == \"${ops.node_for_ecommerce_v1.checkPosition}\" // checkPosition\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedArea",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Log Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "${apim_name}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "HTTPStatus",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {},
+              "partHeader": {
+                "title": "Response Codes (5m)",
+                "subtitle": "checkPosition"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 12,
+              "y": 110,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "${apim_id}"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "5f15d44b-5ded-4991-9518-c37f839a7cf2",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-ecommerce/v1\"\n| where operationId_s == \"${ops.node_for_ecommerce_v1.checkPosition}\" // checkPosition\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Log Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "${apim_name}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      },
+                      {
+                        "name": "duration_percentile_95",
+                        "type": "real"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {},
+              "partHeader": {
+                "title": "Percentile Response Time (5m)",
+                "subtitle": "checkPosition"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 114,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "${apim_id}"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "bd78f63e-e491-4235-be85-eb9c466140d5",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-ecommerce/v2\"\n| where operationId_s == \"${ops.node_for_ecommerce_v2.closePaymentV2}\" // closePaymentV2\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500 and responseCode_d != 0) by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Log Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "${apim_name}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {},
+              "partHeader": {
+                "title": "Availability (5m)",
+                "subtitle": "closePaymentV2"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 114,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "${apim_id}"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "1fc24235-d55d-4be0-a047-cb88fc20beab",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "AzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-ecommerce/v2\"\n| where operationId_s == \"${ops.node_for_ecommerce_v2.closePaymentV2}\" // closePaymentV2\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedArea",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Log Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "${apim_name}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "HTTPStatus",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {},
+              "partHeader": {
+                "title": "Response Codes (5m)",
+                "subtitle": "closePaymentV2"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 12,
+              "y": 114,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "${apim_id}"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "74f3f817-38ac-4417-b3c4-330167a14100",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "let threshold = 7.0;\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-ecommerce/v2\"\n| where operationId_s == \"${ops.node_for_ecommerce_v2.closePaymentV2}\" // closePaymentV2\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(todouble(DurationMs)/1000, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Log Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "${apim_name}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      },
+                      {
+                        "name": "duration_percentile_95",
+                        "type": "real"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {},
+              "partHeader": {
+                "title": "Percentile Response Time (5m)",
+                "subtitle": "closePaymentV2"
               }
             }
           }
@@ -9942,7 +10714,13 @@
                 "StartboardPart-LogsDashboardPart-c0ffee00-0000-4a00-9000-000000000078",
                 "StartboardPart-LogsDashboardPart-c0ffee00-0000-4a00-9000-000000000079",
                 "StartboardPart-LogsDashboardPart-c0ffee00-0000-4a00-9000-000000000080",
-                "StartboardPart-LogsDashboardPart-c0ffee00-0000-4a00-9000-000000000081"
+                "StartboardPart-LogsDashboardPart-c0ffee00-0000-4a00-9000-000000000081",
+                "StartboardPart-LogsDashboardPart-c0ffee00-0000-4a00-9000-000000000082",
+                "StartboardPart-LogsDashboardPart-c0ffee00-0000-4a00-9000-000000000083",
+                "StartboardPart-LogsDashboardPart-c0ffee00-0000-4a00-9000-000000000084",
+                "StartboardPart-LogsDashboardPart-c0ffee00-0000-4a00-9000-000000000085",
+                "StartboardPart-LogsDashboardPart-c0ffee00-0000-4a00-9000-000000000086",
+                "StartboardPart-LogsDashboardPart-c0ffee00-0000-4a00-9000-000000000087"
               ]
             }
           }
