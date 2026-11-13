@@ -411,4 +411,15 @@ variable "postgres_dns_registration_virtual_endpoint_enabled" {
   default     = false
 }
 
+variable "recovery_adx_viewer" {
+  description = "Existing ADX database on which the FDR workload identity needs Viewer access. Null disables the assignment."
+
+  type = object({
+    cluster_name  = string
+    database_name = string
+  })
+
+  default = null
+}
+
 
