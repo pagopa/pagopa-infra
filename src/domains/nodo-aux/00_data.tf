@@ -63,12 +63,6 @@ data "azurerm_api_management_product" "apim_apiconfig_auth_product" {
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
 }
 
-data "kubernetes_namespace" "namespace" {
-  metadata {
-    name = var.domain
-  }
-}
-
 data "azurerm_resource_group" "identity_rg" {
   name = "${local.product}-identity-rg"
 }
