@@ -99,18 +99,6 @@ module "apim_ecommerce_checkout_api_v1" {
   })
 }
 
-resource "azurerm_api_management_api_operation_policy" "get_transaction_info" {
-  api_name            = "${local.project}-ecommerce-checkout-api-v1"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  operation_id        = "getTransactionInfo"
-
-  xml_content = templatefile("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl", {
-    ecommerce_ingress_hostname         = local.ecommerce_hostname
-    enable_rate_limit_by_transactionId = true
-  })
-}
-
 resource "azurerm_api_management_api_operation_policy" "get_transaction_info_v2" {
   api_name            = "${local.project}-ecommerce-checkout-api-v2"
   resource_group_name = local.pagopa_apim_rg
