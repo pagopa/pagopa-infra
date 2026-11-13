@@ -25,7 +25,7 @@
     </set-header>
     <!-- Headers settings required for backend service END -->
     <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
-    <set-variable name="transactionsOperationId" value="newTransactionForIO,getTransactionInfoForIO,requestTransactionUserCancellationForIO,requestTransactionAuthorizationForIO" />
+    <set-variable name="transactionsOperationId" value="newTransactionForIO,getTransactionInfoForIO,requestTransactionUserCancellationForIO,requestTransactionAuthorizationForIO,getTransactionOutcomes" />
     <set-variable name="paymentMethodsOperationId" value="getAllPaymentMethodsForIO" />
     <set-variable name="paymentMethodsOperationIdV2" value="calculateFeesForIO" />
     <set-variable name="paymentRequestsOperationId" value="getPaymentRequestInfoForIO" />
