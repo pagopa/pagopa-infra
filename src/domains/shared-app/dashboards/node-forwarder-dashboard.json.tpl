@@ -25,7 +25,7 @@
                   "name": "Scope",
                   "value": {
                     "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                      "/subscriptions/${subscription_id}/resourceGroups/${apim_rg}/providers/Microsoft.ApiManagement/service/${apim_name}"
                     ]
                   },
                   "isOptional": true
@@ -146,7 +146,7 @@
                   "name": "Scope",
                   "value": {
                     "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                      "/subscriptions/${subscription_id}/resourceGroups/${apim_rg}/providers/Microsoft.ApiManagement/service/${apim_name}"
                     ]
                   },
                   "isOptional": true
@@ -283,7 +283,7 @@
                   "name": "Scope",
                   "value": {
                     "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                      "/subscriptions/${subscription_id}/resourceGroups/${apim_rg}/providers/Microsoft.ApiManagement/service/${apim_name}"
                     ]
                   },
                   "isOptional": true
@@ -419,7 +419,7 @@
                   "name": "Scope",
                   "value": {
                     "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                      "/subscriptions/${subscription_id}/resourceGroups/${monitor_rg}/providers/microsoft.insights/components/${appinsights_name}"
                     ]
                   },
                   "isOptional": true
@@ -469,7 +469,7 @@
                 },
                 {
                   "name": "PartSubTitle",
-                  "value": "pagopa-p-appinsights",
+                  "value": "${appinsights_name}",
                   "isOptional": true
                 },
                 {
@@ -540,7 +540,7 @@
                   "name": "Scope",
                   "value": {
                     "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                      "/subscriptions/${subscription_id}/resourceGroups/${monitor_rg}/providers/microsoft.insights/components/${appinsights_name}"
                     ]
                   },
                   "isOptional": true
@@ -590,7 +590,7 @@
                 },
                 {
                   "name": "PartSubTitle",
-                  "value": "pagopa-p-appinsights",
+                  "value": "${appinsights_name}",
                   "isOptional": true
                 },
                 {
@@ -680,7 +680,7 @@
                   "name": "Scope",
                   "value": {
                     "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                      "/subscriptions/${subscription_id}/resourceGroups/${monitor_rg}/providers/microsoft.insights/components/${appinsights_name}"
                     ]
                   },
                   "isOptional": true
@@ -730,7 +730,7 @@
                 },
                 {
                   "name": "PartSubTitle",
-                  "value": "pagopa-p-appinsights",
+                  "value": "${appinsights_name}",
                   "isOptional": true
                 },
                 {
@@ -812,7 +812,7 @@
                   "name": "Scope",
                   "value": {
                     "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                      "/subscriptions/${subscription_id}/resourceGroups/${monitor_rg}/providers/microsoft.insights/components/${appinsights_name}"
                     ]
                   },
                   "isOptional": true
@@ -862,7 +862,7 @@
                 },
                 {
                   "name": "PartSubTitle",
-                  "value": "pagopa-p-appinsights",
+                  "value": "${appinsights_name}",
                   "isOptional": true
                 },
                 {
@@ -951,7 +951,7 @@
                   "name": "Scope",
                   "value": {
                     "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                      "/subscriptions/${subscription_id}/resourceGroups/${monitor_rg}/providers/microsoft.insights/components/${appinsights_name}"
                     ]
                   },
                   "isOptional": true
@@ -980,7 +980,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "requests\n| where timestamp > ago(1d)\n| where cloud_RoleName == \"pagopa-p-app-node-forwarder\"\n//| where operation_Name == \"p-node-forwarder-api-v1;rev=1 - forward\"\n| summarize count() by resultCode\n\n",
+                  "value": "requests\n| where timestamp > ago(1d)\n| where cloud_RoleName == \"${product}-app-node-forwarder\"\n//| where operation_Name == \"${env_short}-node-forwarder-api-v1;rev=1 - forward\"\n| summarize count() by resultCode\n\n",
                   "isOptional": true
                 },
                 {
@@ -1000,7 +1000,7 @@
                 },
                 {
                   "name": "PartSubTitle",
-                  "value": "pagopa-p-appinsights",
+                  "value": "${appinsights_name}",
                   "isOptional": true
                 },
                 {
@@ -1038,7 +1038,7 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "requests\n| where timestamp > ago(1d)\n| where cloud_RoleName == \"pagopa-p-weu-core-app-node-forwarder-ha\"\n//| where operation_Name == \"p-node-forwarder-api-v1;rev=1 - forward\"\n| summarize count() by resultCode\n\n",
+                  "Query": "requests\n| where timestamp > ago(1d)\n| where cloud_RoleName == \"${forwarder_app_name}\"\n//| where operation_Name == \"${env_short}-node-forwarder-api-v1;rev=1 - forward\"\n| summarize count() by resultCode\n\n",
                   "PartTitle": "Daily error distribution"
                 }
               }
@@ -1065,7 +1065,7 @@
                   "name": "Scope",
                   "value": {
                     "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                      "/subscriptions/${subscription_id}/resourceGroups/${monitor_rg}/providers/microsoft.insights/components/${appinsights_name}"
                     ]
                   },
                   "isOptional": true
@@ -1094,7 +1094,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "requests\n| where timestamp > ago(24h)\n| where cloud_RoleName == \"pagopa-p-app-node-forwarder\"\n//| where operation_Name == \"p-node-forwarder-api-v1;rev=1 - forward\"\n| summarize count() by bin(timestamp,1h)\n\n",
+                  "value": "requests\n| where timestamp > ago(24h)\n| where cloud_RoleName == \"${product}-app-node-forwarder\"\n//| where operation_Name == \"${env_short}-node-forwarder-api-v1;rev=1 - forward\"\n| summarize count() by bin(timestamp,1h)\n\n",
                   "isOptional": true
                 },
                 {
@@ -1114,7 +1114,7 @@
                 },
                 {
                   "name": "PartSubTitle",
-                  "value": "pagopa-p-appinsights",
+                  "value": "${appinsights_name}",
                   "isOptional": true
                 },
                 {
@@ -1152,7 +1152,7 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "requests\n| where timestamp > ago(24h)\n| where cloud_RoleName == \"pagopa-p-weu-core-app-node-forwarder-ha\"\n//| where operation_Name == \"p-node-forwarder-api-v1;rev=1 - forward\"\n| summarize count() by bin(timestamp,1h)\n\n",
+                  "Query": "requests\n| where timestamp > ago(24h)\n| where cloud_RoleName == \"${forwarder_app_name}\"\n//| where operation_Name == \"${env_short}-node-forwarder-api-v1;rev=1 - forward\"\n| summarize count() by bin(timestamp,1h)\n\n",
                   "PartTitle": "Daily requests x hh"
                 }
               }
@@ -1179,7 +1179,7 @@
                   "name": "Scope",
                   "value": {
                     "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                      "/subscriptions/${subscription_id}/resourceGroups/${monitor_rg}/providers/microsoft.insights/components/${appinsights_name}"
                     ]
                   },
                   "isOptional": true
@@ -1229,7 +1229,7 @@
                 },
                 {
                   "name": "PartSubTitle",
-                  "value": "pagopa-p-appinsights",
+                  "value": "${appinsights_name}",
                   "isOptional": true
                 },
                 {
@@ -1298,7 +1298,7 @@
                   "name": "Scope",
                   "value": {
                     "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                      "/subscriptions/${subscription_id}/resourceGroups/${monitor_rg}/providers/microsoft.insights/components/${appinsights_name}"
                     ]
                   },
                   "isOptional": true
@@ -1348,7 +1348,7 @@
                 },
                 {
                   "name": "PartSubTitle",
-                  "value": "pagopa-p-appinsights",
+                  "value": "${appinsights_name}",
                   "isOptional": true
                 },
                 {
@@ -1408,7 +1408,7 @@
               "type": "Extension/HubsExtension/PartType/MarkdownPart",
               "settings": {
                 "content": {
-                  "content": "<span style=\"color:green\">pagopa-p-weu-core-app-node-forwarder-ha 💪 </span>\n==\n\n",
+                  "content": "<span style=\"color:green\">${forwarder_app_name} 💪 </span>\n==\n\n",
                   "title": "",
                   "subtitle": "",
                   "markdownSource": 1,
@@ -1433,7 +1433,7 @@
                       "metrics": [
                         {
                           "resourceMetadata": {
-                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/sites/pagopa-p-weu-core-app-node-forwarder-ha"
+                            "id": "/subscriptions/${subscription_id}/resourceGroups/${forwarder_rg}/providers/Microsoft.Web/sites/${forwarder_app_name}"
                           },
                           "name": "HealthCheckStatus",
                           "aggregationType": 4,
@@ -1443,7 +1443,7 @@
                           }
                         }
                       ],
-                      "title": "Avg Health check status for pagopa-p-weu-core-app-node-forwarder-ha",
+                      "title": "Avg Health check status for ${forwarder_app_name}",
                       "titleKind": 1,
                       "visualization": {
                         "chartType": 2,
@@ -1488,7 +1488,7 @@
                       "metrics": [
                         {
                           "resourceMetadata": {
-                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/sites/pagopa-p-weu-core-app-node-forwarder-ha"
+                            "id": "/subscriptions/${subscription_id}/resourceGroups/${forwarder_rg}/providers/Microsoft.Web/sites/${forwarder_app_name}"
                           },
                           "name": "HealthCheckStatus",
                           "aggregationType": 4,
@@ -1498,7 +1498,7 @@
                           }
                         }
                       ],
-                      "title": "Avg Health check status for pagopa-p-weu-core-app-node-forwarder-ha",
+                      "title": "Avg Health check status for ${forwarder_app_name}",
                       "titleKind": 1,
                       "visualization": {
                         "chartType": 2,
@@ -1542,7 +1542,7 @@
                       "metrics": [
                         {
                           "resourceMetadata": {
-                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/sites/pagopa-p-weu-core-app-node-forwarder-ha"
+                            "id": "/subscriptions/${subscription_id}/resourceGroups/${forwarder_rg}/providers/Microsoft.Web/sites/${forwarder_app_name}"
                           },
                           "name": "Requests",
                           "aggregationType": 1,
@@ -1552,7 +1552,7 @@
                           }
                         }
                       ],
-                      "title": "Sum Requests for pagopa-p-weu-core-app-node-forwarder-ha",
+                      "title": "Sum Requests for ${forwarder_app_name}",
                       "titleKind": 1,
                       "visualization": {
                         "chartType": 2,
@@ -1597,7 +1597,7 @@
                       "metrics": [
                         {
                           "resourceMetadata": {
-                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/sites/pagopa-p-weu-core-app-node-forwarder-ha"
+                            "id": "/subscriptions/${subscription_id}/resourceGroups/${forwarder_rg}/providers/Microsoft.Web/sites/${forwarder_app_name}"
                           },
                           "name": "Requests",
                           "aggregationType": 1,
@@ -1607,7 +1607,7 @@
                           }
                         }
                       ],
-                      "title": "Sum Requests for pagopa-p-weu-core-app-node-forwarder-ha",
+                      "title": "Sum Requests for ${forwarder_app_name}",
                       "titleKind": 1,
                       "visualization": {
                         "chartType": 2,
@@ -1651,7 +1651,7 @@
                       "metrics": [
                         {
                           "resourceMetadata": {
-                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/sites/pagopa-p-weu-core-app-node-forwarder-ha"
+                            "id": "/subscriptions/${subscription_id}/resourceGroups/${forwarder_rg}/providers/Microsoft.Web/sites/${forwarder_app_name}"
                           },
                           "name": "Http5xx",
                           "aggregationType": 1,
@@ -1661,7 +1661,7 @@
                           }
                         }
                       ],
-                      "title": "Sum Http Server Errors for pagopa-p-weu-core-app-node-forwarder-ha",
+                      "title": "Sum Http Server Errors for ${forwarder_app_name}",
                       "titleKind": 1,
                       "visualization": {
                         "chartType": 2,
@@ -1706,7 +1706,7 @@
                       "metrics": [
                         {
                           "resourceMetadata": {
-                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/sites/pagopa-p-weu-core-app-node-forwarder-ha"
+                            "id": "/subscriptions/${subscription_id}/resourceGroups/${forwarder_rg}/providers/Microsoft.Web/sites/${forwarder_app_name}"
                           },
                           "name": "Http5xx",
                           "aggregationType": 1,
@@ -1716,7 +1716,7 @@
                           }
                         }
                       ],
-                      "title": "Sum Http Server Errors for pagopa-p-weu-core-app-node-forwarder-ha",
+                      "title": "Sum Http Server Errors for ${forwarder_app_name}",
                       "titleKind": 1,
                       "visualization": {
                         "chartType": 2,
@@ -1760,7 +1760,7 @@
                       "metrics": [
                         {
                           "resourceMetadata": {
-                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/sites/pagopa-p-weu-core-app-node-forwarder-ha"
+                            "id": "/subscriptions/${subscription_id}/resourceGroups/${forwarder_rg}/providers/Microsoft.Web/sites/${forwarder_app_name}"
                           },
                           "name": "AverageResponseTime",
                           "aggregationType": 4,
@@ -1770,7 +1770,7 @@
                           }
                         }
                       ],
-                      "title": "Avg Average Response Time (deprecated) for pagopa-p-weu-core-app-node-forwarder-ha",
+                      "title": "Avg Average Response Time (deprecated) for ${forwarder_app_name}",
                       "titleKind": 1,
                       "visualization": {
                         "chartType": 2,
@@ -1815,7 +1815,7 @@
                       "metrics": [
                         {
                           "resourceMetadata": {
-                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/sites/pagopa-p-weu-core-app-node-forwarder-ha"
+                            "id": "/subscriptions/${subscription_id}/resourceGroups/${forwarder_rg}/providers/Microsoft.Web/sites/${forwarder_app_name}"
                           },
                           "name": "AverageResponseTime",
                           "aggregationType": 4,
@@ -1825,7 +1825,7 @@
                           }
                         }
                       ],
-                      "title": "Avg Average Response Time (deprecated) for pagopa-p-weu-core-app-node-forwarder-ha",
+                      "title": "Avg Average Response Time (deprecated) for ${forwarder_app_name}",
                       "titleKind": 1,
                       "visualization": {
                         "chartType": 2,
@@ -1869,13 +1869,13 @@
                       "metrics": [
                         {
                           "resourceMetadata": {
-                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/serverFarms/pagopa-p-weu-core-plan-node-forwarder-ha"
+                            "id": "/subscriptions/${subscription_id}/resourceGroups/${forwarder_rg}/providers/Microsoft.Web/serverFarms/${forwarder_plan_name}"
                           },
                           "name": "CpuPercentage",
                           "aggregationType": 4,
                           "metricVisualization": {
                             "displayName": "CPU Percentage",
-                            "resourceDisplayName": "pagopa-p-weu-core-plan-node-forwarder-ha"
+                            "resourceDisplayName": "${forwarder_plan_name}"
                           }
                         }
                       ],
@@ -1904,13 +1904,13 @@
                       "metrics": [
                         {
                           "resourceMetadata": {
-                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/serverFarms/pagopa-p-weu-core-plan-node-forwarder-ha"
+                            "id": "/subscriptions/${subscription_id}/resourceGroups/${forwarder_rg}/providers/Microsoft.Web/serverFarms/${forwarder_plan_name}"
                           },
                           "name": "CpuPercentage",
                           "aggregationType": 4,
                           "metricVisualization": {
                             "displayName": "CPU Percentage",
-                            "resourceDisplayName": "pagopa-p-weu-core-plan-node-forwarder-ha"
+                            "resourceDisplayName": "${forwarder_plan_name}"
                           }
                         }
                       ],
@@ -1954,13 +1954,13 @@
                       "metrics": [
                         {
                           "resourceMetadata": {
-                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/serverFarms/pagopa-p-weu-core-plan-node-forwarder-ha"
+                            "id": "/subscriptions/${subscription_id}/resourceGroups/${forwarder_rg}/providers/Microsoft.Web/serverFarms/${forwarder_plan_name}"
                           },
                           "name": "MemoryPercentage",
                           "aggregationType": 4,
                           "metricVisualization": {
                             "displayName": "Memory Percentage",
-                            "resourceDisplayName": "pagopa-p-weu-core-plan-node-forwarder-ha"
+                            "resourceDisplayName": "${forwarder_plan_name}"
                           }
                         }
                       ],
@@ -1989,13 +1989,13 @@
                       "metrics": [
                         {
                           "resourceMetadata": {
-                            "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-node-forwarder-rg/providers/Microsoft.Web/serverFarms/pagopa-p-weu-core-plan-node-forwarder-ha"
+                            "id": "/subscriptions/${subscription_id}/resourceGroups/${forwarder_rg}/providers/Microsoft.Web/serverFarms/${forwarder_plan_name}"
                           },
                           "name": "MemoryPercentage",
                           "aggregationType": 4,
                           "metricVisualization": {
                             "displayName": "Memory Percentage",
-                            "resourceDisplayName": "pagopa-p-weu-core-plan-node-forwarder-ha"
+                            "resourceDisplayName": "${forwarder_plan_name}"
                           }
                         }
                       ],
@@ -2044,7 +2044,7 @@
                   "name": "Scope",
                   "value": {
                     "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                      "/subscriptions/${subscription_id}/resourceGroups/${apim_rg}/providers/Microsoft.ApiManagement/service/${apim_name}"
                     ]
                   },
                   "isOptional": true
@@ -2096,7 +2096,7 @@
                 },
                 {
                   "name": "PartSubTitle",
-                  "value": "pagopa-p-apim",
+                  "value": "${apim_name}",
                   "isOptional": true
                 },
                 {
@@ -2165,7 +2165,7 @@
                   "name": "Scope",
                   "value": {
                     "resourceIds": [
-                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                      "/subscriptions/${subscription_id}/resourceGroups/${monitor_rg}/providers/microsoft.insights/components/${appinsights_name}"
                     ]
                   },
                   "isOptional": true
@@ -2215,7 +2215,7 @@
                 },
                 {
                   "name": "PartSubTitle",
-                  "value": "pagopa-p-appinsights",
+                  "value": "${appinsights_name}",
                   "isOptional": true
                 },
                 {
@@ -2334,11 +2334,11 @@
       }
     }
   },
-  "name": "pagopa-p-opex_pagopa-node-forwarder",
+  "name": "${product}_pagopa-node-forwarder",
   "type": "Microsoft.Portal/dashboards",
   "location": "INSERT LOCATION",
   "tags": {
-    "hidden-title": "pagopa-p-opex_pagopa-node-forwarder"
+    "hidden-title": "${product}_pagopa-node-forwarder"
   },
   "apiVersion": "2022-12-01-preview"
 }
