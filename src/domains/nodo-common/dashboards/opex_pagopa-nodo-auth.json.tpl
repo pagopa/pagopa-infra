@@ -1878,7 +1878,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let opNames = datatable(operationId_s:string, apiName:string) [ ${operation_names_kql} ];\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s !in (${handled_operation_ids_kql})\n| where backendUrl_s !startswith \"${excluded_backend_url}\"\n| summarize count() by operationId_s, bin(TimeGenerated, 1d)\n| lookup kind=leftouter opNames on operationId_s\n| project TimeGenerated, apiName=coalesce(apiName, operationId_s), count_\n| render columnchart with (xtitle = \"time\", ytitle = \"count\")",
+                  "value": "let opNames = datatable(operationId_s:string, apiName:string) [ ${operation_names_kql} ];\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s !in (${handled_operation_ids_kql})\n| where backendUrl_s !startswith \"${excluded_backend_url}\"\n| summarize count() by operationId_s, bin(TimeGenerated, 1d)\n| lookup kind=leftouter opNames on operationId_s\n| project TimeGenerated, apiName=iff(isempty(operationId_s), \"ResourceNotFound-404\", coalesce(apiName, operationId_s)), count_\n| render columnchart with (xtitle = \"time\", ytitle = \"count\")",
                   "isOptional": true
                 },
                 {
@@ -1954,7 +1954,7 @@
         "timeRange": {
           "value": {
             "relative": {
-              "duration": 24,
+              "duration": 4,
               "timeUnit": 1
             }
           },
@@ -1967,13 +1967,13 @@
           "value": {
             "MsPortalFx_TimeRange": {
               "model": {
-                "format": "utc",
+                "format": "local",
                 "granularity": "auto",
-                "relative": "24h"
+                "relative": "4h"
               },
               "displayCache": {
-                "name": "UTC Time",
-                "value": "Past 24 hours"
+                "name": "Local Time",
+                "value": "Past 4 hours"
               },
               "filteredPartIds": [
                 "StartboardPart-LogsDashboardPart-c0ffee00-0000-4a00-9000-000000000001",
