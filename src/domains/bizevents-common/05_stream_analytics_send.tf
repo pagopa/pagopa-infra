@@ -27,7 +27,7 @@ SELECT
   CAST(e.paymentInfo.amount AS nvarchar(max)) AS amount,
   CAST(e.paymentInfo.fee AS nvarchar(max)) AS fee,
   e.id AS id,
-  e.timestamp AS timestamp
+  COALESCE(e.timestamp, DATEDIFF(millisecond, CAST('1970-01-01T00:00:00Z' AS datetime), e.EventEnqueuedUtcTime)) AS timestamp
 INTO [evh-tx-stream-send-filter]
 FROM [evh-rx-stream-send-filter] e
 QUERY
