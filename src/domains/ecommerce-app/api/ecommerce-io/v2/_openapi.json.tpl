@@ -233,6 +233,7 @@
     },
     "/transactions/{transactionId}": {
       "get": {
+        "deprecated": true,
         "tags": [
           "ecommerce-transactions"
         ],
@@ -254,7 +255,7 @@
           }
         ],
         "summary": "Get transaction information",
-        "description": "Return information for the input specific transaction resource",
+        "description": "Return information for the input specific transaction resource - Deprecated and marked for removal, use /transactions/{transactionId}/outcomes api",
         "responses": {
           "200": {
             "description": "Transaction data successfully retrieved",
@@ -362,6 +363,89 @@
           },
           "504": {
             "description": "Timeout from PagoPA services",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/{transactionId}/outcomes": {
+      "get": {
+        "tags": [
+          "ecommerce-transactions"
+        ],
+        "operationId": "getTransactionOutcomes",
+        "summary": "Get transaction outcome",
+        "description": "Return outcome information for the input specific transaction resource",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "required": true,
+            "description": "Transaction ID",
+            "schema": {
+              "$ref": "#/components/schemas/TransactionID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction authorization request successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionOutcomeInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid transaction id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Bad gateway",
             "content": {
               "application/json": {
                 "schema": {
@@ -869,6 +953,73 @@
   },
   "components": {
     "schemas": {
+      "TransactionID": {
+        "description": "Base64 of bytes related to TransactionId",
+        "type": "string"
+      },
+      "TransactionOutcomeInfo": {
+        "type": "object",
+        "description": "Transaction outcome info returned when querying for an existing transaction outcome status",
+        "properties": {
+          "outcome": {
+            "type": "number",
+            "enum": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              17,
+              18,
+              25,
+              99,
+              116,
+              117,
+              121
+            ],
+            "description": "- `0` - Success\n- `1` - Generic error\n- `2` - Authorization error\n- `3` - Invalid data\n- `4` - Timeout\n- `5` - Unsupported circuit\n- `6` - Missing data\n- `7` - Invalid card: expired card etc\n- `8` - Canceled by the user\n- `9` - Double transaction\n- `10` - Excessive amount\n- `11` - Order not present\n- `12` - Invalid method\n- `13` - Retriable KO\n- `14` - Invalid session\n- `17` - Taken in charge\n- `18` - Refunded\n- `25` - PSP Error\n- `99` - Backend Error\n- `116` - Balance not available\n- `117` - CVV Error\n- `121` - Limit exceeded\n"
+          },
+          "totalAmount": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountEuroCents"
+              }
+            ],
+            "description": "The total amount paid for the transaction in eurocents. Fees are not included"
+          },
+          "fees": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FeeEuroCents"
+              }
+            ],
+            "description": "The total fees paid for the transaction in eurocents"
+          },
+          "isFinalStatus": {
+            "type": "boolean",
+            "description": "A flag that describe the outcome as final or not. If true, the outcome will not change in the future and the client can interrupt polling"
+          }
+        },
+        "required": [
+          "outcome",
+          "isFinalStatus"
+        ]
+      },
+      "FeeEuroCents": {
+        "description": "Fee for payments, in euro cents",
+        "type": "integer",
+        "format": "int32"
+      },
       "NodeProblemJson404": {
         "oneOf": [
           {

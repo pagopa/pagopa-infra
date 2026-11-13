@@ -30,7 +30,7 @@
             </return-response>
         </when>
     </choose>
-    <set-variable name="transactionsOperationId" value="getTransactionInfo,getTransactionOutcomes,newTransactionForEcommerceWebview" />
+    <set-variable name="transactionsOperationId" value="getTransactionOutcomes,newTransactionForEcommerceWebview" />
     <set-variable name="paymentMethodsOperationId" value="createSessionWebview" />
     <set-variable name="walletsOperationId" value="createWalletForTransactionsForIO" />
     <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
