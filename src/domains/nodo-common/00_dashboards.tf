@@ -9,6 +9,14 @@ locals {
         activatePaymentNoticeV2 = "6a5f497475a838165ccb1e41"
         sendPaymentOutcomeV2    = "6a5f497475a838165ccb1e42"
       }
+      unhandled_operation_ids = {
+        verificaBollettino               = "6a5f497475a838165ccb1e3e"
+        demandPaymentNotice              = "6a5f497475a838165ccb1e3f"
+        nodoChiediCatalogoServiziV2      = "6a5f497475a838165ccb1e40"
+        nodoInviaFlussoRendicontazione   = "6a5f497475a838165ccb1e43"
+        nodoChiediInformativaPA          = "6a5f497475a838165ccb1e44"
+        nodoChiediTemplateInformativaPSP = "6a5f497475a838165ccb1e45"
+      }
     }
     p = {
       excluded_backend_url = "https://10.79.20.25"
@@ -18,6 +26,14 @@ locals {
         sendPaymentOutcome      = "63b6e2daea7c4a25440fdaa1"
         activatePaymentNoticeV2 = "63b6e2daea7c4a25440fdaa5"
         sendPaymentOutcomeV2    = "63b6e2daea7c4a25440fdaa6"
+      }
+      unhandled_operation_ids = {
+        verificaBollettino               = "63b6e2daea7c4a25440fdaa2"
+        demandPaymentNotice              = "63b6e2daea7c4a25440fdaa3"
+        nodoChiediCatalogoServiziV2      = "63b6e2daea7c4a25440fdaa4"
+        nodoInviaFlussoRendicontazione   = "63ff4f22aca2fd18dcc4a6f7"
+        nodoChiediInformativaPA          = "63ff4f22aca2fd18dcc4a6f8"
+        nodoChiediTemplateInformativaPSP = "63ff4f22aca2fd18dcc4a6f9"
       }
     }
   }
@@ -31,6 +47,8 @@ locals {
     op_activatePaymentNoticeV2 = local.opex_nodo_auth_dashboard_config[var.env_short].operation_ids.activatePaymentNoticeV2
     op_sendPaymentOutcome      = local.opex_nodo_auth_dashboard_config[var.env_short].operation_ids.sendPaymentOutcome
     op_sendPaymentOutcomeV2    = local.opex_nodo_auth_dashboard_config[var.env_short].operation_ids.sendPaymentOutcomeV2
+    handled_operation_ids_kql  = join(", ", [for id in values(local.opex_nodo_auth_dashboard_config[var.env_short].operation_ids) : "'${id}'"])
+    operation_names_kql        = join(", ", [for name, id in merge(local.opex_nodo_auth_dashboard_config[var.env_short].operation_ids, local.opex_nodo_auth_dashboard_config[var.env_short].unhandled_operation_ids) : "'${id}', '${name}'"])
   })) : null
 }
 

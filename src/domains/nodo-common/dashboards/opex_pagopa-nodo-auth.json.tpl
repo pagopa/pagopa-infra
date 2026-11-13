@@ -1823,6 +1823,128 @@
                 "subtitle": "sendPaymentOutcomeV2"
               }
             }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 20,
+              "colSpan": 18,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "${apim_id}"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "ae9b8444-d297-4055-9022-fbf3a854e3d9",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "let opNames = datatable(operationId_s:string, apiName:string) [ ${operation_names_kql} ];\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s !in (${handled_operation_ids_kql})\n| where backendUrl_s !startswith \"${excluded_backend_url}\"\n| summarize count() by operationId_s, bin(TimeGenerated, 1d)\n| lookup kind=leftouter opNames on operationId_s\n| project TimeGenerated, apiName=coalesce(apiName, operationId_s), count_\n| render columnchart with (xtitle = \"time\", ytitle = \"count\")",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedColumn",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Log Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "${apim_name}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "apiName",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {},
+              "partHeader": {
+                "title": "Unhandled API invocations (1d)",
+                "subtitle": "APIs not handled by Nodo"
+              }
+            }
           }
         ]
       }
@@ -1868,7 +1990,8 @@
                 "StartboardPart-LogsDashboardPart-c0ffee00-0000-4a00-9000-000000000012",
                 "StartboardPart-LogsDashboardPart-c0ffee00-0000-4a00-9000-000000000013",
                 "StartboardPart-LogsDashboardPart-c0ffee00-0000-4a00-9000-000000000014",
-                "StartboardPart-LogsDashboardPart-c0ffee00-0000-4a00-9000-000000000015"
+                "StartboardPart-LogsDashboardPart-c0ffee00-0000-4a00-9000-000000000015",
+                "StartboardPart-LogsDashboardPart-c0ffee00-0000-4a00-9000-000000000016"
               ]
             }
           }
