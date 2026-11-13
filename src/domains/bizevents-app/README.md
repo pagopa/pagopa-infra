@@ -4,31 +4,31 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.21.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.12.1 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.30.0 |
-| <a name="requirement_null"></a> [null](#requirement\_null) | = 3.2 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 2.53 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.0 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.16.0 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.33.0 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | ~> 3.2 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | d0a0b3a81963169bdc974f79eba31e41e918e63d |
-| <a name="module_apim_api_bizevents_api_v1"></a> [apim\_api\_bizevents\_api\_v1](#module\_apim\_api\_bizevents\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_api_bizevents_helpdesk_api_v1"></a> [apim\_api\_bizevents\_helpdesk\_api\_v1](#module\_apim\_api\_bizevents\_helpdesk\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_api_bizevents_lap_api_jwt_v1"></a> [apim\_api\_bizevents\_lap\_api\_jwt\_v1](#module\_apim\_api\_bizevents\_lap\_api\_jwt\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_api_bizevents_lap_api_v1"></a> [apim\_api\_bizevents\_lap\_api\_v1](#module\_apim\_api\_bizevents\_lap\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_bizevents_helpdesk_product"></a> [apim\_bizevents\_helpdesk\_product](#module\_apim\_bizevents\_helpdesk\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_bizevents_nodo_sync_product"></a> [apim\_bizevents\_nodo\_sync\_product](#module\_apim\_bizevents\_nodo\_sync\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_bizevents_product"></a> [apim\_bizevents\_product](#module\_apim\_bizevents\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_bizevents_product_all_in_one"></a> [apim\_bizevents\_product\_all\_in\_one](#module\_apim\_bizevents\_product\_all\_in\_one) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_lap_product"></a> [apim\_lap\_product](#module\_apim\_lap\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v3__/cert_mounter | n/a |
-| <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup | n/a |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 588ea917b4c495e1b6af2b955a154d2de6d94a43 |
+| <a name="module_apim_api_bizevents_api_v1"></a> [apim\_api\_bizevents\_api\_v1](#module\_apim\_api\_bizevents\_api\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
+| <a name="module_apim_api_bizevents_helpdesk_api_v1"></a> [apim\_api\_bizevents\_helpdesk\_api\_v1](#module\_apim\_api\_bizevents\_helpdesk\_api\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
+| <a name="module_apim_api_bizevents_lap_api_jwt_v1"></a> [apim\_api\_bizevents\_lap\_api\_jwt\_v1](#module\_apim\_api\_bizevents\_lap\_api\_jwt\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
+| <a name="module_apim_api_bizevents_lap_api_v1"></a> [apim\_api\_bizevents\_lap\_api\_v1](#module\_apim\_api\_bizevents\_lap\_api\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
+| <a name="module_apim_bizevents_helpdesk_product"></a> [apim\_bizevents\_helpdesk\_product](#module\_apim\_bizevents\_helpdesk\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_bizevents_nodo_sync_product"></a> [apim\_bizevents\_nodo\_sync\_product](#module\_apim\_bizevents\_nodo\_sync\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_bizevents_product"></a> [apim\_bizevents\_product](#module\_apim\_bizevents\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_bizevents_product_all_in_one"></a> [apim\_bizevents\_product\_all\_in\_one](#module\_apim\_bizevents\_product\_all\_in\_one) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_lap_product"></a> [apim\_lap\_product](#module\_apim\_lap\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v4__/cert_mounter | n/a |
+| <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v4__/gh_runner_container_app_job_domain_setup | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
-| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
-| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_configuration | n/a |
+| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v4__/tls_checker | n/a |
+| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v4__/kubernetes_workload_identity_configuration | n/a |
 
 ## Resources
 
@@ -55,10 +55,10 @@
 | [kubernetes_role_binding.system_deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding) | resource |
 | [kubernetes_service_account.azure_devops](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/service_account) | resource |
 | [terraform_data.sha256_policy_lap_generatePDF](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
-| [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azurerm_api_management_product.technical_support_api_product](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
@@ -85,7 +85,6 @@
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
-| <a name="input_gh_runner_job_location"></a> [gh\_runner\_job\_location](#input\_gh\_runner\_job\_location) | (Optional) The GH runner container app job location. Consistent with the container app environment location | `string` | `"westeurope"` | no |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
 | <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | n/a | `string` | `"~/.kube"` | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
