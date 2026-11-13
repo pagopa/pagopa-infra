@@ -39,8 +39,6 @@
 | <a name="module_apim_ecommerce_redirect_product"></a> [apim\_ecommerce\_redirect\_product](#module\_apim\_ecommerce\_redirect\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
 | <a name="module_apim_ecommerce_transaction_auth_requests_service_api_v2"></a> [apim\_ecommerce\_transaction\_auth\_requests\_service\_api\_v2](#module\_apim\_ecommerce\_transaction\_auth\_requests\_service\_api\_v2) | ./.terraform/modules/__v4__/api_management_api | n/a |
 | <a name="module_apim_ecommerce_transaction_user_receipts_service_api_v1"></a> [apim\_ecommerce\_transaction\_user\_receipts\_service\_api\_v1](#module\_apim\_ecommerce\_transaction\_user\_receipts\_service\_api\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
-| <a name="module_apim_ecommerce_transactions_service_api_v1"></a> [apim\_ecommerce\_transactions\_service\_api\_v1](#module\_apim\_ecommerce\_transactions\_service\_api\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
-| <a name="module_apim_ecommerce_transactions_service_api_v2"></a> [apim\_ecommerce\_transactions\_service\_api\_v2](#module\_apim\_ecommerce\_transactions\_service\_api\_v2) | ./.terraform/modules/__v4__/api_management_api | n/a |
 | <a name="module_apim_ecommerce_user_stats_service_api_v1"></a> [apim\_ecommerce\_user\_stats\_service\_api\_v1](#module\_apim\_ecommerce\_user\_stats\_service\_api\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
 | <a name="module_apim_ecommerce_webview_api_v1"></a> [apim\_ecommerce\_webview\_api\_v1](#module\_apim\_ecommerce\_webview\_api\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
 | <a name="module_apim_ecommerce_webview_product"></a> [apim\_ecommerce\_webview\_product](#module\_apim\_ecommerce\_webview\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
@@ -138,7 +136,6 @@
 | [azurerm_api_management_api_version_set.ecommerce_payment_requests_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_transaction_auth_requests_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_transaction_user_receipts_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
-| [azurerm_api_management_api_version_set.ecommerce_transactions_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_user_stats_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.pagopa_ecommerce_helpdesk_commands_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.pagopa_ecommerce_helpdesk_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
