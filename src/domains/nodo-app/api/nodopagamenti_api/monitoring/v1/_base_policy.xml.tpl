@@ -1,12 +1,23 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="${base-url}" />
+
         <choose>
-            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it"))">
-                <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf" /> <!-- PRF -->
+            <!-- check URI request contains pagopa to set our internal service -->
+            <when condition="@(context.Request.Url.Path.IndexOf("pagopa", StringComparison.OrdinalIgnoreCase) >= 0)">
+                <set-backend-service base-url="${pagopa-base-url}" />
+                <!-- in this case remove /pagopa from the request path to forward to the backend service -->
+                <rewrite-uri template="@{
+                    var path = context.Request.Url.Path;
+                    var index = path.IndexOf("/pagopa", StringComparison.OrdinalIgnoreCase);
+                    return path.Substring(index + "/pagopa".Length);
+                }" copy-unmatched-params="true" />
             </when>
-        </choose>        
+            <otherwise>
+                <set-backend-service base-url="@(context.Variables.GetValueOrDefault<string>("baseUrl", "{{schema-ip-nexi}}"))" />
+            </otherwise>
+        </choose>
+
     </inbound>
     <backend>
         <base />
