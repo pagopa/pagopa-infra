@@ -5,7 +5,7 @@
         <rate-limit-by-key
             calls="1"
             renewal-period="5"
-            counter-key="@(context.Subscription.Name + &quot;:ecommerceSearchDeadLetterEvents&quot;)"
+            counter-key="@(context.Subscription.Name + &quot;:listDeadletterTransactionsInternal&quot;)"
             increment-condition="@(true)" />
         <set-backend-service base-url="https://${hostname}/pagopa-ecommerce-watchdog-deadletter-service" />
         <rewrite-uri template="/v2/internal/deadletter-transactions" />

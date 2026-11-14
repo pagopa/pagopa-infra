@@ -573,7 +573,7 @@ resource "azurerm_api_management_api_operation_policy" "helpdesk_v2_watchdog_dea
   api_name            = "${local.project}-helpdesk-service-api-v2"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  operation_id        = "ecommerceSearchDeadLetterEvents"
+  operation_id        = "listDeadletterTransactionsInternal"
 
   xml_content = templatefile("./api/ecommerce-helpdesk-api/v2/_watchdog_deadletter_transactions.xml.tpl", {
     hostname = local.ecommerce_hostname

@@ -237,12 +237,12 @@
         }
       }
     },
-    "/ecommerce/searchDeadLetterEvents": {
+    "/ecommerce/deadletter-transactions": {
       "get": {
         "tags": [
           "eCommerce"
         ],
-        "operationId": "ecommerceSearchDeadLetterEvents",
+        "operationId": "listDeadletterTransactionsInternal",
         "summary": "List deadletter transactions with their actions",
         "description": "Returns the paginated list of deadletter transactions in the given date range, each one enriched with the list of actions taken on it. Rate limited to 1 request every 5 seconds for each subscription.\n",
         "parameters": [
