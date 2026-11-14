@@ -569,6 +569,36 @@ module "apim_pagopa_ecommerce_helpdesk_service_api_v2" {
   })
 }
 
+resource "azurerm_api_management_api_operation_policy" "helpdesk_v2_watchdog_deadletter_transactions" {
+  api_name            = "${local.project}-helpdesk-service-api-v2"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "listDeadletterTransactionsInternal"
+
+  xml_content = templatefile("./api/ecommerce-helpdesk-api/v2/_watchdog_deadletter_transactions.xml.tpl", {
+    hostname = local.ecommerce_hostname
+  })
+
+  depends_on = [
+    module.apim_pagopa_ecommerce_helpdesk_service_api_v2,
+    azurerm_api_management_named_value.ecommerce_watchdog_internal_api_key,
+  ]
+}
+
+data "azurerm_key_vault_secret" "ecommerce_watchdog_internal_api_key" {
+  name         = "watchdog-internal-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce_watchdog_internal_api_key" {
+  name                = "ecommerce-watchdog-internal-api-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-watchdog-internal-api-key"
+  value               = data.azurerm_key_vault_secret.ecommerce_watchdog_internal_api_key.value
+  secret              = true
+}
+
 resource "azurerm_api_management_api_operation_policy" "helpdesk_pgs_xpay" {
   api_name            = "${local.project}-helpdesk-service-api-v1"
   resource_group_name = local.pagopa_apim_rg
