@@ -80,3 +80,11 @@ resource "azurerm_api_management_named_value" "ndp_disable_activate" {
   value               = "false"
 }
 
+resource "azurerm_api_management_named_value" "decoupler_paymenttoken_ttl_duration" {
+  name                = "decoupler-paymenttoken-ttl-duration"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "decoupler-paymenttoken-ttl-duration"
+  value               = var.decoupler_paymenttoken_ttl_duration
+}
+
