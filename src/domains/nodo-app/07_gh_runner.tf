@@ -56,12 +56,18 @@ module "gh_runner_job" {
       short_name : "node-tech-supp"
     },
     {
-      name : "pagopa-mbd"
+      name : "pagopa-mbd",
       short_name : "mbd"
     },
     {
       name : "pagopa-decoupler",
       short_name : "decoupler"
+    },
+    {
+      org_id = "57742367"
+      name : "pagopa-nodo-observability",
+      repository_id : "1446965331"
+      short_name : "nodo-obs"
     }
   ]
   job      = {}
