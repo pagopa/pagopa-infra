@@ -4730,6 +4730,27 @@
         }
       }
     },
+    "/api/v1/test-metrics/pending-runs": {
+      "get": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Pending Runs",
+        "operationId": "pending_runs_api_v1_test_metrics_pending_runs_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PendingRunsOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/test-metrics/avg-pass-rate": {
       "get": {
         "tags": [
@@ -10218,6 +10239,30 @@
           "text"
         ],
         "title": "ParseResponse"
+      },
+      "PendingRunsOut": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "nrt": {
+            "type": "integer",
+            "title": "Nrt"
+          },
+          "qg": {
+            "type": "integer",
+            "title": "Qg"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total",
+          "nrt",
+          "qg"
+        ],
+        "title": "PendingRunsOut",
+        "description": "Runs waiting for review (revision result PENDING) that reviewers can act on in the portal."
       },
       "ProjectCreate": {
         "properties": {
