@@ -4651,7 +4651,6 @@
             "schema": {
               "title": "Test Object",
               "type": "string",
-              "format": "uuid",
               "nullable": true
             }
           }
@@ -5528,6 +5527,423 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/flaky/scenarios": {
+      "get": {
+        "tags": [
+          "flaky"
+        ],
+        "summary": "List Scenarios",
+        "operationId": "list_scenarios_api_v1_flaky_scenarios_get",
+        "parameters": [
+          {
+            "name": "env",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/EnvEnum",
+              "default": "UAT"
+            }
+          },
+          {
+            "name": "test_object",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Test Object",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "nullable": true
+            }
+          },
+          {
+            "name": "flag",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "all",
+                "flagged",
+                "unflagged"
+              ],
+              "type": "string",
+              "default": "all",
+              "title": "Flag"
+            }
+          },
+          {
+            "name": "min_level",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Min Level",
+              "type": "integer",
+              "maximum": 5,
+              "minimum": 1,
+              "nullable": true
+            }
+          },
+          {
+            "name": "hint",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Hint",
+              "enum": [
+                "to_mark",
+                "to_unmark",
+                "broken"
+              ],
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Q",
+              "type": "string",
+              "maxLength": 200,
+              "nullable": true
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Page Size"
+            }
+          },
+          {
+            "name": "scenario_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Scenario Name",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedResponse_FlakyScenarioRowOut_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/flaky/summary": {
+      "get": {
+        "tags": [
+          "flaky"
+        ],
+        "summary": "Get Summary",
+        "operationId": "get_summary_api_v1_flaky_summary_get",
+        "parameters": [
+          {
+            "name": "env",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/EnvEnum",
+              "default": "UAT"
+            }
+          },
+          {
+            "name": "test_object",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Test Object",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "nullable": true
+            }
+          },
+          {
+            "name": "flag",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "all",
+                "flagged",
+                "unflagged"
+              ],
+              "type": "string",
+              "default": "all",
+              "title": "Flag"
+            }
+          },
+          {
+            "name": "min_level",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Min Level",
+              "type": "integer",
+              "maximum": 5,
+              "minimum": 1,
+              "nullable": true
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Q",
+              "type": "string",
+              "maxLength": 200,
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlakySummaryOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/flaky/scenarios/history": {
+      "get": {
+        "tags": [
+          "flaky"
+        ],
+        "summary": "Get History",
+        "operationId": "get_history_api_v1_flaky_scenarios_history_get",
+        "parameters": [
+          {
+            "name": "env",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/EnvEnum"
+            }
+          },
+          {
+            "name": "test_object",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "title": "Test Object"
+            }
+          },
+          {
+            "name": "test_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "title": "Test Type"
+            }
+          },
+          {
+            "name": "scenario_name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "title": "Scenario Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FlakyHistoryItemOut"
+                  },
+                  "title": "Response Get History Api V1 Flaky Scenarios History Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/flaky/scenarios/flag": {
+      "put": {
+        "tags": [
+          "flaky"
+        ],
+        "summary": "Set Flag",
+        "operationId": "set_flag_api_v1_flaky_scenarios_flag_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlakyFlagIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlakyFlagOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/flaky/recompute": {
+      "post": {
+        "tags": [
+          "flaky"
+        ],
+        "summary": "Recompute",
+        "operationId": "recompute_api_v1_flaky_recompute_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlakyRecomputeIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlakyRecomputeStatusOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/flaky/recompute/status": {
+      "get": {
+        "tags": [
+          "flaky"
+        ],
+        "summary": "Get Recompute Status",
+        "operationId": "get_recompute_status_api_v1_flaky_recompute_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Recompute Status Api V1 Flaky Recompute Status Get",
+                  "$ref": "#/components/schemas/FlakyRecomputeStatusOut",
+                  "nullable": true
                 }
               }
             }
@@ -8654,6 +9070,230 @@
         ],
         "title": "FeatureVisibilityUpdateResponse"
       },
+      "FlakyFlagIn": {
+        "properties": {
+          "test_object": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Test Object"
+          },
+          "test_type": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Test Type"
+          },
+          "scenario_name": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Scenario Name"
+          },
+          "is_flaky": {
+            "type": "boolean",
+            "title": "Is Flaky"
+          },
+          "user": {
+            "type": "string",
+            "minLength": 1,
+            "title": "User"
+          }
+        },
+        "type": "object",
+        "required": [
+          "test_object",
+          "test_type",
+          "scenario_name",
+          "is_flaky",
+          "user"
+        ],
+        "title": "FlakyFlagIn"
+      },
+      "FlakyFlagOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "test_object": {
+            "type": "string",
+            "title": "Test Object"
+          },
+          "test_type": {
+            "type": "string",
+            "title": "Test Type"
+          },
+          "scenario_name": {
+            "type": "string",
+            "title": "Scenario Name"
+          },
+          "is_flaky": {
+            "type": "boolean",
+            "title": "Is Flaky"
+          },
+          "flagged_by": {
+            "title": "Flagged By",
+            "type": "string",
+            "nullable": true
+          },
+          "flagged_at": {
+            "title": "Flagged At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updated_by": {
+            "title": "Updated By",
+            "type": "string",
+            "nullable": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "test_object",
+          "test_type",
+          "scenario_name",
+          "is_flaky",
+          "flagged_by",
+          "flagged_at",
+          "updated_by",
+          "updated_at"
+        ],
+        "title": "FlakyFlagOut"
+      },
+      "FlakyHistoryItemOut": {
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Run Id"
+          },
+          "ts": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Ts"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "P",
+              "R",
+              "F"
+            ],
+            "title": "Outcome"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "retries": {
+            "title": "Retries",
+            "type": "integer",
+            "nullable": true
+          },
+          "error_message": {
+            "title": "Error Message",
+            "type": "string",
+            "nullable": true
+          },
+          "allure_url": {
+            "title": "Allure Url",
+            "type": "string",
+            "nullable": true
+          },
+          "test_version": {
+            "title": "Test Version",
+            "type": "string",
+            "nullable": true
+          },
+          "test_object_version": {
+            "type": "string",
+            "title": "Test Object Version"
+          },
+          "test_origin": {
+            "title": "Test Origin",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "run_id",
+          "ts",
+          "outcome",
+          "status",
+          "retries",
+          "error_message",
+          "allure_url",
+          "test_version",
+          "test_object_version",
+          "test_origin"
+        ],
+        "title": "FlakyHistoryItemOut"
+      },
+      "FlakyRecomputeIn": {
+        "properties": {
+          "user": {
+            "type": "string",
+            "minLength": 1,
+            "title": "User"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user"
+        ],
+        "title": "FlakyRecomputeIn"
+      },
+      "FlakyRecomputeStatusOut": {
+        "properties": {
+          "last_attempt_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Last Attempt At"
+          },
+          "last_success_at": {
+            "title": "Last Success At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "last_error": {
+            "title": "Last Error",
+            "type": "string",
+            "nullable": true
+          },
+          "last_trigger": {
+            "title": "Last Trigger",
+            "type": "string",
+            "nullable": true
+          },
+          "last_requested_by": {
+            "title": "Last Requested By",
+            "type": "string",
+            "nullable": true
+          },
+          "scored_count": {
+            "type": "integer",
+            "title": "Scored Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "last_attempt_at",
+          "last_success_at",
+          "last_error",
+          "last_trigger",
+          "last_requested_by",
+          "scored_count"
+        ],
+        "title": "FlakyRecomputeStatusOut"
+      },
       "FlakyScenarioIn": {
         "properties": {
           "id": {
@@ -8663,25 +9303,33 @@
             "nullable": true
           },
           "suite_id": {
+            "title": "Suite Id",
             "type": "string",
             "format": "uuid",
-            "title": "Suite Id"
+            "nullable": true
           },
           "test_object": {
             "type": "string",
             "title": "Test Object"
+          },
+          "test_type": {
+            "title": "Test Type",
+            "type": "string",
+            "nullable": true
           },
           "scenario_name": {
             "type": "string",
             "title": "Scenario Name"
           },
           "test_object_version": {
+            "title": "Test Object Version",
             "type": "string",
-            "title": "Test Object Version"
+            "nullable": true
           },
           "test_version": {
+            "title": "Test Version",
             "type": "string",
-            "title": "Test Version"
+            "nullable": true
           },
           "inserted_at": {
             "title": "Inserted At",
@@ -8693,17 +9341,20 @@
             "type": "boolean",
             "title": "Is Flaky",
             "default": true
+          },
+          "user": {
+            "title": "User",
+            "type": "string",
+            "nullable": true
           }
         },
         "type": "object",
         "required": [
-          "suite_id",
           "test_object",
-          "scenario_name",
-          "test_object_version",
-          "test_version"
+          "scenario_name"
         ],
-        "title": "FlakyScenarioIn"
+        "title": "FlakyScenarioIn",
+        "description": "Flag sent by the NRT/TAS/QG report panels.\n\nFlags belong to the scenario (test_object + test_type + scenario_name): version fields are\naccepted for compatibility, and test_type is resolved from suite_id when missing."
       },
       "FlakyScenarioOut": {
         "properties": {
@@ -8714,25 +9365,32 @@
             "nullable": true
           },
           "suite_id": {
+            "title": "Suite Id",
             "type": "string",
             "format": "uuid",
-            "title": "Suite Id"
+            "nullable": true
           },
           "test_object": {
             "type": "string",
             "title": "Test Object"
+          },
+          "test_type": {
+            "type": "string",
+            "title": "Test Type"
           },
           "scenario_name": {
             "type": "string",
             "title": "Scenario Name"
           },
           "test_object_version": {
+            "title": "Test Object Version",
             "type": "string",
-            "title": "Test Object Version"
+            "nullable": true
           },
           "test_version": {
+            "title": "Test Version",
             "type": "string",
-            "title": "Test Version"
+            "nullable": true
           },
           "inserted_at": {
             "title": "Inserted At",
@@ -8747,14 +9405,163 @@
         },
         "type": "object",
         "required": [
-          "suite_id",
           "test_object",
+          "test_type",
           "scenario_name",
-          "test_object_version",
-          "test_version",
           "is_flaky"
         ],
         "title": "FlakyScenarioOut"
+      },
+      "FlakyScenarioRowOut": {
+        "properties": {
+          "test_object": {
+            "type": "string",
+            "title": "Test Object"
+          },
+          "test_type": {
+            "type": "string",
+            "title": "Test Type"
+          },
+          "scenario_name": {
+            "type": "string",
+            "title": "Scenario Name"
+          },
+          "env": {
+            "type": "string",
+            "title": "Env"
+          },
+          "score": {
+            "title": "Score",
+            "type": "integer",
+            "nullable": true
+          },
+          "level": {
+            "title": "Level",
+            "type": "integer",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "INSUFFICIENT_DATA",
+              "BROKEN"
+            ],
+            "title": "State"
+          },
+          "flip_rate": {
+            "title": "Flip Rate",
+            "type": "number",
+            "nullable": true
+          },
+          "retry_pass_rate": {
+            "title": "Retry Pass Rate",
+            "type": "number",
+            "nullable": true
+          },
+          "runs_analyzed": {
+            "type": "integer",
+            "title": "Runs Analyzed"
+          },
+          "last_failure_at": {
+            "title": "Last Failure At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "recent_outcomes": {
+            "items": {
+              "$ref": "#/components/schemas/OutcomePointOut"
+            },
+            "type": "array",
+            "title": "Recent Outcomes"
+          },
+          "last_suite_id": {
+            "title": "Last Suite Id",
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "is_flaky": {
+            "type": "boolean",
+            "title": "Is Flaky"
+          },
+          "flagged_by": {
+            "title": "Flagged By",
+            "type": "string",
+            "nullable": true
+          },
+          "flagged_at": {
+            "title": "Flagged At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "hint": {
+            "title": "Hint",
+            "type": "string",
+            "enum": [
+              "to_mark",
+              "to_unmark",
+              "broken"
+            ],
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "test_object",
+          "test_type",
+          "scenario_name",
+          "env",
+          "score",
+          "level",
+          "state",
+          "flip_rate",
+          "retry_pass_rate",
+          "runs_analyzed",
+          "last_failure_at",
+          "recent_outcomes",
+          "last_suite_id",
+          "is_flaky",
+          "flagged_by",
+          "flagged_at",
+          "hint"
+        ],
+        "title": "FlakyScenarioRowOut"
+      },
+      "FlakySummaryOut": {
+        "properties": {
+          "to_mark": {
+            "type": "integer",
+            "title": "To Mark"
+          },
+          "to_unmark": {
+            "type": "integer",
+            "title": "To Unmark"
+          },
+          "broken": {
+            "type": "integer",
+            "title": "Broken"
+          },
+          "flagged": {
+            "type": "integer",
+            "title": "Flagged"
+          },
+          "analyzed": {
+            "type": "integer",
+            "title": "Analyzed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "to_mark",
+          "to_unmark",
+          "broken",
+          "flagged",
+          "analyzed"
+        ],
+        "title": "FlakySummaryOut"
       },
       "GenerateRequest": {
         "properties": {
@@ -9247,6 +10054,67 @@
           "url"
         ],
         "title": "OllamaStatusOut"
+      },
+      "OutcomePointOut": {
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Run Id"
+          },
+          "ts": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Ts"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "P",
+              "R",
+              "F"
+            ],
+            "title": "Outcome"
+          }
+        },
+        "type": "object",
+        "required": [
+          "run_id",
+          "ts",
+          "outcome"
+        ],
+        "title": "OutcomePointOut"
+      },
+      "PaginatedResponse_FlakyScenarioRowOut_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/FlakyScenarioRowOut"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "page_size": {
+            "type": "integer",
+            "title": "Page Size"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "title": "PaginatedResponse[FlakyScenarioRowOut]"
       },
       "PaginatedResponse_NrtListObject_": {
         "properties": {
