@@ -2,17 +2,14 @@
   "openapi": "3.0.0",
   "info": {
     "version": "0.0.1",
-    "title": "Pagopa eCommerce services for app IO with payment wallet",
-    "description": "API's exposed from eCommerce services to app IO to allow pagoPA payment with payment wallet.",
-    "contact": {
-      "name": "pagoPA - Touchpoints team"
-    }
+    "title": "eCommerce API for IO App",
+    "description": "eCommerce pagoPA API dedicated to IO App for pagoPA payment"
   },
   "tags": [
     {
       "name": "ecommerce-methods-handler",
-      "description": "Api's for retrieve payment methods for performing transactions payment",
-    },
+      "description": "Api's for retrieve payment methods for performing transactions payment"
+    }
   ],
   "servers": [
     {
@@ -90,7 +87,7 @@
           }
         }
       }
-    },
+    }
   },
   "components": {
     "schemas": {

@@ -2,11 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "0.0.1",
-    "title": "Pagopa eCommerce services for app IO",
-    "description": "API's exposed from eCommerce services to io webview to allow get transaction.",
-    "contact": {
-      "name": "pagoPA - Touchpoints team"
-    }
+    "title": "eCommerce API for webview",
+    "description": "eCommerce pagoPA API dedicated to webview for pagoPA payment"
   },
   "tags": [
     {
@@ -569,6 +566,9 @@
           "reason": {
             "type": "string"
           },
+          "companyName": {
+            "type": "string"
+          },
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
           },
@@ -593,6 +593,7 @@
           "rptId": "77777777777302012387654312384",
           "paymentToken": "paymentToken1",
           "reason": "reason1",
+          "companyName": "companyName1",
           "amount": 600,
           "authToken": "authToken1",
           "isAllCCP": false,
@@ -631,6 +632,7 @@
                 "rptId": "77777777777302012387654312384",
                 "paymentToken": "paymentToken1",
                 "reason": "reason1",
+                "companyName": "companyName1",
                 "amount": 600,
                 "transferList": [
                   {

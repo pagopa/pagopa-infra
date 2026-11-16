@@ -24,8 +24,3 @@ checkout_apim_frontend_enabled = false
 # ecommerce ingress hostname
 ecommerce_ingress_hostname = "weudev.ecommerce.internal.dev.platform.pagopa.it"
 checkout_ingress_hostname  = "weudev.checkout.internal.dev.platform.pagopa.it"
-tls_cert_check_helm = {
-  chart_version = "7.6.0"
-  image_name    = "ghcr.io/pagopa/infra-ssl-check"
-  image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
-}

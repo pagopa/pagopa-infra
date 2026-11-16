@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "2.0.0",
-    "title": "Pagopa Checkout for EC (v2)",
-    "description": "This microservice that expose Checkout services to EC. (v2)"
+    "title": "Checkout - EC API",
+    "description": "Checkout API for EC"
   },
   "servers": [
     {

@@ -143,6 +143,12 @@ variable "payment_wallet_service_api_key_use_primary" {
   default     = true
 }
 
+variable "payment_wallet_helpdesk_service_api_key_use_primary" {
+  type        = bool
+  description = "If true the current active API key used for helpdesk service requests will be the primary one."
+  default     = true
+}
+
 variable "pay_wallet_apim_frontend_enabled" {
   type        = bool
   default     = false

@@ -17,7 +17,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-upload-r
   query = (<<-QUERY
 let threshold = 2000;
 AzureDiagnostics
-| where url_s matches regex "/upload/[^/]+/debt-positions-service"
+| where apiId_s == 'pagopa-p-gpd-upload-api-v1' or apiId_s == 'pagopa-p-aca-upload-api-v2'
+| where url_s matches regex '/upload/[^/]+/debt-positions-service'
 | summarize
     watermark=threshold,
     duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 5m)
@@ -25,8 +26,8 @@ AzureDiagnostics
   QUERY
   )
   severity    = 2
-  frequency   = 5
-  time_window = 10
+  frequency   = 1440
+  time_window = 1440
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 2
@@ -51,7 +52,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-upload-r
   query = (<<-QUERY
 let threshold = 0.99;
 AzureDiagnostics
-| where url_s matches regex "/upload/[^/]+/debt-positions-service"
+| where apiId_s == 'pagopa-p-gpd-upload-api-v1' or apiId_s == 'pagopa-p-aca-upload-api-v2'
+| where url_s matches regex '/upload/[^/]+/debt-positions-service'
 | summarize
     Total=count(),
     Success=count(responseCode_d < 500)
