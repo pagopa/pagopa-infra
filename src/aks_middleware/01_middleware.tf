@@ -1,5 +1,6 @@
 module "aks_middleware" {
-  source = "./.terraform/modules/__v4__/kubernetes_middleware"
+  #source = "./.terraform/modules/__v4__/kubernetes_middleware"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//kubernetes_middleware?ref=v10.46.0"
 
   https_endpoint                                            = var.https_endpoint
   alert_name                                                = var.https_endpoint

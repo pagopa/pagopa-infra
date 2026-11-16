@@ -1,10 +1,9 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "pagoPA Payment Wallet Outcome API",
+    "title": "pagoPA - wallet outcomes API for IO",
     "version": "0.0.1",
-    "description": "API to handle payment wallets outcome in onboarding phase. API return a response code to the IO App for decoding the wallet onboarding result.",
-    "termsOfService": "https://pagopa.it/terms/"
+    "description": "API to support payment wallet outcomes handling for IO"
   },
   "tags": [
     {
