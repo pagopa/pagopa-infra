@@ -2,11 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "0.0.1",
-    "title": "Pagopa eCommerce services for app IO",
-    "description": "API's exposed from eCommerce services to io webview to allow get transaction.",
-    "contact": {
-      "name": "pagoPA - Touchpoints team"
-    }
+    "title": "eCommerce API for webview",
+    "description": "eCommerce pagoPA API dedicated to webview for pagoPA payment"
   },
   "tags": [
     {
