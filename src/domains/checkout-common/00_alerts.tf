@@ -27,7 +27,7 @@ AzureDiagnostics
   and operationId_s != "authenticateWithAuthToken" //exclude POST auth/token api
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 and DurationMs < 250)
+    Success=countif(responseCode_d < 500 and responseCode_d != 429 and DurationMs < 250)
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < 96
