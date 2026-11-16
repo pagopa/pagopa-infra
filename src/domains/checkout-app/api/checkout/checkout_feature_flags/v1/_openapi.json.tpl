@@ -2,8 +2,8 @@
     "openapi": "3.0.0",
     "info": {
         "version": "1.0.0",
-        "title": "Pagopa Feature Flags",
-        "description": "This API set contains APIM level APIs used to manage feature flags for checkout."
+        "title": "Checkout pagoPA feature Flags",
+        "description": "This APIM level API is used to enable feature flags features in checkout."
     },
     "servers": [
         {
@@ -25,7 +25,7 @@
             "get": {
                 "operationId": "evaluateFeatureFlags",
                 "tags": ["featureFlags"],
-                "summary": Evaluate feature flags values",
+                "summary": "Evaluate feature flags values",
                 "description": "Returns the values of all feature flags.",
                 "responses": {
                     "200": {

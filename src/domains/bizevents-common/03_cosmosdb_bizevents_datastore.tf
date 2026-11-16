@@ -6,13 +6,13 @@ resource "azurerm_resource_group" "bizevents_rg" {
 }
 
 module "bizevents_datastore_cosmosdb_snet" {
-  source               = "./.terraform/modules/__v3__/subnet"
+  source               = "./.terraform/modules/__v4__/subnet"
   name                 = "${local.project}-datastore-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_bizevents_datastore_cosmosdb
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
 
-  private_endpoint_network_policies_enabled = false
+  private_endpoint_network_policies = "Disabled"
 
   service_endpoints = [
     "Microsoft.Web",
@@ -22,7 +22,7 @@ module "bizevents_datastore_cosmosdb_snet" {
 }
 
 module "bizevents_datastore_cosmosdb_account" {
-  source                           = "./.terraform/modules/__v3__/cosmosdb_account"
+  source                           = "./.terraform/modules/__v4__/cosmosdb_account"
   name                             = "${local.project}-ds-cosmos-account"
   location                         = var.location
   domain                           = var.domain
@@ -64,7 +64,7 @@ module "bizevents_datastore_cosmosdb_account" {
 module "bizevents_datastore_cosmosdb_account_dev" {
   count = var.env_short == "d" ? 1 : 0 # used for ADF biz test developer
 
-  source              = "./.terraform/modules/__v3__/cosmosdb_account"
+  source              = "./.terraform/modules/__v4__/cosmosdb_account"
   name                = "${local.project}-ds-cosmos-account-dev"
   location            = var.location
   domain              = var.domain
@@ -105,7 +105,7 @@ module "bizevents_datastore_cosmosdb_account_dev" {
 
 # cosmosdb database for biz-events
 module "bizevents_datastore_cosmosdb_database" {
-  source              = "./.terraform/modules/__v3__/cosmosdb_sql_database"
+  source              = "./.terraform/modules/__v4__/cosmosdb_sql_database"
   name                = "db"
   resource_group_name = azurerm_resource_group.bizevents_rg.name
   account_name        = module.bizevents_datastore_cosmosdb_account.name
@@ -113,7 +113,7 @@ module "bizevents_datastore_cosmosdb_database" {
 module "bizevents_datastore_cosmosdb_database_dev" {
   count = var.env_short == "d" ? 1 : 0 # used for ADF biz test developer
 
-  source              = "./.terraform/modules/__v3__/cosmosdb_sql_database"
+  source              = "./.terraform/modules/__v4__/cosmosdb_sql_database"
   name                = "db"
   resource_group_name = azurerm_resource_group.bizevents_rg.name
   account_name        = module.bizevents_datastore_cosmosdb_account_dev[0].name
@@ -192,14 +192,14 @@ locals {
 
 # cosmosdb container for biz events datastore
 module "bizevents_datastore_cosmosdb_containers" {
-  source   = "./.terraform/modules/__v3__/cosmosdb_sql_container"
+  source   = "./.terraform/modules/__v4__/cosmosdb_sql_container"
   for_each = { for c in local.bizevents_datastore_cosmosdb_containers : c.name => c }
 
   name                = each.value.name
   resource_group_name = azurerm_resource_group.bizevents_rg.name
   account_name        = module.bizevents_datastore_cosmosdb_account.name
   database_name       = module.bizevents_datastore_cosmosdb_database.name
-  partition_key_path  = each.value.partition_key_path
+  partition_key_paths = [each.value.partition_key_path]
   throughput          = lookup(each.value, "throughput", null)
   default_ttl         = lookup(each.value, "default_ttl", null)
   indexing_policy     = lookup(each.value, "indexing_policy", {})
@@ -207,14 +207,14 @@ module "bizevents_datastore_cosmosdb_containers" {
 }
 
 module "bizevents_datastore_cosmosdb_containers_dev" {
-  source   = "./.terraform/modules/__v3__/cosmosdb_sql_container"
+  source   = "./.terraform/modules/__v4__/cosmosdb_sql_container"
   for_each = { for c in local.bizevents_datastore_cosmosdb_containers_dev : c.name => c }
 
   name                = each.value.name
   resource_group_name = azurerm_resource_group.bizevents_rg.name
   account_name        = module.bizevents_datastore_cosmosdb_account_dev[0].name
   database_name       = module.bizevents_datastore_cosmosdb_database_dev[0].name
-  partition_key_path  = each.value.partition_key_path
+  partition_key_paths = [each.value.partition_key_path]
   throughput          = lookup(each.value, "throughput", null)
   default_ttl         = lookup(each.value, "default_ttl", null)
   indexing_policy     = lookup(each.value, "indexing_policy", {})
