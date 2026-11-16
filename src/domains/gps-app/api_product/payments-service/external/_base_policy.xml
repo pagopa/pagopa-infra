@@ -1,14 +1,20 @@
 <policies>
-    <inbound>
-        <base />         
-    </inbound>
-    <backend>
-        <base />
-    </backend>
-    <outbound>
-        <base />
-    </outbound>
-    <on-error>
-        <base />
-    </on-error>
+  <inbound>
+    <base />
+    <!-- rate limit by subscription key for external clients -->
+    <choose>
+      <when condition="@(!((string)context.Request.Headers.GetValueOrDefault(&quot;X-Orginal-Host-For&quot;,&quot;&quot;)).Equals(&quot;api.prf.platform.pagopa.it&quot;) &amp;&amp; !((string)context.Request.OriginalUrl.ToUri().Host).Equals(&quot;api.prf.platform.pagopa.it&quot;))">
+        <rate-limit-by-key calls="100" renewal-period="10" counter-key="@(context.Subscription.Key)" increment-condition="@(context.Response.StatusCode != 429)" remaining-calls-header-name="x-remaining-calls-per-period" />
+      </when>
+    </choose>
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
 </policies>

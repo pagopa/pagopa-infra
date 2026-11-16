@@ -3,10 +3,7 @@
   "info": {
     "version": "0.0.1,",
     "title": "wallet pagoPA - NPG notifications API",
-    "description": "Notification API to implement callback providing order status updates after wallet creation on Nexi's NPG",
-    "contact": {
-      "name": "pagoPA - Touchpoints team"
-    }
+    "description": "API to support npg notifications related to onboarding"
   },
   "tags": [
     {
@@ -352,10 +349,11 @@
       },
       "OperationType": {
         "type": "string",
-        "description": "It indicates the purpose of the request:\n* AUTHORIZATION - any authorization with explicit capture\n* CAPTURE - a captured authorization or an implicit captured payment\n* VOID - reversal of an authorization\n* REFUND - refund of a captured amount\n* CANCEL - the rollback of an capture, refund.      \n",
+        "description": "It indicates the purpose of the request:\n* AUTHORIZATION - any authorization with explicit capture\n* CARD_VERIFICATION - card verification operation\n* CAPTURE - a captured authorization or an implicit captured payment\n* VOID - reversal of an authorization\n* REFUND - refund of a captured amount\n* CANCEL - the rollback of an capture, refund.      \n",
         "example": "CAPTURE",
         "enum": [
           "AUTHORIZATION",
+          "CARD_VERIFICATION",
           "CAPTURE",
           "VOID",
           "REFUND",

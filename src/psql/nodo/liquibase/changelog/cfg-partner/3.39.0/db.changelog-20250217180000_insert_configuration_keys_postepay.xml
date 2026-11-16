@@ -4,6 +4,11 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
 
     <changeSet author="liquibase" id="202502171800">
+    
+   <validCheckSum>
+        9:66489fed0d067976912611e14a991a35
+    </validCheckSum>
+
         <insert tableName="CONFIGURATION_KEYS">
             <column name="CONFIG_CATEGORY"    value="GLOBAL"/>
             <column name="CONFIG_KEY"         value="postepay_in_poste"/>

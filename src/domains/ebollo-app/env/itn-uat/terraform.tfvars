@@ -22,3 +22,5 @@ apim_dns_zone_prefix        = "uat.platform"
 ### Aks
 
 ingress_load_balancer_ip = "10.3.2.250"
+
+redis_ha_enabled = false

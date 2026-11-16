@@ -52,7 +52,7 @@ module "printit_pdf_engine_app_service" {
   }
 
   autoscale_settings = {
-    max_capacity                       = var.env_short == "p" ? 10 : 3
+    max_capacity                       = var.env_short == "p" ? 30 : 3
     scale_up_requests_threshold        = 2000
     scale_down_requests_threshold      = 1000
     scale_up_response_time_threshold   = 5
@@ -105,7 +105,7 @@ module "printit_pdf_engine_app_service_java" {
   }
 
   autoscale_settings = {
-    max_capacity                       = var.env_short == "p" ? 10 : 3
+    max_capacity                       = var.env_short == "p" ? 30 : 3
     scale_up_requests_threshold        = 2000
     scale_down_requests_threshold      = 1000
     scale_up_response_time_threshold   = 5

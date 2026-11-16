@@ -228,6 +228,7 @@ The currently supported types are:
 | [azurerm_data_factory_trigger_schedule.Trigger_SMO_QPT_TAXONOMY_AGGREGATE](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_SMO_QPT_TIMEOUT](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_SMO_QPT_TRANSACTION](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_trigger_schedule) | resource |
+| [azurerm_eventhub_consumer_group.gpd_ingestion_manager_consumer_gpd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/eventhub_consumer_group) | resource |
 | [azurerm_eventhub_consumer_group.rtp_consumer_gpd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/eventhub_consumer_group) | resource |
 | [azurerm_eventhub_namespace_authorization_rule.cdc_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/eventhub_namespace_authorization_rule) | resource |
 | [azurerm_eventhub_namespace_authorization_rule.cdc_test_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/eventhub_namespace_authorization_rule) | resource |
@@ -253,6 +254,7 @@ The currently supported types are:
 | [azurerm_role_assignment.fdr_qi_fdr_iuvs_data_evh_data_receiver_role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.fdr_qi_flow_data_evh_data_receiver_role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_storage_container.blob-observability-st](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
+| [azurerm_storage_table.gpd_ingestion_dead_letter](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
 | [azapi_resource.df_connection_privatelink_private_endpoint_connection](https://registry.terraform.io/providers/azure/azapi/latest/docs/data-sources/resource) | data source |
 | [azapi_resource.privatelink_private_endpoint_connection](https://registry.terraform.io/providers/azure/azapi/latest/docs/data-sources/resource) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |

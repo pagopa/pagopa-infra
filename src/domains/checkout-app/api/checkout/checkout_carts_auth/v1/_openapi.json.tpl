@@ -3,7 +3,7 @@
   "info": {
     "version": "1.0.0",
     "title": "Checkout pagoPA carts - auth API",
-    "description": "This microservice that expose Checkout services to EC."
+    "description": "Authenticated API exposed to allow integration to EC or other clients with Checkout pagoPA carts"
   },
   "servers": [
     {

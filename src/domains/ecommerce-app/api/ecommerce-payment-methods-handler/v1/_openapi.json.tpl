@@ -117,7 +117,7 @@
                         "name": "x-client-id",
                         "in": "header",
                         "description": "client id related to a given touchpoint",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "string",
                             "enum": [
@@ -181,10 +181,477 @@
                     }
                 }
             }
+        },
+        "/payment-methods/{id}/fees": {
+            "post": {
+                "tags": [
+                    "payment-methods-handler"
+                ],
+                "operationId": "calculateFees",
+                "summary": "Calculate payment method fees",
+                "description": "GET with body payload - no resources created: Return the fees for the choosen payment method based on transaction amount etc.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Payment Method ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "maxOccurrences",
+                        "in": "query",
+                        "description": "max occurrences",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "x-client-id",
+                        "in": "header",
+                        "description": "client id related to a given touchpoint",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "IO",
+                                "CHECKOUT",
+                                "CHECKOUT_CART"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "x-language",
+                        "in": "header",
+                        "description": "The user language",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "IT",
+                                "EN",
+                                "FR",
+                                "DE",
+                                "SL"
+                            ]
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CalculateFeeRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Return list of psp ordered by fee.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CalculateFeeResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Service unavailable",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/payment-methods/{id}/sessions/{orderId}": {
+            "get": {
+                "tags": [
+                    "payment-methods-handler"
+                ],
+                "operationId": "getSessionPaymentMethod",
+                "summary": "Get session payment method by ID",
+                "description": "API for retrieving card data information for a given payment method session",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Payment Method ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orderId",
+                        "in": "path",
+                        "description": "OrderId related to NPG session",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "x-client-id",
+                        "in": "header",
+                        "description": "Transaction origin (populated by APIM policy)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "IO",
+                                "CHECKOUT",
+                                "CHECKOUT_CART"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Session payment method successfully retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SessionPaymentMethodResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Session or payment method not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Service unavailable",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Payment gateway did return error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "payment-methods-handler"
+                ],
+                "operationId": "updateSession",
+                "summary": "Update a payment method session",
+                "description": "Associates a transaction ID to an existing NPG session identified by payment method ID and order ID. Returns 204 No Content on success.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Payment Method ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orderId",
+                        "in": "path",
+                        "description": "OrderId related to NPG session",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "x-client-id",
+                        "in": "header",
+                        "description": "Transaction origin (populated by APIM policy)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "IO",
+                                "CHECKOUT",
+                                "CHECKOUT_CART"
+                            ]
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchSessionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Session successfully updated"
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Session or payment method not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Session already associated to a different transaction",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Service unavailable",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/payment-methods/{id}/sessions/{orderId}/transactionId": {
+            "get": {
+                "tags": [
+                    "payment-methods-handler"
+                ],
+                "operationId": "getTransactionIdForSession",
+                "summary": "Get eCommerce transaction id for the given NPG session",
+                "description": "API to get a transaction id from a NPG session. Validates the session security token provided via Authorization Bearer header.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Payment Method ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orderId",
+                        "in": "path",
+                        "description": "OrderId related to NPG session",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "x-client-id",
+                        "in": "header",
+                        "description": "Transaction origin (populated by APIM policy)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "IO",
+                                "CHECKOUT",
+                                "CHECKOUT_CART"
+                            ]
+                        }
+                    }
+                ],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transaction id successfully retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SessionGetTransactionIdResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Session or payment method not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Invalid session (no transaction associated or mismatched security token)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Service unavailable",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
+            "PatchSessionRequest": {
+                "type": "object",
+                "description": "Request body for updating a payment method session",
+                "required": [
+                    "transactionId"
+                ],
+                "properties": {
+                    "transactionId": {
+                        "type": "string",
+                        "description": "Transaction ID to associate with the session"
+                    }
+                }
+            },
+            "SessionGetTransactionIdResponse": {
+                "type": "object",
+                "description": "Transaction id for session successful response",
+                "required": [
+                    "transactionId",
+                    "base64TransactionId"
+                ],
+                "properties": {
+                    "transactionId": {
+                        "type": "string",
+                        "description": "Transaction id associated to this NPG session"
+                    },
+                    "base64TransactionId": {
+                        "type": "string",
+                        "description": "Base64 URL-safe encoding of the transaction id UUID bytes"
+                    }
+                }
+            },
+            "SessionPaymentMethodResponse": {
+                "type": "object",
+                "description": "Session Payment method Response",
+                "required": [
+                    "sessionId",
+                    "bin",
+                    "lastFourDigits",
+                    "expiringDate",
+                    "brand"
+                ],
+                "properties": {
+                    "sessionId": {
+                        "type": "string",
+                        "description": "Session Payment method ID"
+                    },
+                    "bin": {
+                        "type": "string",
+                        "description": "Bin of user card"
+                    },
+                    "lastFourDigits": {
+                        "type": "string",
+                        "description": "Last four digits of user card"
+                    },
+                    "expiringDate": {
+                        "type": "string",
+                        "pattern": "^[0-9]{4,6}$",
+                        "description": "Expiring date of user card"
+                    },
+                    "brand": {
+                        "type": "string",
+                        "description": "The card brand name"
+                    }
+                }
+            },
             "PaymentMethodsRequest": {
                 "required": [
                     "paymentNotice",
@@ -465,6 +932,178 @@
                         "type": "string"
                     }
                 }
+            },
+            "CalculateFeeRequest": {
+                "description": "Calculate fee request",
+                "type": "object",
+                "required": [
+                    "paymentNotices",
+                    "touchpoint",
+                    "isAllCCP"
+                ],
+                "properties": {
+                    "touchpoint": {
+                        "type": "string",
+                        "description": "The touchpoint name"
+                    },
+                    "bin": {
+                        "type": "string",
+                        "description": "The user card bin"
+                    },
+                    "idPspList": {
+                        "description": "List of psps",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "paymentNotices": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 5,
+                        "items": {
+                            "$ref": "#/components/schemas/PaymentNotice"
+                        }
+                    },
+                    "isAllCCP": {
+                        "description": "Flag for the inclusion of Poste bundles. false -> excluded, true -> included",
+                        "type": "boolean"
+                    }
+                }
+            },
+            "PaymentNotice": {
+                "description": "Payment notice data",
+                "type": "object",
+                "required": [
+                    "paymentAmount",
+                    "primaryCreditorInstitution",
+                    "transferList"
+                ],
+                "properties": {
+                    "paymentAmount": {
+                        "description": "The transaction payment amount",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "primaryCreditorInstitution": {
+                        "description": "The primary creditor institution",
+                        "type": "string"
+                    },
+                    "transferList": {
+                        "description": "Transfer list",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TransferListItem"
+                        }
+                    }
+                }
+            },
+            "CalculateFeeResponse": {
+                "description": "Calculate fee response",
+                "type": "object",
+                "required": [
+                    "bundles",
+                    "paymentMethodName",
+                    "paymentMethodDescription",
+                    "paymentMethodStatus",
+                    "asset"
+                ],
+                "properties": {
+                    "paymentMethodName": {
+                        "description": "Payment method name",
+                        "type": "string"
+                    },
+                    "paymentMethodDescription": {
+                        "description": "Payment method description",
+                        "type": "string"
+                    },
+                    "paymentMethodStatus": {
+                        "type": "string",
+                        "description": "Payment method status",
+                        "enum": [
+                            "ENABLED",
+                            "DISABLED",
+                            "MAINTENANCE"
+                        ]
+                    },
+                    "belowThreshold": {
+                        "description": "Boolean value indicating if the payment is below the configured threshold",
+                        "type": "boolean"
+                    },
+                    "bundles": {
+                        "description": "Bundle list",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Bundle"
+                        }
+                    },
+                    "asset": {
+                        "description": "Payment method asset",
+                        "type": "string"
+                    },
+                    "brandAssets": {
+                        "description": "Brand assets map associated to the selected payment method",
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "paymentTypeCode": {
+                        "description": "AFM payment type code of the selected payment method (e.g. CP, RBPR)",
+                        "type": "string"
+                    }
+                }
+            },
+            "Bundle": {
+                "description": "Bundle object",
+                "type": "object",
+                "properties": {
+                    "abi": {
+                        "description": "Bundle ABI code",
+                        "type": "string"
+                    },
+                    "bundleDescription": {
+                        "description": "Bundle description",
+                        "type": "string"
+                    },
+                    "idBrokerPsp": {
+                        "description": "Bundle PSP broker id",
+                        "type": "string"
+                    },
+                    "idBundle": {
+                        "description": "Bundle id",
+                        "type": "string"
+                    },
+                    "idChannel": {
+                        "description": "Channel id",
+                        "type": "string"
+                    },
+                    "idPsp": {
+                        "description": "PSP id",
+                        "type": "string"
+                    },
+                    "onUs": {
+                        "description": "Boolean value indicating if this bundle is an on-us ones",
+                        "type": "boolean"
+                    },
+                    "paymentMethod": {
+                        "description": "Payment method",
+                        "type": "string"
+                    },
+                    "taxPayerFee": {
+                        "description": "Tax payer fee",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "touchpoint": {
+                        "description": "The touchpoint name",
+                        "type": "string"
+                    },
+                    "pspBusinessName": {
+                        "description": "The psp business name",
+                        "type": "string"
+                    }
+                }
             }
         },
         "requestBodies": {
@@ -483,7 +1122,11 @@
             "ApiKeyAuth": {
                 "type": "apiKey",
                 "in": "header",
-                "name": "ocp-apim-subscription-key"
+                "name": "Ocp-Apim-Subscription-Key"
+            },
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
             }
         }
     }

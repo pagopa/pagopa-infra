@@ -117,7 +117,7 @@ variable "bizevents_datastore_cosmos_db_params" {
     is_virtual_network_filter_enabled = bool
     backup_continuous_enabled         = bool
     container_default_ttl             = number
-    ip_range_filter                   = string
+    ip_range_filter                   = list(string)
     max_throughput                    = number
 
     max_throughput_biz          = number
@@ -172,16 +172,16 @@ variable "bizevents_datastore_fn_sa_delete_retention_days" {
   default     = 30
 }
 
-variable "enable_iac_pipeline" {
-  type        = bool
-  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
-  default     = false
-}
-
 variable "storage_account_replication_type" {
   type        = string
   default     = "LRS"
   description = "(Optional) biz event fn storage account replication type"
+}
+
+variable "bizevents_sa_idh_resource_tier" {
+  type        = string
+  description = "IDH resource tier identifier."
+  default     = "basic"
 }
 
 variable "redis_ha_enabled" {

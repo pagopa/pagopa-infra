@@ -101,6 +101,171 @@ locals {
       default_ttl        = var.gpd_upload_status_ttl,
       autoscale_settings = { max_throughput = var.gpd_upload_status_throughput }
     },
+    {
+      name               = "gpd-reconciliation-runs",
+      partition_key_path = "/day",
+      default_ttl        = -1,
+      autoscale_settings = {
+        max_throughput = var.gpd_reconciliation_runs_throughput
+      }
+
+      indexing_policy = {
+        indexing_mode = "consistent"
+
+        included_paths = [
+          "/day/?",
+          "/serviceTypesKey/?",
+          "/status/?",
+          "/start/?",
+          "/stop/?",
+          "/createdAt/?",
+          "/updatedAt/?"
+        ]
+
+        excluded_paths = [
+          "/*",
+          "/\"_etag\"/?"
+        ]
+
+        composite_indexes = [
+          [
+            {
+              path  = "/status"
+              order = "ascending"
+            },
+            {
+              path  = "/start"
+              order = "descending"
+            }
+          ],
+          [
+            {
+              path  = "/day"
+              order = "ascending"
+            },
+            {
+              path  = "/serviceTypesKey"
+              order = "ascending"
+            }
+          ],
+          [
+            {
+              path  = "/day"
+              order = "ascending"
+            },
+            {
+              path  = "/status"
+              order = "ascending"
+            }
+          ]
+        ]
+      }
+    },
+    {
+      name               = "gpd-reconciliation-reports",
+      partition_key_path = "/pk",
+      default_ttl        = -1,
+      autoscale_settings = {
+        max_throughput = var.gpd_reconciliation_reports_throughput
+      }
+
+      indexing_policy = {
+        indexing_mode = "consistent"
+
+        included_paths = [
+          "/pk/?",
+          "/executionId/?",
+          "/logicalRunKey/?",
+          "/day/?",
+          "/serviceType/?",
+          "/bucket/?",
+          "/paymentPositionId/?",
+          "/paymentOptionId/?",
+          "/ec/?",
+          "/nav/?",
+          "/ecNavKey/?",
+          "/iuv/?",
+          "/bizId/?",
+          "/ppStatus/?",
+          "/poStatus/?",
+          "/reconciliationStatus/?",
+          "/outcome/?",
+          "/payInvoked/?",
+          "/paySucceeded/?",
+          "/errorCode/?",
+          "/createdAt/?",
+          "/updatedAt/?"
+        ]
+
+        excluded_paths = [
+          "/*",
+          "/\"_etag\"/?"
+        ]
+
+        composite_indexes = [
+          [
+            {
+              path  = "/day"
+              order = "ascending"
+            },
+            {
+              path  = "/serviceType"
+              order = "ascending"
+            },
+            {
+              path  = "/reconciliationStatus"
+              order = "ascending"
+            },
+            {
+              path  = "/updatedAt"
+              order = "descending"
+            }
+          ],
+          [
+            {
+              path  = "/executionId"
+              order = "ascending"
+            },
+            {
+              path  = "/reconciliationStatus"
+              order = "ascending"
+            },
+            {
+              path  = "/updatedAt"
+              order = "descending"
+            }
+          ],
+          [
+            {
+              path  = "/day"
+              order = "ascending"
+            },
+            {
+              path  = "/serviceType"
+              order = "ascending"
+            },
+            {
+              path  = "/outcome"
+              order = "ascending"
+            },
+            {
+              path  = "/updatedAt"
+              order = "descending"
+            }
+          ],
+          [
+            {
+              path  = "/ecNavKey"
+              order = "ascending"
+            },
+            {
+              path  = "/updatedAt"
+              order = "descending"
+            }
+          ]
+        ]
+      }
+    },
   ]
 }
 
@@ -116,6 +281,7 @@ module "gpd_cosmosdb_containers" {
   partition_key_paths = [each.value.partition_key_path]
   throughput          = lookup(each.value, "throughput", null)
   default_ttl         = each.value.default_ttl
+  indexing_policy     = lookup(each.value, "indexing_policy", null)
 
   autoscale_settings = contains(var.cosmos_gps_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
 }

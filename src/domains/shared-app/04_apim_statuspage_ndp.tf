@@ -1,5 +1,5 @@
 module "apim_statuspage_nodo_pagamenti" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "statuspage_nodo_pagamenti"
   display_name = "Status Page Nodo Pagamenti"
@@ -39,7 +39,7 @@ resource "azurerm_api_management_api_version_set" "api_statuspage_nodopagamenti_
 
 
 module "apim_api_statuspage_nodopagamenti_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-statuspage-nodopagamenti-api", local.project)
   api_management_name   = local.pagopa_apim_name

@@ -2,11 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "0.0.1",
-    "title": "Pagopa eCommerce services for app IO",
-    "description": "API's exposed from eCommerce services to io webview to allow get transaction.",
-    "contact": {
-      "name": "pagoPA - Touchpoints team"
-    }
+    "title": "eCommerce API for webview",
+    "description": "eCommerce pagoPA API dedicated to webview for pagoPA payment"
   },
   "tags": [
     {
@@ -111,77 +108,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PartyConfigurationFaultPaymentProblemJson"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/transactions/{transactionId}": {
-      "get": {
-        "tags": [
-          "ecommerce-transactions"
-        ],
-        "operationId": "getTransactionInfo",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "transactionId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Transaction ID"
-          }
-        ],
-        "security": [
-          {
-            "eCommerceSessionToken": []
-          }
-        ],
-        "summary": "Get transaction information",
-        "description": "Return information for the input specific transaction resource",
-        "responses": {
-          "200": {
-            "description": "Transaction data successfully retrieved",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TransactionInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid transaction id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized, access token missing or invalid"
-          },
-          "404": {
-            "description": "Transaction not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Gateway timeout",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -569,6 +495,9 @@
           "reason": {
             "type": "string"
           },
+          "companyName": {
+            "type": "string"
+          },
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
           },
@@ -593,6 +522,7 @@
           "rptId": "77777777777302012387654312384",
           "paymentToken": "paymentToken1",
           "reason": "reason1",
+          "companyName": "companyName1",
           "amount": 600,
           "authToken": "authToken1",
           "isAllCCP": false,
@@ -631,6 +561,7 @@
                 "rptId": "77777777777302012387654312384",
                 "paymentToken": "paymentToken1",
                 "reason": "reason1",
+                "companyName": "companyName1",
                 "amount": 600,
                 "transferList": [
                   {
@@ -765,29 +696,6 @@
           "REFUND_REQUESTED",
           "CANCELLATION_REQUESTED",
           "CANCELLATION_EXPIRED"
-        ]
-      },
-      "TransactionInfo": {
-        "description": "Transaction data returned when querying for an existing transaction",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/NewTransactionResponse"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "status": {
-                "$ref": "#/components/schemas/TransactionStatus"
-              },
-              "gatewayAuthorizationStatus": {
-                "type": "string",
-                "description": "Payment gateway authorization status"
-              }
-            },
-            "required": [
-              "status"
-            ]
-          }
         ]
       },
       "Transfer": {
@@ -1260,16 +1168,6 @@
       }
     },
     "requestBodies": {
-      "NewTransactionRequest": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/NewTransactionRequest"
-            }
-          }
-        }
-      }
     },
     "securitySchemes": {
       "eCommerceSessionToken": {

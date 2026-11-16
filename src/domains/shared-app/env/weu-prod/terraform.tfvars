@@ -16,8 +16,8 @@ apim_dns_zone_prefix     = "platform"
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
-taxonomy_function_subnet                   = ["10.1.183.0/24"]
-taxonomy_function_network_policies_enabled = true
+taxonomy_function_subnet           = ["10.1.183.0/24"]
+taxonomy_function_network_policies = "Enabled"
 taxonomy_function = {
   always_on                    = true
   kind                         = "Linux"
@@ -62,3 +62,7 @@ io_backend_base_path = "https://api-app.io.pagopa.it"
 pdv_api_base_path    = "https://api.tokenizer.pdv.pagopa.it/tokenizer/v1"
 
 function_app_ip_restriction_default_action = "Deny"
+
+enabled_features = {
+  node_forwarder_ha = true
+}

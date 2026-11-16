@@ -1,0 +1,5 @@
+.create table QA_NRT_TEST_SUITES_STAGING based-on QA_NRT_TEST_SUITES ifnotexists
+
+.create table QA_NRT_TEST_RUNS_STAGING based-on QA_NRT_TEST_RUNS ifnotexists
+
+.create table QA_NRT_TEST_EXECUTIONS_STAGING based-on QA_NRT_TEST_EXECUTIONS ifnotexists

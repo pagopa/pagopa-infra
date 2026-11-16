@@ -78,8 +78,3 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
-variable "enable_iac_pipeline" {
-  type        = bool
-  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
-  default     = false
-}

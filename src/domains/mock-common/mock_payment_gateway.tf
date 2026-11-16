@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "mock_payment_gateway_rg" {
 # Subnet to host the mock mock-payment-gateway
 module "mock_payment_gateway_snet" {
   count                                         = var.mock_payment_gateway_enabled && var.cidr_subnet_mock_payment_gateway != null ? 1 : 0
-  source                                        = "./.terraform/modules/__v3__/subnet"
+  source                                        = "./.terraform/modules/__v4__/subnet"
   name                                          = format("%s-mock-payment-gateway-snet", local.project_legacy)
   address_prefixes                              = var.cidr_subnet_mock_payment_gateway
   resource_group_name                           = local.vnet_resource_group_name
@@ -26,7 +26,7 @@ module "mock_payment_gateway_snet" {
 
 module "mock_payment_gateway" {
   count  = var.mock_payment_gateway_enabled ? 1 : 0
-  source = "./.terraform/modules/__v3__/app_service"
+  source = "./.terraform/modules/__v4__/app_service"
 
   resource_group_name = azurerm_resource_group.mock_payment_gateway_rg[0].name
   location            = var.location
@@ -40,13 +40,14 @@ module "mock_payment_gateway" {
   ip_restriction_default_action = "Allow"
 
   # App service plan
-  name                = format("%s-app-mock-payment-gateway", local.project_legacy)
-  client_cert_enabled = false
-  always_on           = var.mock_payment_gateway_always_on
-  java_server         = "JAVA"
-  java_version        = "8"
-  java_server_version = "8"
-  health_check_path   = "/actuator/health"
+  name                         = format("%s-app-mock-payment-gateway", local.project_legacy)
+  client_cert_enabled          = false
+  always_on                    = var.mock_payment_gateway_always_on
+  java_server                  = "JAVA"
+  java_version                 = "8"
+  java_server_version          = "8"
+  health_check_path            = "/actuator/health"
+  health_check_maxpingfailures = var.env_short != "p" ? 10 : 2
 
   app_settings = {
     SERVER_PUBLIC_URL = var.env_short == "d" ? format("https://api.%s.%s/mock-payment-gateway/api", var.dns_zone_prefix, var.external_domain) : format("https://api.prf.platform.%s/mock-payment-gateway/api", var.external_domain),

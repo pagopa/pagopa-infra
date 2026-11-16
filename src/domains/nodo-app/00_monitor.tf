@@ -52,6 +52,13 @@ data "azurerm_monitor_action_group" "smo_opsgenie" {
   name                = "SmoOpsgenie"
 }
 
+data "azurerm_monitor_action_group" "cloudo" {
+  count = var.env_short == "p" ? 1 : 0
+
+  resource_group_name = local.cloudo_action_group_rg_name
+  name                = local.monitor_action_group_cloudo_name
+}
+
 resource "azurerm_monitor_metric_alert" "aks_nodo_metrics_error" {
   name                = "${local.aks_name}-nodo-cron-pod_number_error"
   resource_group_name = var.monitor_resource_group_name

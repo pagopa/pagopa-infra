@@ -2,12 +2,15 @@ resource "kubernetes_namespace" "namespace" {
   count = var.mock_enabled ? 1 : 0
   metadata {
     name = var.domain
+    labels = {
+      domain = var.domain # Icinga Business Process domain (continuos-platform-monitoring-app)
+    }
   }
 }
 
 # module "pod_identity" {
 #   count  = var.mock_enabled ? 1 : 0
-#   source = "./.terraform/modules/__v3__/kubernetes_pod_identity"
+#   source = "./.terraform/modules/__v4__/kubernetes_pod_identity"
 #
 #   resource_group_name = local.aks_resource_group_name
 #   location            = var.location
@@ -22,7 +25,7 @@ resource "kubernetes_namespace" "namespace" {
 # }
 
 module "workload_identity" {
-  source                                = "./.terraform/modules/__v3__/kubernetes_workload_identity_configuration"
+  source                                = "./.terraform/modules/__v4__/kubernetes_workload_identity_configuration"
   workload_identity_name_prefix         = var.domain
   workload_identity_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name
   aks_name                              = data.azurerm_kubernetes_cluster.aks.name
@@ -32,4 +35,6 @@ module "workload_identity" {
   key_vault_certificate_permissions     = ["Get"]
   key_vault_key_permissions             = ["Get"]
   key_vault_secret_permissions          = ["Get"]
+
+  tags = module.tag_config.tags
 }

@@ -23,11 +23,11 @@
 | <a name="module_apim_api_gpd_debezium_api"></a> [apim\_api\_gpd\_debezium\_api](#module\_apim\_api\_gpd\_debezium\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_gpd_payments_rest_external_api_v1"></a> [apim\_api\_gpd\_payments\_rest\_external\_api\_v1](#module\_apim\_api\_gpd\_payments\_rest\_external\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_gpd_reporting_analysis_api"></a> [apim\_api\_gpd\_reporting\_analysis\_api](#module\_apim\_api\_gpd\_reporting\_analysis\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_api_gps_donation_api_v1"></a> [apim\_api\_gps\_donation\_api\_v1](#module\_apim\_api\_gps\_donation\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_api_gps_enrollments_api_v1"></a> [apim\_api\_gps\_enrollments\_api\_v1](#module\_apim\_api\_gps\_enrollments\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_debt_positions_product"></a> [apim\_debt\_positions\_product](#module\_apim\_debt\_positions\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gpd_debezium_product"></a> [apim\_gpd\_debezium\_product](#module\_apim\_gpd\_debezium\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gpd_integration_product"></a> [apim\_gpd\_integration\_product](#module\_apim\_gpd\_integration\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_gpd_payments_helpdesk_product"></a> [apim\_gpd\_payments\_helpdesk\_product](#module\_apim\_gpd\_payments\_helpdesk\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_gpd_payments_internal"></a> [apim\_gpd\_payments\_internal](#module\_apim\_gpd\_payments\_internal) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gpd_payments_pull_product"></a> [apim\_gpd\_payments\_pull\_product](#module\_apim\_gpd\_payments\_pull\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gpd_payments_pull_product_and_debt_positions_product_test"></a> [apim\_gpd\_payments\_pull\_product\_and\_debt\_positions\_product\_test](#module\_apim\_gpd\_payments\_pull\_product\_and\_debt\_positions\_product\_test) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gpd_payments_rest_external_product"></a> [apim\_gpd\_payments\_rest\_external\_product](#module\_apim\_gpd\_payments\_rest\_external\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
@@ -36,15 +36,11 @@
 | <a name="module_apim_gpd_reporting_analysis_product"></a> [apim\_gpd\_reporting\_analysis\_product](#module\_apim\_gpd\_reporting\_analysis\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gpd_upload_api_v1"></a> [apim\_gpd\_upload\_api\_v1](#module\_apim\_gpd\_upload\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_gpd_upload_api_v2"></a> [apim\_gpd\_upload\_api\_v2](#module\_apim\_gpd\_upload\_api\_v2) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_gps_donation_product"></a> [apim\_gps\_donation\_product](#module\_apim\_gps\_donation\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_gps_enrollments_product"></a> [apim\_gps\_enrollments\_product](#module\_apim\_gps\_enrollments\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gps_product"></a> [apim\_gps\_product](#module\_apim\_gps\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gps_rtp_product"></a> [apim\_gps\_rtp\_product](#module\_apim\_gps\_rtp\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_gps_spontaneous_payments_services_product"></a> [apim\_gps\_spontaneous\_payments\_services\_product](#module\_apim\_gps\_spontaneous\_payments\_services\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_pn_integration_product"></a> [apim\_pn\_integration\_product](#module\_apim\_pn\_integration\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v3__/cert_mounter | n/a |
 | <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup | n/a |
-| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | ./.terraform/modules/__v3__/kubernetes_pod_identity | n/a |
 | <a name="module_reporting_analysis_function"></a> [reporting\_analysis\_function](#module\_reporting\_analysis\_function) | ./.terraform/modules/__v3__/function_app | n/a |
 | <a name="module_reporting_analysis_function_slot_staging"></a> [reporting\_analysis\_function\_slot\_staging](#module\_reporting\_analysis\_function\_slot\_staging) | ./.terraform/modules/__v3__/function_app_slot | n/a |
 | <a name="module_reporting_function_snet"></a> [reporting\_function\_snet](#module\_reporting\_function\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
@@ -67,8 +63,6 @@
 | [azurerm_api_management_api_version_set.api_gpd_payments_rest_external_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_gpd_payments_soap_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_gpd_reporting_analysis_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
-| [azurerm_api_management_api_version_set.api_gps_donation_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
-| [azurerm_api_management_api_version_set.api_gps_enrollments_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.apim_gpd_upload_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_named_value.afm_pn_sub_key_test_apim_nv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_product_api.apim_api_aca_payments_soap_product_nodo_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_product_api) | resource |
@@ -78,7 +72,8 @@
 | [azurerm_api_management_subscription.fdr_internal_product_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.gpd_for_reporting_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.gpd_integration_qa_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
-| [azurerm_api_management_subscription.gps_spontaneous_payments_services_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
+| [azurerm_api_management_subscription.gpd_payments_helpdesk](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
+| [azurerm_api_management_subscription.gps_pagopa_product_for_gpd_payments](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.iuv_generator_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.test_gpd_payments_pull_and_debt_positions_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_app_service_plan.gpd_reporting_service_plan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_service_plan) | resource |
@@ -87,23 +82,28 @@
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.fdr_internal_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.gpd_for_reporting_subkey_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.gpd_payments_helpdesk_subkey_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.gpd_qa_integration_testing_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.gpd_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.gps_mbd_service_integration_test_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.gps_pagopa_product_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.iuv_generator_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.test_gpd_payments_pull_and_debt_positions_subkey_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_monitor_autoscale_setting.reporting_function](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
+| [azurerm_monitor_diagnostic_setting.gpd_ingestion_storage_table_diagnostics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
+| [azurerm_monitor_metric_alert.gpd_eventhub_incoming_messages](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.gpd-ingestion-manager-availability](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.gpd-ingestion-manager-error-alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.gpd-ingestion-manager-error-generic](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.gpd-ingestion-manager-error-json](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.gpd-ingestion-manager-error-pdv-tokenizer](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.gpd-ingestion-manager-error-unexpected-pdv-tokenizer](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.gpd-payments-pasendrt-dead-letter](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.gpd-rtp-error-generic](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.gpd-rtp-error-message-sent-to-dead-letter](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.gpd-rtp-error-redis-cache-not-updated](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.gpd-rtp-error-rtp-message-not-sent](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.gpd-rtp-opt-in-refresh-error](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.gpd_ingestion_deadletter_table_growth](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-gpd-core-external-availability-gpd-v3](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-gpd-core-external-availability-upd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-gpd-core-external-responsetime-gpd-v3](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
@@ -154,13 +154,13 @@
 | [azurerm_api_management_product.apim_fdr_internal](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_api_management_product.apim_fdr_orgs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_api_management_product.apim_gpd_integration_product](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
-| [azurerm_api_management_product.apim_gps_spontaneous_payments_services_product](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_api_management_product.apim_iuv_generator_product](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_api_management_user.apim_qa_user](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_user) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_container_registry.acr](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/container_registry) | data source |
 | [azurerm_eventhub_authorization_rule.pagopa-evh-ns04_fdr-qi-reported-iuv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
+| [azurerm_eventhub_namespace.gpd_ingestion_evh](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_namespace) | data source |
 | [azurerm_eventhub_namespace_authorization_rule.cdc_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_namespace_authorization_rule) | data source |
 | [azurerm_key_vault.gps_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault.kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
@@ -183,6 +183,7 @@
 | [azurerm_resource_group.identity_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.rg_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_storage_account.gpd_ingestion_sa](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
 | [azurerm_subnet.apim_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
@@ -206,6 +207,7 @@
 | <a name="input_fn_app_storage_account_info"></a> [fn\_app\_storage\_account\_info](#input\_fn\_app\_storage\_account\_info) | n/a | <pre>object({<br/>    account_kind                      = optional(string, "StorageV2")<br/>    account_tier                      = optional(string, "Standard")<br/>    account_replication_type          = optional(string, "LRS")<br/>    advanced_threat_protection_enable = optional(bool, true)<br/>    access_tier                       = optional(string, "Hot")<br/>    public_network_access_enabled     = optional(bool, false)<br/>    use_legacy_defender_version       = optional(bool, false)<br/>  })</pre> | <pre>{<br/>  "access_tier": "Hot",<br/>  "account_kind": "StorageV2",<br/>  "account_replication_type": "LRS",<br/>  "account_tier": "Standard",<br/>  "advanced_threat_protection_enable": true,<br/>  "public_network_access_enabled": false,<br/>  "use_legacy_defender_version": true<br/>}</pre> | no |
 | <a name="input_gh_runner_job_location"></a> [gh\_runner\_job\_location](#input\_gh\_runner\_job\_location) | (Optional) The GH runner container app job location. Consistent with the container app environment location | `string` | `"westeurope"` | no |
 | <a name="input_gpd_cdc_enabled"></a> [gpd\_cdc\_enabled](#input\_gpd\_cdc\_enabled) | Enable CDC for GDP | `bool` | `false` | no |
+| <a name="input_incremental_snapshot_chunk_size"></a> [incremental\_snapshot\_chunk\_size](#input\_incremental\_snapshot\_chunk\_size) | Incremental snapshot chunk size | `number` | `1000` | no |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
 | <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | n/a | `string` | `"~/.kube"` | no |
 | <a name="input_limits_cpu"></a> [limits\_cpu](#input\_limits\_cpu) | Connect Limit CPU | `string` | `"0.5"` | no |
@@ -215,9 +217,10 @@
 | <a name="input_location_string"></a> [location\_string](#input\_location\_string) | One of West Europe, North Europe | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
-| <a name="input_max_threads"></a> [max\_threads](#input\_max\_threads) | Number of max\_threads | `number` | `1` | no |
+| <a name="input_max_batch_size"></a> [max\_batch\_size](#input\_max\_batch\_size) | Debezium Max batch size | `number` | `1000` | no |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | `"pagopa-p-monitor-rg"` | no |
 | <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br/>    name         = optional(string, null)<br/>    minAvailable = optional(number, null)<br/>    matchLabels  = optional(map(any), {})<br/>  }))</pre> | `{}` | no |
+| <a name="input_poll_interval_ms"></a> [poll\_interval\_ms](#input\_poll\_interval\_ms) | Poll interval in milliseconds | `number` | `1500` | no |
 | <a name="input_postgres_db_name"></a> [postgres\_db\_name](#input\_postgres\_db\_name) | Postgres Database Name | `string` | `"apd"` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_replicas"></a> [replicas](#input\_replicas) | Number of replicas in cluster | `number` | `1` | no |
@@ -229,6 +232,8 @@
 | <a name="input_reporting_functions_app_sku"></a> [reporting\_functions\_app\_sku](#input\_reporting\_functions\_app\_sku) | Reporting functions app plan SKU | <pre>object({<br/>    kind     = string<br/>    sku_tier = string<br/>    sku_size = string<br/>  })</pre> | n/a | yes |
 | <a name="input_request_cpu"></a> [request\_cpu](#input\_request\_cpu) | Connect Request CPU | `string` | `"0.5"` | no |
 | <a name="input_request_memory"></a> [request\_memory](#input\_request\_memory) | Connect Request Memory | `string` | `"512m"` | no |
+| <a name="input_snapshot_fetch_size"></a> [snapshot\_fetch\_size](#input\_snapshot\_fetch\_size) | Snapshot fetch size | `number` | `1000` | no |
+| <a name="input_snapshot_max_threads"></a> [snapshot\_max\_threads](#input\_snapshot\_max\_threads) | Number of snapshot max threads | `number` | `1` | no |
 | <a name="input_tasks_max"></a> [tasks\_max](#input\_tasks\_max) | Number of tasks | `string` | `"1"` | no |
 
 ## Outputs

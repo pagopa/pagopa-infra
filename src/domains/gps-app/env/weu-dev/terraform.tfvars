@@ -8,7 +8,7 @@ location_string = "West Europe"
 instance        = "dev"
 
 
-## APIM
+### External resources
 monitor_resource_group_name                 = "pagopa-d-monitor-rg"
 log_analytics_workspace_name                = "pagopa-d-law"
 log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
@@ -29,18 +29,21 @@ reporting_functions_app_sku = {
 }
 
 cname_record_name = "config"
-
-# gpd database config for gpd-app-service
+# APIM
 create_wisp_converter = true
 
 ### debezium zookeeper_yaml
-replicas           = 1
-request_cpu        = 0.5
-limits_cpu         = 2
-request_memory     = "512Mi"
-limits_memory      = "1024Mi"
-postgres_db_name   = "apd"
-tasks_max          = "1"
-container_registry = "pagopadcommonacr.azurecr.io"
-max_threads        = 1
-gpd_cdc_enabled    = true
+replicas                        = 1
+request_cpu                     = 0.5
+limits_cpu                      = 2
+request_memory                  = "512Mi"
+limits_memory                   = "1024Mi"
+postgres_db_name                = "apd"
+tasks_max                       = "1"
+container_registry              = "pagopadcommonacr.azurecr.io"
+snapshot_max_threads            = 1
+snapshot_fetch_size             = 1000
+incremental_snapshot_chunk_size = 1000
+max_batch_size                  = 1000
+poll_interval_ms                = 1500
+gpd_cdc_enabled                 = true

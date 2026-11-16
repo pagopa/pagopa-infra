@@ -4,5 +4,7 @@ module "workload_identity" {
   workload_identity_name_prefix         = var.domain
   workload_identity_resource_group_name = local.aks_resource_group_name
   workload_identity_location            = var.location
+
+  tags = module.tag_config.tags
 }
 

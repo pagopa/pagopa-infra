@@ -14,6 +14,14 @@ data "azurerm_key_vault_secret" "pgres_admin_pwd" {
   key_vault_id = module.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "pgres_gpd_technical_support_login_secret" {
+  name         = "pgres-gpd-technical-support-user-login"
+  value        = "pgres_gpd_technical_support_user"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
 resource "azurerm_resource_group" "flex_data" {
   count = 1 # forced ( before exits only in UAT and PROD now DEV too)
 
@@ -238,6 +246,22 @@ resource "azurerm_key_vault_secret" "pgres_adf_pipeline_pwd_secret" {
   key_vault_id = module.key_vault.id
 }
 
+# Create a secure password for GPD Technical Support
+resource "random_password" "pgres_gpd_technical_support_password" {
+  length  = 32
+  special = true
+
+  # Avoid chars that could break JDBC/Helm/SQL handling
+  override_special = "#%&*()-_=+[]{}<>:?"
+}
+
+# Save GPD Technical Support PostgreSQL password
+resource "azurerm_key_vault_secret" "pgres_gpd_technical_support_password_secret" {
+  name         = "pgres-gpd-technical-support-user-pwd"
+  value        = random_password.pgres_gpd_technical_support_password.result
+  key_vault_id = module.key_vault.id
+}
+
 ################################
 # Create ROLE for ADF pipeline
 ################################
@@ -256,6 +280,13 @@ resource "postgresql_role" "pgres_adf_user" {
   name     = data.azurerm_key_vault_secret.pgres_adf_login.value
   login    = true
   password = azurerm_key_vault_secret.pgres_adf_pipeline_pwd_secret.value
+}
+
+# Create a read-only user for GPD Technical Support reconciliation
+resource "postgresql_role" "pgres_gpd_technical_support_user" {
+  name     = azurerm_key_vault_secret.pgres_gpd_technical_support_login_secret.value
+  login    = true
+  password = azurerm_key_vault_secret.pgres_gpd_technical_support_password_secret.value
 }
 
 # Allows the user to access the schema (USAGE) and create views/tables (CREATE)
@@ -284,4 +315,30 @@ resource "postgresql_grant" "select_payment_position" {
   object_type = "table"
   objects     = ["payment_position", "payment_option", "transfer", "payment_option_metadata", "transfer_metadata"] //, "archiving_selection_buffer"]
   privileges  = ["SELECT", "INSERT", "UPDATE", "DELETE", "TRUNCATE"]
+}
+
+###############################################
+# Grants for GPD Technical Support application
+###############################################
+
+# Allows the GPD Technical Support user to access the APD schema
+resource "postgresql_grant" "gpd_technical_support_schema_usage" {
+  database    = "apd"
+  role        = postgresql_role.pgres_gpd_technical_support_user.name
+  schema      = "apd"
+  object_type = "schema"
+  privileges  = ["USAGE"]
+}
+
+# Allows the GPD Technical Support user to read only the tables required by reconciliation
+resource "postgresql_grant" "gpd_technical_support_select_reconciliation_tables" {
+  database    = "apd"
+  role        = postgresql_role.pgres_gpd_technical_support_user.name
+  schema      = "apd"
+  object_type = "table"
+  objects = [
+    "payment_position",
+    "payment_option"
+  ]
+  privileges = ["SELECT"]
 }

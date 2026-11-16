@@ -1,6 +1,9 @@
 resource "kubernetes_namespace" "namespace" {
   metadata {
     name = var.domain
+    labels = {
+      domain = var.domain # Icinga Business Process domain (continuos-platform-monitoring-app)
+    }
   }
 }
 
@@ -31,4 +34,6 @@ module "workload_identity" {
   key_vault_certificate_permissions     = ["Get", "List"]
   key_vault_key_permissions             = ["Get"]
   key_vault_secret_permissions          = ["Get"]
+
+  tags = module.tag_config.tags
 }

@@ -1,0 +1,469 @@
+{
+  "properties": {
+    "lenses": [
+      {
+        "order": 0,
+        "parts": [
+          {
+            "position": {
+              "x": 0,
+              "y": 0,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet threshold = 0.95;\nAzureDiagnostics\n| where url_s == \"https://api.platform.pagopa.it/ecommerce/notifications-service/v1/emails\" and method_s == \"POST\"\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Availability (15m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "ecommerce/notifications-service/v1/emails",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let threshold = 0.95;\nAzureDiagnostics\n| where url_s == \"https://api.platform.pagopa.it/ecommerce/notifications-service/v1/emails\" and method_s == \"POST\"\n| summarize\n  Total=count(),\n  Success=count(responseCode_d < 500) by bin(TimeGenerated, 15m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
+                  "PartTitle": "Availability (15m)",
+                  "PartSubTitle": "ecommerce/notifications-service/v1/emails",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "availability",
+                        "type": "real"
+                      },
+                      {
+                        "name": "watermark",
+                        "type": "real"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 0,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "AzureDiagnostics\n| where url_s == \"https://api.platform.pagopa.it/ecommerce/notifications-service/v1/emails\" and method_s == \"POST\"\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Pie",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Response Codes (15m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "ecommerce/notifications-service/v1/emails",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "httpStatus_d",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "AzureDiagnostics\n| where url_s == \"https://api.platform.pagopa.it/ecommerce/notifications-service/v1/emails\" and method_s == \"POST\"\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 15m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
+                  "SpecificChart": "StackedArea",
+                  "PartTitle": "Response Codes (15m)",
+                  "PartSubTitle": "ecommerce/notifications-service/v1/emails",
+                  "Dimensions": {
+                    "aggregation": "Sum",
+                    "splitBy": [
+                      {
+                        "name": "HTTPStatus",
+                        "type": "string"
+                      }
+                    ],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "count_",
+                        "type": "long"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 12,
+              "y": 0,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "PT4H",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "value": {
+                    "scope": "hierarchy"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "\nlet threshold = 250;\nAzureDiagnostics\n| where url_s == \"https://api.platform.pagopa.it/ecommerce/notifications-service/v1/emails\" and method_s == \"POST\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedColumn",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Percentile Response Time (15m)",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "ecommerce/notifications-service/v1/emails",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "aggregation": "Sum",
+                    "splitBy": [],
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "duration_percentile_95",
+                        "type": "real"
+                      }
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let threshold = 250;\nAzureDiagnostics\n| where url_s == \"https://api.platform.pagopa.it/ecommerce/notifications-service/v1/emails\" and method_s == \"POST\"\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 15m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                  "SpecificChart": "Line",
+                  "PartTitle": "Percentile Response Time (15m)",
+                  "PartSubTitle": "ecommerce/notifications-service/v1/emails",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "watermark",
+                        "type": "long"
+                      },
+                      {
+                        "name": "duration_percentile_95",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "model": {
+        "timeRange": {
+          "value": {
+            "relative": {
+              "duration": 24,
+              "timeUnit": 1
+            }
+          },
+          "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+        },
+        "filterLocale": {
+          "value": "en-us"
+        },
+        "filters": {
+          "value": {
+            "MsPortalFx_TimeRange": {
+              "model": {
+                "format": "local",
+                "granularity": "auto",
+                "relative": "12h"
+              },
+              "displayCache": {
+                "name": "Local Time",
+                "value": "Past 12 hours"
+              },
+              "filteredPartIds": [
+                "StartboardPart-LogsDashboardPart-210c042d-82ee-40ca-8b92-d163c3ce8229",
+                "StartboardPart-LogsDashboardPart-210c042d-82ee-40ca-8b92-d163c3ce822b",
+                "StartboardPart-LogsDashboardPart-210c042d-82ee-40ca-8b92-d163c3ce822d"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "name": "ecommerce-notification-service-dashboard",
+  "type": "Microsoft.Portal/dashboards",
+  "location": "INSERT LOCATION",
+  "tags": {
+    "hidden-title": "ecommerce-notification-service-dashboard"
+  },
+  "apiVersion": "2022-12-01-preview"
+}

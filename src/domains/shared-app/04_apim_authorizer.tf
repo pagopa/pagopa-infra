@@ -12,7 +12,7 @@ locals {
 ## Products ##
 ##############
 module "apim_authorizer_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "authorizer"
   display_name = "Authorizer Domain Caching - Internal API"
@@ -40,7 +40,7 @@ resource "azurerm_api_management_api_version_set" "api_authorizer_api" {
 }
 
 module "apim_api_authorizer_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-authorizer-api", local.project)
   api_management_name   = local.pagopa_apim_name

@@ -1188,16 +1188,16 @@
         "required": [
           "description",
           "group",
-          "method_management",
+          "methodManagement",
           "name",
-          "payment_method_asset",
-          "payment_method_id",
-          "payment_method_types",
-          "range_amount",
+          "paymentMethodAsset",
+          "paymentMethodId",
+          "paymentMethodTypes",
+          "rangeAmount",
           "status",
-          "user_device",
-          "user_touchpoint",
-          "validity_date_from"
+          "userDevice",
+          "userTouchpoint",
+          "validityDateFrom"
         ],
         "type": "object",
         "properties": {
@@ -1255,10 +1255,10 @@
               "type": "string"
             }
           },
-          "payment_method_id": {
+          "paymentMethodId": {
             "type": "string"
           },
-          "user_touchpoint": {
+          "userTouchpoint": {
             "type": "array",
             "items": {
               "type": "string",
@@ -1269,7 +1269,7 @@
               ]
             }
           },
-          "user_device": {
+          "userDevice": {
             "type": "array",
             "items": {
               "type": "string",
@@ -1281,7 +1281,7 @@
               ]
             }
           },
-          "payment_method_types": {
+          "paymentMethodTypes": {
             "type": "array",
             "items": {
               "type": "string",
@@ -1292,17 +1292,17 @@
               ]
             }
           },
-          "validity_date_from": {
+          "validityDateFrom": {
             "type": "string",
             "format": "date"
           },
-          "range_amount": {
+          "rangeAmount": {
             "$ref": "#/components/schemas/FeeRange"
           },
-          "payment_method_asset": {
+          "paymentMethodAsset": {
             "type": "string"
           },
-          "method_management": {
+          "methodManagement": {
             "type": "string",
             "enum": [
               "ONBOARDABLE",
@@ -1311,7 +1311,7 @@
               "REDIRECT"
             ]
           },
-          "payment_methods_brand_assets": {
+          "paymentMethodsBrandAssets": {
             "type": "object",
             "additionalProperties": {
               "type": "string"

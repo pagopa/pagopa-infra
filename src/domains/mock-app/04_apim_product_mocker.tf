@@ -1,6 +1,6 @@
 module "apim_mocker_core_product" {
   count  = var.env_short != "p" ? 1 : 0
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = local.mocker_core_api_locals.product_id
   display_name = local.mocker_core_api_locals.display_name
@@ -19,7 +19,7 @@ module "apim_mocker_core_product" {
 
 module "apim_mocker_config_product" {
   count  = var.env_short != "p" ? 1 : 0
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = local.mocker_config_api_locals.product_id
   display_name = local.mocker_config_api_locals.display_name
@@ -38,7 +38,7 @@ module "apim_mocker_config_product" {
 
 module "apim_remora_engine_product" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = local.remora_engine_api_locals.product_id
   display_name = local.remora_engine_api_locals.display_name

@@ -23,7 +23,6 @@ dns_zone_internal_prefix         = "internal.uat.platform"
 mock_ec_enabled              = true
 mock_payment_gateway_enabled = true
 mock_ec_always_on            = true
-enable_iac_pipeline          = false
 
 # CosmosDB for Mocker
 mocker_cosmosdb_params = {

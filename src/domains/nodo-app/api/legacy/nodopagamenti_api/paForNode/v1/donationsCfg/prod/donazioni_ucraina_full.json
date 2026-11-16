@@ -1,0 +1,287 @@
+{
+  "debtorFullName": "",
+  "debtorEntityUniqueIdentifierType": "F",
+  "debtorEntityUniqueIdentifierValue": "anonimo",
+  "data": [
+    {
+      "name": "Croce Rossa Italiana",
+      "reason": "Donazione Emergenza Ucraina",
+      "web_site": "https://cri.it/emergenzaucraina/",
+      "base64Logo": "/9j/4AAQSk",
+      "cf": "13669721006",
+      "iban": "IT11A11111111111111111111111",
+      "paymentDescription": "Donazione Emergenza Ucraina",
+      "companyName": "Croce Rossa Italiana",
+      "officeName": "Croce Rossa Italiana",
+      "auxdigit": "3",
+      "segregationcode": "00",
+      "transferCategory": "0804101AP",
+      "slices": [
+        {
+          "idDonation": "00",
+          "amount": 500
+        },
+        {
+          "idDonation": "01",
+          "amount": 1000
+        },
+        {
+          "idDonation": "02",
+          "amount": 2000
+        },
+        {
+          "idDonation": "03",
+          "amount": 5000
+        },
+        {
+          "idDonation": "04",
+          "amount": 10000
+        },
+        {
+          "idDonation": "05",
+          "amount": 20000
+        }
+      ]
+    },
+    {
+      "name": "Save The Children",
+      "reason": "Emergenza Ucraina",
+      "web_site": "https://www.savethechildren.it/cosa-facciamo/risposta-alle-emergenze/emergenza-ucraina?utm_source=pagopa&utm_medium=app&utm_campaign=rf-ef-ucraina&utm_content=crowd&utm_term=txt&causale=21882",
+      "base64Logo": "/9j/4AAQSk",
+      "cf": "97227450158",
+      "iban": "IT71P0501803200000011184009",
+      "paymentDescription": "Emergenza Ucraina",
+      "companyName": "Save The Children",
+      "officeName": "Save The Children",
+      "auxdigit": "3",
+      "segregationcode": "00",
+      "transferCategory": "0804101AP",
+      "slices": [
+        {
+          "idDonation": "06",
+          "amount": 500
+        },
+        {
+          "idDonation": "07",
+          "amount": 1000
+        },
+        {
+          "idDonation": "08",
+          "amount": 2000
+        },
+        {
+          "idDonation": "09",
+          "amount": 5000
+        },
+        {
+          "idDonation": "10",
+          "amount": 10000
+        },
+        {
+          "idDonation": "11",
+          "amount": 20000
+        }
+      ]
+    },
+    {
+      "name": "CESVI",
+      "reason": "Donazione sostegno Ucraina",
+      "web_site": "https://www.cesvi.org/emergenzaucraina/",
+      "base64Logo": "/9j/4AAQSkZJR",
+      "cf": "95008730160",
+      "iban": "IT11A11111111111111111111113",
+      "paymentDescription": "Donazione sostegno Ucraina",
+      "companyName": "CESVI",
+      "officeName": "CESVI",
+      "auxdigit": "3",
+      "segregationcode": "00",
+      "transferCategory": "0101002IM",
+      "slices": [
+        {
+          "idDonation": "12",
+          "amount": 500
+        },
+        {
+          "idDonation": "13",
+          "amount": 1000
+        },
+        {
+          "idDonation": "14",
+          "amount": 2000
+        },
+        {
+          "idDonation": "15",
+          "amount": 5000
+        },
+        {
+          "idDonation": "16",
+          "amount": 10000
+        },
+        {
+          "idDonation": "17",
+          "amount": 20000
+        }
+      ]
+    },
+    {
+      "name": "Fondazione AVSI",
+      "reason": "Donazione Emergenza Ucraina",
+      "web_site": "https://www.avsi.org/it/campaign/emergenza-ucraina-helpukraine/88/",
+      "base64Logo": "/9j/4AAQSk",
+      "cf": "81017180407",
+      "iban": "IT11A11111111111111111111114",
+      "paymentDescription": "Donazione Emergenza Ucraina",
+      "companyName": "Fondazione AVSI",
+      "officeName": "Fondazione AVSI",
+      "auxdigit": "3",
+      "segregationcode": "00",
+      "transferCategory": "0804101AP",
+      "slices": [
+        {
+          "idDonation": "18",
+          "amount": 500
+        },
+        {
+          "idDonation": "19",
+          "amount": 1000
+        },
+        {
+          "idDonation": "20",
+          "amount": 2000
+        },
+        {
+          "idDonation": "21",
+          "amount": 5000
+        },
+        {
+          "idDonation": "22",
+          "amount": 10000
+        },
+        {
+          "idDonation": "23",
+          "amount": 20000
+        }
+      ]
+    },
+    {
+      "name": "Soleterre",
+      "reason": "Donazione Emergenza Ucraina",
+      "web_site": "https://soleterre.org/ucraina/",
+      "base64Logo": "/9j/4AAQSk",
+      "cf": "97329310151",
+      "iban": "IT11A11111111111111111111115",
+      "paymentDescription": "Donazione Emergenza Ucraina",
+      "companyName": "Soleterre",
+      "officeName": "Soleterre",
+      "auxdigit": "3",
+      "segregationcode": "00",
+      "transferCategory": "0804101AP",
+      "slices": [
+        {
+          "idDonation": "24",
+          "amount": 500
+        },
+        {
+          "idDonation": "25",
+          "amount": 1000
+        },
+        {
+          "idDonation": "26",
+          "amount": 2000
+        },
+        {
+          "idDonation": "27",
+          "amount": 5000
+        },
+        {
+          "idDonation": "28",
+          "amount": 10000
+        },
+        {
+          "idDonation": "29",
+          "amount": 20000
+        }
+      ]
+    },
+    {
+      "name": "Fondazione Bambino Gesù Onlus",
+      "reason": "Donazione Emergenza Ucraina",
+      "web_site": "https://www.fondazionebambinogesu.it/",
+      "base64Logo": "/9j/4AAQSk",
+      "cf": "97531780589",
+      "iban": "IT11A11111111111111111111116",
+      "paymentDescription": "Donazione Emergenza Ucraina",
+      "companyName": "Fondazione Bambino Gesù Onlus",
+      "officeName": "Fondazione Bambino Gesù Onlus",
+      "auxdigit": "3",
+      "segregationcode": "00",
+      "transferCategory": "0804101AP",
+      "slices": [
+        {
+          "idDonation": "30",
+          "amount": 500
+        },
+        {
+          "idDonation": "31",
+          "amount": 1000
+        },
+        {
+          "idDonation": "32",
+          "amount": 2000
+        },
+        {
+          "idDonation": "33",
+          "amount": 5000
+        },
+        {
+          "idDonation": "34",
+          "amount": 10000
+        },
+        {
+          "idDonation": "35",
+          "amount": 20000
+        }
+      ]
+    },
+    {
+      "name": "UNHCR",
+      "reason": "Donazione Emergenza Ucraina",
+      "web_site": "https://www.unhcr.org/it/cosa-facciamo/emergenze/ucraina/",
+      "base64Logo": "/9j/4AAQSk",
+      "cf": "80233930587",
+      "iban": "IT11A11111111111111111111117",
+      "paymentDescription": "Donazione Emergenza Ucraina",
+      "companyName": "UNHCR",
+      "officeName": "UNHCR",
+      "auxdigit": "3",
+      "segregationcode": "00",
+      "transferCategory": "0804101AP",
+      "slices": [
+        {
+          "idDonation": "36",
+          "amount": 500
+        },
+        {
+          "idDonation": "37",
+          "amount": 1000
+        },
+        {
+          "idDonation": "38",
+          "amount": 2000
+        },
+        {
+          "idDonation": "39",
+          "amount": 5000
+        },
+        {
+          "idDonation": "40",
+          "amount": 10000
+        },
+        {
+          "idDonation": "41",
+          "amount": 20000
+        }
+      ]
+    }
+  ]
+}

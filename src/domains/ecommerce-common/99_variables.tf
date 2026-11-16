@@ -228,12 +228,6 @@ variable "ecommerce_storage_transient_params" {
   description = "Azure storage DB params for ecommerce transient resources."
 }
 
-variable "enable_iac_pipeline" {
-  type        = bool
-  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
-  default     = false
-}
-
 variable "ecommerce_jwt_issuer_api_key_use_primary" {
   type        = bool
   description = "If true the current active API key used for jwt issuer service will be the primary one."

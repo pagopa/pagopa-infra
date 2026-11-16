@@ -29,11 +29,6 @@ data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_nodo-dei-pagamenti-r
   resource_group_name = "${local.product}-msg-rg"
 }
 
-data "azurerm_container_registry" "acr" {
-  name                = local.acr_name
-  resource_group_name = local.acr_resource_group_name
-}
-
 data "azurerm_subnet" "apim_vnet" {
   name                 = local.apim_snet
   resource_group_name  = local.vnet_resource_group_name

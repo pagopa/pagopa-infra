@@ -173,6 +173,18 @@ locals {
         {
           keys   = ["userId"]
           unique = false
+        },
+        {
+          keys   = ["authorizationRequestId"]
+          unique = false
+        },
+        {
+          keys   = ["endToEndId"]
+          unique = false
+        },
+        {
+          keys   = ["rrn"]
+          unique = false
         }
       ]
       shard_key           = "_id",
@@ -303,6 +315,18 @@ locals {
         {
           keys   = ["userId"]
           unique = false
+        },
+        {
+          keys   = ["authorizationRequestId"]
+          unique = false
+        },
+        {
+          keys   = ["endToEndId"]
+          unique = false
+        },
+        {
+          keys   = ["rrn"]
+          unique = false
         }
       ]
       shard_key           = "_id",
@@ -355,6 +379,10 @@ locals {
         {
           keys   = ["transactionId"]
           unique = false
+        },
+        {
+          keys   = ["timestamp"]
+          unique = false
         }
       ]
       shard_key           = "transactionId",
@@ -372,6 +400,16 @@ locals {
         }
       ]
       shard_key           = "transactionId",
+      default_ttl_seconds = null
+    },
+    {
+      name = "calendar_stats"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        }
+      ]
+      shard_key           = "_id",
       default_ttl_seconds = null
     }
   ]

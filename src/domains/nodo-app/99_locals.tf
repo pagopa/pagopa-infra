@@ -17,6 +17,8 @@ locals {
   monitor_action_group_email_name                 = "PagoPA"
   monitor_action_group_opsgenie_name              = "Opsgenie"
   monitor_action_group_infra_opsgenie_name        = "InfraOpsgenie"
+  monitor_action_group_cloudo_name                = "pagopa-${var.env_short}-cloudo-trigger"
+  cloudo_action_group_rg_name                     = "${local.product}-itn-cloudo-rg"
   monitor_appinsights_name                        = "${local.product}-appinsights"
 
   vnet_name                = "${local.product}-vnet"

@@ -54,13 +54,13 @@ AzureDiagnostics
 | where url_s matches regex "/gpd-payments/api"
 | summarize
     Total=count(),
-    Success=count(responseCode_d < 500)
+    Success=count(responseCode_d >= 200 and responseCode_d <= 299)
     by bin(TimeGenerated, 5m)
 | extend availability=toreal(Success) / Total
 | where availability < threshold
   QUERY
   )
-  severity    = 1
+  severity    = 0
   frequency   = 5
   time_window = 5
   trigger {
@@ -88,7 +88,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-payments
   query = (<<-QUERY
 let threshold = 1500;
 AzureDiagnostics
-| where url_s matches regex "/gpd/payments-receipts-service"
+| where apiId_s == 'p-gpd-payments-rest-api-aks-v1'
+| where url_s matches regex '/gpd/payments-receipts-service'
 | summarize
     watermark=threshold,
     duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 5m)
@@ -96,8 +97,8 @@ AzureDiagnostics
   QUERY
   )
   severity    = 2
-  frequency   = 5
-  time_window = 10
+  frequency   = 1440
+  time_window = 1440
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 2
@@ -122,7 +123,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-payments
   query = (<<-QUERY
 let threshold = 0.99;
 AzureDiagnostics
-| where url_s matches regex "/gpd/payments-receipts-service'"
+| where apiId_s == 'p-gpd-payments-rest-api-aks-v1'
+| where url_s matches regex '/gpd/payments-receipts-service'
 | summarize
     Total=count(),
     Success=count(responseCode_d < 500)
@@ -134,6 +136,41 @@ AzureDiagnostics
   severity    = 1
   frequency   = 5
   time_window = 5
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+}
+
+
+## GPD-Payments paSendRT Dead Letter ##
+resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-payments-pasendrt-dead-letter" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-gpd-payments-pasendrt-dead-letter"
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    email_subject          = "gpd-payments-pasendrt-dead-letter"
+    custom_webhook_payload = "{}"
+  }
+
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "GPD Payments paSendRT message moved to dead-letter storage after maximum retry attempts"
+  enabled        = true
+
+  query = (<<-QUERY
+traces
+| where cloud_RoleName == "pagopa-${var.env_short}-gpd-payments-service"
+| where message startswith "[paSendRT] Maximum retry attempts reached. Message moved to dead-letter storage"
+  QUERY
+  )
+
+  severity    = 1
+  frequency   = 15
+  time_window = 15
+
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1

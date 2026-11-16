@@ -1,5 +1,20 @@
 <policies>
     <inbound>
+      <!-- Apply frontend CORS before inheriting the global policy. -->
+      <cors allow-credentials="false" terminate-unmatched-request="true">
+        <allowed-origins>
+          <origin>${frontend_origin}</origin>
+        </allowed-origins>
+        <allowed-methods>
+          <method>GET</method>
+          <method>HEAD</method>
+          <method>POST</method>
+        </allowed-methods>
+        <allowed-headers>
+          <header>Accept</header>
+          <header>Content-Type</header>
+        </allowed-headers>
+      </cors>
       <base />
       <rate-limit-by-key calls="50" renewal-period="5" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" remaining-calls-variable-name="remainingCallsPerIp"/>
       <set-backend-service base-url="https://${hostname}/pagopa-search-transactions-fe/" />

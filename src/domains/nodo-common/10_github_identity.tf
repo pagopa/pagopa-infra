@@ -181,6 +181,7 @@ resource "null_resource" "github_runner_app_permissions_to_namespace_ci_01" {
   ]
 }
 
+# nodo workload identity 
 # WL-IDENTITY
 # https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/1227751458/Migrazione+pod+Identity+vs+workload+Identity#Init-workload-identity
 module "workload_identity" {
@@ -189,4 +190,19 @@ module "workload_identity" {
   workload_identity_name_prefix         = var.domain
   workload_identity_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name
   workload_identity_location            = var.location
+
+  tags = module.tag_config.tags
+}
+
+# nodo-cron workload identity
+# WL-IDENTITY
+# https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/1227751458/Migrazione+pod+Identity+vs+workload+Identity#Init-workload-identity
+module "workload_identity_nodo_cron" {
+  source = "./.terraform/modules/__v4__/kubernetes_workload_identity_init"
+
+  workload_identity_name_prefix         = "${var.domain}-cron"
+  workload_identity_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name
+  workload_identity_location            = var.location
+
+  tags = module.tag_config.tags
 }

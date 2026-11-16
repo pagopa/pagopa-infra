@@ -3,7 +3,7 @@
 ##############
 
 module "apim_pagopa_platform_statuspage_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "pagoPAPlatformStatusPage"
   display_name = "pagoPA platform Status Page"

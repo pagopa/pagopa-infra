@@ -94,6 +94,12 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
+variable "burst_capacity_enabled" {
+  type        = bool
+  default     = false
+  description = "burst capacity enabled"
+}
+
 variable "receipts_datastore_cosmos_db_params" {
   type = object({
     kind           = string

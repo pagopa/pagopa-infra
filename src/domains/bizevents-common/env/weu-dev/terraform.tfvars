@@ -40,7 +40,7 @@ bizevents_datastore_cosmos_db_params = {
   public_network_access_enabled     = false
   is_virtual_network_filter_enabled = false
 
-  ip_range_filter = ""
+  ip_range_filter = []
 
   backup_continuous_enabled = false
 
@@ -81,7 +81,5 @@ negative_bizevents_datastore_cosmos_db_params = {
 }
 
 cidr_subnet_bizevents_datastore_cosmosdb = ["10.1.156.0/24"]
-
-enable_iac_pipeline = true
-redis_ha_enabled    = false
-
+redis_ha_enabled                         = false
+bizevents_sa_idh_resource_tier           = "basic_public"

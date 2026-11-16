@@ -1,0 +1,1 @@
+/Users/jacopo.carlini/Progetti/pagopa/pagopa-infra/scripts/terraform_with_import.sh

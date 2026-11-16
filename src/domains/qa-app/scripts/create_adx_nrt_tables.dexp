@@ -1,0 +1,36 @@
+.create-merge table QA_NRT_TEST_SUITES (
+    id: guid,
+    test_object: string,
+    test_type: string,
+    suite_version: string,
+    owner_team: string
+)
+
+.create-merge table QA_NRT_TEST_RUNS (
+    id: guid,
+    suite_id: guid,
+    scenario_qty: int,
+    passed_scenario: int,
+    failed_scenario: int,
+    broken_scenario: int,
+    skipped_scenario: int,
+    timestamp_start: datetime,
+    timestamp_end: datetime,
+    duration_ms: long,
+    env: string,
+    trigger_type: string,
+    test_version: string,
+    test_origin: string
+)
+
+.create-merge table QA_NRT_TEST_EXECUTIONS (
+    id: guid,
+    run_id: guid,
+    allure_id: string,
+    status: string,
+    scenario_name: string,
+    allure_report: dynamic,
+    duration_ms: long,
+    error_message: string,
+    retries: int
+)

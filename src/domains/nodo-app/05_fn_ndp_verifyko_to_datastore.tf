@@ -58,10 +58,11 @@ module "nodo_verifyko_to_datastore_function" {
   resource_group_name = data.azurerm_resource_group.nodo_verify_ko_rg.name
   name                = "${local.project}-verifyko2ds-fn"
 
-  location          = var.location
-  health_check_path = "/info"
-  subnet_id         = module.nodo_verifyko_to_datastore_function_snet.id
-  runtime_version   = "~4"
+  location                     = var.location
+  health_check_path            = "/info"
+  health_check_maxpingfailures = null
+  subnet_id                    = module.nodo_verifyko_to_datastore_function_snet.id
+  runtime_version              = "~4"
 
   system_identity_enabled = true
 
@@ -118,6 +119,7 @@ module "nodo_verifyko_to_datastore_function_slot_staging" {
   health_check_path                        = "/info"
   runtime_version                          = "~4"
   subnet_id                                = module.nodo_verifyko_to_datastore_function_snet.id
+  health_check_maxpingfailures             = null
 
   # App settings
   app_settings = local.function_verifyko_to_datastore_app_settings
