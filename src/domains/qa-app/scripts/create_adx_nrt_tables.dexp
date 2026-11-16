@@ -56,3 +56,43 @@
     inserted_at: datetime,
     is_flaky: bool
 )
+
+.create-merge table QA_NRT_FLAKY_REGISTRY (
+    id: guid,
+    test_object: string,
+    test_type: string,
+    scenario_name: string,
+    is_flaky: bool,
+    flagged_by: string,
+    flagged_at: datetime,
+    updated_by: string,
+    updated_at: datetime,
+    inserted_at: datetime
+)
+
+.create-merge table QA_NRT_FLAKY_SCORES (
+    test_object: string,
+    test_type: string,
+    scenario_name: string,
+    env: string,
+    score: int,
+    level: int,
+    state: string,
+    flip_rate: decimal,
+    retry_pass_rate: decimal,
+    runs_analyzed: int,
+    last_failure_at: datetime,
+    recent_outcomes: dynamic,
+    last_suite_id: guid,
+    computed_at: datetime
+)
+
+.create-merge table QA_NRT_FLAKY_RECOMPUTE_STATUS (
+    id: int,
+    last_attempt_at: datetime,
+    last_success_at: datetime,
+    last_error: string,
+    last_trigger: string,
+    last_requested_by: string,
+    scored_count: int
+)

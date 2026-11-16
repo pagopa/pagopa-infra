@@ -5,3 +5,9 @@
 .create table QA_NRT_TEST_EXECUTIONS_STAGING based-on QA_NRT_TEST_EXECUTIONS ifnotexists
 
 .create table QA_NRT_FLAKY_SCENARIOS_STAGING based-on QA_NRT_FLAKY_SCENARIOS ifnotexists
+
+.create table QA_NRT_FLAKY_REGISTRY_STAGING based-on QA_NRT_FLAKY_REGISTRY ifnotexists
+
+.create table QA_NRT_FLAKY_SCORES_STAGING based-on QA_NRT_FLAKY_SCORES ifnotexists
+
+.create table QA_NRT_FLAKY_RECOMPUTE_STATUS_STAGING based-on QA_NRT_FLAKY_RECOMPUTE_STATUS ifnotexists

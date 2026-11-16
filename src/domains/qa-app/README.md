@@ -34,6 +34,9 @@ creates these empty tables using `.create table ... based-on ... ifnotexists`:
 | `QA_NRT_TEST_RUNS_STAGING` | `QA_NRT_TEST_RUNS` |
 | `QA_NRT_TEST_EXECUTIONS_STAGING` | `QA_NRT_TEST_EXECUTIONS` |
 | `QA_NRT_FLAKY_SCENARIOS_STAGING` | `QA_NRT_FLAKY_SCENARIOS` |
+| `QA_NRT_FLAKY_REGISTRY_STAGING` | `QA_NRT_FLAKY_REGISTRY` |
+| `QA_NRT_FLAKY_SCORES_STAGING` | `QA_NRT_FLAKY_SCORES` |
+| `QA_NRT_FLAKY_RECOMPUTE_STATUS_STAGING` | `QA_NRT_FLAKY_RECOMPUTE_STATUS` |
 
 This copies the actual source schema, including column names, types, and order,
 without copying rows or modifying the final tables. Kusto does not copy update
