@@ -1,5 +1,5 @@
 module "negative_bizevents_datastore_cosmosdb_account" {
-  source              = "./.terraform/modules/__v3__/cosmosdb_account"
+  source              = "./.terraform/modules/__v4__/cosmosdb_account"
   name                = "${local.project}-neg-ds-cosmos-account"
   location            = var.location
   domain              = var.domain
@@ -22,7 +22,7 @@ module "negative_bizevents_datastore_cosmosdb_account" {
 
   is_virtual_network_filter_enabled = var.negative_bizevents_datastore_cosmos_db_params.is_virtual_network_filter_enabled
 
-  ip_range = ""
+  ip_range = []
 
   # add data.azurerm_subnet.<my_service>.id
   # allowed_virtual_network_subnet_ids = var.bizevents_datastore_cosmos_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
@@ -40,7 +40,7 @@ module "negative_bizevents_datastore_cosmosdb_account" {
 
 # cosmosdb database for negative biz-events
 module "negative_bizevents_datastore_cosmosdb_database" {
-  source              = "./.terraform/modules/__v3__/cosmosdb_sql_database"
+  source              = "./.terraform/modules/__v4__/cosmosdb_sql_database"
   name                = "db"
   resource_group_name = azurerm_resource_group.bizevents_rg.name
   account_name        = module.negative_bizevents_datastore_cosmosdb_account.name
@@ -60,14 +60,14 @@ locals {
 
 # cosmosdb container for negative biz events datastore
 module "negative_bizevents_datastore_cosmosdb_containers" {
-  source   = "./.terraform/modules/__v3__/cosmosdb_sql_container"
+  source   = "./.terraform/modules/__v4__/cosmosdb_sql_container"
   for_each = { for c in local.negative_bizevents_datastore_cosmosdb_containers : c.name => c }
 
   name                = each.value.name
   resource_group_name = azurerm_resource_group.bizevents_rg.name
   account_name        = module.negative_bizevents_datastore_cosmosdb_account.name
   database_name       = module.negative_bizevents_datastore_cosmosdb_database.name
-  partition_key_path  = each.value.partition_key_path
+  partition_key_paths = [each.value.partition_key_path]
   throughput          = lookup(each.value, "throughput", null)
   default_ttl         = lookup(each.value, "default_ttl", null)
 
