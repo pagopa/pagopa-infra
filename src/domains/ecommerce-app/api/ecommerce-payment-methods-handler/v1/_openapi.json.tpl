@@ -227,7 +227,7 @@
                         "name": "x-language",
                         "in": "header",
                         "description": "The user language",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "string",
                             "enum": [
@@ -293,10 +293,365 @@
                     }
                 }
             }
+        },
+        "/payment-methods/{id}/sessions/{orderId}": {
+            "get": {
+                "tags": [
+                    "payment-methods-handler"
+                ],
+                "operationId": "getSessionPaymentMethod",
+                "summary": "Get session payment method by ID",
+                "description": "API for retrieving card data information for a given payment method session",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Payment Method ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orderId",
+                        "in": "path",
+                        "description": "OrderId related to NPG session",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "x-client-id",
+                        "in": "header",
+                        "description": "Transaction origin (populated by APIM policy)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "IO",
+                                "CHECKOUT",
+                                "CHECKOUT_CART"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Session payment method successfully retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SessionPaymentMethodResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Session or payment method not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Service unavailable",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Payment gateway did return error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "payment-methods-handler"
+                ],
+                "operationId": "updateSession",
+                "summary": "Update a payment method session",
+                "description": "Associates a transaction ID to an existing NPG session identified by payment method ID and order ID. Returns 204 No Content on success.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Payment Method ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orderId",
+                        "in": "path",
+                        "description": "OrderId related to NPG session",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "x-client-id",
+                        "in": "header",
+                        "description": "Transaction origin (populated by APIM policy)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "IO",
+                                "CHECKOUT",
+                                "CHECKOUT_CART"
+                            ]
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchSessionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Session successfully updated"
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Session or payment method not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Session already associated to a different transaction",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Service unavailable",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/payment-methods/{id}/sessions/{orderId}/transactionId": {
+            "get": {
+                "tags": [
+                    "payment-methods-handler"
+                ],
+                "operationId": "getTransactionIdForSession",
+                "summary": "Get eCommerce transaction id for the given NPG session",
+                "description": "API to get a transaction id from a NPG session. Validates the session security token provided via Authorization Bearer header.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Payment Method ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orderId",
+                        "in": "path",
+                        "description": "OrderId related to NPG session",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "x-client-id",
+                        "in": "header",
+                        "description": "Transaction origin (populated by APIM policy)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "IO",
+                                "CHECKOUT",
+                                "CHECKOUT_CART"
+                            ]
+                        }
+                    }
+                ],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transaction id successfully retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SessionGetTransactionIdResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Session or payment method not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Invalid session (no transaction associated or mismatched security token)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Service unavailable",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
+            "PatchSessionRequest": {
+                "type": "object",
+                "description": "Request body for updating a payment method session",
+                "required": [
+                    "transactionId"
+                ],
+                "properties": {
+                    "transactionId": {
+                        "type": "string",
+                        "description": "Transaction ID to associate with the session"
+                    }
+                }
+            },
+            "SessionGetTransactionIdResponse": {
+                "type": "object",
+                "description": "Transaction id for session successful response",
+                "required": [
+                    "transactionId",
+                    "base64TransactionId"
+                ],
+                "properties": {
+                    "transactionId": {
+                        "type": "string",
+                        "description": "Transaction id associated to this NPG session"
+                    },
+                    "base64TransactionId": {
+                        "type": "string",
+                        "description": "Base64 URL-safe encoding of the transaction id UUID bytes"
+                    }
+                }
+            },
+            "SessionPaymentMethodResponse": {
+                "type": "object",
+                "description": "Session Payment method Response",
+                "required": [
+                    "sessionId",
+                    "bin",
+                    "lastFourDigits",
+                    "expiringDate",
+                    "brand"
+                ],
+                "properties": {
+                    "sessionId": {
+                        "type": "string",
+                        "description": "Session Payment method ID"
+                    },
+                    "bin": {
+                        "type": "string",
+                        "description": "Bin of user card"
+                    },
+                    "lastFourDigits": {
+                        "type": "string",
+                        "description": "Last four digits of user card"
+                    },
+                    "expiringDate": {
+                        "type": "string",
+                        "pattern": "^[0-9]{4,6}$",
+                        "description": "Expiring date of user card"
+                    },
+                    "brand": {
+                        "type": "string",
+                        "description": "The card brand name"
+                    }
+                }
+            },
             "PaymentMethodsRequest": {
                 "required": [
                     "paymentNotice",
@@ -692,6 +1047,10 @@
                         "additionalProperties": {
                             "type": "string"
                         }
+                    },
+                    "paymentTypeCode": {
+                        "description": "AFM payment type code of the selected payment method (e.g. CP, RBPR)",
+                        "type": "string"
                     }
                 }
             },
@@ -764,6 +1123,10 @@
                 "type": "apiKey",
                 "in": "header",
                 "name": "Ocp-Apim-Subscription-Key"
+            },
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
             }
         }
     }
