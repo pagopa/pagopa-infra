@@ -27,7 +27,7 @@
       <set-header name="X-Client-Id" exists-action="override" >
       <value>CHECKOUT</value>
     </set-header>
-      <set-variable name="transactionsOperationId" value="newTransaction,getTransactionInfo,getTransactionOutcomes,requestTransactionUserCancellation,requestTransactionAuthorization" />
+      <set-variable name="transactionsOperationId" value="getTransactionOutcomes,requestTransactionUserCancellation,requestTransactionAuthorization" />
       <set-variable name="paymentMethodsHandlerOperationId" value="createSession,getSessionPaymentMethod,updateSession,getTransactionIdForSession,getAllPaymentMethods,getPaymentMethod,calculateFees" />
       <set-variable name="paymentRequestsOperationId" value="getPaymentRequestInfo" />
       <set-variable name="cartsOperationId" value="GetCarts,GetCartsRedirect" />

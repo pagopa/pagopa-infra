@@ -24,7 +24,6 @@
       <set-header name="X-Client-Id" exists-action="override" >
       <value>CHECKOUT</value>
     </set-header>
-      <set-variable name="transactionsV2OperationId" value="getTransactionInfo" />
       <set-variable name="transactionsV21OperationId" value="newTransaction" />
       <set-variable name="paymentMethodsHandlerOperationId" value="getAllPaymentMethods,getPaymentMethod,calculateFees" />
       <choose>
