@@ -57,7 +57,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_service_v1
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Checkout-auth-service login 429 rate limit responses detected, more than 10 KO in 30 minute time window"
+  description    = "Checkout-auth-service login 429 rate limit responses detected, 10 or more KO in 30 minute time window"
   enabled        = true
   query = (<<-QUERY
 AzureDiagnostics

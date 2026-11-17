@@ -112,7 +112,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_for_checkout_r
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "eCommerce for Checkout 429 rate limit responses detected, more than 10 KO in 30 minute time window"
+  description    = "eCommerce for Checkout 429 rate limit responses detected, 10 or more KO in 30 minute time window"
   enabled        = true
   query = (<<-QUERY
 AzureDiagnostics
