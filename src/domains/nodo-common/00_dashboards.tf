@@ -41,10 +41,67 @@ locals {
         nodoChiediNumeroAvviso    = "6a5f489e75a838165ccb1c5d"
         nodoChiediCatalogoServizi = "6a5f489e75a838165ccb1c5e"
       }
+      node_for_pa_v1 = {
+        nodoChiediElencoFlussiRendicontazione = "6a5f48a175a838165ccb1c7f"
+        nodoChiediFlussoRendicontazione       = "6a5f48a175a838165ccb1c80"
+      }
       node_for_ecommerce_v1 = {
         checkPosition = "checkPosition"
       }
       node_for_ecommerce_v2 = {
+        closePaymentV2 = "closePaymentV2"
+      }
+      node_for_psp_v1_noauth = {
+        verifyPaymentNotice         = "6a5f489e75a838165ccb1c50"
+        activatePaymentNotice       = "6a5f489e75a838165ccb1c51"
+        sendPaymentOutcome          = "6a5f489e75a838165ccb1c52"
+        verificaBollettino          = "6a5f489e75a838165ccb1c53"
+        demandPaymentNotice         = "6a5f489e75a838165ccb1c54"
+        nodoChiediCatalogoServiziV2 = "6a5f489e75a838165ccb1c55"
+        activatePaymentNoticeV2     = "6a5f489e75a838165ccb1c56"
+        sendPaymentOutcomeV2        = "6a5f489e75a838165ccb1c57"
+      }
+      nodo_per_pa_v1_noauth = {
+        nodoChiediStatoRPT                    = "6a5f497875a838165ccb206c"
+        nodoChiediListaPendentiRPT            = "6a5f497875a838165ccb206d"
+        nodoInviaRPT                          = "6a5f497875a838165ccb206e"
+        nodoInviaCarrelloRPT                  = "6a5f497875a838165ccb206f"
+        nodoChiediCopiaRT                     = "6a5f497875a838165ccb2070"
+        nodoChiediInformativaPSP              = "6a5f497875a838165ccb2071"
+        nodoPAChiediInformativaPA             = "6a5f497875a838165ccb2072"
+        nodoChiediElencoQuadraturePA          = "6a5f497875a838165ccb2073"
+        nodoChiediQuadraturaPA                = "6a5f497875a838165ccb2074"
+        nodoChiediElencoFlussiRendicontazione = "6a5f497875a838165ccb2075"
+        nodoChiediFlussoRendicontazione       = "6a5f497875a838165ccb2076"
+      }
+      nodo_per_psp_v1_noauth = {
+        nodoVerificaRPT                  = "6a5f497475a838165ccb1df8"
+        nodoAttivaRPT                    = "6a5f497475a838165ccb1df9"
+        nodoInviaRT                      = "6a5f497475a838165ccb1dfa"
+        nodoChiediInformativaPA          = "6a5f497475a838165ccb1dfb"
+        nodoChiediTemplateInformativaPSP = "6a5f497475a838165ccb1dfc"
+        nodoChiediElencoQuadraturePSP    = "6a5f497475a838165ccb1dfd"
+        nodoInviaFlussoRendicontazione   = "6a5f497475a838165ccb1dfe"
+      }
+      nodo_per_psp_richiesta_avvisi_v1_noauth = {
+        nodoChiediNumeroAvviso    = "6a5f497975a838165ccb207b"
+        nodoChiediCatalogoServizi = "6a5f497975a838165ccb207c"
+      }
+      nodo_per_pm_v1_noauth = {
+        nodoChiediInformazioniPagamento = "nodoChiediInformazioniPagamento"
+        nodoChiediAvanzamentoPagamento  = "nodoChiediAvanzamentoPagamento"
+        nodoChiediListaPSP              = "nodoChiediListaPSP"
+        nodoInoltraEsitoPagamentoCarta  = "nodoInoltraEsitoPagamentoCarta"
+        nodoInoltraPagamentoMod1        = "nodoInoltraPagamentoMod1"
+        nodoInoltraPagamentoMod2        = "nodoInoltraPagamentoMod2"
+        nodoInoltraEsitoPagamentoPayPal = "nodoInoltraEsitoPagamentoPayPal"
+        nodoNotificaAnnullamento        = "nodoNotificaAnnullamento"
+        health                          = "health"
+        closePayment                    = "closePayment"
+        checkPosition                   = "checkPosition"
+        parkedList                      = "parkedList"
+      }
+      nodo_per_pm_v2_noauth = {
         closePaymentV2 = "closePaymentV2"
       }
     }
@@ -88,18 +145,89 @@ locals {
         nodoChiediNumeroAvviso    = "63b6e2da2a92e811a8f338ed"
         nodoChiediCatalogoServizi = "63b6e2da2a92e811a8f338ee"
       }
+      node_for_pa_v1 = {
+        nodoChiediElencoFlussiRendicontazione = "63ff73adea7c4a1860530e3a"
+        nodoChiediFlussoRendicontazione       = "63ff73adea7c4a1860530e3b"
+      }
       node_for_ecommerce_v1 = {
         checkPosition = "checkPosition"
       }
       node_for_ecommerce_v2 = {
         closePaymentV2 = "closePaymentV2"
       }
+      node_for_psp_v1_noauth = {
+        verifyPaymentNotice         = "61dedafc2a92e81a0c7a58fb"
+        activatePaymentNotice       = "61dedafc2a92e81a0c7a58fc"
+        sendPaymentOutcome          = "61dedafc2a92e81a0c7a58fd"
+        verificaBollettino          = "61dedafc2a92e81a0c7a58fe"
+        demandPaymentNotice         = "62bb23bdea7c4a0f183fc065"
+        nodoChiediCatalogoServiziV2 = "62bb23bdea7c4a0f183fc066"
+        activatePaymentNoticeV2     = "63c559672a92e811a8f33a00"
+        sendPaymentOutcomeV2        = "63c559672a92e811a8f33a01"
+      }
+      nodo_per_pa_v1_noauth = {
+        nodoChiediElencoFlussiRendicontazione = "61e9633dea7c4a07cc7d480d"
+        nodoChiediFlussoRendicontazione       = "61e9633dea7c4a07cc7d480e"
+        nodoChiediStatoRPT                    = "62189aea2a92e81fa4f15ec4"
+        nodoChiediListaPendentiRPT            = "62189aea2a92e81fa4f15ec5"
+        nodoInviaRPT                          = "62189aea2a92e81fa4f15ec6"
+        nodoInviaCarrelloRPT                  = "62189aea2a92e81fa4f15ec7"
+        nodoChiediCopiaRT                     = "62189aea2a92e81fa4f15ec8"
+        nodoChiediInformativaPSP              = "62189aea2a92e81fa4f15ec9"
+        nodoPAChiediInformativaPA             = "62189aea2a92e81fa4f15eca"
+        nodoChiediElencoQuadraturePA          = "62189aea2a92e81fa4f15ecb"
+        nodoChiediQuadraturaPA                = "62189aea2a92e81fa4f15ecc"
+      }
+      nodo_per_psp_v1_noauth = {
+        nodoVerificaRPT                  = "61dedafb2a92e81a0c7a58f5"
+        nodoAttivaRPT                    = "61dedafc2a92e81a0c7a58f6"
+        nodoInviaFlussoRendicontazione   = "61e9633eea7c4a07cc7d4811"
+        nodoInviaRT                      = "6217ba1b2a92e81fa4f15e77"
+        nodoChiediInformativaPA          = "6217ba1b2a92e81fa4f15e78"
+        nodoChiediTemplateInformativaPSP = "6217ba1b2a92e81fa4f15e79"
+        nodoChiediElencoQuadraturePSP    = "6217ba1b2a92e81fa4f15e7a"
+      }
+      nodo_per_psp_richiesta_avvisi_v1_noauth = {
+        nodoChiediNumeroAvviso    = "6217ba1a2a92e81fa4f15e75"
+        nodoChiediCatalogoServizi = "6217ba1b2a92e81fa4f15e76"
+      }
+      nodo_per_pm_v1_noauth = {
+        nodoChiediInformazioniPagamento = "nodoChiediInformazioniPagamento"
+        nodoChiediAvanzamentoPagamento  = "nodoChiediAvanzamentoPagamento"
+        nodoChiediListaPSP              = "nodoChiediListaPSP"
+        nodoInoltraEsitoPagamentoCarta  = "nodoInoltraEsitoPagamentoCarta"
+        nodoInoltraPagamentoMod1        = "nodoInoltraPagamentoMod1"
+        nodoInoltraPagamentoMod2        = "nodoInoltraPagamentoMod2"
+        nodoNotificaAnnullamento        = "nodoNotificaAnnullamento"
+        health                          = "health"
+        nodoInoltraEsitoPagamentoPayPal = "nodoInoltraEsitoPagamentoPayPal"
+        closePayment                    = "closePayment"
+        checkPosition                   = "checkPosition"
+        parkedList                      = "parkedList"
+      }
+      nodo_per_pm_v2_noauth = {
+        closePaymentV2 = "closePaymentV2"
+      }
+    }
+  }
+
+  # Nodo instances: identifiers and backend of the Nexi Postgres one
+  opex_nodo_nodes = {
+    u = {
+      pagopa_postgres_id    = "NDP001UAT"
+      nexi_postgres_id      = "NDP004UAT"
+      nexi_postgres_backend = "https://10.79.20.63"
+    }
+    p = {
+      pagopa_postgres_id    = "NDP001PROD"
+      nexi_postgres_id      = "NDP004PROD"
+      nexi_postgres_backend = "https://10.79.20.25"
     }
   }
 
   opex_nodo_auth_dashboard_config = {
     u = {
-      excluded_backend_url = "https://10.79.20.63"
+      excluded_backend_url = local.opex_nodo_nodes.u.nexi_postgres_backend
       operation_ids = {
         verifyPaymentNotice     = local.opex_nodo_auth_operation_ids.u.node_for_psp_v1.verifyPaymentNotice
         activatePaymentNotice   = local.opex_nodo_auth_operation_ids.u.node_for_psp_v1.activatePaymentNotice
@@ -117,7 +245,7 @@ locals {
       }
     }
     p = {
-      excluded_backend_url = "https://10.79.20.25"
+      excluded_backend_url = local.opex_nodo_nodes.p.nexi_postgres_backend
       operation_ids = {
         verifyPaymentNotice     = local.opex_nodo_auth_operation_ids.p.node_for_psp_v1.verifyPaymentNotice
         activatePaymentNotice   = local.opex_nodo_auth_operation_ids.p.node_for_psp_v1.activatePaymentNotice
@@ -149,11 +277,38 @@ locals {
     operation_names_kql        = join(", ", [for name, id in merge(local.opex_nodo_auth_dashboard_config[var.env_short].operation_ids, local.opex_nodo_auth_dashboard_config[var.env_short].unhandled_operation_ids) : "'${id}', '${name}'"])
   })) : null
 
-  # all-auth dashboard: every API of the common list except the *FlussoRendicontazione / *FlussiRendicontazione ones
   opex_nodo_auth_all_dashboard_json = contains(keys(local.opex_nodo_auth_operation_ids), var.env_short) ? jsondecode(templatefile("./dashboards/opex_pagopa-nodo-auth-all.json.tpl", {
     apim_id   = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/${local.pagopa_apim_rg}/providers/Microsoft.ApiManagement/service/${local.pagopa_apim_name}"
     apim_name = local.pagopa_apim_name
-    ops       = { for service, apis in local.opex_nodo_auth_operation_ids[var.env_short] : service => { for api, id in apis : api => id if !can(regex("Fluss[oi]Rendicontazione$", api)) } }
+    ops       = local.opex_nodo_auth_operation_ids[var.env_short]
+  })) : null
+
+  opex_nodo_multinode_url_paths = [
+    "/nodo/nodo-per-pm",
+    "/nodo/nodo-per-pa",
+    "/nodo-auth/nodo-per-pa",
+    "/nodo/nodo-per-psp-richiesta-avvisi",
+    "/nodo-auth/nodo-per-psp-richiesta-avvisi",
+    "/nodo/nodo-per-psp",
+    "/nodo-auth/nodo-per-psp",
+    "/nodo-auth/node-for-ecommerce",
+    "/nodo-auth/node-for-pa",
+    "/nodo/node-for-psp",
+    "/nodo-auth/node-for-psp",
+  ]
+
+  opex_nodo_multinode_dashboard_json = contains(keys(local.opex_nodo_nodes), var.env_short) ? jsondecode(templatefile("./dashboards/multi-node-monitoring-ndp.json.tpl", {
+    apim_id               = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/${local.pagopa_apim_rg}/providers/Microsoft.ApiManagement/service/${local.pagopa_apim_name}"
+    apim_name             = local.pagopa_apim_name
+    appinsights_id        = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/${var.monitor_resource_group_name}/providers/microsoft.insights/components/${local.application_insights_name}"
+    appinsights_name      = local.application_insights_name
+    nodo_host             = "weu${var.env}.nodo.${local.internal_dns_zone_name}"
+    fdr_host              = "weu${var.env}.fdr.${local.internal_dns_zone_name}"
+    nexi_postgres_backend = local.opex_nodo_nodes[var.env_short].nexi_postgres_backend
+    nexi_postgres_id      = local.opex_nodo_nodes[var.env_short].nexi_postgres_id
+    pagopa_postgres_id    = local.opex_nodo_nodes[var.env_short].pagopa_postgres_id
+    url_regex             = join("|", local.opex_nodo_multinode_url_paths)
+    ops                   = local.opex_nodo_auth_operation_ids[var.env_short]
   })) : null
 }
 
@@ -203,6 +358,35 @@ resource "azurerm_portal_dashboard" "opex_pagopa_nodo_auth_all" {
       {
         "lenses" = {
           for lens_index, lens in local.opex_nodo_auth_all_dashboard_json.properties.lenses :
+          tostring(lens_index) => merge(lens, {
+            "parts" = {
+              for part_index, part in lens.parts :
+              tostring(part_index) => part
+            }
+          })
+        }
+      }
+    )
+  )
+}
+
+resource "azurerm_portal_dashboard" "opex_pagopa_nodo_multi_node_monitoring" {
+  count               = local.opex_nodo_multinode_dashboard_json != null ? 1 : 0
+  name                = "opex_${var.env_short}_pagopa-multi-node-monitoring-ndp"
+  resource_group_name = var.monitor_resource_group_name
+  location            = var.location
+  tags = {
+    source = "terraform"
+  }
+
+  #convert json dashboard output from Azure export function to the one handled by azurerm portal dashboard provider
+  #see https://github.com/hashicorp/terraform-provider-azurerm/issues/27117 issue for more info
+  dashboard_properties = jsonencode(
+    merge(
+      local.opex_nodo_multinode_dashboard_json.properties,
+      {
+        "lenses" = {
+          for lens_index, lens in local.opex_nodo_multinode_dashboard_json.properties.lenses :
           tostring(lens_index) => merge(lens, {
             "parts" = {
               for part_index, part in lens.parts :
