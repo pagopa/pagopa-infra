@@ -91,3 +91,9 @@ data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_nodo-dei-pagamenti-b
   resource_group_name = "${local.product}-msg-rg"
 }
 
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt-send_pagopa-biz-evt-tx-send" {
+  name                = "${var.prefix}-biz-evt-rx-send"
+  namespace_name      = "${local.product}-${var.location_short}-core-evh-ns03"
+  eventhub_name       = "nodo-dei-pagamenti-biz-evt-send"
+  resource_group_name = "${local.product}-msg-rg"
+}
