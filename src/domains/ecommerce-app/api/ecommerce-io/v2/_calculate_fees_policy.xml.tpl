@@ -95,7 +95,7 @@
             </when>
             <when condition="@((bool)context.Variables["isCard"] && !String.IsNullOrEmpty((string)context.Variables["orderId"]))">
                 <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodSessionResponse">
-                    <set-url>@($"https://${ecommerce-basepath}/pagopa-ecommerce-payment-methods-service/payment-methods/{(string)context.Variables["paymentMethodId"]}/sessions/{(string)context.Variables["orderId"]}")</set-url>
+                    <set-url>@($"https://${ecommerce-basepath}/pagopa-ecommerce-payment-methods-handler/payment-methods/{(string)context.Variables["paymentMethodId"]}/sessions/{(string)context.Variables["orderId"]}")</set-url>
                     <set-method>GET</set-method>
                      <set-header name="X-Client-Id" exists-action="override">
                         <value>IO</value>
