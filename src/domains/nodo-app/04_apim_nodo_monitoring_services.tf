@@ -16,10 +16,6 @@ module "apim_nodo_dei_pagamenti_monitoring_product" {
   subscription_required = false
   approval_required     = false
 
-  # policy_xml = templatefile("./api_product/legacy/nodo_pagamenti_api/monitoring/base_policy.xml.tpl", {
-  #   base-url = "{{schema-ip-nexi}}"
-  #
-  # })
   policy_xml = file("./api_product/legacy/nodo_pagamenti_api/monitoring/base_policy.xml.tpl")
 }
 
@@ -52,7 +48,7 @@ module "apim_nodo_monitoring_api" {
   name                  = format("%s-nodo-monitoring-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_nodo_dei_pagamenti_monitoring_product.product_id, "apim_for_node"]
+  product_ids           = [module.apim_nodo_dei_pagamenti_monitoring_product.product_id, module.apim_apim_for_node_product.product_id]
   subscription_required = local.apim_nodo_monitoring_api.subscription_required
 
   version_set_id = azurerm_api_management_api_version_set.nodo_monitoring_api.id
