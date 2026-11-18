@@ -6845,6 +6845,24 @@
             "minLength": 1,
             "nullable": true
           },
+          "hidden": {
+            "type": "boolean",
+            "title": "Hidden",
+            "default": false
+          },
+          "version_source": {
+            "type": "string",
+            "enum": [
+              "AUTO",
+              "MANUAL"
+            ],
+            "title": "Version Source",
+            "default": "AUTO"
+          },
+          "manual_versions": {
+            "$ref": "#/components/schemas/ManualVersionsIn",
+            "nullable": true
+          },
           "user": {
             "type": "string",
             "minLength": 1,
@@ -6913,6 +6931,30 @@
             "title": "Ea Node Id",
             "type": "string",
             "nullable": true
+          },
+          "hidden": {
+            "type": "boolean",
+            "title": "Hidden"
+          },
+          "version_source": {
+            "type": "string",
+            "title": "Version Source"
+          },
+          "manual_versions": {
+            "title": "Manual Versions",
+            "additionalProperties": {
+              "type": "string",
+              "nullable": true
+            },
+            "propertyNames": {
+              "enum": [
+                "DEV",
+                "UAT",
+                "PROD"
+              ]
+            },
+            "type": "object",
+            "nullable": true
           }
         },
         "type": "object",
@@ -6927,7 +6969,9 @@
           "ci",
           "kind",
           "test_object",
-          "ea_node_id"
+          "ea_node_id",
+          "hidden",
+          "version_source"
         ],
         "title": "ApplicationOut"
       },
@@ -7003,6 +7047,24 @@
             "minLength": 1,
             "nullable": true
           },
+          "hidden": {
+            "title": "Hidden",
+            "type": "boolean",
+            "nullable": true
+          },
+          "version_source": {
+            "title": "Version Source",
+            "type": "string",
+            "enum": [
+              "AUTO",
+              "MANUAL"
+            ],
+            "nullable": true
+          },
+          "manual_versions": {
+            "$ref": "#/components/schemas/ManualVersionsIn",
+            "nullable": true
+          },
           "user": {
             "type": "string",
             "minLength": 1,
@@ -7067,6 +7129,14 @@
             "type": "string",
             "nullable": true
           },
+          "version_source": {
+            "type": "string",
+            "title": "Version Source"
+          },
+          "hidden": {
+            "type": "boolean",
+            "title": "Hidden"
+          },
           "repo": {
             "$ref": "#/components/schemas/CellOut",
             "nullable": true
@@ -7113,6 +7183,8 @@
           "kind",
           "test_object",
           "ea_node_id",
+          "version_source",
+          "hidden",
           "repo",
           "envs",
           "flags"
@@ -11273,6 +11345,31 @@
         ],
         "title": "ManualSyncIn"
       },
+      "ManualVersionsIn": {
+        "properties": {
+          "DEV": {
+            "title": "Dev",
+            "type": "string",
+            "maxLength": 100,
+            "nullable": true
+          },
+          "UAT": {
+            "title": "Uat",
+            "type": "string",
+            "maxLength": 100,
+            "nullable": true
+          },
+          "PROD": {
+            "title": "Prod",
+            "type": "string",
+            "maxLength": 100,
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "title": "ManualVersionsIn",
+        "description": "Manually entered versions; only the keys actually sent are applied (null/empty clears)."
+      },
       "NameCount": {
         "properties": {
           "name": {
@@ -11659,6 +11756,11 @@
             ],
             "title": "Area"
           },
+          "hidden": {
+            "type": "boolean",
+            "title": "Hidden",
+            "default": false
+          },
           "user": {
             "type": "string",
             "minLength": 1,
@@ -11688,6 +11790,10 @@
             "type": "string",
             "title": "Area"
           },
+          "hidden": {
+            "type": "boolean",
+            "title": "Hidden"
+          },
           "application_count": {
             "type": "integer",
             "title": "Application Count"
@@ -11698,6 +11804,7 @@
           "id",
           "name",
           "area",
+          "hidden",
           "application_count"
         ],
         "title": "ProductOut"
@@ -11717,6 +11824,11 @@
               "CORE",
               "TOUCHPOINT"
             ],
+            "nullable": true
+          },
+          "hidden": {
+            "title": "Hidden",
+            "type": "boolean",
             "nullable": true
           },
           "user": {
@@ -14091,9 +14203,8 @@
             "title": "Env"
           },
           "version": {
-            "title": "Version",
             "type": "string",
-            "nullable": true
+            "title": "Version"
           },
           "read_status": {
             "type": "string",
