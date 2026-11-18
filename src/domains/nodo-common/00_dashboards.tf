@@ -283,19 +283,10 @@ locals {
     ops       = local.opex_nodo_auth_operation_ids[var.env_short]
   })) : null
 
-  opex_nodo_multinode_url_paths = [
-    "/nodo/nodo-per-pm",
-    "/nodo/nodo-per-pa",
-    "/nodo-auth/nodo-per-pa",
-    "/nodo/nodo-per-psp-richiesta-avvisi",
-    "/nodo-auth/nodo-per-psp-richiesta-avvisi",
-    "/nodo/nodo-per-psp",
-    "/nodo-auth/nodo-per-psp",
-    "/nodo-auth/node-for-ecommerce",
-    "/nodo-auth/node-for-pa",
-    "/nodo/node-for-psp",
-    "/nodo-auth/node-for-psp",
-  ]
+  opex_nodo_multinode_all_operation_ids = {
+    for env_short, groups in local.opex_nodo_auth_operation_ids :
+    env_short => distinct(flatten([for group in values(groups) : values(group)]))
+  }
 
   opex_nodo_multinode_dashboard_json = contains(keys(local.opex_nodo_nodes), var.env_short) ? jsondecode(templatefile("./dashboards/multi-node-monitoring-ndp.json.tpl", {
     apim_id               = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/${local.pagopa_apim_rg}/providers/Microsoft.ApiManagement/service/${local.pagopa_apim_name}"
@@ -307,7 +298,7 @@ locals {
     nexi_postgres_backend = local.opex_nodo_nodes[var.env_short].nexi_postgres_backend
     nexi_postgres_id      = local.opex_nodo_nodes[var.env_short].nexi_postgres_id
     pagopa_postgres_id    = local.opex_nodo_nodes[var.env_short].pagopa_postgres_id
-    url_regex             = join("|", local.opex_nodo_multinode_url_paths)
+    all_operation_ids     = join(", ", [for id in local.opex_nodo_multinode_all_operation_ids[var.env_short] : "'${id}'"])
     ops                   = local.opex_nodo_auth_operation_ids[var.env_short]
   })) : null
 }
