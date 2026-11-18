@@ -7386,6 +7386,11 @@
             "minLength": 1,
             "pattern": "^[A-Za-z0-9._-]+$",
             "title": "Repository"
+          },
+          "repo_only": {
+            "type": "boolean",
+            "title": "Repo Only",
+            "default": false
           }
         },
         "type": "object",
