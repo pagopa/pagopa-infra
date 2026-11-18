@@ -100,7 +100,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        backendUrl_s startswith \"https://${nodo_host}/nodo\",\n        \"01 ${pagopa_postgres_id} PagoPA\",\n        backendUrl_s startswith \"${nexi_postgres_backend}\",\n        \"03 ${nexi_postgres_id} Nexi\",\n        backendUrl_s startswith \"https://${fdr_host}\",\n        \"04 FdR-Fase1\",\n        backendUrl_s startswith \"https://${nodo_host}/wisp\",\n        \"05 WISP Dismantling\",\n        (backendUrl_s == \"\"),\n        \"06 Managed by APIM policies\",\n        \"99 unknown\"\n    )\n| summarize Count = count() by raw_backend_name\n| extend backend_name = substring(raw_backend_name, 3)\n| project ['Routed Backend'] = backend_name, Count\n| render piechart\n\n",
+                  "value": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s in (monitored_apis | project operationId_s)\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        backendUrl_s startswith \"https://${nodo_host}/nodo\",\n        \"01 ${pagopa_postgres_id} PagoPA\",\n        backendUrl_s startswith \"${nexi_postgres_backend}\",\n        \"03 ${nexi_postgres_id} Nexi\",\n        backendUrl_s startswith \"https://${fdr_host}\",\n        \"04 FdR-Fase1\",\n        backendUrl_s startswith \"https://${nodo_host}/wisp\",\n        \"05 WISP Dismantling\",\n        (backendUrl_s == \"\"),\n        \"06 Managed by APIM policies\",\n        \"99 unknown\"\n    )\n| summarize Count = count() by raw_backend_name\n| extend backend_name = substring(raw_backend_name, 3)\n| project ['Routed Backend'] = backend_name, Count\n| render piechart\n\n",
                   "isOptional": true
                 },
                 {
@@ -158,7 +158,7 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        backendUrl_s startswith \"https://${nodo_host}/nodo\",\n        \"01 ${pagopa_postgres_id} PagoPA\",\n        backendUrl_s startswith \"${nexi_postgres_backend}\",\n        \"03 ${nexi_postgres_id} Nexi\",\n        backendUrl_s startswith \"https://${fdr_host}\",\n        \"04 FdR-Fase1\",\n        backendUrl_s startswith \"https://${nodo_host}/wisp\",\n        \"05 WISP Dismantling\",\n        (backendUrl_s == \"\"),\n        \"06 Managed by APIM policies\",\n        \"99 unknown\"\n    )\n| summarize Count = count() by raw_backend_name\n| extend backend_name = substring(raw_backend_name, 3)\n| project ['Routed Backend'] = backend_name, Count\n| render piechart\n\n",
+                  "Query": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s in (monitored_apis | project operationId_s)\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        backendUrl_s startswith \"https://${nodo_host}/nodo\",\n        \"01 ${pagopa_postgres_id} PagoPA\",\n        backendUrl_s startswith \"${nexi_postgres_backend}\",\n        \"03 ${nexi_postgres_id} Nexi\",\n        backendUrl_s startswith \"https://${fdr_host}\",\n        \"04 FdR-Fase1\",\n        backendUrl_s startswith \"https://${nodo_host}/wisp\",\n        \"05 WISP Dismantling\",\n        (backendUrl_s == \"\"),\n        \"06 Managed by APIM policies\",\n        \"99 unknown\"\n    )\n| summarize Count = count() by raw_backend_name\n| extend backend_name = substring(raw_backend_name, 3)\n| project ['Routed Backend'] = backend_name, Count\n| render piechart\n\n",
                   "PartTitle": "Routed primitives: Overview - Percentages",
                   "PartSubTitle": "Percentages about all Nodo dei Pagamenti's primitives, grouped by routing backend"
                 }
@@ -219,7 +219,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        backendUrl_s startswith \"https://${nodo_host}/nodo\",\n        \"01 ${pagopa_postgres_id} PagoPA\",\n        backendUrl_s startswith \"${nexi_postgres_backend}\",\n        \"03 ${nexi_postgres_id} Nexi\",\n        backendUrl_s startswith \"https://${fdr_host}\",\n        \"04 FdR-Fase1\",\n        backendUrl_s startswith \"https://${nodo_host}/wisp\",\n        \"05 WISP Dismantling\",\n        (backendUrl_s == \"\"),\n        \"06 Managed by APIM policies\",\n        \"99 unknown\"\n    )\n| summarize count() by raw_backend_name, primitive_name\n| order by raw_backend_name asc, primitive_name asc\n| extend backend_name = substring(raw_backend_name, 3)\n| project ['Routed Backend']=backend_name, ['Primitive']=primitive_name, ['Count']=count_\n\n",
+                  "value": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s in (monitored_apis | project operationId_s)\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        backendUrl_s startswith \"https://${nodo_host}/nodo\",\n        \"01 ${pagopa_postgres_id} PagoPA\",\n        backendUrl_s startswith \"${nexi_postgres_backend}\",\n        \"03 ${nexi_postgres_id} Nexi\",\n        backendUrl_s startswith \"https://${fdr_host}\",\n        \"04 FdR-Fase1\",\n        backendUrl_s startswith \"https://${nodo_host}/wisp\",\n        \"05 WISP Dismantling\",\n        (backendUrl_s == \"\"),\n        \"06 Managed by APIM policies\",\n        \"99 unknown\"\n    )\n| summarize count() by raw_backend_name, primitive_name\n| order by raw_backend_name asc, primitive_name asc\n| extend backend_name = substring(raw_backend_name, 3)\n| project ['Routed Backend']=backend_name, ['Primitive']=primitive_name, ['Count']=count_\n\n",
                   "isOptional": true
                 },
                 {
@@ -265,7 +265,7 @@
                     "Primitive": "366px",
                     "Count": "90px"
                   },
-                  "Query": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        backendUrl_s startswith \"https://${nodo_host}/nodo\",\n        \"01 ${pagopa_postgres_id} PagoPA\",\n        backendUrl_s startswith \"${nexi_postgres_backend}\",\n        \"03 ${nexi_postgres_id} Nexi\",\n        backendUrl_s startswith \"https://${fdr_host}\",\n        \"04 FdR-Fase1\",\n        backendUrl_s startswith \"https://${nodo_host}/wisp\",\n        \"05 WISP Dismantling\",\n        (backendUrl_s == \"\"),\n        \"06 Managed by APIM policies\",\n        \"99 unknown\"\n    )\n| summarize count() by raw_backend_name, primitive_name\n| order by raw_backend_name asc, primitive_name asc\n| extend backend_name = substring(raw_backend_name, 3)\n| project ['Routed Backend']=backend_name, ['Primitive']=primitive_name, ['Count']=count_\n\n",
+                  "Query": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s in (monitored_apis | project operationId_s)\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        backendUrl_s startswith \"https://${nodo_host}/nodo\",\n        \"01 ${pagopa_postgres_id} PagoPA\",\n        backendUrl_s startswith \"${nexi_postgres_backend}\",\n        \"03 ${nexi_postgres_id} Nexi\",\n        backendUrl_s startswith \"https://${fdr_host}\",\n        \"04 FdR-Fase1\",\n        backendUrl_s startswith \"https://${nodo_host}/wisp\",\n        \"05 WISP Dismantling\",\n        (backendUrl_s == \"\"),\n        \"06 Managed by APIM policies\",\n        \"99 unknown\"\n    )\n| summarize count() by raw_backend_name, primitive_name\n| order by raw_backend_name asc, primitive_name asc\n| extend backend_name = substring(raw_backend_name, 3)\n| project ['Routed Backend']=backend_name, ['Primitive']=primitive_name, ['Count']=count_\n\n",
                   "PartTitle": "Routed primitives: Overview - Volumes",
                   "PartSubTitle": "Volumes about routing of all Nodo dei Pagamenti's primitives"
                 }
@@ -326,7 +326,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        backendUrl_s startswith \"https://${nodo_host}/nodo\",\n        \"01 ${pagopa_postgres_id} PagoPA\",\n        backendUrl_s startswith \"${nexi_postgres_backend}\",\n        \"03 ${nexi_postgres_id} Nexi\",\n        \"99 not needed\"\n    )                 \n| where raw_backend_name != \"99 not needed\"\n| summarize Count = count() by raw_backend_name\n| extend backend_name = substring(raw_backend_name, 3)\n| project ['Routed Backend'] = backend_name, Count\n| render piechart\n\n",
+                  "value": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s in (monitored_apis | project operationId_s)\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        backendUrl_s startswith \"https://${nodo_host}/nodo\",\n        \"01 ${pagopa_postgres_id} PagoPA\",\n        backendUrl_s startswith \"${nexi_postgres_backend}\",\n        \"03 ${nexi_postgres_id} Nexi\",\n        \"99 not needed\"\n    )                 \n| where raw_backend_name != \"99 not needed\"\n| summarize Count = count() by raw_backend_name\n| extend backend_name = substring(raw_backend_name, 3)\n| project ['Routed Backend'] = backend_name, Count\n| render piechart\n\n",
                   "isOptional": true
                 },
                 {
@@ -384,7 +384,7 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        backendUrl_s startswith \"https://${nodo_host}/nodo\",\n        \"01 ${pagopa_postgres_id} PagoPA\",\n        backendUrl_s startswith \"${nexi_postgres_backend}\",\n        \"03 ${nexi_postgres_id} Nexi\",\n        \"99 not needed\"\n    )                 \n| where raw_backend_name != \"99 not needed\"\n| summarize Count = count() by raw_backend_name\n| extend backend_name = substring(raw_backend_name, 3)\n| project ['Routed Backend'] = backend_name, Count\n| render piechart\n\n",
+                  "Query": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s in (monitored_apis | project operationId_s)\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        backendUrl_s startswith \"https://${nodo_host}/nodo\",\n        \"01 ${pagopa_postgres_id} PagoPA\",\n        backendUrl_s startswith \"${nexi_postgres_backend}\",\n        \"03 ${nexi_postgres_id} Nexi\",\n        \"99 not needed\"\n    )                 \n| where raw_backend_name != \"99 not needed\"\n| summarize Count = count() by raw_backend_name\n| extend backend_name = substring(raw_backend_name, 3)\n| project ['Routed Backend'] = backend_name, Count\n| render piechart\n\n",
                   "PartTitle": "Routed primitives: On NDP instances - Percentages",
                   "PartSubTitle": "Percentages about primitives routed on NDP instances"
                 }
@@ -583,7 +583,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| where backendUrl_s == \"\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        (backendUrl_s == \"\" and responseCode_d == 200),\n        \"01 OK\",\n        (backendUrl_s == \"\" and responseCode_d == 401),\n        \"02 Error: Invalid subscription key\",\n        (backendUrl_s == \"\" and lastError_reason_s != \"\"),\n        strcat(\"03 Error: \", lastError_reason_s),\n        \"99 unknown\"\n    )                 \n| summarize count() by raw_backend_name, primitive_name\n| order by raw_backend_name asc\n| extend backend_name = substring(raw_backend_name, 3)\n| project ['Outcome']=backend_name, ['Primitive']=primitive_name, ['Count']=count_\n| render piechart\n\n",
+                  "value": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s in (monitored_apis | project operationId_s)\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| where backendUrl_s == \"\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        (backendUrl_s == \"\" and responseCode_d == 200),\n        \"01 OK\",\n        (backendUrl_s == \"\" and responseCode_d == 401),\n        \"02 Error: Invalid subscription key\",\n        (backendUrl_s == \"\" and lastError_reason_s != \"\"),\n        strcat(\"03 Error: \", lastError_reason_s),\n        \"99 unknown\"\n    )                 \n| summarize count() by raw_backend_name, primitive_name\n| order by raw_backend_name asc\n| extend backend_name = substring(raw_backend_name, 3)\n| project ['Outcome']=backend_name, ['Primitive']=primitive_name, ['Count']=count_\n| render piechart\n\n",
                   "isOptional": true
                 },
                 {
@@ -641,7 +641,7 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| where backendUrl_s == \"\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        (backendUrl_s == \"\" and responseCode_d == 200),\n        \"01 OK\",\n        (backendUrl_s == \"\" and responseCode_d == 401),\n        \"02 Error: Invalid subscription key\",\n        (backendUrl_s == \"\" and lastError_reason_s != \"\"),\n        strcat(\"03 Error: \", lastError_reason_s),\n        \"99 unknown\"\n    )                 \n| summarize count() by raw_backend_name, primitive_name\n| order by raw_backend_name asc\n| extend backend_name = substring(raw_backend_name, 3)\n| project ['Outcome']=backend_name, ['Primitive']=primitive_name, ['Count']=count_\n| render piechart\n\n",
+                  "Query": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s in (monitored_apis | project operationId_s)\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| where backendUrl_s == \"\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        (backendUrl_s == \"\" and responseCode_d == 200),\n        \"01 OK\",\n        (backendUrl_s == \"\" and responseCode_d == 401),\n        \"02 Error: Invalid subscription key\",\n        (backendUrl_s == \"\" and lastError_reason_s != \"\"),\n        strcat(\"03 Error: \", lastError_reason_s),\n        \"99 unknown\"\n    )                 \n| summarize count() by raw_backend_name, primitive_name\n| order by raw_backend_name asc\n| extend backend_name = substring(raw_backend_name, 3)\n| project ['Outcome']=backend_name, ['Primitive']=primitive_name, ['Count']=count_\n| render piechart\n\n",
                   "ControlType": "FrameControlChart",
                   "SpecificChart": "Pie",
                   "PartTitle": "Routed primitives: Managed by APIM policies - Percentages",
@@ -722,7 +722,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| where backendUrl_s == \"\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        (backendUrl_s == \"\" and responseCode_d == 200),\n        \"01 OK\",\n        (backendUrl_s == \"\" and responseCode_d == 401),\n        \"02 Error: Invalid subscription key\",\n        (backendUrl_s == \"\" and lastError_reason_s != \"\"),\n        strcat(\"03 Error: \", lastError_reason_s),\n        \"99 Error: Unknown\"\n    )                 \n| where raw_backend_name != \"01 OK\" and raw_backend_name !startswith \"02 Error\"\n| extend backend_name = substring(raw_backend_name, 10)\n| project \n    ['Primitive']=primitive_name, \n    ['Error']=backend_name, \n    ['Status']=responseCode_d, \n    ['Execution time']=strcat(backendTime_d / 1000, \" sec\"), \n    ['Caused by']=lastError_message_s\n\n",
+                  "value": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s in (monitored_apis | project operationId_s)\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| where backendUrl_s == \"\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        (backendUrl_s == \"\" and responseCode_d == 200),\n        \"01 OK\",\n        (backendUrl_s == \"\" and responseCode_d == 401),\n        \"02 Error: Invalid subscription key\",\n        (backendUrl_s == \"\" and lastError_reason_s != \"\"),\n        strcat(\"03 Error: \", lastError_reason_s),\n        \"99 Error: Unknown\"\n    )                 \n| where raw_backend_name != \"01 OK\" and raw_backend_name !startswith \"02 Error\"\n| extend backend_name = substring(raw_backend_name, 10)\n| project \n    ['Primitive']=primitive_name, \n    ['Error']=backend_name, \n    ['Status']=responseCode_d, \n    ['Execution time']=strcat(backendTime_d / 1000, \" sec\"), \n    ['Caused by']=lastError_message_s\n\n",
                   "isOptional": true
                 },
                 {
@@ -770,7 +770,7 @@
                     "Execution time": "131px",
                     "Status": "82px"
                   },
-                  "Query": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| where backendUrl_s == \"\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        (backendUrl_s == \"\" and responseCode_d == 200),\n        \"01 OK\",\n        (backendUrl_s == \"\" and responseCode_d == 401),\n        \"02 Error: Invalid subscription key\",\n        (backendUrl_s == \"\" and lastError_reason_s != \"\"),\n        strcat(\"03 Error: \", lastError_reason_s),\n        \"99 Error: Unknown\"\n    )                 \n| where raw_backend_name != \"01 OK\" and raw_backend_name !startswith \"02 Error\"\n| extend backend_name = substring(raw_backend_name, 10)\n| project \n    ['Primitive']=primitive_name, \n    ['Error']=backend_name, \n    ['Status']=responseCode_d, \n    ['Execution time']=strcat(backendTime_d / 1000, \" sec\"), \n    ['Caused by']=lastError_message_s\n\n",
+                  "Query": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s in (monitored_apis | project operationId_s)\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| where backendUrl_s == \"\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        (backendUrl_s == \"\" and responseCode_d == 200),\n        \"01 OK\",\n        (backendUrl_s == \"\" and responseCode_d == 401),\n        \"02 Error: Invalid subscription key\",\n        (backendUrl_s == \"\" and lastError_reason_s != \"\"),\n        strcat(\"03 Error: \", lastError_reason_s),\n        \"99 Error: Unknown\"\n    )                 \n| where raw_backend_name != \"01 OK\" and raw_backend_name !startswith \"02 Error\"\n| extend backend_name = substring(raw_backend_name, 10)\n| project \n    ['Primitive']=primitive_name, \n    ['Error']=backend_name, \n    ['Status']=responseCode_d, \n    ['Execution time']=strcat(backendTime_d / 1000, \" sec\"), \n    ['Caused by']=lastError_message_s\n\n",
                   "PartTitle": "Routed primitives: Managed by APIM policies - Error details",
                   "PartSubTitle": "Details about errors of primitives not routed on backend and managed directly by APIM policies"
                 }
@@ -1574,6 +1574,286 @@
           },
           {
             "position": {
+              "x": 9,
+              "y": 34,
+              "colSpan": 5,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "${appinsights_id}"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "4f326218-80a1-4fa6-ba04-1b1ead3c389a",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_psp_v1.verifyPaymentNotice.id}', '${apis.node_for_psp_v1.verifyPaymentNotice.name}', '${apis.node_for_psp_v1_noauth.verifyPaymentNotice.id}', '${apis.node_for_psp_v1_noauth.verifyPaymentNotice.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                target startswith \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${pagopa_postgres_id} PagoPA\"\n| summarize Count = count() by bin(timestamp, 5m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${pagopa_postgres_id} PagoPA\"\n    )\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "FaultCode per ${pagopa_postgres_id} PagoPA",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "${appinsights_name}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "Count",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "fault_code",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_psp_v1.verifyPaymentNotice.id}', '${apis.node_for_psp_v1.verifyPaymentNotice.name}', '${apis.node_for_psp_v1_noauth.verifyPaymentNotice.id}', '${apis.node_for_psp_v1_noauth.verifyPaymentNotice.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                target startswith \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${pagopa_postgres_id} PagoPA\"\n| summarize Count = count() by bin(timestamp, 5m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${pagopa_postgres_id} PagoPA\"\n    )\n\n",
+                  "SpecificChart": "Line",
+                  "PartTitle": "FaultCode per ${pagopa_postgres_id} PagoPA",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "Count",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "fault_code",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "IsQueryContainTimeRange": false
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 14,
+              "y": 34,
+              "colSpan": 5,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "${appinsights_id}"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "8611af56-c872-4758-a987-4a7b87a72c51",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_psp_v1.verifyPaymentNotice.id}', '${apis.node_for_psp_v1.verifyPaymentNotice.name}', '${apis.node_for_psp_v1_noauth.verifyPaymentNotice.id}', '${apis.node_for_psp_v1_noauth.verifyPaymentNotice.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                target startswith \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${nexi_postgres_id} Nexi\"\n| summarize Count = count() by bin(timestamp, 5m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${nexi_postgres_id} Nexi\"\n    )\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "FaultCode per ${nexi_postgres_id} Nexi",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "${appinsights_name}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "Count",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "fault_code",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_psp_v1.verifyPaymentNotice.id}', '${apis.node_for_psp_v1.verifyPaymentNotice.name}', '${apis.node_for_psp_v1_noauth.verifyPaymentNotice.id}', '${apis.node_for_psp_v1_noauth.verifyPaymentNotice.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                target startswith \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${nexi_postgres_id} Nexi\"\n| summarize Count = count() by bin(timestamp, 5m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${nexi_postgres_id} Nexi\"\n    )\n\n",
+                  "SpecificChart": "Line",
+                  "PartTitle": "FaultCode per ${nexi_postgres_id} Nexi",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "Count",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "fault_code",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "IsQueryContainTimeRange": false
+                }
+              }
+            }
+          },
+          {
+            "position": {
               "x": 0,
               "y": 39,
               "colSpan": 18,
@@ -2369,6 +2649,286 @@
           },
           {
             "position": {
+              "x": 9,
+              "y": 55,
+              "colSpan": 5,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "${appinsights_id}"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "45b0c0ad-1c0b-4116-916d-4cbf27e0e47a",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_psp_v1.activatePaymentNotice.id}', '${apis.node_for_psp_v1.activatePaymentNotice.name}', '${apis.node_for_psp_v1.activatePaymentNoticeV2.id}', '${apis.node_for_psp_v1.activatePaymentNoticeV2.name}', '${apis.node_for_psp_v1_noauth.activatePaymentNotice.id}', '${apis.node_for_psp_v1_noauth.activatePaymentNotice.name}', '${apis.node_for_psp_v1_noauth.activatePaymentNoticeV2.id}', '${apis.node_for_psp_v1_noauth.activatePaymentNoticeV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                target startswith \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${pagopa_postgres_id} PagoPA\"\n| summarize Count = count() by bin(timestamp, 5m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${pagopa_postgres_id} PagoPA\"\n    )\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "FaultCode per ${pagopa_postgres_id} PagoPA",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "${appinsights_name}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "Count",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "fault_code",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_psp_v1.activatePaymentNotice.id}', '${apis.node_for_psp_v1.activatePaymentNotice.name}', '${apis.node_for_psp_v1.activatePaymentNoticeV2.id}', '${apis.node_for_psp_v1.activatePaymentNoticeV2.name}', '${apis.node_for_psp_v1_noauth.activatePaymentNotice.id}', '${apis.node_for_psp_v1_noauth.activatePaymentNotice.name}', '${apis.node_for_psp_v1_noauth.activatePaymentNoticeV2.id}', '${apis.node_for_psp_v1_noauth.activatePaymentNoticeV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                target startswith \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${pagopa_postgres_id} PagoPA\"\n| summarize Count = count() by bin(timestamp, 5m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${pagopa_postgres_id} PagoPA\"\n    )\n\n",
+                  "SpecificChart": "Line",
+                  "PartTitle": "FaultCode per ${pagopa_postgres_id} PagoPA",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "Count",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "fault_code",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "IsQueryContainTimeRange": false
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 14,
+              "y": 55,
+              "colSpan": 5,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "${appinsights_id}"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "a1929ce0-71db-41e9-afb8-9dcce19ff170",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_psp_v1.activatePaymentNotice.id}', '${apis.node_for_psp_v1.activatePaymentNotice.name}', '${apis.node_for_psp_v1.activatePaymentNoticeV2.id}', '${apis.node_for_psp_v1.activatePaymentNoticeV2.name}', '${apis.node_for_psp_v1_noauth.activatePaymentNotice.id}', '${apis.node_for_psp_v1_noauth.activatePaymentNotice.name}', '${apis.node_for_psp_v1_noauth.activatePaymentNoticeV2.id}', '${apis.node_for_psp_v1_noauth.activatePaymentNoticeV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                target startswith \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${nexi_postgres_id} Nexi\"\n| summarize Count = count() by bin(timestamp, 5m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${nexi_postgres_id} Nexi\"\n    )\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "FaultCode per ${nexi_postgres_id} Nexi",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "${appinsights_name}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "Count",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "fault_code",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_psp_v1.activatePaymentNotice.id}', '${apis.node_for_psp_v1.activatePaymentNotice.name}', '${apis.node_for_psp_v1.activatePaymentNoticeV2.id}', '${apis.node_for_psp_v1.activatePaymentNoticeV2.name}', '${apis.node_for_psp_v1_noauth.activatePaymentNotice.id}', '${apis.node_for_psp_v1_noauth.activatePaymentNotice.name}', '${apis.node_for_psp_v1_noauth.activatePaymentNoticeV2.id}', '${apis.node_for_psp_v1_noauth.activatePaymentNoticeV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                target startswith \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${nexi_postgres_id} Nexi\"\n| summarize Count = count() by bin(timestamp, 5m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${nexi_postgres_id} Nexi\"\n    )\n\n",
+                  "SpecificChart": "Line",
+                  "PartTitle": "FaultCode per ${nexi_postgres_id} Nexi",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "Count",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "fault_code",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "IsQueryContainTimeRange": false
+                }
+              }
+            }
+          },
+          {
+            "position": {
               "x": 0,
               "y": 60,
               "colSpan": 18,
@@ -3158,6 +3718,286 @@
                   "Query": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| extend raw_backend_name = case ( \n                                target startswith \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| extend [\"Timestamp\"] = timestamp\n| summarize [\"Average Duration (ms)\"] = avg(duration) by bin([\"Timestamp\"], 1m), [\"Backend Name\"]=backend_name\n| order by [\"Timestamp\"] asc\n| render timechart\n\n",
                   "PartTitle": "Routed primitives: ClosePaymentV2 - Average time duration on NDP instances",
                   "PartSubTitle": "Average elapsed time on NDP instances for routed closePaymentV2"
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 9,
+              "y": 76,
+              "colSpan": 5,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "${appinsights_id}"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "7aaafe3a-8e22-473e-ace0-df9923a5ab1a",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                target startswith \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${pagopa_postgres_id} PagoPA\"\n| summarize Count = count() by bin(timestamp, 5m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${pagopa_postgres_id} PagoPA\"\n    )\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "FaultCode per ${pagopa_postgres_id} PagoPA",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "${appinsights_name}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "Count",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "fault_code",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                target startswith \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${pagopa_postgres_id} PagoPA\"\n| summarize Count = count() by bin(timestamp, 5m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${pagopa_postgres_id} PagoPA\"\n    )\n\n",
+                  "SpecificChart": "Line",
+                  "PartTitle": "FaultCode per ${pagopa_postgres_id} PagoPA",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "Count",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "fault_code",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "IsQueryContainTimeRange": false
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 14,
+              "y": 76,
+              "colSpan": 5,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "${appinsights_id}"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "7c80546c-88b4-4945-b8be-b655ddc43ef7",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                target startswith \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${nexi_postgres_id} Nexi\"\n| summarize Count = count() by bin(timestamp, 5m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${nexi_postgres_id} Nexi\"\n    )\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "FaultCode per ${nexi_postgres_id} Nexi",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "${appinsights_name}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "Count",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "fault_code",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                target startswith \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${nexi_postgres_id} Nexi\"\n| summarize Count = count() by bin(timestamp, 5m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${nexi_postgres_id} Nexi\"\n    )\n\n",
+                  "SpecificChart": "Line",
+                  "PartTitle": "FaultCode per ${nexi_postgres_id} Nexi",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "Count",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "fault_code",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "IsQueryContainTimeRange": false
                 }
               }
             }
@@ -3971,6 +4811,286 @@
                     ],
                     "aggregation": "Sum"
                   }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 9,
+              "y": 97,
+              "colSpan": 5,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "${appinsights_id}"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "b9515c8d-4dfa-45f3-8ffb-2730f7d90bae",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_psp_v1.sendPaymentOutcome.id}', '${apis.node_for_psp_v1.sendPaymentOutcome.name}', '${apis.node_for_psp_v1.sendPaymentOutcomeV2.id}', '${apis.node_for_psp_v1.sendPaymentOutcomeV2.name}', '${apis.node_for_psp_v1_noauth.sendPaymentOutcome.id}', '${apis.node_for_psp_v1_noauth.sendPaymentOutcome.name}', '${apis.node_for_psp_v1_noauth.sendPaymentOutcomeV2.id}', '${apis.node_for_psp_v1_noauth.sendPaymentOutcomeV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                target startswith \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${pagopa_postgres_id} PagoPA\"\n| summarize Count = count() by bin(timestamp, 5m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${pagopa_postgres_id} PagoPA\"\n    )\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "FaultCode per ${pagopa_postgres_id} PagoPA",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "${appinsights_name}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "Count",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "fault_code",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_psp_v1.sendPaymentOutcome.id}', '${apis.node_for_psp_v1.sendPaymentOutcome.name}', '${apis.node_for_psp_v1.sendPaymentOutcomeV2.id}', '${apis.node_for_psp_v1.sendPaymentOutcomeV2.name}', '${apis.node_for_psp_v1_noauth.sendPaymentOutcome.id}', '${apis.node_for_psp_v1_noauth.sendPaymentOutcome.name}', '${apis.node_for_psp_v1_noauth.sendPaymentOutcomeV2.id}', '${apis.node_for_psp_v1_noauth.sendPaymentOutcomeV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                target startswith \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${pagopa_postgres_id} PagoPA\"\n| summarize Count = count() by bin(timestamp, 5m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${pagopa_postgres_id} PagoPA\"\n    )\n\n",
+                  "SpecificChart": "Line",
+                  "PartTitle": "FaultCode per ${pagopa_postgres_id} PagoPA",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "Count",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "fault_code",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "IsQueryContainTimeRange": false
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 14,
+              "y": 97,
+              "colSpan": 5,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "${appinsights_id}"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "53a5c9a0-4814-450b-b5aa-2632e4fc1e1b",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_psp_v1.sendPaymentOutcome.id}', '${apis.node_for_psp_v1.sendPaymentOutcome.name}', '${apis.node_for_psp_v1.sendPaymentOutcomeV2.id}', '${apis.node_for_psp_v1.sendPaymentOutcomeV2.name}', '${apis.node_for_psp_v1_noauth.sendPaymentOutcome.id}', '${apis.node_for_psp_v1_noauth.sendPaymentOutcome.name}', '${apis.node_for_psp_v1_noauth.sendPaymentOutcomeV2.id}', '${apis.node_for_psp_v1_noauth.sendPaymentOutcomeV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                target startswith \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${nexi_postgres_id} Nexi\"\n| summarize Count = count() by bin(timestamp, 5m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${nexi_postgres_id} Nexi\"\n    )\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "FaultCode per ${nexi_postgres_id} Nexi",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "${appinsights_name}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "Count",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "fault_code",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_psp_v1.sendPaymentOutcome.id}', '${apis.node_for_psp_v1.sendPaymentOutcome.name}', '${apis.node_for_psp_v1.sendPaymentOutcomeV2.id}', '${apis.node_for_psp_v1.sendPaymentOutcomeV2.name}', '${apis.node_for_psp_v1_noauth.sendPaymentOutcome.id}', '${apis.node_for_psp_v1_noauth.sendPaymentOutcome.name}', '${apis.node_for_psp_v1_noauth.sendPaymentOutcomeV2.id}', '${apis.node_for_psp_v1_noauth.sendPaymentOutcomeV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                target startswith \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${nexi_postgres_id} Nexi\"\n| summarize Count = count() by bin(timestamp, 5m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${nexi_postgres_id} Nexi\"\n    )\n\n",
+                  "SpecificChart": "Line",
+                  "PartTitle": "FaultCode per ${nexi_postgres_id} Nexi",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "Count",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "fault_code",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "IsQueryContainTimeRange": false
                 }
               }
             }
