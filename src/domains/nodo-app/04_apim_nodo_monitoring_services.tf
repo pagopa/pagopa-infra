@@ -62,7 +62,7 @@ module "apim_nodo_monitoring_api" {
   service_url = null
 
   content_format = "openapi"
-  content_value = templatefile("./api/nodopagamenti_api/monitoring/v1/_NodoDeiPagamenti.openapi.json.tpl", {
+  content_value = templatefile("./api/nodopagamenti_api/monitoring/v1/_openapi.json.tpl", {
     host    = local.apim_hostname
     service = module.apim_nodo_dei_pagamenti_monitoring_product.product_id
   })
