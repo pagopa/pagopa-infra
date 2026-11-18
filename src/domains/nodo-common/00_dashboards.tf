@@ -288,6 +288,59 @@ locals {
     env_short => distinct(flatten([for group in values(groups) : values(group)]))
   }
 
+  opex_nodo_multinode_ops = lookup(local.opex_nodo_auth_operation_ids, var.env_short, {})
+
+  # references to the operation ids of the deprecated primitives
+  opex_nodo_multinode_deprecated_operation_ids = try([
+    local.opex_nodo_multinode_ops.node_for_psp_v1.nodoChiediInformativaPA,
+    local.opex_nodo_multinode_ops.nodo_per_pa_v1.nodoChiediCopiaRT,
+    local.opex_nodo_multinode_ops.nodo_per_pa_v1_noauth.nodoChiediCopiaRT,
+    local.opex_nodo_multinode_ops.nodo_per_pa_v1_noauth.nodoChiediElencoQuadraturePA,
+    local.opex_nodo_multinode_ops.nodo_per_pa_v1_noauth.nodoChiediInformativaPSP,
+    local.opex_nodo_multinode_ops.nodo_per_pa_v1_noauth.nodoChiediListaPendentiRPT,
+    local.opex_nodo_multinode_ops.nodo_per_pa_v1_noauth.nodoChiediQuadraturaPA,
+    local.opex_nodo_multinode_ops.nodo_per_pa_v1_noauth.nodoChiediStatoRPT,
+    local.opex_nodo_multinode_ops.nodo_per_pa_v1_noauth.nodoInviaCarrelloRPT,
+    local.opex_nodo_multinode_ops.nodo_per_pa_v1_noauth.nodoInviaRPT,
+    local.opex_nodo_multinode_ops.nodo_per_pa_v1_noauth.nodoPAChiediInformativaPA,
+    local.opex_nodo_multinode_ops.nodo_per_pm_v1_noauth.closePayment,
+    local.opex_nodo_multinode_ops.nodo_per_pm_v1_noauth.nodoChiediAvanzamentoPagamento,
+    local.opex_nodo_multinode_ops.nodo_per_pm_v1_noauth.nodoChiediInformazioniPagamento,
+    local.opex_nodo_multinode_ops.nodo_per_pm_v1_noauth.nodoChiediListaPSP,
+    local.opex_nodo_multinode_ops.nodo_per_pm_v1_noauth.nodoInoltraEsitoPagamentoCarta,
+    local.opex_nodo_multinode_ops.nodo_per_pm_v1_noauth.nodoInoltraEsitoPagamentoPayPal,
+    local.opex_nodo_multinode_ops.nodo_per_pm_v1_noauth.nodoInoltraPagamentoMod1,
+    local.opex_nodo_multinode_ops.nodo_per_pm_v1_noauth.nodoInoltraPagamentoMod2,
+    local.opex_nodo_multinode_ops.nodo_per_pm_v1_noauth.nodoNotificaAnnullamento,
+    local.opex_nodo_multinode_ops.nodo_per_pm_v1_noauth.parkedList,
+    local.opex_nodo_multinode_ops.nodo_per_psp_v1.nodoAttivaRPT,
+    local.opex_nodo_multinode_ops.nodo_per_psp_v1.nodoChiediElencoQuadraturePSP,
+    local.opex_nodo_multinode_ops.nodo_per_psp_v1.nodoChiediInformativaPA,
+    local.opex_nodo_multinode_ops.nodo_per_psp_v1.nodoInviaRT,
+    local.opex_nodo_multinode_ops.nodo_per_psp_v1.nodoVerificaRPT,
+    local.opex_nodo_multinode_ops.nodo_per_psp_v1_noauth.nodoAttivaRPT,
+    local.opex_nodo_multinode_ops.nodo_per_psp_v1_noauth.nodoChiediElencoQuadraturePSP,
+    local.opex_nodo_multinode_ops.nodo_per_psp_v1_noauth.nodoChiediInformativaPA,
+    local.opex_nodo_multinode_ops.nodo_per_psp_v1_noauth.nodoInviaRT,
+    local.opex_nodo_multinode_ops.nodo_per_psp_v1_noauth.nodoVerificaRPT,
+  ], [])
+
+  # api structure (id, name, deprecated) built once, keyed by service group and operation
+  opex_nodo_multinode_apis = {
+    for group, operations in local.opex_nodo_multinode_ops : group => {
+      for name, id in operations : name => {
+        id         = id
+        name       = name
+        deprecated = contains(local.opex_nodo_multinode_deprecated_operation_ids, id)
+      }
+    }
+  }
+
+  opex_nodo_multinode_monitored_apis_kql = "datatable(operationId_s: string, primitive: string, deprecated: bool)[${join(", ", distinct(flatten([
+    for group, operations in local.opex_nodo_multinode_apis : [
+      for name, api in operations : "'${api.id}', '${api.name}', ${api.deprecated}"
+    ]
+  ])))}]"
   opex_nodo_multinode_dashboard_json = contains(keys(local.opex_nodo_nodes), var.env_short) ? jsondecode(templatefile("./dashboards/multi-node-monitoring-ndp.json.tpl", {
     apim_id               = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/${local.pagopa_apim_rg}/providers/Microsoft.ApiManagement/service/${local.pagopa_apim_name}"
     apim_name             = local.pagopa_apim_name
@@ -299,7 +352,8 @@ locals {
     nexi_postgres_id      = local.opex_nodo_nodes[var.env_short].nexi_postgres_id
     pagopa_postgres_id    = local.opex_nodo_nodes[var.env_short].pagopa_postgres_id
     all_operation_ids     = join(", ", [for id in local.opex_nodo_multinode_all_operation_ids[var.env_short] : "'${id}'"])
-    ops                   = local.opex_nodo_auth_operation_ids[var.env_short]
+    apis                  = local.opex_nodo_multinode_apis
+    monitored_apis_kql    = local.opex_nodo_multinode_monitored_apis_kql
   })) : null
 }
 
