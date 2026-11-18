@@ -2609,6 +2609,67 @@
         }
       }
     },
+    "/api/v1/releases/versions": {
+      "get": {
+        "tags": [
+          "releases"
+        ],
+        "summary": "Get Version",
+        "description": "Last known version of an application (by ``product_key``) in an environment.",
+        "operationId": "get_version_api_v1_releases_versions_get",
+        "parameters": [
+          {
+            "name": "product_key",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "title": "Product Key"
+            }
+          },
+          {
+            "name": "env",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "enum": [
+                "DEV",
+                "UAT",
+                "PROD"
+              ],
+              "type": "string",
+              "title": "Env"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VersionOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Application or version not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/releases/sync-status": {
       "get": {
         "tags": [
@@ -4947,6 +5008,26 @@
             "schema": {
               "type": "string",
               "title": "Test Object"
+            }
+          },
+          {
+            "name": "test_object_version",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Test Object Version",
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "test_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Test Type",
+              "type": "string",
+              "nullable": true
             }
           }
         ],
@@ -13993,6 +14074,67 @@
           "type"
         ],
         "title": "ValidationError"
+      },
+      "VersionOut": {
+        "properties": {
+          "product_key": {
+            "type": "string",
+            "title": "Product Key"
+          },
+          "env": {
+            "type": "string",
+            "enum": [
+              "DEV",
+              "UAT",
+              "PROD"
+            ],
+            "title": "Env"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string",
+            "nullable": true
+          },
+          "read_status": {
+            "type": "string",
+            "title": "Read Status"
+          },
+          "error_detail": {
+            "title": "Error Detail",
+            "type": "string",
+            "nullable": true
+          },
+          "checked_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Checked At"
+          },
+          "last_ok_at": {
+            "title": "Last Ok At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "version_since": {
+            "title": "Version Since",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "product_key",
+          "env",
+          "version",
+          "read_status",
+          "error_detail",
+          "checked_at",
+          "last_ok_at",
+          "version_since"
+        ],
+        "title": "VersionOut",
+        "description": "Last known version of an application in one environment (from ``sp_version_state``).\n\n``version`` is the last good read: it is kept when a later read fails, so callers\nshould also look at ``read_status`` and ``checked_at`` to judge how fresh it is."
       }
     }
   }
