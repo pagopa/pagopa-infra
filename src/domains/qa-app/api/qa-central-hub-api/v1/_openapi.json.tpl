@@ -2524,6 +2524,646 @@
         }
       }
     },
+    "/api/v1/releases/status": {
+      "get": {
+        "tags": [
+          "releases"
+        ],
+        "summary": "Get Status",
+        "operationId": "get_status_api_v1_releases_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/releases/summary": {
+      "get": {
+        "tags": [
+          "releases"
+        ],
+        "summary": "Get Summary",
+        "operationId": "get_summary_api_v1_releases_summary_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SummaryOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/releases/applications/{application_id}": {
+      "get": {
+        "tags": [
+          "releases"
+        ],
+        "summary": "Get Application",
+        "operationId": "get_application_api_v1_releases_applications__application_id__get",
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Application Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationDetailOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/releases/sync-status": {
+      "get": {
+        "tags": [
+          "releases"
+        ],
+        "summary": "Get Sync Status",
+        "operationId": "get_sync_status_api_v1_releases_sync_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Sync Status Api V1 Releases Sync Status Get",
+                  "$ref": "#/components/schemas/SyncStatusOut",
+                  "nullable": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/releases/sync": {
+      "post": {
+        "tags": [
+          "releases"
+        ],
+        "summary": "Trigger Sync",
+        "operationId": "trigger_sync_api_v1_releases_sync_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManualSyncIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SyncStatusOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/releases/catalog/products": {
+      "get": {
+        "tags": [
+          "releases"
+        ],
+        "summary": "List Products",
+        "operationId": "list_products_api_v1_releases_catalog_products_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProductOut"
+                  },
+                  "type": "array",
+                  "title": "Response List Products Api V1 Releases Catalog Products Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "releases"
+        ],
+        "summary": "Create Product",
+        "operationId": "create_product_api_v1_releases_catalog_products_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductOut"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/releases/catalog/products/{product_id}": {
+      "patch": {
+        "tags": [
+          "releases"
+        ],
+        "summary": "Update Product",
+        "operationId": "update_product_api_v1_releases_catalog_products__product_id__patch",
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Product Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductPatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "releases"
+        ],
+        "summary": "Delete Product",
+        "operationId": "delete_product_api_v1_releases_catalog_products__product_id__delete",
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Product Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/releases/catalog/applications": {
+      "get": {
+        "tags": [
+          "releases"
+        ],
+        "summary": "List Applications",
+        "operationId": "list_applications_api_v1_releases_catalog_applications_get",
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Product Id",
+              "type": "string",
+              "format": "uuid",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApplicationOut"
+                  },
+                  "title": "Response List Applications Api V1 Releases Catalog Applications Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "releases"
+        ],
+        "summary": "Create Application",
+        "operationId": "create_application_api_v1_releases_catalog_applications_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/releases/catalog/applications/check": {
+      "post": {
+        "tags": [
+          "releases"
+        ],
+        "summary": "Check Application",
+        "operationId": "check_application_api_v1_releases_catalog_applications_check_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/releases/catalog/applications/{application_id}": {
+      "patch": {
+        "tags": [
+          "releases"
+        ],
+        "summary": "Update Application",
+        "operationId": "update_application_api_v1_releases_catalog_applications__application_id__patch",
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Application Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationPatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "releases"
+        ],
+        "summary": "Delete Application",
+        "operationId": "delete_application_api_v1_releases_catalog_applications__application_id__delete",
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Application Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/releases/catalog/test-objects": {
+      "get": {
+        "tags": [
+          "releases"
+        ],
+        "summary": "List Test Objects",
+        "operationId": "list_test_objects_api_v1_releases_catalog_test_objects_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "Response List Test Objects Api V1 Releases Catalog Test Objects Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/releases/catalog/ea-components": {
+      "get": {
+        "tags": [
+          "releases"
+        ],
+        "summary": "List Ea Components",
+        "operationId": "list_ea_components_api_v1_releases_catalog_ea_components_get",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Q",
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EaComponentOut"
+                  },
+                  "title": "Response List Ea Components Api V1 Releases Catalog Ea Components Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/docs": {
       "get": {
         "tags": [
@@ -6022,6 +6662,403 @@
         ],
         "title": "ActionCatalogEntry"
       },
+      "ApplicationDetailOut": {
+        "properties": {
+          "application": {
+            "$ref": "#/components/schemas/ApplicationRowOut"
+          },
+          "product_name": {
+            "type": "string",
+            "title": "Product Name"
+          },
+          "history": {
+            "additionalProperties": {
+              "items": {
+                "$ref": "#/components/schemas/DeployEventOut"
+              },
+              "type": "array"
+            },
+            "propertyNames": {
+              "enum": [
+                "REPO",
+                "DEV",
+                "UAT",
+                "PROD"
+              ]
+            },
+            "type": "object",
+            "title": "History"
+          }
+        },
+        "type": "object",
+        "required": [
+          "application",
+          "product_name",
+          "history"
+        ],
+        "title": "ApplicationDetailOut"
+      },
+      "ApplicationIn": {
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Product Id"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Name"
+          },
+          "product_key": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Product Key"
+          },
+          "repository": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9._-]+$",
+            "title": "Repository"
+          },
+          "pipeline_url": {
+            "title": "Pipeline Url",
+            "type": "string",
+            "minLength": 1,
+            "nullable": true
+          },
+          "runtime": {
+            "type": "string",
+            "enum": [
+              "AKS",
+              "AZ"
+            ],
+            "title": "Runtime"
+          },
+          "ci": {
+            "type": "string",
+            "enum": [
+              "GHA",
+              "AZDO"
+            ],
+            "title": "Ci"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "backend",
+              "frontend"
+            ],
+            "title": "Kind",
+            "default": "backend"
+          },
+          "test_object": {
+            "title": "Test Object",
+            "type": "string",
+            "minLength": 1,
+            "nullable": true
+          },
+          "ea_node_id": {
+            "title": "Ea Node Id",
+            "type": "string",
+            "minLength": 1,
+            "nullable": true
+          },
+          "user": {
+            "type": "string",
+            "minLength": 1,
+            "title": "User"
+          }
+        },
+        "type": "object",
+        "required": [
+          "product_id",
+          "name",
+          "product_key",
+          "repository",
+          "runtime",
+          "ci",
+          "user"
+        ],
+        "title": "ApplicationIn"
+      },
+      "ApplicationOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "product_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Product Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "product_key": {
+            "type": "string",
+            "title": "Product Key"
+          },
+          "repository": {
+            "type": "string",
+            "title": "Repository"
+          },
+          "pipeline_url": {
+            "title": "Pipeline Url",
+            "type": "string",
+            "nullable": true
+          },
+          "runtime": {
+            "type": "string",
+            "title": "Runtime"
+          },
+          "ci": {
+            "type": "string",
+            "title": "Ci"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "test_object": {
+            "title": "Test Object",
+            "type": "string",
+            "nullable": true
+          },
+          "ea_node_id": {
+            "title": "Ea Node Id",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "product_id",
+          "name",
+          "product_key",
+          "repository",
+          "pipeline_url",
+          "runtime",
+          "ci",
+          "kind",
+          "test_object",
+          "ea_node_id"
+        ],
+        "title": "ApplicationOut"
+      },
+      "ApplicationPatch": {
+        "properties": {
+          "product_id": {
+            "title": "Product Id",
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "minLength": 1,
+            "nullable": true
+          },
+          "product_key": {
+            "title": "Product Key",
+            "type": "string",
+            "minLength": 1,
+            "nullable": true
+          },
+          "repository": {
+            "title": "Repository",
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9._-]+$",
+            "nullable": true
+          },
+          "pipeline_url": {
+            "title": "Pipeline Url",
+            "type": "string",
+            "minLength": 1,
+            "nullable": true
+          },
+          "runtime": {
+            "title": "Runtime",
+            "type": "string",
+            "enum": [
+              "AKS",
+              "AZ"
+            ],
+            "nullable": true
+          },
+          "ci": {
+            "title": "Ci",
+            "type": "string",
+            "enum": [
+              "GHA",
+              "AZDO"
+            ],
+            "nullable": true
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string",
+            "enum": [
+              "backend",
+              "frontend"
+            ],
+            "nullable": true
+          },
+          "test_object": {
+            "title": "Test Object",
+            "type": "string",
+            "minLength": 1,
+            "nullable": true
+          },
+          "ea_node_id": {
+            "title": "Ea Node Id",
+            "type": "string",
+            "minLength": 1,
+            "nullable": true
+          },
+          "user": {
+            "type": "string",
+            "minLength": 1,
+            "title": "User"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user"
+        ],
+        "title": "ApplicationPatch",
+        "description": "Partial update: only the fields actually sent are changed (nullable ones may be cleared)."
+      },
+      "ApplicationRowOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "product_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Product Id"
+          },
+          "product_key": {
+            "type": "string",
+            "title": "Product Key"
+          },
+          "repository": {
+            "type": "string",
+            "title": "Repository"
+          },
+          "pipeline_url": {
+            "title": "Pipeline Url",
+            "type": "string",
+            "nullable": true
+          },
+          "runtime": {
+            "type": "string",
+            "title": "Runtime"
+          },
+          "ci": {
+            "type": "string",
+            "title": "Ci"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "test_object": {
+            "title": "Test Object",
+            "type": "string",
+            "nullable": true
+          },
+          "ea_node_id": {
+            "title": "Ea Node Id",
+            "type": "string",
+            "nullable": true
+          },
+          "repo": {
+            "$ref": "#/components/schemas/CellOut",
+            "nullable": true
+          },
+          "envs": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CellOut",
+              "nullable": true
+            },
+            "propertyNames": {
+              "enum": [
+                "DEV",
+                "UAT",
+                "PROD"
+              ]
+            },
+            "type": "object",
+            "title": "Envs"
+          },
+          "flags": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "ALIGNED",
+                "DRIFT",
+                "UNREACHABLE",
+                "UNTESTED"
+              ]
+            },
+            "type": "array",
+            "title": "Flags"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "product_id",
+          "product_key",
+          "repository",
+          "pipeline_url",
+          "runtime",
+          "ci",
+          "kind",
+          "test_object",
+          "ea_node_id",
+          "repo",
+          "envs",
+          "flags"
+        ],
+        "title": "ApplicationRowOut"
+      },
+      "AreaGroupOut": {
+        "properties": {
+          "area": {
+            "type": "string",
+            "title": "Area"
+          },
+          "products": {
+            "items": {
+              "$ref": "#/components/schemas/ProductGroupOut"
+            },
+            "type": "array",
+            "title": "Products"
+          }
+        },
+        "type": "object",
+        "required": [
+          "area",
+          "products"
+        ],
+        "title": "AreaGroupOut"
+      },
       "AssistantConfig": {
         "properties": {
           "provider": {
@@ -6127,6 +7164,129 @@
         ],
         "title": "Body_parse_file_api_v1_bdd_parse_file_post"
       },
+      "CellOut": {
+        "properties": {
+          "version": {
+            "title": "Version",
+            "type": "string",
+            "nullable": true
+          },
+          "read_status": {
+            "type": "string",
+            "title": "Read Status"
+          },
+          "error_detail": {
+            "title": "Error Detail",
+            "type": "string",
+            "nullable": true
+          },
+          "checked_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Checked At"
+          },
+          "last_ok_at": {
+            "title": "Last Ok At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "version_since": {
+            "title": "Version Since",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "drift": {
+            "$ref": "#/components/schemas/Drift",
+            "nullable": true
+          },
+          "tests": {
+            "items": {
+              "$ref": "#/components/schemas/RunRefOut"
+            },
+            "type": "array",
+            "title": "Tests",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "version",
+          "read_status",
+          "error_detail",
+          "checked_at",
+          "last_ok_at",
+          "version_since"
+        ],
+        "title": "CellOut"
+      },
+      "CheckIn": {
+        "properties": {
+          "product_key": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Product Key"
+          },
+          "repository": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9._-]+$",
+            "title": "Repository"
+          }
+        },
+        "type": "object",
+        "required": [
+          "product_key",
+          "repository"
+        ],
+        "title": "CheckIn"
+      },
+      "CheckOut": {
+        "properties": {
+          "repo": {
+            "$ref": "#/components/schemas/CheckTargetOut"
+          },
+          "envs": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CheckTargetOut"
+            },
+            "type": "object",
+            "title": "Envs"
+          }
+        },
+        "type": "object",
+        "required": [
+          "repo",
+          "envs"
+        ],
+        "title": "CheckOut"
+      },
+      "CheckTargetOut": {
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "title": "Ok"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string",
+            "nullable": true
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "ok",
+          "version",
+          "detail"
+        ],
+        "title": "CheckTargetOut"
+      },
       "CostReport": {
         "properties": {
           "year": {
@@ -6229,6 +7389,76 @@
           "absence_date"
         ],
         "title": "CsvAbsenceRow"
+      },
+      "DeleteIn": {
+        "properties": {
+          "user": {
+            "type": "string",
+            "minLength": 1,
+            "title": "User"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user"
+        ],
+        "title": "DeleteIn"
+      },
+      "DeployEventOut": {
+        "properties": {
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "previous_version": {
+            "title": "Previous Version",
+            "type": "string",
+            "nullable": true
+          },
+          "detected_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Detected At"
+          },
+          "previous_seen_at": {
+            "title": "Previous Seen At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "is_baseline": {
+            "type": "boolean",
+            "title": "Is Baseline"
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "upgrade",
+              "rollback",
+              "unknown",
+              "baseline"
+            ],
+            "title": "Direction"
+          },
+          "runs": {
+            "items": {
+              "$ref": "#/components/schemas/RunRefOut"
+            },
+            "type": "array",
+            "title": "Runs",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "version",
+          "previous_version",
+          "detected_at",
+          "previous_seen_at",
+          "is_baseline",
+          "direction"
+        ],
+        "title": "DeployEventOut"
       },
       "DocItemCreate": {
         "properties": {
@@ -6918,6 +8148,16 @@
         "type": "object",
         "title": "DqDomainUpdate"
       },
+      "Drift": {
+        "type": "string",
+        "enum": [
+          "EQUAL",
+          "BEHIND",
+          "AHEAD",
+          "UNKNOWN"
+        ],
+        "title": "Drift"
+      },
       "EaAssistantOut": {
         "properties": {
           "answer": {
@@ -7165,6 +8405,24 @@
           "content"
         ],
         "title": "EaChatMessage"
+      },
+      "EaComponentOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "EaComponentOut"
       },
       "EaEdgeCreate": {
         "properties": {
@@ -9920,6 +11178,20 @@
         ],
         "title": "JiraTrend"
       },
+      "ManualSyncIn": {
+        "properties": {
+          "user": {
+            "type": "string",
+            "minLength": 1,
+            "title": "User"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user"
+        ],
+        "title": "ManualSyncIn"
+      },
       "NameCount": {
         "properties": {
           "name": {
@@ -10263,6 +11535,120 @@
         ],
         "title": "PendingRunsOut",
         "description": "Runs waiting for review (revision result PENDING) that reviewers can act on in the portal."
+      },
+      "ProductGroupOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "applications": {
+            "items": {
+              "$ref": "#/components/schemas/ApplicationRowOut"
+            },
+            "type": "array",
+            "title": "Applications"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "applications"
+        ],
+        "title": "ProductGroupOut"
+      },
+      "ProductIn": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Name"
+          },
+          "area": {
+            "type": "string",
+            "enum": [
+              "CORE",
+              "TOUCHPOINT"
+            ],
+            "title": "Area"
+          },
+          "user": {
+            "type": "string",
+            "minLength": 1,
+            "title": "User"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "area",
+          "user"
+        ],
+        "title": "ProductIn"
+      },
+      "ProductOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "area": {
+            "type": "string",
+            "title": "Area"
+          },
+          "application_count": {
+            "type": "integer",
+            "title": "Application Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "area",
+          "application_count"
+        ],
+        "title": "ProductOut"
+      },
+      "ProductPatch": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "minLength": 1,
+            "nullable": true
+          },
+          "area": {
+            "title": "Area",
+            "type": "string",
+            "enum": [
+              "CORE",
+              "TOUCHPOINT"
+            ],
+            "nullable": true
+          },
+          "user": {
+            "type": "string",
+            "minLength": 1,
+            "title": "User"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user"
+        ],
+        "title": "ProductPatch"
       },
       "ProjectCreate": {
         "properties": {
@@ -10944,6 +12330,87 @@
           "permissions"
         ],
         "title": "RolePermissionUpdate"
+      },
+      "RunRefOut": {
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Run Id"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "NRT",
+              "QG",
+              "TAS"
+            ],
+            "title": "Kind"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "PASSED",
+              "FAILED",
+              "NEUTRAL"
+            ],
+            "title": "Outcome"
+          },
+          "needs_review": {
+            "type": "boolean",
+            "title": "Needs Review"
+          },
+          "trigger_type": {
+            "title": "Trigger Type",
+            "type": "string",
+            "nullable": true
+          },
+          "timestamp_start": {
+            "title": "Timestamp Start",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "passed": {
+            "title": "Passed",
+            "type": "integer",
+            "nullable": true
+          },
+          "failed": {
+            "title": "Failed",
+            "type": "integer",
+            "nullable": true
+          },
+          "allure_url": {
+            "title": "Allure Url",
+            "type": "string",
+            "nullable": true
+          },
+          "gha_run_url": {
+            "title": "Gha Run Url",
+            "type": "string",
+            "nullable": true
+          },
+          "hub_url": {
+            "type": "string",
+            "title": "Hub Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "run_id",
+          "kind",
+          "outcome",
+          "needs_review",
+          "trigger_type",
+          "timestamp_start",
+          "passed",
+          "failed",
+          "allure_url",
+          "gha_run_url",
+          "hub_url"
+        ],
+        "title": "RunRefOut"
       },
       "SanpEnvironment": {
         "type": "string",
@@ -11658,6 +13125,67 @@
         "type": "object",
         "title": "SettingsUpdate"
       },
+      "StatusOut": {
+        "properties": {
+          "sync": {
+            "$ref": "#/components/schemas/SyncStatusOut",
+            "nullable": true
+          },
+          "areas": {
+            "items": {
+              "$ref": "#/components/schemas/AreaGroupOut"
+            },
+            "type": "array",
+            "title": "Areas"
+          }
+        },
+        "type": "object",
+        "required": [
+          "sync",
+          "areas"
+        ],
+        "title": "StatusOut"
+      },
+      "SummaryOut": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "aligned": {
+            "type": "integer",
+            "title": "Aligned"
+          },
+          "drift": {
+            "type": "integer",
+            "title": "Drift"
+          },
+          "unreachable": {
+            "type": "integer",
+            "title": "Unreachable"
+          },
+          "untested": {
+            "type": "integer",
+            "title": "Untested"
+          },
+          "last_success_at": {
+            "title": "Last Success At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "total",
+          "aligned",
+          "drift",
+          "unreachable",
+          "untested",
+          "last_success_at"
+        ],
+        "title": "SummaryOut"
+      },
       "SyncLoginRequest": {
         "properties": {
           "email": {
@@ -11729,6 +13257,81 @@
           "errors"
         ],
         "title": "SyncResult"
+      },
+      "SyncStatusOut": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "trigger": {
+            "type": "string",
+            "title": "Trigger"
+          },
+          "requested_by": {
+            "title": "Requested By",
+            "type": "string",
+            "nullable": true
+          },
+          "queued_at": {
+            "title": "Queued At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "started_at": {
+            "title": "Started At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "finished_at": {
+            "title": "Finished At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "last_success_at": {
+            "title": "Last Success At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "applications_checked": {
+            "type": "integer",
+            "title": "Applications Checked"
+          },
+          "reads_failed": {
+            "type": "integer",
+            "title": "Reads Failed"
+          },
+          "errors": {
+            "items": {},
+            "type": "array",
+            "title": "Errors"
+          },
+          "in_progress": {
+            "type": "boolean",
+            "title": "In Progress",
+            "description": "QUEUED or RUNNING and not stale (QUEUED > 10 min, RUNNING > 30 min).",
+            "readOnly": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "trigger",
+          "requested_by",
+          "queued_at",
+          "started_at",
+          "finished_at",
+          "last_success_at",
+          "applications_checked",
+          "reads_failed",
+          "errors",
+          "in_progress"
+        ],
+        "title": "SyncStatusOut"
       },
       "TestExecutionCreate": {
         "properties": {
