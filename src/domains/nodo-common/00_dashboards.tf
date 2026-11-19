@@ -217,11 +217,15 @@ locals {
       pagopa_postgres_id    = "NDP001UAT"
       nexi_postgres_id      = "NDP004UAT"
       nexi_postgres_backend = "https://10.79.20.63"
+      grafana_url           = "https://pagopa-u-weu-grafana-cpavbjb0axhrdcg3.weu.grafana.azure.com/d/aepmv9bibr0u8c/preview-manual-ndp-transactions-monitoring"
+      kibana_url            = "https://pagopa-s-weu-ec.kb.westeurope.azure.elastic-cloud.com/s/ndp-uat/app/dashboards#/view/1e045fcc-569d-49ce-8798-d40b3ac23aad?_g=%28refreshInterval:%28pause:!t,value:60000%29,time:%28from:now-15m,to:now%29%29&_a=%28viewMode:view%29"
     }
     p = {
       pagopa_postgres_id    = "NDP001PROD"
       nexi_postgres_id      = "NDP004PROD"
       nexi_postgres_backend = "https://10.79.20.25"
+      grafana_url           = "https://pagopa-p-weu-grafana-avb5f4e0fqawgyea.weu.grafana.azure.com/d/aepmv9bibr0u8c/preview-manual-ndp-transactions-monitoring?orgId=1&var-domainIdSearchFilter=&var-noticeNumberSearchFilter=&var-paymentTokenSearchFilter=&var-verifiedOnInstance=No%20filter&var-activatedOnInstance=No%20filter&from=now-30m&to=now"
+      kibana_url            = ""
     }
   }
 
@@ -354,6 +358,8 @@ locals {
     nexi_postgres_backend = local.opex_nodo_nodes[var.env_short].nexi_postgres_backend
     nexi_postgres_id      = local.opex_nodo_nodes[var.env_short].nexi_postgres_id
     pagopa_postgres_id    = local.opex_nodo_nodes[var.env_short].pagopa_postgres_id
+    grafana_url           = local.opex_nodo_nodes[var.env_short].grafana_url
+    kibana_url            = local.opex_nodo_nodes[var.env_short].kibana_url
     all_operation_ids     = join(", ", [for id in local.opex_nodo_multinode_all_operation_ids[var.env_short] : "'${id}'"])
     apis                  = local.opex_nodo_multinode_apis
     monitored_apis_kql    = local.opex_nodo_multinode_monitored_apis_kql

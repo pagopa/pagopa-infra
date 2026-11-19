@@ -5110,7 +5110,28 @@
               "type": "Extension/HubsExtension/PartType/MarkdownPart",
               "settings": {
                 "content": {
-                  "content": "# Enhanced dashboard [on Grafana](https://pagopa-p-weu-grafana-avb5f4e0fqawgyea.weu.grafana.azure.com/d/aepmv9bibr0u8c/preview-manual-ndp-transactions-monitoring?orgId=1&var-domainIdSearchFilter=&var-noticeNumberSearchFilter=&var-paymentTokenSearchFilter=&var-verifiedOnInstance=No%20filter&var-activatedOnInstance=No%20filter&from=now-30m&to=now)\n",
+                  "content": "# Enhanced dashboard [on Grafana](${grafana_url})\n",
+                  "title": "",
+                  "subtitle": "",
+                  "markdownSource": 1,
+                  "markdownUri": ""
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 110,
+              "colSpan": 18,
+              "rowSpan": 1
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "content": "# Enhanced dashboard [on Kibana](${kibana_url})\n",
                   "title": "",
                   "subtitle": "",
                   "markdownSource": 1,
