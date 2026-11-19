@@ -194,6 +194,15 @@ resource "azurerm_key_vault_secret" "ehub_send_biz_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "ehub_send_biz_testing_connection_string" {
+  count        = var.env_short == "u" ? 1 : 0
+  name         = format("ehub-tx-send-%s-biz-testing-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt-send_pagopa-biz-evt-tx-send[0].primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
 ####################
 ## EVENT HUB NS04
 ####################
