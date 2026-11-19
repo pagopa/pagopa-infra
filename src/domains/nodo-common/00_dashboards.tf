@@ -272,6 +272,7 @@ locals {
     apim_id                    = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/${local.pagopa_apim_rg}/providers/Microsoft.ApiManagement/service/${local.pagopa_apim_name}"
     apim_name                  = local.pagopa_apim_name
     excluded_backend_url       = local.opex_nodo_auth_dashboard_config[var.env_short].excluded_backend_url
+    nodo_host                  = "weu${var.env}.nodo.${local.internal_dns_zone_name}"
     op_verifyPaymentNotice     = local.opex_nodo_auth_dashboard_config[var.env_short].operation_ids.verifyPaymentNotice
     op_activatePaymentNotice   = local.opex_nodo_auth_dashboard_config[var.env_short].operation_ids.activatePaymentNotice
     op_activatePaymentNoticeV2 = local.opex_nodo_auth_dashboard_config[var.env_short].operation_ids.activatePaymentNoticeV2

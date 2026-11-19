@@ -1878,7 +1878,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let opNames = datatable(operationId_s:string, apiName:string) [ ${operation_names_kql} ];\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s !in (${handled_operation_ids_kql})\n| where backendUrl_s !startswith \"${excluded_backend_url}\"\n| summarize count() by operationId_s, bin(TimeGenerated, 1d)\n| lookup kind=leftouter opNames on operationId_s\n| project TimeGenerated, apiName=iff(isempty(operationId_s), \"ResourceNotFound-404\", coalesce(apiName, operationId_s)), count_\n| render columnchart with (xtitle = \"time\", ytitle = \"count\")",
+                  "value": "let opNames = datatable(operationId_s:string, apiName:string) [ ${operation_names_kql} ];\nAzureDiagnostics\n| where url_s matches regex \"/nodo-auth/node-for-psp/v1\"\n| where operationId_s !in (${handled_operation_ids_kql})\n| where backendUrl_s has \"https://${nodo_host}/nodo\"\n| lookup kind = leftouter opNames on operationId_s\n| extend apiName = iff(isempty(operationId_s), \"ResourceNotFound-404\", coalesce(apiName, operationId_s))\n| summarize Count = count() by bin(TimeGenerated, 1m), apiName\n| render timechart\n    with (\n    xcolumn = TimeGenerated,\n    ycolumns = Count,\n    series = apiName\n    )",
                   "isOptional": true
                 },
                 {
@@ -1888,7 +1888,7 @@
                 },
                 {
                   "name": "SpecificChart",
-                  "value": "StackedColumn",
+                  "value": "Line",
                   "isOptional": true
                 },
                 {
@@ -1910,7 +1910,7 @@
                     },
                     "yAxis": [
                       {
-                        "name": "count_",
+                        "name": "Count",
                         "type": "long"
                       }
                     ],
@@ -1941,8 +1941,8 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {},
               "partHeader": {
-                "title": "Unhandled API invocations (1d)",
-                "subtitle": "APIs not handled by Nodo"
+                "title": "API invocations that should not be handled by Nodo PagoPA",
+                "subtitle": "APIs not handled by Nodo PagoPA but invoked on it"
               }
             }
           }
