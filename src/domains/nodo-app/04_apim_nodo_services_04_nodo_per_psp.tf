@@ -118,3 +118,15 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_richiesta_avvisi
   })
 
 }
+
+# nodoChiediTemplateInformativaPSP
+resource "azurerm_api_management_api_operation_policy" "nodoChiediTemplateInformativaPSP_policy" {
+
+  api_name            = azurerm_api_management_api.apim_nodo_per_psp_api_v1.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  operation_id        = var.env_short == "d" ? "6217af2f95aa0303ccfcf7de" : var.env_short == "u" ? "6a5f497475a838165ccb1dfc" : "6217ba1b2a92e81fa4f15e79"
+
+  #tfsec:ignore:GEN005
+  xml_content = file("./api/legacy/nodopagamenti_api/nodoPerPsp/v1/nodoChiediTemplateInformativaPSP_policy.xml")
+}

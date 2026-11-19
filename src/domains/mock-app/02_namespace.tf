@@ -2,6 +2,9 @@ resource "kubernetes_namespace" "namespace" {
   count = var.mock_enabled ? 1 : 0
   metadata {
     name = var.domain
+    labels = {
+      domain = var.domain # Icinga Business Process domain (continuos-platform-monitoring-app)
+    }
   }
 }
 
