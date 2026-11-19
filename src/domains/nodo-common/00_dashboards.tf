@@ -1,6 +1,6 @@
 locals {
   # common list of operation IDs from the exported OpenAPI, grouped by service path, keyed by API name
-  opex_nodo_auth_operation_ids = {
+  opex_nodo_operation_ids = {
     u = {
       node_for_psp_v1 = {
         verifyPaymentNotice              = "6a5f497475a838165ccb1e3b"
@@ -229,37 +229,37 @@ locals {
     u = {
       excluded_backend_url = local.opex_nodo_nodes.u.nexi_postgres_backend
       operation_ids = {
-        verifyPaymentNotice     = local.opex_nodo_auth_operation_ids.u.node_for_psp_v1.verifyPaymentNotice
-        activatePaymentNotice   = local.opex_nodo_auth_operation_ids.u.node_for_psp_v1.activatePaymentNotice
-        sendPaymentOutcome      = local.opex_nodo_auth_operation_ids.u.node_for_psp_v1.sendPaymentOutcome
-        activatePaymentNoticeV2 = local.opex_nodo_auth_operation_ids.u.node_for_psp_v1.activatePaymentNoticeV2
-        sendPaymentOutcomeV2    = local.opex_nodo_auth_operation_ids.u.node_for_psp_v1.sendPaymentOutcomeV2
+        verifyPaymentNotice     = local.opex_nodo_operation_ids.u.node_for_psp_v1.verifyPaymentNotice
+        activatePaymentNotice   = local.opex_nodo_operation_ids.u.node_for_psp_v1.activatePaymentNotice
+        sendPaymentOutcome      = local.opex_nodo_operation_ids.u.node_for_psp_v1.sendPaymentOutcome
+        activatePaymentNoticeV2 = local.opex_nodo_operation_ids.u.node_for_psp_v1.activatePaymentNoticeV2
+        sendPaymentOutcomeV2    = local.opex_nodo_operation_ids.u.node_for_psp_v1.sendPaymentOutcomeV2
       }
       unhandled_operation_ids = {
-        verificaBollettino               = local.opex_nodo_auth_operation_ids.u.node_for_psp_v1.verificaBollettino
-        demandPaymentNotice              = local.opex_nodo_auth_operation_ids.u.node_for_psp_v1.demandPaymentNotice
-        nodoChiediCatalogoServiziV2      = local.opex_nodo_auth_operation_ids.u.node_for_psp_v1.nodoChiediCatalogoServiziV2
-        nodoInviaFlussoRendicontazione   = local.opex_nodo_auth_operation_ids.u.node_for_psp_v1.nodoInviaFlussoRendicontazione
-        nodoChiediInformativaPA          = local.opex_nodo_auth_operation_ids.u.node_for_psp_v1.nodoChiediInformativaPA
-        nodoChiediTemplateInformativaPSP = local.opex_nodo_auth_operation_ids.u.node_for_psp_v1.nodoChiediTemplateInformativaPSP
+        verificaBollettino               = local.opex_nodo_operation_ids.u.node_for_psp_v1.verificaBollettino
+        demandPaymentNotice              = local.opex_nodo_operation_ids.u.node_for_psp_v1.demandPaymentNotice
+        nodoChiediCatalogoServiziV2      = local.opex_nodo_operation_ids.u.node_for_psp_v1.nodoChiediCatalogoServiziV2
+        nodoInviaFlussoRendicontazione   = local.opex_nodo_operation_ids.u.node_for_psp_v1.nodoInviaFlussoRendicontazione
+        nodoChiediInformativaPA          = local.opex_nodo_operation_ids.u.node_for_psp_v1.nodoChiediInformativaPA
+        nodoChiediTemplateInformativaPSP = local.opex_nodo_operation_ids.u.node_for_psp_v1.nodoChiediTemplateInformativaPSP
       }
     }
     p = {
       excluded_backend_url = local.opex_nodo_nodes.p.nexi_postgres_backend
       operation_ids = {
-        verifyPaymentNotice     = local.opex_nodo_auth_operation_ids.p.node_for_psp_v1.verifyPaymentNotice
-        activatePaymentNotice   = local.opex_nodo_auth_operation_ids.p.node_for_psp_v1.activatePaymentNotice
-        sendPaymentOutcome      = local.opex_nodo_auth_operation_ids.p.node_for_psp_v1.sendPaymentOutcome
-        activatePaymentNoticeV2 = local.opex_nodo_auth_operation_ids.p.node_for_psp_v1.activatePaymentNoticeV2
-        sendPaymentOutcomeV2    = local.opex_nodo_auth_operation_ids.p.node_for_psp_v1.sendPaymentOutcomeV2
+        verifyPaymentNotice     = local.opex_nodo_operation_ids.p.node_for_psp_v1.verifyPaymentNotice
+        activatePaymentNotice   = local.opex_nodo_operation_ids.p.node_for_psp_v1.activatePaymentNotice
+        sendPaymentOutcome      = local.opex_nodo_operation_ids.p.node_for_psp_v1.sendPaymentOutcome
+        activatePaymentNoticeV2 = local.opex_nodo_operation_ids.p.node_for_psp_v1.activatePaymentNoticeV2
+        sendPaymentOutcomeV2    = local.opex_nodo_operation_ids.p.node_for_psp_v1.sendPaymentOutcomeV2
       }
       unhandled_operation_ids = {
-        verificaBollettino               = local.opex_nodo_auth_operation_ids.p.node_for_psp_v1.verificaBollettino
-        demandPaymentNotice              = local.opex_nodo_auth_operation_ids.p.node_for_psp_v1.demandPaymentNotice
-        nodoChiediCatalogoServiziV2      = local.opex_nodo_auth_operation_ids.p.node_for_psp_v1.nodoChiediCatalogoServiziV2
-        nodoInviaFlussoRendicontazione   = local.opex_nodo_auth_operation_ids.p.node_for_psp_v1.nodoInviaFlussoRendicontazione
-        nodoChiediInformativaPA          = local.opex_nodo_auth_operation_ids.p.node_for_psp_v1.nodoChiediInformativaPA
-        nodoChiediTemplateInformativaPSP = local.opex_nodo_auth_operation_ids.p.node_for_psp_v1.nodoChiediTemplateInformativaPSP
+        verificaBollettino               = local.opex_nodo_operation_ids.p.node_for_psp_v1.verificaBollettino
+        demandPaymentNotice              = local.opex_nodo_operation_ids.p.node_for_psp_v1.demandPaymentNotice
+        nodoChiediCatalogoServiziV2      = local.opex_nodo_operation_ids.p.node_for_psp_v1.nodoChiediCatalogoServiziV2
+        nodoInviaFlussoRendicontazione   = local.opex_nodo_operation_ids.p.node_for_psp_v1.nodoInviaFlussoRendicontazione
+        nodoChiediInformativaPA          = local.opex_nodo_operation_ids.p.node_for_psp_v1.nodoChiediInformativaPA
+        nodoChiediTemplateInformativaPSP = local.opex_nodo_operation_ids.p.node_for_psp_v1.nodoChiediTemplateInformativaPSP
       }
     }
   }
@@ -277,22 +277,23 @@ locals {
     operation_names_kql        = join(", ", [for name, id in merge(local.opex_nodo_auth_dashboard_config[var.env_short].operation_ids, local.opex_nodo_auth_dashboard_config[var.env_short].unhandled_operation_ids) : "'${id}', '${name}'"])
   })) : null
 
-  opex_nodo_auth_all_dashboard_json = contains(keys(local.opex_nodo_auth_operation_ids), var.env_short) ? jsondecode(templatefile("./dashboards/opex_pagopa-nodo-auth-all.json.tpl", {
+  opex_nodo_auth_all_dashboard_json = contains(keys(local.opex_nodo_operation_ids), var.env_short) ? jsondecode(templatefile("./dashboards/opex_pagopa-nodo-auth-all.json.tpl", {
     apim_id   = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/${local.pagopa_apim_rg}/providers/Microsoft.ApiManagement/service/${local.pagopa_apim_name}"
     apim_name = local.pagopa_apim_name
-    ops       = local.opex_nodo_auth_operation_ids[var.env_short]
+    ops       = local.opex_nodo_operation_ids[var.env_short]
   })) : null
 
   opex_nodo_multinode_all_operation_ids = {
-    for env_short, groups in local.opex_nodo_auth_operation_ids :
+    for env_short, groups in local.opex_nodo_operation_ids :
     env_short => distinct(flatten([for group in values(groups) : values(group)]))
   }
 
-  opex_nodo_multinode_ops = lookup(local.opex_nodo_auth_operation_ids, var.env_short, {})
+  opex_nodo_multinode_ops = lookup(local.opex_nodo_operation_ids, var.env_short, {})
 
   # references to the operation ids of the deprecated primitives
   opex_nodo_multinode_deprecated_operation_ids = try([
     local.opex_nodo_multinode_ops.node_for_psp_v1.nodoChiediInformativaPA,
+    local.opex_nodo_multinode_ops.node_for_psp_v1.nodoChiediTemplateInformativaPSP,
     local.opex_nodo_multinode_ops.nodo_per_pa_v1.nodoChiediCopiaRT,
     local.opex_nodo_multinode_ops.nodo_per_pa_v1_noauth.nodoChiediCopiaRT,
     local.opex_nodo_multinode_ops.nodo_per_pa_v1_noauth.nodoChiediElencoQuadraturePA,
@@ -318,11 +319,13 @@ locals {
     local.opex_nodo_multinode_ops.nodo_per_psp_v1.nodoChiediInformativaPA,
     local.opex_nodo_multinode_ops.nodo_per_psp_v1.nodoInviaRT,
     local.opex_nodo_multinode_ops.nodo_per_psp_v1.nodoVerificaRPT,
+    local.opex_nodo_multinode_ops.nodo_per_psp_v1.nodoChiediTemplateInformativaPSP,
     local.opex_nodo_multinode_ops.nodo_per_psp_v1_noauth.nodoAttivaRPT,
     local.opex_nodo_multinode_ops.nodo_per_psp_v1_noauth.nodoChiediElencoQuadraturePSP,
     local.opex_nodo_multinode_ops.nodo_per_psp_v1_noauth.nodoChiediInformativaPA,
     local.opex_nodo_multinode_ops.nodo_per_psp_v1_noauth.nodoInviaRT,
     local.opex_nodo_multinode_ops.nodo_per_psp_v1_noauth.nodoVerificaRPT,
+    local.opex_nodo_multinode_ops.nodo_per_psp_v1_noauth.nodoChiediTemplateInformativaPSP,
   ], [])
 
   # api structure (id, name, deprecated) built once, keyed by service group and operation
