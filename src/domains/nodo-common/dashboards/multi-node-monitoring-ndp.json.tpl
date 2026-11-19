@@ -442,7 +442,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let monitored_apis = ${monitored_apis_kql};\nlet backend_stats = dependencies\n    | extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n    | join kind=leftouter monitored_apis on operationId_s\n    | where operationId_s != \"\" and primitive != \"\"\n    | extend response = tostring(customDimensions[\"Response-Body\"])\n    | extend outcome = extract(\"<outcome>(.*?)</outcome>\", 1, response)\n    | extend raw_backend_name = case ( \n                                    target startswith \"https://${nodo_host}\",\n                                    \"01 ${pagopa_postgres_id} PagoPA\",\n                                    target startswith \"${nexi_postgres_backend}\",\n                                    \"03 ${nexi_postgres_id} Nexi\",\n                                    \"99 not needed\"\n                                )   \n    | where raw_backend_name !startswith \"99\"\n    | extend backend_name = substring(raw_backend_name, 3)\n    | summarize\n        Total = count(),\n        KO = countif(outcome == \"KO\")\n        by backend_name\n    | project\n        [\"Backend Name\"]=backend_name,\n        [\"Invocations\"]=Total\n;\nbackend_stats\n| union (backend_stats\n    | summarize \n        [\"Backend Name\"] = \"TOTAL\",\n        [\"Total Invocations\"] = sum([\"Invocations\"])\n    )\n| render barchart kind=unstacked\n\n",
+                  "value": "let monitored_apis = ${monitored_apis_kql};\nlet backend_stats = dependencies\n    | extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n    | join kind=leftouter monitored_apis on operationId_s\n    | where operationId_s != \"\" and primitive != \"\"\n    | extend response = tostring(customDimensions[\"Response-Body\"])\n    | extend outcome = extract(\"<outcome>(.*?)</outcome>\", 1, response)\n    | extend raw_backend_name = case ( \n                                    target startswith \"https://${nodo_host}\",\n                                    \"01 ${pagopa_postgres_id} PagoPA\",\n                                    target startswith \"${nexi_postgres_backend}\",\n                                    \"03 ${nexi_postgres_id} Nexi\",\n                                    \"99 not needed\"\n                                )   \n    | where raw_backend_name !startswith \"99\"\n    | extend backend_name = substring(raw_backend_name, 3)\n    | summarize\n        Total = count(),\n        KO = countif(outcome == \"KO\"),\n        OK = countif(outcome != \"KO\")\n        by backend_name\n    | project\n        [\"Backend Name\"] = backend_name,\n        [\"KO\"] = KO,\n        [\"OK\"] = OK,\n        [\"Invocations\"] = Total\n;\nbackend_stats\n| union (backend_stats\n    | summarize\n        [\"Backend Name\"] = \"TOTAL\",\n        [\"KO\"] = sum([\"KO\"]),\n        [\"OK\"] = sum([\"OK\"]),\n        [\"Total Invocations\"] = sum([\"Invocations\"])\n    )\n| render barchart\n\n",
                   "isOptional": true
                 },
                 {
@@ -474,6 +474,14 @@
                     },
                     "yAxis": [
                       {
+                        "name": "KO",
+                        "type": "long"
+                      },
+                      {
+                        "name": "OK",
+                        "type": "long"
+                      },
+                      {
                         "name": "Invocations",
                         "type": "long"
                       },
@@ -504,7 +512,7 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let monitored_apis = ${monitored_apis_kql};\nlet backend_stats = dependencies\n    | extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n    | join kind=leftouter monitored_apis on operationId_s\n    | where operationId_s != \"\" and primitive != \"\"\n    | extend response = tostring(customDimensions[\"Response-Body\"])\n    | extend outcome = extract(\"<outcome>(.*?)</outcome>\", 1, response)\n    | extend raw_backend_name = case ( \n                                    target startswith \"https://${nodo_host}\",\n                                    \"01 ${pagopa_postgres_id} PagoPA\",\n                                    target startswith \"${nexi_postgres_backend}\",\n                                    \"03 ${nexi_postgres_id} Nexi\",\n                                    \"99 not needed\"\n                                )   \n    | where raw_backend_name !startswith \"99\"\n    | extend backend_name = substring(raw_backend_name, 3)\n    | summarize\n        Total = count(),\n        KO = countif(outcome == \"KO\")\n        by backend_name\n    | project\n        [\"Backend Name\"]=backend_name,\n        [\"Invocations\"]=Total\n;\nbackend_stats\n| union (backend_stats\n    | summarize \n        [\"Backend Name\"] = \"TOTAL\",\n        [\"Total Invocations\"] = sum([\"Invocations\"])\n    )\n| render barchart kind=unstacked\n\n",
+                  "Query": "let monitored_apis = ${monitored_apis_kql};\nlet backend_stats = dependencies\n    | extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n    | join kind=leftouter monitored_apis on operationId_s\n    | where operationId_s != \"\" and primitive != \"\"\n    | extend response = tostring(customDimensions[\"Response-Body\"])\n    | extend outcome = extract(\"<outcome>(.*?)</outcome>\", 1, response)\n    | extend raw_backend_name = case ( \n                                    target startswith \"https://${nodo_host}\",\n                                    \"01 ${pagopa_postgres_id} PagoPA\",\n                                    target startswith \"${nexi_postgres_backend}\",\n                                    \"03 ${nexi_postgres_id} Nexi\",\n                                    \"99 not needed\"\n                                )   \n    | where raw_backend_name !startswith \"99\"\n    | extend backend_name = substring(raw_backend_name, 3)\n    | summarize\n        Total = count(),\n        KO = countif(outcome == \"KO\"),\n        OK = countif(outcome != \"KO\")\n        by backend_name\n    | project\n        [\"Backend Name\"] = backend_name,\n        [\"KO\"] = KO,\n        [\"OK\"] = OK,\n        [\"Invocations\"] = Total\n;\nbackend_stats\n| union (backend_stats\n    | summarize\n        [\"Backend Name\"] = \"TOTAL\",\n        [\"KO\"] = sum([\"KO\"]),\n        [\"OK\"] = sum([\"OK\"]),\n        [\"Total Invocations\"] = sum([\"Invocations\"])\n    )\n| render barchart\n\n",
                   "PartTitle": "Routed primitives: On NDP instances - Volumes",
                   "PartSubTitle": "Volumes about primitives routed on NDP instances",
                   "Dimensions": {
@@ -513,6 +521,14 @@
                       "type": "string"
                     },
                     "yAxis": [
+                      {
+                        "name": "KO",
+                        "type": "long"
+                      },
+                      {
+                        "name": "OK",
+                        "type": "long"
+                      },
                       {
                         "name": "Invocations",
                         "type": "long"
