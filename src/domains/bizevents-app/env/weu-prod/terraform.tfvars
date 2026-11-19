@@ -1,12 +1,11 @@
-prefix                 = "pagopa"
-env_short              = "p"
-env                    = "prod"
-domain                 = "bizevents"
-location               = "westeurope"
-location_short         = "weu"
-location_string        = "West Europe"
-instance               = "prod"
-gh_runner_job_location = "italynorth"
+prefix          = "pagopa"
+env_short       = "p"
+env             = "prod"
+domain          = "bizevents"
+location        = "westeurope"
+location_short  = "weu"
+location_string = "West Europe"
+instance        = "prod"
 
 
 ### External resources
@@ -49,5 +48,3 @@ pod_disruption_budgets = {
     }
   },
 }
-
-
