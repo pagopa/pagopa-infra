@@ -3241,7 +3241,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\nlet backend_stats = dependencies\n    | extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n    | join kind=leftouter monitored_apis on operationId_s\n    | where operationId_s != \"\" and primitive != \"\"\n    | extend response = parse_json(tostring(customDimensions[\"Response-Body\"])) \n    | extend outcome = response[\"outcome\"]\n    | extend raw_backend_name = case ( \n                                    data has \"https://${nodo_host}/nodo\",\n                                    \"01 ${pagopa_postgres_id} PagoPA\",\n                                    target startswith \"${nexi_postgres_backend}\",\n                                    \"03 ${nexi_postgres_id} Nexi\",\n                                    \"99 not needed\"\n                                )   \n    | where raw_backend_name !startswith \"99\"\n    | extend backend_name = substring(raw_backend_name, 3)\n    | summarize\n        Total = count(),\n        KO = countif(outcome == \"KO\")\n        by backend_name\n    | project\n        [\"Backend Name\"]=backend_name,\n        [\"Total Responses\"]=Total,\n        [\"OK Responses\"]=Total - KO,\n        [\"KO Responses\"]=KO;\nbackend_stats\n| union (backend_stats\n    | summarize \n        [\"Backend Name\"] = \"TOTAL\",\n        [\"Total Responses\"] = sum([\"Total Responses\"]),\n        [\"OK Responses\"] = sum([\"OK Responses\"]),\n        [\"KO Responses\"] = sum([\"KO Responses\"])\n    )\n| render barchart kind=unstacked\n\n",
+                  "value": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\nlet backend_stats = dependencies\n    | extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n    | join kind=leftouter monitored_apis on operationId_s\n    | where operationId_s != \"\" and primitive != \"\"\n    | extend raw_backend_name = case ( \n                                    data has \"https://${nodo_host}/nodo\",\n                                    \"01 ${pagopa_postgres_id} PagoPA\",\n                                    target startswith \"${nexi_postgres_backend}\",\n                                    \"03 ${nexi_postgres_id} Nexi\",\n                                    \"99 not needed\"\n                                )   \n    | where raw_backend_name !startswith \"99\"\n    | extend backend_name = substring(raw_backend_name, 3)\n    | summarize\n        Total = count(),\n        KO = countif(resultCode != \"200\")\n        by backend_name\n    | project\n        [\"Backend Name\"]=backend_name,\n        [\"Total Responses\"]=Total,\n        [\"OK Responses\"]=Total - KO,\n        [\"KO Responses\"]=KO;\nbackend_stats\n| union (backend_stats\n    | summarize \n        [\"Backend Name\"] = \"TOTAL\",\n        [\"Total Responses\"] = sum([\"Total Responses\"]),\n        [\"OK Responses\"] = sum([\"OK Responses\"]),\n        [\"KO Responses\"] = sum([\"KO Responses\"])\n    )\n| render barchart kind=unstacked\n\n",
                   "isOptional": true
                 },
                 {
@@ -3307,7 +3307,7 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\nlet backend_stats = dependencies\n    | extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n    | join kind=leftouter monitored_apis on operationId_s\n    | where operationId_s != \"\" and primitive != \"\"\n    | extend response = parse_json(tostring(customDimensions[\"Response-Body\"])) \n    | extend outcome = response[\"outcome\"]\n    | extend raw_backend_name = case ( \n                                    data has \"https://${nodo_host}/nodo\",\n                                    \"01 ${pagopa_postgres_id} PagoPA\",\n                                    target startswith \"${nexi_postgres_backend}\",\n                                    \"03 ${nexi_postgres_id} Nexi\",\n                                    \"99 not needed\"\n                                )   \n    | where raw_backend_name !startswith \"99\"\n    | extend backend_name = substring(raw_backend_name, 3)\n    | summarize\n        Total = count(),\n        KO = countif(outcome == \"KO\")\n        by backend_name\n    | project\n        [\"Backend Name\"]=backend_name,\n        [\"Total Responses\"]=Total,\n        [\"OK Responses\"]=Total - KO,\n        [\"KO Responses\"]=KO;\nbackend_stats\n| union (backend_stats\n    | summarize \n        [\"Backend Name\"] = \"TOTAL\",\n        [\"Total Responses\"] = sum([\"Total Responses\"]),\n        [\"OK Responses\"] = sum([\"OK Responses\"]),\n        [\"KO Responses\"] = sum([\"KO Responses\"])\n    )\n| render barchart kind=unstacked\n\n",
+                  "Query": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\nlet backend_stats = dependencies\n    | extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n    | join kind=leftouter monitored_apis on operationId_s\n    | where operationId_s != \"\" and primitive != \"\"\n    | extend raw_backend_name = case ( \n                                    data has \"https://${nodo_host}/nodo\",\n                                    \"01 ${pagopa_postgres_id} PagoPA\",\n                                    target startswith \"${nexi_postgres_backend}\",\n                                    \"03 ${nexi_postgres_id} Nexi\",\n                                    \"99 not needed\"\n                                )   \n    | where raw_backend_name !startswith \"99\"\n    | extend backend_name = substring(raw_backend_name, 3)\n    | summarize\n        Total = count(),\n        KO = countif(resultCode != \"200\")\n        by backend_name\n    | project\n        [\"Backend Name\"]=backend_name,\n        [\"Total Responses\"]=Total,\n        [\"OK Responses\"]=Total - KO,\n        [\"KO Responses\"]=KO;\nbackend_stats\n| union (backend_stats\n    | summarize \n        [\"Backend Name\"] = \"TOTAL\",\n        [\"Total Responses\"] = sum([\"Total Responses\"]),\n        [\"OK Responses\"] = sum([\"OK Responses\"]),\n        [\"KO Responses\"] = sum([\"KO Responses\"])\n    )\n| render barchart kind=unstacked\n\n",
                   "SpecificChart": "UnstackedBar",
                   "PartTitle": "Routed primitives: ClosePaymentV2 - Error on NDP instances volumes",
                   "PartSubTitle": "Volumes about errors on NDP instances for routed closePaymentV2",
@@ -3388,7 +3388,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| extend response = parse_json(tostring(customDimensions[\"Response-Body\"]))\n| extend outcome = response[\"outcome\"]\n| extend raw_backend_name = case ( \n        data has \"https://${nodo_host}/nodo\", \"01 ${pagopa_postgres_id} PagoPA\",\n        target startswith \"${nexi_postgres_backend}\", \"03 ${nexi_postgres_id} Nexi\",\n        \"99 not needed\"\n    )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| summarize [\"KO Responses\"] = countif(outcome == \"KO\") by bin(timestamp, 1m), [\"Backend Name\"] = backend_name\n| order by timestamp asc\n| render timechart\n\n",
+                  "value": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| extend raw_backend_name = case ( \n        data has \"https://${nodo_host}/nodo\", \"01 ${pagopa_postgres_id} PagoPA\",\n        target startswith \"${nexi_postgres_backend}\", \"03 ${nexi_postgres_id} Nexi\",\n        \"99 not needed\"\n    )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| summarize [\"KO Responses\"] = countif(resultCode != \"200\") by bin(timestamp, 1m), [\"Backend Name\"] = backend_name\n| order by timestamp asc\n| render timechart\n\n",
                   "isOptional": true
                 },
                 {
@@ -3451,7 +3451,7 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| extend response = parse_json(tostring(customDimensions[\"Response-Body\"]))\n| extend outcome = response[\"outcome\"]\n| extend raw_backend_name = case ( \n        data has \"https://${nodo_host}/nodo\", \"01 ${pagopa_postgres_id} PagoPA\",\n        target startswith \"${nexi_postgres_backend}\", \"03 ${nexi_postgres_id} Nexi\",\n        \"99 not needed\"\n    )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| summarize [\"KO Responses\"] = countif(outcome == \"KO\") by bin(timestamp, 1m), [\"Backend Name\"] = backend_name\n| order by timestamp asc\n| render timechart\n\n",
+                  "Query": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| extend raw_backend_name = case ( \n        data has \"https://${nodo_host}/nodo\", \"01 ${pagopa_postgres_id} PagoPA\",\n        target startswith \"${nexi_postgres_backend}\", \"03 ${nexi_postgres_id} Nexi\",\n        \"99 not needed\"\n    )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| summarize [\"KO Responses\"] = countif(resultCode != \"200\") by bin(timestamp, 1m), [\"Backend Name\"] = backend_name\n| order by timestamp asc\n| render timechart\n\n",
                   "PartTitle": "Routed primitives: ClosePaymentV2 - Error on NDP instances during time",
                   "PartSubTitle": "Volumes divided by time about errors on NDP instances for routed closePaymentV2",
                   "Dimensions": {
@@ -3527,7 +3527,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where toint(resultCode) >= 300\n| extend [\"HTTP Status\"] = resultCode\n| extend raw_backend_name = case ( \n        data has \"https://${nodo_host}/nodo\",\n        \"01 ${pagopa_postgres_id} PagoPA\",\n        target startswith \"${nexi_postgres_backend}\",\n        \"03 ${nexi_postgres_id} Nexi\",\n        \"99 not needed\"\n    )   \n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| summarize Count = count() by [\"HTTP Status\"], backend_name\n| top 20 by Count desc\n| render columnchart kind=unstacked\n\n",
+                  "value": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where toint(resultCode) != 200\n| extend [\"HTTP Status\"] = iff(resultCode != \"\", resultCode, \"No HTTP Status\")\n| extend raw_backend_name = case ( \n        data has \"https://${nodo_host}/nodo\",\n        \"01 ${pagopa_postgres_id} PagoPA\",\n        target startswith \"${nexi_postgres_backend}\",\n        \"03 ${nexi_postgres_id} Nexi\",\n        \"99 not needed\"\n    )   \n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| summarize Count = count() by [\"HTTP Status\"], backend_name\n| top 20 by Count desc\n| render columnchart kind=unstacked\n\n",
                   "isOptional": true
                 },
                 {
@@ -3590,7 +3590,7 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where toint(resultCode) >= 300\n| extend [\"HTTP Status\"] = resultCode\n| extend raw_backend_name = case ( \n        data has \"https://${nodo_host}/nodo\",\n        \"01 ${pagopa_postgres_id} PagoPA\",\n        target startswith \"${nexi_postgres_backend}\",\n        \"03 ${nexi_postgres_id} Nexi\",\n        \"99 not needed\"\n    )   \n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| summarize Count = count() by [\"HTTP Status\"], backend_name\n| top 20 by Count desc\n| render columnchart kind=unstacked\n\n",
+                  "Query": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where toint(resultCode) != 200\n| extend [\"HTTP Status\"] = iff(resultCode != \"\", resultCode, \"No HTTP Status\")\n| extend raw_backend_name = case ( \n        data has \"https://${nodo_host}/nodo\",\n        \"01 ${pagopa_postgres_id} PagoPA\",\n        target startswith \"${nexi_postgres_backend}\",\n        \"03 ${nexi_postgres_id} Nexi\",\n        \"99 not needed\"\n    )   \n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| summarize Count = count() by [\"HTTP Status\"], backend_name\n| top 20 by Count desc\n| render columnchart kind=unstacked\n\n",
                   "SpecificChart": "UnstackedColumn",
                   "PartTitle": "Routed primitives: ClosePaymentV2 - Error on NDP instances details",
                   "PartSubTitle": "Details about errors on NDP instances for routed closePaymentV2",
@@ -3735,286 +3735,6 @@
                   "Query": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| extend raw_backend_name = case ( \n                                data has \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| extend [\"Timestamp\"] = timestamp\n| summarize [\"Average Duration (ms)\"] = avg(duration) by bin([\"Timestamp\"], 1m), [\"Backend Name\"]=backend_name\n| order by [\"Timestamp\"] asc\n| render timechart\n\n",
                   "PartTitle": "Routed primitives: ClosePaymentV2 - Average time duration on NDP instances",
                   "PartSubTitle": "Average elapsed time on NDP instances for routed closePaymentV2"
-                }
-              }
-            }
-          },
-          {
-            "position": {
-              "x": 9,
-              "y": 76,
-              "colSpan": 5,
-              "rowSpan": 5
-            },
-            "metadata": {
-              "inputs": [
-                {
-                  "name": "resourceTypeMode",
-                  "isOptional": true
-                },
-                {
-                  "name": "ComponentId",
-                  "isOptional": true
-                },
-                {
-                  "name": "Scope",
-                  "value": {
-                    "resourceIds": [
-                      "${appinsights_id}"
-                    ]
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "PartId",
-                  "value": "7aaafe3a-8e22-473e-ace0-df9923a5ab1a",
-                  "isOptional": true
-                },
-                {
-                  "name": "Version",
-                  "value": "2.0",
-                  "isOptional": true
-                },
-                {
-                  "name": "TimeRange",
-                  "isOptional": true
-                },
-                {
-                  "name": "DashboardId",
-                  "isOptional": true
-                },
-                {
-                  "name": "DraftRequestParameters",
-                  "isOptional": true
-                },
-                {
-                  "name": "Query",
-                  "value": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                data has \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${pagopa_postgres_id} PagoPA\"\n| summarize Count = count() by bin(timestamp, 1m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${pagopa_postgres_id} PagoPA\"\n    )\n\n",
-                  "isOptional": true
-                },
-                {
-                  "name": "ControlType",
-                  "value": "FrameControlChart",
-                  "isOptional": true
-                },
-                {
-                  "name": "SpecificChart",
-                  "value": "Line",
-                  "isOptional": true
-                },
-                {
-                  "name": "PartTitle",
-                  "value": "FaultCode per ${pagopa_postgres_id} PagoPA",
-                  "isOptional": true
-                },
-                {
-                  "name": "PartSubTitle",
-                  "value": "${appinsights_name}",
-                  "isOptional": true
-                },
-                {
-                  "name": "Dimensions",
-                  "value": {
-                    "xAxis": {
-                      "name": "timestamp",
-                      "type": "datetime"
-                    },
-                    "yAxis": [
-                      {
-                        "name": "Count",
-                        "type": "long"
-                      }
-                    ],
-                    "splitBy": [
-                      {
-                        "name": "fault_code",
-                        "type": "string"
-                      }
-                    ],
-                    "aggregation": "Sum"
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "LegendOptions",
-                  "value": {
-                    "isEnabled": true,
-                    "position": "Bottom"
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "IsQueryContainTimeRange",
-                  "value": false,
-                  "isOptional": true
-                }
-              ],
-              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
-              "settings": {
-                "content": {
-                  "Query": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                data has \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${pagopa_postgres_id} PagoPA\"\n| summarize Count = count() by bin(timestamp, 1m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${pagopa_postgres_id} PagoPA\"\n    )\n\n",
-                  "SpecificChart": "Line",
-                  "PartTitle": "FaultCode per ${pagopa_postgres_id} PagoPA",
-                  "Dimensions": {
-                    "xAxis": {
-                      "name": "timestamp",
-                      "type": "datetime"
-                    },
-                    "yAxis": [
-                      {
-                        "name": "Count",
-                        "type": "long"
-                      }
-                    ],
-                    "splitBy": [
-                      {
-                        "name": "fault_code",
-                        "type": "string"
-                      }
-                    ],
-                    "aggregation": "Sum"
-                  },
-                  "IsQueryContainTimeRange": false
-                }
-              }
-            }
-          },
-          {
-            "position": {
-              "x": 14,
-              "y": 76,
-              "colSpan": 5,
-              "rowSpan": 5
-            },
-            "metadata": {
-              "inputs": [
-                {
-                  "name": "resourceTypeMode",
-                  "isOptional": true
-                },
-                {
-                  "name": "ComponentId",
-                  "isOptional": true
-                },
-                {
-                  "name": "Scope",
-                  "value": {
-                    "resourceIds": [
-                      "${appinsights_id}"
-                    ]
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "PartId",
-                  "value": "7c80546c-88b4-4945-b8be-b655ddc43ef7",
-                  "isOptional": true
-                },
-                {
-                  "name": "Version",
-                  "value": "2.0",
-                  "isOptional": true
-                },
-                {
-                  "name": "TimeRange",
-                  "isOptional": true
-                },
-                {
-                  "name": "DashboardId",
-                  "isOptional": true
-                },
-                {
-                  "name": "DraftRequestParameters",
-                  "isOptional": true
-                },
-                {
-                  "name": "Query",
-                  "value": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                data has \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${nexi_postgres_id} Nexi\"\n| summarize Count = count() by bin(timestamp, 1m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${nexi_postgres_id} Nexi\"\n    )\n\n",
-                  "isOptional": true
-                },
-                {
-                  "name": "ControlType",
-                  "value": "FrameControlChart",
-                  "isOptional": true
-                },
-                {
-                  "name": "SpecificChart",
-                  "value": "Line",
-                  "isOptional": true
-                },
-                {
-                  "name": "PartTitle",
-                  "value": "FaultCode per ${nexi_postgres_id} Nexi",
-                  "isOptional": true
-                },
-                {
-                  "name": "PartSubTitle",
-                  "value": "${appinsights_name}",
-                  "isOptional": true
-                },
-                {
-                  "name": "Dimensions",
-                  "value": {
-                    "xAxis": {
-                      "name": "timestamp",
-                      "type": "datetime"
-                    },
-                    "yAxis": [
-                      {
-                        "name": "Count",
-                        "type": "long"
-                      }
-                    ],
-                    "splitBy": [
-                      {
-                        "name": "fault_code",
-                        "type": "string"
-                      }
-                    ],
-                    "aggregation": "Sum"
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "LegendOptions",
-                  "value": {
-                    "isEnabled": true,
-                    "position": "Bottom"
-                  },
-                  "isOptional": true
-                },
-                {
-                  "name": "IsQueryContainTimeRange",
-                  "value": false,
-                  "isOptional": true
-                }
-              ],
-              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
-              "settings": {
-                "content": {
-                  "Query": "let monitored_apis = datatable(operationId_s: string, primitive: string)['${apis.node_for_ecommerce_v2.closePaymentV2.id}', '${apis.node_for_ecommerce_v2.closePaymentV2.name}'];\ndependencies\n| extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s != \"\" and primitive != \"\"\n| where customDimensions[\"Response-Body\"] contains \"<fault>\"\n| extend response = tostring(customDimensions[\"Response-Body\"])\n| extend\n    fault_code = extract(\"<faultCode>(.*?)</faultCode>\", 1, response),\n    fault_string = extract(\"<faultString>(.*?)</faultString>\", 1, response)\n| extend raw_backend_name = case(\n                                data has \"https://${nodo_host}/nodo\",\n                                \"01 ${pagopa_postgres_id} PagoPA\",\n                                target startswith \"${nexi_postgres_backend}\",\n                                \"03 ${nexi_postgres_id} Nexi\",\n                                \"99 not needed\"\n                            )\n| where raw_backend_name !startswith \"99\"\n| extend backend_name = substring(raw_backend_name, 3)\n| where backend_name == \"${nexi_postgres_id} Nexi\"\n| summarize Count = count() by bin(timestamp, 1m), fault_code\n| render timechart\n    with (\n    xcolumn=timestamp,\n    ycolumns=Count,\n    series=fault_code,\n    title=\"FaultCode per ${nexi_postgres_id} Nexi\"\n    )\n\n",
-                  "SpecificChart": "Line",
-                  "PartTitle": "FaultCode per ${nexi_postgres_id} Nexi",
-                  "Dimensions": {
-                    "xAxis": {
-                      "name": "timestamp",
-                      "type": "datetime"
-                    },
-                    "yAxis": [
-                      {
-                        "name": "Count",
-                        "type": "long"
-                      }
-                    ],
-                    "splitBy": [
-                      {
-                        "name": "fault_code",
-                        "type": "string"
-                      }
-                    ],
-                    "aggregation": "Sum"
-                  },
-                  "IsQueryContainTimeRange": false
                 }
               }
             }
