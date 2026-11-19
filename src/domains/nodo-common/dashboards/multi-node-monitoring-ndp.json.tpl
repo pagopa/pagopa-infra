@@ -452,7 +452,7 @@
                 },
                 {
                   "name": "SpecificChart",
-                  "value": "UnstackedBar",
+                  "value": "StackedBar",
                   "isOptional": true
                 },
                 {
@@ -513,6 +513,7 @@
               "settings": {
                 "content": {
                   "Query": "let monitored_apis = ${monitored_apis_kql};\nlet backend_stats = dependencies\n    | extend operationId_s = tostring(split(operation_Name, \" - \")[1])\n    | join kind=leftouter monitored_apis on operationId_s\n    | where operationId_s != \"\" and primitive != \"\"\n    | extend response = tostring(customDimensions[\"Response-Body\"])\n    | extend outcome = extract(\"<outcome>(.*?)</outcome>\", 1, response)\n    | extend raw_backend_name = case ( \n                                    data has \"https://${nodo_host}/nodo\",\n                                    \"01 ${pagopa_postgres_id} PagoPA\",\n                                    target startswith \"${nexi_postgres_backend}\",\n                                    \"03 ${nexi_postgres_id} Nexi\",\n                                    \"99 not needed\"\n                                )   \n    | where raw_backend_name !startswith \"99\"\n    | extend backend_name = substring(raw_backend_name, 3)\n    | summarize\n        Total = count(),\n        KO = countif(outcome == \"KO\"),\n        OK = countif(outcome != \"KO\")\n        by backend_name\n    | project\n        [\"Backend Name\"] = backend_name,\n        [\"KO\"] = KO,\n        [\"OK\"] = OK,\n        [\"Invocations\"] = Total\n;\nbackend_stats\n| union (backend_stats\n    | summarize\n        [\"Backend Name\"] = \"TOTAL\",\n        [\"KO\"] = sum([\"KO\"]),\n        [\"OK\"] = sum([\"OK\"]),\n        [\"Total Invocations\"] = sum([\"Invocations\"])\n    )\n| render barchart\n\n",
+                  "SpecificChart": "StackedBar",
                   "PartTitle": "Routed primitives: On NDP instances - Volumes",
                   "PartSubTitle": "Volumes about primitives routed on NDP instances",
                   "Dimensions": {
@@ -599,7 +600,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s in (monitored_apis | project operationId_s)\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| where backendUrl_s == \"\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        (backendUrl_s == \"\" and responseCode_d == 200),\n        \"01 OK\",\n        (backendUrl_s == \"\" and responseCode_d == 401),\n        \"02 Error: Invalid subscription key\",\n        (backendUrl_s == \"\" and lastError_reason_s != \"\"),\n        strcat(\"03 Error: \", lastError_reason_s),\n        \"99 unknown\"\n    )                 \n| summarize count() by raw_backend_name, primitive_name\n| order by raw_backend_name asc\n| extend backend_name = substring(raw_backend_name, 3)\n| project ['Outcome']=backend_name, ['Primitive']=primitive_name, ['Count']=count_\n| render piechart\n\n",
+                  "value": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind = leftouter monitored_apis on operationId_s\n| where operationId_s in (monitored_apis\n    | project operationId_s)\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| where backendUrl_s == \"\"\n| extend primitive_name = case(is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case(\n    (backendUrl_s == \"\" and responseCode_d == 200),\n    \"01 OK\",\n    (backendUrl_s == \"\" and responseCode_d == 401),\n    \"02 Error: Invalid subscription key\",\n    (backendUrl_s == \"\" and lastError_reason_s != \"\"),\n    strcat(\"03 Error: \", lastError_reason_s),\n    \"99 unknown\"\n)\n| summarize Count=count() by Outcome = substring(raw_backend_name, 3), Primitive = primitive_name\n| project Label = strcat(Primitive, \" | \", Outcome), Count\n| render piechart\n\n",
                   "isOptional": true
                 },
                 {
@@ -627,7 +628,7 @@
                   "isOptional": true,
                   "value": {
                     "xAxis": {
-                      "name": "Outcome",
+                      "name": "Label",
                       "type": "string"
                     },
                     "yAxis": [
@@ -657,14 +658,14 @@
               "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
               "settings": {
                 "content": {
-                  "Query": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s in (monitored_apis | project operationId_s)\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| where backendUrl_s == \"\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        (backendUrl_s == \"\" and responseCode_d == 200),\n        \"01 OK\",\n        (backendUrl_s == \"\" and responseCode_d == 401),\n        \"02 Error: Invalid subscription key\",\n        (backendUrl_s == \"\" and lastError_reason_s != \"\"),\n        strcat(\"03 Error: \", lastError_reason_s),\n        \"99 unknown\"\n    )                 \n| summarize count() by raw_backend_name, primitive_name\n| order by raw_backend_name asc\n| extend backend_name = substring(raw_backend_name, 3)\n| project ['Outcome']=backend_name, ['Primitive']=primitive_name, ['Count']=count_\n| render piechart\n\n",
+                  "Query": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind = leftouter monitored_apis on operationId_s\n| where operationId_s in (monitored_apis\n    | project operationId_s)\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| where backendUrl_s == \"\"\n| extend primitive_name = case(is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case(\n    (backendUrl_s == \"\" and responseCode_d == 200),\n    \"01 OK\",\n    (backendUrl_s == \"\" and responseCode_d == 401),\n    \"02 Error: Invalid subscription key\",\n    (backendUrl_s == \"\" and lastError_reason_s != \"\"),\n    strcat(\"03 Error: \", lastError_reason_s),\n    \"99 unknown\"\n)\n| summarize Count=count() by Outcome = substring(raw_backend_name, 3), Primitive = primitive_name\n| project Label = strcat(Primitive, \" | \", Outcome), Count\n| render piechart\n\n",
                   "ControlType": "FrameControlChart",
                   "SpecificChart": "Pie",
                   "PartTitle": "Routed primitives: Managed by APIM policies - Percentages",
                   "PartSubTitle": "Percentages about outcomes of primitives not routed on backend and managed directly by APIM policies",
                   "Dimensions": {
                     "xAxis": {
-                      "name": "Outcome",
+                      "name": "Label",
                       "type": "string"
                     },
                     "yAxis": [
@@ -738,7 +739,7 @@
                 },
                 {
                   "name": "Query",
-                  "value": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s in (monitored_apis | project operationId_s)\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| where backendUrl_s == \"\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        (backendUrl_s == \"\" and responseCode_d == 200),\n        \"01 OK\",\n        (backendUrl_s == \"\" and responseCode_d == 401),\n        \"02 Error: Invalid subscription key\",\n        (backendUrl_s == \"\" and lastError_reason_s != \"\"),\n        strcat(\"03 Error: \", lastError_reason_s),\n        \"99 Error: Unknown\"\n    )                 \n| where raw_backend_name != \"01 OK\" and raw_backend_name !startswith \"02 Error\"\n| extend backend_name = substring(raw_backend_name, 10)\n| project \n    ['Primitive']=primitive_name, \n    ['Error']=backend_name, \n    ['Status']=responseCode_d, \n    ['Execution time']=strcat(backendTime_d / 1000, \" sec\"), \n    ['Caused by']=lastError_message_s\n\n",
+                  "value": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind = leftouter monitored_apis on operationId_s\n| where operationId_s in (monitored_apis\n    | project operationId_s)\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| where backendUrl_s == \"\"\n| extend primitive_name = case(is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case(\n    (backendUrl_s == \"\" and responseCode_d == 200),\n    \"01 OK\",\n    (backendUrl_s == \"\" and responseCode_d == 401),\n    \"02 Error: Invalid subscription key\",\n    (backendUrl_s == \"\" and lastError_reason_s != \"\"),\n    strcat(\"03 Error: \", lastError_reason_s),\n    \"99 Error: Unknown\"\n)\n| where raw_backend_name != \"01 OK\"\n| extend backend_name = substring(raw_backend_name, 10)\n| summarize Count = count() by Primitive = primitive_name, Error = backend_name, Status = responseCode_d, ['Caused by'] = lastError_message_s\n| project Primitive, Error, Status, Count, ['Caused by']\n\n",
                   "isOptional": true
                 },
                 {
@@ -786,7 +787,7 @@
                     "Execution time": "131px",
                     "Status": "82px"
                   },
-                  "Query": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind=leftouter monitored_apis on operationId_s\n| where operationId_s in (monitored_apis | project operationId_s)\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| where backendUrl_s == \"\"\n| extend primitive_name = case (is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case ( \n        (backendUrl_s == \"\" and responseCode_d == 200),\n        \"01 OK\",\n        (backendUrl_s == \"\" and responseCode_d == 401),\n        \"02 Error: Invalid subscription key\",\n        (backendUrl_s == \"\" and lastError_reason_s != \"\"),\n        strcat(\"03 Error: \", lastError_reason_s),\n        \"99 Error: Unknown\"\n    )                 \n| where raw_backend_name != \"01 OK\" and raw_backend_name !startswith \"02 Error\"\n| extend backend_name = substring(raw_backend_name, 10)\n| project \n    ['Primitive']=primitive_name, \n    ['Error']=backend_name, \n    ['Status']=responseCode_d, \n    ['Execution time']=strcat(backendTime_d / 1000, \" sec\"), \n    ['Caused by']=lastError_message_s\n\n",
+                  "Query": "let monitored_apis = ${monitored_apis_kql};\nAzureDiagnostics\n| join kind = leftouter monitored_apis on operationId_s\n| where operationId_s in (monitored_apis\n    | project operationId_s)\n| extend primitive = iff(isempty(primitive), iff(isempty(operationId_s), \"ResourceNotFound-404\", operationId_s), primitive)\n| extend is_auth = url_s contains \"/nodo-auth/\"\n| where backendUrl_s == \"\"\n| extend primitive_name = case(is_auth, strcat(primitive, \" (Auth)\"), primitive)\n| extend raw_backend_name = case(\n    (backendUrl_s == \"\" and responseCode_d == 200),\n    \"01 OK\",\n    (backendUrl_s == \"\" and responseCode_d == 401),\n    \"02 Error: Invalid subscription key\",\n    (backendUrl_s == \"\" and lastError_reason_s != \"\"),\n    strcat(\"03 Error: \", lastError_reason_s),\n    \"99 Error: Unknown\"\n)\n| where raw_backend_name != \"01 OK\"\n| extend backend_name = substring(raw_backend_name, 10)\n| summarize Count = count() by Primitive = primitive_name, Error = backend_name, Status = responseCode_d, ['Caused by'] = lastError_message_s\n| project Primitive, Error, Status, Count, ['Caused by']\n\n",
                   "PartTitle": "Routed primitives: Managed by APIM policies - Error details",
                   "PartSubTitle": "Details about errors of primitives not routed on backend and managed directly by APIM policies"
                 }
