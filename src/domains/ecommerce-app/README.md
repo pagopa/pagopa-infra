@@ -96,6 +96,7 @@
 | [azurerm_api_management_api_operation_policy.nodo_per_pm_check_position_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.nodo_per_pm_close_payment_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.npg_notifications_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_operation_policy.post_contract_deactivation](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.post_orders_build](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.post_payment_methods_search](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.post_payment_methods_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
