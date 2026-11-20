@@ -7168,6 +7168,10 @@
             },
             "type": "array",
             "title": "Flags"
+          },
+          "stack": {
+            "$ref": "#/components/schemas/StackOut",
+            "nullable": true
           }
         },
         "type": "object",
@@ -7373,6 +7377,90 @@
           "version_since"
         ],
         "title": "CellOut"
+      },
+      "ChangeItemOut": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "number": {
+            "title": "Number",
+            "type": "integer",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "author": {
+            "title": "Author",
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "number",
+          "title",
+          "author",
+          "url"
+        ],
+        "title": "ChangeItemOut"
+      },
+      "ChangeSummaryOut": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "UNAVAILABLE",
+              "ERROR",
+              "PENDING"
+            ],
+            "title": "Status"
+          },
+          "direction": {
+            "title": "Direction",
+            "type": "string",
+            "nullable": true
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ChangeItemOut"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total_commits": {
+            "type": "integer",
+            "title": "Total Commits"
+          },
+          "truncated": {
+            "type": "boolean",
+            "title": "Truncated"
+          },
+          "compare_url": {
+            "title": "Compare Url",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "direction",
+          "items",
+          "total_commits",
+          "truncated",
+          "compare_url"
+        ],
+        "title": "ChangeSummaryOut"
       },
       "CheckIn": {
         "properties": {
@@ -7605,6 +7693,10 @@
             "type": "array",
             "title": "Runs",
             "default": []
+          },
+          "changes": {
+            "$ref": "#/components/schemas/ChangeSummaryOut",
+            "nullable": true
           }
         },
         "type": "object",
@@ -13322,6 +13414,37 @@
         },
         "type": "object",
         "title": "SettingsUpdate"
+      },
+      "StackOut": {
+        "properties": {
+          "language": {
+            "type": "string",
+            "title": "Language"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string",
+            "nullable": true
+          },
+          "source": {
+            "title": "Source",
+            "type": "string",
+            "nullable": true
+          },
+          "ref": {
+            "title": "Ref",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "language",
+          "version",
+          "source",
+          "ref"
+        ],
+        "title": "StackOut"
       },
       "StatusOut": {
         "properties": {
