@@ -1081,6 +1081,7 @@
         },
         "/psp/api/v1/contracts/{contractId}/deactivation": {
           "post": {
+            "operationId": "postContractDeactivation",
             "tags": [
               "Payment Services"
             ],
