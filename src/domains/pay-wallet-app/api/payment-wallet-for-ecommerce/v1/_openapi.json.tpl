@@ -338,6 +338,19 @@
               "FAILED"
             ]
           },
+          "operationType": {
+            "type": "string",
+            "description": "Operation type received by NPG",
+            "example": "AUTHORIZATION",
+            "enum": [
+              "AUTHORIZATION",
+              "CARD_VERIFICATION",
+              "CAPTURE",
+              "VOID",
+              "REFUND",
+              "CANCEL"
+            ]
+          },
           "errorCode": {
             "type": "string",
             "description": "Error code for the onboarding operation received by NPG"

@@ -401,6 +401,11 @@
           "cardId4": {
             "description": "NPG unique card identifier",
             "type": "string"
+          },
+          "operationType": {
+            "description": "Operation type received by NPG",
+            "type": "string",
+            "example": "AUTHORIZATION"
           }
         },
         "required": [
