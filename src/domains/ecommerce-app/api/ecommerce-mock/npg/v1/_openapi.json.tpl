@@ -1079,6 +1079,83 @@
                 }
             }
         },
+        "/psp/api/v1/contracts/{contractId}/deactivation": {
+          "post": {
+            "tags": [
+              "Payment Services"
+            ],
+            "summary": "Deactivate a contract.",
+            "description": "Deactivates a wallet's contract, allowing the wallet to be deleted.",
+            "parameters": [
+              {
+                "name": "Correlation-Id",
+                "in": "header",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "description": "Mandatory field in UUID v4 format. The purpose of this field is to trace the request across different systems, making debugging and request tracking easier."
+              },
+              {
+                "name": "X-API-KEY",
+                "in": "header",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Authentication API Key."
+              },
+              {
+                "name": "contractId",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "C28349870000000001",
+                "description": "Recurring contract ID."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Contract deactivation successful"
+              },
+              "201": {
+                "description": "Created"
+              },
+              "400": {
+                "description": "Invalid request data",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ClientError"
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Unauthorized"
+              },
+              "403": {
+                "description": "Forbidden"
+              },
+              "404": {
+                "description": "Not found"
+              },
+              "500": {
+                "description": "Internal Server Error",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ServerError"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "/fe/build/text/{id}": {
             "post": {
                 "tags": [
