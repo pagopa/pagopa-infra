@@ -49,6 +49,6 @@ provider "helm" {
 }
 
 module "__v4__" {
-  # 10.1.1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=9308c4dac3413721a4a5a7d5205dac5cb16830ac"
+  # 10.52.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4?ref=b9b0d242905eb8eeb02fdaa7543494499c573505"
 }
