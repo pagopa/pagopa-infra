@@ -26,9 +26,22 @@ module "nodo_observability_sa" {
   allow_nested_items_to_be_public = false
 
   blob_delete_retention_days    = var.nodo_observability_storage_account.blob_delete_retention_days
-  public_network_access_enabled = true
+  public_network_access_enabled = false
+
+  index_document                = "index.html"
+  error_404_document            = "error.html"
 
   tags = module.tag_config.tags
+}
+
+# blob $web
+resource "azurerm_storage_container" "observability_web_storage" {
+  count      = var.nodo_observability_enabled ? 1 : 0
+  depends_on = [module.nodo_observability_sa]
+
+  name                  = "$web"
+  storage_account_id    = module.nodo_observability_sa[0].id # pagopa<env_short>weunodoobsvsa
+  container_access_type = "private"
 }
 
 # blob checkpoint
@@ -37,7 +50,7 @@ resource "azurerm_storage_container" "observability_checkpoint_storage" {
   depends_on = [module.nodo_observability_sa]
 
   name                  = "observability-checkpoint-storage"
-  storage_account_id    = module.nodo_observability_sa[0].id # pagopa<env>observabilitysa
+  storage_account_id    = module.nodo_observability_sa[0].id # pagopa<env_short>weunodoobsvsa
   container_access_type = "private"
 }
 
@@ -66,7 +79,7 @@ resource "azurerm_private_endpoint" "observability_checkpoint_storage_blob_priva
   tags = module.tag_config.tags
 }
 
-resource "azurerm_private_endpoint" "observability_checkpoint_storage_web_private_endpoint" {
+resource "azurerm_private_endpoint" "observability_web_storage_web_private_endpoint" {
   count      = var.nodo_observability_enabled ? 1 : 0
   depends_on = [module.nodo_observability_sa]
 
