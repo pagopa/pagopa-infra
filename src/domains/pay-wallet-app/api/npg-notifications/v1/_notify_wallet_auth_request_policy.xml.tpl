@@ -73,6 +73,7 @@
               JObject requestBody = (JObject)context.Variables["npgAuthNotificationRequestBody"];
               JObject operation = (JObject)requestBody["operation"];
               string operationResult = (string)operation["operationResult"];
+              string operationType = (string)operation["operationType"];
               string orderId = (string)operation["orderId"];
               string operationId = (string)operation["operationId"];
               string paymentCircuit = (string)operation["paymentCircuit"];
@@ -119,6 +120,7 @@
               JObject outcomeGateway = new JObject();
               outcomeGateway["paymentGatewayType"] = "NPG";
               outcomeGateway["operationResult"] = operationResult;
+              outcomeGateway["operationType"] = operationType;
               outcomeGateway["orderId"] = orderId;
               outcomeGateway["operationId"] = operationId;
               outcomeGateway["errorCode"] = errorCode;
