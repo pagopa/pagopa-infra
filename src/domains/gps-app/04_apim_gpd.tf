@@ -8,7 +8,7 @@
 ########################################################
 
 module "apim_gpd_integration_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "debt-positions-integration"
   display_name = "GPD Debt Positions integration for organizations"
