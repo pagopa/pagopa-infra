@@ -126,7 +126,7 @@ module "crusc8_cdn_frontdoor" {
         {
           action = "Append"
           name   = "Content-Security-Policy-Report-Only"
-          value  = "img-src 'self' https://assets.cdn.io.italia.it https://selcdcheckoutsa.z6.web.core.windows.net data:;"
+          value  = "img-src 'self' https://assets.cdn.io.italia.it https://assets.cdn.platform.pagopa.it https://selcdcheckoutsa.z6.web.core.windows.net data:;"
         },
         # {
         #   action = "Append"
