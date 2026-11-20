@@ -7163,7 +7163,8 @@
                 "ALIGNED",
                 "DRIFT",
                 "UNREACHABLE",
-                "UNTESTED"
+                "UNTESTED",
+                "UNDER_QA"
               ]
             },
             "type": "array",
@@ -13489,6 +13490,10 @@
             "type": "integer",
             "title": "Untested"
           },
+          "under_qa": {
+            "type": "integer",
+            "title": "Under Qa"
+          },
           "last_success_at": {
             "title": "Last Success At",
             "type": "string",
@@ -13503,6 +13508,7 @@
           "drift",
           "unreachable",
           "untested",
+          "under_qa",
           "last_success_at"
         ],
         "title": "SummaryOut"
