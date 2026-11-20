@@ -3,10 +3,7 @@
   "info": {
     "version": "0.0.1,",
     "title": "wallet pagoPA - NPG notifications API",
-    "description": "Notification API to implement callback providing order status updates after wallet creation on Nexi's NPG",
-    "contact": {
-      "name": "pagoPA - Touchpoints team"
-    }
+    "description": "API to support npg notifications related to onboarding"
   },
   "tags": [
     {
