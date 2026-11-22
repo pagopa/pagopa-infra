@@ -4439,6 +4439,289 @@
         }
       }
     },
+    "/api/v1/messaging/inbox": {
+      "get": {
+        "tags": [
+          "messaging"
+        ],
+        "summary": "List Inbox",
+        "operationId": "list_inbox_api_v1_messaging_inbox_get",
+        "parameters": [
+          {
+            "name": "unread_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Unread Only"
+            }
+          },
+          {
+            "name": "severity",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Severity",
+              "enum": [
+                "info",
+                "warning",
+                "critical"
+              ],
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Type",
+              "type": "string",
+              "maxLength": 255,
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "title": "Cursor",
+              "type": "string",
+              "maxLength": 500,
+              "nullable": true
+            }
+          },
+          {
+            "name": "x-user-email",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "title": "X-User-Email",
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InboxPageOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/messaging/inbox/summary": {
+      "get": {
+        "tags": [
+          "messaging"
+        ],
+        "summary": "Inbox Summary",
+        "operationId": "inbox_summary_api_v1_messaging_inbox_summary_get",
+        "parameters": [
+          {
+            "name": "x-user-email",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "title": "X-User-Email",
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InboxSummaryOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/messaging/inbox/read-all": {
+      "post": {
+        "tags": [
+          "messaging"
+        ],
+        "summary": "Read All",
+        "operationId": "read_all_api_v1_messaging_inbox_read_all_post",
+        "parameters": [
+          {
+            "name": "x-user-email",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "title": "X-User-Email",
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarkReadOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/messaging/inbox/{inbox_id}/read": {
+      "post": {
+        "tags": [
+          "messaging"
+        ],
+        "summary": "Read One",
+        "operationId": "read_one_api_v1_messaging_inbox__inbox_id__read_post",
+        "parameters": [
+          {
+            "name": "inbox_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Inbox Id"
+            }
+          },
+          {
+            "name": "x-user-email",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "title": "X-User-Email",
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarkReadOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/messaging/events": {
+      "post": {
+        "tags": [
+          "messaging"
+        ],
+        "summary": "Ingest Event",
+        "description": "Accept one CloudEvent (202), or report it as duplicate or suppressed (200).",
+        "operationId": "ingest_event_api_v1_messaging_events_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CloudEvent"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventIngestOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/tm/resources": {
       "get": {
         "tags": [
@@ -7534,6 +7817,84 @@
         ],
         "title": "CheckTargetOut"
       },
+      "CloudEvent": {
+        "properties": {
+          "specversion": {
+            "type": "string",
+            "const": "1.0",
+            "title": "Specversion",
+            "default": "1.0"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "subject": {
+            "title": "Subject",
+            "type": "string",
+            "nullable": true
+          },
+          "time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Time"
+          },
+          "datacontenttype": {
+            "type": "string",
+            "const": "application/json",
+            "title": "Datacontenttype",
+            "default": "application/json"
+          },
+          "data": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Data"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "info",
+              "warning",
+              "critical"
+            ],
+            "title": "Severity"
+          },
+          "product": {
+            "title": "Product",
+            "type": "string",
+            "nullable": true
+          },
+          "environment": {
+            "title": "Environment",
+            "type": "string",
+            "enum": [
+              "dev",
+              "uat",
+              "prod"
+            ],
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "source",
+          "type",
+          "data",
+          "severity"
+        ],
+        "title": "CloudEvent",
+        "description": "A CloudEvents 1.0 event in JSON structured mode, plus the hub's extension attributes."
+      },
       "CostReport": {
         "properties": {
           "year": {
@@ -10300,6 +10661,29 @@
         ],
         "title": "EstimateDriftItem"
       },
+      "EventIngestOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "accepted",
+              "duplicate",
+              "suppressed"
+            ],
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "status"
+        ],
+        "title": "EventIngestOut"
+      },
       "ExternalResourceCreate": {
         "properties": {
           "first_name": {
@@ -11248,6 +11632,120 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
+      "InboxItemOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "body": {
+            "type": "string",
+            "title": "Body"
+          },
+          "link": {
+            "title": "Link",
+            "type": "string",
+            "nullable": true
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "info",
+              "warning",
+              "critical"
+            ],
+            "title": "Severity"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "read_at": {
+            "title": "Read At",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "auto_read": {
+            "type": "boolean",
+            "title": "Auto Read"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "body",
+          "link",
+          "severity",
+          "type",
+          "created_at",
+          "read_at",
+          "auto_read"
+        ],
+        "title": "InboxItemOut"
+      },
+      "InboxPageOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/InboxItemOut"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "next_cursor": {
+            "title": "Next Cursor",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "title": "InboxPageOut"
+      },
+      "InboxSummaryOut": {
+        "properties": {
+          "unread": {
+            "type": "integer",
+            "title": "Unread"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "max_unread_severity": {
+            "title": "Max Unread Severity",
+            "type": "string",
+            "enum": [
+              "info",
+              "warning",
+              "critical"
+            ],
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "unread",
+          "total",
+          "max_unread_severity"
+        ],
+        "title": "InboxSummaryOut"
+      },
       "JiraAlert": {
         "properties": {
           "key": {
@@ -11467,6 +11965,19 @@
         "type": "object",
         "title": "ManualVersionsIn",
         "description": "Manually entered versions; only the keys actually sent are applied (null/empty clears)."
+      },
+      "MarkReadOut": {
+        "properties": {
+          "updated": {
+            "type": "integer",
+            "title": "Updated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "updated"
+        ],
+        "title": "MarkReadOut"
       },
       "NameCount": {
         "properties": {
