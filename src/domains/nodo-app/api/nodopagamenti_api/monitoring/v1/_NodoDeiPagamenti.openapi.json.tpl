@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "_NodoDeiPagamenti",
+    "title": "_NodoDeiPagamenti ${service}",
     "description": "Api and Models",
     "version": "1.0"
   },
@@ -65,6 +65,17 @@
             "description": ""
           }
         }
+      }
+    },
+    "/cache/version": {
+      "get": {
+        "operationId": "cache-version",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "cache/version"
       }
     }
   }
