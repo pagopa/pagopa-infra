@@ -80,17 +80,23 @@ variable "k8s_kube_config_path_prefix" {
   default = "~/.kube"
 }
 
-# variable "external_domain" {
-#   type        = string
-#   default     = null
-#   description = "Domain for delegation"
-# }
-#
-# variable "dns_zone_internal_prefix" {
-#   type        = string
-#   default     = null
-#   description = "The dns subdomain."
-# }
+variable "ingress_haproxy_load_balancer_ip" {
+  type        = string
+  description = "IP of the HAProxy ingress controller"
+}
+
+
+variable "external_domain" {
+  type        = string
+  default     = "pagopa.it"
+  description = "Domain for delegation"
+}
+
+variable "dns_zone_internal_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain."
+}
 #
 # variable "apim_dns_zone_prefix" {
 #   type        = string

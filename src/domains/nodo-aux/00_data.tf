@@ -71,3 +71,8 @@ data "azurerm_kubernetes_cluster" "aks" {
   name                = local.aks_name
   resource_group_name = local.aks_resource_group_name
 }
+
+data "azurerm_private_dns_zone" "internal" {
+  name                = local.internal_dns_zone_name
+  resource_group_name = local.internal_dns_zone_resource_group_name
+}
