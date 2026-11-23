@@ -396,6 +396,8 @@ locals {
     ]) : item.key => item
   } : {}
 
+  fault_code_alert_groups = ["node_for_psp_auth"]
+
   error_fault_code = "('${join("', '", ["PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_ERRORE_IDEMPOTENZA"])}')"
 
   // Nodo SOAP path
