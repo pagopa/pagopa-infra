@@ -308,6 +308,8 @@ module "gpd_payments_cosmosdb_account" {
   location = var.location
   domain   = var.domain
 
+  burst_capacity_enabled = var.cosmos_gpd_payments_db_params.burst_capacity_enabled
+
   resource_group_name = azurerm_resource_group.gps_rg.name
   offer_type          = var.cosmos_gpd_payments_db_params.offer_type
   kind                = var.cosmos_gpd_payments_db_params.kind
