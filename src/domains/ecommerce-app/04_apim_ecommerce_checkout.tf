@@ -38,20 +38,6 @@ resource "azurerm_api_management_named_value" "ecommerce_checkout_transaction_jw
   secret              = true
 }
 
-data "azurerm_key_vault_secret" "ecommerce_for_checkout_google_recaptcha_secret" {
-  name         = "ecommerce-for-checkout-google-recaptcha-secret"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
-
-resource "azurerm_api_management_named_value" "ecommerce_for_checkout_google_recaptcha_secret_named_value" {
-  name                = "ecommerce-for-checkout-google-recaptcha-secret"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  display_name        = "ecommerce-for-checkout-google-recaptcha-secret"
-  value               = data.azurerm_key_vault_secret.ecommerce_for_checkout_google_recaptcha_secret.value
-  secret              = true
-}
-
 # pagopa-ecommerce APIs for checkout
 locals {
   apim_ecommerce_checkout_api = {

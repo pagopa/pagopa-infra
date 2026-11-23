@@ -10,12 +10,11 @@ locals {
 
   # shared CSP value -> single source of truth for both CDN delivery rules and APIM policy
   checkout_csp_value = join("", [
-    "default-src 'self'; connect-src 'self' https://api.${var.dns_zone_prefix}.${var.external_domain} https://api-eu.mixpanel.com https://privacyportalde-cdn.onetrust.com https://privacyportal-de.onetrust.com ${local.npg_sdk_cdn_url}",
-    " https://recaptcha.net/;",
-    "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;",
-    "img-src 'self' https://assets.cdn.platform.pagopa.it www.gstatic.com/recaptcha data: https://privacyportalde-cdn.onetrust.com;",
-    "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://privacyportalde-cdn.onetrust.com https://${local.npg_sdk_hostname} ${local.npg_sdk_cdn_url};",
-    "style-src 'self'  'unsafe-inline' https://privacyportalde-cdn.onetrust.com; font-src 'self' https://privacyportalde-cdn.onetrust.com; worker-src www.recaptcha.net blob:;"
+    "default-src 'self'; connect-src 'self' https://api.${var.dns_zone_prefix}.${var.external_domain} https://api-eu.mixpanel.com https://privacyportalde-cdn.onetrust.com https://privacyportal-de.onetrust.com ${local.npg_sdk_cdn_url};",
+    "frame-ancestors 'none'; object-src 'none'; frame-src 'self' *.platform.pagopa.it *.nexigroup.com;",
+    "img-src 'self' https://assets.cdn.platform.pagopa.it data: https://privacyportalde-cdn.onetrust.com;",
+    "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://privacyportalde-cdn.onetrust.com https://${local.npg_sdk_hostname} ${local.npg_sdk_cdn_url};",
+    "style-src 'self'  'unsafe-inline' https://privacyportalde-cdn.onetrust.com; font-src 'self' https://privacyportalde-cdn.onetrust.com; worker-src blob:;"
   ])
 
   # DNS Zone Key for the main CDN (the one configured in the module)
@@ -48,17 +47,12 @@ locals {
         {
           action = "Overwrite"
           name   = local.content_security_policy_header_name
-          value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://privacyportalde-cdn.onetrust.com https://privacyportal-de.onetrust.com %s", var.dns_zone_prefix, var.external_domain, local.npg_sdk_cdn_url)
+          value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://privacyportalde-cdn.onetrust.com https://privacyportal-de.onetrust.com %s;", var.dns_zone_prefix, var.external_domain, local.npg_sdk_cdn_url)
         },
         {
           action = "Append"
           name   = local.content_security_policy_header_name
-          value  = " https://recaptcha.net/;"
-        },
-        {
-          action = "Append"
-          name   = local.content_security_policy_header_name
-          value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;"
+          value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' *.platform.pagopa.it *.nexigroup.com;"
         }
       ]
     },
@@ -68,17 +62,17 @@ locals {
         {
           action = "Append"
           name   = local.content_security_policy_header_name
-          value  = "img-src 'self' https://assets.cdn.platform.pagopa.it www.gstatic.com/recaptcha data: https://privacyportalde-cdn.onetrust.com;"
+          value  = "img-src 'self' https://assets.cdn.platform.pagopa.it data: https://privacyportalde-cdn.onetrust.com;"
         },
         {
           action = "Append"
           name   = local.content_security_policy_header_name
-          value  = "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://privacyportalde-cdn.onetrust.com https://${local.npg_sdk_hostname} ${local.npg_sdk_cdn_url};"
+          value  = "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://privacyportalde-cdn.onetrust.com https://${local.npg_sdk_hostname} ${local.npg_sdk_cdn_url};"
         },
         {
           action = "Append"
           name   = local.content_security_policy_header_name
-          value  = "style-src 'self'  'unsafe-inline' https://privacyportalde-cdn.onetrust.com; font-src 'self' https://privacyportalde-cdn.onetrust.com; worker-src www.recaptcha.net blob:;"
+          value  = "style-src 'self'  'unsafe-inline' https://privacyportalde-cdn.onetrust.com; font-src 'self' https://privacyportalde-cdn.onetrust.com; worker-src blob:;"
         },
         {
           action = "Overwrite"
