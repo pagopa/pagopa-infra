@@ -1,51 +1,47 @@
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availability" {
-  for_each = local.formatted_operation_data
+  # One alert for each single API operation (see local.single_operation_data)
+  for_each = local.single_operation_data
 
-  name                = "pagopa-${var.env_short}-nodo-${each.key}-api-availability"
+  name                = "pagopa-${var.env_short}-nodo-${each.value.group}-${each.value.primitiva}-api-availability"
   resource_group_name = "dashboards"
   location            = var.location
   data_source_id      = data.azurerm_api_management.apim.id
-  description         = "Alert when any PagoPA Nodo ${upper(each.key)} API operation falls below 99% availability."
+  description         = "Alert when PagoPA Nodo ${upper(each.value.group)} ${each.value.primitiva} API operation falls below expected availability."
   enabled             = true
   severity            = 1
   frequency           = 5
 
   # Keep the original 7-minute window for all Nodo API availability alerts.
-  # Use a 14-minute window only for nodo_for_pa_auth so the query can evaluate
+  # Use a 14-minute window only for operations of nodo_for_pa_auth so the query can evaluate
   # two consecutive 7-minute bins before firing the alert.
-  time_window = each.key == "nodo_for_pa_auth" ? 14 : 7
+  time_window = each.value.require_two_consecutive_bins ? 14 : 7
 
   action {
     action_group           = local.action_groups
-    email_subject          = "Nodo PagoPA ${upper(each.key)} API Availability Alert"
+    email_subject          = "Nodo PagoPA ${upper(each.value.group)} ${each.value.primitiva} API Availability Alert"
     custom_webhook_payload = "{}"
   }
 
   query = <<-EOT
-    let operationMap = datatable(operationId_s: string, apiName: string)
-    [
-        ${each.value.formatted_operations}
-    ];
-    let operationIds = toscalar(operationMap | summarize make_list(operationId_s, 20));
     let thresholdTrafficMin = 20;
     let thresholdTrafficLinear = 90;
     let lowTrafficAvailability = 80;
     let highTrafficAvailability = 98;
     let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
-    // Enable the two-consecutive-bin rule only for nodo_for_pa_auth.
+    // Enable the two-consecutive-bin rule only for nodo_for_pa_auth operations.
     // Other API availability alerts keep the existing single-bin behavior.
-    let requireTwoConsecutiveBins = "${each.key}" == "nodo_for_pa_auth";
+    let requireTwoConsecutiveBins = ${each.value.require_two_consecutive_bins};
     AzureDiagnostics
     // Match the query lookback window with the Terraform alert evaluation window.
     // nodo_for_pa_auth needs 14 minutes to inspect two 7-minute bins.
-    | where TimeGenerated > ago(${each.key == "nodo_for_pa_auth" ? "14m" : "7m"})
+    | where TimeGenerated > ago(${each.value.require_two_consecutive_bins ? "14m" : "7m"})
     | where url_s matches regex "${each.value.sub_service}"
-    | where operationId_s in (operationIds)
+    | where operationId_s == "${each.value.operation_id}"
     | summarize
         Total = count(),
         Success = countif(todouble(responseCode_d) < 500)
-        by TimeBin = bin(TimeGenerated, 7m), operationId_s
+        by TimeBin = bin(TimeGenerated, 7m)
     | where Total > 5
     | extend trafficUp = Total - thresholdTrafficMin
     | extend deltaRatio = todouble(todouble(trafficUp) / todouble(thresholdDelta))
@@ -62,24 +58,22 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
     // Mark each 7-minute bin as degraded without filtering it immediately.
     // This is required to compare the current bin with the previous one.
     | extend belowThreshold = availability < expectedAvailability
-    // Order and serialize rows so prev() can safely compare each bin
-    // with the previous bin of the same operation.
-    // For nodo_for_pa_auth, this allows firing only after two consecutive degraded bins.
-    | order by operationId_s asc, TimeBin asc
+    // Order and serialize rows so prev() can compare each bin with the previous one.
+    // Since the query is scoped to a single operation, no per-operation partitioning is needed.
+    | order by TimeBin asc
     | serialize
-    // Read the previous bin status only when it belongs to the same operation.
-    // This prevents comparing degraded bins from different API operations.
-    | extend previousBelowThreshold = iff(
-        operationId_s == prev(operationId_s, 1, ""),
-        prev(belowThreshold, 1, false),
-        false
-      )
+    | extend previousBelowThreshold = prev(belowThreshold, 1, false)
     // For nodo_for_pa_auth, fire only when both the current and previous bins are degraded.
     // For all other alerts, preserve the previous behavior and fire on a single degraded bin.
     | where belowThreshold == true
     | where requireTwoConsecutiveBins == false or previousBelowThreshold == true
-    | join kind=inner (operationMap) on operationId_s
-    | project TimeGenerated = TimeBin, apiName, operationId_s, availability, Total, Success
+    | project
+        TimeGenerated = TimeBin,
+        apiName = "${each.value.primitiva}",
+        operationId_s = "${each.value.operation_id}",
+        availability,
+        Total,
+        Success
   EOT
 
   trigger {

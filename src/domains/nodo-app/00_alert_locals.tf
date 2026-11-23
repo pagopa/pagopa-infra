@@ -376,6 +376,26 @@ locals {
     }
   } : {}
 
+  # One entry per single API operation, used to create one availability alert per operation.
+  # The sub_service of the group (first element) is kept to preserve the current URL filter behavior.
+  # Groups listed in two_consecutive_bins_groups fire only after two consecutive degraded 7m bins.
+  two_consecutive_bins_groups = ["nodo_for_pa_auth"]
+
+  single_operation_data = var.env_short == "p" ? {
+    for item in flatten([
+      for group, ops in local.grouped_operation_sets : [
+        for op in ops : {
+          key                          = "${group}-${op.primitiva}"
+          group                        = group
+          operation_id                 = op.operationId_s
+          primitiva                    = op.primitiva
+          sub_service                  = ops[0].sub_service
+          require_two_consecutive_bins = contains(local.two_consecutive_bins_groups, group)
+        }
+      ]
+    ]) : item.key => item
+  } : {}
+
   error_fault_code = "('${join("', '", ["PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_ERRORE_IDEMPOTENZA"])}')"
 
   // Nodo SOAP path
