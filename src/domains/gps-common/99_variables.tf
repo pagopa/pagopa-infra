@@ -299,10 +299,11 @@ variable "cidr_subnet_gps_cosmosdb" {
 
 variable "cosmos_gpd_payments_db_params" {
   type = object({
-    kind           = string
-    capabilities   = list(string)
-    offer_type     = string
-    server_version = string
+    burst_capacity_enabled = optional(bool, false)
+    kind                   = string
+    capabilities           = list(string)
+    offer_type             = string
+    server_version         = string
     consistency_policy = object({
       consistency_level       = string
       max_interval_in_seconds = number
