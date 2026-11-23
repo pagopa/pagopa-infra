@@ -80,8 +80,8 @@ stages:
       parameters:
         ENV: 'uat'
         ENV_FOLDER: 'uat'
-        WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
-        WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+        #WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
+        #WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
         WORKING_DIR_SECRET: ${{ variables.WORKING_DIR_SECRET }}
         DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
@@ -100,8 +100,9 @@ stages:
       parameters:
         ENV: 'prod'
         ENV_FOLDER: 'prod'
-        WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
-        WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+        #WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
+        #WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
+        WORKING_DIR_SECRET: ${{ variables.WORKING_DIR_SECRET }}
         DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
