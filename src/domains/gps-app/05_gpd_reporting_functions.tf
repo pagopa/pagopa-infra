@@ -71,6 +71,7 @@ module "reporting_analysis_function" {
   storage_account_name = replace("${local.product_location}gpdanalysisst", "-", "")
   location             = var.location
   health_check_path    = "/info"
+  minimum_tls_version  = "1.2"
   # dotnet_version    = var.reporting_analysis_dotnet_version
   subnet_id       = module.reporting_function_snet.id
   runtime_version = "~4"
