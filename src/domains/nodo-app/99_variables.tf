@@ -133,13 +133,6 @@ variable "cidr_subnet_vmss" {
   description = "VMSS network address space."
 }
 
-# nodo dei pagamenti - ndp
-variable "nodo_ndp_subscription_limit" {
-  type        = number
-  description = "subscriptions limit"
-  default     = 1000
-}
-
 variable "lb_frontend_private_ip_address" {
   type        = string
   description = "load balancer egress nodo private ip"

@@ -70,10 +70,10 @@ module "apim_nodo_monitoring_api" {
   xml_content = templatefile("./api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {
     base-url        = "{{schema-ip-nexi}}"
     pagopa-base-url = format("https://%s/nodo", local.nodo_hostname)
-    allowed_ip_1 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[0]  # PagoPA on prem VPN
-    allowed_ip_2 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[1]  # PagoPA on prem VPN DR
-    allowed_ip_3 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[8]  # NEXI VPN
-    allowed_ip_4 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[9]  # NEXI VPN
-    allowed_ip_5 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[10] # NEXI VPN
+    allowed_ip_1    = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[0]  # PagoPA on prem VPN
+    allowed_ip_2    = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[1]  # PagoPA on prem VPN DR
+    allowed_ip_3    = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[8]  # NEXI VPN
+    allowed_ip_4    = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[9]  # NEXI VPN
+    allowed_ip_5    = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[10] # NEXI VPN
   })
 }
