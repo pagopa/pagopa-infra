@@ -398,6 +398,9 @@ locals {
 
   fault_code_alert_groups = ["node_for_psp_auth"]
 
+  # Groups for which per-operation PagoPA Nodo (pagopa_nodo_ingress) availability and fault code alerts are created
+  nodo_pagopa_alert_groups = ["node_for_psp_auth"]
+
   error_fault_code = "('${join("', '", ["PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_ERRORE_IDEMPOTENZA"])}')"
 
   // Nodo SOAP path
