@@ -91,7 +91,7 @@ pgres_flex_params = {
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]
 cidr_subnet_pg_flex_dbms = ["10.1.141.0/24"]
 
-# CosmosDb GPD payments
+# CosmosDB-Tables-GPD-Payments
 cosmos_gpd_payments_db_params = {
   kind         = "GlobalDocumentDB"
   capabilities = ["EnableTable"]
@@ -101,6 +101,7 @@ cosmos_gpd_payments_db_params = {
     max_interval_in_seconds = 300
     max_staleness_prefix    = 100000
   }
+  burst_capacity_enabled           = true
   server_version                   = "4.0"
   main_geo_location_zone_redundant = true
   enable_free_tier                 = false
@@ -118,7 +119,7 @@ cosmos_gpd_payments_db_params = {
 
   payments_receipts_table = {
     autoscale  = true
-    throughput = 6000
+    throughput = 8000
   }
 
   payments_pp_table = {

@@ -169,3 +169,27 @@ resource "azurerm_key_vault_secret" "receipts-storage-account-pkey" {
   content_type = "text/plain"
   key_vault_id = module.key_vault.id
 }
+
+data "azurerm_api_management_product" "apim_receipts_internal_product" {
+  product_id = "receipts-internal"
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+
+resource "azurerm_api_management_subscription" "receipts_internal_product_subscription_key" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apim_receipts_internal_product.id
+  display_name  = "Subscription Key for Receipts Generator Helpdesk API"
+  allow_tracing = false
+  state         = "active"
+}
+
+resource "azurerm_key_vault_secret" "receipt_pdf_generator_api_key" {
+  name         = "receipt-pdf-generator-api-key"
+  value        = azurerm_api_management_subscription.receipts_internal_product_subscription_key.primary_key
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
