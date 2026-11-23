@@ -116,3 +116,48 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_psp_api_faul
     threshold = 0
   }
 }
+
+// Alert to monitor invocation of unexpected API on PagoPA Nodo
+resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_unhandled_api_invocation_alert" {
+  count = var.env_short == "p" ? 1 : 0
+
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-nodo-pagoaa-unhandled-api-invocation"
+  location            = var.location
+
+  action {
+    action_group           = local.action_groups
+    email_subject          = "API invocations that should not be handled by Nodo PagoPA Alert"
+    custom_webhook_payload = "{}"
+  }
+
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "Alert when an API not handled by Nodo PagoPA is invoked on it."
+  enabled        = true
+
+  severity  = 1
+  frequency = 5
+  # the time window was updated from 5 to 7 because the delay between the call and log
+  # sometimes can be 2 minutes, this can affect the alert query
+  time_window = 7
+  query       = <<-EOT
+    let opNames = datatable(operationId_s:string, apiName:string) [
+      ${for key, ops in local.formatted_operation_data : key => {
+                  for op in ops.formatted_operations : {
+                      operationId_s = op.operationId_s
+                      apiName = op.apiName
+                  }
+        }}}
+     ];
+    AzureDiagnostics
+    | where timestamp > ago(7m)
+    | where url_s matches regex "/nodo-auth/node-for-psp/v1"
+    | where operationId_s !in ("63b6e2daea7c4a25440fda9f", "63b6e2daea7c4a25440fdaa0", "63b6e2daea7c4a25440fdaa1", "63b6e2daea7c4a25440fdaa5", "63b6e2daea7c4a25440fdaa6")
+    | where backendUrl_s has "${local.pagopa_nodo_ingress}/nodo"
+    | summarize Count = count() by bin(TimeGenerated, 1m), apiName
+  EOT
+  trigger {
+    operator  = "GreaterThan"
+    threshold = 0
+  }
+}
