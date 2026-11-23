@@ -434,6 +434,12 @@ variable "node_decoupler_primitives" {
   default     = "nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"
 }
 
+variable "decoupler_paymenttoken_ttl_duration" {
+  type        = number
+  default     = 5184000
+  description = "(Optional) Set the TTL for the payment tokens cached by Decoupler"
+}
+
 
 variable "nodo_pagamenti_subkey_required" {
   type        = bool
