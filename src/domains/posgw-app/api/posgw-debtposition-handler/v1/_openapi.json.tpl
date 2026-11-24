@@ -29,7 +29,7 @@
     }
   ],
   "paths": {
-    "/debt-positions": {
+    "/debt-positions/{orgFiscalCode}": {
       "post": {
         "tags": [
           "pagopa-internal"
@@ -45,6 +45,16 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/CorrelationId"
+          },
+          {
+            "name": "orgFiscalCode",
+            "in": "path",
+            "required": true,
+            "description": "The creditor institution fiscal code",
+            "schema": {
+              "type": "string",
+              "example": "77777777777"
+            }
           }
         ],
         "requestBody": {
