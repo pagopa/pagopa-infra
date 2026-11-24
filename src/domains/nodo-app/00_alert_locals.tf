@@ -1,21 +1,21 @@
 locals {
   grouped_operation_sets = {
-    node_for_io_auth = var.env_short != "p" ? [] : [
-      // Node for IO WS (AUTH)
-      {
-        operationId_s = "63b6e2da2a92e811a8f338ec",
-        primitiva     = "activateIOPayment",
-        sub_service   = "nodo-auth/node-for-io",
-      }
-    ]
-
-    node_for_io = var.env_short != "p" ? [] : [
-      {
-        operationId_s = "61dedb1eea7c4a07cc7d47b8",
-        primitiva     = "activateIOPaymentReq",
-        sub_service   = "nodo/node-for-io",
-      },
-    ]
+    # node_for_io_auth = var.env_short != "p" ? [] : [
+    #   // Node for IO WS (AUTH)
+    #   {
+    #     operationId_s = "63b6e2da2a92e811a8f338ec",
+    #     primitiva     = "activateIOPayment",
+    #     sub_service   = "nodo-auth/node-for-io",
+    #   }
+    # ]
+    #
+    # node_for_io = var.env_short != "p" ? [] : [
+    #   {
+    #     operationId_s = "61dedb1eea7c4a07cc7d47b8",
+    #     primitiva     = "activateIOPaymentReq",
+    #     sub_service   = "nodo/node-for-io",
+    #   },
+    # ]
 
     nodo_per_pa_auth = var.env_short != "p" ? [] : [
       {
@@ -338,19 +338,19 @@ locals {
       },
     ]
 
-    nodo_for_pa_auth = var.env_short != "p" ? [] : [
-      // Node for PA WS (AUTH)
-      {
-        operationId_s : "63ff73adea7c4a1860530e3a",
-        primitiva : "nodoChiediElencoFlussiRendicontazione",
-        sub_service : "nodo-auth/node-for-pa",
-      },
-      {
-        operationId_s : "63ff73adea7c4a1860530e3b",
-        primitiva : "nodoChiediFlussoRendicontazione",
-        sub_service : "nodo-auth/node-for-pa",
-      },
-    ]
+    # nodo_for_pa_auth = var.env_short != "p" ? [] : [
+    #   // Node for PA WS (AUTH)
+    #   {
+    #     operationId_s : "63ff73adea7c4a1860530e3a",
+    #     primitiva : "nodoChiediElencoFlussiRendicontazione",
+    #     sub_service : "nodo-auth/node-for-pa",
+    #   },
+    #   {
+    #     operationId_s : "63ff73adea7c4a1860530e3b",
+    #     primitiva : "nodoChiediFlussoRendicontazione",
+    #     sub_service : "nodo-auth/node-for-pa",
+    #   },
+    # ]
 
     node_for_ecommerce_auth = var.env_short != "p" ? [] : [
       // Node for eCommerce API(AUTH)
@@ -378,19 +378,15 @@ locals {
 
   # One entry per single API operation, used to create one availability alert per operation.
   # The sub_service of the group (first element) is kept to preserve the current URL filter behavior.
-  # Groups listed in two_consecutive_bins_groups fire only after two consecutive degraded 7m bins.
-  two_consecutive_bins_groups = ["nodo_for_pa_auth"]
-
   single_operation_data = var.env_short == "p" ? {
     for item in flatten([
       for group, ops in local.grouped_operation_sets : [
         for op in ops : {
-          key                          = "${group}-${op.primitiva}"
-          group                        = group
-          operation_id                 = op.operationId_s
-          primitiva                    = op.primitiva
-          sub_service                  = ops[0].sub_service
-          require_two_consecutive_bins = contains(local.two_consecutive_bins_groups, group)
+          key          = "${group}-${op.primitiva}"
+          group        = group
+          operation_id = op.operationId_s
+          primitiva    = op.primitiva
+          sub_service  = ops[0].sub_service
         }
       ]
     ]) : item.key => item

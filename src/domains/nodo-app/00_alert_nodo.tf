@@ -10,11 +10,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
   enabled             = true
   severity            = 1
   frequency           = 5
-
-  # Keep the original 7-minute window for all Nodo API availability alerts.
-  # Use a 14-minute window only for operations of nodo_for_pa_auth so the query can evaluate
-  # two consecutive 7-minute bins before firing the alert.
-  time_window = each.value.require_two_consecutive_bins ? 14 : 7
+  # the time window was updated from 5 to 7 because the delay between the call and log
+  # sometimes can be 2 minutes, this can affect the alert query
+  time_window = 7
 
   action {
     action_group           = local.action_groups
@@ -29,19 +27,14 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
     let highTrafficAvailability = 98;
     let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
-    // Enable the two-consecutive-bin rule only for nodo_for_pa_auth operations.
-    // Other API availability alerts keep the existing single-bin behavior.
-    let requireTwoConsecutiveBins = ${each.value.require_two_consecutive_bins};
     AzureDiagnostics
-    // Match the query lookback window with the Terraform alert evaluation window.
-    // nodo_for_pa_auth needs 14 minutes to inspect two 7-minute bins.
-    | where TimeGenerated > ago(${each.value.require_two_consecutive_bins ? "14m" : "7m"})
+    | where TimeGenerated > ago(7m)
     | where url_s matches regex "${each.value.sub_service}"
     | where operationId_s == "${each.value.operation_id}"
     | summarize
         Total = count(),
         Success = countif(todouble(responseCode_d) < 500)
-        by TimeBin = bin(TimeGenerated, 7m)
+        by bin(TimeGenerated, 7m)
     | where Total > 5
     | extend trafficUp = Total - thresholdTrafficMin
     | extend deltaRatio = todouble(todouble(trafficUp) / todouble(thresholdDelta))
@@ -55,20 +48,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
         )
       )
     | extend availability = ((Success * 1.0) / Total) * 100
-    // Mark each 7-minute bin as degraded without filtering it immediately.
-    // This is required to compare the current bin with the previous one.
-    | extend belowThreshold = availability < expectedAvailability
-    // Order and serialize rows so prev() can compare each bin with the previous one.
-    // Since the query is scoped to a single operation, no per-operation partitioning is needed.
-    | order by TimeBin asc
-    | serialize
-    | extend previousBelowThreshold = prev(belowThreshold, 1, false)
-    // For nodo_for_pa_auth, fire only when both the current and previous bins are degraded.
-    // For all other alerts, preserve the previous behavior and fire on a single degraded bin.
-    | where belowThreshold == true
-    | where requireTwoConsecutiveBins == false or previousBelowThreshold == true
+    | where availability < expectedAvailability
     | project
-        TimeGenerated = TimeBin,
+        TimeGenerated,
         apiName = "${each.value.primitiva}",
         operationId_s = "${each.value.operation_id}",
         availability,
