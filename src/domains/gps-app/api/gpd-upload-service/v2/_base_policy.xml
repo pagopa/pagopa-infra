@@ -17,7 +17,7 @@
 
     <choose>
       <!-- Making sure that will exclude all APIs that does not include CI fiscal code -->
-      <when condition="@(context.Request.MatchedParameters.ContainsKey("organization-fiscal-code") && !context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key", "").Equals(""))">
+      <when condition="@(context.Request.MatchedParameters.ContainsKey("organization-fiscal-code"))">
       <set-variable name="authorization_entity" value="@(context.Request.MatchedParameters["organization-fiscal-code"])" />
       <include-fragment fragment-id="authorizer" />
       </when>
