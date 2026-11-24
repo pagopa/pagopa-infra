@@ -7115,6 +7115,100 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "test-lifecycle"
+        ],
+        "summary": "Delete Scope",
+        "operationId": "delete_scope_api_v1_test_lifecycle_scopes__scope_id__delete",
+        "parameters": [
+          {
+            "name": "scope_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scope Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TlDeleteRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TlDeleteResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-lifecycle/scopes/{scope_id}/delete-preview": {
+      "get": {
+        "tags": [
+          "test-lifecycle"
+        ],
+        "summary": "Scope Delete Preview",
+        "operationId": "scope_delete_preview_api_v1_test_lifecycle_scopes__scope_id__delete_preview_get",
+        "parameters": [
+          {
+            "name": "scope_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scope Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TlDeletePreview"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/test-lifecycle/features": {
@@ -7225,7 +7319,101 @@
         }
       }
     },
+    "/api/v1/test-lifecycle/features/{feature_id}/delete-preview": {
+      "get": {
+        "tags": [
+          "test-lifecycle"
+        ],
+        "summary": "Feature Delete Preview",
+        "operationId": "feature_delete_preview_api_v1_test_lifecycle_features__feature_id__delete_preview_get",
+        "parameters": [
+          {
+            "name": "feature_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Feature Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TlDeletePreview"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/test-lifecycle/features/{feature_id}": {
+      "delete": {
+        "tags": [
+          "test-lifecycle"
+        ],
+        "summary": "Delete Feature",
+        "operationId": "delete_feature_api_v1_test_lifecycle_features__feature_id__delete",
+        "parameters": [
+          {
+            "name": "feature_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Feature Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TlDeleteRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TlDeleteResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
       "get": {
         "tags": [
           "test-lifecycle"
@@ -17109,6 +17297,190 @@
         ],
         "title": "TlCommentResolve"
       },
+      "TlDeleteAffectedFeature": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "code"
+        ],
+        "title": "TlDeleteAffectedFeature"
+      },
+      "TlDeleteBlocker": {
+        "properties": {
+          "feature_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Feature Id"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "published",
+              "pr_open"
+            ],
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "feature_id",
+          "code",
+          "reason"
+        ],
+        "title": "TlDeleteBlocker"
+      },
+      "TlDeleteJiraIssue": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "design",
+              "impl",
+              "qa_epic"
+            ],
+            "title": "Role"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "title": "Status",
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "title": "Url",
+            "type": "string",
+            "nullable": true
+          },
+          "feature_code": {
+            "title": "Feature Code",
+            "type": "string",
+            "nullable": true
+          },
+          "default_selected": {
+            "type": "boolean",
+            "title": "Default Selected"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "role",
+          "default_selected"
+        ],
+        "title": "TlDeleteJiraIssue"
+      },
+      "TlDeletePreview": {
+        "properties": {
+          "deletable": {
+            "type": "boolean",
+            "title": "Deletable"
+          },
+          "blockers": {
+            "items": {
+              "$ref": "#/components/schemas/TlDeleteBlocker"
+            },
+            "type": "array",
+            "title": "Blockers"
+          },
+          "features": {
+            "items": {
+              "$ref": "#/components/schemas/TlDeleteAffectedFeature"
+            },
+            "type": "array",
+            "title": "Features"
+          },
+          "scenario_count": {
+            "type": "integer",
+            "title": "Scenario Count"
+          },
+          "jira_issues": {
+            "items": {
+              "$ref": "#/components/schemas/TlDeleteJiraIssue"
+            },
+            "type": "array",
+            "title": "Jira Issues"
+          }
+        },
+        "type": "object",
+        "required": [
+          "deletable",
+          "blockers",
+          "features",
+          "scenario_count",
+          "jira_issues"
+        ],
+        "title": "TlDeletePreview"
+      },
+      "TlDeleteRequest": {
+        "properties": {
+          "actor_email": {
+            "type": "string",
+            "title": "Actor Email"
+          },
+          "delete_jira_keys": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Delete Jira Keys",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "actor_email"
+        ],
+        "title": "TlDeleteRequest"
+      },
+      "TlDeleteResult": {
+        "properties": {
+          "deleted_features": {
+            "type": "integer",
+            "title": "Deleted Features"
+          },
+          "jira_results": {
+            "items": {
+              "$ref": "#/components/schemas/TlJiraDeleteResult"
+            },
+            "type": "array",
+            "title": "Jira Results"
+          }
+        },
+        "type": "object",
+        "required": [
+          "deleted_features",
+          "jira_results"
+        ],
+        "title": "TlDeleteResult"
+      },
       "TlExamples": {
         "properties": {
           "headers": {
@@ -17385,6 +17757,11 @@
             "type": "string",
             "format": "date-time",
             "title": "Updated At"
+          },
+          "deletable": {
+            "type": "boolean",
+            "title": "Deletable",
+            "default": true
           }
         },
         "type": "object",
@@ -17841,6 +18218,33 @@
           "actor_email"
         ],
         "title": "TlJiraActorRequest"
+      },
+      "TlJiraDeleteResult": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "deleted",
+              "failed"
+            ],
+            "title": "Status"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "status"
+        ],
+        "title": "TlJiraDeleteResult"
       },
       "TlJiraLink": {
         "properties": {
@@ -19165,6 +19569,11 @@
             "title": "Nrt Pass Rate",
             "type": "number",
             "nullable": true
+          },
+          "deletable": {
+            "type": "boolean",
+            "title": "Deletable",
+            "default": true
           }
         },
         "type": "object",
