@@ -79,7 +79,7 @@ resource "azurerm_api_management_subscription" "posgw_debtposition_handler_subke
 }
 
 resource "azurerm_key_vault_secret" "posgw_debtposition_handler_subscription_key" {
-  name         = "debtposition-handler-api-sub-key"
+  name         = "debtposition-handler-api-key"
   value        = azurerm_api_management_subscription.posgw_debtposition_handler_subkey.primary_key
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.key_vault.id
