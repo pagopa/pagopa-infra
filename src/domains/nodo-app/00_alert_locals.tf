@@ -401,6 +401,20 @@ locals {
   # Groups for which per-operation PagoPA Nodo (pagopa_nodo_ingress) availability and fault code alerts are created
   nodo_pagopa_alert_groups = ["node_for_psp_auth"]
 
+  # node_for_psp_auth operations that are expected to be handled by Nodo PagoPA.
+  # Any other operation routed to Nodo PagoPA triggers the unhandled API invocation alert.
+  nodo_pagopa_handled_primitive = [
+    "verifyPaymentNotice",
+    "activatePaymentNotice",
+    "sendPaymentOutcome",
+    "activatePaymentNoticeV2",
+    "sendPaymentOutcomeV2",
+  ]
+  nodo_pagopa_handled_operation_ids = [
+    for op in local.grouped_operation_sets["node_for_psp_auth"] : op.operationId_s
+    if contains(local.nodo_pagopa_handled_primitive, op.primitiva)
+  ]
+
   error_fault_code = "('${join("', '", ["PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_ERRORE_IDEMPOTENZA"])}')"
 
   // Nodo SOAP path

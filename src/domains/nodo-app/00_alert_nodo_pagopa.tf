@@ -130,7 +130,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_unhandled_ap
   count = var.env_short == "p" ? 1 : 0
 
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-nodo-pagoaa-unhandled-api-invocation"
+  name                = "pagopa-${var.env_short}-nodo-pagopa-unhandled-api-invocation"
   location            = var.location
 
   action {
@@ -149,20 +149,22 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_unhandled_ap
   # sometimes can be 2 minutes, this can affect the alert query
   time_window = 7
   query       = <<-EOT
-    let opNames = datatable(operationId_s:string, apiName:string) [
-      ${for key, ops in local.formatted_operation_data : key => {
-                  for op in ops.formatted_operations : {
-                      operationId_s = op.operationId_s
-                      apiName = op.apiName
-                  }
-        }}}
-     ];
+    // Map operationId -> API name for the operations exposed on node-for-psp (AUTH)
+    let opNames = datatable(operationId_s: string, apiName: string)
+    [
+        ${local.formatted_operation_data["node_for_psp_auth"].formatted_operations}
+    ];
+    // Operations that are expected to be handled by Nodo PagoPA
+    let handledOperationIds = dynamic([${join(", ", [for id in local.nodo_pagopa_handled_operation_ids : "\"${id}\""])}]);
     AzureDiagnostics
-    | where timestamp > ago(7m)
+    | where TimeGenerated > ago(7m)
     | where url_s matches regex "/nodo-auth/node-for-psp/v1"
-    | where operationId_s !in ("63b6e2daea7c4a25440fda9f", "63b6e2daea7c4a25440fdaa0", "63b6e2daea7c4a25440fdaa1", "63b6e2daea7c4a25440fdaa5", "63b6e2daea7c4a25440fdaa6")
     | where backendUrl_s has "${local.pagopa_nodo_ingress}/nodo"
-    | summarize Count = count() by bin(TimeGenerated, 1m), apiName
+    | where operationId_s !in (handledOperationIds)
+    | join kind=leftouter (opNames) on operationId_s
+    // Fallback to the operationId when the operation is not mapped
+    | extend apiName = iff(isempty(apiName), operationId_s, apiName)
+    | summarize Count = count() by bin(TimeGenerated, 7m), apiName, operationId_s
   EOT
   trigger {
     operator  = "GreaterThan"
