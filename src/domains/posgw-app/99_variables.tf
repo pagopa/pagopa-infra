@@ -42,6 +42,12 @@ variable "external_domain" {
   description = "Domain for delegation"
 }
 
+variable "apim_dns_zone_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain for apim."
+}
+
 ### PDB
 variable "pod_disruption_budgets" {
   type = map(object({

@@ -39,8 +39,9 @@ locals {
   gh_runner_pat_kv_rg   = "${local.project}-sec-rg"
 
 
-  apim_name    = "${local.product}-apim"
-  apim_rg_name = "${local.product}-api-rg"
+  apim_name     = "${local.product}-apim"
+  apim_rg_name  = "${local.product}-api-rg"
+  apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
 
   aks_name        = "${local.product}-${var.location_short}-${var.env}-aks"
   aks_rg_name     = "${local.product}-${var.location_short}-${var.env}-aks-rg"
