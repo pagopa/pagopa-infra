@@ -19667,7 +19667,9 @@
           "submit",
           "approve",
           "request_changes",
-          "reopen"
+          "reopen",
+          "withdraw_approval",
+          "withdraw"
         ],
         "title": "TlTransitionAction"
       },
