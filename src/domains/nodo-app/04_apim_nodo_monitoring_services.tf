@@ -16,10 +16,7 @@ module "apim_nodo_dei_pagamenti_monitoring_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = templatefile("./api_product/legacy/nodo_pagamenti_api/monitoring/base_policy.xml.tpl", {
-    base-url = var.env_short == "p" ? "{{schema-ip-nexi}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
-
-  })
+  policy_xml = file("./api_product/legacy/nodo_pagamenti_api/monitoring/base_policy.xml.tpl")
 }
 
 ######################
@@ -51,7 +48,7 @@ module "apim_nodo_monitoring_api" {
   name                  = format("%s-nodo-monitoring-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_nodo_dei_pagamenti_monitoring_product.product_id, "apim_for_node"]
+  product_ids           = [module.apim_nodo_dei_pagamenti_monitoring_product.product_id, module.apim_apim_for_node_product.product_id]
   subscription_required = local.apim_nodo_monitoring_api.subscription_required
 
   version_set_id = azurerm_api_management_api_version_set.nodo_monitoring_api.id
@@ -65,17 +62,18 @@ module "apim_nodo_monitoring_api" {
   service_url = null
 
   content_format = "openapi"
-  content_value = templatefile("./api/nodopagamenti_api/monitoring/v1/_NodoDeiPagamenti.openapi.json.tpl", {
+  content_value = templatefile("./api/nodopagamenti_api/monitoring/v1/_openapi.json.tpl", {
     host    = local.apim_hostname
     service = module.apim_nodo_dei_pagamenti_monitoring_product.product_id
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {
-    base-url     = var.env_short == "p" ? "{{schema-ip-nexi}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
-    allowed_ip_1 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[0]  # PagoPA on prem VPN
-    allowed_ip_2 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[1]  # PagoPA on prem VPN DR
-    allowed_ip_3 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[8]  # NEXI VPN
-    allowed_ip_4 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[9]  # NEXI VPN
-    allowed_ip_5 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[10] # NEXI VPN
+    base-url        = "{{schema-ip-nexi}}"
+    pagopa-base-url = format("https://%s/nodo", local.nodo_hostname)
+    allowed_ip_1    = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[0]  # PagoPA on prem VPN
+    allowed_ip_2    = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[1]  # PagoPA on prem VPN DR
+    allowed_ip_3    = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[8]  # NEXI VPN
+    allowed_ip_4    = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[9]  # NEXI VPN
+    allowed_ip_5    = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[10] # NEXI VPN
   })
 }
