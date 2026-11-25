@@ -356,10 +356,39 @@
       },
       "DebtPositionResponse": {
         "type": "object",
+        "required": [
+          "creditorInstitutionFiscalCode",
+          "noticeNumber",
+          "iuv",
+          "iupd"
+        ],
         "properties": {
-          "idDeptPosition": {
+          "creditorInstitutionFiscalCode": {
             "type": "string",
-            "example": "GPD-ID-99887766"
+            "example": "80001230456"
+          },
+          "noticeNumber": {
+            "type": "string",
+            "example": "302000100000012345"
+          },
+          "iuv": {
+            "type": "string",
+            "example": "020001000000123456"
+          },
+          "iupd": {
+            "type": "string",
+            "example": "IUPD-2024-XYZ-001"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "PUBLISHED",
+              "VALID",
+              "UNPAYABLE",
+              "PARTIALLY_PAID",
+              "PAID"
+            ]
           }
         }
       },
