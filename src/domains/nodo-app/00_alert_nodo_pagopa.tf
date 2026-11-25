@@ -149,10 +149,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_unhandled_ap
   # sometimes can be 2 minutes, this can affect the alert query
   time_window = 7
   query       = <<-EOT
-    // Map operationId -> API name for the operations exposed on node-for-psp (AUTH)
+    // Map operationId -> API name for the operations exposed on node-for-psp (AUTH, group node_for_psp_v1)
     let opNames = datatable(operationId_s: string, apiName: string)
     [
-        ${local.formatted_operation_data["node_for_psp_auth"].formatted_operations}
+        ${local.formatted_operation_data["node_for_psp_v1"].formatted_operations}
     ];
     // Operations that are expected to be handled by Nodo PagoPA
     let handledOperationIds = dynamic([${join(", ", [for id in local.nodo_pagopa_handled_operation_ids : "\"${id}\""])}]);
