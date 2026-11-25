@@ -79,7 +79,7 @@ AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/ecommerce/checkout/'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 or (operationId_s in ("getPaymentRequestInfo","getPaymentRequestInfoAuth") and responseCode_d in (502, 504)))
+    Success=countif((responseCode_d < 500 and responseCode_d != 429) or (operationId_s in ("getPaymentRequestInfo","getPaymentRequestInfoAuth") and responseCode_d in (502, 504)))
     by Time = bin(TimeGenerated, 15m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
@@ -98,7 +98,38 @@ AzureDiagnostics
   }
 }
 
+# eCommerce for Checkout: 429 (rate limit) on APIs
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_for_checkout_rate_limit_ko" {
+  count = var.env_short == "p" ? 1 : 0
 
+  name                = "ecommerce-for-checkout-rate-limit-ko"
+  resource_group_name = azurerm_resource_group.rg_ecommerce_alerts[0].name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id, azurerm_monitor_action_group.service_management_opsgenie[0].id]
+    email_subject          = "[eCommerce] Checkout APIs rate limit KO"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "eCommerce for Checkout 429 rate limit responses detected, 10 or more KO in 30 minute time window"
+  enabled        = true
+  query = (<<-QUERY
+AzureDiagnostics
+| where url_s startswith "https://api.platform.pagopa.it/ecommerce/checkout/"
+| where operationId_s in ("getPaymentRequestInfo", "newTransaction", "createSession")
+| where responseCode_d == 429
+| project TimeGenerated, operationId_s, responseCode_d
+  QUERY
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 10
+  }
+}
 
 # eCommerce transaction service: KO for PATCH auth requests
 resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_service_auth_request_ko" {

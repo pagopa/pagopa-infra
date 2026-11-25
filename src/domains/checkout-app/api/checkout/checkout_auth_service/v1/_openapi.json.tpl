@@ -28,22 +28,13 @@
         ],
         "operationId": "authLogin",
         "summary": "Login endpoint",
-        "description": "GET login endpoint with reCAPTCHA code",
+        "description": "GET login endpoint",
         "parameters": [
           {
             "in": "header",
             "name": "x-rpt-ids",
             "required": false,
             "description": "Optional RPT ID used to track login attempts to payment notices",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "recaptcha",
-            "required": true,
-            "description": "reCAPTCHA code",
             "schema": {
               "type": "string"
             }

@@ -27,7 +27,7 @@ AzureDiagnostics
   and operationId_s != "authenticateWithAuthToken" //exclude POST auth/token api
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 and DurationMs < 250)
+    Success=countif(responseCode_d < 500 and responseCode_d != 429 and DurationMs < 250)
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < 96
@@ -40,6 +40,39 @@ AzureDiagnostics
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 2
+  }
+}
+
+#Checkout auth service: 429 (rate limit) on login API
+resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_service_v1_login_rate_limit_ko" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "checkout-auth-service-v1-login-rate-limit-ko"
+  resource_group_name = azurerm_resource_group.rg_checkout_alerts[0].name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.checkout_opsgenie[0].id]
+    email_subject          = "[Checkout] Auth service login rate limit KO"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "Checkout-auth-service login 429 rate limit responses detected, 10 or more KO in 30 minute time window"
+  enabled        = true
+  query = (<<-QUERY
+AzureDiagnostics
+| where url_s startswith 'https://api.platform.pagopa.it/checkout/auth-service/v1'
+  and operationId_s == "authLogin"
+| where responseCode_d == 429
+| project TimeGenerated, operationId_s, responseCode_d
+  QUERY
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 10
   }
 }
 
