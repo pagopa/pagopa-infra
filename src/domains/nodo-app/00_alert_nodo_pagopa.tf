@@ -18,7 +18,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_api_availabi
   time_window = 7
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.nodo_alert_action_groups
     email_subject          = "Nodo PagoPA ${upper(each.value.group)} ${each.value.primitiva} API Availability Alert"
     custom_webhook_payload = "{}"
   }
@@ -72,7 +72,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_psp_api_faul
   location            = var.location
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.nodo_alert_action_groups
     email_subject          = "Nodo PagoPA ${upper(each.value.group)} ${each.value.primitiva} API Fault Code Availability Alert"
     custom_webhook_payload = "{}"
   }
@@ -134,7 +134,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_unhandled_ap
   location            = var.location
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.nodo_alert_action_groups
     email_subject          = "API invocations that should not be handled by Nodo PagoPA Alert"
     custom_webhook_payload = "{}"
   }

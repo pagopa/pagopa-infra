@@ -15,7 +15,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
   time_window = 7
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.nodo_alert_action_groups
     email_subject          = "Nodo PagoPA ${upper(each.value.group)} ${each.value.primitiva} API Availability Alert"
     custom_webhook_payload = "{}"
   }
@@ -76,7 +76,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_psp_api_fault_c
   location            = var.location
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.nodo_alert_action_groups
     email_subject          = "Nodo PagoPA ${upper(each.value.group)} ${each.value.primitiva} API Fault Code Availability Alert"
     custom_webhook_payload = "{}"
   }

@@ -302,7 +302,8 @@ locals {
   # Default alert action groups: slack channel and email
   action_groups_default = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack_pagopa_pagamenti_alert.id]
   # If production and severity is higher than severity 3, the alert is forwarder to opsgenie action group
-  action_groups = var.env_short == "p" ? concat(local.action_groups_default, [data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]) : local.action_groups_default
+  action_groups            = var.env_short == "p" ? concat(local.action_groups_default, [data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]) : local.action_groups_default
+  nodo_alert_action_groups = var.env_short == "p" ? concat(local.action_groups_default, [data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]) : [data.azurerm_monitor_action_group.slack.id]
   # In case of alert with severity SEV3 it isn't forwarder to opsgenie, but only on slack channel and email
   action_groups_sev3 = var.env_short == "p" ? concat(local.action_groups_default) : local.action_groups_default
 }
