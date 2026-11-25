@@ -65,7 +65,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
 }
 // Alert to monitor availability based on fault code, it does not filter by target, so monitors all node types.
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_psp_api_fault_code_availability_alert" {
-  # One alert for each single API operation of the groups in local.fault_code_alert_groups (prod only)
+  # One alert for each single API operation of the groups in local.fault_code_alert_groups
   for_each = {
     for key, op in local.single_operation_data : key => op
     if contains(local.fault_code_alert_groups, op.group)

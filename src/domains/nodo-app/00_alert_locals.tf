@@ -245,17 +245,17 @@ locals {
   }
 
   # Per group: sub_service + datatable rows ("operationId", "primitiva") for KQL queries
-  formatted_operation_data = var.env_short == "p" ? {
+  formatted_operation_data = {
     for group, data in local.grouped_operation_sets : group => {
       sub_service = data.sub_service
       formatted_operations = join(",\n  ", [
         for primitiva, operation_id in data.operations : "\"${operation_id}\", \"${primitiva}\""
       ])
     }
-  } : {}
+  }
 
   # One entry per single API operation, used to create one alert per operation.
-  single_operation_data = var.env_short == "p" ? {
+  single_operation_data = {
     for item in flatten([
       for group, data in local.grouped_operation_sets : [
         for primitiva, operation_id in data.operations : {
@@ -267,7 +267,7 @@ locals {
         }
       ]
     ]) : item.key => item
-  } : {}
+  }
 
   fault_code_alert_groups = ["node_for_psp_v1"]
 
@@ -297,7 +297,7 @@ locals {
   nodo_soap_path_short = "/webservices/input"
 
   // PagoPA Nodo ingress
-  pagopa_nodo_ingress = "https://weuprod.nodo.internal.platform.pagopa.it"
+  pagopa_nodo_ingress = "https://${local.nodo_hostname}"
 
   # Default alert action groups: slack channel and email
   action_groups_default = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack_pagopa_pagamenti_alert.id]

@@ -22,11 +22,6 @@ data "azurerm_monitor_action_group" "slack_pagopa_pagamenti_alert" {
   name                = local.monitor_action_group_slack_pagamenti_alert_name
 }
 
-data "azurerm_monitor_action_group" "slacknodo" {
-  resource_group_name = var.monitor_resource_group_name
-  name                = local.monitor_action_group_slack_name
-}
-
 data "azurerm_monitor_action_group" "email" {
   resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_email_name

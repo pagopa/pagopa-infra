@@ -1,5 +1,5 @@
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_api_availability" {
-  # One alert for each single API operation of the groups in local.nodo_pagopa_alert_groups (prod only)
+  # One alert for each single API operation of the groups in local.nodo_pagopa_alert_groups
   for_each = {
     for key, op in local.single_operation_data : key => op
     if contains(local.nodo_pagopa_alert_groups, op.group)
@@ -61,7 +61,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_api_availabi
 
 // Alert to monitor fault code based availability
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_psp_api_fault_code_availability_alert" {
-  # One alert for each single API operation of the groups in local.nodo_pagopa_alert_groups (prod only)
+  # One alert for each single API operation of the groups in local.nodo_pagopa_alert_groups
   for_each = {
     for key, op in local.single_operation_data : key => op
     if contains(local.nodo_pagopa_alert_groups, op.group)
@@ -127,7 +127,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_psp_api_faul
 
 // Alert to monitor invocation of unexpected API on PagoPA Nodo
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_unhandled_api_invocation_alert" {
-  count = var.env_short == "p" ? 1 : 0
+  count = var.env_short != "d" ? 1 : 0
 
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-nodo-pagopa-unhandled-api-invocation"
