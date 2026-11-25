@@ -71,15 +71,6 @@
                 "WISP_REDIRECT"
               ]
             }
-          },
-          {
-            "in": "query",
-            "name": "recaptchaResponse",
-            "description": "Recaptcha response",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
           }
         ],
         "responses": {
