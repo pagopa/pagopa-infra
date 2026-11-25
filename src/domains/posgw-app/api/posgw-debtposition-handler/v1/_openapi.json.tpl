@@ -174,6 +174,145 @@
           }
         }
       }
+    },
+    "/debt-positions/{orgFiscalCode}/{iupd}/invalidations": {
+      "post": {
+        "tags": [
+          "pagopa-internal"
+        ],
+        "summary": "Invalidate a debt position",
+        "security": [
+          {
+            "PagopaInternalApiKeyAuth": []
+          }
+        ],
+        "description": "Trigger a position invalidation invoking external service",
+        "operationId": "invalidateDebtPosition",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CorrelationId"
+          },
+          {
+            "name": "orgFiscalCode",
+            "in": "path",
+            "required": true,
+            "description": "The creditor institution fiscal code",
+            "schema": {
+              "type": "string",
+              "example": "77777777777"
+            }
+          },
+          {
+            "name": "iupd",
+            "in": "path",
+            "required": true,
+            "description": "The unique identifier of the debt position",
+            "schema": {
+              "type": "string",
+              "example": "iupd_12345"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Debt position invalidated successfully"
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                },
+                "example": {
+                  "status": 401,
+                  "detail": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Bad gateway",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Gateway timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
