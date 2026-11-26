@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION offline.get_retry_queues()
+CREATE OR REPLACE FUNCTION online.get_retry_queues()
 RETURNS TABLE (
     queue TEXT,
     partition_key TEXT,
