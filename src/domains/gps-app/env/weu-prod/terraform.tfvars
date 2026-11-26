@@ -7,8 +7,6 @@ location_short  = "weu"
 location_string = "West Europe"
 instance        = "prod"
 
-gh_runner_job_location = "italynorth"
-
 
 ### External resources
 monitor_resource_group_name                 = "pagopa-p-monitor-rg"
