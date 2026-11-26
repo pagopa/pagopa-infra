@@ -289,6 +289,66 @@ locals {
   ]
 
 
+  # Evaluation timing and thresholds of the per-operation availability alerts, per environment.
+  #  - timing.frequency / timing.time_window: alert evaluation frequency and lookback window (minutes)
+  #  - timing.bin_size: size of the time bins used to compute the availability (minutes)
+  #  - timing.align_bin_to_now: if true bins are aligned to now() (bin_at), so the whole window is a single bin;
+  #    if false bins are aligned to the clock (bin), as in the original prod alerts
+  #  - timing.throttling: minutes during which the same alert is not fired again (null = disabled)
+  #  - thresholds.<alert>.min_calls: minimum number of calls in a bin to evaluate the availability
+  #  - thresholds.<alert>.traffic_min / traffic_linear / low_availability / high_availability:
+  #    expected availability is low_availability under traffic_min calls, high_availability over traffic_linear calls
+  #    and linear in between. With low_availability == high_availability the expected availability is fixed.
+  # Prod: original values (7m window, traffic based thresholds).
+  # UAT: low traffic (a few calls per API every 5 minutes), so a longer window and a fixed 50% threshold
+  #      are used to detect broken APIs instead of quality degradation.
+  alert_config = {
+    p = {
+      timing = {
+        frequency        = 5
+        time_window      = 7
+        bin_size         = 7
+        align_bin_to_now = false
+        throttling       = null
+      }
+      thresholds = {
+        # min_calls = 6 is equivalent to the original "Total > 5" filter
+        apim_availability             = { min_calls = 6, traffic_min = 20, traffic_linear = 90, low_availability = 80, high_availability = 98 }
+        fault_code_availability       = { min_calls = 1, traffic_min = 150, traffic_linear = 400, low_availability = 95, high_availability = 97 }
+        nodo_pagopa_apim_availability = { min_calls = 1, traffic_min = 100, traffic_linear = 200, low_availability = 92, high_availability = 99 }
+        nodo_pagopa_fault_code        = { min_calls = 1, traffic_min = 100, traffic_linear = 200, low_availability = 95, high_availability = 97 }
+      }
+    }
+    u = {
+      timing = {
+        frequency        = 10
+        time_window      = 30
+        bin_size         = 30
+        align_bin_to_now = true
+        throttling       = 30
+      }
+      thresholds = {
+        apim_availability             = { min_calls = 5, traffic_min = 5, traffic_linear = 5, low_availability = 50, high_availability = 50 }
+        fault_code_availability       = { min_calls = 5, traffic_min = 5, traffic_linear = 5, low_availability = 50, high_availability = 50 }
+        nodo_pagopa_apim_availability = { min_calls = 5, traffic_min = 5, traffic_linear = 5, low_availability = 50, high_availability = 50 }
+        nodo_pagopa_fault_code        = { min_calls = 5, traffic_min = 5, traffic_linear = 5, low_availability = 50, high_availability = 50 }
+      }
+    }
+  }
+
+  # Config of the current environment (falls back to prod values, alerts are not created where no operation IDs are mapped)
+  alert_timing     = lookup(local.alert_config, var.env_short, local.alert_config.p).timing
+  alert_thresholds = lookup(local.alert_config, var.env_short, local.alert_config.p).thresholds
+
+  # KQL bin expression per time column (TimeGenerated for AzureDiagnostics, timestamp for App Insights)
+  alert_bin_kql = {
+    for column in ["TimeGenerated", "timestamp"] : column => (
+      local.alert_timing.align_bin_to_now
+      ? "bin_at(${column}, ${local.alert_timing.bin_size}m, now())"
+      : "bin(${column}, ${local.alert_timing.bin_size}m)"
+    )
+  }
+
   error_fault_code = "('${join("', '", ["PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_ERRORE_IDEMPOTENZA"])}')"
 
   // Nodo SOAP path

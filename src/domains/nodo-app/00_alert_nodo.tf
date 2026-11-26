@@ -9,10 +9,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
   description         = "Alert when PagoPA Nodo ${upper(each.value.group)} ${each.value.primitiva} API operation falls below expected availability."
   enabled             = true
   severity            = 1
-  frequency           = 5
-  # the time window was updated from 5 to 7 because the delay between the call and log
-  # sometimes can be 2 minutes, this can affect the alert query
-  time_window = 7
+  # timing per environment, see local.alert_config
+  # (prod: 7m window because the delay between the call and log sometimes can be 2 minutes)
+  frequency   = local.alert_timing.frequency
+  time_window = local.alert_timing.time_window
+  throttling  = local.alert_timing.throttling
 
   action {
     action_group           = local.nodo_alert_action_groups
@@ -21,21 +22,22 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
   }
 
   query = <<-EOT
-    let thresholdTrafficMin = 20;
-    let thresholdTrafficLinear = 90;
-    let lowTrafficAvailability = 80;
-    let highTrafficAvailability = 98;
+    let minCalls = ${local.alert_thresholds.apim_availability.min_calls};
+    let thresholdTrafficMin = ${local.alert_thresholds.apim_availability.traffic_min};
+    let thresholdTrafficLinear = ${local.alert_thresholds.apim_availability.traffic_linear};
+    let lowTrafficAvailability = ${local.alert_thresholds.apim_availability.low_availability};
+    let highTrafficAvailability = ${local.alert_thresholds.apim_availability.high_availability};
     let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
     AzureDiagnostics
-    | where TimeGenerated > ago(7m)
+    | where TimeGenerated > ago(${local.alert_timing.time_window}m)
     | where url_s matches regex "${each.value.sub_service}"
     | where operationId_s == "${each.value.operation_id}"
     | summarize
         Total = count(),
         Success = countif(todouble(responseCode_d) < 500)
-        by bin(TimeGenerated, 7m)
-    | where Total > 5
+        by TimeGenerated = ${local.alert_bin_kql["TimeGenerated"]}
+    | where Total >= minCalls
     | extend trafficUp = Total - thresholdTrafficMin
     | extend deltaRatio = todouble(todouble(trafficUp) / todouble(thresholdDelta))
     | extend expectedAvailability = iff(
@@ -85,20 +87,22 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_psp_api_fault_c
   description    = "Alert when PagoPA Nodo ${upper(each.value.group)} ${each.value.primitiva} API operation falls, based on fault code, below expected availability."
   enabled        = true
 
-  severity  = 1
-  frequency = 5
-  # the time window was updated from 5 to 7 because the delay between the call and log
-  # sometimes can be 2 minutes, this can affect the alert query
-  time_window = 7
+  severity = 1
+  # timing per environment, see local.alert_config
+  # (prod: 7m window because the delay between the call and log sometimes can be 2 minutes)
+  frequency   = local.alert_timing.frequency
+  time_window = local.alert_timing.time_window
+  throttling  = local.alert_timing.throttling
   query       = <<-EOT
-    let thresholdTrafficMin = 150;
-    let thresholdTrafficLinear = 400;
-    let lowTrafficAvailability = 95;
-    let highTrafficAvailability = 97;
+    let minCalls = ${local.alert_thresholds.fault_code_availability.min_calls};
+    let thresholdTrafficMin = ${local.alert_thresholds.fault_code_availability.traffic_min};
+    let thresholdTrafficLinear = ${local.alert_thresholds.fault_code_availability.traffic_linear};
+    let lowTrafficAvailability = ${local.alert_thresholds.fault_code_availability.low_availability};
+    let highTrafficAvailability = ${local.alert_thresholds.fault_code_availability.high_availability};
     let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
     dependencies
-    | where timestamp > ago(7m)
+    | where timestamp > ago(${local.alert_timing.time_window}m)
     | where name == "POST ${local.nodo_soap_path_short}/"
     | extend operationId_s = tostring(split(operation_Name, " - ")[1])
     | where operationId_s == "${each.value.operation_id}"
@@ -108,7 +112,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_psp_api_fault_c
     | summarize
         Total=count(),
         Success=countif(outcome == "OK" or faultCode !in ${local.error_fault_code})
-        by bin(timestamp, 7m)
+        by timestamp = ${local.alert_bin_kql["timestamp"]}
+    | where Total >= minCalls
     | extend trafficUp = Total-thresholdTrafficMin
     | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
     | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
