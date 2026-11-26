@@ -121,9 +121,10 @@ module "reporting_analysis_function_slot_staging" {
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
-  always_on         = var.reporting_analysis_function_always_on
-  health_check_path = "/info"
-  runtime_version   = "~4"
+  always_on           = var.reporting_analysis_function_always_on
+  health_check_path   = "/info"
+  runtime_version     = "~4"
+  minimum_tls_version = "1.2"
 
   # App settings
   app_settings = local.function_analysis_app_settings

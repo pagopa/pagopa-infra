@@ -3,6 +3,10 @@ data "azuread_group" "adgroup_admin" {
   display_name = "${local.product}-adgroup-admin"
 }
 
+data "azuread_group" "adgroup_admin_dev" {
+  display_name = "${local.product}-adgroup-admin-dev"
+}
+
 data "azuread_group" "adgroup_developers" {
   display_name = "${local.product}-adgroup-developers"
 }
