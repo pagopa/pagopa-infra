@@ -201,3 +201,10 @@ reporting_fdr_storage_account = {
   blob_delete_retention_days         = 30
   account_replication_type           = "GZRS"
 }
+
+
+# Read access required by the recovery discovery worker.
+recovery_adx_viewer = {
+  cluster_name  = "pagopapdataexplorer"
+  database_name = "re"
+}
