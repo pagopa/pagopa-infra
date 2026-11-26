@@ -5,6 +5,9 @@ locals {
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "PagoPA"
 
+  pagopa_apim_name = "${local.product}-apim"
+  pagopa_apim_rg   = "${local.product}-api-rg"
+
   subscription_name = "${var.env}-${var.prefix}"
 
   azdo_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"

@@ -2,11 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "2.0.0",
-    "title": "Pagopa eCommerce services for Checkout",
-    "description": "This microservice that expose eCommerce services to Checkout.",
-    "contact": {
-      "name": "pagoPA - Touchpoints team"
-    }
+    "title": "Ecommerce API for checkout pagoPA",
+    "description": "Ecommerce pagoPA API dedicated to checkout pagoPA for pagoPA payment"
   },
   "tags": [
     {
@@ -19,8 +16,8 @@
     },
     {
       "name": "ecommerce-methods-handler",
-      "description": "Api's for retrieve payment methods for performing transactions payment",
-    },
+      "description": "Api's for retrieve payment methods for performing transactions payment"
+    }
   ],
   "servers": [
     {
@@ -32,77 +29,6 @@
     "description": "Design review"
   },
   "paths": {
-    "/transactions/{transactionId}": {
-      "get": {
-        "tags": [
-          "ecommerce-transactions"
-        ],
-        "operationId": "getTransactionInfo",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "transactionId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Transaction ID"
-          }
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "summary": "Get transaction information",
-        "description": "Return information for the input specific transaction resource",
-        "responses": {
-          "200": {
-            "description": "Transaction data successfully retrieved",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TransactionInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid transaction id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized, access token missing or invalid"
-          },
-          "404": {
-            "description": "Transaction not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Gateway timeout",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
-      },
-    },
     "/transactions": {
       "post": {
         "tags": [
@@ -145,15 +71,6 @@
                 "WISP_REDIRECT"
               ]
             }
-          },
-          {
-            "in": "query",
-            "name": "recaptchaResponse",
-            "description": "Recaptcha response",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
           }
         ],
         "responses": {
@@ -575,123 +492,6 @@
           "faultCodeDetail"
         ]
       },
-      "TransactionInfo": {
-        "description": "Transaction data returned when querying for an existing transaction",
-        "type": "object",
-        "properties": {
-          "transactionId": {
-            "type": "string"
-          },
-          "payments": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PaymentInfo"
-            },
-            "minItems": 1,
-            "maxItems": 5,
-            "example": [
-              {
-                "rptId": "77777777777302012387654312384",
-                "paymentToken": "paymentToken1",
-                "reason": "reason1",
-                "amount": 600,
-                "transferList": [
-                  {
-                    "paFiscalCode": "77777777777",
-                    "digitalStamp": false,
-                    "transferCategory": "transferCategory1",
-                    "transferAmount": 500
-                  },
-                  {
-                    "paFiscalCode": "11111111111",
-                    "digitalStamp": true,
-                    "transferCategory": "transferCategory2",
-                    "transferAmount": 100
-                  }
-                ]
-              }
-            ]
-          },
-          "status": {
-            "$ref": "#/components/schemas/TransactionStatus"
-          },
-          "feeTotal": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          },
-          "idCart": {
-            "description": "Cart identifier provided by creditor institution",
-            "type": "string",
-            "example": "idCartFromCreditorInstitution"
-          },
-          "clientId": {
-            "description": "transaction client id",
-            "type": "string",
-            "enum": [
-              "IO",
-              "CHECKOUT",
-              "CHECKOUT_CART",
-              "UNKNOWN"
-            ]
-          },
-          "nodeInfo":{
-            "type": "object",
-            "description": "Node operation info",
-            "properties": {
-              "closePaymentResultError": {
-                "type": "object",
-                "description": "Error details for close payment result",
-                "properties": {
-                  "statusCode": {
-                    "description": "Status code (4xx, 5xx) of the error received on the node",
-                    "type": "number"
-                  },
-                  "description": {
-                    "description": "Description of the error received on the node",
-                    "type": "string"
-                  }
-                }
-              },
-              "sendPaymentResultOutcome": {
-                "description": "The outcome of sendPaymentResult api (OK, KO, NOT_RECEIVED)",
-                "type": "string",
-                "enum": [
-                  "OK",
-                  "KO",
-                  "NOT_RECEIVED"
-                ]
-              },
-            }
-          },
-          "gatewayInfo":{
-            "type": "object",
-            "description": "Gateway infos",
-            "properties": {
-              "gateway": {
-                "type": "string",
-                "pattern": "NPG|REDIRECT",
-                "description": "Payment gateway identifier"
-              },
-              "authorizationStatus": {
-                "type": "string",
-                "description": "Payment gateway authorization status"
-              },
-              "authorizationCode": {
-                "type": "string",
-                "description": "Payment gateway-specific authorization code related to the transaction"
-              },
-              "errorCode": {
-                "type": "string",
-                "description": "Payment gateway-specific error code from the gateway"
-              },
-            }
-          },
-        },
-        "required": [
-          "status",
-          "transactionId",
-          "payments"
-        ]
-      },
       "ValidationFaultPaymentUnknownProblemJson": {
         "description": "A PaymentProblemJson-like type specific for the GetPayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to validation errors.",
         "type": "object",
@@ -876,21 +676,6 @@
           "faultCodeDetail"
         ]
       },
-      "FaultCategory": {
-        "description": "Fault code categorization for the PagoPA Verifica and Attiva operations.\nPossible categories are:\n- `PAYMENT_DUPLICATED`\n- `PAYMENT_ONGOING`\n- `PAYMENT_EXPIRED`\n- `PAYMENT_UNAVAILABLE`\n- `PAYMENT_UNKNOWN`\n- `DOMAIN_UNKNOWN`\n- `PAYMENT_CANCELED`\n- `GENERIC_ERROR`\n- `PAYMENT_DATA_ERROR`",
-        "type": "string",
-        "enum": [
-          "PAYMENT_DUPLICATED",
-          "PAYMENT_ONGOING",
-          "PAYMENT_EXPIRED",
-          "PAYMENT_UNAVAILABLE",
-          "PAYMENT_UNKNOWN",
-          "DOMAIN_UNKNOWN",
-          "PAYMENT_CANCELED",
-          "GENERIC_ERROR",
-          "PAYMENT_DATA_ERROR"
-        ]
-      },
       "PaymentOngoingStatusFault": {
         "description": "Fault codes for errors related to payment attempts that cause conflict with the current payment status,\nsuch as a duplicated payment attempt or a payment attempt made while another attempt is still being processed.\nShould be mapped to 409 HTTP status code.\nFor further information visit https://docs.pagopa.it/gestionedeglierrori/struttura-degli-errori/fault-code.\nPossible fault codes are:\n- `PPT_PAGAMENTO_IN_CORSO`\n- `PAA_PAGAMENTO_IN_CORSO`",
         "type": "string",
@@ -1028,6 +813,9 @@
           "reason": {
             "type": "string"
           },
+          "companyName": {
+            "type": "string"
+          },
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
           },
@@ -1058,6 +846,7 @@
           "rptId": "77777777777302012387654312384",
           "paymentToken": "paymentToken1",
           "reason": "reason1",
+          "companyName": "companyName1",
           "amount": 600,
           "authToken": "authToken1",
           "isAllCCP": false,
@@ -1140,6 +929,7 @@
                 "rptId": "77777777777302012387654312384",
                 "paymentToken": "paymentToken1",
                 "reason": "reason1",
+                "companyName": "companyName1",
                 "amount": 600,
                 "transferList": [
                   {
@@ -1160,6 +950,7 @@
                 "rptId": "77777777777302012387654312385",
                 "paymentToken": "paymentToken2",
                 "reason": "reason2",
+                "companyName": "companyName2",
                 "amount": 300,
                 "transferList": [
                   {
@@ -1736,16 +1527,6 @@
       }
     },
     "requestBodies": {
-      "PaymentMethodsRequest": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/PaymentMethodsRequest"
-            }
-          }
-        }
-      }
     },
     "securitySchemes": {
       "bearerAuth": {

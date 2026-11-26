@@ -125,15 +125,6 @@ variable "checkout_cdn_storage_replication_type" {
   description = "(Optional) Checkout cnd storage replication type"
 }
 
-variable "tls_cert_check_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "tls cert helm chart configuration"
-}
-
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"

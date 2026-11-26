@@ -87,9 +87,10 @@ cidr_subnet_pg_flex_dbms = ["10.1.141.0/24"]
 
 # CosmosDb GPD payments
 cosmos_gpd_payments_db_params = {
-  kind         = "GlobalDocumentDB"
-  capabilities = ["EnableTable"]
-  offer_type   = "Standard"
+  burst_capacity_enabled = false
+  kind                   = "GlobalDocumentDB"
+  capabilities           = ["EnableTable"]
+  offer_type             = "Standard"
   consistency_policy = {
     consistency_level       = "Strong"
     max_interval_in_seconds = 300

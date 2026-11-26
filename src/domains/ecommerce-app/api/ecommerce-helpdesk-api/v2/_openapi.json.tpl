@@ -584,6 +584,56 @@
           "authenticationType": "auth type"
         }
       },
+      "EventInfo": {
+        "type": "object",
+        "description": "Event info",
+        "properties": {
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "eventCode": {
+            "type": "string"
+          },
+          "errorDetails": {
+            "$ref": "#/components/schemas/ErrorDetails"
+          }
+        },
+        "required": [
+          "creationDate",
+          "eventCode"
+        ],
+        "example": {
+          "creationDate": "2023-08-07T15:32:56.592Z",
+          "eventCode": "TRANSACTION_ACTIVATED_EVENT",
+          "errorDetails": {
+            "httpErrorCode": 500,
+            "description": "Internal server error",
+            "errorType": "COMMUNICATION_ERROR"
+          }
+        }
+      },
+      "ErrorDetails": {
+        "type": "object",
+        "description": "Error details",
+        "properties": {
+          "httpErrorCode": {
+            "$ref": "#/components/schemas/HttpStatusCode"
+          },
+          "description": {
+            "type": "string",
+            "description": "error description"
+          },
+          "errorType": {
+            "type": "string",
+            "description": "error type"
+          }
+        },
+        "required": [
+          "description",
+          "errorType"
+        ]
+      },
       "TransactionInfo": {
         "type": "object",
         "description": "Transaction info",
@@ -598,6 +648,12 @@
           },
           "statusDetails": {
             "type": "string"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventInfo"
+            }
           },
           "eventStatus": {
             "$ref": "https://raw.githubusercontent.com/pagopa/pagopa-ecommerce-transactions-service/main/api-spec/v1/transactions-api.yaml#/components/schemas/TransactionStatus"
