@@ -88,3 +88,11 @@ resource "azurerm_api_management_named_value" "decoupler_paymenttoken_ttl_durati
   value               = var.decoupler_paymenttoken_ttl_duration
 }
 
+resource "azurerm_api_management_named_value" "decoupler_fiscalCodeNoticeNumber_ttl_duration" {
+  name                = "decoupler-fiscalCodeNoticeNumber-ttl-duration"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "decoupler-fiscalCodeNoticeNumber-ttl-duration"
+  value               = var.decoupler_fiscalCodeNoticeNumber_ttl_duration
+}
+

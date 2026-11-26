@@ -433,6 +433,12 @@ variable "decoupler_paymenttoken_ttl_duration" {
   description = "(Optional) Set the TTL for the payment tokens cached by Decoupler"
 }
 
+variable "decoupler_fiscalCodeNoticeNumber_ttl_duration" {
+  type        = number
+  default     = 3600
+  description = "(Optional) Set the TTL for the fiscalCode-noticeNumber tokens cached by Decoupler"
+}
+
 
 variable "nodo_pagamenti_subkey_required" {
   type        = bool
