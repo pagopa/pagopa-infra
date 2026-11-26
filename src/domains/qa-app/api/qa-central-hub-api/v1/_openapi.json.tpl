@@ -7641,7 +7641,7 @@
           "test-lifecycle"
         ],
         "summary": "List Category Tags",
-        "description": "Tag di categoria ammessi sugli scenari.",
+        "description": "Tag suggeriti per gli scenari (catalogo, tag base e tag in uso).",
         "operationId": "list_category_tags_api_v1_test_lifecycle_category_tags_get",
         "responses": {
           "200": {
@@ -8006,6 +8006,102 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TlRevisionOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-lifecycle/features/{feature_id}/tag-cleanup": {
+      "get": {
+        "tags": [
+          "test-lifecycle"
+        ],
+        "summary": "Get Tag Cleanup",
+        "description": "Scenari che portano tag di test-type (@e2e, @integration, @api) e cosa si propone.",
+        "operationId": "get_tag_cleanup_api_v1_test_lifecycle_features__feature_id__tag_cleanup_get",
+        "parameters": [
+          {
+            "name": "feature_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Feature Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TlTagCleanup"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "test-lifecycle"
+        ],
+        "summary": "Apply Tag Cleanup",
+        "description": "Toglie i tag di test-type dagli scenari della bozza e imposta quello del file.",
+        "operationId": "apply_tag_cleanup_api_v1_test_lifecycle_features__feature_id__tag_cleanup_post",
+        "parameters": [
+          {
+            "name": "feature_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Feature Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TlTagCleanupApply"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TlFeatureDetail"
                 }
               }
             }
@@ -17525,6 +17621,16 @@
             "format": "uuid",
             "nullable": true
           },
+          "test_type": {
+            "title": "Test Type",
+            "type": "string",
+            "enum": [
+              "integration",
+              "e2e",
+              "api"
+            ],
+            "nullable": true
+          },
           "actor_email": {
             "type": "string",
             "title": "Actor Email"
@@ -17581,6 +17687,11 @@
             "title": "Impl Owner Id",
             "type": "string",
             "format": "uuid",
+            "nullable": true
+          },
+          "test_type": {
+            "title": "Test Type",
+            "type": "string",
             "nullable": true
           },
           "jira_design_key": {
@@ -17756,6 +17867,11 @@
             "format": "uuid",
             "nullable": true
           },
+          "test_type": {
+            "title": "Test Type",
+            "type": "string",
+            "nullable": true
+          },
           "scenario_count": {
             "type": "integer",
             "title": "Scenario Count",
@@ -17861,6 +17977,16 @@
           "jira_qa_epic_key": {
             "title": "Jira Qa Epic Key",
             "type": "string",
+            "nullable": true
+          },
+          "test_type": {
+            "title": "Test Type",
+            "type": "string",
+            "enum": [
+              "integration",
+              "e2e",
+              "api"
+            ],
             "nullable": true
           },
           "migration_note": {
@@ -19703,6 +19829,70 @@
           "implemented"
         ],
         "title": "TlStepPhraseOut"
+      },
+      "TlTagCleanup": {
+        "properties": {
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/TlTagCleanupRow"
+            },
+            "type": "array",
+            "title": "Rows",
+            "default": []
+          },
+          "proposed_test_type": {
+            "title": "Proposed Test Type",
+            "type": "string",
+            "enum": [
+              "integration",
+              "e2e",
+              "api"
+            ],
+            "nullable": true
+          },
+          "conflict": {
+            "title": "Conflict",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "title": "TlTagCleanup"
+      },
+      "TlTagCleanupApply": {
+        "properties": {
+          "actor_email": {
+            "type": "string",
+            "title": "Actor Email"
+          }
+        },
+        "type": "object",
+        "required": [
+          "actor_email"
+        ],
+        "title": "TlTagCleanupApply"
+      },
+      "TlTagCleanupRow": {
+        "properties": {
+          "scenario_tag": {
+            "type": "string",
+            "title": "Scenario Tag"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tags"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scenario_tag",
+          "tags"
+        ],
+        "title": "TlTagCleanupRow",
+        "description": "A scenario that carries test-type tags (they belong to the file)."
       },
       "TlTransitionAction": {
         "type": "string",
