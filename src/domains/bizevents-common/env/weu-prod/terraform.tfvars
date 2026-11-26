@@ -45,7 +45,7 @@ bizevents_datastore_cosmos_db_params = {
   is_virtual_network_filter_enabled = false
 
   //set ip_range_filter to allow azure services (0.0.0.0) and azure portal.
-  ip_range_filter = "104.42.195.92,40.76.54.131,52.176.6.30,52.169.50.45,52.187.184.26,0.0.0.0"
+  ip_range_filter = ["104.42.195.92", "40.76.54.131", "52.176.6.30", "52.169.50.45", "52.187.184.26", "0.0.0.0"]
 
   backup_continuous_enabled = true
 
@@ -53,10 +53,10 @@ bizevents_datastore_cosmos_db_params = {
 
   max_throughput = 42000
 
-  max_throughput_biz          = 45000
+  max_throughput_biz          = 150000
   max_throughput_view_user    = 60000
-  max_throughput_view_cart    = 45000
-  max_throughput_view_general = 45000
+  max_throughput_view_cart    = 150000
+  max_throughput_view_general = 150000
 
 }
 
@@ -95,3 +95,4 @@ negative_bizevents_datastore_cosmos_db_params = {
 cidr_subnet_bizevents_datastore_cosmosdb = ["10.1.156.0/24"]
 storage_account_replication_type         = "GZRS"
 redis_ha_enabled                         = true
+bizevents_sa_idh_resource_tier           = "basic"

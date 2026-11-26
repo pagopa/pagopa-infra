@@ -3,7 +3,7 @@
     "info": {
         "version": "1.0.0",
         "title": "Checkout Frontend Proxy",
-        "description": "APIM proxy for checkout frontend via App Gateway. Used during CDN migration and retained as fallback path for Front Door CDN."
+        "description": "Reverse proxy for checkout frontend served by Front Door CDN - used during migration and retained as fallback"
     },
     "servers": [
         {

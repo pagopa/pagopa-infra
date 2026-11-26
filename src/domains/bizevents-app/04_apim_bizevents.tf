@@ -35,7 +35,7 @@ locals {
 module "apim_bizevents_product_all_in_one" {
   # only for test
   count  = var.env_short != "p" ? 1 : 0
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "bizevents-all-in-one"
   display_name = "bizevents-all-in-one"
@@ -54,7 +54,7 @@ module "apim_bizevents_product_all_in_one" {
 
 // EC user(s)
 module "apim_bizevents_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "bizevents"
   display_name = local.apim_bizevents_service_api.display_name
@@ -73,7 +73,7 @@ module "apim_bizevents_product" {
 
 // Helpdesk
 module "apim_bizevents_helpdesk_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "bizevents-helpdesk"
   display_name = local.apim_bizevents_helpdesk_api.display_name
@@ -93,7 +93,7 @@ module "apim_bizevents_helpdesk_product" {
 
 // BizEvent-NdP synchronization - manual API
 module "apim_bizevents_nodo_sync_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "bizevents-nodo-sync"
   display_name = local.apim_bizevents_nodo_sync_product.display_name
@@ -145,7 +145,7 @@ resource "azurerm_api_management_api_version_set" "api_bizevents_helpdesk_api" {
 # }
 
 module "apim_api_bizevents_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                = format("%s-bizevents-service-api", local.project)
   api_management_name = local.pagopa_apim_name
@@ -177,7 +177,7 @@ module "apim_api_bizevents_api_v1" {
 }
 
 module "apim_api_bizevents_helpdesk_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                = format("%s-bizevents-helpdesk-api", local.project)
   api_management_name = local.pagopa_apim_name
