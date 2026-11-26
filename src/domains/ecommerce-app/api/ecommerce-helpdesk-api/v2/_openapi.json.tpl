@@ -237,6 +237,98 @@
         }
       }
     },
+    "/ecommerce/deadletter-transactions": {
+      "get": {
+        "tags": [
+          "eCommerce"
+        ],
+        "operationId": "listDeadletterTransactionsInternal",
+        "summary": "List deadletter transactions with their actions",
+        "description": "Returns the paginated list of deadletter transactions in the given date range, each one enriched with the list of actions taken on it. Rate limited to 1 request every 5 seconds for each subscription.\n",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fromDate",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2025-08-19"
+            },
+            "description": "Start date of the range (format YYYY-MM-DD)"
+          },
+          {
+            "in": "query",
+            "name": "toDate",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2025-08-19"
+            },
+            "description": "End date of the range (format YYYY-MM-DD)"
+          },
+          {
+            "in": "query",
+            "name": "pageNumber",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            },
+            "description": "Searched page number, starting from 0"
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20,
+              "default": 10
+            },
+            "description": "Max element per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Page of deadletter transactions with their actions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WatchdogDeadletterTransactionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or query parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded (1 request every 5 seconds)"
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/ecommerce/searchMetrics": {
       "post": {
         "tags": [
@@ -295,6 +387,151 @@
   },
   "components": {
     "schemas": {
+      "WatchdogDeadletterTransactionsResponse": {
+        "type": "object",
+        "properties": {
+          "deadletterTransactions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WatchdogDeadletterTransaction"
+            }
+          },
+          "page": {
+            "$ref": "#/components/schemas/WatchdogPageInfo"
+          }
+        },
+        "required": [
+          "deadletterTransactions",
+          "page"
+        ]
+      },
+      "WatchdogPageInfo": {
+        "type": "object",
+        "description": "Information about the returned query page",
+        "properties": {
+          "current": {
+            "type": "integer",
+            "description": "Current returned page index (0-based)"
+          },
+          "total": {
+            "type": "integer",
+            "description": "Total pages for the query (based on requested page size)"
+          },
+          "results": {
+            "type": "integer",
+            "description": "Transactions returned into the current page"
+          }
+        },
+        "required": [
+          "current",
+          "total",
+          "results"
+        ]
+      },
+      "WatchdogDeadletterTransaction": {
+        "type": "object",
+        "properties": {
+          "transactionId": {
+            "type": "string"
+          },
+          "insertionDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "paymentToken": {
+            "type": "string"
+          },
+          "paymentMethodName": {
+            "type": "string"
+          },
+          "pspId": {
+            "type": "string"
+          },
+          "eCommerceStatus": {
+            "type": "string"
+          },
+          "gatewayAuthorizationStatus": {
+            "type": "string"
+          },
+          "nodoStatus": {
+            "type": "string"
+          },
+          "paymentEndToEndId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "deadletterTransactionDetails": {
+            "type": "object"
+          },
+          "eCommerceDetails": {
+            "type": "object"
+          },
+          "nodoDetails": {
+            "type": "object"
+          },
+          "npgDetails": {
+            "type": "object"
+          },
+          "actions": {
+            "type": "array",
+            "description": "Actions taken on the deadletter transaction",
+            "items": {
+              "$ref": "#/components/schemas/WatchdogDeadletterTransactionAction"
+            }
+          }
+        },
+        "required": [
+          "transactionId",
+          "insertionDate",
+          "actions"
+        ]
+      },
+      "WatchdogDeadletterTransactionAction": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "transactionId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "action": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "FINAL",
+                  "NOT_FINAL"
+                ]
+              }
+            },
+            "required": [
+              "value",
+              "type"
+            ]
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "transactionId",
+          "userId",
+          "action",
+          "timestamp"
+        ]
+      },
       "ProblemJson": {
         "type": "object",
         "properties": {
