@@ -8029,7 +8029,7 @@
           "test-lifecycle"
         ],
         "summary": "Transition Revision",
-        "description": "Transizione di workflow. Bloccata -> 409 con `reasons`; non reviewer -> 403.\n\n`request_changes` senza nota è bloccata con 409 `transition_not_allowed` (nessuna\nvalidazione di schema: la nota è obbligatoria solo per quell'azione). Una nota oltre\n5000 caratteri (come i commenti) è rifiutata con 422 dallo schema.",
+        "description": "Transizione di workflow. Bloccata -> 409 con `reasons`.\n\nAttore non abilitato -> 403: `not_reviewer` (approva, richiedi modifiche, riporta in review)\noppure `not_owner` (ritira in bozza). `withdraw_approval` è 409 se la PR è già mergiata o se\nla pubblicazione della PR è in corso.\n\n`request_changes` senza nota è bloccata con 409 `transition_not_allowed` (nessuna\nvalidazione di schema: la nota è obbligatoria solo per quell'azione). Una nota oltre\n5000 caratteri (come i commenti) è rifiutata con 422 dallo schema.",
         "operationId": "transition_revision_api_v1_test_lifecycle_features__feature_id__revisions__revision_id__transitions_post",
         "parameters": [
           {
@@ -17641,6 +17641,14 @@
             "title": "Jira",
             "default": []
           },
+          "jira_history": {
+            "items": {
+              "$ref": "#/components/schemas/TlJiraHistoryRow"
+            },
+            "type": "array",
+            "title": "Jira History",
+            "default": []
+          },
           "jira_error": {
             "title": "Jira Error",
             "type": "string",
@@ -18245,6 +18253,41 @@
           "status"
         ],
         "title": "TlJiraDeleteResult"
+      },
+      "TlJiraHistoryRow": {
+        "properties": {
+          "revision_number": {
+            "type": "integer",
+            "title": "Revision Number"
+          },
+          "revision_status": {
+            "$ref": "#/components/schemas/TlRevisionStatus"
+          },
+          "is_current": {
+            "type": "boolean",
+            "title": "Is Current"
+          },
+          "design": {
+            "$ref": "#/components/schemas/TlJiraLink",
+            "nullable": true
+          },
+          "impl": {
+            "$ref": "#/components/schemas/TlJiraLink",
+            "nullable": true
+          },
+          "qa_epic": {
+            "$ref": "#/components/schemas/TlJiraLink",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "revision_number",
+          "revision_status",
+          "is_current"
+        ],
+        "title": "TlJiraHistoryRow",
+        "description": "Jira tasks and epic used by one revision of a feature."
       },
       "TlJiraLink": {
         "properties": {
