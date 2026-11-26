@@ -4,3 +4,9 @@ resource "azurerm_storage_container" "gpd_receipt_dead_letter" {
   storage_account_id    = module.gpd_sa_sftp.id
   container_access_type = "private"
 }
+
+resource "azurerm_storage_container" "gpd_receipts" {
+  name                  = "receipts"
+  storage_account_id    = module.gpd_sa_sftp.id
+  container_access_type = "private"
+}
