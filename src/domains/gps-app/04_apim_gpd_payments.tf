@@ -30,7 +30,7 @@ locals {
 ###################
 
 module "apim_gpd_payments_soap_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "gpd-payments-soap"
   display_name = "GPD Payments pagoPA - SOAP"
@@ -75,7 +75,7 @@ resource "azurerm_api_management_api" "apim_api_gpd_payments_soap_api_v1" {
   protocols    = ["https"]
   service_url  = local.apim_gpd_payments_soap_api.service_url
 
-  soap_pass_through = true
+  api_type = "soap"
 
   import {
     content_format = "wsdl"
@@ -126,7 +126,7 @@ resource "azurerm_api_management_api_operation_policy" "paSendRT_v2_wisp_api_pol
 ###################
 
 module "apim_gpd_payments_rest_external_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "gpd-payments-rest-aks"
   display_name = "GPD Payments pagoPA - REST for Auth"
@@ -144,7 +144,7 @@ module "apim_gpd_payments_rest_external_product" {
 }
 
 module "apim_gpd_payments_helpdesk_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "gpd-payments-helpdesk"
   display_name = "GPD Payments pagoPA - Helpdesk"
@@ -173,7 +173,7 @@ resource "azurerm_api_management_api_version_set" "api_gpd_payments_rest_externa
 }
 
 module "apim_api_gpd_payments_rest_external_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-gpd-payments-rest-api-aks", var.env_short)
   api_management_name   = local.pagopa_apim_name
@@ -205,7 +205,7 @@ module "apim_api_gpd_payments_rest_external_api_v1" {
 #####################
 
 module "apim_gpd_payments_internal" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "gpd-payments-internal"
   display_name = "GPD Payments pagoPA - Internal Services"

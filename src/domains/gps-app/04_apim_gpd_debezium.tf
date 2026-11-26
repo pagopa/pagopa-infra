@@ -21,7 +21,7 @@ locals {
 ##############
 
 module "apim_gpd_debezium_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "product-gpd-debezium"
   display_name = "GPD Debezium API pagoPA"
@@ -53,7 +53,7 @@ resource "azurerm_api_management_api_version_set" "api_gpd_debezium_api" {
 
 
 module "apim_api_gpd_debezium_api" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-api-gpd-debezium-api", var.env_short)
   api_management_name   = local.pagopa_apim_name

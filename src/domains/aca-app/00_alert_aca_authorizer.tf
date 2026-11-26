@@ -17,7 +17,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-aca-unauthor
 
   data_source_id = data.azurerm_api_management.apim.id
   description    = "Unauthorized for ACA APIs is greater than or equal to 10%"
-  enabled        = true
+  enabled        = false
   query = (<<-QUERY
 let threshold = 0.10;
 AzureDiagnostics

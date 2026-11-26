@@ -1,5 +1,5 @@
 module "tls_checker" {
-  source = "./.terraform/modules/__v3__/tls_checker"
+  source = "./.terraform/modules/__v4__/tls_checker"
 
   https_endpoint                      = local.aca_hostname
   alert_name                          = local.aca_hostname
@@ -25,19 +25,18 @@ module "tls_checker" {
 }
 
 module "cert_mounter" {
-  source                                 = "./.terraform/modules/__v3__/cert_mounter"
+  source                                 = "./.terraform/modules/__v4__/cert_mounter"
   namespace                              = var.domain
   certificate_name                       = replace(local.aca_hostname, ".", "-")
   kv_name                                = data.azurerm_key_vault.kv.name
   tenant_id                              = data.azurerm_subscription.current.tenant_id
-  workload_identity_enabled              = true
   workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
   workload_identity_client_id            = module.workload_identity.workload_identity_client_id
   depends_on                             = [module.workload_identity]
 }
 
 module "workload_identity" {
-  source                                = "./.terraform/modules/__v3__/kubernetes_workload_identity_configuration"
+  source                                = "./.terraform/modules/__v4__/kubernetes_workload_identity_configuration"
   workload_identity_name_prefix         = var.domain
   workload_identity_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name
   aks_name                              = data.azurerm_kubernetes_cluster.aks.name

@@ -3,7 +3,7 @@
 ##############
 
 module "apim_aca_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "aca"
   display_name = "ACA pagoPA"
@@ -43,7 +43,7 @@ resource "azurerm_api_management_api_version_set" "aca_api" {
 }
 
 module "apim_aca_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = format("%s-api", local.project)
   api_management_name   = local.pagopa_apim_name
