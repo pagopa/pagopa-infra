@@ -25,8 +25,7 @@
       <value>CHECKOUT</value>
     </set-header>
       <set-variable name="transactionsV21OperationId" value="newTransaction" />
-      <set-variable name="paymentMethodsOperationId" value="calculateFees" />
-      <set-variable name="paymentMethodsHandlerOperationId" value="getAllPaymentMethods,getPaymentMethod" />
+      <set-variable name="paymentMethodsHandlerOperationId" value="getAllPaymentMethods,getPaymentMethod,calculateFees" />
       <choose>
         <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("transactionsV21OperationId","").Split(','), operations => operations == context.Operation.Id))">
           <set-header name="x-api-key" exists-action="override">
@@ -34,12 +33,11 @@
           </set-header>
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2.1")"/>
         </when>
-        <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("paymentMethodsOperationId","").Split(','), operations => operations == context.Operation.Id))">
-          <!-- Set payment-methods API Key header -->
+        <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("transactionsV2OperationId","").Split(','), operations => operations == context.Operation.Id))">
           <set-header name="x-api-key" exists-action="override">
-            <value>{{ecommerce-payment-methods-api-key-value}}</value>
+            <value>{{ecommerce-transactions-service-api-key-value}}</value>
           </set-header>
-          <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service/v2")"/>
+          <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2")"/>
         </when>
         <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("paymentMethodsHandlerOperationId","").Split(','), operations => operations == context.Operation.Id))">
           <!-- Set payment-methods API Key header -->

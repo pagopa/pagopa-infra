@@ -47,7 +47,7 @@
                 </return-response>
             </when>
         </choose>
-        <set-variable name="paymentMethodBackendUri" value="https://${hostname}/pagopa-ecommerce-payment-methods-service" />
+        <set-variable name="paymentMethodBackendUri" value="https://${hostname}/pagopa-ecommerce-payment-methods-handler" />
         <set-variable name="transactionServiceBackendUri" value="https://${hostname}/pagopa-ecommerce-transactions-service" />
         <set-variable name="npgNotificationRequestBody" value="@((JObject)context.Request.Body.As<JObject>(true))" />
         <!-- end policy variables -->
@@ -60,7 +60,7 @@
         <choose>
             <when condition="@((string)context.Variables["transactionId"] == "")">
                 <send-request mode="new" response-variable-name="paymentMethodSessionVerificationResponse" timeout="10" ignore-error="true">
-                    <set-url>@(String.Format((string)context.Variables["paymentMethodBackendUri"]+"/v2/payment-methods/{0}/sessions/{1}/transactionId", (string)context.Variables["paymentMethodId"], (string)context.Variables["orderId"]))</set-url>
+                    <set-url>@(String.Format((string)context.Variables["paymentMethodBackendUri"]+"/payment-methods/{0}/sessions/{1}/transactionId", (string)context.Variables["paymentMethodId"], (string)context.Variables["orderId"]))</set-url>
                     <set-method>GET</set-method>
                     <set-header name="Content-Type" exists-action="override">
                         <value>application/json</value>
