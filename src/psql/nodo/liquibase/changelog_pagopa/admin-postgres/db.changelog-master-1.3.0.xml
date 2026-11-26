@@ -8,6 +8,6 @@
   <include file="./db.changelog-master-1.2.0.xml"/>
 
   <!-- 1.3.0 -->
-  <include file="./${version}/db.changelog-20261126000001_scheduler_fire_check_purge_schedule.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20261126000001_scheduler_trace_purge_schedule.xml" labels="${version}"/>
 
 </databaseChangeLog>
