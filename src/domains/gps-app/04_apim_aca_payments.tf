@@ -42,7 +42,7 @@ resource "azurerm_api_management_api" "apim_api_aca_payments_soap_api_v1" {
   protocols    = ["https"]
   service_url  = local.apim_gpd_payments_soap_api.service_url
 
-  soap_pass_through = true
+  api_type = "soap"
 
   import {
     content_format = "wsdl"
