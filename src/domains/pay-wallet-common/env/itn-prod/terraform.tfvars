@@ -115,8 +115,8 @@ aks_foobar_paywallet_node_pool_configuration = {
   enabled         = true,
   tier            = "Standard_D8ds"
   name            = "wallet"
-  node_count_min  = 3,
-  node_count_max  = 4,
+  node_count_min  = 6,
+  node_count_max  = 9,
   node_labels     = { node_name : "aks-pay-wallet-user", node_type : "user", domain : "paywallet" },
   node_taints     = ["paymentWalletOnly=true:NoSchedule"],
   node_tags       = { payWallet : "true" },

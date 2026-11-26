@@ -133,13 +133,6 @@ variable "cidr_subnet_vmss" {
   description = "VMSS network address space."
 }
 
-# nodo dei pagamenti - ndp
-variable "nodo_ndp_subscription_limit" {
-  type        = number
-  description = "subscriptions limit"
-  default     = 1000
-}
-
 variable "lb_frontend_private_ip_address" {
   type        = string
   description = "load balancer egress nodo private ip"
@@ -432,6 +425,12 @@ variable "node_decoupler_primitives" {
   type        = string
   description = "Node decoupler primitives"
   default     = "nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"
+}
+
+variable "decoupler_paymenttoken_ttl_duration" {
+  type        = number
+  default     = 5184000
+  description = "(Optional) Set the TTL for the payment tokens cached by Decoupler"
 }
 
 
