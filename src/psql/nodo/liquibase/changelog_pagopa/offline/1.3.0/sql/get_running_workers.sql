@@ -11,7 +11,7 @@ AS $$
 
     WITH clock AS (
          SELECT timezone('Europe/Rome', now()) AS current_local
-    ),
+    )
     SELECT j.job_name,
            j.extra_key,
            j."start",
