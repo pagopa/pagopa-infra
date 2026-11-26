@@ -108,3 +108,74 @@ resource "azurerm_storage_container" "blob-observability-st" {
 #   }
 
 # }
+
+
+
+resource "azurerm_resource_group" "smo_observability" {
+  name     = "${local.project_itn}-smo-rg"
+  location = var.location_itn
+  tags     = module.tag_config.tags
+}
+
+module "storage_account_celonis" {
+  source = "./.terraform/modules/__v4__/IDH/storage_account"
+
+  name = replace("${local.project}-celonis", "-", "")
+
+  product_name        = "pagopa"
+  env                 = "dev"
+  idh_resource_tier   = "basic"
+  domain              = var.domain
+  location            = var.location_itn
+  resource_group_name = azurerm_resource_group.smo_observability.name
+  tags                = {}
+}
+
+# grant di contributor ad adx
+resource "azurerm_role_assignment" "adx_role_on_storage_account" {
+  scope                = module.storage_account_celonis.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = azurerm_kusto_cluster.data_explorer_cluster[0].identity[0].principal_id
+}
+
+
+# grant di contributor ad adf
+resource "azurerm_role_assignment" "adf_role_on_storage_account" {
+  scope                = module.storage_account_celonis.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = data.azurerm_data_factory.obeserv_data_factory.identity[0].principal_id
+}
+
+# creo il path a celonis
+resource "azurerm_storage_container" "container_celonis_path" {
+  name               = "celonis-export"
+  storage_account_id = module.storage_account_celonis.id
+}
+
+
+data "azurerm_storage_account_blob_container_sas" "sas_token_celonis" {
+  connection_string = module.storage_account_celonis.primary_connection_string
+  container_name    = "celonis-export"
+  https_only        = true
+
+  start  = "2026-10-01"
+  expiry = "2026-10-30"
+
+  permissions {
+    read   = true
+    add    = false
+    create = false
+    write  = false
+    delete = false
+    list   = true
+  }
+}
+
+
+
+resource "azurerm_key_vault_secret" "kv_sas_token_celonis" {
+  name  = "celonis-sas-token"
+  value = "https://${module.storage_account_celonis.name}.blob.core.windows.net/${azurerm_storage_container.container_celonis_path.name}${data.azurerm_storage_account_blob_container_sas.sas_token_celonis.sas}"
+  #  value        = data.azurerm_storage_account_blob_container_sas.sas_token_celonis.sas
+  key_vault_id = data.azurerm_key_vault.cruscotto_kv.id
+}
