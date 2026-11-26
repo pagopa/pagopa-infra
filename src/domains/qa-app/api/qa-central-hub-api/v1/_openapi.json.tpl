@@ -7581,60 +7581,6 @@
         }
       }
     },
-    "/api/v1/test-lifecycle/features/{feature_id}/import-cleanup": {
-      "post": {
-        "tags": [
-          "test-lifecycle"
-        ],
-        "summary": "Retry Import Cleanup",
-        "description": "Riprova la PR che toglie il file importato dal branch di partenza.",
-        "operationId": "retry_import_cleanup_api_v1_test_lifecycle_features__feature_id__import_cleanup_post",
-        "parameters": [
-          {
-            "name": "feature_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Feature Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TlJiraActorRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TlFeatureDetail"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/test-lifecycle/category-tags": {
       "get": {
         "tags": [
@@ -8599,6 +8545,188 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/TlPrRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TlFeatureDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-lifecycle/features/{feature_id}/revisions/{revision_id}/git-sync": {
+      "get": {
+        "tags": [
+          "test-lifecycle"
+        ],
+        "summary": "Get Branch Sync",
+        "description": "Confronto della bozza con il suo branch di lavoro. Non scrive mai; un guasto di Git è\nuno stato (`unreachable`, `not_configured`), mai un errore.",
+        "operationId": "get_branch_sync_api_v1_test_lifecycle_features__feature_id__revisions__revision_id__git_sync_get",
+        "parameters": [
+          {
+            "name": "feature_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Feature Id"
+            }
+          },
+          {
+            "name": "revision_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Revision Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TlBranchSync"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-lifecycle/features/{feature_id}/revisions/{revision_id}/git-sync/push": {
+      "post": {
+        "tags": [
+          "test-lifecycle"
+        ],
+        "summary": "Push Branch Sync",
+        "description": "\"Salva tutti\": un commit del feature file sul branch di lavoro (solo bozze). Se il file\nsul branch è cambiato: 409 `repo_changed`, salvo `overwrite`. Senza token 503.",
+        "operationId": "push_branch_sync_api_v1_test_lifecycle_features__feature_id__revisions__revision_id__git_sync_push_post",
+        "parameters": [
+          {
+            "name": "feature_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Feature Id"
+            }
+          },
+          {
+            "name": "revision_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Revision Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TlBranchPush"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TlBranchSync"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-lifecycle/features/{feature_id}/revisions/{revision_id}/git-sync/pull": {
+      "post": {
+        "tags": [
+          "test-lifecycle"
+        ],
+        "summary": "Pull Branch Sync",
+        "description": "\"Accetta dal repo\": sostituisce il contenuto della bozza con il file del branch (solo\nbozze). File non leggibile 422 `import_parse_error`; file assente 404.",
+        "operationId": "pull_branch_sync_api_v1_test_lifecycle_features__feature_id__revisions__revision_id__git_sync_pull_post",
+        "parameters": [
+          {
+            "name": "feature_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Feature Id"
+            }
+          },
+          {
+            "name": "revision_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Revision Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TlBranchPull"
               }
             }
           }
@@ -17299,6 +17427,82 @@
         ],
         "title": "TestSuiteOut"
       },
+      "TlBranchPull": {
+        "properties": {
+          "actor_email": {
+            "type": "string",
+            "title": "Actor Email"
+          }
+        },
+        "type": "object",
+        "required": [
+          "actor_email"
+        ],
+        "title": "TlBranchPull"
+      },
+      "TlBranchPush": {
+        "properties": {
+          "actor_email": {
+            "type": "string",
+            "title": "Actor Email"
+          },
+          "overwrite": {
+            "type": "boolean",
+            "title": "Overwrite",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "actor_email"
+        ],
+        "title": "TlBranchPush"
+      },
+      "TlBranchSync": {
+        "properties": {
+          "branch": {
+            "title": "Branch",
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "no_branch",
+              "branch_missing",
+              "file_missing",
+              "in_sync",
+              "hub_ahead",
+              "repo_ahead",
+              "diverged",
+              "unreachable",
+              "not_configured"
+            ],
+            "title": "State"
+          },
+          "hub_unsynced": {
+            "type": "boolean",
+            "title": "Hub Unsynced",
+            "default": false
+          },
+          "repo_changed": {
+            "type": "boolean",
+            "title": "Repo Changed",
+            "default": false
+          },
+          "compare_url": {
+            "title": "Compare Url",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "state"
+        ],
+        "title": "TlBranchSync",
+        "description": "Comparison of a draft with its working branch in the central repository."
+      },
       "TlCommentCreate": {
         "properties": {
           "actor_email": {
@@ -19206,6 +19410,11 @@
             "type": "string",
             "nullable": true
           },
+          "work_branch": {
+            "title": "Work Branch",
+            "type": "string",
+            "nullable": true
+          },
           "base_stale": {
             "type": "boolean",
             "title": "Base Stale",
@@ -19942,6 +20151,11 @@
           },
           "note": {
             "title": "Note",
+            "type": "string",
+            "nullable": true
+          },
+          "branch_name": {
+            "title": "Branch Name",
             "type": "string",
             "nullable": true
           }
