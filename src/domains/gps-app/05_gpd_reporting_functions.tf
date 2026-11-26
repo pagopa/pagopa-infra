@@ -64,13 +64,14 @@ locals {
 
 ## Function reporting_analysis
 module "reporting_analysis_function" {
-  source = "./.terraform/modules/__v3__/function_app"
+  source = "./.terraform/modules/__v4__/function_app"
 
   resource_group_name  = azurerm_resource_group.gpd_rg.name
   name                 = format("%s-fn-gpd-analysis", local.product_location)
   storage_account_name = replace("${local.product_location}gpdanalysisst", "-", "")
   location             = var.location
   health_check_path    = "/info"
+  minimum_tls_version  = "1.2"
   # dotnet_version    = var.reporting_analysis_dotnet_version
   subnet_id       = module.reporting_function_snet.id
   runtime_version = "~4"
@@ -95,6 +96,7 @@ module "reporting_analysis_function" {
   always_on                                = var.reporting_analysis_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
+  app_service_plan_type                    = "external"
   app_settings                             = local.function_analysis_app_settings
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
@@ -110,20 +112,19 @@ module "reporting_analysis_function" {
 module "reporting_analysis_function_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "./.terraform/modules/__v3__/function_app_slot"
+  source = "./.terraform/modules/__v4__/function_app_slot"
 
-  app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   function_app_id                          = module.reporting_analysis_function.id
   storage_account_name                     = module.reporting_analysis_function.storage_account_name
   storage_account_access_key               = module.reporting_analysis_function.storage_account.primary_access_key
   name                                     = "staging"
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  location                                 = var.location
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
-  always_on         = var.reporting_analysis_function_always_on
-  health_check_path = "/info"
-  runtime_version   = "~4"
+  always_on           = var.reporting_analysis_function_always_on
+  health_check_path   = "/info"
+  runtime_version     = "~4"
+  minimum_tls_version = "1.2"
 
   # App settings
   app_settings = local.function_analysis_app_settings

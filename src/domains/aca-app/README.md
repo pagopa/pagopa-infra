@@ -5,24 +5,24 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.33.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.12.1 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.30.0 |
-| <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 2.53 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.0 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.16.0 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.33.0 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | ~> 3.2 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 087a57940a67444c3b883030c54ceb78562c64ef |
-| <a name="module_apim_aca_api_v1"></a> [apim\_aca\_api\_v1](#module\_apim\_aca\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_aca_product"></a> [apim\_aca\_product](#module\_apim\_aca\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_aca_upload_api_v2"></a> [apim\_aca\_upload\_api\_v2](#module\_apim\_aca\_upload\_api\_v2) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v3__/cert_mounter | n/a |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | efa14380821c386298a5632549d001f4297659e0 |
+| <a name="module_apim_aca_api_v1"></a> [apim\_aca\_api\_v1](#module\_apim\_aca\_api\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
+| <a name="module_apim_aca_product"></a> [apim\_aca\_product](#module\_apim\_aca\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_aca_upload_api_v2"></a> [apim\_aca\_upload\_api\_v2](#module\_apim\_aca\_upload\_api\_v2) | ./.terraform/modules/__v4__/api_management_api | n/a |
+| <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v4__/cert_mounter | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
-| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
-| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_configuration | n/a |
+| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v4__/tls_checker | n/a |
+| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v4__/kubernetes_workload_identity_configuration | n/a |
 
 ## Resources
 
