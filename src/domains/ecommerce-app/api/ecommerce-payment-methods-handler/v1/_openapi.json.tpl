@@ -604,17 +604,12 @@
                 "type": "object",
                 "description": "Transaction id for session successful response",
                 "required": [
-                    "transactionId",
-                    "base64TransactionId"
+                    "transactionId"
                 ],
                 "properties": {
                     "transactionId": {
                         "type": "string",
                         "description": "Transaction id associated to this NPG session"
-                    },
-                    "base64TransactionId": {
-                        "type": "string",
-                        "description": "Base64 URL-safe encoding of the transaction id UUID bytes"
                     }
                 }
             },
