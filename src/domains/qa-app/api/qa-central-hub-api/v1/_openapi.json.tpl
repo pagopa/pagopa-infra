@@ -9347,6 +9347,114 @@
         }
       }
     },
+    "/api/v1/test-lifecycle/issues/{issue_id}/import": {
+      "post": {
+        "tags": [
+          "test-lifecycle"
+        ],
+        "summary": "Import Issue File",
+        "description": "Imports the feature file of an `unmanaged_file` / `unknown_feature_code` issue into the\nhub; a file without the hub's header gets an alignment pull request.",
+        "operationId": "import_issue_file_api_v1_test_lifecycle_issues__issue_id__import_post",
+        "parameters": [
+          {
+            "name": "issue_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Issue Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TlAdoptRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TlAdoptOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-lifecycle/issues/{issue_id}/restore-header": {
+      "post": {
+        "tags": [
+          "test-lifecycle"
+        ],
+        "summary": "Restore Issue Header",
+        "description": "Opens the pull request that gives a managed file its `# qa-hub:` header back.",
+        "operationId": "restore_issue_header_api_v1_test_lifecycle_issues__issue_id__restore_header_post",
+        "parameters": [
+          {
+            "name": "issue_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Issue Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TlIssueActor"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TlRestoreHeaderOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/test-lifecycle/steps": {
       "get": {
         "tags": [
@@ -17469,6 +17577,58 @@
         ],
         "title": "TestSuiteOut"
       },
+      "TlAdoptOut": {
+        "properties": {
+          "feature_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Feature Id"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "alignment_pending": {
+            "type": "boolean",
+            "title": "Alignment Pending"
+          },
+          "pr_url": {
+            "title": "Pr Url",
+            "type": "string",
+            "nullable": true
+          },
+          "pr_error": {
+            "title": "Pr Error",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "feature_id",
+          "code",
+          "alignment_pending"
+        ],
+        "title": "TlAdoptOut"
+      },
+      "TlAdoptRequest": {
+        "properties": {
+          "actor_email": {
+            "type": "string",
+            "title": "Actor Email"
+          },
+          "scope_code": {
+            "title": "Scope Code",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "actor_email"
+        ],
+        "title": "TlAdoptRequest"
+      },
       "TlBranchPull": {
         "properties": {
           "actor_email": {
@@ -18492,6 +18652,19 @@
         ],
         "title": "TlImportGitResult"
       },
+      "TlIssueActor": {
+        "properties": {
+          "actor_email": {
+            "type": "string",
+            "title": "Actor Email"
+          }
+        },
+        "type": "object",
+        "required": [
+          "actor_email"
+        ],
+        "title": "TlIssueActor"
+      },
       "TlIssueKind": {
         "type": "string",
         "enum": [
@@ -18499,6 +18672,8 @@
           "new_scenario_from_git",
           "file_deleted",
           "unknown_feature_code",
+          "unmanaged_file",
+          "missing_header",
           "parse_error",
           "pr_closed_unmerged",
           "pr_creation_failed",
@@ -19474,6 +19649,22 @@
           "lock_version"
         ],
         "title": "TlRebaseView"
+      },
+      "TlRestoreHeaderOut": {
+        "properties": {
+          "pr_url": {
+            "title": "Pr Url",
+            "type": "string",
+            "nullable": true
+          },
+          "pr_error": {
+            "title": "Pr Error",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "title": "TlRestoreHeaderOut"
       },
       "TlRevisionOut": {
         "properties": {
