@@ -6,7 +6,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
   resource_group_name = "dashboards"
   location            = var.location
   data_source_id      = data.azurerm_api_management.apim.id
-  description         = "Alert when PagoPA Nodo ${upper(each.value.group)} ${each.value.primitiva} API operation falls below expected availability."
+  description         = "Alert when Nodo ${upper(each.value.group)} ${each.value.primitiva} API operation falls below expected availability."
   enabled             = true
   severity            = 1
   # timing per environment, see local.alert_config
@@ -17,7 +17,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
 
   action {
     action_group           = local.nodo_alert_action_groups
-    email_subject          = "Nodo PagoPA ${upper(each.value.group)} ${each.value.primitiva} API Availability Alert"
+    email_subject          = "[${var.env}] Nodo ${upper(each.value.group)} ${each.value.primitiva} API Availability Alert"
     custom_webhook_payload = "{}"
   }
 
@@ -79,12 +79,12 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_psp_api_fault_c
 
   action {
     action_group           = local.nodo_alert_action_groups
-    email_subject          = "Nodo PagoPA ${upper(each.value.group)} ${each.value.primitiva} API Fault Code Availability Alert"
+    email_subject          = "[${var.env}] Nodo ${upper(each.value.group)} ${each.value.primitiva} API Fault Code Availability Alert"
     custom_webhook_payload = "{}"
   }
 
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Alert when PagoPA Nodo ${upper(each.value.group)} ${each.value.primitiva} API operation falls, based on fault code, below expected availability."
+  description    = "Alert when Nodo ${upper(each.value.group)} ${each.value.primitiva} API operation falls, based on fault code, below expected availability."
   enabled        = true
 
   severity = 1
