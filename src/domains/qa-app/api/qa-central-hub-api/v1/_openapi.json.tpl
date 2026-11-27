@@ -7319,6 +7319,48 @@
         }
       }
     },
+    "/api/v1/test-lifecycle/features/move": {
+      "post": {
+        "tags": [
+          "test-lifecycle"
+        ],
+        "summary": "Move Features",
+        "description": "Sposta feature in un altro ambito, tutto o niente. Le feature prendono codice, numero e\ntag dell'ambito di arrivo (solo se non sono già sul repo con i codici dell'hub: 409\n`adapt_blocked` con l'elenco).",
+        "operationId": "move_features_api_v1_test_lifecycle_features_move_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TlMoveRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TlMoveResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/test-lifecycle/features/{feature_id}/delete-preview": {
       "get": {
         "tags": [
@@ -17875,6 +17917,11 @@
             "type": "string",
             "title": "Scope Code"
           },
+          "scope_name": {
+            "title": "Scope Name",
+            "type": "string",
+            "nullable": true
+          },
           "design_owner_id": {
             "title": "Design Owner Id",
             "type": "string",
@@ -18052,6 +18099,11 @@
           "scope_code": {
             "type": "string",
             "title": "Scope Code"
+          },
+          "scope_name": {
+            "title": "Scope Name",
+            "type": "string",
+            "nullable": true
           },
           "design_owner_id": {
             "title": "Design Owner Id",
@@ -19020,6 +19072,99 @@
         ],
         "title": "TlMigrationTagPatch"
       },
+      "TlMoveItem": {
+        "properties": {
+          "feature_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Feature Id"
+          },
+          "old_code": {
+            "type": "string",
+            "title": "Old Code"
+          },
+          "new_code": {
+            "type": "string",
+            "title": "New Code"
+          },
+          "old_scope_code": {
+            "type": "string",
+            "title": "Old Scope Code"
+          },
+          "new_scope_code": {
+            "type": "string",
+            "title": "New Scope Code"
+          }
+        },
+        "type": "object",
+        "required": [
+          "feature_id",
+          "old_code",
+          "new_code",
+          "old_scope_code",
+          "new_scope_code"
+        ],
+        "title": "TlMoveItem"
+      },
+      "TlMoveRequest": {
+        "properties": {
+          "feature_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "maxItems": 200,
+            "minItems": 1,
+            "title": "Feature Ids"
+          },
+          "target_scope_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Target Scope Id"
+          },
+          "actor_email": {
+            "type": "string",
+            "title": "Actor Email"
+          }
+        },
+        "type": "object",
+        "required": [
+          "feature_ids",
+          "target_scope_id",
+          "actor_email"
+        ],
+        "title": "TlMoveRequest",
+        "description": "Move features to another scope; they take its code, number and scenario tags."
+      },
+      "TlMoveResult": {
+        "properties": {
+          "moved": {
+            "items": {
+              "$ref": "#/components/schemas/TlMoveItem"
+            },
+            "type": "array",
+            "title": "Moved",
+            "default": []
+          },
+          "skipped": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Skipped",
+            "default": []
+          },
+          "alignment_error": {
+            "title": "Alignment Error",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "title": "TlMoveResult"
+      },
       "TlNrtEnvResult": {
         "properties": {
           "env": {
@@ -19929,6 +20074,11 @@
             "type": "string",
             "format": "date-time",
             "title": "Updated At"
+          },
+          "alignment_error": {
+            "title": "Alignment Error",
+            "type": "string",
+            "nullable": true
           },
           "feature_count": {
             "type": "integer",
