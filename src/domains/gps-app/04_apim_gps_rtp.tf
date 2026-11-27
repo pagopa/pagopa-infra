@@ -1,6 +1,6 @@
 
 module "apim_gps_rtp_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "gpsrtp"
   display_name = "GPD x RTP - Helpdesk"

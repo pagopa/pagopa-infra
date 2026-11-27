@@ -3,7 +3,7 @@
 ############################
 
 module "apim_pn_integration_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "pn-integration"
   display_name = "PN Integration"
@@ -46,7 +46,7 @@ resource "azurerm_api_management_named_value" "afm_pn_sub_key_test_apim_nv" {
 #############################
 
 module "apim_aca_integration_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "aca-integration"
   display_name = "ACA Integration"

@@ -5,7 +5,7 @@
 ## Products ##
 
 module "apim_gpd_product" {
-  source       = "./.terraform/modules/__v3__/api_management_product"
+  source       = "./.terraform/modules/__v4__/api_management_product"
   product_id   = "product-gpd"
   display_name = "GPD pagoPA"
   description  = "Prodotto Gestione Posizione Debitorie"
@@ -30,7 +30,7 @@ module "apim_gpd_product" {
 ## Products ##
 
 module "apim_debt_positions_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "debt-positions"
   display_name = "GPD Debt Positions for organizations"
