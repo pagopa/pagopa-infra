@@ -55,6 +55,15 @@
               "type": "string",
               "example": "77777777777"
             }
+          },
+          {
+            "name": "toPublish",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "requestBody": {
