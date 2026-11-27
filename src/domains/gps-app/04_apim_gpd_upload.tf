@@ -25,7 +25,7 @@ resource "azurerm_api_management_api_version_set" "apim_gpd_upload_api" {
 }
 
 module "apim_gpd_upload_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.product}-gpd-upload-api"
   api_management_name   = local.pagopa_apim_name
@@ -50,7 +50,7 @@ module "apim_gpd_upload_api_v1" {
 }
 
 module "apim_gpd_upload_api_v2" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "./.terraform/modules/__v4__/api_management_api"
 
   name                  = "${local.product}-gpd-upload-api"
   api_management_name   = local.pagopa_apim_name

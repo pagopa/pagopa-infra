@@ -7,46 +7,46 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.3.0 |
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 3.0.2 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 2.53 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.16.0 |
-| <a name="requirement_kubectl"></a> [kubectl](#requirement\_kubectl) | 1.14.0 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.30.0 |
-| <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.3 |
+| <a name="requirement_kubectl"></a> [kubectl](#requirement\_kubectl) | ~> 1.19.0 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.33.0 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | ~> 3.2 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | d0a0b3a81963169bdc974f79eba31e41e918e63d |
-| <a name="module_apim_aca_integration_product"></a> [apim\_aca\_integration\_product](#module\_apim\_aca\_integration\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_api_gpd_debezium_api"></a> [apim\_api\_gpd\_debezium\_api](#module\_apim\_api\_gpd\_debezium\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_api_gpd_payments_rest_external_api_v1"></a> [apim\_api\_gpd\_payments\_rest\_external\_api\_v1](#module\_apim\_api\_gpd\_payments\_rest\_external\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_api_gpd_reporting_analysis_api"></a> [apim\_api\_gpd\_reporting\_analysis\_api](#module\_apim\_api\_gpd\_reporting\_analysis\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_debt_positions_product"></a> [apim\_debt\_positions\_product](#module\_apim\_debt\_positions\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_gpd_debezium_product"></a> [apim\_gpd\_debezium\_product](#module\_apim\_gpd\_debezium\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_gpd_integration_product"></a> [apim\_gpd\_integration\_product](#module\_apim\_gpd\_integration\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_gpd_payments_helpdesk_product"></a> [apim\_gpd\_payments\_helpdesk\_product](#module\_apim\_gpd\_payments\_helpdesk\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_gpd_payments_internal"></a> [apim\_gpd\_payments\_internal](#module\_apim\_gpd\_payments\_internal) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_gpd_payments_pull_product"></a> [apim\_gpd\_payments\_pull\_product](#module\_apim\_gpd\_payments\_pull\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_gpd_payments_pull_product_and_debt_positions_product_test"></a> [apim\_gpd\_payments\_pull\_product\_and\_debt\_positions\_product\_test](#module\_apim\_gpd\_payments\_pull\_product\_and\_debt\_positions\_product\_test) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_gpd_payments_rest_external_product"></a> [apim\_gpd\_payments\_rest\_external\_product](#module\_apim\_gpd\_payments\_rest\_external\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_gpd_payments_soap_product"></a> [apim\_gpd\_payments\_soap\_product](#module\_apim\_gpd\_payments\_soap\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_gpd_product"></a> [apim\_gpd\_product](#module\_apim\_gpd\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_gpd_reporting_analysis_product"></a> [apim\_gpd\_reporting\_analysis\_product](#module\_apim\_gpd\_reporting\_analysis\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_gpd_upload_api_v1"></a> [apim\_gpd\_upload\_api\_v1](#module\_apim\_gpd\_upload\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_gpd_upload_api_v2"></a> [apim\_gpd\_upload\_api\_v2](#module\_apim\_gpd\_upload\_api\_v2) | ./.terraform/modules/__v3__/api_management_api | n/a |
-| <a name="module_apim_gps_product"></a> [apim\_gps\_product](#module\_apim\_gps\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_gps_rtp_product"></a> [apim\_gps\_rtp\_product](#module\_apim\_gps\_rtp\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_pn_integration_product"></a> [apim\_pn\_integration\_product](#module\_apim\_pn\_integration\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v3__/cert_mounter | n/a |
-| <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup | n/a |
-| <a name="module_reporting_analysis_function"></a> [reporting\_analysis\_function](#module\_reporting\_analysis\_function) | ./.terraform/modules/__v3__/function_app | n/a |
-| <a name="module_reporting_analysis_function_slot_staging"></a> [reporting\_analysis\_function\_slot\_staging](#module\_reporting\_analysis\_function\_slot\_staging) | ./.terraform/modules/__v3__/function_app_slot | n/a |
-| <a name="module_reporting_function_snet"></a> [reporting\_function\_snet](#module\_reporting\_function\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | efa14380821c386298a5632549d001f4297659e0 |
+| <a name="module_apim_aca_integration_product"></a> [apim\_aca\_integration\_product](#module\_apim\_aca\_integration\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_api_gpd_debezium_api"></a> [apim\_api\_gpd\_debezium\_api](#module\_apim\_api\_gpd\_debezium\_api) | ./.terraform/modules/__v4__/api_management_api | n/a |
+| <a name="module_apim_api_gpd_payments_rest_external_api_v1"></a> [apim\_api\_gpd\_payments\_rest\_external\_api\_v1](#module\_apim\_api\_gpd\_payments\_rest\_external\_api\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
+| <a name="module_apim_api_gpd_reporting_analysis_api"></a> [apim\_api\_gpd\_reporting\_analysis\_api](#module\_apim\_api\_gpd\_reporting\_analysis\_api) | ./.terraform/modules/__v4__/api_management_api | n/a |
+| <a name="module_apim_debt_positions_product"></a> [apim\_debt\_positions\_product](#module\_apim\_debt\_positions\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_gpd_debezium_product"></a> [apim\_gpd\_debezium\_product](#module\_apim\_gpd\_debezium\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_gpd_integration_product"></a> [apim\_gpd\_integration\_product](#module\_apim\_gpd\_integration\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_gpd_payments_helpdesk_product"></a> [apim\_gpd\_payments\_helpdesk\_product](#module\_apim\_gpd\_payments\_helpdesk\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_gpd_payments_internal"></a> [apim\_gpd\_payments\_internal](#module\_apim\_gpd\_payments\_internal) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_gpd_payments_pull_product"></a> [apim\_gpd\_payments\_pull\_product](#module\_apim\_gpd\_payments\_pull\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_gpd_payments_pull_product_and_debt_positions_product_test"></a> [apim\_gpd\_payments\_pull\_product\_and\_debt\_positions\_product\_test](#module\_apim\_gpd\_payments\_pull\_product\_and\_debt\_positions\_product\_test) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_gpd_payments_rest_external_product"></a> [apim\_gpd\_payments\_rest\_external\_product](#module\_apim\_gpd\_payments\_rest\_external\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_gpd_payments_soap_product"></a> [apim\_gpd\_payments\_soap\_product](#module\_apim\_gpd\_payments\_soap\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_gpd_product"></a> [apim\_gpd\_product](#module\_apim\_gpd\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_gpd_reporting_analysis_product"></a> [apim\_gpd\_reporting\_analysis\_product](#module\_apim\_gpd\_reporting\_analysis\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_gpd_upload_api_v1"></a> [apim\_gpd\_upload\_api\_v1](#module\_apim\_gpd\_upload\_api\_v1) | ./.terraform/modules/__v4__/api_management_api | n/a |
+| <a name="module_apim_gpd_upload_api_v2"></a> [apim\_gpd\_upload\_api\_v2](#module\_apim\_gpd\_upload\_api\_v2) | ./.terraform/modules/__v4__/api_management_api | n/a |
+| <a name="module_apim_gps_product"></a> [apim\_gps\_product](#module\_apim\_gps\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_gps_rtp_product"></a> [apim\_gps\_rtp\_product](#module\_apim\_gps\_rtp\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_apim_pn_integration_product"></a> [apim\_pn\_integration\_product](#module\_apim\_pn\_integration\_product) | ./.terraform/modules/__v4__/api_management_product | n/a |
+| <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v4__/cert_mounter | n/a |
+| <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v4__/gh_runner_container_app_job_domain_setup | n/a |
+| <a name="module_reporting_analysis_function"></a> [reporting\_analysis\_function](#module\_reporting\_analysis\_function) | ./.terraform/modules/__v4__/function_app | n/a |
+| <a name="module_reporting_analysis_function_slot_staging"></a> [reporting\_analysis\_function\_slot\_staging](#module\_reporting\_analysis\_function\_slot\_staging) | ./.terraform/modules/__v4__/function_app_slot | n/a |
+| <a name="module_reporting_function_snet"></a> [reporting\_function\_snet](#module\_reporting\_function\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
-| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
-| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_configuration | n/a |
+| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v4__/tls_checker | n/a |
+| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v4__/kubernetes_workload_identity_configuration | n/a |
 
 ## Resources
 
@@ -127,15 +127,15 @@
 | [azurerm_resource_group.gpd_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.strimzi-kafka-operator](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [kubectl_manifest.debezium-ingress](https://registry.terraform.io/providers/gavinbunney/kubectl/1.14.0/docs/resources/manifest) | resource |
-| [kubectl_manifest.debezium-network-policy](https://registry.terraform.io/providers/gavinbunney/kubectl/1.14.0/docs/resources/manifest) | resource |
-| [kubectl_manifest.debezium_role](https://registry.terraform.io/providers/gavinbunney/kubectl/1.14.0/docs/resources/manifest) | resource |
-| [kubectl_manifest.debezium_secrets](https://registry.terraform.io/providers/gavinbunney/kubectl/1.14.0/docs/resources/manifest) | resource |
-| [kubectl_manifest.debezoum_rbac](https://registry.terraform.io/providers/gavinbunney/kubectl/1.14.0/docs/resources/manifest) | resource |
-| [kubectl_manifest.healthchecker-config-map](https://registry.terraform.io/providers/gavinbunney/kubectl/1.14.0/docs/resources/manifest) | resource |
-| [kubectl_manifest.healthchecker-cron](https://registry.terraform.io/providers/gavinbunney/kubectl/1.14.0/docs/resources/manifest) | resource |
-| [kubectl_manifest.kafka_connect](https://registry.terraform.io/providers/gavinbunney/kubectl/1.14.0/docs/resources/manifest) | resource |
-| [kubectl_manifest.postgres_connector](https://registry.terraform.io/providers/gavinbunney/kubectl/1.14.0/docs/resources/manifest) | resource |
+| [kubectl_manifest.debezium-ingress](https://registry.terraform.io/providers/gavinbunney/kubectl/latest/docs/resources/manifest) | resource |
+| [kubectl_manifest.debezium-network-policy](https://registry.terraform.io/providers/gavinbunney/kubectl/latest/docs/resources/manifest) | resource |
+| [kubectl_manifest.debezium_role](https://registry.terraform.io/providers/gavinbunney/kubectl/latest/docs/resources/manifest) | resource |
+| [kubectl_manifest.debezium_secrets](https://registry.terraform.io/providers/gavinbunney/kubectl/latest/docs/resources/manifest) | resource |
+| [kubectl_manifest.debezoum_rbac](https://registry.terraform.io/providers/gavinbunney/kubectl/latest/docs/resources/manifest) | resource |
+| [kubectl_manifest.healthchecker-config-map](https://registry.terraform.io/providers/gavinbunney/kubectl/latest/docs/resources/manifest) | resource |
+| [kubectl_manifest.healthchecker-cron](https://registry.terraform.io/providers/gavinbunney/kubectl/latest/docs/resources/manifest) | resource |
+| [kubectl_manifest.kafka_connect](https://registry.terraform.io/providers/gavinbunney/kubectl/latest/docs/resources/manifest) | resource |
+| [kubectl_manifest.postgres_connector](https://registry.terraform.io/providers/gavinbunney/kubectl/latest/docs/resources/manifest) | resource |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [kubernetes_namespace.namespace_system](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [kubernetes_pod_disruption_budget_v1.gps](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/pod_disruption_budget_v1) | resource |
@@ -205,7 +205,6 @@
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
 | <a name="input_flag_responsetime_alert"></a> [flag\_responsetime\_alert](#input\_flag\_responsetime\_alert) | Flag to enable if payments-pull response time alert is available | `number` | `0` | no |
 | <a name="input_fn_app_storage_account_info"></a> [fn\_app\_storage\_account\_info](#input\_fn\_app\_storage\_account\_info) | n/a | <pre>object({<br/>    account_kind                      = optional(string, "StorageV2")<br/>    account_tier                      = optional(string, "Standard")<br/>    account_replication_type          = optional(string, "LRS")<br/>    advanced_threat_protection_enable = optional(bool, true)<br/>    access_tier                       = optional(string, "Hot")<br/>    public_network_access_enabled     = optional(bool, false)<br/>    use_legacy_defender_version       = optional(bool, false)<br/>  })</pre> | <pre>{<br/>  "access_tier": "Hot",<br/>  "account_kind": "StorageV2",<br/>  "account_replication_type": "LRS",<br/>  "account_tier": "Standard",<br/>  "advanced_threat_protection_enable": true,<br/>  "public_network_access_enabled": false,<br/>  "use_legacy_defender_version": true<br/>}</pre> | no |
-| <a name="input_gh_runner_job_location"></a> [gh\_runner\_job\_location](#input\_gh\_runner\_job\_location) | (Optional) The GH runner container app job location. Consistent with the container app environment location | `string` | `"westeurope"` | no |
 | <a name="input_gpd_cdc_enabled"></a> [gpd\_cdc\_enabled](#input\_gpd\_cdc\_enabled) | Enable CDC for GDP | `bool` | `false` | no |
 | <a name="input_incremental_snapshot_chunk_size"></a> [incremental\_snapshot\_chunk\_size](#input\_incremental\_snapshot\_chunk\_size) | Incremental snapshot chunk size | `number` | `1000` | no |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
