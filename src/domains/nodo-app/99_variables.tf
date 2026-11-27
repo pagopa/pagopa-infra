@@ -434,8 +434,8 @@ variable "decoupler_paymenttoken_ttl_duration" {
 }
 
 variable "decoupler_fiscalCodeNoticeNumber_ttl_duration" {
-  type        = number
-//  default     = 3600 // 1 hour
+  type = number
+  //  default     = 3600 // 1 hour
   default     = 86400 // 24 hour
   description = "Set the TTL for the fiscalCode-noticeNumber tokens cached by Decoupler"
 }
