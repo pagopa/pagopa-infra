@@ -56,7 +56,7 @@ module "gh_runner_job" {
       short_name : "node-tech-supp"
     },
     {
-      name : "pagopa-mbd"
+      name : "pagopa-mbd",
       short_name : "mbd"
     },
     {
