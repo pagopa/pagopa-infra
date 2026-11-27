@@ -430,7 +430,14 @@ variable "node_decoupler_primitives" {
 variable "decoupler_paymenttoken_ttl_duration" {
   type        = number
   default     = 5184000
-  description = "(Optional) Set the TTL for the payment tokens cached by Decoupler"
+  description = "Set the TTL for the payment tokens cached by Decoupler"
+}
+
+variable "decoupler_fiscalCodeNoticeNumber_ttl_duration" {
+  type = number
+  //  default     = 3600 // 1 hour
+  default     = 86400 // 24 hour
+  description = "Set the TTL for the fiscalCode-noticeNumber tokens cached by Decoupler"
 }
 
 
