@@ -6,3 +6,4 @@ location_string = "Italy North"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
+apim_dns_zone_prefix     = "dev.platform"
