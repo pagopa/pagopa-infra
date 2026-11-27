@@ -18601,6 +18601,12 @@
           "actor_email": {
             "type": "string",
             "title": "Actor Email"
+          },
+          "epic_key": {
+            "title": "Epic Key",
+            "type": "string",
+            "maxLength": 32,
+            "nullable": true
           }
         },
         "type": "object",
