@@ -17908,6 +17908,14 @@
           "status": {
             "$ref": "#/components/schemas/TlFeatureStatus"
           },
+          "display_status": {
+            "$ref": "#/components/schemas/TlFeatureStatus"
+          },
+          "is_running": {
+            "type": "boolean",
+            "title": "Is Running",
+            "default": false
+          },
           "scope_id": {
             "type": "string",
             "format": "uuid",
@@ -18060,6 +18068,7 @@
           "code",
           "number",
           "status",
+          "display_status",
           "scope_id",
           "scope_code",
           "created_by",
@@ -18090,6 +18099,14 @@
           },
           "status": {
             "$ref": "#/components/schemas/TlFeatureStatus"
+          },
+          "display_status": {
+            "$ref": "#/components/schemas/TlFeatureStatus"
+          },
+          "is_running": {
+            "type": "boolean",
+            "title": "Is Running",
+            "default": false
           },
           "scope_id": {
             "type": "string",
@@ -18150,6 +18167,7 @@
           "code",
           "number",
           "status",
+          "display_status",
           "scope_id",
           "scope_code",
           "updated_at"
@@ -20098,6 +20116,11 @@
             "type": "object",
             "title": "Status Counts",
             "default": {}
+          },
+          "running_count": {
+            "type": "integer",
+            "title": "Running Count",
+            "default": 0
           },
           "nrt_pass_rate": {
             "title": "Nrt Pass Rate",
