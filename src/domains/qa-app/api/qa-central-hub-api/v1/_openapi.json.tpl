@@ -5550,6 +5550,28 @@
         }
       }
     },
+    "/api/v1/test-metrics/nrts/ticket-status/refresh": {
+      "post": {
+        "tags": [
+          "test-metrics"
+        ],
+        "summary": "Refresh Ticket Status",
+        "description": "Align the stored Jira status of the tickets linked to the listed runs with Jira.",
+        "operationId": "refresh_ticket_status_api_v1_test_metrics_nrts_ticket_status_refresh_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketStatusRefreshOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/test-metrics/nrts/update": {
       "put": {
         "tags": [
@@ -17576,6 +17598,24 @@
           "test_object_version"
         ],
         "title": "TestSuiteOut"
+      },
+      "TicketStatusRefreshOut": {
+        "properties": {
+          "checked": {
+            "type": "integer",
+            "title": "Checked"
+          },
+          "updated": {
+            "type": "integer",
+            "title": "Updated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "checked",
+          "updated"
+        ],
+        "title": "TicketStatusRefreshOut"
       },
       "TlAdoptOut": {
         "properties": {
